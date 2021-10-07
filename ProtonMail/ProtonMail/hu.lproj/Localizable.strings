@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Egy vagy több e-mail cím vagy domain név nem létezik vagy hibás formátumú. Az üzenet a piszkozatokba került.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "A melléklet importálva";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Az iOS alkalmazásban nem lehet erre váltani: %@.";
 
 /* No comment provided by engineer. */
-"It's not possible to switch to another plan within the app. %1$@" = "Nem lehetséges az app-on belül előfizetést váltani. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Tájékoztasson az új funkciókról";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Kérjük, próbálja meg újra";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Kérjük, először a ProtonMail alkalmazás bejelentkezési felületét használja.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Üzenetek küldése a %1$@ címről előfizetéshez kötött. Az Ön üzenete az %2$@, alapértelmezett címről lesz elküldve";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+
 /* menu title */
 "Sent" = "Elküldött";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Tárhely";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Tároló figyelmeztetés";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "A küldés nem sikerült. A piszkozat formátuma hibás.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Az elérhető legnagyobb titkosítási szint.";

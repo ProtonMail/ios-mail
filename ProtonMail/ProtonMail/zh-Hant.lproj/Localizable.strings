@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "至少一個收件人的電子郵件地址/網域不存在或格式錯誤。 郵件已移至草稿。";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "新增附件失敗";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已匯入";
 
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "請再試一次";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "請升級您的方案";
+
 /* Description */
 "Please use ProtonMail App login first." = "請先使用 protonmail 應用程式登錄。";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "從 %1$@ 寄送郵件是付費功能，您的郵件將會從預設地址 %2$@ 寄出。";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "附件上傳後\n才可以傳送";
+
 /* menu title */
 "Sent" = "已傳送";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "儲存空間";
 
+/* Storage warning */
+"Storage quota exceeded" = "超過儲存空間限制";
+
 /* Title */
 "Storage Warning" = "儲存空間不足";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "草稿格式錯誤，寄送失敗！";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "無法附加以下檔案：";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "可用的最高級別加密。";

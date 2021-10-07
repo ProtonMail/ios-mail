@@ -203,7 +203,7 @@
 "App is locked" = "L'aplicació està bloquejada";
 
 /* cell title in device settings */
-"App Language" = "Idioma de la aplicació";
+"App Language" = "Idioma de l'aplicació";
 
 /* section title in settings */
 "App Settings" = "Configuració de l'aplicació";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almenys una adreça de correu o domini de destinatari no existeix o té un format incorrecte. Missatge mogut a esborranys.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Error d'adjunt";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Fitxer adjunt importat";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Torneu-ho a provar, si us plau";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Actualitzeu el vostre pla";
+
 /* Description */
 "Please use ProtonMail App login first." = "Si us plau, utilitzeu primer l'inici de sessió en l’App ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "S'estan enviant missatges de %1$@ L'adreça és una funció remunerada. El vostre missatge s'enviarà des de la vostra adreça predeterminada %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Es podrà enviar quan els adjunts estiguin carregats";
+
 /* menu title */
 "Sent" = "Enviat";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Emmagatzematge";
 
+/* Storage warning */
+"Storage quota exceeded" = "Límit d'emmagatzemament superat";
+
 /* Title */
 "Storage Warning" = "Avís d'emmagatzematge";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Ha fallat l'enviament incorrecte del format de projecte!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "No s'han pogut adjuntar els fitxers següents:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "El nivell més alt de xifrat disponible.";

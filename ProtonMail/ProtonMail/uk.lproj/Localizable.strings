@@ -54,7 +54,7 @@
 
 /* *
  *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "Повідомлення не може мати більше 5 міток";
+"A message cannot have more than 5 labels" = "Повідомлення не може мати більш як 5 міток";
 
 /* "Alert" = "Alert"; */
 "A new version of ProtonMail app is available, please update to latest version." = "Доступна нова версія ProtonMail. Будь ласка, оновіть програму.";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Адреса е-пошти чи домен принаймні одного з отримувачів не існує, або має неналежний формат. Повідомлення переміщено до чернеток.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Помилка вкладення";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вкладення імпортовано";
@@ -684,14 +687,14 @@
 "Display name" = "Ім'я";
 
 /* Title in settings */
-"Display Name" = "Ім'я для показу";
+"Display Name" = "Ім'я";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Ім'я для показу оновлено";
+"Display Name Updated" = "Ім'я оновлено";
 
 /* Title in display name settings */
-"DisplayName" = "Ім'я для показу";
+"DisplayName" = "Ім'я";
 
 /* Description */
 "Do you want to cancel the process?" = "Бажаєте скасувати процес?";
@@ -850,10 +853,10 @@
 "End-to-end encrypted message" = "Наскрізно зашифроване повідомлення";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "Наскрізно зашифроване повідомлення з надійної адреси";
+"End-to-end encrypted message from verified address" = "Наскрізно зашифроване повідомлення з перевіреної адреси";
 
 /* encryption lock description */
-"End-to-end encrypted to verified address" = "Наскрізно зашифровано для перевіреного отримувача";
+"End-to-end encrypted to verified address" = "Наскрізно зашифровано для перевіреної адреси";
 
 /* Title */
 "End-to-End Encryption" = "Наскрізне шифрування";
@@ -980,7 +983,7 @@
 "Go to drafts" = "Перейти до чернеток";
 
 /* Action */
-"Go to inbox" = "Перейти у Вхідні";
+"Go to inbox" = "Перейти у вхідні";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to login" = "Перейти до входу";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Неможливо перемкнутися на %@ в нашій програмі для iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to switch to another plan within the app. %1$@" = "Неможливо змінити тарифний план у програмі. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Неможливо перейти на інший тарифний план у програмі. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Повідомляти про нові можливості";
@@ -1274,10 +1277,10 @@
 "Manage Labels/Folders" = "Керувати мітками/теками";
 
 /* Action */
-"Mark as unread" = "Позначити як непрочитане";
+"Mark as unread" = "Позначити непрочитаним";
 
 /* mark message as read action */
-"Mark Read" = "Позначити як прочитане";
+"Mark Read" = "Позначити прочитаним";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1323,7 +1326,7 @@
 "Message Swipe Actions" = "Дії посування для повідомлень";
 
 /* Description */
-"Messages you send can be set to auto delete after a certain time period." = "Повідомлення, які ви надсилаєте, можна налаштувати на автоматичне видалення після певного періоду часу.";
+"Messages you send can be set to auto delete after a certain time period." = "Повідомлення, які ви надсилаєте, можна налаштувати на автоматичне видалення після певного проміжку часу.";
 
 /* default vcard types */
 "Mobile" = "Мобільний";
@@ -1527,13 +1530,13 @@
 "PGP-encrypted message" = "PGP-зашифроване повідомлення";
 
 /* encryption lock description */
-"PGP-encrypted message from verified address" = "PGP-зашифроване повідомлення з надійної адреси";
+"PGP-encrypted message from verified address" = "PGP-зашифроване повідомлення з перевіреної адреси";
 
 /* encryption lock description */
 "PGP-signed" = "PGP-підписано";
 
 /* encryption lock description */
-"PGP-signed message from verified address" = "PGP-підписане повідомлення з надійної адреси";
+"PGP-signed message from verified address" = "PGP-підписане повідомлення з перевіреної адреси";
 
 /* default vcard types */
 "Phone" = "Телефон";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Будь ласка, спробуйте знову";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Будь ласка, оновіть свій тарифний план";
 
 /* Description */
 "Please use ProtonMail App login first." = "Спершу увійдіть з програмою ProtonMail.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Надсилання повідомлень з адреси %1$@ є платною функцією. Ваше повідомлення буде надіслано з типової адреси %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде доступне\nколи вкладення будуть вивантажені";
+
 /* menu title */
 "Sent" = "Надіслані";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Сховище";
 
+/* Storage warning */
+"Storage quota exceeded" = "Перевищено квоту сховища";
+
 /* Title */
 "Storage Warning" = "Попередження про сховище";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Не вдалося надіслати. Виникла помилка з форматом чернетки.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Не вдалося прикріпити такі файли:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Найвищий доступний рівень шифрування.";
@@ -2189,7 +2204,7 @@
 "TroubleShooting" = "Усунення проблем";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Спробуйте під'єднатися до Proton з іншої мережі (абоо скористайтеся ProtonVPN чи Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся ProtonVPN чи Tor).";
 
 /* action sheet option */
 "Turn Off" = "Вимкнути";
@@ -2360,7 +2375,7 @@
 "View HTML" = "Перегляд HTML";
 
 /* Action */
-"View Plans" = "Переглянути тарифні плани";
+"View Plans" = "Переглянути плани";
 
 /* Title */
 "Warning" = "Попередження";

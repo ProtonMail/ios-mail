@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "ShareDev";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Requerit per adjuntar fitxers multimèdia al correu electrònic.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Requerit per adjuntar fotos al correu electrònic.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "S'utilitza per accedir a les adreces de correu electrònic dels contactes desats al dispositiu de manera que es puguin utilitzar quan redacteu un missatge o quan pugeu manualment els contactes del dispositiu al vostre compte. La informació de contacte no es puja als nostres servidors sense una acció explícita per fer-ho.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Us permet desbloquejar l'aplicació de forma ràpida i segura.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Requerit per guardar les imatges adjuntes a la galeria de fotografies.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Requerit per adjuntar fotos al correu electrònic.";
+

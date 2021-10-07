@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Pelo menos um endereço de e-mail/domínio do destinatário não existe ou está formatado incorretamente. Mensagem movida para rascunhos.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Falha ao anexar";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Anexo importado";
 
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Por favor, tente novamente";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Por favor, atualize seu plano";
+
 /* Description */
 "Please use ProtonMail App login first." = "Por favor, primeiro faça o login no ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "O envio de mensagens do endereço %1$@ é um recurso pago. A sua mensagem será enviada do seu endereço padrão %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "O envio estará disponível\nquando os anexos estiverem carregados";
+
 /* menu title */
 "Sent" = "Enviado";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Armazenamento";
 
+/* Storage warning */
+"Storage quota exceeded" = "Cota de armazenamento excedida";
+
 /* Title */
 "Storage Warning" = "Aviso de armazenamento";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Formato de rascunho incorreto. Falha ao enviar!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Os seguintes arquivos não puderam ser anexados:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "O nível mais alto de criptografia disponível.";

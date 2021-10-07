@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "Delen";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Vereist voor het toevoegen van mediabestanden aan de e-mails.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Vereist voor het toevoegen van foto's aan de e-mails.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Used for accessing email addresses for contacts saved on the device so they can be used when composing a message or when manually uploading the device contacts to your account. Contact information is not uploaded to our servers without an explicit action to do so.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Allows you quick and secure to unlock your application.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Required for saving image attachments to photo library.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Required for attaching photos to the email.";
+
