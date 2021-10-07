@@ -221,6 +221,7 @@ extension AppDelegate: UIApplicationDelegate {
 
         if #available(iOS 15.0, *) {
             setupNavigationBarAppearance()
+            setupTableViewHeader()
         }
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
@@ -547,6 +548,11 @@ extension AppDelegate {
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
+    }
+    
+    @available(iOS 15.0, *)
+    private func setupTableViewHeader() {
+        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 }
 

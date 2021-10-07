@@ -335,6 +335,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Fonts.h6.regular
         header.textLabel?.textColor = UIColor.gray
+        header.tintColor = UIColor(hexColorCode: "#e5e5e5")
     }
 }
 
