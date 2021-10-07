@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Alespoň jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná. Zpráva byla přesunuta do návrhů.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Chyba přílohy";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Příloha byla importována";
 
@@ -379,7 +382,7 @@
 "Can't find the selected message. Please try again." = "Nelze nalézt označenou zprávu. Zkuste to prosím znova.";
 
 /* Description */
-"Can't find the value from the response body" = "Nelze najít hodnotu z odpovědi";
+"Can't find the value from the response body" = "Nebylo možné nalézt odpovědi textu těla";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Nelze najít tuto přílohu!";
@@ -465,7 +468,7 @@
 "Check Again" = "Zkontrolovat znovu";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "Zkontrolujte postavení Proton Statusu, pro náš stav systému.";
 
 /* "Username" */
 "Checking ...." = "Kontrola ....";
@@ -542,7 +545,7 @@
 "Contact the ProtonMail team" = "Kontaktuj tým ProtonMailu";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, email (support@protonmail.com), nebo Twitter.";
 
 /* Action and title
    menu title */
@@ -669,10 +672,10 @@
 "Details" = "Detaily";
 
 /* network troubleshot cell title */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Zakažte všechny proxy nebo brány firewall nebo se obraťte na správce sítě.";
 
 /* Cert pinning failed alert message */
-"Disable Validation" = "Disable Validation";
+"Disable Validation" = "Vypnout validaci ověřování";
 
 /* Action */
 "Discard changes" = "Zahodit změny";
@@ -750,7 +753,7 @@
 "Edit signature" = "Upravit podpis";
 
 /* network troubleshot cell title */
-"email" = "email";
+"email" = "e-mail";
 
 /* default vcard types */
 "Email" = "E-mail";
@@ -895,7 +898,7 @@
 "Expires" = "Vyprší";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "Vyprší za %d dnů %d hodin %d minut %d vteřin";
 
 /* Title */
 "Expiring Messages" = "Platnost zpráv";
@@ -1058,7 +1061,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s podmínkami užívání služby ProtonMail.";
@@ -1125,10 +1128,10 @@
 "Is this bug report about an in-app purchase?" = "Týká se tato zpráva o chybě nákupu v aplikaci?";
 
 /* It is not possible to switch to `plan` within our iOS app. */
-"It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
+"It is not possible to switch to %@ within our iOS app." = "Je nomožné přejít na %@ s naší iOS aplikací.";
 
 /* No comment provided by engineer. */
-"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "V aplikaci není možné přejít na jiný tarif. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Informujte mě o nových funkcích";
@@ -1220,7 +1223,7 @@
 "Log Out All" = "Odhlásit vše";
 
 /* Alert when auth token is revoked and switch to another */
-"Logged out from %@ and signed in with %@" = "Logged out from %1$@ and signed in with %2$@";
+"Logged out from %@ and signed in with %@" = "Byli jste odhlášeni z %1$@ a přihlášeni k %2$@";
 
 /* Title */
 "Login" = "Přihlášení";
@@ -1268,7 +1271,7 @@
 "Manage Addresses" = "Spravovat Adresy";
 
 /* Settings row */
-"Manage in device Settings" = "Manage in device Settings";
+"Manage in device Settings" = "Spravovat zařízení v nastavení";
 
 /* Title */
 "Manage Labels/Folders" = "Spravovat Označení/Složky";
@@ -1289,7 +1292,7 @@
 "Message %@" = "Zpráva %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zpráva nemohla být odeslána. Nejméně jeden odesílatel emailu/domény neexistuje nebo je špatně naformátován.";
 
 /* *
  *  Expiration View */
@@ -1336,7 +1339,7 @@
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilní registrace jsou dočasně vypnuty. Opakujte akci později nebo se zkuste zaregistrovat na protonmail.com pomocí stolního nebo přenosného počítače.";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
+"Modifying or turning off the default mobile signature is a paid feature." = "Úprava nebo vypnutí hlavní výchozí funkce podpisu telefonem je placená služba.";
 
 /* More actions button */
 "More" = "Více";
@@ -1464,13 +1467,13 @@
 "On" = "Zapnuto";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "On EE, MMM d, yyyy at %@";
+"On EE, MMM d, yyyy at %@" = "V EE, d, MMM yyyy v %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "V EE, MMM d, yyyy at %1$@, %2$@, napsal/a:";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Pokud jsou aktuální všechny předplatné aktivace plánu, ignorujte aktivaci předplatného. Pro další asistenci, prosím kontaktujte klientskou podporu. \r\n\r\n Chcete určitě ignorovat aktivaci?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Lze přidat pouze jeden bezplatný účet";
@@ -1585,7 +1588,7 @@
 "Please input a valid email address." = "Zadejte prosím platnou emailovou adresu.";
 
 /* network troubleshot cell title */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "Prosíme zkontrolujte, že jste připojeni k internetu.";
 
 /* Error */
 "Please pick a user name first!" = "Nejprve si prosím vyberte uživatelské jméno!";
@@ -1597,7 +1600,7 @@
 "Please remove all attachments before changing sender!" = "Před změnou odesílatele odstraňte prosím všechny přílohy";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Please select at least one email";
+"Please select at least one email" = "Prosíme vyberte aspoň jeden email";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Prosím zvolte alespoň jeden e-mail pro kontaktní skupinu";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Zkuste to prosím znovu";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Upgradujte svůj plán";
 
 /* Description */
 "Please use ProtonMail App login first." = "Nejprve se, prosím, pomocí aplikace ProtonMail přihlašte.";
@@ -1702,7 +1708,7 @@
 "Proxy/Firewall interference" = "Rušení proxy/firewall";
 
 /* cell title in device settings */
-"Push Notifications" = "Push Notifications";
+"Push Notifications" = "Push Notifikace";
 
 /* Title */
 "Quick swipe actions" = "Akce rychlého přetažení";
@@ -1720,7 +1726,7 @@
 "Reading device contacts data..." = "Čtení kontaktů ze zařízení...";
 
 /* The error message is shown in composer */
-"Recipient not found" = "Recipient not found";
+"Recipient not found" = "Příjemce nebyl nalezen";
 
 /* Title */
 "Recovery Code" = "Kód pro obnovení";
@@ -1742,7 +1748,7 @@
 "Remove All" = "Odebrat vše";
 
 /* Settings row */
-"Remove image meta-data" = "Remove image meta-data";
+"Remove image meta-data" = "Odstranit meta data obrázku";
 
 /* un star message */
 "Remove Star" = "Odebrat hvězdičku";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Odesílání zpráv z adresy %1$@ je placená funkce. Vaše zpráva bude odeslána z Vaší výchozí adresy %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Zaslání bude možné po nahrání příloh";
+
 /* menu title */
 "Sent" = "Odeslané";
 
@@ -1897,7 +1906,7 @@
 "Single Password" = "Jednotné heslo";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Snooze";
+"Snooze" = "Odložit";
 
 /* settings option */
 "Snooze Notifications" = "Odložit oznámení";
@@ -1946,10 +1955,13 @@
 "State" = "Stav";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "Stále nelze najít řešení";
 
 /* Title */
 "Storage" = "Úložiště";
+
+/* Storage warning */
+"Storage quota exceeded" = "Kvóta úložiště byla překročena";
 
 /* Title */
 "Storage Warning" = "Varování o docházejícím místě";
@@ -1970,13 +1982,13 @@
 "Subscription" = "Předplatné";
 
 /* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+"Subscription information temporarily unavailable. Please try again later." = "Informace o předplatném je dočasně nedostupná. Prosím, zkuste to později.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Podpora %i specifických domén (např. uživatel@vašedoména.cz)";
 
 /* network troubleshot cell title */
-"support form" = "support form";
+"support form" = "formulář podpory";
 
 /* Action */
 "Support ProtonMail" = "Podpořte ProtonMail";
@@ -1989,7 +2001,7 @@
 
 /* cell title in device settings
    Swiping gestures */
-"Swiping gestures" = "Swiping gestures";
+"Swiping gestures" = "Přejetí gestem";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Přepnuto na účet '%@'";
@@ -2004,7 +2016,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Klepněte na \"Beztak Odeslat\" pro odeslání bez vypršení platnosti těmto příjemcům";
 
 /* network troubleshot cell title */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte Váš antivirový program.";
 
 /* agree check box terms */
 "terms and conditions" = "smluvní podmínky užívání";
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Nesprávný formát návrhu. Odesílání selhalo!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Následující soubory se nepodařilo připojit:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "K dispozici je nejvyšší úroveň šifrování.";
@@ -2056,7 +2071,7 @@
 "The new password does not match." = "Nová hesla se neshodují.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Nové heslo musí mít délku alespoň 8 znaků";
 
 /* (No Comment) */
 "The new password not match" = "Hesla se neshodují";
@@ -2086,10 +2101,10 @@
 "The total attachment size cannot exceed 25MB" = "Celková velikost příloh nemůže být větší než 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL kterou se snažíte zpřístupnit je nestandartní a možná se nenačítá správně. Chcete ji otevřít s použitím výchozího prohlížeče Vašeho zařízení?";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "The user is already logged in";
+"The user is already logged in" = "Uživatel je už přihlášený";
 
 /* (No Comment) */
 "The UserName have been taken." = "Uživatelské jméno už bylo použito.";
@@ -2102,10 +2117,10 @@
 "The verification failed!" = "Ověření selhalo!";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Ve frontě jsou stále některé zprávy. Když se odhlásíte, koncept zprávy bude odstraněn.";
 
 /* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
+"There are unsent messages that will be lost if you log out" = "Jsou evidovány neodeslané zprávy. V případě, že se odhlásíte, budou ztraceny";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Došlo k chybě při vytváření nebo načítání uložených dat aplikace.";
@@ -2129,16 +2144,16 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Tato zpráva může být pokus o phishing. Prosím zkontrolujte odesílatele a obsah a ujistěte se, že jsou skutečné.";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
 
 /* contacts talbe cell Title title */
 "Title" = "Titul";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Ověření certifikátu TSL se nezdařilo. Vaše připojení může být sledováno, aplikace byla dočasně zablokována z důvodu Vaší bezpečnosti. Přepněte okamžitě sítě.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Ověření certifikátu TSL se nezdařilo. Vaše připojení může být sledováno, aplikace byla dočasně zablokována z důvodu Vaší bezpečnosti.\n\nOkamžitě přepněte sítě";
 
 /* Title */
 "To" = "Komu";
@@ -2186,19 +2201,19 @@
 "Troubleshoot" = "Poradce při potížích";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "Řešení problémů";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte ProtonVPN nebo Tor).";
 
 /* action sheet option */
 "Turn Off" = "Vypnout";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Zapněte tuto funkci aplikace pro automatické zapínání a použijte PIN kód nebo Face ID pro odemčení.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Zapněte tuto funkci aplikace pro automatické zapínání a použijte PIN kód nebo otisk prstu pro odemčení.";
 
 /* Title */
 "Tweet about ProtonMail" = "Tvítovat o ProtonMailu";
@@ -2277,7 +2292,7 @@
 "Unlimited messages sent/day" = "Neomezený počet odeslaných zpráv/den";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Unlock required";
+"Unlock required" = "Odemčení vyžadováno";
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
@@ -2372,7 +2387,7 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozornění: Nenastavili jste e-mail pro obnovení, v případě ztráty hesla, nebude možné účet obnovit. Pokračovat bez e-mailu pro obnovení?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nebylo možné zaslat Vaši zprávu protože může být špatné nastavení síťového spojení. Zpráva byla uchována ve formátu konceptu a bude automaticky opět zaslána, jakmile se otevře aplikace.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Na výše uvedené mobilní telefonní číslo Vám zašleme ověřovací kód.";
@@ -2381,7 +2396,7 @@
 "We will send a verification code to the email address above." = "Na výše uvedenou e-mailovou adresu vám zašleme ověřovací kód.";
 
 /* The body of the iOS 10 upgrate alert */
-"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.";
+"We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "Brzy bude pozastavena podpora pro iOS 10 zařízení. Prosíme proveďte aktualizaci svého systému pro příjem budoucí aktualizace.";
 
 /* Title */
 "We would like to know what we can do better." = "Rádi bychom věděli co můžeme udělat líp.";
@@ -2417,7 +2432,7 @@
 "You are about to launch the web browser and navigate to" = "Chystáte se otevřít webový prohlížeč a přejít na";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Hodláte odstranit všechny své účty ze svého zařízení. Nebudete mít následně možnost přístupu na tomto zařízení pokud znovu neprovedete konfiguraci.\n\nChcete opravdu odstranit veškeré účty?";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Gesta přejíždění můžete upravit v nastavení aplikace ProtonMail.";
@@ -2429,7 +2444,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ adresu nelze nastavit jako výchozí, protože je to placená funkce.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "V nastavení systému je zakázano použití FaceID. FaceID byli využito na ochranu informací účtu. Pro přístup k Vašemu účtu přejděte do nastavení a reaktivujte FaceID, nebo se přihlašte zpět.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Je zapnuto vypršení platnosti zprávy, ale ne všichni příjemci to podporují. Prosím, přidejte heslo a/nebo zakažte PGP odesílání pro použití vypršení platnosti pro všechny příjemce.";
@@ -2444,7 +2459,7 @@
 "You have unsaved changes. Do you want to save it?" = "Máte neuložené změny, chcete je uložit?";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@)." = "You have used %d%% of your storage space (%@).";
+"You have used %d%% of your storage space (%@)." = "Využíváte %d%% úložného prostoru (%@).";
 
 /* *
  *  StorageLimit */
@@ -2455,19 +2470,19 @@
 
 /* Alert to confirm logout
    Alert when logout primary account from account manager */
-"You will be switched to %@" = "You will be switched to %@";
+"You will be switched to %@" = "Budete přepnuti do %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "You're going to delete the message irreversibly. Are you sure?";
+"You're going to delete the message irreversibly. Are you sure?" = "Zprávu smažete nenávratně. Chcete opravdu provést tuto akci?";
 
 /* view top title */
 "Your Country Code" = "Kód Vaší země";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaše země může blokovat přístup k Protonu. Zkuste použít %1$@ (nebo jinou VPN) a nebo%2$@ pro přístup ke službě Proton.";
 
 /* network troubleshot cell title */
-"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.";
+"Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Vaše země může blokovat přístup k Protonu. Zkuste použít Proton VPN (nebo jinou VPN) a nebo Tor pro přístup ke službě Proton.";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Vaše doručená pošta je nyní chráněna pomocí přímého šifrování. Pro automatické odesílání zabezpečených e-mailů Vašim kontaktům je vyzvěte k použití ProtonMail! Pokud jej nepoužívají, zprávy můžete taky zašifrovat manuálně.";
@@ -2486,7 +2501,7 @@
 "Your plan will automatically renew on" = "Váš plán se automaticky obnoví dne";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaše relace vypršela protože účet nebyl aktivní po delší dobu nebo byl zrušen. Prosím, přihlašte se zpátky.";
 
 /* Description */
 "Your signature has been updated." = "Váš podpis byl aktualizován.";

@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Au moins une adresse/domaine de destinataire n'existe pas ou est mal formaté. Le message a été déplacé vers les brouillons.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Défaut de pièce jointe";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Pièce jointe importée";
 
@@ -1464,10 +1467,10 @@
 "On" = "Le";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "Le EEEE d MMMM yyyyy à %@";
+"On EE, MMM d, yyyy at %@" = "Le EEEE d MMMM yyyy à %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "Le EEEE d MMMM yyyyy à %1$@, %2$@ a écrit :";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "Le EEEE d MMMM yyyy à %1$@, %2$@ a écrit :";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorez l'activation de l'achat uniquement si vous êtes sûr que tous vos abonnements sont à jour. Pour plus d'assistance, veuillez contacter le support client. \r\n\r\n Êtes-vous sûr de vouloir ignorer l'activation ?";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Veuillez réessayer";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Veuillez mettre à niveau votre offre";
 
 /* Description */
 "Please use ProtonMail App login first." = "Veuillez d'abord vous connecter à ProtonMail App.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Envoyer des messages depuis l'adresse %1$@ est une fonctionnalité payante. Votre message sera envoyé à partir de votre adresse par défaut %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "L'envoi sera possible\nlorsque les pièces jointes auront été téléchargées";
+
 /* menu title */
 "Sent" = "Envoyés";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Espace de stockage";
 
+/* Storage warning */
+"Storage quota exceeded" = "Quota de stockage dépassé";
+
 /* Title */
 "Storage Warning" = "Avertissement de stockage";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Échec de l'envoi. Une erreur est survenue avec le format du brouillon.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Les fichiers suivants n'ont pas pu être joints :";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Le plus haut niveau de chiffrement disponible.";

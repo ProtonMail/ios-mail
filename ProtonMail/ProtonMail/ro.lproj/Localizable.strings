@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Cel puțin o adresă de e-mail/domeniu pentru destinatar nu există sau nu este în format corespunzător. Mesajul a fost mutat în ciorne.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Eșuare atașare fișier";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Atașament importat";
 
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Mai încercați";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Treceți la alt plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Folosiți mai întâi conectarea în aplicația ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Trimiterea de mesaje de la adrese %1$@ este o facilitate plătită. Mesajul vă va fi trimis de pe adresa implicită %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Trimiterea va fi disponibilă\ndupă încărcarea atașamentelor";
+
 /* menu title */
 "Sent" = "Trimis";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Spațiu stocare";
 
+/* Storage warning */
+"Storage quota exceeded" = "Cota de stocare depășită";
+
 /* Title */
 "Storage Warning" = "Avertizare stocare";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Formatul ciornei nu este corect. Trimitere eșuată!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Următoarele fișiere nu au putut fi atașate:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Cel mai mare nivel de criptare disponibil.";

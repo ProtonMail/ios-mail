@@ -35,7 +35,7 @@
 "%d Minutes" = "%d minuter";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d markerade";
+"%d Selected" = "%d valda";
 
 /* Service plan capability; i = 1 */
 "%i email address" = "%i e-postadress";
@@ -197,7 +197,7 @@
 "API Server not reachable..." = "API-servern kan inte nås...";
 
 /* section title in settings */
-"APP INFORMATION" = "APP INFORMATION";
+"APP INFORMATION" = "APP-INFORMATION";
 
 /* Error */
 "App is locked" = "Appen är låst";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Åtminstone en mottagares e-postadress/domän finns inte eller är felaktigt formaterad. Meddelande flyttat till utkast.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Bifogad fil misslyckades";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bilaga tillagd";
@@ -432,7 +435,7 @@
 
 /* *
  *  PhoneVerifyViewController */
-"Cell phone number" = "Mobilnummer";
+"Cell phone number" = "Telefonnummer";
 
 /* Title */
 "Change default address to .." = "Ändra standard adress till ..";
@@ -441,7 +444,7 @@
 "Change left swipe action" = "Ändra vänster svep rörelse";
 
 /* change password input label */
-"Change Login Password" = "Ändra lösenord för inloggning";
+"Change Login Password" = "Ändra inloggningslösenord";
 
 /* Title */
 "Change Mailbox Password" = "Ändra lösenord för brevlådan";
@@ -450,7 +453,7 @@
 "Change Password" = "Ändra lösenord";
 
 /* settings protection section title */
-"Change Pin" = "Ändra PIN-kod";
+"Change Pin" = "Ändra PIN";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Ändra höger svep rörelse";
@@ -486,7 +489,7 @@
 "Close" = "Stäng";
 
 /* Action */
-"close tour" = "Stäng rundturen";
+"close tour" = "stäng rundtur";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
@@ -512,7 +515,7 @@
 "Confirm Mailbox Password" = "Bekräfta brevlådelösenord";
 
 /* Title */
-"Confirm new login password" = "Bekräfta nytt lösenord";
+"Confirm new login password" = "Bekräfta nytt inloggningslösenord";
 
 /* Title */
 "Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlådan";
@@ -610,7 +613,7 @@
 "Date: %@" = "Datum: %@";
 
 /* Title */
-"days" = "dagar";
+"days" = "Dagar";
 
 /* Title */
 "Debug" = "Felsök";
@@ -653,7 +656,7 @@
 "Delete" = "Radera";
 
 /* emptify folder/label confirmation alert */
-"Delete all" = "Ta bort alla";
+"Delete all" = "Radera alla";
 
 /* Title-Contacts */
 "Delete Contact" = "Radera kontakt";
@@ -688,7 +691,7 @@
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Visningsnamn uppdaterat";
+"Display Name Updated" = "Visningsnamn har uppdaterats";
 
 /* Title in display name settings */
 "DisplayName" = "Visningsnamn";
@@ -769,7 +772,7 @@
 "Email Addresses" = "E-postadresser";
 
 /* Send an email to the current contact (button title text) */
-"Email Contact" = "E-post till kontakt";
+"Email Contact" = "E-posta kontakt";
 
 /* place holder */
 "Email default signature" = "Standardsignatur";
@@ -1080,7 +1083,7 @@
 "inline attachments" = "bilagorna";
 
 /* place holder */
-"Input Display Name ..." = "Ange visningsnamn...";
+"Input Display Name ..." = "Ange visningsnamn ...";
 
 /* place holder */
 "Input Notification Email ..." = "Ange notifikations-e-post...";
@@ -1147,7 +1150,7 @@
 "Label as..." = "Märk som...";
 
 /* Title */
-"Label Management" = "Hantering av etiketter";
+"Label Management" = "Etiketthantering";
 
 /* createing lable input place holder */
 "Label Name" = "Etikettnamn";
@@ -1177,7 +1180,7 @@
 "Learn More" = "Läs mer";
 
 /* learn more button */
-"Learn more here" = "Läs mer";
+"Learn more here" = "Läs mer här";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Gräns uppnådd";
@@ -1186,7 +1189,7 @@
 "Limited to 150 messages sent/day" = "Begränsad till 150 meddelanden skickade/dag";
 
 /* Action */
-"Load remote content" = "Läs in fjärrinnehåll";
+"Load remote content" = "Ladda fjärrinnehåll";
 
 /* (No Comment) */
 "Loading..." = "Laddar...";
@@ -1345,13 +1348,13 @@
 "More Credits" = "Fler krediter";
 
 /* move action */
-"Move to All Mail" = "Flytta till all e-post";
+"Move to All Mail" = "Flytta till All e-post";
 
 /* move action */
 "Move to Archive" = "Flytta till Arkiv";
 
 /* move action */
-"Move to Draft" = "Flytta till utkast";
+"Move to Draft" = "Flytta till Utkast";
 
 /* folder apply - title */
 "Move to Folder" = "Flytta till mapp";
@@ -1564,7 +1567,7 @@
 "Pin code can't be empty." = "PIN-kod kan inte vara tomt.";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Abonnemang kan redigeras i webbversionen.";
+"Plans can be edited on the web version." = "Planer kan redigeras i webbversionen.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Lägg till ett lösenord för följande mottagare.";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Var god försök igen";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Vänligen uppgradera din plan";
 
 /* Description */
 "Please use ProtonMail App login first." = "Vänligen använd ProtonMail App inlogg först.";
@@ -1687,7 +1693,7 @@
 "ProtonMail is currently offline..." = "ProtonMail är för närvarande offline...";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus krävs för att anpassa din mobila signatur";
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus krävs för att kunna anpassa din mobilsignatur";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary gör det möjligt för dig att lägga till och redigera kontaktuppgifter utöver bara kontaktens namn och e-postadress. Genom att använda ProtonMail kommer dessa data att vara lika säkra som din end-to-end-krypterade e-post.";
@@ -1720,7 +1726,7 @@
 "Reading device contacts data..." = "Läser kontaktdata från enheten...";
 
 /* The error message is shown in composer */
-"Recipient not found" = "Mottagare kunde inte hittas";
+"Recipient not found" = "Mottagaren hittades inte";
 
 /* Title */
 "Recovery Code" = "Återställningskod";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Att skicka meddelanden från en %1$@. me adress är en betalfunktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Det är möjligt att skicka efter att bifogade filer har laddats upp";
+
 /* menu title */
 "Sent" = "Skickat";
 
@@ -1891,7 +1900,7 @@
 "Signature" = "Signatur";
 
 /* Title */
-"Signature Updated" = "Signatur uppdaterad";
+"Signature Updated" = "Signaturen har uppdaterats";
 
 /* settings general section title */
 "Single Password" = "Enkel-lösenord";
@@ -1937,7 +1946,7 @@
 "Starred" = "Stjärnmärkt";
 
 /* "INBOX" */
-"STARRED" = "STJÄRNMÄRKTA";
+"STARRED" = "Stjärnmärkt";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Starttid";
@@ -1950,6 +1959,9 @@
 
 /* Title */
 "Storage" = "Lagringsutrymme";
+
+/* Storage warning */
+"Storage quota exceeded" = "Lagringskvot överskrids";
 
 /* Title */
 "Storage Warning" = "Lagringsvarning";
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Avsändning misslyckades. Det fanns ett fel med utkastformatet.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Följande filer kunde inte bifogas:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Den högsta nivån av kryptering tillgänglig.";
@@ -2207,7 +2222,7 @@
 "Twitter" = "Twitter";
 
 /* Placeholder */
-"Two Factor Code" = "Tvåfaktorkod";
+"Two Factor Code" = "Tvåfaktorskod";
 
 /* Internal type casting error */
 "Type casting error" = "Type casting error";
@@ -2323,7 +2338,7 @@
 "User already exist!" = "Användaren existerar redan!";
 
 /* (No Comment) */
-"User is available!" = "Användarnamnet är tillgängligt";
+"User is available!" = "Användarnamn är tillgängligt";
 
 /* Title */
 "USER LOGIN" = "Användarinloggning";
@@ -2441,7 +2456,7 @@
 "You have a new email!" = "Du har ett nytt meddelande!";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara det?";
+"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara dem?";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Du har använt %d%% av ditt lagringsutrymme (%@).";

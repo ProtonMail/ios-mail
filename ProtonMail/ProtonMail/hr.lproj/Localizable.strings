@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Barem jedna adresa e-pošte/domena primatelja ne postoji ili je loše oblikovana. Poruka je premještena u skice.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Privitak je uvezen";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Nije moguće prebaciti se na %@ unutar naše iOS aplikacije.";
 
 /* No comment provided by engineer. */
-"It's not possible to switch to another plan within the app. %1$@" = "Nije moguće prebaciti se na drugi plan unutar aplikacije. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Informirajte me o novim značajkama";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Molimo pokušajte ponovno";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Najprije koristite prijavu u ProtonMail aplikaciju.";
 
@@ -1797,7 +1803,7 @@
 "Save draft" = "Spremi skicu";
 
 /* action sheet option */
-"Scheduled" = "Planirano";
+"Scheduled" = "Zakazano";
 
 /* *
  *  SearchViewController */
@@ -1844,6 +1850,9 @@
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Vaša će poruka biti poslana s Vaše zadane adrese %2$@";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
 
 /* menu title */
 "Sent" = "Poslano";
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Prostor za pohranu";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Upozorenje o slobodnom prostoru";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Format nacrta nije ispravan. Slanje nije uspjelo.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Najviša dostupna razina šifriranja.";

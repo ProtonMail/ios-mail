@@ -173,7 +173,7 @@
 "All Mail" = "Allur póstur";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Allar verndarstillingar verða endurstilltar og þurrkaðar út þegar þú skráir þig úr forritinu.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Leyfa varaleið beiningar";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Að minnsta kosti eitt tölvupóstfang viðtakanda er ekki til eða er rangt sniðið. Skilaboð voru færð í drög.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Viðhengi flutt inn";
@@ -1564,7 +1567,7 @@
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Hægt er að breyta áætlunum í vefútgáfunni.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Bættu inn lykilorði fyrir eftirfarandi viðtakendur.";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Endilega reyndu aftur";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
 
 /* Description */
 "Please use ProtonMail App login first." = "Notaðu fyrst ProtonMail-forritið til að skrá þig inn.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+
 /* menu title */
 "Sent" = "Sent";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Geymslurými";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Aðvörun vegna geymslupláss";
 
@@ -2030,6 +2042,9 @@
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Snið draganna er ekki rétt, sending mistókst!";
 
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
+
 /* key size note part 1 */
 "The highest level of encryption available." = "Hæsta stig dulritunar í boði.";
 
@@ -2056,7 +2071,7 @@
 "The new password does not match." = "Nýju lykilorðin stemma ekki.";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "Nýja lykilorðið þarf að vera að lágmarki 8 stafir";
 
 /* (No Comment) */
 "The new password not match" = "Lykilorðin stemma ekki";
@@ -2195,7 +2210,7 @@
 "Turn Off" = "Slökkva á";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Kveiktu á þessum eiginleika til að læsa forritinu sjálfkrafa og nota PIN-númer eða andlitsauðkenningu til að opna það.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Kveiktu á þessum eiginleika til að læsa\\nforritinu sjálfvirkt og nota PIN-kóða eða fingrafar til að aflæsa því.";
