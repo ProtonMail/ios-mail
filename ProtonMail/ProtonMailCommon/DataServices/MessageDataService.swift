@@ -1018,7 +1018,7 @@ class MessageDataService : Service, HasLocalStorage {
                             do {
                                 if newMessage.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = newMessage.time?.timeIntervalSince1970 {
                                     // remote time and local time are not empty
-                                    if oldtime >= time {
+                                    if oldtime > time {
                                         DispatchQueue.main.async {
                                             completion(task, response, Message.ObjectIDContainer(newMessage), error)
                                         }
@@ -2690,56 +2690,50 @@ class MessageDataService : Service, HasLocalStorage {
                             msg.message?["messageStatus"] = 1
                         }
                         
-                        if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 || lo == 8 { //if it is a draft
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
+                        if let lo = msg.message?["Location"] as? Int,
+                           lo == 1 || lo == 8, //if it is a draft
+                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
+                           existMes.messageStatus == 1,
+                           let BETime = msg.message?["Time"] as? TimeInterval,
+                           let localTime = existMes.time?.timeIntervalSince1970,
+                           BETime > localTime {
+                            existMes.time = BETime.asDate()
+                            if let subject = msg.message?["Subject"] as? String {
+                                existMes.title = subject
                             }
+                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
+                                existMes.toList = toList.json()
+                            }
+                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
+                                existMes.bccList = bccList.json()
+                            }
+                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
+                                existMes.ccList = ccList.json()
+                            }
+                            continue
                         }
                         
-                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray {
-                            if labelIDs.contains("1") || labelIDs.contains("8") {
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
+                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray,
+                           labelIDs.contains("1") || labelIDs.contains("8"),
+                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
+                           existMes.messageStatus == 1,
+                           let BETime = msg.message?["Time"] as? TimeInterval,
+                           let localTime = existMes.time?.timeIntervalSince1970,
+                           BETime > localTime {
+                            existMes.time = BETime.asDate()
+                            if let subject = msg.message?["Subject"] as? String {
+                                existMes.title = subject
                             }
+                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
+                                existMes.toList = toList.json()
+                            }
+                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
+                                existMes.bccList = bccList.json()
+                            }
+                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
+                                existMes.ccList = ccList.json()
+                            }
+                            continue
                         }
                         
                         do {
