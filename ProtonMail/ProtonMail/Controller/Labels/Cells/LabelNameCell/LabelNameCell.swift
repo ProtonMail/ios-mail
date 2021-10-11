@@ -29,22 +29,20 @@ protocol LabelNameDelegate: AnyObject {
 
 final class LabelNameCell: UITableViewCell {
 
-    @IBOutlet private var nameField: UITextField!
+    @IBOutlet private var nameField: LabelTextField!
     private weak var delegate: LabelNameDelegate?
     private let maximum: Int = 100
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        let padding = UIView(frame: .init(x: 0, y: 0, width: 16, height: 96))
         self.nameField.delegate = self
         self.nameField.backgroundColor = .clear
-        self.nameField.leftView = padding
-        self.nameField.leftViewMode = .always
         self.contentView.backgroundColor = UIColorManager.BackgroundNorm
     }
 
     func config(name: String, type: PMLabelType, delegate: LabelNameDelegate?) {
         self.nameField.attributedText = name.apply(style: FontManager.subHeadline)
+        self.nameField.typingAttributes = FontManager.subHeadline
         self.delegate = delegate
 
         let labelPlaceHolder = LocalString._labels_label_name_text
