@@ -465,6 +465,7 @@
 		2C8B58CD07E1E679631D58BDD9F8B2FB /* ConversationRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D2DBC32B4D3D66F4158A5C1A14FEC1 /* ConversationRead.swift */; };
 		2CA4DB264C0C177131A2C2D644C99392 /* CoordinatorSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932D364704D3F3037FE7D04D015C303 /* CoordinatorSegue.swift */; };
 		2CADCD834EE46ECE2101AA6F90795F2E /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA66852CB9BDBA5E864BF9166EA0EFA8 /* EmailHeaderView.swift */; };
+		2CB04E562B8E0CFF20A8F70023ABE28D /* LabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F23D4585CEBB7867B9769B4E528FA /* LabelTextField.swift */; };
 		2D167D8028366315D75C660A9DF9B04E /* HtmlEditorBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */; };
 		2D21E0DD45618DED3713B926CF66680D /* NewMessageBodyViewController+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4F26A1107CFB9BC038004D16EE7A0F /* NewMessageBodyViewController+Print.swift */; };
 		2D44C77998E9A27A15BF041762590268 /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
@@ -1376,6 +1377,7 @@
 		84951B6CDBDA98B6C74E39CC3E7360DD /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
 		849BAE4951E24817656B06523AACA44E /* NewMessageBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E923ABE77AD5E832ACA4AD6826499 /* NewMessageBodyViewController.swift */; };
 		84A4A4C93C9E179EAC54ABC7461601C0 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F921C9918B518B23D3AFA6E47844069 /* AddressBookService.swift */; };
+		84A81ACD5BE16A7CBA9880926C363B86 /* LabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F23D4585CEBB7867B9769B4E528FA /* LabelTextField.swift */; };
 		84B80DE0DB21C29D799FA783FE0EBB3A /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366440FD86C2A31F36A17127B4F2D8B4 /* FileManager+Extension.swift */; };
 		84BA0326B9446C1490963961C45028D5 /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A3F6C6E3C1FDBA5EC49E664CC41311 /* SignInCoordinator.swift */; };
 		84D3FC7461FABC26290F12405A1619FD /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
@@ -3137,6 +3139,7 @@
 		481C1156C63FF770665F22A72C0E6462 /* Saver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Saver.swift; sourceTree = "<group>"; };
 		483C01F6D1C97E9AAE607E3F928C97B4 /* MessageDataService+FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageDataService+FileManager.swift"; sourceTree = "<group>"; };
 		484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenPGP+String+Extension.swift"; sourceTree = "<group>"; };
+		484F23D4585CEBB7867B9769B4E528FA /* LabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextField.swift; sourceTree = "<group>"; };
 		48867731FE803673FC4F3A92D8D0320E /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		488DDB0F8994B139EB8F8D0E222238E1 /* MainQueueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueHandler.swift; sourceTree = "<group>"; };
 		4891AB6EE024AC2EEB26E77303F6F238 /* PMDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMDateFormatterTests.swift; sourceTree = "<group>"; };
@@ -5426,6 +5429,7 @@
 			children = (
 				5017AE4F402E5646AC3CC84BB61C0140 /* LabelNameCell.swift */,
 				C28872D64A9C4592E94C081194877E7A /* LabelNameCell.xib */,
+				484F23D4585CEBB7867B9769B4E528FA /* LabelTextField.swift */,
 			);
 			path = LabelNameCell;
 			sourceTree = "<group>";
@@ -8803,6 +8807,7 @@
 				87155975A6A9E6A8309CBE0D7A860365 /* LabelPaletteCell.swift in Sources */,
 				0C27E46D1C3818AC900B4454F042F4FD /* LabelParentSelectVM.swift in Sources */,
 				062BC2C6D5C56019FAF5FA48FDDBB0AD /* LabelParentSelectViewController.swift in Sources */,
+				2CB04E562B8E0CFF20A8F70023ABE28D /* LabelTextField.swift in Sources */,
 				1AB54A0C37224E8E2EF88791F3CF0BDF /* LabelUpdate+Extension.swift in Sources */,
 				14058CBC4B1B03FBFB6E795354DDE837 /* LabelUpdate+Var+Extension.swift in Sources */,
 				4948C9FF4027DF90A5869DFAE176013F /* LabelUpdate.swift in Sources */,
@@ -9561,6 +9566,7 @@
 				D4D90963FE9B6ECC7EC4B028CD89EB56 /* LabelPaletteCell.swift in Sources */,
 				A45AD86F4D859A742BF184A6622976F4 /* LabelParentSelectVM.swift in Sources */,
 				E75881026DC8BD71772E0770A27AB1D8 /* LabelParentSelectViewController.swift in Sources */,
+				84A81ACD5BE16A7CBA9880926C363B86 /* LabelTextField.swift in Sources */,
 				04D962AD9DA400645D1E058566610E05 /* LabelUpdate+Extension.swift in Sources */,
 				EE204F148344F07B7BC89F40B3B76D98 /* LabelUpdate+Var+Extension.swift in Sources */,
 				8D4D46181E80961FCCE6E662D68F5A37 /* LabelUpdate.swift in Sources */,
