@@ -115,18 +115,18 @@ extension EncryptedSearchIndexService {
         }
     }
     
-    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: NSSet, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
+    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: Set<String>, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
         
         var rowID:Int64? = -1
-        var allLabels:String = ""
-        for (index, label) in labelIDs.enumerated() {
+        let allLabels:String = labelIDs.joined(separator: ";")
+        /*for (index, label) in labelIDs.enumerated() {
             let id:String = (label as! Label).labelID
             if index == 0 {
                 allLabels += id
             } else {
                 allLabels += ";" + id
             }
-        }
+        }*/
         
         do {
             let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
