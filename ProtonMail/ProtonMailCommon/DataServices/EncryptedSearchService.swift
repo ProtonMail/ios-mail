@@ -16,11 +16,235 @@ import Network
 import Groot
 import BackgroundTasks
 
+import ProtonCore_Services
+import ProtonCore_DataModel
+
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
         return stride(from: 0, to: self.count, by: chunkSize).map {
             Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
         }
+    }
+}
+
+struct ESSender: Codable {
+    var Name: String = ""
+    var Address: String = ""
+}
+
+public class ESMessage: Codable {
+    //variables that are fetched with getMessage
+    public var ID: String = ""
+    public var Order: Int
+    public var ConversationID: String
+    public var Subject: String
+    public var Unread: Int
+    public var `Type`: Int    //messagetype
+    public var SenderAddress: String //TODO
+    public var SenderName: String   //TODO
+    var Sender: ESSender
+    //public var replyTo: String  //not existing
+    //public var replyTos: String //TODO
+    var ToList: [ESSender?] = []
+    var CCList: [ESSender?] = []
+    var BCCList: [ESSender?] = []
+    public var Time: Double
+    public var Size: Int
+    public var IsEncrypted: Int
+    public var ExpirationTime: Date?
+    public var IsReplied: Int
+    public var IsRepliedAll: Int
+    public var IsForwarded: Int
+    public var SpamScore: Int?
+    public var AddressID: String?   //needed for decryption
+    public var NumAttachments: Int
+    public var Flags: Int
+    public var LabelIDs: Set<String>
+    public var ExternalID: String?
+    //public var unsubscribeMethods: String?
+    
+    //variables that are fetched with getMessageDetails
+    //public var attachments: Set<Any>
+    public var Body: String?
+    public var Header: String?
+    public var MIMEType: String?
+    //public var ParsedHeaders: String? //String or class?
+    public var UserID: String?
+
+    //local variables
+    public var Starred: Bool? = false
+    public var isDetailsDownloaded: Bool? = false
+    //var tempAtts: [AttachmentInline]? = nil
+    
+    /// check if contains exclusive lable
+    ///
+    /// - Parameter label: Location
+    /// - Returns: yes or no
+    internal func contains(label: Message.Location) -> Bool {
+        return self.contains(label: label.rawValue)
+    }
+    
+    /// check if contains the lable
+    ///
+    /// - Parameter labelID: label id
+    /// - Returns: yes or no
+    internal func contains(label labelID : String) -> Bool {
+        let labels = self.LabelIDs
+        for l in labels {
+            //TODO
+            if let label = l as? Label, labelID == label.labelID {
+                return true
+            }
+        }
+        return false
+    }
+    
+    /// check if message contains a draft label
+    var draft : Bool {
+        contains(label: Message.Location.draft) || contains(label: Message.HiddenLocation.draft.rawValue)
+    }
+    
+    var flag : Message.Flag? {
+        get {
+            return Message.Flag(rawValue: self.Flags)
+        }
+        set {
+            self.Flags = newValue!.rawValue
+        }
+    }
+    
+    //signed mime also external message
+    var isExternal : Bool? {
+        get {
+            return !self.flag!.contains(.internal) && self.flag!.contains(.received)
+        }
+    }
+    
+    // 7  & 8
+    var isE2E : Bool? {
+        get {
+            return self.flag!.contains(.e2e)
+        }
+    }
+    
+    var isPlainText : Bool {
+        get {
+            if let type = MIMEType, type.lowercased() == Message.MimeType.plainText {
+                return true
+            }
+            return false
+        }
+    }
+    
+    var isMultipartMixed : Bool {
+        get {
+            if let type = MIMEType, type.lowercased() == Message.MimeType.mutipartMixed {
+                return true
+            }
+            return false
+        }
+    }
+    
+    //case outPGPInline = 7
+    var isPgpInline : Bool {
+        get {
+            if isE2E!, !isPgpMime! {
+                return true
+            }
+            return false
+        }
+    }
+    
+    //case outPGPMime = 8       // out pgp mime
+    var isPgpMime : Bool? {
+        get {
+            if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, isE2E! {
+                return true
+            }
+            return false
+        }
+    }
+    
+    //case outSignedPGPMime = 9 //PGP/MIME signed message
+    var isSignedMime : Bool? {
+        get {
+            if let mt = self.MIMEType, mt.lowercased() == Message.MimeType.mutipartMixed, isExternal!, !isE2E! {
+                return true
+            }
+            return false
+        }
+    }
+    
+    public func decryptBody(keys: [Key], passphrase: String) throws -> String? {
+        var firstError: Error?
+        var errorMessages: [String] = []
+        
+        for key in keys {
+            do {
+                return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase)
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                    errorMessages.append(error.localizedDescription)
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        
+        let extra: [String: Any] = ["newSchema": false,
+                                    "Ks count": keys.count,
+                                    "Error message": errorMessages]
+        
+        if let error = firstError {
+            Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                                   error: error,
+                                   extra: extra)
+            throw error
+        }
+        Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                               error: "No error from crypto library",
+                               extra: extra)
+        return nil
+    }
+    
+    public func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
+        var firstError: Error?
+        var errorMessages: [String] = []
+        var newScheme: Int = 0
+        var oldSchemaWithToken: Int = 0
+        var oldSchema: Int = 0
+        
+        for key in keys {
+            do {
+                if let token = key.token, let signature = key.signature{
+                    //have both means new schema. key is
+                    newScheme += 1
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here Detached signature
+                        // if failed return a warning
+                        PMLog.D(signature)
+                        //TODO
+                        return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: plaitToken)
+                    }
+                } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                    oldSchemaWithToken += 1
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here embeded signature
+                        return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: plaitToken)
+                    }
+                } else { //normal key old schema
+                    oldSchema += 1
+                    return try self.Body!.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
+                }
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                    errorMessages.append(error.localizedDescription)
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        return nil
     }
 }
 
@@ -50,10 +274,10 @@ open class IndexSingleMessageAsyncOperation: Operation {
             didChangeValue(forKey: oldValue.keyPath)
         }
     }
-    public let messageID: String
+    public let message: ESMessage
     
-    init(_ messageID: String) {
-        self.messageID = messageID
+    init(_ message: ESMessage) {
+        self.message = message
     }
     
     public override var isAsynchronous: Bool {
@@ -84,7 +308,22 @@ open class IndexSingleMessageAsyncOperation: Operation {
             state = .executing
         }
         
-        autoreleasepool {
+        //print("processing message: \(self.message.ID)")
+        EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message) { messageWithDetails in
+            //print("Message detailes downloaded: \(messageWithDetails!.isDetailsDownloaded!)")
+            EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!) { [weak self] in
+                //print("Message \(self?.message.ID) sucessfully processed!")
+                EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
+                self?.state = .finished
+                
+                #if !APP_EXTENSION
+                    //Update UI progress bar
+                    EncryptedSearchService.shared.updateUIWithProgressBarStatus()
+                #endif
+            }
+        }
+        
+        /*autoreleasepool {
         //print("processing message: \(self.messageID)")
             EncryptedSearchService.shared.getMessage(self.messageID) { [weak self] message in
                 //print("Message fetched: \(message!.messageID), details: \(message!.isDetailDownloaded)")
@@ -106,6 +345,7 @@ open class IndexSingleMessageAsyncOperation: Operation {
                 }
             }
         } //end autoreleasepool
+         */
     }
     
     public func finish() {
@@ -123,6 +363,9 @@ public class EncryptedSearchService {
         if users.firstUser != nil {
             user = users.firstUser //should return the currently active user
             messageService = user.messageService
+            self.apiService = user.apiService
+            self.userDataSource = user.messageService.userDataSource
+            //userDataSource = UserManager -> user
         }
         
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
@@ -141,6 +384,9 @@ public class EncryptedSearchService {
     
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil
+    internal var apiService: APIService? = nil
+    internal var userDataSource: UserDataSource? = nil
+    
     var totalMessages: Int = 0
     var limitPerRequest: Int = 1
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
@@ -222,6 +468,38 @@ extension EncryptedSearchService {
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
+        
+        //TESTS
+        /*self.fetchMessages(byLabel: "5", time: 0) { error, messages in
+            print("error: \(String(describing: error?.localizedDescription))")
+            
+            if error != nil {
+                print("Error when fetching messages")
+                exit(0)
+            } else {
+                for m in messages! {
+                    print("id: \(m.Sender)")
+                    self.fetchMessageDetailForMessage(m) { error, msg in
+                        if error == nil {
+                            print("message with details: \(String(describing: msg!.Body!))")
+                            
+                            do {
+                                let body = try self.decryptBodyIfNeeded(message: msg!)
+                                print("plaintext body: \(body!)")
+                            } catch {
+                                print("error when decrypting: \(error)")
+                                exit(1)
+                            }
+                            
+                        } else {
+                            print("error: \(String(describing: error))")
+                        }
+                        exit(0)
+                    }
+                }
+                //exit(0)
+            }
+        }*/
         
         //check if search index db exists - and if not create it
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: self.user.userInfo.userId)
@@ -456,6 +734,8 @@ extension EncryptedSearchService {
         let users: UsersManager = sharedServices.get()
         self.user = users.firstUser
         self.messageService = self.user.messageService
+        self.apiService = self.user.apiService
+        self.userDataSource = self.messageService?.userDataSource
     }
     
     private func printTiming(_ title: String, for array: NSMutableArray) -> Void {
@@ -472,7 +752,7 @@ extension EncryptedSearchService {
     
     // Checks the total number of messages on the backend
     func getTotalMessages(completionHandler: @escaping () -> Void) -> Void {
-        self.messageService?.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false) { _, response, error in
+        /*self.messageService?.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: 0, forceClean: false, isUnread: false) { _, response, error in
             if error == nil {
                 self.totalMessages = response!["Total"] as! Int
                 self.limitPerRequest = response!["Limit"] as! Int
@@ -480,13 +760,163 @@ extension EncryptedSearchService {
                 NSLog("Error when parsing total # of messages: %@", error!)
             }
             completionHandler()
+        }*/
+        let request = FetchMessagesByLabel(labelID: Message.Location.allmail.rawValue, endTime: 0, isUnread: false)
+        self.apiService?.GET(request){ [weak self] (_, responseDict, error) in
+            if error != nil {
+                print("Error for api get number of messages: \(String(describing: error))")
+            } else if let response = responseDict {
+                self?.totalMessages = response["Total"] as! Int
+                self?.limitPerRequest = response["Limit"] as! Int
+            } else {
+                print("Unable to parse response: \(NSError.unableToParseResponse(responseDict))")
+            }
+            completionHandler()
+        }
+    }
+    
+    private func jsonStringToESMessage(jsonData: Data) throws -> ESMessage? {
+        let decoder = JSONDecoder()
+        let message: ESMessage? = try decoder.decode(ESMessage.self, from: jsonData)
+        return message
+    }
+    
+    private func parseMessageResponse(labelID: String, isUnread:Bool, response: [String:Any], completion: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+        guard var messagesArray = response["Messages"] as? [[String: Any]] else {
+            completion?(NSError.unableToParseResponse(response), nil)
+            return
+        }
+
+        for (index, _) in messagesArray.enumerated() {
+            messagesArray[index]["UserID"] = self.user.userInfo.userId
+        }
+        //let messagesCount = response["Total"] as? Int ?? 0
+        
+        do {
+            var messages: [ESMessage] = []
+            for (index, _) in messagesArray.enumerated() {
+                let jsonDict = messagesArray[index]
+                let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
+
+                //let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
+                //print("object: \(jsonObject)")
+                
+                let message: ESMessage? = try self.jsonStringToESMessage(jsonData: jsonData)
+                //message.MessageStatus = 1
+                message?.isDetailsDownloaded = false
+                messages.append(message!)
+            }
+            completion?(nil, messages)
+        } catch {
+            PMLog.D("error: \(error)")
+            //print("error when serialization: \(error)")
+            completion?(error, nil)
+        }
+        
+    }
+    
+    private func parseMessageDetailResponse(response: [String: Any], completion: ((Error?, ESMessage?)-> Void)?) -> Void {
+        guard var msg = response["Message"] as? [String: Any] else {
+            completion?(NSError.unableToParseResponse(response), nil)
+            return
+        }
+        
+        msg.removeValue(forKey: "Location")
+        msg.removeValue(forKey: "Starred")
+        msg.removeValue(forKey: "test")
+        msg["UserID"] = self.user.userInfo.userId
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: msg, options: [])
+            //debugging:
+            //let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            //print("detailed message: \(jsonObject)")
+            //exit(0)
+            
+            let message: ESMessage? = try self.jsonStringToESMessage(jsonData: jsonData)
+            
+            //set some local variables
+            //TODO unsubscribemethods
+            //TODO messageStatus
+            message?.isDetailsDownloaded = true
+            message?.Starred = false
+            
+            completion?(nil, message)
+        } catch {
+            PMLog.D("error when serialization: \(error)")
+            completion?(error, nil)
+        }
+        
+    }
+
+    private func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false)
+        self.apiService?.GET(request){ [weak self] (task, responseDict, error) in
+            if error != nil {
+                //print("Error for api get: \(String(describing: error))")
+                DispatchQueue.main.async {
+                    completionHandler?(error, nil)
+                }
+            } else if let response = responseDict {
+                self?.parseMessageResponse(labelID: labelID, isUnread: false, response: response){ errorFromParsing, messages in
+                    if let err = errorFromParsing {
+                        DispatchQueue.main.async {
+                            //print("Error when parsing: \(String(describing: err))")
+                            completionHandler?(err as NSError, nil)
+                        }
+                    } else {
+                        //everything went well - return messages
+                        DispatchQueue.main.async {
+                            completionHandler?(error, messages)
+                        }
+                    }
+                }
+            } else {
+                //print("Unable tp parse response: \(String(describing: responseDict))")
+                DispatchQueue.main.async {
+                    completionHandler?(NSError.unableToParseResponse(responseDict), nil)
+                }
+            }
+        }
+    }
+    
+    private func fetchMessageDetailForMessage(_ message: ESMessage, completionHandler: ((Error?, ESMessage?) -> Void)?){
+        if message.isDetailsDownloaded! {
+            DispatchQueue.main.async {
+                completionHandler?(nil, message)
+            }
+        } else {
+            self.apiService?.messageDetail(messageID: message.ID){ [weak self] (task, responseDict, error) in
+                if error != nil {
+                    DispatchQueue.main.async {
+                        completionHandler?(error, nil)
+                    }
+                } else if let response = responseDict {
+                    self?.parseMessageDetailResponse(response: response) { (errorFromParsing, msg) in
+                        if let err = errorFromParsing {
+                            DispatchQueue.main.async {
+                                completionHandler?(err as NSError, nil)
+                            }
+                        } else {
+                            //everything went well - return messages
+                            DispatchQueue.main.async {
+                                completionHandler?(error, msg)
+                            }
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completionHandler?(NSError.unableToParseResponse(responseDict), nil)
+                    }
+                }
+            }
         }
     }
 
     func downloadAndProcessPage(_ mailboxID: String, _ time: Int, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
         group.enter()
-        self.messageService?.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { [weak self] _, result, error in
+        /*self.messageService?.fetchMessages(byLabel: mailboxID, time: time, forceClean: false, isUnread: false) { [weak self] _, result, error in
             if error == nil {
                 let messagesBatch: NSMutableArray = self?.getMessageIDs(result) ?? []
                 print("Process page...")
@@ -495,6 +925,18 @@ extension EncryptedSearchService {
                     self?.lastMessageTimeIndexed = self?.getOldestMessageInMessageBatch(result) ?? 0
                     group.leave()
                 }
+            } else {
+                print("Error while fetching messages: \(String(describing: error))")
+            }
+        }*/
+        self.fetchMessages(byLabel: mailboxID, time: time) { [weak self] error, messages in
+            if error == nil {
+                self?.processPageOneByOne(forBatch: messages, completionHandler: {
+                    [weak self] in
+                    print("Page successfull processed!")
+                    self?.lastMessageTimeIndexed = Int((messages?.last?.Time)!)
+                    group.leave()
+                })
             } else {
                 print("Error while fetching messages: \(String(describing: error))")
             }
@@ -520,12 +962,13 @@ extension EncryptedSearchService {
         }
     }
     
-    func processPageOneByOne(forBatch messageIDs: NSMutableArray, completionHandler: @escaping () -> Void) -> Void {
+    func processPageOneByOne(forBatch messages: [ESMessage]?, completionHandler: @escaping () -> Void) -> Void {
         //start a new thread to process the page
         DispatchQueue.global(qos: .userInitiated).async {
-            for id in messageIDs {
+            for m in messages! {
                 autoreleasepool {
-                    let op = IndexSingleMessageAsyncOperation(id as! String)
+                    //TODO
+                    let op = IndexSingleMessageAsyncOperation(m)
                     self.messageIndexingQueue.addOperation(op)
                 }
             }
@@ -632,18 +1075,25 @@ extension EncryptedSearchService {
         }
     }*/
     
-    func getMessageDetailsForSingleMessage(for message: Message, completionHandler: @escaping (Message?) -> Void) -> Void {
-        if message.isDetailDownloaded {
+    func getMessageDetailsForSingleMessage(for message: ESMessage, completionHandler: @escaping (ESMessage?) -> Void) -> Void {
+        if message.isDetailsDownloaded! {
             completionHandler(message)
         } else {
-            self.messageService?.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { [weak self] _, response, newM, error in
+            self.fetchMessageDetailForMessage(message) { error, msg in
+                if error == nil {
+                    completionHandler(msg)
+                } else {
+                    print("Error when fetching message details: \(String(describing: error))")
+                }
+            }
+            /*self.messageService?.fetchMessageDetailForMessage(message, labelID: Message.Location.allmail.rawValue) { [weak self] _, response, newM, error in
                 if error == nil {
                     let messageWithDetails: Message? = self?.parseMessageObjectFromResponse(for: (response?["Message"] as? [String:Any])!)
                     completionHandler(messageWithDetails)
                 } else {
                     print("Error when fetching message details: \(String(describing: error))")
                 }
-            }
+            }*/
         }
     }
     
@@ -765,11 +1215,133 @@ extension EncryptedSearchService {
         }
     }*/
     
-    func decryptAndExtractDataSingleMessage(for message: Message, completionHandler: @escaping () -> Void) -> Void {
+    private func decryptBodyIfNeeded(message: ESMessage) throws -> String? {
+        
+        var keys: [Key] = []
+        if let addressID = message.AddressID, let _keys = self.userDataSource?.getAllAddressKey(address_id: addressID) {
+            keys = _keys
+        } else {
+            keys = self.userDataSource!.addressKeys
+        }
+        
+        if let passphrase = self.userDataSource?.mailboxPassword, var body = self.userDataSource!.newSchema ? try message.decryptBody(keys: keys, userKeys: self.userDataSource!.userPrivateKeys, passphrase: passphrase) : try message.decryptBody(keys: keys, passphrase: passphrase) {
+            if message.isPgpMime! || message.isSignedMime! {
+                if let mimeMsg = MIMEMessage(string: body) {
+                    if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
+                        body = html
+                    } else if let text = mimeMsg.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
+                        body = text.encodeHtml()
+                        body = "<html><body>\(body.ln2br())</body></html>"
+                    }
+                    
+                    let cidParts = mimeMsg.mainPart.partCIDs()
+                    
+                    for cidPart in cidParts {
+                        if var cid = cidPart.cid,
+                            let rawBody = cidPart.rawBodyString {
+                            cid = cid.preg_replace("<", replaceto: "")
+                            cid = cid.preg_replace(">", replaceto: "")
+                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                        }
+                    }
+                    /// cache the decrypted inline attachments
+                    let atts = mimeMsg.mainPart.findAtts()
+                    var inlineAtts = [AttachmentInline]()
+                    for att in atts {
+                        if let filename = att.getFilename()?.clear {
+                            let data = att.data
+                            let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                            do {
+                                try data.write(to: path, options: [.atomic])
+                            } catch {
+                                continue
+                            }
+                            inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
+                        }
+                    }
+                    //message.tempAtts = inlineAtts
+                    //TODO
+                } else { //backup plan
+                    body = body.multipartGetHtmlContent ()
+                }
+            } else if message.isPgpInline {
+                if message.isPlainText {
+                    let head = "<html><head></head><body>"
+                    // The plain text draft from android and web doesn't have
+                    // the head, so if the draft contains head
+                    // It means the draft already encoded
+                    if !body.hasPrefix(head) {
+                        body = body.encodeHtml()
+                        body = body.ln2br()
+                    }
+                    return body
+                } else if message.isMultipartMixed {
+                    ///TODO:: clean up later
+                    if let mimeMsg = MIMEMessage(string: body) {
+                        if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
+                            body = html
+                        } else if let text = mimeMsg.mainPart.part(ofType: Message.MimeType.plainText)?.bodyString {
+                            body = text.encodeHtml()
+                            body = "<html><body>\(body.ln2br())</body></html>"
+                        }
+                        
+                        if let cidPart = mimeMsg.mainPart.partCID(),
+                            var cid = cidPart.cid,
+                            let rawBody = cidPart.rawBodyString {
+                            cid = cid.preg_replace("<", replaceto: "")
+                            cid = cid.preg_replace(">", replaceto: "")
+                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                        }
+                        /// cache the decrypted inline attachments
+                        let atts = mimeMsg.mainPart.findAtts()
+                        var inlineAtts = [AttachmentInline]()
+                        for att in atts {
+                            if let filename = att.getFilename()?.clear {
+                                let data = att.data
+                                let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                                do {
+                                    try data.write(to: path, options: [.atomic])
+                                } catch {
+                                    continue
+                                }
+                                inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
+                            }
+                        }
+                        //message.tempAtts = inlineAtts
+                        //TODO
+                    } else { //backup plan
+                        body = body.multipartGetHtmlContent ()
+                    }
+                } else {
+                    return body
+                }
+            }
+            if message.isPlainText {
+                if message.draft {
+                    return body
+                } else {
+                    body = body.encodeHtml()
+                    return body.ln2br()
+                }
+            }
+            return body
+        }
+        
+        Analytics.shared.error(message: .decryptedMessageBodyFailed,
+                               error: "passphrase is nil")
+        return message.Body
+    }
+    
+    func decryptAndExtractDataSingleMessage(for message: ESMessage, completionHandler: @escaping () -> Void) -> Void {
         var body: String? = ""
         var decryptionFailed: Bool = true
         do {
-            body = try self.messageService?.decryptBodyIfNeeded(message: message)
+            //body = try self.messageService?.decryptBodyIfNeeded(message: message)
+            body = try self.decryptBodyIfNeeded(message: message)
             decryptionFailed = false
         } catch {
             print("Error when decrypting messages: \(error).")
@@ -925,47 +1497,25 @@ extension EncryptedSearchService {
         return result!
     }
     
-    struct Sender: Codable {
-        var Name: String = ""
-        var Address: String = ""
-    }
-    
-    func createEncryptedContent(message: Message, cleanedBody: String) -> EncryptedsearchEncryptedMessageContent? {
+    func createEncryptedContent(message: ESMessage, cleanedBody: String) -> EncryptedsearchEncryptedMessageContent? {
         //1. create decryptedMessageContent
-        let decoder = JSONDecoder()
-        let senderJsonData = Data(message.sender!.utf8)
-        let toListJsonData: Data = message.toList.data(using: .utf8)!
-        let ccListJsonData: Data = message.ccList.data(using: .utf8)!
-        let bccListJsonData: Data = message.bccList.data(using: .utf8)!
-        
-        var decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchDecryptedMessageContent()
-        do {
-            let senderStruct = try decoder.decode(Sender.self, from: senderJsonData)
-            let toListStruct = try decoder.decode([Sender].self, from: toListJsonData)
-            let ccListStruct = try decoder.decode([Sender].self, from: ccListJsonData)
-            let bccListStruct = try decoder.decode([Sender].self, from: bccListJsonData)
-            
-            let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(senderStruct.Name, email: senderStruct.Address)
-            let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            toListStruct.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
-                toList.add(r)
-            }
-            let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            ccListStruct.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
-                ccList.add(r)
-            }
-            let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
-            bccListStruct.forEach { s in
-                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s.Name, email: s.Address)
-                bccList.add(r)
-            }
-            
-            decryptedMessageContent = EncryptedsearchNewDecryptedMessageContent(message.subject, sender, cleanedBody, toList, ccList, bccList)
-        } catch {
-            print(error)
+        let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(message.Sender.Name, email: message.Sender.Address)
+        let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        message.ToList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            toList.add(r)
         }
+        let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        message.CCList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            ccList.add(r)
+        }
+        let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+        message.BCCList.forEach { s in
+            let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+            bccList.add(r)
+        }
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject, sender, cleanedBody, toList, ccList, bccList)
         
         //2. encrypt content via gomobile
         let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
@@ -1037,22 +1587,22 @@ extension EncryptedSearchService {
         return key
     }
     
-    func addMessageKewordsToSearchIndex(_ message: Message, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
+    func addMessageKewordsToSearchIndex(_ message: ESMessage, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
         var hasBody: Bool = true
         if decryptionFailed {
             hasBody = false //TODO are there any other case where there is no body?
         }
         
         let location: Int = Int(Message.Location.allmail.rawValue)!
-        let time: Int = Int((message.time)!.timeIntervalSince1970)
-        let order: Int = Int(truncating: message.order)
+        let time: Int = Int(message.Time)
+        let order: Int = message.Order
         
         //let iv: String = String(decoding: (encryptedContent?.iv)!, as: UTF8.self)
         let iv: Data = (encryptedContent?.iv)!.base64EncodedData()
         //let ciphertext: String = String(decoding: (encryptedContent?.ciphertext)!, as: UTF8.self)
         let ciphertext:Data = (encryptedContent?.ciphertext)!.base64EncodedData()
         
-        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.user.userInfo.userId, messageID: message.messageID, time: time, labelIDs: message.labels, isStarred: message.starred, unread: message.unRead, location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
+        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.user.userInfo.userId, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
         //print("message inserted at row: ", row!)
     }
 
