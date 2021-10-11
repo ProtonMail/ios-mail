@@ -66,7 +66,9 @@ class ContactPicker: UIView, AccessibleView {
             if let contactGroup = model as? ContactGroupVO {
                 contactGroup.selectAllEmailFromGroup()
             }
-            self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
+            addToSelectedContacts(model: model) { [weak self] in
+                self?.contactCollectionView.scrollToEntryAnimated(animated: true, onComplete: nil)
+            }
         }
         return controller
     }
@@ -314,9 +316,10 @@ class ContactPicker: UIView, AccessibleView {
     }
     
     internal func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
-        self.contactCollectionView.addToSelectedContacts(model: model) {
+        self.contactCollectionView.addToSelectedContacts(model: model) { [weak self] in
             if focus {
-                let _ = self.becomeFirstResponder()
+                self?.contactCollectionView.scrollToEntryAnimated(animated: true, onComplete: nil)
+                let _ = self?.becomeFirstResponder()
             }
         }
     }
