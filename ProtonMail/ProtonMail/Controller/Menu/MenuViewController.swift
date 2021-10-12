@@ -457,7 +457,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         
         plusView.addSubview(plusIcon)
         [
-            plusIcon.trailingAnchor.constraint(equalTo: plusView.trailingAnchor, constant: -16),
+            plusIcon.trailingAnchor.constraint(equalTo: plusView.trailingAnchor, constant: -20),
             plusIcon.centerYAnchor.constraint(equalTo: plusView.centerYAnchor),
             plusIcon.widthAnchor.constraint(equalToConstant: 20),
             plusIcon.heightAnchor.constraint(equalToConstant: 20)
