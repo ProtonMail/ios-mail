@@ -107,8 +107,6 @@ class SignInManager: Service {
         userDataService.fetchSettings(userInfo: userInfo, auth: auth).done(on: .main) { [weak self] userInfo in
             guard let self = self else { return }
             self.usersManager.update(auth: auth, user: userInfo)
-            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: userInfo.swipeLeft,
-                                                        rightToLeft: userInfo.swipeRight)
 
             guard userInfo.delinquent < 3 else {
                 self.queueManager.unregisterHandler(user.mainQueueHandler)
