@@ -320,7 +320,7 @@
 "Attachment" = "Вложение";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Ошибка вложения";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вложение импортировано";
@@ -1414,7 +1414,7 @@
 "Language" = "Язык";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Позже";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Пожалуйста, обновитесь до платного тарифного плана для использования более 3 ярлыков";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Пожалуйста, обновите свой тарифный план";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Пожалуйста, улучшите свой тарифный план, чтобы продолжать отправлять и получать электронные письма.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Пожалуйста, для входа сначала воспользуйтесь приложением ProtonMail.";
@@ -2032,7 +2032,7 @@
 "ProtonMail" = "ProtonMail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу приватность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу конфиденциальность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "Зашифрованная электронная почта ProtonMail";
@@ -2344,7 +2344,7 @@
 "Signed out from %@ and signed in with %@" = "Вы вышли из %1$@ и вошли в %2$@";
 
 /* Onboarding title */
-"Simply private" = "Просто приватный";
+"Simply private" = "Просто конфиденциальный";
 
 /* skip button title in onboarding page */
 "Skip" = "Пропустить";
@@ -2413,10 +2413,10 @@
 "Storage" = "Хранилище";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Хранилище заполнено";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Превышена квота хранилища";
 
 /* Title */
 "Storage Warning" = "Предупреждение о хранилище";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Сбой отправки. Ошибка в формате черновика.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Не удалось прикрепить следующие файлы:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Наивысший из доступных уровень шифрования.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Вы используете %d%% объёма своего хранилища (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы использовали %1$d%% своего дискового пространства (%2$@). Чтобы продолжать отправлять и получать сообщения электронной почты, пожалуйста, улучшите тарифный план.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Вы исчерпали весь объём хранилища (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Вы израсходовали все пространство для хранения (%@). Чтобы продолжать отправлять и получать электронные письма, пожалуйста, улучшите тарифный план.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Для отправки необходим хотя бы один получатель";

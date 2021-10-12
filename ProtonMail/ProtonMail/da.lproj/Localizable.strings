@@ -320,7 +320,7 @@
 "Attachment" = "Vedhæftning";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Vedhæftning mislykkedes";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Vedhæftning importeret";
@@ -1414,7 +1414,7 @@
 "Language" = "Sprog";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Senere";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Opgradér til et betalt abonnement for at bruge mere end 3 etiketter";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Opgrader venligst dit abonnement";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Du bedes opgradere dit abonnement for fortsat at kunne sende og modtage e-mails.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Benyt først ProtonMail App-login.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Lagerplads";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Lageret er fuldt";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Lagerpladskvote overskredet";
 
 /* Title */
 "Storage Warning" = "Lagerpladsadvarsel";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Ukorrekt udkastsformatet, afsendelse mislykkedes!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Følgende filer kunne ikke vedhæftes:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Det kraftigste tilgængelige krypteringsniveau.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Du har brugt %d%% af din lagerplads (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brugt %1$d%% af din lagerplads (%2$@). Opgradér venligst for at forsat at kunne sende og modtage e-mails.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Du har opbrugt al din lagerplads (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har brugt al din lagerplads (%@). Opgradér venligst for at forsat at kunne sende og modtage e-mails.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Minimum én adressat kræves for at kunne afsende";

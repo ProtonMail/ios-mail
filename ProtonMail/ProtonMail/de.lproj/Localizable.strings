@@ -320,7 +320,7 @@
 "Attachment" = "Anhang";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Anhang fehlerhaft";
+"Attachment failure" = "Anhängen fehlgeschlagen";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Anhang importiert";
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Bitte wechseln Sie zu einem kostenpflichtigen Tarif, um mehr als 3 Etiketten zu verwenden";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Bitte erweitere dein Paket";
+"Please upgrade your plan" = "Bitte erweitern Sie Ihren Abonnement";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Bitte wechseln Sie Ihren Tarif, um weiterhin E-Mails senden und empfangen zu können.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Bitte verwenden Sie zuerst die Anmeldung in der ProtonMail App.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Speicher";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Speicherplatz voll";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Speicherkontingent überschritten";
 
 /* Title */
 "Storage Warning" = "Speicherplatz-Warnung";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Das Entwurfsformat ist fehlerhaft. Senden fehlgeschlagen!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Die folgenden Dateien konnten nicht angehängt werden:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Die höchstmögliche Verschlüsselung, die zur Verfügung steht.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Sie haben %d%% Ihres Speicherplatzes von (%@) aufgebraucht.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Sie haben %1$d%% Ihres Speicherplatzes (%2$@) aufgebraucht. Bitte steigen Sie auf ein anderes Abonnement um, damit Sie weiterhin E-Mails senden und empfangen können.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Sie haben Ihren gesamten Speicherplatz (%@) aufgebraucht.";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Sie haben Ihren gesamten Speicherplatz (%@) aufgebraucht . Bitte steigen Sie auf ein anderes Abonnement um, damit Sie weiterhin E-Mails senden und empfangen können.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Sie benötigen mindestens einen Empfänger, um die Nachricht senden zu können";

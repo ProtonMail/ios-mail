@@ -320,7 +320,7 @@
 "Attachment" = "Pièce jointe";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Défaut de pièce jointe";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Pièce jointe importée";
@@ -1414,7 +1414,7 @@
 "Language" = "Langue";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Plus tard";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Veuillez passer à une offre payante pour utiliser plus de 3 labels";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Veuillez passer à l’offre supérieure";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Veuillez d'abord utiliser l'application ProtonMail pour vous connecter.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Espace de stockage";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Stockage plein";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Quota de stockage dépassé";
 
 /* Title */
 "Storage Warning" = "Avertissement de stockage";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Échec de l'envoi. Une erreur est survenue avec le format du brouillon.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Les fichiers suivants n'ont pas pu être joints :";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Le plus haut niveau de chiffrement disponible.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Vous avez utilisé %d%% de votre espace de stockage (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé %1$d%% de votre espace de stockage(%2$@). Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Vous avez épuisé tout votre espace de stockage (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Vous avez utilisé tout votre espace de stockage (%@). Veuillez passer à l’offre supérieure pour continuer à envoyer et recevoir des messages.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Vous avez besoin d’au moins un destinataire pour envoyer";

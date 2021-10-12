@@ -320,7 +320,7 @@
 "Attachment" = "附件";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "新增附件失敗";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已匯入";
@@ -1414,7 +1414,7 @@
 "Language" = "語言";
 
 /* Action */
-"Later" = "Later";
+"Later" = "稍後";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "請升級至付費方案以使用超過 3 個標籤";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "請升級您的方案";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "請升級您的方案以繼續傳送與接收電子郵件。";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "請先使用 protonmail 應用程式登入。";
@@ -2413,10 +2413,10 @@
 "Storage" = "儲存空間";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "儲存空間已滿";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "超過儲存空間限制";
 
 /* Title */
 "Storage Warning" = "儲存空間不足";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "草稿格式錯誤，寄送失敗！";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "無法附加以下檔案：";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "可用的最高級別加密。";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "您已經使用了 %d%% 的儲存空間 (%@)。";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "您已使用了您的儲存空間 (%2$@) 的 %1$d%%。請升級您的方案以繼續傳送與接收電子郵件。";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "您已經使用了所有的儲存空間 (%@)。";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "您已用盡您所有的儲存空間 (%@)。請升級您的方案以繼續傳送與接收電子郵件。";
 
 /* "Alert" */
 "You need at least one recipient to send" = "至少需有一位收件人";

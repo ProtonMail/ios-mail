@@ -320,7 +320,7 @@
 "Attachment" = "Załącznik";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Błąd przesyłania załącznika";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Załącznik został zaimportowany";
@@ -1414,7 +1414,7 @@
 "Language" = "Język";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Później";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,7 +1978,7 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Ulepsz do płatnego planu, aby używać więcej niż 3 etykiet";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Ulepsz plan";
 
 /* Content of storage full alert */
 "Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
@@ -2416,7 +2416,7 @@
 "Storage full" = "Storage full";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Limit przestrzeni dyskowej został przekroczony";
 
 /* Title */
 "Storage Warning" = "Ostrzeżenie o przestrzeni dyskowej";
