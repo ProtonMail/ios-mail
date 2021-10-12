@@ -72,7 +72,6 @@ class SettingsEncryptedSearchViewModel {
         self.pauseIndexing = false
         self.estimatedTimeRemaining.value = 0
         self.currentProgress.value = 0
-        self.progressViewStatus.value = 0
     }
     
     var isEncryptedSearch: Bool {
@@ -94,7 +93,6 @@ class SettingsEncryptedSearchViewModel {
     }
     
     var pauseIndexing: Bool
-    var progressViewStatus = Bindable<Float>()
     var currentProgress = Bindable<Int>()
     var estimatedTimeRemaining = Bindable<Int>()
     
