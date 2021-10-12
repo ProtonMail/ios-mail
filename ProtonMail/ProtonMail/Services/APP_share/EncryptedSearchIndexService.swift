@@ -273,8 +273,8 @@ extension EncryptedSearchIndexService {
     func getOldestMessageInSearchIndex(for userID: String) -> String {
         let time: Expression<CLong> = self.databaseSchema.time
         
-        let query = self.searchableMessages.select(time).order(time.desc).limit(1)
-        // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
+        let query = self.searchableMessages.select(time).order(time.asc).limit(1)
+        // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
         
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var oldestMessage: CLong = 0
@@ -286,6 +286,24 @@ extension EncryptedSearchIndexService {
             print("Error when querying oldest message in search index: \(error)")
         }
         return self.timeToDateString(time: oldestMessage)
+    }
+    
+    func getNewestMessageInSearchIndex(for userID: String) -> String {
+        let time: Expression<CLong> = self.databaseSchema.time
+        
+        let query = self.searchableMessages.select(time).order(time.desc).limit(1)
+        // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
+        
+        let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+        var newestMessage: CLong = 0
+        do {
+            for result in try handleToSQLiteDB!.prepare(query) {
+                newestMessage = result[time]
+            }
+        } catch {
+            print("Error when querying newest message in search index: \(error)")
+        }
+        return self.timeToDateString(time: newestMessage)
     }
     
     private func timeToDateString(time: CLong) -> String {
