@@ -2149,7 +2149,7 @@ class LocalizedString {
     lazy var _changes_will_discarded = NSLocalizedString("Your changes will be discarded", comment: "")
 
     lazy var _label_as_title = NSLocalizedString("Label as", comment: "")
-    lazy var _label_as_send_to_archive = NSLocalizedString("Send to archive?", comment: "")
+    lazy var _label_as_also_archive = NSLocalizedString("Also archive?", comment: "Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels")
     lazy var _label_as_new_label = NSLocalizedString("New Label", comment: "")
 
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "") 

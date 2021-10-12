@@ -58,7 +58,7 @@ class LabelAsActionSheetPresenter {
             }
             labelActions.append(item)
         }
-        let archiveButton = PMActionSheetToggleItem(title: LocalString._label_as_send_to_archive,
+        let archiveButton = PMActionSheetToggleItem(title: LocalString._label_as_also_archive,
                                                     icon: nil,
                                                     toggleColor: UIColorManager.BrandNorm)
         let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
