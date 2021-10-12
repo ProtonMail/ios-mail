@@ -313,7 +313,8 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
-    private func restoreAppStates() { // here
+    private func restoreAppStates() {
+        guard appWindow != nil else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let menu = controller as? MenuViewController {
                 menu.coordinator.handleSwitchView(deepLink: self.deeplink)
@@ -432,7 +433,7 @@ class WindowsCoordinator: CoordinatorNew {
 
     private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
         self.deeplink = deepLink
-        guard arePrimaryUserSettingsFetched else {
+        guard arePrimaryUserSettingsFetched && appWindow != nil else {
             return
         }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
