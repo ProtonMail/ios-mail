@@ -115,7 +115,6 @@ class SingleMessageContentViewModel {
             if !isEmbedInConversationView {
                 markReadIfNeeded()
             }
-            self.messageBodyViewModel.messageHasChanged(message: self.message)
             return
         }
         guard internetStatusProvider.currentStatus != .NotReachable else {

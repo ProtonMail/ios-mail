@@ -88,7 +88,11 @@ class BannerViewController: UIViewController {
         handleReceiptBanner()
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
+        view.alpha = 0
         viewModel.recalculateCellHeight?(false)
+        delay(0.5) {
+            self.view.alpha = 1
+        }
     }
 
     func hideBanner(type: BannerType) {
@@ -254,7 +258,7 @@ class BannerViewController: UIViewController {
     }
 
     private func addBannerView(type: BannerType, shouldAddContainer: Bool, bannerView: UIView) {
-        guard let containerView = self.containerView else { return }
+        guard let containerView = self.containerView, displayedBanners[type] == nil else { return }
         var viewToAdd = bannerView
         if shouldAddContainer {
             let bannerContainerView = UIView()
@@ -275,7 +279,7 @@ class BannerViewController: UIViewController {
     private func findIndexToInsert(_ typeToInsert: BannerType) -> Int {
         guard let containerView = self.containerView else { return 0 }
 
-        var indexToInsert = 0
+        var indexToInsert = containerView.arrangedSubviews.count
         for (index, view) in containerView.arrangedSubviews.enumerated() {
             if let type = displayedBanners.first(where: { _, value -> Bool in
                 return value == view
