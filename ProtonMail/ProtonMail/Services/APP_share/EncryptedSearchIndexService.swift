@@ -24,7 +24,9 @@ public class EncryptedSearchIndexService {
         fileByteCountFormatter?.countStyle = .file
 
         //create initial connection if not existing
-        let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: EncryptedSearchService.shared.user.userInfo.userId)
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (usersManager.firstUser?.userInfo.userId)!
+        let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
         //create table
         self.createSearchIndexTable(using: handleToSQliteDB!)
     }
