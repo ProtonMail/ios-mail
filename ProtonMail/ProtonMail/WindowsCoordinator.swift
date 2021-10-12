@@ -157,7 +157,8 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func didEnterBackground() {
-        if let vc = self.currentWindow?.topmostViewController() {
+        if let vc = self.currentWindow?.topmostViewController(),
+           !(vc is ComposeContainerViewController) {
             vc.view.endEditing(true)
         }
         if let window = self.currentWindow {
