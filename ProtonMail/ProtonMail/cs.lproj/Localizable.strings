@@ -320,7 +320,7 @@
 "Attachment" = "Příloha";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Chyba přílohy";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Příloha byla importována";
@@ -1414,7 +1414,7 @@
 "Language" = "Jazyk";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Později";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Chcete-li používat více než 3 štítky, přejděte na placený tarif";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Upgradujte svůj plán";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Chcete-li i nadále odesílat a přijímat e-maily, upgradujte svůj plán.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Nejprve se přihlaste pomocí aplikace ProtonMail.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Úložiště";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Plné úložiště";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Kvóta úložiště byla překročena";
 
 /* Title */
 "Storage Warning" = "Varování o docházejícím místě";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Nesprávný formát návrhu. Odesílání selhalo!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Následující soubory se nepodařilo připojit:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "K dispozici je nejvyšší úroveň šifrování.";

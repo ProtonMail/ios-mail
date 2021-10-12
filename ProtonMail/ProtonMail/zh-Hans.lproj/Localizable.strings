@@ -320,7 +320,7 @@
 "Attachment" = "附件";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "附件上传失败";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
@@ -2413,10 +2413,10 @@
 "Storage" = "存储空间";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "存储空间已满";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "已超出存储配额";
 
 /* Title */
 "Storage Warning" = "存储空间提示";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "草稿格式错误发送失败!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "无法附加以下文件：";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "最高级别的加密。";

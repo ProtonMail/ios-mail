@@ -320,7 +320,7 @@
 "Attachment" = "Bilaga";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Bifogad fil misslyckades";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bilaga har importerats";
@@ -1414,7 +1414,7 @@
 "Language" = "Språk";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Senare";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Uppgradera till en betald plan för fler än 3 etiketter";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Vänligen uppgradera din plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Vänligen uppgradera din plan för att fortsätta skicka och ta emot e-post.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Lagring";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Lagring full";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Lagringskvoten har överskridits";
 
 /* Title */
 "Storage Warning" = "Lagringsvarning";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Sending failed. There was an error with the draft format.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Följande filer kunde inte bifogas:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Den högsta nivån av kryptering tillgänglig.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Du har använt %d%% av ditt lagringsutrymme (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har förbrukat %1$d%% av ditt lagringsutrymme (%2$@). Vänligen uppgradera din plan för att fortsätta skicka och ta emot e-post.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "You have used up all of your storage space (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Du har använt allt ditt lagringsutrymme (%@). Vänligen uppgradera din plan för att fortsätta skicka och ta emot e-post.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "You need at least one recipient to send";

@@ -320,7 +320,7 @@
 "Attachment" = "Attachment";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Αποτυχία επισύναψης";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Το συνημμένο έχει εισαχθεί";
@@ -444,7 +444,7 @@
 "Can't download message body. Please try again." = "Δεν είναι δυνατή η λήψη του body των μηνυμάτων, παρακαλώ δοκιμάστε ξανά.";
 
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
-"Can't fetch contact groups" = "Δεν είναι δυνατή η συγχώνευση της ομάδας επαφών";
+"Can't fetch contact groups" = "Αδυναμία λήψης ομάδων επαφών";
 
 /* (No Comment) */
 "Can't find the clicked message please try again!" = "Δεν είναι δυνατή η εύρεση του μηνύματος με κλικ, παρακαλώ δοκιμάστε ξανά!";
@@ -1109,7 +1109,7 @@
 "Feedback" = "Αξιολόγηση";
 
 /* Error */
-"Fetch user info failed" = "Η λήψη πληροφοριών χρήστη απέτυχε";
+"Fetch user info failed" = "Αποτυχία λήψης στοιχείων χρήστη";
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
@@ -1414,7 +1414,7 @@
 "Language" = "Γλώσσα";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Αργότερα";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1430,7 +1430,7 @@
 "Left to Right" = "Left to Right";
 
 /* Title of alert when the free account limit is reached */
-"Limit reached" = "Επίτευξη ορίου";
+"Limit reached" = "Εξάντληση ορίου";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Περιορισμένο σε 150 απεσταλμένα μηνύματα την ημέρα";
@@ -1510,16 +1510,16 @@
 "Mark as legitimate" = "Mark as legitimate";
 
 /* The title of the read action in action sheet */
-"Mark as read" = "Επισήμανση ως αναγνωσμένο";
+"Mark as read" = "Σήμανση ως διαβασμένο";
 
 /* Action */
-"Mark as read/unread" = "Mark as read/unread";
+"Mark as read/unread" = "Σήμανση ως διαβασμένο ή μη";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "Επισήμανση ως μη αναγνωσμένο";
+"Mark as unread" = "Σήμανση ως μη διαβασμένο";
 
 /* mark message as read action */
-"Mark Read" = "Επισήμανση ως αναγνωσμένο";
+"Mark Read" = "Σήμανση ως διαβασμένο";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Παρακαλώ αναβαθμίστε το πρόγραμμά σας";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
@@ -2077,7 +2077,7 @@
 "Re:" = "Απ:";
 
 /* No comment provided by engineer. */
-"Read" = "Read";
+"Read" = "Διαβασμένα";
 
 /* Title */
 "Reading device contacts data…" = "Reading device contacts data…";
@@ -2273,7 +2273,7 @@
 "Sent Failed" = "Αποτυχία αποστολής";
 
 /* Description */
-"Server proofs not valid!" = "Το όνομα του Server είναι εσφαλμένο!";
+"Server proofs not valid!" = "Μη έγκυρα αποδεικτικά διακομιστή!";
 
 /* Title */
 "Set" = "Set";
@@ -2413,10 +2413,10 @@
 "Storage" = "Αποθηκευτικός χώρος";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Αποθηκευτικός χώρος πλήρης";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Υπέρβαση ορίου αποθηκευτικού χώρου";
 
 /* Title */
 "Storage Warning" = "Προειδοποίηση αποθήκευσης";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Η αποστολή απέτυχε. Παρουσιάστηκε σφάλμα με την μορφοποίηση προχείρου.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Αδυναμία επισύναψης των εξής αρχείων:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Το υψηλότερο δυνατό επίπεδο κρυπτογράφησης.";
@@ -2754,7 +2754,7 @@
 "Type casting error" = "Type casting error";
 
 /* Description */
-"Unable to connect to the server" = "Αδυναμία σύνδεσης στο διακομιστή";
+"Unable to connect to the server" = "Αδυναμία σύνδεσης στον διακομιστή";
 
 /* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Δεν είναι δυνατή η δημιουργία έγκυρης διεύθυνσης URL με την ακόλουθη διαδρομή: %@";
@@ -2824,10 +2824,10 @@
 "Unlock required" = "Απαιτείται ξεκλείδωμα";
 
 /* The unread title of unread action button in mailbox view */
-"unread" = "unread";
+"unread" = "μη διαβασμένα";
 
 /* VoiceOver: email is not read yet */
-"Unread" = "Μη αναγνωσμένα";
+"Unread" = "Μη διαβασμένα";
 
 /* The title of the star action in action sheet */
 "Unstar" = "Unstar";
@@ -2926,7 +2926,7 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "We have trouble connecting to the servers. Please reconnect.";
+"We have trouble connecting to the servers. Please reconnect." = "Δυσκολευόμαστε να συνδεθούμε στους διακομιστές. Παρακαλούμε επανασυνδεθείτε.";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "We recommend setting up a password instead for the following recipients:";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει %d%% του χώρου αποθήκευσης σας (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει %1$d%% του αποθηκευτικού σας χώρου (%2$@). Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Έχετε εξαντλήσει όλο το χώρο αποθήκευσης σας (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Έχετε χρησιμοποιήσει το σύνολο του αποθηκευτικού σας χώρου (%@). Παρακαλώ αναβαθμίστε το πρόγραμμά σας, προς συνέχιση αποστολών και παραλαβών μηνυμάτων.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Χρειάζεστε τουλάχιστον έναν παραλήπτη για αποστολή";

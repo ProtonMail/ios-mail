@@ -320,7 +320,7 @@
 "Attachment" = "Adjunt";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Error d'adjunt";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Fitxer adjunt importat";
@@ -1414,7 +1414,7 @@
 "Language" = "Idioma";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Més tard";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Actualitzeu-vos a un pla de pagament per utilitzar més de 3 etiquetes";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Actualitzeu el vostre pla";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Si us plau, utilitzeu primer l'inici de sessió a l’aplicació ProtonMail.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Emmagatzematge";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Emmagatzematge ple";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Límit d'emmagatzematge superat";
 
 /* Title */
 "Storage Warning" = "Avís d'emmagatzematge";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Ha fallat l'enviament incorrecte del format de projecte!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "No s'han pogut adjuntar els fitxers següents:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "El nivell més alt de xifrat disponible.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Heu utilitzat %d%% del vostre espai d'emmagatzematge (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Heu utilitzat %1$d%% del vostre espai d'emmagatzematge (%2$@). Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Has utilitzat tot el teu espai d'emmagatzematge (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Heu utilitzat tot el vostre espai d'emmagatzematge (%@). Actualitzeu el vostre pla per continuar enviant i rebent correus electrònics.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Necessites almenys un destinatari per enviar";

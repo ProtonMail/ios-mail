@@ -320,7 +320,7 @@
 "Attachment" = "Вкладення";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Помилка вкладення";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вкладення імпортовано";
@@ -1414,7 +1414,7 @@
 "Language" = "Мова";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Пізніше";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Передплатіть тарифний план, щоб використовувати більше 3 міток";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Будь ласка, оновіть свій тарифний план";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Будь ласка, оновіть свій тарифний план, щоб продовжувати надсилати та отримувати електронні листи.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Спершу увійдіть з програмою ProtonMail.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Сховище";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Сховище заповнено";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Перевищено квоту сховища";
 
 /* Title */
 "Storage Warning" = "Попередження про сховище";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Не вдалося надіслати. Виникла помилка з форматом чернетки.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Не вдалося прикріпити такі файли:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Найвищий доступний рівень шифрування.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Ви використали %d%% обсягу свого сховища (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% простору свого сховища (%2$@). Оновіть свій тарифний план, щоб надсилати та отримувати електронні листи.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Ви використали увесь обсяг свого сховища (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви вичерпали весь простір свого сховища (%@). Оновіть свій тарифний план, щоб надсилати та отримувати електронні листи.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Необхідно вказати принаймні одного отримувача";

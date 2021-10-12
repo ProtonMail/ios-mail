@@ -320,7 +320,7 @@
 "Attachment" = "Atașament";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Eșuare atașare fișier";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Atașament importat";
@@ -1414,7 +1414,7 @@
 "Language" = "Limba";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Mai târziu";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 etichete.";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Treceți la alt plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Mai întâi conectati-vă în aplicația ProtonMail.";
@@ -2413,10 +2413,10 @@
 "Storage" = "Spațiu stocare";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Spaţiu de stocare plin";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Cota de stocare depășită";
 
 /* Title */
 "Storage Warning" = "Avertizare stocare";
@@ -2517,7 +2517,7 @@
 "The draft format incorrectly sending failed!" = "Trimitere eșuată. A apărut o eroare în formatul ciornei.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Următoarele fișiere nu au putut fi atașate:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Cel mai mare nivel de criptare disponibil.";
@@ -3025,14 +3025,14 @@
 "You have used %d%% of your storage space (%@)." = "Ați folosit %d%% din spațiul disponibil (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ați folosit %1$d%% din spațiul de stocare (%2$@). Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Ați utilizat tot spațiul de stocare disponibil (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ați folosit tot spațiul de stocare (%@). Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul.";

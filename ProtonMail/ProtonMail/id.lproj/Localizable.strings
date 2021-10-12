@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Pada' E, d MMM yyyy 'pukul' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
@@ -26,10 +26,10 @@
 "%@ storage capacity" = "%@ kapasitas penyimpanan";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "%d kesempatan tersisa";
 
 /* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+"%d attempt remaining until secure data wipe!" = "%d kesempatan tersisa hingga data aman dihapus!";
 
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d percakapan";
@@ -38,10 +38,10 @@
 "%d conversations" = "%d percakapan";
 
 /* day */
-"%d day" = "%d day";
+"%d day" = "%d hari";
 
 /* hour */
-"%d hour" = "%d hour";
+"%d hour" = "%d jam";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d Anggota";
@@ -251,10 +251,10 @@
 "App PIN" = "PIN App";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "PIN aplikasi & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "PIN aplikasi & Touch ID";
 
 /* section title in settings */
 "App settings" = "Pengaturan aplikasi";
@@ -299,7 +299,7 @@
 "Are you sure? This can't be undone." = "Apakan anda yakin? Tindakan ini tidak bisa dibatalkan.";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "Pukul %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Setidaknya satu alamat surel di grup tidak dapat ditemukan";
@@ -359,7 +359,7 @@
 "Auto Show Images" = "Tampilkan gambar otomatis";
 
 /* settings general section title */
-"Auto show remote content" = "Otomatis tampilkan konten jarak jauh";
+"Auto show remote content" = "Tampilkan remote content secara otomatis";
 
 /* settings general section title */
 "Auto-load embedded images" = "Muat gambar tertanam secara otomatis";
@@ -392,7 +392,7 @@
 "Birthday" = "Ulang tahun";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "Baca pesan berutas dalam mode percakapan.";
 
 /* Title */
 "Bug Description" = "Deskripsi Bug";
@@ -623,13 +623,13 @@
 "Connect Account" = "Hubungkan Akun";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Kontak dihapus, akan disinkronkan bila tersambung ke Internet";
 
 /* contact section title */
 "Contact details" = "Rincian kontak";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Kontak disimpan, akan disinkronkan bila tersambung ke Internet";
 
 /* Title */
 "Contact the ProtonMail team" = "Hubungi tim ProtonMail";
@@ -655,7 +655,7 @@
 "Conversation mode" = "Mode percakapan";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "Salin";
 
 /* Title */
 "Copy address" = "Salin alamat";
@@ -711,7 +711,7 @@
 "Custom" = "Sesuaikan";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Potong";
 
 /* message Date: text */
 "Date:" = "Tanggal:";
@@ -742,7 +742,7 @@
 "Decryption of this content failed" = "Dekripsi konten ini gagal";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+"decryption of this message's encrypted content failed." = "gagal mendekripsi konten dalam pesan ini.";
 
 /* Title */
 "Default" = "Bawaan";
@@ -872,7 +872,7 @@
 "DRAFTS" = "Draf";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "Selalu mutakhir";
 
 /* Action */
 "Edit" = "Sunting";
@@ -1024,7 +1024,7 @@
 "End-to-End Encryption" = "Enkripsi end-to-end";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Nikmati enkripsi dua arah bersama kontak di luar Proton: Ajak mereka pakai ProtonMail atau enkripsi pesan mereka secara manual.";
 
 /* Action in 2fa popup view */
 "Enter" = "Masukkan";
@@ -1033,7 +1033,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Masukkan sebuah kode PIN dengan min 4 karakter dan maks 21 karakter.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Enter current PIN code";
+"Enter current PIN code" = "Masukkan kode PIN";
 
 /* Title */
 "Enter Verification Code" = "Masukkan kode verifikasi";
@@ -1060,7 +1060,7 @@
 "Enter your signature here" = "Masukkan tanda tangan Anda di sini";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "Galat";
 
 /* settings debug section title */
 "Error Logs" = "Log kesalahan";
@@ -1100,7 +1100,7 @@
 "Failed to initialize the application's saved data" = "Gagal menginisialisasi data yang disimpan aplikasi";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+"Failed to load content!\nPlease try again." = "Gagal memuat konten!\nSilakan coba lagi.";
 
 /* default vcard types */
 "Fax" = "Faks";
@@ -1112,7 +1112,7 @@
 "Fetch user info failed" = "Pengambilan info pengguna gagal";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Sortir, tandai, dan warnai pesan di kotak masuk sesuai selera Anda.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Folder";
@@ -1187,7 +1187,7 @@
 "Get more information" = "Dapatkan lebih banyak informasi";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "Memulai";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ke draf";
@@ -1226,7 +1226,7 @@
 "Hide" = "Sembunyikan";
 
 /* Title */
-"Hide details" = "Hide details";
+"Hide details" = "Sembunyikan info";
 
 /* (No Comment) */
 "Hide Details" = "Sembunyikan rincian";
@@ -1300,7 +1300,7 @@
 "Incorrect password" = "Kata sandi salah";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "PIN salah.";
 
 /* Option title */
 "Inherit color from parent folder" = "Wariskan warna dari folder induk";
@@ -1315,7 +1315,7 @@
 "Input Display Name ..." = "Masukkan nama tampilan ...";
 
 /* place holder */
-"Input Display Name…" = "Input Display Name…";
+"Input Display Name…" = "Masukkan Nama Tampilan…";
 
 /* place holder */
 "Input Notification Email …" = "Masukkan Surel Pemberitahuan …";
@@ -1442,7 +1442,7 @@
 "Load images" = "Muat gambar";
 
 /* Action */
-"Load remote content" = "Muat konten jarak jauh";
+"Load remote content" = "Muat remote content";
 
 /* (No Comment) */
 "Loading..." = "Memuat...";
@@ -1649,7 +1649,7 @@
 "Name" = "Nama";
 
 /* Onboarding title */
-"Neat and tidy" = "Neat and tidy";
+"Neat and tidy" = "Rapi";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Daftar gratis";
@@ -1689,7 +1689,7 @@
 "New sign-in password" = "Kata sandi masuk yang baru";
 
 /* title of the next button */
-"Next" = "Next";
+"Next" = "Selanjutnya";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nama panggilan";
@@ -1787,13 +1787,13 @@
 "On" = "Aktif";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "Pada %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "Pada %1$@ pukul %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
+"On E, MMM d, yyyy at %@" = "Pada E, d MMM yyyy pukul %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Hanya abaikan aktivasi pembayaran jika Anda yakin semua langganan Anda telah terperbaharui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. \r\n\r\n Apakah Anda yakin ingin mengabaikan aktivasi?";
@@ -1805,7 +1805,7 @@
 "Open" = "Buka";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Open account switcher";
+"Open account switcher" = "Buka pemindah akun";
 
 /* (No Comment) */
 "OpenDraft" = "Buka draf";
@@ -1927,7 +1927,7 @@
 "Please input a valid email address." = "Silakan masukkan alamat surel yang valid.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep ProtonMail open until the operation is done." = "Jangan tutup ProtonMail sebelum prosesnya tuntas.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Pastikan koneksi internet anda berfungsi.";
@@ -2044,7 +2044,7 @@
 "ProtonMail is currently offline…" = "ProtonMail sedang luring…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"ProtonMail needs photo library access in your device settings." = "ProtonMail perlu mengakses album foto di ponsel Anda.";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus dibutuhkan untuk dapat mengubah tanda tangan mobile Anda";
@@ -2243,7 +2243,7 @@
 "Sending failed" = "Pengiriman gagal";
 
 /* Alert title */
-"Sending in progress" = "Sending in progress";
+"Sending in progress" = "Sedang dikirim";
 
 /* Description */
 "Sending Message" = "Mengirim pesan";
@@ -2306,7 +2306,7 @@
 "Show" = "Tampilkan";
 
 /* Title */
-"Show details" = "Show details";
+"Show details" = "Tampilkan info";
 
 /* Title */
 "Sign in" = "Masuk";
@@ -2344,10 +2344,10 @@
 "Signed out from %@ and signed in with %@" = "Keluar dari %1$@ dan masuk dengan %2$@";
 
 /* Onboarding title */
-"Simply private" = "Simply private";
+"Simply private" = "Tetap rahasia";
 
 /* skip button title in onboarding page */
-"Skip" = "Skip";
+"Skip" = "Lewati";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
@@ -2636,13 +2636,13 @@
 "This message contains embedded images." = "Pesan ini mengandung gambar yang disematkan.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "Pesan ini mengandung konten daring dan gambar bawaan";
 
 /* No comment provided by engineer. */
-"This message contains remote content." = "Pesan ini mengandung konten jarak jauh.";
+"This message contains remote content." = "Pesan ini mengandung remote content.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Pesan ini dibuat secara otomatis untuk menanggapi pesan sebelumnya.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Pesan ini dari sebuah milis.";
@@ -2666,7 +2666,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validasi sertifikat TLS gagal. Koneksi Anda mungkin diawasi dan aplikasi memblokir sementara demi keselamatan Anda.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Validasi sertifikat TLS gagal. Koneksi Anda mungkin dipantau. Aplikasi ini sementara diblokir demi keamanan Anda.\n\npindah jaringan segera";
 
 /* message To: feild
    Title */
@@ -2724,7 +2724,7 @@
 "Troubleshooting guide" = "Panduan penyelesaian masalah";
 
 /* Try again action */
-"Try again" = "Try again";
+"Try again" = "Coba lagi";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Coba sambungkan ke Proton dari jaringan yang berbeda (atau gunakan ProtonVPN atau Tor).";
@@ -2923,7 +2923,7 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Peringatan: Anda tidak mengatur surel pemulihan. Jika Anda melupakan sandi, surel tidak mungkin dapat dipulihkan. Lanjutkan tanpa surel pemulihan?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirim pesan anda, mungkin karena koneksi jaringan yang buruk. Pesan anda telah disimpan di Draf dan akan dikirim secara otomatis saat anda membuka aplikasi berikutnya.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirim pesan kepada Anda karena satu dan lain hal, utamanya karena koneksi jaringan yang buruk. Pesan Anda telah tersimpan di Draf dan akan terkirim secara otomatis pada saat Anda membuka aplikasi ini kembali.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Kami mengalami kendala menyambungkan ke server. Silakan sambungkan ulang.";
