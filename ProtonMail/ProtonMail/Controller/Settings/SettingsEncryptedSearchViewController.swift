@@ -172,7 +172,8 @@ extension SettingsEncryptedSearchViewController {
                 //index building completely finished
                 let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
-                    let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let userID: String = (usersManager.firstUser?.userInfo.userId)!
                     let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
                     threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex)

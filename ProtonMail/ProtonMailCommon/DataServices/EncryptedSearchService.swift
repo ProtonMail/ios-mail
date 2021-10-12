@@ -359,7 +359,7 @@ public class EncryptedSearchService {
     
     //set initializer to private - Singleton
     private init(){
-        let users: UsersManager = sharedServices.get()
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
         if users.firstUser != nil {
             user = users.firstUser //should return the currently active user
             messageService = user.messageService
@@ -683,6 +683,7 @@ extension EncryptedSearchService {
     }
     
     func deleteSearchIndex(){
+        self.updateCurrentUserIfNeeded()
         //just delete the search index if it exists
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
             let result: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: self.user.userInfo.userId)
@@ -731,7 +732,7 @@ extension EncryptedSearchService {
     }
     
     private func updateCurrentUserIfNeeded() -> Void {
-        let users: UsersManager = sharedServices.get()
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
         self.user = users.firstUser
         self.messageService = self.user.messageService
         self.apiService = self.user.apiService
