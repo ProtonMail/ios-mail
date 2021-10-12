@@ -266,12 +266,14 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             break //Do nothing
         case .downloadedMessages:
-            //TODO this should just be clickable when indexbuilding is completely finished
-            let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-            let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-            vc.set(viewModel: vm)
-            vc.set(coordinator: self.coordinator!)
-            show(vc, sender: self)
+            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                //indexbuilding is completely finished
+                let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+                vc.set(viewModel: vm)
+                vc.set(coordinator: self.coordinator!)
+                show(vc, sender: self)
+            }
             break
         }
     }
