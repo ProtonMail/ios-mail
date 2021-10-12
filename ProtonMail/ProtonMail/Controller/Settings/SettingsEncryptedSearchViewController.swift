@@ -57,7 +57,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
         
-        setupProgressViewObserver()
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
     }
@@ -287,7 +286,6 @@ extension SettingsEncryptedSearchViewController {
         })
         alert.addAction(UIAlertAction(title: "Enable", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
             //change UI
-            //self.progressView.isHidden = false
             self.hideSections = false
 
             self.tableView.reloadData() //refresh the view to show changes in UI
@@ -300,28 +298,15 @@ extension SettingsEncryptedSearchViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    func setupProgressViewObserver() {
-        self.viewModel.progressViewStatus.bind { (_) in
-            //DispatchQueue.main.async {
-                //self?.progressView.setProgress((self?.viewModel.progressViewStatus.value)!, animated: true)
-            //}
-            DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
-
-                UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
-                }
-            }
-        }
-    }
-
     func setupEstimatedTimeUpdateObserver() {
         self.viewModel.estimatedTimeRemaining.bind { (_) in
-            DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+            if EncryptedSearchService.shared.indexBuildingInProgress {
+                DispatchQueue.main.async {
+                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
-                UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
                 }
             }
         }
@@ -329,11 +314,13 @@ extension SettingsEncryptedSearchViewController {
 
     func setupProgressUpdateObserver() {
         self.viewModel.currentProgress.bind { (_) in
-            DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+            if EncryptedSearchService.shared.indexBuildingInProgress {
+                DispatchQueue.main.async {
+                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
-                UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
                 }
             }
         }

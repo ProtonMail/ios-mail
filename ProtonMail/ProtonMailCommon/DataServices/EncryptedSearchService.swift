@@ -315,11 +315,6 @@ open class IndexSingleMessageAsyncOperation: Operation {
                 //print("Message \(self?.message.ID) sucessfully processed!")
                 EncryptedSearchService.shared.processedMessages += 1    //increase count of processed messages
                 self?.state = .finished
-                
-                #if !APP_EXTENSION
-                    //Update UI progress bar
-                    EncryptedSearchService.shared.updateUIWithProgressBarStatus()
-                #endif
             }
         }
         
@@ -1833,8 +1828,7 @@ extension EncryptedSearchService {
     func updateIndexBuildingProgress(processedMessages: Int){
         //progress bar runs from 0 to 1 - normalize by totalMessages
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
-        self.viewModel?.progressViewStatus.value = updateStep
-        //TODO
+        self.viewModel?.currentProgress.value = Int(updateStep)
     }
     
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
