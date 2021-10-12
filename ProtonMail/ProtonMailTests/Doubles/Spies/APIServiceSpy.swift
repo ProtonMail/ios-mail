@@ -1,6 +1,7 @@
 import ProtonCore_Doh
 import ProtonCore_Networking
 import ProtonCore_Services
+import Foundation
 
 class APIServiceSpy: APIService {
 

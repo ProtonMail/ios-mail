@@ -349,6 +349,7 @@
 		2185438D12B7EE525C1B2790042A5D97 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		218D0E6661D1D445A33F3C602FAC005D /* ContactGroupMutiSelectViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2AD6935E03E7F5A62A7F6A2EA6F875 /* ContactGroupMutiSelectViewModelImpl.swift */; };
 		2190B7FF5905D69784BB643DC8DA0F2F /* PMLabelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EA04A38E64C4EF658240D877DF75 /* PMLabelType.swift */; };
+		21975D8D75B56AC79FBA4ADFF0BAE4F6 /* BugDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */; };
 		21A22D014CF6CB1EB6C5D86F919A7795 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
 		220085D197AF2A60E944FFFA28A9B949 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FB7A9464582BFE7709A9BFE7B9EF1 /* SettingsTableViewController.swift */; };
@@ -3163,6 +3164,7 @@
 		4C4468F707E83B966F97590E7241FEEC /* Dictionary+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Helpers.swift"; sourceTree = "<group>"; };
 		4CB1E24CCA74109E244612E0BD18798C /* AttachmentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttachmentTableViewCell.xib; sourceTree = "<group>"; };
 		4D12D456CD1CB08880AA39DC222F6A99 /* HeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderData.swift; sourceTree = "<group>"; };
+		4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugDataServiceTests.swift; sourceTree = "<group>"; };
 		4D2E78DBFCB20CF085CF81D7290D9587 /* HeaderedPrintRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderedPrintRenderer.swift; sourceTree = "<group>"; };
 		4D3719085F278C51B2B1D58303FCF558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4DE2104E284998D2F3ACE1FC54CC1E61 /* PMDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMDateFormatter.swift; sourceTree = "<group>"; };
@@ -5570,6 +5572,7 @@
 				81435542A478C50E837D6D3838F2A056 /* CacheService */,
 				E0BC1F6E071FA045B3ED789FBEDC62F0 /* ConversationStateService */,
 				D2038F203AD2770E390E55955DEDBEF2 /* DataModels */,
+				4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */,
 				2B62F7CBA20BFC6C1C6263A39C23CBE3 /* CoreDataStoreTest.swift */,
 				7DFBF249F3C293E82857F6EBC6C0EE12 /* MessageDataServiceTests.swift */,
 				8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */,
@@ -8345,6 +8348,7 @@
 				3347C6DAF0E7ED2D8A49ADFFF3961810 /* BackgroundSaveTests.swift in Sources */,
 				43D50FFD657C90A1ADA128E42EEBAC5C /* BackgroundTimerTests.swift in Sources */,
 				9571D57E748371E70AE828122EFCF5A7 /* BioMetricStatusStub.swift in Sources */,
+				21975D8D75B56AC79FBA4ADFF0BAE4F6 /* BugDataServiceTests.swift in Sources */,
 				7214C7B275074ADA626BADE7E15032E4 /* CacheServiceParsingTests.swift in Sources */,
 				8E00E65FCD1FDD0AD2E3A30827488A15 /* CacheServiceTests+Contact.swift in Sources */,
 				65B66FC62236AE762BB7BC8A02FED563 /* CacheServiceTests+Label.swift in Sources */,
