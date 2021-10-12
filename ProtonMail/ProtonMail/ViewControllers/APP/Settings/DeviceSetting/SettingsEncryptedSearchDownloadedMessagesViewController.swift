@@ -85,7 +85,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .messageHistory:
             let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
             if let threeLineCell = cell as? ThreeLinesTableViewCell {
-                let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                let userID: String = (usersManager.firstUser?.userInfo.userId)!
                 let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                 threeLineCell.configCell(eSection.title, oldestIndexedMessage, "All your messages are downloaded")
                 threeLineCell.accessoryType = .checkmark
@@ -107,7 +108,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .storageUsage:
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.CellID, for: indexPath)
             if let buttonCell = cell as? ButtonTableViewCell {
-                let userID: String = EncryptedSearchService.shared.user.userInfo.userId
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                let userID: String = (usersManager.firstUser?.userInfo.userId)!
                 let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
                 let storageLimit: Float = self.viewModel.storageLimit
                 let bottomLine = sizeOfIndex + "MB of " + String(storageLimit) + " GB"
