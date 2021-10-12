@@ -95,9 +95,15 @@ class WindowsCoordinator: CoordinatorNew {
                     self?.didReceiveTokenRevoke(uid: uid)
                 }
             }
+
             NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
                 self?.arePrimaryUserSettingsFetched = true
                 self?.restoreAppStates()
+            }
+
+            NotificationCenter.default.addObserver(forName: .switchView, object: nil, queue: .main) { notification in
+                // trigger the menu to follow the deeplink or show inbox
+                self.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
             }
             
             if #available(iOS 13.0, *) {
@@ -306,15 +312,10 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
-    private func restoreAppStates() {
-        guard let deepLink = self.deeplink else {
-            // There is no previous states , navigate to inbox
-            NotificationCenter.default.post(name: .switchView, object: nil)
-            return
-        }
+    private func restoreAppStates() { // here
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let menu = controller as? MenuViewController {
-                menu.coordinator.follow(deepLink)
+                menu.coordinator.handleSwitchView(deepLink: self.deeplink)
                 stop = true
             }
         }
@@ -423,6 +424,20 @@ class WindowsCoordinator: CoordinatorNew {
             if let menu = controller as? MenuViewController,
                 let coordinator = menu.coordinator {
                 coordinator.follow(deeplink)
+                stop = true
+            }
+        }
+    }
+
+    private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
+        self.deeplink = deepLink
+        guard arePrimaryUserSettingsFetched else {
+            return
+        }
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController,
+                let coordinator = menu.coordinator {
+                coordinator.handleSwitchView(deepLink: deepLink)
                 stop = true
             }
         }
