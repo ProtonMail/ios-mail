@@ -20,7 +20,7 @@ class ConversationMessageCellPresenter {
             view.initialsLabel.textAlignment = .center
         }
 
-        if model.messageLocation == .draft {
+        if model.messageLocation == .draft || model.isDraft {
             view.initialsLabel.isHidden = true
             view.initialsIcon.isHidden = false
         }

@@ -12,4 +12,5 @@ struct ConversationMessageModel {
     let hasAttachment: Bool
     let tags: [TagViewModel]
     let expirationTag: TagViewModel?
+    let isDraft: Bool
 }

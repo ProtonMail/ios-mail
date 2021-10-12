@@ -34,7 +34,8 @@ class ConversationCollapsedMessageViewModel {
             isStarred: message.starred,
             hasAttachment: message.numAttachments.intValue > 0,
             tags: tags,
-            expirationTag: message.createTagFromExpirationDate
+            expirationTag: message.createTagFromExpirationDate,
+            isDraft: message.draft
         )
     }
 
