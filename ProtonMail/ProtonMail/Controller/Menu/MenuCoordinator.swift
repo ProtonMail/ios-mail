@@ -66,14 +66,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
          lastUpdatedStore:LastUpdatedStoreProtocol,
          usersManager: UsersManager,
          vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat = 327) {
-        defer {
-            NotificationCenter
-                .default
-                .addObserver(self,
-                             selector: #selector(performLastSegue(_:)),
-                             name: .switchView,
-                             object: nil)
-        }
+
         //Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
         SideMenuController.preferences.basic.position = .sideBySide
@@ -229,10 +222,11 @@ extension MenuCoordinator {
 
 // MARK: Navigation
 extension MenuCoordinator {
-    @objc private func performLastSegue(_ notification: Notification) {
-        if let link = notification.object as? DeepLink {
-            self.follow(link)
+    func handleSwitchView(deepLink: DeepLink?) {
+        if let deepLink = deepLink {
+            follow(deepLink)
         } else {
+            // There is no previous states , navigate to inbox
             presentInitialPage()
         }
     }
