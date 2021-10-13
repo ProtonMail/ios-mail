@@ -122,9 +122,10 @@ class SignInManager: Service {
             self.usersManager.active(uid: auth.sessionID)
             self.lastUpdatedStore.contactsCached = 0
             UserTempCachedStatus.restore()
-            NotificationCenter.default.post(name: .didSignIn, object: nil)
 
             tryUnlock()
+
+            NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
         }.catch(on: .main) { [weak self] (error) in
             onError(error as NSError)
             _ = self?.usersManager.clean()
