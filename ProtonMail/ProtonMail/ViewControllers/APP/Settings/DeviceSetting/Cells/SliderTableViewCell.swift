@@ -22,13 +22,14 @@ import UIKit
     static var CellID: String {
         return "\(self)"
     }
-    typealias ActionStatus = (_ value: Float) -> Void
-    typealias sliderActionBlock = (_ cell: SliderTableViewCell?, _ newValue: Float, _ feedback: @escaping ActionStatus) -> Void
+    //typealias ActionStatus = (_ value: Float) -> Void
+    typealias sliderActionBlock = (_ cell: SliderTableViewCell?, _ newValue: Float) -> Void
     var callback: sliderActionBlock?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         //TODO changes to UI
+        //slider.setValue(600, animated: false)
     }
     
     @IBOutlet weak var topLabel: UILabel!
@@ -37,18 +38,17 @@ import UIKit
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         let value: Float = sender.value
-        callback?(self, value, {(value) -> Void in
-            self.slider.value = value
-            self.layoutIfNeeded()
-        })
+        print("slider: \(sender.value)")
+        callback?(self, value)
     }
     
-    func configCell(_ topLine: String, _ bottomLine: String, _ sliderValue: Float, _ sliderMaxValue: Float, complete: sliderActionBlock?) {
+    func configCell(_ topLine: String, _ bottomLine: String, currentValue sliderValue: Float, maxValue sliderMaxValue: Float, minValue sliderMinValue: Float, complete: sliderActionBlock?) {
         
         topLabel.text = topLine
         bottomLabel.text = bottomLine
-        slider.value = sliderValue
-        slider.minimumValue = 0.0
+        slider.isContinuous = false
+        slider.setValue(sliderValue, animated: false)
+        slider.minimumValue = sliderMinValue
         slider.maximumValue = sliderMaxValue
         callback = complete
         

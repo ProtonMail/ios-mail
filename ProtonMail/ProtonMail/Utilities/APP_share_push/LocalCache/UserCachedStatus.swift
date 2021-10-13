@@ -194,7 +194,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     var storageLimit: Float {
         get {
             if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
-                return 0.0
+                return 600.0    //initial value
             }
             return getShared().float(forKey: Key.encryptedSearchStorageLimit)
         }
