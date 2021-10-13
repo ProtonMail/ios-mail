@@ -129,7 +129,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = self.phoneContacts
 
             if user.hasPaidMailPlan {
-                contactsWithoutLastTimeUsed.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
+                let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter{ $0.contactCount > 0 }
+                contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
             }
             // sort the contact group and phone address together
             contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
