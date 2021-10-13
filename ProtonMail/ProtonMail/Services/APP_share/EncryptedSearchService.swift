@@ -187,7 +187,8 @@ public class ESMessage: Codable {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
+                //TODO temporary disable to have less output
+                //PMLog.D(error.localizedDescription)
             }
         }
         
@@ -241,7 +242,8 @@ public class ESMessage: Codable {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
+                //TODO temporary disable to have less output
+                //PMLog.D(error.localizedDescription)
             }
         }
         return nil
@@ -416,7 +418,7 @@ public class EncryptedSearchService {
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
     
-    internal var timingsBuildIndex: NSMutableArray = []
+    /*internal var timingsBuildIndex: NSMutableArray = []
     internal var timingsMessageFetching: NSMutableArray = []
     internal var timingsMessageDetailsFetching: NSMutableArray = []
     internal var timingsDecryptMessages: NSMutableArray = []
@@ -426,10 +428,12 @@ public class EncryptedSearchService {
     
     internal var timingsParseBody: NSMutableArray = []
     internal var timingsRemoveElements: NSMutableArray = []
-    internal var timingsParseCleanedContent: NSMutableArray = []
+    internal var timingsParseCleanedContent: NSMutableArray = []*/
     
     internal var startBackgroundTask: Double = 0.0
     internal var backgroundTaskCounter: Int = 0
+    
+    internal var fetchMessageCounter: Int = 0
 }
 
 extension EncryptedSearchService {
@@ -500,9 +504,10 @@ extension EncryptedSearchService {
         EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: self.user.userInfo.userId)
         
         //set up timer to estimate time for index building every 2 seconds
+        //self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
+        self.indexingStartTime = CFAbsoluteTimeGetCurrent()
         self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
-        
-        self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
+
         self.getTotalMessages() {
             print("Total messages: ", self.totalMessages)
 
@@ -538,8 +543,8 @@ extension EncryptedSearchService {
                 //If its an build from scratch, start indexing with time = 0
                 self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) { [weak self] in
                     print("Finished building search index!")
-                    self?.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
-                    self?.printTiming("Building the Index", for: self!.timingsBuildIndex)
+                    //self?.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
+                    //self?.printTiming("Building the Index", for: self!.timingsBuildIndex)
                     self?.updateMemoryConsumption()
                     
                     self?.viewModel?.isEncryptedSearch = true
@@ -846,6 +851,7 @@ extension EncryptedSearchService {
     }
 
     private func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+        self.fetchMessageCounter += 1
         let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false)
         self.apiService?.GET(request){ [weak self] (task, responseDict, error) in
             if error != nil {
@@ -957,6 +963,8 @@ extension EncryptedSearchService {
             }
         }
     }
+    
+    
     
     func processPageOneByOne(forBatch messages: [ESMessage]?, completionHandler: @escaping () -> Void) -> Void {
         //start a new thread to process the page
@@ -1355,12 +1363,12 @@ extension EncryptedSearchService {
         var contentOfEmail: String = ""
         
         do {
-            self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add start time
+            //self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add start time
             //parse HTML email as DOM tree
             let doc: Document = try SwiftSoup.parse(body)
-            self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add stop time
+            //self.timingsParseBody.add(CFAbsoluteTimeGetCurrent()) //add stop time
             
-            self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
+            //self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
             //remove style elements from DOM tree
             let styleElements: Elements = try doc.getElementsByTag("style")
             for s in styleElements {
@@ -1370,14 +1378,14 @@ extension EncryptedSearchService {
             //remove quoted text, unless the email is forwarded
             if removeQuotes {
                 let (noQuoteContent, _) = try locateBlockQuotes(doc)
-                self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
+                //self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
                 let newBodyOfEmail: Document = try SwiftSoup.parse(noQuoteContent)
                 contentOfEmail = try newBodyOfEmail.text().preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-                self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
+                //self.timingsParseCleanedContent.add(CFAbsoluteTimeGetCurrent()) //add start time
             } else {
                 contentOfEmail = try doc.text().preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
             }
-            self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
+            //self.timingsRemoveElements.add(CFAbsoluteTimeGetCurrent()) //add start time
         } catch Exception.Error(_, let message) {
             print(message)
         } catch {
@@ -2077,6 +2085,9 @@ extension EncryptedSearchService {
     }
     
     @objc func updateRemainingIndexingTime() {
+        print("#of message fetches: \(self.fetchMessageCounter)")
+        let elapsedTime = self.indexingStartTime - CFAbsoluteTimeGetCurrent()
+        print("time from start of indexing: \(elapsedTime)")
         if self.indexBuildingInProgress && self.processedMessages != self.prevProcessedMessages {
             DispatchQueue.global().async {
                 let result = self.estimateIndexingTime()
