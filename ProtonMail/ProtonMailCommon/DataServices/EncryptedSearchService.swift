@@ -250,6 +250,80 @@ public class ESMessage: Codable {
     }
 }
 
+open class DownloadPageAsyncOperation: Operation {
+    public enum State: String {
+        case ready = "Ready"
+        case executing = "Executing"
+        case finished = "Finished"
+        fileprivate var keyPath: String { return "is" + self.rawValue }
+    }
+    private var stateStore: State = .ready
+    private let stateQueue = DispatchQueue(label: "Async State Queue", attributes: .concurrent)
+    public var state: State {
+        get {
+            stateQueue.sync {
+                return stateStore
+            }
+        }
+        set {
+            let oldValue = state
+            willChangeValue(forKey: state.keyPath)
+            willChangeValue(forKey: newValue.keyPath)
+            stateQueue.sync(flags: .barrier) {
+                stateStore = newValue
+            }
+            didChangeValue(forKey: state.keyPath)
+            didChangeValue(forKey: oldValue.keyPath)
+        }
+    }
+    
+    public override var isAsynchronous: Bool {
+        return true
+    }
+    
+    public override var isExecuting: Bool {
+        return state == .executing
+    }
+    
+    public override var isFinished: Bool {
+        return state == .finished
+    }
+    
+    public override func start() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .ready
+            main()
+        }
+    }
+    
+    public override func main() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .executing
+        }
+        
+        EncryptedSearchService.shared.fetchMessages(byLabel: Message.Location.allmail.rawValue, time: EncryptedSearchService.shared.lastMessageTimeIndexed) { (error, messages) in
+            if error == nil {
+                EncryptedSearchService.shared.processPageOneByOne(forBatch: messages, completionHandler: {
+                    print("Page successfull processed!")
+                    EncryptedSearchService.shared.lastMessageTimeIndexed = Int((messages?.last?.Time)!)
+                    self.finish()   //set operation to be finished
+                })
+            } else {
+                print("Error while fetching messages: \(String(describing: error))")
+                self.finish()   //set operation to be finished
+            }
+        }
+    }
+    
+    public func finish() {
+        state = .finished
+    }
+}
+
 open class IndexSingleMessageAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"
@@ -408,6 +482,12 @@ public class EncryptedSearchService {
         //queue.maxConcurrentOperationCount = 1
         return queue
     }()
+    lazy var downloadPageQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "Download Page Queue"
+        queue.maxConcurrentOperationCount = 1   //download 1 page at a time
+        return queue
+    }()
     
     internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
     
@@ -521,6 +601,8 @@ extension EncryptedSearchService {
                     self.viewModel?.currentProgress.value = 100
                     self.viewModel?.estimatedTimeRemaining.value = 0
                     self.indexBuildingInProgress = false
+                    self.indexBuildingTimer?.invalidate()
+                    
                     if self.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
                         #if !APP_EXTENSION
@@ -541,7 +623,9 @@ extension EncryptedSearchService {
             //build search index completely new
             DispatchQueue.global(qos: .userInitiated).async {
                 //If its an build from scratch, start indexing with time = 0
-                self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) { [weak self] in
+                //self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) { [weak self] in
+                //self.downloadPage() { [weak self] in
+                self.downloadAndProcessPage(){ [weak self] in
                     print("Finished building search index!")
                     //self?.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
                     //self?.printTiming("Building the Index", for: self!.timingsBuildIndex)
@@ -551,6 +635,7 @@ extension EncryptedSearchService {
                     self?.viewModel?.currentProgress.value = 100
                     self?.viewModel?.estimatedTimeRemaining.value = 0
                     self?.indexBuildingInProgress = false
+                    self!.indexBuildingTimer!.invalidate()
                     
                     if self?.backgroundTask != .invalid {
                         //background processing not needed any longer - clean up
@@ -579,7 +664,11 @@ extension EncryptedSearchService {
         } else {    //resume indexing
             print("Resume indexing...")
             self.indexBuildingInProgress = true
-            self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
+            //self.indexingStartTime = CFAbsoluteTimeGetCurrent()
+            self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+            //self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
+            //self.downloadPage(){
+            self.downloadAndProcessPage(){
                 self.viewModel?.isEncryptedSearch = true
                 self.viewModel?.currentProgress.value = 100
                 self.viewModel?.estimatedTimeRemaining.value = 0
@@ -850,7 +939,7 @@ extension EncryptedSearchService {
         
     }
 
-    private func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+    public func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
         self.fetchMessageCounter += 1
         let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false)
         self.apiService?.GET(request){ [weak self] (task, responseDict, error) in
@@ -964,7 +1053,43 @@ extension EncryptedSearchService {
         }
     }
     
+    func downloadAndProcessPage(completionHandler: @escaping () -> Void) -> Void {
+        let group = DispatchGroup()
+        group.enter()
+        self.downloadPage() {
+            print("Processed messages: \(self.processedMessages)")
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            if self.processedMessages >= self.totalMessages {
+                completionHandler()
+            } else {
+                if self.indexBuildingInProgress {
+                    //recursion?
+                    self.downloadAndProcessPage(){
+                        completionHandler()
+                    }
+                } else {
+                    //index building stopped from outside - finish up current page and return
+                    completionHandler()
+                }
+            }
+        }
+    }
     
+    func downloadPage(completionHandler: @escaping () -> Void){
+        //start a new thread to download page
+        DispatchQueue.global(qos: .userInitiated).async {
+            var op: Operation? = DownloadPageAsyncOperation()
+            self.downloadPageQueue.addOperation(op!)
+            self.downloadPageQueue.waitUntilAllOperationsAreFinished()
+            //cleanup
+            self.downloadPageQueue.cancelAllOperations()
+            op = nil
+            completionHandler()
+        }
+    }
     
     func processPageOneByOne(forBatch messages: [ESMessage]?, completionHandler: @escaping () -> Void) -> Void {
         //start a new thread to process the page
@@ -972,11 +1097,14 @@ extension EncryptedSearchService {
             for m in messages! {
                 autoreleasepool {
                     //TODO
-                    let op = IndexSingleMessageAsyncOperation(m)
-                    self.messageIndexingQueue.addOperation(op)
+                    var op: Operation? = IndexSingleMessageAsyncOperation(m)
+                    self.messageIndexingQueue.addOperation(op!)
+                    op = nil    //clean up
                 }
             }
             self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
+            //clean up
+            self.messageIndexingQueue.cancelAllOperations()
             completionHandler()
         }
     }
