@@ -38,7 +38,9 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
         let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,
                                                viewController: viewController,

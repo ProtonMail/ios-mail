@@ -129,7 +129,8 @@ enum LabelLocation: Equatable, Hashable {
         case .addAccount: return ""
         }
     }
-    
+
+#if !APP_EXTENSION
     var icon: UIImage? {
         switch self {
         case .inbox:
@@ -168,7 +169,8 @@ enum LabelLocation: Equatable, Hashable {
             return nil
         }
     }
-    
+#endif
+
     var toMessageLocation: Message.Location {
         // todo remove Message.Location in future
         switch self {
