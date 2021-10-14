@@ -55,29 +55,31 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     override func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
-        if let fLabel = message.firstValidFolder() {
-            if messageService.move(messages: [message], from: [fLabel], to: Message.Location.trash.rawValue) {
-                if self.label.labelID != fLabel {
-                    return (.showGeneral, nil, false)
-                }
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue), true)
+        // Empty string as source if we don't find a valid folder
+        let fLabel = message.firstValidFolder() ?? ""
+        if messageService.move(messages: [message], from: [fLabel], to: Message.Location.trash.rawValue) {
+            if self.label.labelID != fLabel {
+                return (.showGeneral, nil, false)
             }
+            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue), true)
         }
         
         return (.nothing, nil, true)
     }
 
-    override func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?, Bool) {
+    override func delete(conversation: Conversation) -> (SwipeResponse, UndoMessage?, Bool) {
         if [Message.Location.draft.rawValue, Message.Location.spam.rawValue, Message.Location.trash.rawValue].contains(labelID) {
-            conversationService.deleteConversations(with: conversationIDs, labelID: labelID) { [weak self] result in
+            conversationService.deleteConversations(with: [conversation.conversationID], labelID: labelID) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
         } else {
-            conversationService.move(conversationIDs: conversationIDs,
-                                     from: self.labelID,
+            // Empty string as source if we don't find a valid folder
+            let fLabel = conversation.firstValidFolder() ?? ""
+            conversationService.move(conversationIDs: [conversation.conversationID],
+                                     from: fLabel,
                                      to: Message.Location.trash.rawValue) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
@@ -90,58 +92,58 @@ class LabelboxViewModelImpl : MailboxViewModel {
 
     override func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
-            if let fLabel = message.firstValidFolder() {
-                if messageService.move(messages: [message], from: [fLabel], to: Message.Location.archive.rawValue) {
-                    if self.label.labelID != fLabel {
-                        return (.showGeneral, nil)
-                    }
-                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
-                }
-            }
-        } else if let conversation = self.itemOfConversation(index: index) {
-            if let fLabel = conversation.firstValidFolder() {
-                conversationService.move(conversationIDs: [conversation.conversationID],
-                                         from: fLabel,
-                                         to: Message.Location.archive.rawValue) { [weak self] result in
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
-                }
+            // Empty string as source if we don't find a valid folder
+            let fLabel = message.firstValidFolder() ?? ""
+            if messageService.move(messages: [message], from: [fLabel], to: Message.Location.archive.rawValue) {
                 if self.label.labelID != fLabel {
                     return (.showGeneral, nil)
                 }
-                return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
             }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            // Empty string as source if we don't find a valid folder
+            let fLabel = conversation.firstValidFolder() ?? ""
+            conversationService.move(conversationIDs: [conversation.conversationID],
+                                     from: fLabel,
+                                     to: Message.Location.archive.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
+            if self.label.labelID != fLabel {
+                return (.showGeneral, nil)
+            }
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }
     
     override func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
-            if let fLabel = message.firstValidFolder() {
-                if messageService.move(messages: [message], from: [fLabel], to: Message.Location.spam.rawValue) {
-                    if self.label.labelID != fLabel {
-                        return (.showGeneral, nil)
-                    }
-                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
-                }
-            }
-        } else if let conversation = self.itemOfConversation(index: index) {
-            if let fLabel = conversation.firstValidFolder() {
-                conversationService.move(conversationIDs: [conversation.conversationID],
-                                         from: fLabel,
-                                         to: Message.Location.spam.rawValue) { [weak self] result in
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
-                }
+            // Empty string as source if we don't find a valid folder
+            let fLabel = message.firstValidFolder() ?? ""
+            if messageService.move(messages: [message], from: [fLabel], to: Message.Location.spam.rawValue) {
                 if self.label.labelID != fLabel {
                     return (.showGeneral, nil)
                 }
-                return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
             }
+        } else if let conversation = self.itemOfConversation(index: index) {
+            // Empty string as source if we don't find a valid folder
+            let fLabel = conversation.firstValidFolder() ?? ""
+            conversationService.move(conversationIDs: [conversation.conversationID],
+                                     from: fLabel,
+                                     to: Message.Location.spam.rawValue) { [weak self] result in
+                guard let self = self else { return }
+                if let _ = try? result.get() {
+                    self.eventsService.fetchEvents(labelID: self.labelId)
+                }
+            }
+            if self.label.labelID != fLabel {
+                return (.showGeneral, nil)
+            }
+            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: fLabel, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
         return (.nothing, nil)
     }

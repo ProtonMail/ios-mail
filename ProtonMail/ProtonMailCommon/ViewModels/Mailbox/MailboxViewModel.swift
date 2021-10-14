@@ -666,7 +666,7 @@ class MailboxViewModel: StorageLimit {
         if let message = self.item(index: index) {
             return self.delete(message: message)
         } else if let conversation = self.itemOfConversation(index: index) {
-            return self.delete(conversationIDs: [conversation.conversationID])
+            return self.delete(conversation: conversation)
         }
         return (.nothing, nil, false)
     }
@@ -687,11 +687,11 @@ class MailboxViewModel: StorageLimit {
         messageService.delete(messages: [message], label: self.labelID)
     }
 
-    func delete(conversationIDs: [String]) -> (SwipeResponse, UndoMessage?, Bool) {
+    func delete(conversation: Conversation) -> (SwipeResponse, UndoMessage?, Bool) {
         if self.labelID == Message.Location.trash.rawValue {
             return (.nothing, nil, false)
         } else {
-            conversationService.move(conversationIDs: conversationIDs,
+            conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: self.labelID,
                                      to: Message.Location.trash.rawValue) { [weak self] result in
                 guard let self = self else { return }
