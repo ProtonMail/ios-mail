@@ -29,7 +29,7 @@ protocol NewMailboxMessageCellDelegate: AnyObject {
     func getExpirationDate(id: String) -> String?
 }
 
-class NewMailboxMessageCell: SwipyCell {
+class NewMailboxMessageCell: SwipyCell, AccessibleCell {
 
     weak var cellDelegate: NewMailboxMessageCellDelegate?
     private var shouldUpdateTime: Bool = false
@@ -41,6 +41,7 @@ class NewMailboxMessageCell: SwipyCell {
         addSubviews()
         setUpLayout()
         setUpAvatarTapHandling()
+        generateCellAccessibilityIdentifiers("mailboxMessageCell")
     }
 
     let customView = NewMailboxMessageCellContentView()

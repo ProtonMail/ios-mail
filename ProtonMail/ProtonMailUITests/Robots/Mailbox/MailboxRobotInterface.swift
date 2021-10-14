@@ -14,6 +14,7 @@ fileprivate struct id {
     static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
     static let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
+    static let mailboxMessageCellIdentifier = "NewMailboxMessageCell.mailboxMessageCell"
     static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
@@ -40,7 +41,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        cell().byIndex(index).tap()
+        cell(id.mailboxMessageCellIdentifier).byIndex(index).tap()
         return MessageRobot()
     }
     

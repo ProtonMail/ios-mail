@@ -10,17 +10,18 @@ import pmtest
 
 fileprivate struct id {
     /// Move to folder dialog identifiers
-    static let addFolderButtonIdentifier = "LabelsViewController.addFolderButton"
-    static let addLabelButtonIdentifier = "LabelsViewController.addLabelButton"
+    static let addFolderButtonIdentifier = LocalString._move_to_new_folder
+    static let addLabelButtonIdentifier = LocalString._label_as_new_label
     static let applyMoveToFolderButtonIdentifier = "LabelsViewController.applyButton"
     static let cancelMoveToFolderButtonIdentifier = "LabelsViewController.cancelButton"
-    static func folderCellIdentifier(_ folderName: String) -> String { return "LabelTableViewCell.\(folderName)".replacingOccurrences(of: " ", with: "_") }
+    static func folderCellIdentifier(_ folderName: String) -> String { return "\(folderName)" }
 
     /// Add new folder dialog identifiers
-    static let folderNameTextFieldIdentifier = "LabelEditViewController.newLabelInput"
+    static let folderNameTextFieldIdentifier = "Label_Name.nameField"
     static let cancelAddFolderButtonIdentifier = "LabelEditViewController.cancelButton"
     static let applyAddFolderButtonIdentifier = "LabelEditViewController.applyButton"
     static let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
+    static let doneButtonLabel = LocalString._general_done_button
     static let doneKyboardButtonIdentifier = LocalString._general_done_button.lowercased()
 }
 
@@ -31,19 +32,25 @@ class MoveToFolderRobotInterface: CoreElements {
     
     @discardableResult
     func clickAddFolder() -> MoveToFolderRobotInterface {
-        button(id.addFolderButtonIdentifier).tap()
+        cell(id.addFolderButtonIdentifier).tap()
         return self
     }
     
     @discardableResult
     func clickAddLabel() -> MoveToFolderRobotInterface {
-        button(id.addLabelButtonIdentifier).tap()
+        cell(id.addLabelButtonIdentifier).tap()
         return self
     }
     
     @discardableResult
     func selectFolder(_ folderName: String) -> MoveToFolderRobotInterface {
         cell(id.folderCellIdentifier(folderName)).tap()
+        return self
+    }
+    
+    @discardableResult
+    func selectLabel(_ labelName: String) -> MoveToFolderRobotInterface {
+        cell(id.folderCellIdentifier(labelName)).tap()
         return self
     }
     
@@ -61,7 +68,7 @@ class MoveToFolderRobotInterface: CoreElements {
     
     @discardableResult
     func typeFolderName(_ folderName: String) -> MoveToFolderRobotInterface {
-        textField(id.folderNameTextFieldIdentifier).typeText(folderName)
+        textField(id.folderNameTextFieldIdentifier).tap().typeText(folderName)
         return self
     }
     
@@ -81,6 +88,24 @@ class MoveToFolderRobotInterface: CoreElements {
     func tapKeyboardDoneButton() -> MoveToFolderRobotInterface {
         button(id.doneKyboardButtonIdentifier).tap()
         return self
+    }
+    
+    @discardableResult
+    func tapDoneCreatingButton<T: CoreElements>(robot _: T.Type) -> T {
+        button(id.doneButtonLabel).tap()
+        return T()
+    }
+    
+    @discardableResult
+    func tapDoneSelectingFolderButton() -> InboxRobot {
+        button(id.doneButtonLabel).tap()
+        return InboxRobot()
+    }
+    
+    @discardableResult
+    func tapDoneSelectingLabelButton() -> MessageRobot {
+        button(id.doneButtonLabel).tap()
+        return MessageRobot()
     }
     
     func moveToExistingFolder(name: String) -> MoveToFolderRobotInterface {

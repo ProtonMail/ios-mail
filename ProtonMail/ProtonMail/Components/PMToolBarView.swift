@@ -139,6 +139,7 @@ class PMToolBarView: UIView {
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarMoveTo.image, for: .normal)
             button.tintColor = UIColorManager.IconNorm
+            button.accessibilityIdentifier = "PMToolBarView.moveToButton"
             return button
         }
 
@@ -147,6 +148,7 @@ class PMToolBarView: UIView {
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarLabel.image, for: .normal)
             button.tintColor = UIColorManager.IconNorm
+            button.accessibilityIdentifier = "PMToolBarView.labelAsButton"
             return button
         }
 

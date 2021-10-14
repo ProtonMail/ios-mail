@@ -10,8 +10,8 @@ import pmtest
 
 fileprivate struct id {
     /// Navigation Bar buttons
-    static let labelNavBarButtonIdentifier = "UINavigationItem.topLabelButton"
-    static let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton"
+    static let labelNavBarButtonIdentifier = "PMToolBarView.labelAsButton"
+    static let folderNavBarButtonIdentifier = "PMToolBarView.moveToButton"
     static let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
     static let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
     static let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
@@ -42,20 +42,18 @@ class MessageRobot: CoreElements {
             .clickLabelApplyButton()
     }
     
-    func createFolder(_ folderName: String) -> MoveToFolderRobot {
+    func createFolder(_ folderName: String) -> MoveToFolderRobotInterface {
         openFoldersModal()
             .clickAddFolder()
             .typeFolderName(folderName)
-            .tapKeyboardDoneButton()
-            .clickCreateFolderButton()
+            .tapDoneCreatingButton(robot: MoveToFolderRobotInterface.self)
     }
     
     func createLabel(_ folderName: String) -> MoveToFolderRobot {
         openLabelsModal()
             .clickAddLabel()
             .typeFolderName(folderName)
-            .tapKeyboardDoneButton()
-            .clickCreateFolderButton()
+            .tapDoneCreatingButton(robot: MoveToFolderRobot.self)
     }
     
     func clickMoveToSpam() -> MailboxRobotInterface {

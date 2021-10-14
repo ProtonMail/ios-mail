@@ -27,7 +27,7 @@ protocol LabelNameDelegate: AnyObject {
     func nameChanged(name: String)
 }
 
-final class LabelNameCell: UITableViewCell {
+final class LabelNameCell: UITableViewCell, AccessibleCell {
 
     @IBOutlet private var nameField: LabelTextField!
     private weak var delegate: LabelNameDelegate?
@@ -48,6 +48,7 @@ final class LabelNameCell: UITableViewCell {
         let labelPlaceHolder = LocalString._labels_label_name_text
         let folderPlaceHolder = LocalString._labels_folder_name_text
         self.nameField.placeholder = type == .folder ? folderPlaceHolder: labelPlaceHolder
+        generateCellAccessibilityIdentifiers(labelPlaceHolder)
     }
 }
 

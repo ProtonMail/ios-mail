@@ -96,7 +96,6 @@ class AccountSettingsTests : BaseTestCase {
             .addLabel()
             .createFolderLabel(labelName)
             .deleteFolderLabel(labelName)
-            .labels()
             .verify.folderLabelDeleted(labelName)
     }
 
@@ -107,7 +106,6 @@ class AccountSettingsTests : BaseTestCase {
             .addFolder()
             .createFolderLabel(folderName)
             .deleteFolderLabel(folderName)
-            .folders()
             .verify.folderLabelDeleted(folderName)
     }
     

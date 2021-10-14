@@ -22,13 +22,13 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
-            .clickApplyButtonAndReturnToInbox()
+            .selectFolder(folderName)
+            .tapDoneSelectingFolderButton()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
             .folders()
             .deleteFolderLabel(folderName)
-            .folders()
             .verify.folderLabelDeleted(folderName)
     }
     
@@ -41,14 +41,14 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(labelName)
-            .clickLabelApplyButton()
+            .selectLabel(labelName)
+            .tapDoneSelectingLabelButton()
             .navigateBackToInbox()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
             .labels()
             .deleteFolderLabel(labelName)
-            .labels()
             .verify.folderLabelDeleted(labelName)
     }
     
@@ -120,7 +120,6 @@ class LabelsFoldersTests: BaseTestCase {
             .done()
             .create()
             .deleteFolderLabel(newFolderName)
-            .folders()
             .verify.folderLabelDeleted(newFolderName)
     }
     
@@ -146,7 +145,6 @@ class LabelsFoldersTests: BaseTestCase {
             .done()
             .create()
             .deleteFolderLabel(newFolderName)
-            .labels()
             .verify.folderLabelDeleted(newFolderName)
     }
 }

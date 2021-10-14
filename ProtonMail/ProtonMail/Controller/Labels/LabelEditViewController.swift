@@ -383,6 +383,7 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
         instance.textLabel?.textAlignment = .center
         instance.addSeparator(padding: 0)
         instance.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        instance.accessibilityIdentifier = "LabelEditViewController.deleteCell"
         return instance
     }
 
