@@ -39,7 +39,7 @@ class AccountSettingsRobot: CoreElements {
     }
     
     func folders() -> AccountSettingsLabelsAndFoldersRobot {
-        staticText(id.foldersIdentifier).tap()
+        cell(id.foldersIdentifier).tap()
         return AccountSettingsLabelsAndFoldersRobot()
     }
     
