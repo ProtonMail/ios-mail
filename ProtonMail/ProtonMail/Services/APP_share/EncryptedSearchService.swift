@@ -2079,6 +2079,7 @@ extension EncryptedSearchService {
     
     @available(iOS 13.0, *)
     private func buildIndexInBackgroundTask(task: BGProcessingTask) {
+        var skipBackgroundTask: Bool = false
         //Provide an expiration handler in case indexing is not finished in time
         task.expirationHandler = {
             //schedule a new background processing task if index building is not finished
@@ -2090,13 +2091,15 @@ extension EncryptedSearchService {
             let text: String = "stop background task. time= " + String(elapsedTime)
             self.sendNotification(text: text)
             
-            //pause indexing
-            self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-            self.viewModel?.pauseIndexing = true
-            self.pauseAndResumeIndexing()
-            
-            //set task to be completed - so that the systems does not terminate the app
-            task.setTaskCompleted(success: true)
+            if !skipBackgroundTask {
+                //pause indexing
+                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
+                self.viewModel?.pauseIndexing = true
+                self.pauseAndResumeIndexing()
+                
+                //set task to be completed - so that the systems does not terminate the app
+                task.setTaskCompleted(success: true)
+            }
         }
         
         //start background processing task
@@ -2106,14 +2109,20 @@ extension EncryptedSearchService {
         self.sendNotification(text: text)
         print("BGTASK: \(self.backgroundTaskCounter)")
         
-        //resume indexing in background
-        if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
-            self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
-            self.viewModel?.pauseIndexing = false
-        }
-        self.pauseAndResumeIndexing() {
-            //if indexing is finshed during background task - set to complete
+        //index is build in foreground - no need for a background task
+        if self.indexBuildingInProgress {
+            skipBackgroundTask = true
             task.setTaskCompleted(success: true)
+        } else {
+            //resume indexing in background
+            if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+                self.viewModel?.pauseIndexing = false
+            }
+            self.pauseAndResumeIndexing() {
+                //if indexing is finshed during background task - set to complete
+                task.setTaskCompleted(success: true)
+            }
         }
     }
     
@@ -2135,6 +2144,7 @@ extension EncryptedSearchService {
     
     @available(iOS 13.0, *)
     private func appRefreshTask(task: BGAppRefreshTask) {
+        var skipBackgroundTask: Bool = false
         //Provide an expiration handler in case indexing is not finished in time
         task.expirationHandler = {
             //schedule a new background app refresh task
@@ -2148,11 +2158,17 @@ extension EncryptedSearchService {
             self.sendNotification(text: text)
             print("APP_REFRESH_finished: ", formatter.string(from: currentDateTime))
             
-            //set task to be completed - so that the systems does not terminate the app
-            task.setTaskCompleted(success: true)
+            if !skipBackgroundTask {
+                //pause indexing
+                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
+                self.viewModel?.pauseIndexing = true
+                self.pauseAndResumeIndexing()
+                
+                //set task to be completed - so that the systems does not terminate the app
+                task.setTaskCompleted(success: true)
+            }
         }
         
-        //TODO sent notification, write time to file, print on console
         let currentDateTime = Date()
         let formatter = DateFormatter()
         formatter.timeStyle = .medium
@@ -2161,18 +2177,21 @@ extension EncryptedSearchService {
         self.sendNotification(text: text)
         print("APP_REFRESH_started: ", formatter.string(from: currentDateTime))
         
-        //write time of app refresh to file
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let filename:String = "apprefresh_" + String(formatter.string(from: currentDateTime).filter { !" \n\t\r".contains($0) }) + ".txt"
-        let url = path.appendingPathComponent(filename)
-        do {
-            try text.write(to: url, atomically: true, encoding: .utf8)
-        } catch {
-            print("Error when writing to file: \(error.localizedDescription)")
+        //index is build in foreground - no need for a background task
+        if self.indexBuildingInProgress {
+            skipBackgroundTask = true
+            task.setTaskCompleted(success: true)
+        } else {
+            //resume indexing in background
+            if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+                self.viewModel?.pauseIndexing = false
+            }
+            self.pauseAndResumeIndexing() {
+                //if indexing is finshed during background task - set to complete
+                task.setTaskCompleted(success: true)
+            }
         }
-        
-        //set task to be completed
-        task.setTaskCompleted(success: true)
     }
 
     @available(iOS 13.0, *)
