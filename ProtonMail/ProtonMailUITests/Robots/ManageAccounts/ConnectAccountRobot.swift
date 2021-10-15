@@ -9,11 +9,11 @@
 import pmtest
 
 fileprivate struct id {
-    static let usernameTextFieldIdentifier = "AccountConnectViewController.usernameTextField"
-    static let passwordSecureTextFieldIdentifier = "AccountConnectViewController.passwordTextField"
-    static let loginButtonIdentifier = "AccountConnectViewController.signInButton"
-    static let mailboxPasswordTextField = "AccountPasswordViewController.passwordTextField"
-    static let decryptButtonIdentifier = "AccountPasswordViewController.signInButton"
+    static let usernameTextFieldIdentifier = "LoginViewController.loginTextField.textField"
+    static let passwordSecureTextFieldIdentifier = "LoginViewController.passwordTextField.textField"
+    static let loginButtonIdentifier = "LoginViewController.signInButton"
+    static let mailboxPasswordTextField = "MailboxPasswordViewController.mailboxPasswordTextField.textField"
+    static let decryptButtonIdentifier = "MailboxPasswordViewController.unlockButton"
     static let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
     static let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
     static let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
