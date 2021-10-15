@@ -96,8 +96,10 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser.email)
-            .verify.accountLoggedOut(twoPassUser.email)
+            .logoutAccount(twoPassUser)
+            .menuDrawer()
+            .accountsList()
+            .verify.accountSignedOut(twoPassUser)
     }
 
     func testLogoutSecondaryAccount() {
@@ -113,8 +115,10 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser.email)
-            .verify.accountLoggedOut(onePassUser.email)
+            .logoutAccount(onePassUser)
+            .menuDrawer()
+            .accountsList()
+            .verify.accountSignedOut(twoPassUser)
     }
 
     func testRemovePrimaryAccount() {
@@ -129,9 +133,12 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser.email)
-            .deleteAccount(twoPassUser.email)
-            .verify.accountRemoved(twoPassUser.email)
+            .logoutAccount(twoPassUser)
+            .menuDrawer()
+            .accountsList()
+            .manageAccounts()
+            .deleteAccount(twoPassUser)
+            .verify.accountRemoved(twoPassUser)
     }
 
     func testRemoveSecondaryAccount() {
@@ -147,9 +154,12 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser.email)
-            .deleteAccount(onePassUser.email)
-            .verify.accountRemoved(onePassUser.email)
+            .logoutAccount(onePassUser)
+            .menuDrawer()
+            .accountsList()
+            .manageAccounts()
+            .deleteAccount(onePassUser)
+            .verify.accountRemoved(onePassUser)
     }
 
     func testCancelLoginOnTwoFaPrompt() {
@@ -165,7 +175,7 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .verify.accountRemoved(onePassUserWith2Fa.email)
+            .verify.accountRemoved(onePassUserWith2Fa)
     }
 
     func testAddTwoFreeAccounts() {
@@ -195,8 +205,6 @@ class MultiuserManagementTests : BaseTestCase {
             .accountsList()
             .switchToAccount(onePassUser)
             .menuDrawer()
-            .accountsList()
-            .manageAccounts()
-            .verify.switchedToAccount(onePassUser.email)
+            .verify.currentAccount(onePassUser)
     }
 }

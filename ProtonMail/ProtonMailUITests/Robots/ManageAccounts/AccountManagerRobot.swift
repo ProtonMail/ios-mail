@@ -10,13 +10,19 @@ import pmtest
 import ProtonCore_TestingToolkit
 
 fileprivate struct id {
-    static let addAccountCellIdentifier = "addAccountLabel"
+    static let addAccountButtonIdentifier = "UINavigationItem.rightBarButtonItem"
     static let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
     static let swipeUserCellLogoutButtonIdentifier = "Log out"
     static let swipeUserCellDeleteButtonIdentifier = "Delete"
     static let removeAllLabel = "Remove All"
-    static func userAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)" }
-    static func loggedOutUserAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)_(logged_out)" }
+    static let signOutButtonLabel = LocalString._signout_primary_account_from_manager_account
+    static let confirmSignOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
+    static let removeAccountButtonLabel = "Remove account"
+    static let confirmRemoveButtonLabel = LocalString._general_remove_button
+    static func userAccountMoreBtnIdentifier(_ name: String) -> String {
+        return "\(name).moreBtn"
+    }
+    static func loggedOutUserAccountCellIdentifier(_ name: String) -> String { return "AccountmanagerUserCell.\(name)" }
 }
 
 /**
@@ -27,19 +33,19 @@ class AccountManagerRobot: CoreElements {
     var verify = Verify()
     
     func addAccount() -> ConnectAccountRobot {
-        staticText(id.addAccountCellIdentifier).tap()
+        button(id.addAccountButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
-    func logoutAccount(_ email: String) -> AccountManagerRobot {
-        return swipeLeft(email)
-            .logout()
-            .confirmLogout()
+    func logoutAccount(_ user: User) -> InboxRobot {
+        return tapMore(user.name)
+            .signOut()
+            .confirmSignOut()
     }
     
-    func deleteAccount(_ email: String) -> AccountManagerRobot {
-        return swipeLeftToDelete(email)
-            .remove()
+    func deleteAccount(_ user: User) -> AccountManagerRobot {
+        return tapMore(user.name)
+            .removeAccount()
             .confirmRemove()
     }
     
@@ -53,24 +59,34 @@ class AccountManagerRobot: CoreElements {
         return RemoveAllAlertRobot()
     }
     
-    private func swipeLeft(_ email: String) -> AccountManagerRobot {
-        cell(id.userAccountCellIdentifier(email)).swipeLeft()
-        return AccountManagerRobot()
-    }
-    
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
         cell(id.loggedOutUserAccountCellIdentifier(email)).swipeLeft()
         return AccountManagerRobot()
     }
-
-    private func logout() -> LogoutAccountAlertRobot {
-        button(id.swipeUserCellLogoutButtonIdentifier).tap()
-        return LogoutAccountAlertRobot()
+    
+    private func tapMore(_ name: String) -> AccountManagerRobot {
+        button(id.userAccountMoreBtnIdentifier(name)).tap()
+        return AccountManagerRobot()
     }
-
-    private func remove() -> RemoveAccountAlertRobot {
-        button(id.swipeUserCellDeleteButtonIdentifier).tap()
-        return RemoveAccountAlertRobot()
+    
+    private func signOut() -> AccountManagerRobot {
+        button(id.signOutButtonLabel).tap()
+        return AccountManagerRobot()
+    }
+    
+    private func confirmSignOut() -> InboxRobot {
+        button(id.confirmSignOutButtonLabel).tap()
+        return InboxRobot()
+    }
+    
+    private func removeAccount() -> AccountManagerRobot {
+        button(id.removeAccountButtonLabel).tap()
+        return AccountManagerRobot()
+    }
+    
+    private func confirmRemove() -> AccountManagerRobot {
+        button(id.confirmRemoveButtonLabel).tap()
+        return AccountManagerRobot()
     }
     
     /**
@@ -83,33 +99,6 @@ class AccountManagerRobot: CoreElements {
             return LoginRobot()
         }
     }
-    
-    /**
-     RemoveAllAlertRobot class contains actions for Remove all accounts alert.
-     */
-    class RemoveAccountAlertRobot {
-        
-        func confirmRemove() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-    }
-    
-    /**
-     RemoveAllAlertRobot class contains actions for Remove all accounts alert.
-     */
-    class LogoutAccountAlertRobot: CoreElements {
-        
-        func confirmLogout() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-        
-        func confirmLogoutWithMultipleAccounts() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-    }
 
     /**
     * Contains all the validations that can be performed by [AccountManagerRobot].
@@ -120,12 +109,8 @@ class AccountManagerRobot: CoreElements {
             cell(id.loggedOutUserAccountCellIdentifier(email)).wait().checkExists()
         }
         
-        func accountRemoved(_ email: String) {
-            cell(id.loggedOutUserAccountCellIdentifier(email)).waitUntilGone()
-        }
-        
-        func switchedToAccount(_ account: String) {
-            ///TODO: add implementation
+        func accountRemoved(_ user: User) {
+            cell(id.loggedOutUserAccountCellIdentifier(user.name)).waitUntilGone()
         }
     }
 }

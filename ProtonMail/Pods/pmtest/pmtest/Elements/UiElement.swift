@@ -373,6 +373,16 @@ open class UiElement {
         XCTAssertTrue(labelValue == label, "Expected Element text label to be: \"\(label)\", but found: \"\(labelValue)\"")
         return self
     }
+    
+    @discardableResult
+    public func checkContainsLabel(_ label: String) -> UiElement {
+        guard let labelValue = uiElement().label as? String else {
+            XCTFail("Element doesn't have text label.")
+            return self
+        }
+        XCTAssertTrue(labelValue.contains(label), "Expected Element text label to contain: \"\(label)\", but found: \"\(labelValue)\"")
+        return self
+    }
 
     @discardableResult
     public func checkHasValue(_ value: String) -> UiElement {
