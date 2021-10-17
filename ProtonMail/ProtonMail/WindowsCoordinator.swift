@@ -96,8 +96,10 @@ class WindowsCoordinator: CoordinatorNew {
                 }
             }
             NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
-                self?.arePrimaryUserSettingsFetched = true
-                self?.restoreAppStates()
+                if self?.arePrimaryUserSettingsFetched == false {
+                    self?.arePrimaryUserSettingsFetched = true
+                    self?.restoreAppStates()
+                }
             }
             
             if #available(iOS 13.0, *) {
