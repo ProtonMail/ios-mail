@@ -979,8 +979,28 @@ extension EncryptedSearchService {
         } else {
             self.apiService?.messageDetail(messageID: message.ID, priority: "u=7"){ [weak self] (task, responseDict, error) in
                 if error != nil {
-                    DispatchQueue.main.async {
-                        completionHandler?(error, nil)
+                    //429 - too many requests - retry after some time
+                    let urlResponse: HTTPURLResponse? = task?.response as? HTTPURLResponse
+                    if urlResponse?.statusCode == 429 {
+                        let headers: [String: Any]? = urlResponse?.allHeaderFields as? [String: Any]
+                        let timeOut: String? = headers?["retry-after"] as? String
+                        if let retryTime = timeOut {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + Double(retryTime)!){
+                                print("Error 429: Retry fetch after \(timeOut!) seconds for message: \(message.ID)")
+                                self?.fetchMessageDetailForMessage(message){ err, msg in
+                                    completionHandler?(err, msg)
+                                }
+                            }
+                        } else {
+                            //Retry-after header not present, return error
+                            DispatchQueue.main.async {
+                                completionHandler?(error, nil)
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            completionHandler?(error, nil)
+                        }
                     }
                 } else if let response = responseDict {
                     self?.parseMessageDetailResponse(response: response) { (errorFromParsing, msg) in
