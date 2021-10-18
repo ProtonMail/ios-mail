@@ -251,8 +251,9 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
-            self.setShowingCcBccView(to: showCcBcc)
+        if self.datasource?.ccBccIsShownInitially() ?? false ||
+            self.ccContactPicker.alpha == 1 {
+            self.setShowingCcBccView(to: true)
         } else {
             self.view.removeConstraint(self.subjectTopToBccContactPicker)
             self.view.addConstraint(self.subjectTopToToContactPicker)
