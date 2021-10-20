@@ -1753,7 +1753,8 @@ extension EncryptedSearchService {
     }
     
     private func retrieveSearchIndexKey() -> Data? {
-        let uid: String = self.user.userInfo.userId
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let uid: String = (usersManager.firstUser?.userInfo.userId)!
         var key: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + uid)
         
         //Check if user already has an key
@@ -1890,6 +1891,7 @@ extension EncryptedSearchService {
                             group.leave()
                         } else {
                             print("message: \(m!.id_) not found locally - fetch from server")
+                            group.leave()
                             /*self.fetchSingleMessageFromServer(byMessageID: m!.id_) { error, message in
                                 if error == nil {
                                     messages.append(message!)
@@ -1921,8 +1923,10 @@ extension EncryptedSearchService {
     }
     
     func getCache(cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
-        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(self.user.userInfo.userId)
-        let cache: EncryptedsearchCache? = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.user.userinfo.userId, dbParams: dbParams, cipher: cipher)
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (usersManager.firstUser?.userInfo.userId)!
+        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
+        let cache: EncryptedsearchCache? = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: dbParams, cipher: cipher)
         return cache!
     }
     
