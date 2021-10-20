@@ -1,4 +1,3 @@
-
 # iOS-mail
 
 ## Introduction
@@ -63,7 +62,7 @@ See [LICENSE](LICENSE) file
 - [Local Data Protection](ProtonMail/README.md#Local-Data)
 <!-- /TOC -->
 
-## Setup
+## Setup 
 
 1. Have macOS up to date and install Xcode 12.5
 2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in the ProtonMail.xcodeproj file. Each shared scheme has a post-build action, and builds will fail on machines with no xUnique installed. Please follow xUnique's [installation instructions](https://github.com/truebit/xUnique)
