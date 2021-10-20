@@ -938,6 +938,40 @@ extension EncryptedSearchService {
         }
         
     }
+    
+    public func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?, Message?) -> Void)?) -> Void {
+        let request = FetchMessagesByID(msgIDs: [messageID])
+        self.apiService?.GET(request) { [weak self] (task, responseDict, error) in
+            if error != nil {
+                DispatchQueue.main.async {
+                    completionHandler?(error, nil)
+                }
+            } else if let response = responseDict {
+                self?.messageService?.cacheService.parseMessagesResponse(labelID: Message.Location.allmail.rawValue, isUnread: false, response: response) { (errorFromParsing) in
+                    if let err = errorFromParsing {
+                        DispatchQueue.main.async {
+                            completionHandler?(err as NSError, nil)
+                        }
+                    } else {
+                        //fetch from coredata
+                        self?.getMessage(messageID) { message in
+                            if message != nil {
+                                completionHandler?(nil, message)
+                            } else {
+                                //TODO what error to return here?
+                                let err = NSError(domain: "Message not found?", code: 123)
+                                completionHandler?(err, nil)
+                            }
+                        }
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completionHandler?(NSError.unableToParseResponse(responseDict), nil)
+                }
+            }
+        }
+    }
 
     public func fetchMessages(byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
         self.fetchMessageCounter += 1
@@ -1276,7 +1310,11 @@ extension EncryptedSearchService {
         if let context = fetchedResultsController?.managedObjectContext{
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 completionHandler(message)
+            } else {
+                completionHandler(nil)
             }
+        } else {
+            completionHandler(nil)
         }
     }
     
@@ -1841,9 +1879,27 @@ extension EncryptedSearchService {
                 DispatchQueue.global(qos: .userInitiated).async {
                     let res: EncryptedsearchSearchResult? = searchResults.get(index)
                     let m: EncryptedsearchMessage? = res?.message
+                    //TODO
+                    //if the message is already downloaded fetch it locally
+                    //otherwise fetch it from the server
+                    //if no internet connection is available - print an error?
+                    print("fetch message: \(m!.id_) locally")
                     self.getMessage(m!.id_) { mnew in
-                        messages.append(mnew!)
-                        group.leave()
+                        if mnew != nil {
+                            messages.append(mnew!)
+                            group.leave()
+                        } else {
+                            print("message: \(m!.id_) not found locally - fetch from server")
+                            /*self.fetchSingleMessageFromServer(byMessageID: m!.id_) { error, message in
+                                if error == nil {
+                                    messages.append(message!)
+                                    group.leave()
+                                } else {
+                                    print("Error when fetching message from the server: \(String(describing: error))")
+                                    group.leave()
+                                }
+                            }*/
+                        }
                     }
                 }
             }
