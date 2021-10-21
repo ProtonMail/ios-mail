@@ -250,6 +250,95 @@ public class ESMessage: Codable {
     }
 }
 
+/*open class FetchSingleMessageAsyncOperation: Operation {
+    public enum State: String {
+        case ready = "Ready"
+        case executing = "Executing"
+        case finished = "Finished"
+        fileprivate var keyPath: String { return "is" + self.rawValue }
+    }
+    private var stateStore: State = .ready
+    private let stateQueue = DispatchQueue(label: "Async State Queue", attributes: .concurrent)
+    public var state: State {
+        get {
+            stateQueue.sync {
+                return stateStore
+            }
+        }
+        set {
+            let oldValue = state
+            willChangeValue(forKey: state.keyPath)
+            willChangeValue(forKey: newValue.keyPath)
+            stateQueue.sync(flags: .barrier) {
+                stateStore = newValue
+            }
+            didChangeValue(forKey: state.keyPath)
+            didChangeValue(forKey: oldValue.keyPath)
+        }
+    }
+    
+    public let message: EncryptedsearchMessage?
+    public var m: Message? = nil
+    
+    init(_ message: EncryptedsearchMessage?) {
+        self.message = message
+    }
+    
+    public override var isAsynchronous: Bool {
+        return true
+    }
+    
+    public override var isExecuting: Bool {
+        return state == .executing
+    }
+    
+    public override var isFinished: Bool {
+        return state == .finished
+    }
+    
+    public override func start() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .ready
+            main()
+        }
+    }
+    
+    public override func main() {
+        if self.isCancelled {
+            state = .finished
+        } else {
+            state = .executing
+        }
+        
+        print("fetch message: \(self.message!.id_) locally")
+        EncryptedSearchService.shared.getMessage(self.message!.id_) { message in
+            print("message locally found: \(message?.messageID)")
+            if message != nil {
+                self.m = message
+                self.finish()
+            } else {
+                print("message: \(self.message!.id_) not found locally - fetch from server")
+                EncryptedSearchService.shared.fetchSingleMessageFromServer(byMessageID: self.message!.id_) { error, messageFromServer in
+                    print("Message successfully fetched: \(messageFromServer?.messageID)")
+                    if error == nil {
+                        self.m = messageFromServer
+                        self.finish()
+                    } else {
+                        print("Error when fetching message from the server: \(String(describing: error))")
+                        self.finish()
+                    }
+                }
+            }
+        }
+    }
+    
+    public func finish() {
+        state = .finished
+    }
+}*/
+
 open class DownloadPageAsyncOperation: Operation {
     public enum State: String {
         case ready = "Ready"
@@ -939,35 +1028,33 @@ extension EncryptedSearchService {
         
     }
     
-    public func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?, Message?) -> Void)?) -> Void {
+    public func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?) -> Void)?) -> Void {
         let request = FetchMessagesByID(msgIDs: [messageID])
+        //print("fetch message \(messageID) from server...")
         self.apiService?.GET(request) { [weak self] (task, responseDict, error) in
+            //print("message fetching successfull: \(responseDict)")
             if error != nil {
                 DispatchQueue.main.async {
-                    completionHandler?(error, nil)
+                    completionHandler?(error)
                 }
             } else if let response = responseDict {
+                //print("Parse response...")
                 self?.messageService?.cacheService.parseMessagesResponse(labelID: Message.Location.allmail.rawValue, isUnread: false, response: response) { (errorFromParsing) in
+                    //print("Message parsing for message \(messageID) sucessfull")
                     if let err = errorFromParsing {
                         DispatchQueue.main.async {
-                            completionHandler?(err as NSError, nil)
+                            completionHandler?(err as NSError)
                         }
                     } else {
-                        //fetch from coredata
-                        self?.getMessage(messageID) { message in
-                            if message != nil {
-                                completionHandler?(nil, message)
-                            } else {
-                                //TODO what error to return here?
-                                let err = NSError(domain: "Message not found?", code: 123)
-                                completionHandler?(err, nil)
-                            }
+                        //print("Message should be successfully parsed and available in core data now.")
+                        DispatchQueue.main.async {
+                            completionHandler?(nil)
                         }
                     }
                 }
             } else {
                 DispatchQueue.main.async {
-                    completionHandler?(NSError.unableToParseResponse(responseDict), nil)
+                    completionHandler?(NSError.unableToParseResponse(responseDict))
                 }
             }
         }
@@ -1297,6 +1384,9 @@ extension EncryptedSearchService {
 
     //TODO reset fetch controller managed object context?
     func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
+        /*if self.messageService == nil {
+            self.updateCurrentUserIfNeeded()    //get user, messageservice and apiservice
+        }*/
         let fetchedResultsController = self.messageService?.fetchedMessageControllerForID(messageID)
         
         if let fetchedResultsController = fetchedResultsController {
@@ -1311,9 +1401,11 @@ extension EncryptedSearchService {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 completionHandler(message)
             } else {
+                //print("Error when fetching the message from core data - message not found")
                 completionHandler(nil)
             }
         } else {
+            //print("Error with context when fetching message from core data")
             completionHandler(nil)
         }
     }
@@ -1809,6 +1901,9 @@ extension EncryptedSearchService {
             completion!(nil, error) //There are no results for an empty search query
         }
         
+        //update necessary variables needed
+        self.updateCurrentUserIfNeeded()
+        
         //if search query hasn't changed, but just the page, then just display results
         if query == self.lastSearchQuery {
             //TODO is searchedCount the same as searchresults.length?
@@ -1872,42 +1967,56 @@ extension EncryptedSearchService {
                 endIndex = startIndex + (searchResults.length() % pageSize)-1
             }
             
+            print("Search results found: \(searchResults.length())")
+            
             var messages: [Message] = []
+            /*let queue = OperationQueue()
+            queue.name = "Extract Search Results Queue"
+            queue.maxConcurrentOperationCount = 1
+            queue.qualityOfService = .userInitiated*/
             let group = DispatchGroup()
-            //for index in 0...(searchResults.length()-1) {
+
             for index in startIndex...endIndex {
                 group.enter()
-                DispatchQueue.global(qos: .userInitiated).async {
-                    let res: EncryptedsearchSearchResult? = searchResults.get(index)
-                    let m: EncryptedsearchMessage? = res?.message
-                    //TODO
-                    //if the message is already downloaded fetch it locally
-                    //otherwise fetch it from the server
-                    //if no internet connection is available - print an error?
-                    print("fetch message: \(m!.id_) locally")
-                    self.getMessage(m!.id_) { mnew in
-                        if mnew != nil {
-                            messages.append(mnew!)
-                            group.leave()
-                        } else {
-                            print("message: \(m!.id_) not found locally - fetch from server")
-                            group.leave()
-                            /*self.fetchSingleMessageFromServer(byMessageID: m!.id_) { error, message in
-                                if error == nil {
-                                    messages.append(message!)
-                                    group.leave()
-                                } else {
-                                    print("Error when fetching message from the server: \(String(describing: error))")
+                let result: EncryptedsearchSearchResult? = searchResults.get(index)
+                /*let op: FetchSingleMessageAsyncOperation? = FetchSingleMessageAsyncOperation(result?.message)
+                op!.completionBlock = {
+                    messages.append((op?.m!)!)
+                }
+                print("operation added for message: \(result?.message?.id_)")
+                queue.addOperation(op!)*/
+                /*queue.addOperation {
+                    let id: String = (result?.message!.id_)!
+                    self.getMessage(id) { message in
+                        messages.append(message!)
+                    }
+                }*/
+                let id: String = (result?.message!.id_)!
+                self.getMessage(id) { message in
+                    if message == nil {
+                        //print("Message NOT found locally - fetch from server")
+                        self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
+                            if error != nil {
+                                print("Error when fetching message from server: \(String(describing: error))")
+                                group.leave()
+                            } else {
+                                //print("Message \(id) successfully fetched from server.")
+                                self?.getMessage(id) { msg in
+                                    //print("Message fetched from core data: \(msg!.messageID)")
+                                    messages.append(msg!)
                                     group.leave()
                                 }
-                            }*/
+                            }
                         }
+                    } else {
+                        //print("Message found locally")
+                        messages.append(message!)
+                        group.leave()
                     }
                 }
             }
-
-            //Wait to call completion handler until all search results are extracted
-            group.notify(queue: .main) {
+            
+            group.notify(queue: .main){
                 print("Extracting search results completed!")
                 completionHandler(messages)
             }
