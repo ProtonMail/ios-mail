@@ -278,10 +278,11 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         let userService = userManager.userService
+        let valueToSave = new_value.trim().ln2br()
         if let addr = userManager.addresses.defaultAddress() {
             userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
                                       addressId: addr.addressID, displayName: addr.displayName,
-                                      signature: new_value.ln2br(), completion: { (_, _, error) in
+                                      signature: valueToSave, completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -290,8 +291,9 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            userService.updateSignature(auth: userManager.auth, user: userManager.userInfo,
-                                        new_value.ln2br()) { _, _, error in
+            userService.updateSignature(auth: userManager.auth,
+                                        user: userManager.userInfo,
+                                        valueToSave) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -379,7 +381,8 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
-            self.userManager.mobileSignature = new_value.ln2br()
+            let newValueToSave = new_value.trim().ln2br()
+            self.userManager.mobileSignature = newValueToSave
             self.userManager.save()
             complete(true, nil)
         }
