@@ -345,6 +345,7 @@
 		2125749716CB4EC41775A2AE3BB1C728 /* Siri.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1B61D2D5C0B4BD97409E6104098DB003 /* Siri.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		212F378FE40A9CF0A72DC84EAFED8DA3 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F6D37F0A6272E8EAE461BB707C35C4 /* Analytics.swift */; };
 		21352EBA64320030B9D9FD060C2A637B /* ContactUpgradeCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304EBAE13534EEE358F03C9DF7F79797 /* ContactUpgradeCellDelegate.swift */; };
+		214EAFBB722A9954A4F47C790D9A666D /* LabelLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0611D2422F6BE2987ACCA9F48C953AED /* LabelLocation.swift */; };
 		214EE5539CCDF6926A90CDC9CF58AED7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A766C2DFB30C6AEA644CCC8B55A26D /* SettingsButtonCell.swift */; };
 		2185438D12B7EE525C1B2790042A5D97 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		218D0E6661D1D445A33F3C602FAC005D /* ContactGroupMutiSelectViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2AD6935E03E7F5A62A7F6A2EA6F875 /* ContactGroupMutiSelectViewModelImpl.swift */; };
@@ -944,6 +945,7 @@
 		5A2F085CC1F662AD9E48CBCA794395C2 /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A22C634A036FFC8E1055518DB9867 /* APIServiceDefined.swift */; };
 		5A39F9FB5AC12757D05EC839CEE22795 /* PMLabelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EA04A38E64C4EF658240D877DF75 /* PMLabelType.swift */; };
 		5A4711345BDDFF0C4E4C729204ECD6C6 /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */; };
+		5A4F345D706FF0BC9C81DB8D1720FF38 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03412BA317CA05F8177DD09A6ADED4A1 /* MenuLabel.swift */; };
 		5A6855663102EC324474A755DC034B9D /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */; };
 		5A7BD85A8D26EB454F079C086D2E2723 /* MailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DB40A3CE8A50ADB96BA8CF3A47B91E /* MailButton.swift */; };
 		5A815A07A018C324A31DE23700F7922B /* ActionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */; };
@@ -2105,6 +2107,7 @@
 		CD36C45B0A429EE4B1AB2B3D71A27799 /* PMToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AF6C4D66A6828DEF217EB1750F6B7E /* PMToolBarView.swift */; };
 		CD497B31BF3832C2AECAC46A01C6D865 /* MultiuserManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D221102E545202208AFDCC449DF0D12 /* MultiuserManagementTests.swift */; };
 		CD5FB8A0100858CC555A3F920FD4853A /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
+		CD6AD44AFD757E8CE8219C0E1F127590 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03412BA317CA05F8177DD09A6ADED4A1 /* MenuLabel.swift */; };
 		CD70DC8C8C868BDE04EB69F088091F97 /* LinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA8E8BA202ACC845541D5E39C35123 /* LinkOpener.swift */; };
 		CD9ACDC3388E8B358D12006582596586 /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */; };
 		CDAD05B65324F183FB8A5C9E0CC4FD0D /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87101881BC1D8C883E73CFB82ED48E7 /* TableContainerViewCoordinator.swift */; };
@@ -2552,6 +2555,7 @@
 		F56312D8EF122FD87ADD73E1D7269703 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
 		F5758A935F5898404DB9D18913A7A75A /* ContactEditAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */; };
 		F57CD585C83CEC483CBA24A6729EE409 /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
+		F5ABBEC2FD62B060131722C93A105CE4 /* LabelLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0611D2422F6BE2987ACCA9F48C953AED /* LabelLocation.swift */; };
 		F5C052482D3681E31E00790BD792AEAC /* Message+Var+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102AF496AB07249410599991EBB97156 /* Message+Var+Extension.swift */; };
 		F600A2B88892D45FF160821C8CEAA83A /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF670755650E5DD985579607F574B57 /* DeepLink.swift */; };
 		F60BB3DE9DC822202B8A6551BB0EB89A /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
@@ -10191,6 +10195,7 @@
 				95AA447AEFDA858547B27F85F7808CDA /* Label.swift in Sources */,
 				E060FBB2C8220C7BE1C05FD8BC507697 /* LabelAPI.swift in Sources */,
 				8A743D0141C97E92E5DC30D99C57613D /* LabelCount.swift in Sources */,
+				F5ABBEC2FD62B060131722C93A105CE4 /* LabelLocation.swift in Sources */,
 				C69639437017F9E7D55DCF7153DC2BB7 /* LabelUpdate+Extension.swift in Sources */,
 				72C3058EF04BB713DE136E8B02D026ED /* LabelUpdate+Var+Extension.swift in Sources */,
 				7D3C960DDF7ECBE71A6CA19B222F3070 /* LabelUpdate.swift in Sources */,
@@ -10208,6 +10213,7 @@
 				D840DE2CD3FED303202931337E6171BA /* MailSettings.swift in Sources */,
 				4C061076C15036B242E3CB8D3264CF8F /* MainQueueHandler.swift in Sources */,
 				13B592E4C8D576F95180694B325803E5 /* MarkAsUnsubscribed.swift in Sources */,
+				CD6AD44AFD757E8CE8219C0E1F127590 /* MenuLabel.swift in Sources */,
 				9B532AC034E7617B641195B6E8B4285B /* Message+Constants.swift in Sources */,
 				95B954B9A89B4F49DAFF04EB781347EF /* Message+EncryptType.swift in Sources */,
 				D160A35D4D2B8600E0BA28545882992C /* Message+Extension.swift in Sources */,
@@ -10534,6 +10540,7 @@
 				E220C6628D12932CB1B103FB1D541093 /* Label.swift in Sources */,
 				2B6ABBCD4248FEC54E996024F4CE3159 /* LabelAPI.swift in Sources */,
 				197941A2171B6C3EAE798D1F23B0690F /* LabelCount.swift in Sources */,
+				214EAFBB722A9954A4F47C790D9A666D /* LabelLocation.swift in Sources */,
 				31C092E9ED13659927E978318413AFE6 /* LabelUpdate+Extension.swift in Sources */,
 				B9ADB76BC9A1DAAD4019B0DB5AAE173F /* LabelUpdate+Var+Extension.swift in Sources */,
 				A1676EF3E74399F21165773961CDC4FB /* LabelUpdate.swift in Sources */,
@@ -10551,6 +10558,7 @@
 				FD056076A18125FFD1C5C6107D64E520 /* MailSettings.swift in Sources */,
 				7C8BAE84918D4536CA25B8932D31E0FC /* MainQueueHandler.swift in Sources */,
 				11E12BB23F9BDC2420A7064C4854D853 /* MarkAsUnsubscribed.swift in Sources */,
+				5A4F345D706FF0BC9C81DB8D1720FF38 /* MenuLabel.swift in Sources */,
 				D8F737DCC11AC0F6F47231E95E17AB94 /* Message+Constants.swift in Sources */,
 				82400E5200648EBE0E9E74006D28CFE0 /* Message+EncryptType.swift in Sources */,
 				DF1B0685FE77B338C22145036C3B4F32 /* Message+Extension.swift in Sources */,

@@ -253,7 +253,9 @@ extension MailboxCoordinator {
 
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
-        let labelEditViewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: [])
+        let coreDataService = self.services.get(by: CoreDataService.self)
+        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let labelEditViewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
         let labelEditViewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
                                                viewController: labelEditViewController,

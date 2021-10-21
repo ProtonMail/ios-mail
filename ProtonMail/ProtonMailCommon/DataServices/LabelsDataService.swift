@@ -193,6 +193,13 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
 
+    func getMenuFolderLabels(context: NSManagedObjectContext) -> [MenuLabel] {
+        let labels = getAllLabels(of: .all, context: coreDataService.mainContext)
+        let datas: [MenuLabel] = Array(labels: labels, previousRawData: [])
+        let (_, folderItems) = datas.sortoutData()
+        return folderItems
+    }
+
     func getAllLabels(of type : LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         
