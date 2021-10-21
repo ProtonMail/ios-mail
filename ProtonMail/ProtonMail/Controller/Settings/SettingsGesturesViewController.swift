@@ -56,6 +56,7 @@ class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         self.tableView.register(UINib(nibName: CellKey.settingCell, bundle: nil), forCellReuseIdentifier: CellKey.settingCell)
         self.tableView.tableFooterView = UIView()
+        self.tableView.separatorStyle = .none
         self.tableView.backgroundColor = UIColor(hexString: "E2E6E8", alpha: 1.0)
     }
     
@@ -89,6 +90,7 @@ class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, 
             case .right:
                 cell.configCell(LocalString._swipe_right_to_left, right: self.viewModel.userInfo.swipeRightAction.description)
             }
+            cell.addSeparator(leftRef: cell, constant: 16)
             return cell
         }
         

@@ -140,6 +140,9 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.searchBar.tintColor = .white
         self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.searchController.searchBar.backgroundColor = .clear
+        if #available(iOS 15.0, *) {
+            self.searchController.searchBar.searchTextField.leftView?.tintColor = .lightGray
+        }
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true

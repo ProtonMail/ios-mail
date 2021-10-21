@@ -37,11 +37,11 @@ class ProcessAddCredits: ProcessProtocol {
         }
         do {
             let tokenApi = delegate.paymentsApiProtocol.tokenRequest(api: apiService, amount: plan.yearlyCost, receipt: receipt)
-            let tokenRes = try await(tokenApi.run())
+            let tokenRes = try AwaitKit.await(tokenApi.run())
             guard let token = tokenRes.paymentToken else { return }
             do {
                 let serverUpdateApi = delegate.paymentsApiProtocol.creditRequest(api: apiService, amount: plan.yearlyCost, paymentAction: .token(token: token.token))
-                _ = try await(serverUpdateApi.run())
+                _ = try AwaitKit.await(serverUpdateApi.run())
                 PMLog.debug("StoreKit: credits added")
                 delegate.paymentQueueProtocol.finishTransaction(transaction)
                 delegate.successCallback?(nil)

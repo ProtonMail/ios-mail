@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Setidaknya satu domain/alamat surel penerima tidak ada atau salah format. Pesan dipindah ke draf.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Gagal mengunggah lampiran";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Lampiran telah diimpor";
 
@@ -1007,7 +1010,7 @@
 "Help us to improve ProtonMail with your input." = "Bantu kami meningkatkan ProtonMail dengan masukan Anda.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Bantu kami menjadikan privasi sebagai hal baku di web.";
+"Help us to make privacy the default in the web." = "Bantu kami menjadikan privasi sebagai hal yang baku di internet.";
 
 /* Action */
 "Hide" = "Sembunyikan";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Tidak mungkin pindah ke %@ lewat aplikasi iOS kami.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Tidak mungkin untuk mengganti ke paket lain dalam aplikasi. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Anda tidak dapat mengubah jenis akun Anda melalui aplikasi. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Beri saya kabar tentang fitur-fitur baru";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Silakan coba lagi";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Harap tingkatkan jenis akun Anda";
+
 /* Description */
 "Please use ProtonMail App login first." = "Mohon masuk lewat aplikasi ProtonMail lebih dahulu.";
 
@@ -1687,7 +1693,7 @@
 "ProtonMail is currently offline..." = "ProtonMail sedang luring...";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "Perlu ProtonMail Plus untuk mengubah tanda tangan seluler Anda";
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus dibutuhkan untuk dapat mengubah tanda tangan mobile Anda";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary mengizinkan Anda menambah dan menyunting rincian kontak di luar nama kontak dan surel. Dengan ProtonMail, data ini seaman surel Anda yang dienkripsi end-to-end.";
@@ -1714,7 +1720,7 @@
 "Re-Enter your PIN" = "Masukkan ulang PIN Anda";
 
 /* abbreviation of reply: */
-"Re:" = "Balas:";
+"Re:" = "Ttg:";
 
 /* Title */
 "Reading device contacts data..." = "Membaca data kontak perangkat...";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Mengirim pesan dari alamat %1$@ adalah fitur berbayar. Pesan Anda akan dikirim dari alamat bawaan %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Pesan baru akan dapat terkirim\ndi kala seluruh lampiran telah selesai diunggah";
+
 /* menu title */
 "Sent" = "Terkirim";
 
@@ -1894,7 +1903,7 @@
 "Signature Updated" = "Tanda tangan diperbarui";
 
 /* settings general section title */
-"Single Password" = "Sandi Tunggal";
+"Single Password" = "Kata Sandi Tunggal";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Tunda";
@@ -1950,6 +1959,9 @@
 
 /* Title */
 "Storage" = "Penyimpanan";
+
+/* Storage warning */
+"Storage quota exceeded" = "Kuota penyimpanan terlampaui";
 
 /* Title */
 "Storage Warning" = "Peringatan Penyimpanan";
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Pengiriman gagal. Ada kesalahan pada format draf.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Berkas-berkas berikut gagal terunggah:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Tingkat enkripsi tertinggi tersedia.";

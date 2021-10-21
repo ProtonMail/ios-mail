@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Al menos una dirección de correo electrónico/dominio del destinatario no existe o tiene un formato incorrecto. Mensaje movido a borradores.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Fallo de adjunto";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Adjunto importado";
 
@@ -938,7 +941,7 @@
 "for one year" = "por un año";
 
 /* Service Plan description */
-"For organizations that need multi-user support and additional productivity features" = "Para organizaciones que necesitan soporte multi usuario y funciones de productividad adicionales";
+"For organizations that need multi-user support and additional productivity features" = "Para organizaciones que necesitan soporte multiusuario y funciones de productividad adicionales";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Para personas y grupos que valoran el anonimato y la privacidad";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "No es posible cambiar a %@ dentro de nuestra aplicación iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "No es posible cambiar a otro plan dentro de la aplicación. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "No es posible cambiar de plan dentro de la aplicación. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Mantenerme actualizado acerca de nuevas funciones";
@@ -1603,7 +1606,7 @@
 "Please select at least one email for the contact group" = "Seleccione al menos un correo electrónico para el grupo de contactos";
 
 /* human check select option title */
-"Please select one of the following options:" = "Por favor, selecciona una de las siguientes opciones:";
+"Please select one of the following options:" = "Selecciona una de las siguientes opciones:";
 
 /* Description */
 "Please set a password." = "Por favor, establezca una contraseña.";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Inténtelo de nuevo";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Por favor, actualice su plan";
 
 /* Description */
 "Please use ProtonMail App login first." = "Primero inicie sesión en la app de ProtonMail.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "El envío de mensajes desde la dirección %1$@ es una característica de pago. Su mensaje será enviado desde su dirección predeterminada %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "El envío estará disponible\ncuando se carguen los archivos adjuntos";
+
 /* menu title */
 "Sent" = "Enviados";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Almacenamiento";
 
+/* Storage warning */
+"Storage quota exceeded" = "Cuota de almacenamiento superada";
+
 /* Title */
 "Storage Warning" = "Advertencia de almacenamiento";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "¡El formato del borrador es incorrecto, el envío falló!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "No se han podido adjuntar los siguientes archivos:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "El máximo nivel de cifrado disponible.";

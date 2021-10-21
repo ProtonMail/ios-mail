@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "По крайней мере один адрес электронной почты/домен получателя не существует или отформатирован неправильно. Сообщение перемещено в черновики.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Ошибка вложения";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Вложение импортировано";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Невозможно переключиться на %@ через наше приложение iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Невозможно перейти на другой план в приложении. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Невозможно перейти на другой тарифный план в приложении. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Сообщайте мне о новых функциях";
@@ -1552,13 +1555,13 @@
 "Photo Library" = "Фотоальбом / Медиатека";
 
 /* device settings auto lock type title */
-"PIN" = "ПИН";
+"PIN" = "PIN";
 
 /* device settings auto lock type title */
-"PIN & FaceID" = "ПИН & FaceID";
+"PIN & FaceID" = "PIN & FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "ПИН & FaceID";
+"PIN & TouchID" = "PIN & FaceID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";
@@ -1597,7 +1600,7 @@
 "Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед изменением отправителя";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Выберите хотя бы один адрес эл. почты";
+"Please select at least one email" = "Выберите хотя бы один адрес электронной почты";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Пожалуйста, выберите по крайней мере один адрес электронной почты для группы контактов";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "Пожалуйста, попробуйте ещё раз";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Пожалуйста, обновите свой тарифный план";
 
 /* Description */
 "Please use ProtonMail App login first." = "Пожалуйста, сначала войдите через приложение ProtonMail.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Отправка сообщений с %1$@ – платная функция. Ваше сообщение будет отправлено с вашего обычного адреса %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Отправка будет доступна\nкогда вложения будут загружены";
+
 /* menu title */
 "Sent" = "Отправленные";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Хранилище";
 
+/* Storage warning */
+"Storage quota exceeded" = "Превышена квота хранилища";
+
 /* Title */
 "Storage Warning" = "Предупреждение о хранилище";
 
@@ -2030,6 +2042,9 @@
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Сбой отправки. Ошибка в формате черновика.";
 
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Не удалось прикрепить следующие файлы:";
+
 /* key size note part 1 */
 "The highest level of encryption available." = "Наивысший из доступных уровень шифрования.";
 
@@ -2074,7 +2089,7 @@
 "The passwords you entered do not match." = "Пароли, введённые вами, не совпадают.";
 
 /* update password error */
-"The private key update failed." = "Не удалось обновить секретный ключ.";
+"The private key update failed." = "Не удалось обновить закрытый ключ.";
 
 /* Title */
 "The request timed out." = "Истекло время ожидания запроса.";
@@ -2195,10 +2210,10 @@
 "Turn Off" = "Отключить";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения, и используйте PIN-код или FaceID для разблокировки.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения и использования PIN или FaceID для разблокировки.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения, и используйте PIN-код или отпечаток пальца для разблокировки.";
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Включите эту функцию для автоматической блокировки вашего приложения и использования PIN или отпечатка пальца для разблокировки.";
 
 /* Title */
 "Tweet about ProtonMail" = "Твитнуть о ProtonMail";

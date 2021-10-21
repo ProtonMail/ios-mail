@@ -303,6 +303,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
                                                object:nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.attachmentUploadFailed(notification:)),
+                                               name: .attachmentUploadFailed,
+                                               object: nil)
         setupAutoSave()
     }
     
@@ -509,9 +513,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
-                
+
+                var title = self.headerView.subject.text ?? ""
+                if title.isEmpty {
+                    title = "(No Subject)"
+                }
                 self.viewModel.collectDraft (
-                    self.headerView.subject.text ?? "(No Subject)",
+                    title,
                     body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
@@ -539,7 +547,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
     }
     
-    private func updateAttachmentButton () {
+    private func updateAttachmentButton() {
         guard let atts = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
             self.headerView.updateAttachmentButton(false)
             return
@@ -552,18 +560,45 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.headerView.updateAttachmentButton(false)
         }
     }
+
+    @objc func attachmentUploadFailed(notification: Notification) {
+        guard let code = notification.userInfo?["code"] as? Int,
+              let attachments = self.viewModel.message?.attachments.allObjects as? [Attachment] else {
+            return
+        }
+        let navigation = self.presentedViewController as? UINavigationController
+        let attachmentVC = navigation?.viewControllers.first as? AttachmentsTableViewController
+        let uploadingData = attachments.filter { $0.attachmentID == "0" && !$0.isSoftDeleted }
+        guard !uploadingData.isEmpty else { return }
+        DispatchQueue.main.async {
+            let names = uploadingData.map { $0.fileName }.joined(separator: "\n")
+            let message = "\(LocalString._attachment_upload_failed_body)\n \(names)"
+            let storageErrors = [11100, 422]
+            let title = storageErrors.contains(code) ? LocalString._storage_exceeded: LocalString._attachment_upload_failed_title
+            let alert = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            alert.addOKAction()
+            (attachmentVC ?? self).present(alert, animated: true, completion: nil)
+        }
+
+        
+        uploadingData.forEach { self.delete(attachment: $0, in: attachmentVC) }
+    }
     
     //MARK: - HtmlEditorBehaviourDelegate
     func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         
-        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { (attachment) in
+        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { [weak self] attachment in
             guard let att = attachment else {
                 return
             }
             att.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
-            self.viewModel.uploadAtt(att)
+            self?.viewModel.uploadAtt(att)
+            self?.coordinator?.updateAttachmentsStatus?()
+            self?.updateAttachmentButton()
         }
     }
     
@@ -576,8 +611,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
-        
-        self.viewModel.deleteAtt(attachment).cauterize()
+
+        self.viewModel.deleteAtt(attachment).ensure { [weak self] in
+            self?.coordinator?.updateAttachmentsStatus?()
+            self?.updateAttachmentButton()
+        }.cauterize()
     }
     
     func htmlEditorDidFinishLoadingContent() {
@@ -867,6 +905,7 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
 
     func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
         self.attachments = attachments
+        coordinator?.updateAttachmentsStatus?()
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
@@ -877,6 +916,17 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
+        self.delete(attachment: attachment, in: attViewController)
+    }
+
+    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+    }
+
+    func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
+    }
+
+    private func delete(attachment: Attachment,
+                        in attachmentVC: AttachmentsTableViewController?) {
         self.collectDraftData().done {
             if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
                 self.htmlEditor.remove(embedImage: "cid:\(content_id)")
@@ -889,15 +939,9 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
                 self.viewModel.message?.numAttachments = NSNumber(value: number)
             }
             
-            attViewController.updateAttachments()
+            attachmentVC?.updateAttachments()
             self.updateAttachmentButton()
         }.cauterize()
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
-    }
-
-    func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
     }
 }
 

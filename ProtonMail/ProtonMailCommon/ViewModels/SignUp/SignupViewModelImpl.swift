@@ -234,16 +234,16 @@ class SignupViewModelImpl : SignupViewModel {
                                                                       privateKey: key,
                                                                       domain: self.domain, authCredential: auth)
                                         
-//                                        let setupKeyApi = try await(self.apiService.run(route: setupKeyReq))
+//                                        let setupKeyApi = try AwaitKit.await(self.apiService.run(route: setupKeyReq))
 //                                        if setupKeyApi.error != nil {
 //                                            PMLog.D("signup seupt key error")
 //                                        }
                                         
                                         auth?.update(salt: self.keysalt!.encodeBase64(), privateKey: self.newPrivateKey)
                                         //setup swipe function, will use default auth credential
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftLeftAction(action: MessageSwipeAction.archive,
+                                        let _ = try AwaitKit.await(self.apiService.run(route: UpdateSwiftLeftAction(action: MessageSwipeAction.archive,
                                                                                                            authCredential: auth)))
-                                        let _ = try await(self.apiService.run(route: UpdateSwiftRightAction(action: MessageSwipeAction.trash,
+                                        let _ = try AwaitKit.await(self.apiService.run(route: UpdateSwiftRightAction(action: MessageSwipeAction.trash,
                                                                                                             authCredential: auth)))
                                         //sharedLabelsDataService.fetchLabels()
                                         //ServicePlanDataService.shared.updateCurrentSubscription()

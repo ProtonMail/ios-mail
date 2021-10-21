@@ -467,11 +467,15 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
     }
     
     func sendEmailToGroup(ID: String, name: String) {
-        if viewModel.user.isPaid {
-            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
-        } else {
+        guard viewModel.user.isPaid else {
             self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            return
         }
+        guard !viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
+        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
     }
 }
 

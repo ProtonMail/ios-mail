@@ -39,6 +39,10 @@ extension NSError {
     public func alertSentErrorToast() ->Void {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"])
     }
+
+    class func alertStorageExceeded() {
+        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": "\(LocalString._storage_exceeded)"])
+    }
     
     public class func alertLocalCacheErrorToast() ->Void {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._message_draft_cache_is_broken])

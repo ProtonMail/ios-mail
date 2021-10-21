@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "部分收件人的邮箱地址或域名不存在或格式不正确，因此邮件已被存为草稿。";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "附件上传失败";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "附件已导入";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中开通 %@。";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "App 中无法调整账户等级。%1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "iOS 应用中无法调整账户等级。%1$@";
 
 /* Title */
 "Keep me updated about new features" = "有新功能时通知我";
@@ -1464,7 +1467,7 @@
 "On" = "在";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "yyyy 年 MMM d 日EE %1$@";
+"On EE, MMM d, yyyy at %@" = "于yyyy年MMM月d日EE %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy 年 MMM d 日EE %1$@, %2$@ 来信：";
@@ -1622,6 +1625,9 @@
 
 /* (No Comment) */
 "Please try again." = "请重试";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "请升级您的套餐";
 
 /* Description */
 "Please use ProtonMail App login first." = "请先使用 ProtonMail App 登录。";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "通过 %1$@ 地址发送邮件需要付费，因此您的邮件仍将从首选地址 %2$@ 发出。";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "上传完附件后\n即可发送";
+
 /* menu title */
 "Sent" = "已发送";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "存储空间";
 
+/* Storage warning */
+"Storage quota exceeded" = "已超出存储配额";
+
 /* Title */
 "Storage Warning" = "存储空间提示";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "草稿格式错误发送失败!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "无法附加以下文件：";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "最高级别的加密。";

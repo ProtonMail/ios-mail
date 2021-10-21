@@ -228,6 +228,22 @@ class UserManager : Service, HasLocalStorage {
         }
     }
 
+    func usedSpace(plus size: Int64) {
+        self.userinfo.usedSpace += size
+        self.save()
+    }
+
+    func usedSpace(minus size: Int64) {
+        let usedSize = self.userinfo.usedSpace - size
+        self.userInfo.usedSpace = max(usedSize, 0)
+        self.save()
+    }
+
+    var isStorageExceeded: Bool {
+        let maxSpace = self.userInfo.maxSpace
+        let usedSpace = self.userInfo.usedSpace
+        return usedSpace >= maxSpace
+    }
 }
 
 extension UserManager : AuthDelegate {

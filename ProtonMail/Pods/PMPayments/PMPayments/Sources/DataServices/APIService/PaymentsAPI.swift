@@ -70,7 +70,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         do {
             // validate subscription to get amountDue
             let validateReq = validateSubscriptionRequest(api: api, planId: planId)
-            let res = try await(validateReq.run())
+            let res = try AwaitKit.await(validateReq.run())
             validateSubscriptionProcessing = false
             guard let validateSubscription = res.validateSubscription else { throw(decodeError) }
             if validateSubscription.amountDue == amount {
@@ -79,7 +79,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
             } else {
                 // if amountDue is not equal to amount, request credit for a full amount
                 let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
-                _ = try await(creditReq.run())
+                _ = try AwaitKit.await(creditReq.run())
                 // then request subscription for amountDue = 0
                 return SubscriptionRequest(api: api, planId: planId, amount: 0, paymentAction: paymentAction)
             }

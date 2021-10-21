@@ -103,7 +103,7 @@ extension UIViewController {
         controller.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
         controller.navigationController?.navigationBar.isTranslucent = false
         controller.navigationController?.navigationBar.tintColor = UIColor.white
-        
+
         let navigationBarTitleFont = Fonts.h2.regular
         controller.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,

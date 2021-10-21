@@ -55,7 +55,9 @@ extension StorageLimit {
                 message = String(format: localized, formattedMaxSpace);
             }
         } else {
-            message = String(format: LocalString._space_partial_used_warning, Constants.App.SpaceWarningThreshold, formattedMaxSpace);
+            let usedPercent = (usedSpace / maxSpace) * 100.0
+            let num = Int(String(format: "%.0f", usedPercent))!
+            message = String(format: LocalString._space_partial_used_warning, num, formattedMaxSpace);
         }
         
         let alertController = UIAlertController(title: LocalString._space_warning,

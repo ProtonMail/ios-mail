@@ -67,6 +67,11 @@ class MailboxViewModel: StorageLimit {
     
     ///
     internal weak var users: UsersManager?
+    var isStorageFull: Bool {
+        let maxSpace = user.userinfo.maxSpace
+        let usedSpace = user.userinfo.usedSpace
+        return usedSpace >= maxSpace
+    }
     
     /// mailbox viewModel
     ///

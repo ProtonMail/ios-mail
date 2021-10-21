@@ -308,12 +308,24 @@ extension MessageContainerViewController: ShowImageViewDelegate {
 
 extension MessageContainerViewController: MessageDetailBottomViewDelegate {
     func replyAction() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         self.coordinator.go(to: .composerReply)
     }
     func replyAllAction() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         self.coordinator.go(to: .composerReplyAll)
     }
     func forwardAction() {
+        guard !self.viewModel.user.isStorageExceeded else {
+            LocalString._storage_exceeded.alertToastBottom()
+            return
+        }
         self.coordinator.go(to: .composerForward)
     }
 }

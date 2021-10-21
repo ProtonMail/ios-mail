@@ -52,6 +52,10 @@ extension Attachment {
             }
         }
     }
+
+    var isUploaded: Bool {
+        attachmentID != "0" && attachmentID != .empty
+    }
     
     // MARK: - This is private functions
     

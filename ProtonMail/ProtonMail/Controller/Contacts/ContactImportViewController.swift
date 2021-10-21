@@ -284,7 +284,7 @@ class ContactImportViewController: UIViewController {
                                 pre_contacts.append(cards)
                             } catch {
                                 // upload vcardStr when see error
-                                Analytics.shared.error(message: .vcard, error: vcardStr, user: self.user)
+                                Analytics.shared.error(message: .vcard, error: vcardStr)
                             }
                         }
                     }

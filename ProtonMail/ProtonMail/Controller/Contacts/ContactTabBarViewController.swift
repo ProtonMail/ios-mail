@@ -65,6 +65,12 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     ///    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            self.tabBar.scrollEdgeAppearance = appearance
+            self.tabBar.standardAppearance = appearance
+        }
         
         // setup tab bar item title
         self.tabBar.items?[0].title = LocalString._menu_contacts_title

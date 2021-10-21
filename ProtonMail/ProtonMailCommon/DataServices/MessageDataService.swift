@@ -369,30 +369,49 @@ class MessageDataService : Service, HasLocalStorage {
                     let context = self.coreDataService.mainManagedObjectContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         do {
-                            //Prevent the draft is overriden while sending
-                            if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
-                                let idsSet = Set(sendingMessageIDs)
-                                var msgIDsOfMessageToRemove: [String] = []
-                                
-                                messagesArray.forEach { (messageDict) in
-                                    if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
-                                        msgIDsOfMessageToRemove.append(msgID)
+                            //Prevent the draft is overridden while sending
+                            if labelID == Message.Location.draft.rawValue {
+                                if let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: context) {
+                                    let idsSet = Set(sendingMessageIDs)
+                                    var msgIDsOfMessageToRemove: [String] = []
+                                    
+                                    messagesArray.forEach { (messageDict) in
+                                        if let msgID = messageDict["ID"] as? String, idsSet.contains(msgID) {
+                                            msgIDsOfMessageToRemove.append(msgID)
+                                        }
+                                    }
+                                    
+                                    msgIDsOfMessageToRemove.forEach { (msgID) in
+                                        messagesArray.removeAll { (msgDict) -> Bool in
+                                            if let id = msgDict["ID"] as? String {
+                                                return id == msgID
+                                            }
+                                            return false
+                                        }
                                     }
                                 }
-                                
-                                msgIDsOfMessageToRemove.forEach { (msgID) in
-                                    messagesArray.removeAll { (msgDict) -> Bool in
-                                        if let id = msgDict["ID"] as? String {
-                                            return id == msgID
-                                        }
-                                        return false
+
+                                let localMessages = messagesArray
+                                    .compactMap({ $0["ID"] as? String })
+                                    .compactMap({ Message.messageForMessageID($0, inManagedObjectContext: context) })
+                                localMessages.forEach { local in
+                                    let index = messagesArray.firstIndex { data in
+                                        guard let id = data["ID"] as? String else { return false }
+                                        return id == local.messageID
+                                    }
+                                    guard let _index = index else { return }
+                                    let dict = messagesArray[_index]
+                                    if let time = dict["Time"] as? TimeInterval,
+                                       let localTime = local.time?.timeIntervalSince1970,
+                                       localTime >= time {
+                                        messagesArray.remove(at: _index)
                                     }
                                 }
                             }
                             
                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                                 for message in messages {
-                                    // the matedata set, mark the status
+                                    // the matadata set, mark the status
                                     message.messageStatus = 1
                                     
                                     if let attachments = message.attachments.allObjects as? [Attachment] {
@@ -795,10 +814,13 @@ class MessageDataService : Service, HasLocalStorage {
     // MARK : Send message
     func send(inQueue message : Message!, completion: CompletionBlock?) {
         self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
+        // We don't want to flag to be set in the app extension or the message will be stuck in the extension is killed before finishing
+        #if !APP_EXTENSION
         message.managedObjectContext?.performAndWait {
             message.isSending = true
             _ = message.managedObjectContext?.saveUpstreamIfNeeded()
         }
+        #endif
         self.queue(message, action: .send)
         DispatchQueue.main.async {
             completion?(nil, nil, nil)
@@ -897,20 +919,17 @@ class MessageDataService : Service, HasLocalStorage {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
                                         Analytics.shared.error(message: .fetchMetadata,
                                                                error: error,
-                                                               extra: [Analytics.Reason.status: "save"],
-                                                               user: self.usersManager?.getUser(byUserId: self.userID))
+                                                               extra: [Analytics.Reason.status: "save"])
                                     }
                                 } else {
                                     Analytics.shared.error(message: .fetchMetadata,
-                                                           error: "insert empty",
-                                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                                           error: "insert empty")
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
                             } catch let err as NSError {
                                 Analytics.shared.error(message: .fetchMetadata,
                                                        error: err,
-                                                       extra: ["status": "try catch"],
-                                                       user: self.usersManager?.getUser(byUserId: self.userID))
+                                                       extra: ["status": "try catch"])
                                 PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }
@@ -921,8 +940,7 @@ class MessageDataService : Service, HasLocalStorage {
                             details = err.description
                         }
                         Analytics.shared.error(message: .fetchMetadata,
-                                               error: "Can't get the response Messages -- " + details,
-                                               user: self.usersManager?.getUser(byUserId: self.userID))
+                                               error: "Can't get the response Messages -- " + details)
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
@@ -1281,7 +1299,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage(removeDraft: Bool = true) -> Promise<Void> {
+    fileprivate func cleanMessage(removeDraft: Bool = false) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
@@ -1408,8 +1426,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             } catch let ex as NSError {
                 Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex,
-                                       user: self.usersManager?.getUser(byUserId: self.userID))
+                                       error: ex)
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1424,8 +1441,7 @@ class MessageDataService : Service, HasLocalStorage {
                 attachments.forEach({ context.delete($0) })
                 if let error = context.saveUpstreamIfNeeded() {
                     Analytics.shared.error(message: .purgeOldMessages,
-                                           error: error,
-                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                           error: error)
                     PMLog.D("error : \(error)")
                 }
             }
@@ -1469,12 +1485,19 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
-                        if let err = error, !err.isBadVersionError {
-                            Analytics.shared.error(message: .saveDraftError, error: err, user: self.usersManager?.firstUser)
+                        defer {
+                            // error: response nil
+                            completion?(task, nil, error)
+                        }
+                        guard let err = error else { return }
+                        Analytics.shared.error(message: .saveDraftError, error: err)
+                        DispatchQueue.main.async {
                             NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
-                        // error: response nil
-                        completion?(task, nil, error)
+                        if err.isStorageExceeded {
+                            context.delete(message)
+                            _ = context.saveUpstreamIfNeeded()
+                        }
                         return
                     }
                     
@@ -1484,8 +1507,7 @@ class MessageDataService : Service, HasLocalStorage {
                         let messageIDError = NSError.badParameter("messageID")
                         Analytics.shared.error(message: .saveDraftError,
                                                error: messageIDError,
-                                               extra: ["dicKeys": keys],
-                                               user: self.usersManager?.firstUser)
+                                               extra: ["dicKeys": keys])
                         // The error is messageID missing from the response
                         // But this is meanless to users
                         // I think parse error is more understandable
@@ -1548,7 +1570,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 PMLog.D(" error: \(save_error)")
                             }
                         } catch let exc as NSError {
-                            Analytics.shared.error(message: .grtJSONSerialization, error: exc, user: self.usersManager?.firstUser)
+                            Analytics.shared.error(message: .grtJSONSerialization, error: exc)
                             completion?(task, response, exc)
                             return
                         }
@@ -1594,7 +1616,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .saveDraftError, error: ex, user: self.usersManager?.firstUser)
+                Analytics.shared.error(message: .saveDraftError, error: ex)
                 let _ = sharedMessageQueue.remove(writeQueueUUID)
                 self.dequeueIfNeeded()
                 completion?(nil, nil, ex)
@@ -1703,13 +1725,30 @@ class MessageDataService : Service, HasLocalStorage {
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
                         }
+                        NotificationCenter
+                            .default
+                            .post(name: .attachmentUploaded,
+                                  object: nil,
+                                  userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                             "attachmentID": attachment.attachmentID])
                         completion?(task, response, error)
                     }
                 } else {
-                    if let err = error {
-                        Analytics.shared.error(message: .uploadAttachmentError, error: err, user: self.usersManager?.firstUser)
+                    defer {
+                        completion?(task, response, error)
                     }
-                    completion?(task, response, error)
+                    guard let err = error else { return }
+                    
+                    Analytics.shared.error(message: .uploadAttachmentError, error: err)
+                    let reason = response?["Error"] ?? err.localizedDescription
+                    let code = (response?["Code"] as? Int) ?? err.code
+                    NotificationCenter
+                        .default
+                        .post(name: .attachmentUploadFailed,
+                              object: nil,
+                              userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                         "reason": reason,
+                                         "code": code])
                 }
             }
             
@@ -2124,8 +2163,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                    "IsBodyEmpty": message.body == "",
                                                    "HasPlainText": sendBuilder.hasPlainText,
                                                    "HasMIME": sendBuilder.hasMime,
-                                                   "HasAtt": attachments.count != 0],
-                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                                   "HasAtt": attachments.count != 0])
                 }
                 
                 if let _ = UUID(uuidString: message.messageID) {
@@ -2194,7 +2232,7 @@ class MessageDataService : Service, HasLocalStorage {
                         "status": status.rawValue,
                         "emailCount": emails.count,
                         "attCount": attachments.count
-                    ], user: self.usersManager?.getUser(byUserId: self.userID))
+                    ])
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                                  error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
@@ -2246,7 +2284,7 @@ class MessageDataService : Service, HasLocalStorage {
                     "status": status.rawValue,
                     "emailCount": emails.count,
                     "attCount": attachments.count
-                ], user: self.usersManager?.getUser(byUserId: self.userID))
+                ])
                 completion?(nil, nil, err)
             }.finally {
                 context.performAndWait {
@@ -2332,7 +2370,7 @@ class MessageDataService : Service, HasLocalStorage {
             } else {
                 PMLog.D(" error: \(String(describing: error))")
                 if let err = error {
-                    Analytics.shared.error(message: .queueError, error: err, user: self.usersManager?.firstUser)
+                    Analytics.shared.error(message: .queueError, error: err)
                 }
                 
                 var statusCode = 200
@@ -2415,8 +2453,7 @@ class MessageDataService : Service, HasLocalStorage {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
                     Analytics.shared.error(message: .queueError,
-                                           error: error?.localizedDescription ?? "Error is nil",
-                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                           error: error?.localizedDescription ?? "Error is nil")
                 }
                 
                 if !isInternetIssue && (errorCode != NSError.authCacheLocked().code) {
@@ -2631,8 +2668,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 if error != nil  {
                                     Analytics.shared.error(message: .grtJSONSerialization,
                                                            error: error!,
-                                                           extra: [Analytics.Reason.status: "Delete"],
-                                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                                           extra: [Analytics.Reason.status: "Delete"])
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
@@ -2654,56 +2690,50 @@ class MessageDataService : Service, HasLocalStorage {
                             msg.message?["messageStatus"] = 1
                         }
                         
-                        if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 || lo == 8 { //if it is a draft
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
+                        if let lo = msg.message?["Location"] as? Int,
+                           lo == 1 || lo == 8, //if it is a draft
+                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
+                           existMes.messageStatus == 1,
+                           let BETime = msg.message?["Time"] as? TimeInterval,
+                           let localTime = existMes.time?.timeIntervalSince1970,
+                           BETime > localTime {
+                            existMes.time = BETime.asDate()
+                            if let subject = msg.message?["Subject"] as? String {
+                                existMes.title = subject
                             }
+                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
+                                existMes.toList = toList.json()
+                            }
+                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
+                                existMes.bccList = bccList.json()
+                            }
+                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
+                                existMes.ccList = ccList.json()
+                            }
+                            continue
                         }
                         
-                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray {
-                            if labelIDs.contains("1") || labelIDs.contains("8") {
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
+                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray,
+                           labelIDs.contains("1") || labelIDs.contains("8"),
+                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
+                           existMes.messageStatus == 1,
+                           let BETime = msg.message?["Time"] as? TimeInterval,
+                           let localTime = existMes.time?.timeIntervalSince1970,
+                           BETime > localTime {
+                            existMes.time = BETime.asDate()
+                            if let subject = msg.message?["Subject"] as? String {
+                                existMes.title = subject
                             }
+                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
+                                existMes.toList = toList.json()
+                            }
+                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
+                                existMes.bccList = bccList.json()
+                            }
+                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
+                                existMes.ccList = ccList.json()
+                            }
+                            continue
                         }
                         
                         do {
@@ -2760,8 +2790,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         }
                                         Analytics.shared.error(message: .grtJSONSerialization,
                                                                error: error!,
-                                                               extra: [Analytics.Reason.status: "GRTJSONSerialization Update"],
-                                                               user: self.usersManager?.getUser(byUserId: self.userID))
+                                                               extra: [Analytics.Reason.status: "GRTJSONSerialization Update"])
                                         PMLog.D(" error: \(String(describing: error))")
                                     }
                                 } else {
@@ -2769,8 +2798,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         messagesNoCache.append(messageid)
                                     }
                                     Analytics.shared.error(message: .grtJSONSerialization,
-                                                           error: "GRTJSONSerialization Insert - context nil",
-                                                           user: self.usersManager?.getUser(byUserId: self.userID))
+                                                           error: "GRTJSONSerialization Insert - context nil")
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
@@ -2779,8 +2807,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 }
                                 PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
                                 Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: "GRTJSONSerialization Insert - insert empty",
-                                                       user: self.usersManager?.getUser(byUserId: self.userID))
+                                                       error: "GRTJSONSerialization Insert - insert empty")
                             }
                         } catch let err as NSError {
                             // when GRTJSONSerialization insert failed
@@ -2803,8 +2830,7 @@ class MessageDataService : Service, HasLocalStorage {
                             }
                             Analytics.shared.error(message: .grtJSONSerialization,
                                                    error: err,
-                                                   extra: [Analytics.Reason.status: status],
-                                                   user: self.usersManager?.getUser(byUserId: self.userID))
+                                                   extra: [Analytics.Reason.status: status])
                             PMLog.D(" error: \(err)")
                         }
                     default:
@@ -2816,8 +2842,7 @@ class MessageDataService : Service, HasLocalStorage {
                     if error != nil  {
                         Analytics.shared.error(message: .grtJSONSerialization,
                                                error: error!,
-                                               extra: [Analytics.Reason.status: "Save"],
-                                               user: self.usersManager?.getUser(byUserId: self.userID))
+                                               extra: [Analytics.Reason.status: "Save"])
                         PMLog.D(" error: \(String(describing: error))")
                     }
                 }
@@ -3061,7 +3086,7 @@ class MessageDataService : Service, HasLocalStorage {
                             break
                         }
                         do {
-                            try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                            try AwaitKit.await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
                         } catch let error {
                             print(error.localizedDescription)
                         }

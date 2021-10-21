@@ -32,20 +32,20 @@ class SpamTests: BaseTestCase {
             .spams()
             .verify.messageWithSubjectExists(subject)
     }
-    
-    func testSwipeToSpamMessage() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject)
-            .refreshMailbox()
-            .spamMessageBySubject(subject)
-            .menuDrawer()
-            .spams()
-            .verify.messageWithSubjectExists(subject)
-    }
+
+//    func testSwipeToSpamMessage() {
+//        let user = testData.onePassUser
+//        let recipient = testData.onePassUser
+//        LoginRobot()
+//            .loginUser(user)
+//            .compose()
+//            .sendMessage(recipient.email, subject)
+//            .refreshMailbox()
+//            .spamMessageBySubject(subject)
+//            .menuDrawer()
+//            .spams()
+//            .verify.messageWithSubjectExists(subject)
+//    }
     
     func testClearSpamMessages() {
         let user = testData.onePassUser

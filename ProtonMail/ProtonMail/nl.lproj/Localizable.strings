@@ -243,13 +243,16 @@
 "at" = "om";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Tenminste één e-mailadres in de groep kon niet worden gevonden";
+"At least one email address in the group could not be found" = "Ten minste één e-mailadres in de groep kon niet worden gevonden";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "Ten minste één e-mailadres van de ontvangers is onjuist opgemaakt, gelieve deze te controleren.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Tenminste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Ten minste één e-mailadres/domeinnaam van de ontvangers bestaat niet of is onjuist opgemaakt. Bericht is verplaatst naar concepten.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Bevestigingsfout";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bijlage geïmporteerd";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Het is niet mogelijk om over te schakelen naar %@ binnen onze iOS app.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Het is niet mogelijk om naar een ander abonnementen te switchen in de app. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Het is niet mogelijk over te schakelen naar een ander abonnement binnen de app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Houd mij op de hoogte van nieuwe functionaliteiten";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Probeer opnieuw";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Upgrade uw abonnement";
+
 /* Description */
 "Please use ProtonMail App login first." = "Gebruik eerst de ProtonMail App login.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Versturen zal beschikbaar zijn\nwanneer bijlagen zijn geupload";
+
 /* menu title */
 "Sent" = "Verzonden";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Opslagruimte";
 
+/* Storage warning */
+"Storage quota exceeded" = "Opslagquota overschreden";
+
 /* Title */
 "Storage Warning" = "Opslagwaarschuwing";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Het formaat van het concept is onjuist. Verzenden is mislukt!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "De volgende bestanden konden niet worden bijgevoegd:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Het hoogste niveau van versleuteling beschikbaar.";

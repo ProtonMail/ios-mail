@@ -36,48 +36,52 @@ class CollectionViewTableLayout: UICollectionViewFlowLayout {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.register(SeparatorDecorationView.self)
+        self.scrollDirection = .vertical
+        self.minimumLineSpacing = 0
+        self.minimumInteritemSpacing = 0
     }
     
     private var separators: [IndexPath: UICollectionViewLayoutAttributes] = [:]
     
     override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
-        self.estimatedItemSize = .init(width: (UIApplication.shared.keyWindow?.bounds.width ?? 200) * 0.70, height: 200)
+        self.estimatedItemSize = .init(width: (UIApplication.shared.keyWindow?.bounds.width ?? 200), height: 200)
         super.invalidateLayout(with: context)
     }
-    
-    override func shouldInvalidateLayout(forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes, withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes) -> Bool
-    {
-        // every separators frame depends on frame of some cell, which is calculated twice: attributes that FlowLayout calculates according to estimatedItemSize and then modified by cell according to its AutoLayout constraints. Here we are invalidating separator layout calculated BEFORE cells constraints were applied, so it will not be mispalced.
-        if originalAttributes.representedElementKind == String(describing: SeparatorDecorationView.self) {
-            return true
-        }
-        return super.shouldInvalidateLayout(forPreferredLayoutAttributes: preferredAttributes, withOriginalAttributes: originalAttributes)
-    }
-    
+
     override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.separators[indexPath]
+            return self.separators[indexPath]
     }
-    
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes else { return nil }
-        guard let collectionView = collectionView else { return attributes }
-        
-        attributes.bounds.size.width = collectionView.bounds.width - sectionInset.left - sectionInset.right
-        
-        if indexPath.item > 0 {
-            let inset: CGFloat = 20.0
-            let thickness: CGFloat = 1
-            let separator = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: SeparatorDecorationView.self), with: indexPath)
-            separator.zIndex = Int.max
-            separator.frame = .init(x: attributes.frame.origin.x + inset,
-                                    y: attributes.frame.origin.y - 1,
-                                    width: attributes.bounds.size.width - inset,
-                                    height: thickness)
-            
-            self.separators[indexPath] = separator
+
+    override func prepare() {
+        super.prepare()
+
+        // get rows
+        guard let numberOfSections = self.collectionView?.numberOfSections else {
+            return
         }
-        
-        return attributes
+
+        separators.removeAll()
+
+        for section in 0..<numberOfSections {
+            guard let rows = self.collectionView?.numberOfItems(inSection: section) else {
+                continue
+            }
+            for row in 0..<rows {
+                let indexPath = IndexPath(row: row, section: section)
+                guard let attribute = self.layoutAttributesForItem(at: indexPath) else {
+                    continue
+                }
+
+                let rowFrame = attribute.frame
+                let frame = CGRect(x: rowFrame.minX, y: rowFrame.maxY - 1, width: rowFrame.width, height: 1)
+                let decoration = UICollectionViewLayoutAttributes(forDecorationViewOfKind: String(describing: SeparatorDecorationView.self), with: indexPath)
+                decoration.frame = frame
+                decoration.zIndex = Int.max - 1
+
+                separators[indexPath] = decoration
+            }
+        }
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -86,8 +90,7 @@ class CollectionViewTableLayout: UICollectionViewFlowLayout {
         var result: [UICollectionViewLayoutAttributes] = allAttributes.compactMap { attributes in
             return self.layoutAttributesForItem(at: attributes.indexPath)
         }
-        result.append(contentsOf: self.separators.values )
-        
+        result.append(contentsOf: separators.values)
         return result
     }
 }

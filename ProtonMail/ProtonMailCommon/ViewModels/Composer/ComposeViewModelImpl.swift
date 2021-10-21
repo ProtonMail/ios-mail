@@ -53,17 +53,20 @@ class ComposeViewModelImpl : ComposeViewModel {
     let messageService : MessageDataService
     let coreDataService: CoreDataService
     let user : UserManager
+    private var checkAttachments: (() -> Void?)?
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
          action : ComposeMessageAction,
          msgService: MessageDataService,
          user: UserManager,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataService,
+         checkAttachments: @escaping (() -> Void?)) {
 
         self.messageService = msgService
         self.user = user
         self.coreDataService = coreDataService
+        self.checkAttachments = checkAttachments
         
         super.init()
         self.message = nil
@@ -181,17 +184,23 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         messageService.upload(att: att)
         self.updateDraft()
+        checkAttachments?()
     }
     
     override func uploadPubkey(_ att: Attachment!) {
+        guard !self.user.isStorageExceeded else { return }
+        self.user.usedSpace(plus: att.fileSize.int64Value)
         self.updateDraft()
         messageService.upload(pubKey: att)
         self.updateDraft()
+        checkAttachments?()
     }
     
     override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
+        self.user.usedSpace(minus: att.fileSize.int64Value)
         return messageService.delete(att: att).done { (_) in
             self.updateDraft()
+            self.checkAttachments?()
         }
     }
     
@@ -204,6 +213,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.updateDraft()
             for att in attachments {
                 messageService.upload(att: att)
+                checkAttachments?()
             }
             self.updateDraft()
         }
@@ -240,7 +250,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         att.keyChanged = true
                     }
                 } catch let err as NSError{
-                    Analytics.shared.error(message: .updateAddressIDError, error: err, user: self.user)
+                    Analytics.shared.error(message: .updateAddressIDError, error: err)
                 }
             }
             
@@ -316,13 +326,14 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(c.lock, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            defer {
-                complete?(nil, errCode)
-            }
             
             let err = error as NSError
             var errCode = err.code
-            
+
+            defer {
+                complete?(nil, errCode)
+            }
+
             if errCode == 33101 {
                 c.pgpType = .failed_server_validation
                 self.showError?(LocalString._signle_address_invalid_error_content)
@@ -352,12 +363,13 @@ class ComposeViewModelImpl : ComposeViewModel {
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
             PMLog.D(error.localizedDescription)
-            defer {
-                complete?(nil, errCode)
-            }
             
             let err = error as NSError
             var errCode = err.code
+
+            defer {
+                complete?(nil, errCode)
+            }
 
             // Code=33102 "Recipient could not be found"
             if errCode == 33102 {
@@ -569,7 +581,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 // attach key
                 if attached == false, let context = msg.managedObjectContext {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    let attachment = try? AwaitKit.await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
                     var error: NSError? = nil
                     error = context.saveUpstreamIfNeeded()
                     if error != nil {
@@ -595,7 +607,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
                                                                        bccList: self.toJsonString(self.bccSelectedContacts),
                                                                        ccList: self.toJsonString(self.ccSelectedContacts),
-                                                                       title: self.getSubject(),
+                                                                       title: title,
                                                                        encryptionPassword: "",
                                                                        passwordHint: "",
                                                                        expirationTimeInterval: expir,
@@ -615,7 +627,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message?.toList = self.toJsonString(self.toSelectedContacts)
                 self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
                 self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
-                self.message?.title = self.getSubject()
+                self.message?.title = title
+                self.message?.body = body
                 self.message?.time = Date()
                 self.message?.password = pwd
                 self.message?.unRead = false

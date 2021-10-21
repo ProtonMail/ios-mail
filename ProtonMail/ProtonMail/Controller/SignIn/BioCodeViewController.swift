@@ -22,6 +22,7 @@
     
 
 import Foundation
+import UIKit
 
 class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthenticating {
     weak var delegate : PinCodeViewControllerDelegate?
@@ -75,7 +76,15 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         
         if let bar = self.navigationController?.navigationBar {
             // this will make bar transparent
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            if #available(iOS 15.0, *) {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithTransparentBackground()
+                navigationController?.navigationBar.standardAppearance = appearance
+                navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            } else {
+                navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            }
+            
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.isTranslucent = true
             

@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Xeṛsum yiwet n tansa /taɣult ur turi ara akken iwata. Izen yuɣal d arewway.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Afaylu yeddan ittwaktren";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Ur tezmireḍ ara ad tɛeddiḍ ɣer %@ seg usnas-nneɣ iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "D awezɣi ad tuɣaleḍ ɣer uɣawas-nniḍen s wae asnas. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Ɛreḍ tikelt nniḍen";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Ma ulac aɣilif, zwir deg tuqqna ar usnas ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Tuzna n iznan seg tansa %1$@ d tamahilt s uxeles. Izen-inek ad itwazen seg tansa-inek tamezwart %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+
 /* menu title */
 "Sent" = "Yettwazen";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Asekles";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Alɣu n uḥraz";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Amasal n tmerkast mačči d ameɣtu. Tuzna tecceḍ.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Aswir meqqren n uwgelhen mačči d ameɣtu.";

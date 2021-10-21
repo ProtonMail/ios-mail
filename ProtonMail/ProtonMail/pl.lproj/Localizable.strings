@@ -32,7 +32,7 @@
 "%d Minute" = "%d minuta";
 
 /* auto lock time format */
-"%d Minutes" = "%d minut";
+"%d Minutes" = "%d min.";
 
 /* The string that describes how many contact groups are currently selected */
 "%d Selected" = "%d zaznaczone";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Co najmniej jeden adres e-mail lub domena odbiorcy nie istnieje lub jest nieprawidłowo sformatowana. Wiadomość została przeniesiona do Szkiców.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Błąd przesyłania załącznika";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Załącznik został zaimportowany";
@@ -1040,7 +1043,7 @@
 "IMAP/SMTP Support via ProtonMail Bridge" = "Obsługa IMAP/SMTP za pomocą aplikacji ProtonMail Bridge";
 
 /* Action */
-"Import Error" = "Importuj błąd";
+"Import Error" = "Błąd importu";
 
 /* Title */
 "Import File From..." = "Importuj plik z...";
@@ -1049,7 +1052,7 @@
 "Importing" = "Importowanie";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Importowanie załącznika, to może zająć chwilę";
+"Importing attachment, that can take a while" = "Trwa importowanie załącznika. To może zająć chwilę";
 
 /* import contact title */
 "Importing Contacts" = "Importowanie kontaktów";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Zmiana na plan %@ poprzez aplikację iOS nie jest obsługiwana.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Zmiana planu poprzez aplikację nie jest obsługiwana. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Zmiana planu poprzez aplikację nie jest obsługiwana. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Informuj mnie o nowych funkcjach";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Spróbuj ponownie";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Ulepsz plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Najpierw zaloguj się w aplikacji ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Wysyłanie wiadomości z adresu %1$@ jest funkcją płatną. Twoja wiadomość zostanie wysłana z Twojego domyślnego adresu %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Wysyłanie będzie dostępne\npo przesłaniu załączników";
+
 /* menu title */
 "Sent" = "Wysłane";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Przestrzeń dyskowa";
 
+/* Storage warning */
+"Storage quota exceeded" = "Limit przestrzeni dyskowej został przekroczony";
+
 /* Title */
 "Storage Warning" = "Ostrzeżenie o przestrzeni dyskowej";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Wysyłanie nie powiodło się. Wystąpił błąd z formatem szkicu.";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Najwyższy dostępny poziom szyfrowania.";
@@ -2387,7 +2402,7 @@
 "We would like to know what we can do better." = "Chcielibyśmy wiedzieć, co możemy zrobić lepiej.";
 
 /* Title */
-"Welcome to ProtonMail!" = "Witaj w ProtonMaili";
+"Welcome to ProtonMail!" = "Witaj w ProtonMailu";
 
 /* Description */
 "What people see in the \"From\" field." = "To, co odbiorca widzi w polu \"Od\".";

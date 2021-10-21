@@ -157,6 +157,7 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        PMAPIService.noTrustKit = true
         #endif
 
         TrustKitWrapper.start(delegate: self)
@@ -218,6 +219,10 @@ extension AppDelegate: UIApplicationDelegate {
 //            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
         }
 
+        if #available(iOS 15.0, *) {
+            setupNavigationBarAppearance()
+            setupTableViewHeader()
+        }
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -525,6 +530,29 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func unlocked() {
         // should work via messages
+    }
+}
+
+extension AppDelegate {
+    @available(iOS 15.0, *)
+    private func setupNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+        let navigationBarTitleFont = Fonts.h2.light
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
+        ]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
+    }
+    
+    @available(iOS 15.0, *)
+    private func setupTableViewHeader() {
+        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 }
 

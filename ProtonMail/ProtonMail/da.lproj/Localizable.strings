@@ -66,7 +66,7 @@
 "A paid ProtonMail plan is required to use this feature" = "Et betalt ProtonMail-abonnement kræves til denne funktion";
 
 /* settings touchid error */
-"A passcode has not been set, enable it in the system Settings" = "En PIN-kode er ikke opsat. Opæt én i Systemindstillinger";
+"A passcode has not been set, enable it in the system Settings" = "En PIN-kode er ikke indstillet. Aktivér den i Systemindstillinger";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via protonmail.com for at betale din udestående faktura.";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Mindst én modtagers e-mailadresse/domæne findes ikke eller er fejlagtigt formateret. Besked flyttet til kladder.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Vedhæftning mislykkedes";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Vedhæftning importeret";
@@ -793,7 +796,7 @@
 "Enable Default Signature" = "Aktivér standardsignatur";
 
 /* settings protection section title */
-"Enable FaceID" = "Aktiveér TouchID";
+"Enable FaceID" = "Aktivér FaceID";
 
 /* Title */
 "Enable Mobile Signature" = "Aktivér mobilsignatur";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Det er ikke muligt at skifte til %@ i iOS-app'en.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Det er ikke muligt at svinge til et andet abonnement i appen. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Det er ikke muligt at skifte til et andet abonnement i appen. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
@@ -1277,7 +1280,7 @@
 "Mark as unread" = "Markér som ulæst";
 
 /* mark message as read action */
-"Mark Read" = "Markér som Læst";
+"Mark Read" = "Markér som læst";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Forsøg igen";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Opgrader venligst dit abonnement";
+
 /* Description */
 "Please use ProtonMail App login first." = "Benyt først ProtonMails App-login.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Afsendelse af beskeder fra en %1$@-adresse er en betalingsfunktion. Din besked afsendes via din standardadresse %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Afsendelse bliver mulig\nnår vedhæftninger er uploadet";
+
 /* menu title */
 "Sent" = "Sendt";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Lagerplads";
 
+/* Storage warning */
+"Storage quota exceeded" = "Lagerpladskvote overskredet";
+
 /* Title */
 "Storage Warning" = "Lagerpladsadvarsel";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Ukorrekt udkastsformatet, afsendelse mislykkedes!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Følgende filer kunne ikke vedhæftes:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Det kraftigste tilgængelige krypteringsniveau.";
@@ -2167,10 +2182,10 @@
 
 /* *
  *  SettingTableViewController */
-"TouchID is not enrolled, enable it in the system Settings" = "Berørings-ID er ikke registreret, aktivér det i Systemindstillinger";
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID er ikke registreret, aktivér det i Systemindstillinger";
 
 /* settings touchid/faceid error */
-"TouchID not available" = "Berørings-ID utilgængelig";
+"TouchID not available" = "TouchID ikke tilgængelig";
 
 /* *
  *  MessageAction */
@@ -2195,7 +2210,7 @@
 "Turn Off" = "Slå Fra";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller Ansigts-ID til oplåsning af den.";
+"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller FaceID til oplåsning af den.";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Slå funktionen til for at autolåse din app og benytte PIN-kode eller fingeraftryk til oplåsning af den.";
@@ -2429,7 +2444,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Du har deaktiveret FaceID i dine systemindstillinger. FaceID er blevet brugt til at beskytte vigtige kontooplysninger. For at få adgang til din konto, gå til indstillinger og genaktiver FaceID eller log ind igen.";
+"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Du har deaktiveret FaceID i dine systemindstillinger. FaceID er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto igen ved at gå til indstillinger og genaktivere FaceID eller logge ind igen.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Beskedudløb er aktiveret, men ikke alle modtagerne understøtter denne funktion. Tilføj en adgangskode og/eller deaktivér PGP-afsendelse for at benytte udløb til alle modtagere.";

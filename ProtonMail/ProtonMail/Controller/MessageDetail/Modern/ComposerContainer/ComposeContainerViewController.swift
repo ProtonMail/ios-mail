@@ -27,28 +27,25 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
-    @IBOutlet private var sendButton: UIBarButtonItem! //cancel button.
+    @IBOutlet private var sendButton: UIBarButtonItem!
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     private let timerInterval : TimeInterval = 30
     private var syncTimer: Timer?
+
+    private var isUploadingAttachments = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.setUpSendButton()
+                self.setUpTitleView()
+            }
+        }
+    }
     
     deinit {
         self.childrenHeightObservations = []
         NotificationCenter.default.removeKeyboardObserver(self)
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.startAutoSync()
-        #if !APP_EXTENSION
-        if #available(iOS 13.0, *) {
-            self.view.window?.windowScene?.title = LocalString._general_draft_action
-        }
-        #endif
-        
-        generateAccessibilityIdentifiers()
     }
     
     override func viewDidLoad() {
@@ -95,6 +92,30 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         // accessibility
         self.sendButton.accessibilityLabel = LocalString._general_send_action
         generateAccessibilityIdentifiers()
+
+        NotificationCenter
+            .default
+            .addObserver(self,
+                         selector: #selector(self.attachmentUploaded(noti:)),
+                         name: .attachmentUploaded,
+                         object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.startAutoSync()
+        #if !APP_EXTENSION
+        if #available(iOS 13.0, *) {
+            self.view.window?.windowScene?.title = LocalString._general_draft_action
+        }
+        #endif
+
+        generateAccessibilityIdentifiers()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkAttachments()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -122,7 +143,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        
         let navigationBarTitleFont = Fonts.h2.light
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -131,6 +151,15 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
         cancelButton.title = LocalString._general_cancel_button
+    }
+
+    private func setUpTitleView() {
+        navigationItem.titleView = isUploadingAttachments ? ComposeAttachmentsAreUploadingTitleView() : nil
+    }
+
+    private func setUpSendButton() {
+        let isEnabled = !isUploadingAttachments
+        sendButton.isEnabled = isEnabled
     }
     
     // tableView
@@ -234,6 +263,23 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                 LocalString._drop_finished.alertToastBottom(view: self.view)
             }
         }
+    }
+}
+
+extension ComposeContainerViewController {
+    @objc
+    private func attachmentUploaded(noti: Notification) {
+        guard let _ = noti.userInfo?["objectID"] as? String,
+              let _ = noti.userInfo?["attachmentID"] as? String else {
+            return
+        }
+        checkAttachments()
+    }
+
+    func checkAttachments() {
+        let att = coordinator.editor.viewModel.getAttachments() ?? []
+        let allUploaded = att.filter({ !$0.isSoftDeleted }).allSatisfy({ $0.isUploaded })
+        isUploadingAttachments = !allUploaded
     }
 }
 

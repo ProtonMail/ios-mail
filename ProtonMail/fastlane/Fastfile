@@ -22,8 +22,12 @@ CERTIFICATE_PATH = "Certificates.p12"
 API_KEY_DURATION = 1200 # seconds
 APP_IDENTIFIER = "ch.protonmail.protonmail"
 
+ENTERPRISE_SIRI_PATH = "Siri.mobileprovision"
+ENTERPRISE_PATH = "Enterprise.mobileprovision"
+ENTERPRISE_PUSH_SERVICE_PATH = "PushService.mobileprovision"
+ENTERPRISE_SHARE_PATH = "Share.mobileprovision"
 
-def set_up_keychain
+def set_up_keychain(isEnterprise)
   create_keychain(
       name: DEVELOPER_KEYCHAIN_NAME,
       password: DEVELOPER_KEYCHAIN_PASSWORD,
@@ -31,12 +35,26 @@ def set_up_keychain
       add_to_search_list: true,
       unlock: true
   )
-  import_certificate(
+  if isEnterprise
+    import_certificate(
+      keychain_name: DEVELOPER_KEYCHAIN_NAME,
+      keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
+      certificate_path: CERTIFICATE_PATH,
+      certificate_password: ENV["ENTRIPRISE_DISTRIBUTION_CERTIFICATE_PASSWORD"]
+    )
+
+    install_provisioning_profile(path: ENTERPRISE_SIRI_PATH)
+    install_provisioning_profile(path: ENTERPRISE_PATH)
+    install_provisioning_profile(path: ENTERPRISE_PUSH_SERVICE_PATH)
+    install_provisioning_profile(path: ENTERPRISE_SHARE_PATH)
+  else
+    import_certificate(
       keychain_name: DEVELOPER_KEYCHAIN_NAME,
       keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
       certificate_path: CERTIFICATE_PATH,
       certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
-  )
+    )
+  end
 end
 
 def tear_down_keychain
@@ -113,6 +131,24 @@ def build_release_app
   )
 end
 
+def build_enterprise_app
+  build_app(
+    scheme: "ProtonMailDev",
+    clean: true,
+    output_directory: "outputs/",
+    export_method: "enterprise",
+    export_options: {
+        provisioningProfiles: {
+            "com.protonmail.protonmail" => "ProtonMail Distribution",
+            "com.protonmail.protonmail.ShareDev" => "protonmail share Production",
+            "com.protonmail.protonmail.PushServiceDev" => "protonmail push service Production",
+            "com.protonmail.protonmail.SiriDev" => "production siriDev"
+        },
+        iCloudContainerEnvironment: "Production"
+    }
+  )
+end
+
 def copy_archive_to_builds
   ENV["XCODEBUILD_ARCHIVE"] = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
   sh("./copy_archive_to_builds.sh")
@@ -145,8 +181,8 @@ end
 platform :ios do 
   desc "Build app"
   lane :build do |options|
-    xcode_select("/Applications/Xcode.app")
-    set_up_keychain
+    xcversion(version: "~> 13.0.0")
+    set_up_keychain(true)
 
     api_key = set_up_app_store_api_key
 
@@ -174,6 +210,64 @@ platform :ios do
     tear_down_keychain
     
     send_to_slack(true, changelog, "", bundle_version.strip)
+  end
+
+  desc "Unit Test"
+  lane :unit_test do |options|
+    xcversion(version: "~> 13.0.0")
+    scan(workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "Tests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: "ch.protonmail.protonmail"
+    )
+  end
+
+  desc "UI Test"
+  lane :ui_test do |options|
+    xcversion(version: "~> 13.0.0")
+    scan(workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "ProtonMailUITests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      concurrent_workers: 2,
+      testplan: "SmokeTests",
+      reinstall_app: true,
+      app_identifier: "ch.protonmail.protonmail"
+    )
+  end
+  
+  desc "Build enterprise app"
+  lane :enterprise do |options|
+    xcversion(version: "~> 13.0.0")
+    set_up_keychain(true)
+    
+    # Set build version by git log numbers
+    if options[:usingTimeStamp]
+      timeStamp = Time.now.getutc.to_i
+      bundle_version = sh("./setup_bundle_version.sh " + timeStamp.to_s)
+    else
+      bundle_version = sh("./setup_bundle_version.sh")
+    end
+
+    build_enterprise_app
+
+    branchName = git_branch
+    lastGitCommitHash = last_git_commit[:commit_hash]
+    releaseNote = "Build on: " + git_branch + " \nBuild number: " + bundle_version + "\nGit commit: " + lastGitCommitHash
+
+    firebase_app_distribution(
+              app: "1:75309174866:ios:fb09e26e4130a105",
+              groups: "v4-internal-test-group",
+              release_notes: releaseNote
+          )
+
+    tear_down_keychain
+  
+  # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
   error do |lane, exception|

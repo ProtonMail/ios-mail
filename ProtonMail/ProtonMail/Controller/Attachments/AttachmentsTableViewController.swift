@@ -34,6 +34,31 @@ protocol AttachmentsTableViewControllerDelegate : AnyObject {
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
+private struct AttachInfo {
+    let objectID: String
+    let name: String
+    let size: Int
+    let mimeType: String
+    var attachmentID: String
+    var isUploaded: Bool {
+        attachmentID != "0" && attachmentID != .empty
+    }
+
+    init(attachment: Attachment) {
+        self.objectID = attachment.objectID.uriRepresentation().absoluteString
+        self.name = attachment.fileName
+        self.size = attachment.fileSize.intValue
+        self.mimeType = attachment.mimeType
+        self.attachmentID = attachment.attachmentID
+    }
+}
+
+private extension Collection where Element == AttachInfo {
+    var areUploaded: Bool {
+        allSatisfy { $0.isUploaded }
+    }
+}
+
 class AttachmentsTableViewController: UITableViewController, AttachmentController, AccessibleView {
     
     enum AttachmentSection: Int {
@@ -60,13 +85,14 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     weak var delegate: AttachmentsTableViewControllerDelegate?
+    private(set) weak var user: UserManager?
     
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
     internal var currentAttachmentSize : Int = 0
     
     var message: Message!
-    var normalAttachments: [Attachment] = []
-    var inlineAttachments: [Attachment] = []
+    private var normalAttachments: [AttachInfo] = []
+    private var inlineAttachments: [AttachInfo] = []
     var attachmentSections : [AttachmentSection] = []
     lazy var processQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -103,8 +129,15 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     
     func buildAttachments() {
         let attachments = self.attachments.sorted(by: { $0.objectID.uriRepresentation().lastPathComponent > $1.objectID.uriRepresentation().lastPathComponent })
-        normalAttachments = attachments.filter { !$0.inline() }
-        inlineAttachments = attachments.filter { $0.inline() }
+        attachments.forEach { att in
+            if att.objectID.isTemporaryID {
+                att.managedObjectContext?.performAndWait {
+                    try? att.managedObjectContext?.obtainPermanentIDs(for: [att])
+                }
+            }
+        }
+        normalAttachments = attachments.filter { !$0.inline() }.map { AttachInfo(attachment: $0) }
+        inlineAttachments = attachments.filter { $0.inline() }.map { AttachInfo(attachment: $0) }
 
         attachmentSections.removeAll()
         if !normalAttachments.isEmpty {
@@ -134,6 +167,13 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         
         updateAttachments()
         generateAccessibilityIdentifiers()
+
+        NotificationCenter
+            .default
+            .addObserver(self,
+                         selector: #selector(self.attachmentUploaded(noti:)),
+                         name: .attachmentUploaded,
+                         object: nil)
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
@@ -152,7 +192,6 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
             navigationController.navigationBar.standardAppearance = navBarAppearance
             navigationController.navigationBar.compactAppearance = navBarAppearance
             navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
-
             navigationController.navigationBar.tintColor = UIColor.white
         } else {
             navigationController.navigationBar.barStyle = UIBarStyle.black
@@ -176,6 +215,10 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         return true
     }
 
+    func setup(user: UserManager) {
+        self.user = user
+    }
+
     internal func updateAttachmentSize () {
         self.currentAttachmentSize = self.attachments.reduce(into: 0) {
             $0 += $1.fileSize.intValue
@@ -188,6 +231,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     @IBAction func addAction(_ sender: UIBarButtonItem) {
+        if self.user?.isStorageExceeded ?? false {
+            LocalString._storage_exceeded.alertToastBottom(view: self.view)
+            return
+        }
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
@@ -211,7 +259,6 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         }
     }
     
-    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -228,15 +275,15 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
 
-        var attachment: Attachment?
+        var attachment: AttachInfo?
         let secontItem = attachmentSections[indexPath.section]
         switch secontItem {
-        case .normal: attachment = normalAttachments[indexPath.row] as Attachment
-        case .inline: attachment = inlineAttachments[indexPath.row] as Attachment
+        case .normal: attachment = normalAttachments[indexPath.row]
+        case .inline: attachment = inlineAttachments[indexPath.row]
         }
         
         if let att = attachment {
-            cell.configCell(att.fileName, fileSize: att.fileSize.intValue, showDownload: false)
+            cell.configCell(att.name, fileSize: att.size, showSpinner: !att.isUploaded)
             let crossView = UILabel()
             crossView.text = LocalString._general_remove_button
             crossView.sizeToFit()
@@ -251,17 +298,19 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                     return
                 }
                 
-                var att: Attachment!
+                var attInfo: AttachInfo!
                 switch self.attachmentSections[indexp.section] {
                 case .normal:
-                    att = self.normalAttachments[indexp.row] as Attachment
+                    attInfo = self.normalAttachments[indexp.row]
                 case .inline:
-                    att = self.inlineAttachments[indexp.row] as Attachment
+                    attInfo = self.inlineAttachments[indexp.row]
                 }
-                
-                self.delegate?.attachments(self, didDeletedAttachment: att)
-                if let _ = self.attachments.firstIndex(of: att) {
-                    self.updateAttachments()
+
+                if let att = self.attachments.first(where: { $0.objectID.uriRepresentation().absoluteString ==  attInfo.objectID }) {
+                    self.delegate?.attachments(self, didDeletedAttachment: att)
+                    if let _ = self.attachments.firstIndex(of: att) {
+                        self.updateAttachments()
+                    }
                 }
             }
         }
@@ -286,6 +335,30 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Fonts.h6.regular
         header.textLabel?.textColor = UIColor.gray
+        header.tintColor = UIColor(hexColorCode: "#e5e5e5")
+    }
+}
+
+extension AttachmentsTableViewController {
+    @objc
+    private func attachmentUploaded(noti: Notification) {
+        guard let objecrID = noti.userInfo?["objectID"] as? String,
+              let _ = noti.userInfo?["attachmentID"] as? String else {
+            return
+        }
+
+        var indexPath: IndexPath?
+        if let normalAttIndex = normalAttachments.firstIndex(where: { $0.objectID == objecrID }),
+           let indexOfNormal = attachmentSections.firstIndex(of: .normal) {
+            indexPath = IndexPath(row: normalAttIndex, section: indexOfNormal)
+        } else if let inlineAttIndex = inlineAttachments.firstIndex(where: { $0.objectID == objecrID }),
+                  let indexOfInline = attachmentSections.firstIndex(of: .inline){
+            indexPath = IndexPath(row: inlineAttIndex, section: indexOfInline)
+        }
+        if let indexPath = indexPath {
+            let cell = (tableView.cellForRow(at: indexPath) as?  AttachmentTableViewCell)
+            cell?.stopSpinner()
+        }
     }
 }
 

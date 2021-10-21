@@ -251,6 +251,9 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Almeno un indirizzo e-mail/dominio del destinatario non esiste o è formattato male. Messaggio spostato in bozze.";
 
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
+
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Allegato importato";
 
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "Non è possibile passare a %@ nella nostra app iOS.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Non è possibile cambiare piano all'interno dell'app. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "Non è possibile passare ad un altro piano all'interno dell'app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Mantenermi aggiornato sulle nuove funzionalità";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "Si prega di riprovare";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "Per favore, prima effettua il login nell'app di ProtonMail.";
 
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "L'invio dei messaggi dall'indirizzo %1$@ è una funzionalità a pagamento. Il messaggio sarà inviato dal tuo indirizzo predefinito %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "L'invio sarà disponibile\nquando vengono caricati gli allegati";
+
 /* menu title */
 "Sent" = "Inviata";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Archiviazione";
 
+/* Storage warning */
+"Storage quota exceeded" = "Limite d'archiviazione superato";
+
 /* Title */
 "Storage Warning" = "Avviso di archiviazione";
 
@@ -2029,6 +2041,9 @@
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Il formato della bozza non è corretto. Invio non riuscito!";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Il massimo livello di crittografia disponibile.";

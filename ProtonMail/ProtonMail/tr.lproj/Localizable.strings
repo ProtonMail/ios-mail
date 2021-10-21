@@ -173,7 +173,7 @@
 "All Mail" = "Tüm Postalar";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "Uygulamadan çıkış yapıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecektir.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Uygulama oturumu kapatıldığında tüm koruma ayarları sıfırlanacak ve silinecektir.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Alternatif yönlendirmeye izin ver";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi/alanı bulunamadı veya biçimi hatalı. İleti taslaklara taşındı.";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Ek içe aktarıldı";
@@ -512,7 +515,7 @@
 "Confirm Mailbox Password" = "Posta kutusu parolasını onayla";
 
 /* Title */
-"Confirm new login password" = "Yeni giriş parolasını onayla";
+"Confirm new login password" = "Yeni oturum açma parolasını onayla";
 
 /* Title */
 "Confirm new mailbox password" = "Yeni posta kutusu parolasını onayla";
@@ -983,7 +986,7 @@
 "Go to inbox" = "Gelen kutusuna git";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to login" = "Oturum açmaya gidin";
+"Go to login" = "Oturum açma ekranına git";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ayarlara git";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "iOS uygulamamız içerisinde %@ planına geçmek mümkün değildir.";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "Uygulama üzerinden başka bir tarifeye geçmek mümkün değildir. %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "Beni yeni özellikler hakkında bilgilendirmeye devam et";
@@ -1232,7 +1235,7 @@
 "Login Password" = "Oturum açma parolası";
 
 /* Error */
-"Login password doesn't match" = "Giriş parolası uyuşmuyor";
+"Login password doesn't match" = "Oturum açma parolası uyuşmuyor";
 
 /* Alert title to confirm logout
    Alert title when logout primary account from account manager
@@ -1623,8 +1626,11 @@
 /* (No Comment) */
 "Please try again." = "Lütfen tekrar deneyin";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
-"Please use ProtonMail App login first." = "Lütfen önce ProtonMail uygulamasına giriş yapın.";
+"Please use ProtonMail App login first." = "Lütfen önce ProtonMail uygulaması girişini kullanın.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Lütfen parolanızı sıfırlamak için web uygulamasını kullanın.";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz varsayılan adresinizden gönderilecektir %2$@";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+
 /* menu title */
 "Sent" = "Gönderilen";
 
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "Depolama";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "Depolama Uyarısı";
 
@@ -2030,6 +2042,9 @@
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Gönderim başarısız. Taslak biçiminde bir hata oluştu.";
 
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
+
 /* key size note part 1 */
 "The highest level of encryption available." = "Mevcut olan en yüksek şifreleme düzeyi.";
 
@@ -2062,7 +2077,7 @@
 "The new password not match" = "Parolalar eşleşmiyor";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "İsteğe bağlı kurtarma e-posta adresi, parolanızı unutursanız giriş parolanızı sıfırlamanızı sağlar.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "İsteğe bağlı kurtarma e-posta adresi, parolanızı unutursanız oturum açma parolanızı sıfırlamanızı sağlar.";
 
 /* update password error */
 "The Password is wrong." = "Parola yanlış.";

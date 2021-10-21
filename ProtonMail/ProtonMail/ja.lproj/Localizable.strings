@@ -159,7 +159,7 @@
 "Address" = "住所";
 
 /* cell title in device settings */
-"Addresses" = "住所";
+"Addresses" = "メールアドレス";
 
 /* alert title */
 "Alert" = "警告";
@@ -250,6 +250,9 @@
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。メッセージは下書きに移動されました。";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Attachment failure";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "添付ファイルがインポートされました。";
@@ -844,19 +847,19 @@
 "End Time" = "終了時刻";
 
 /* encryption lock description */
-"End-to-end encrypted" = "端末相互間の暗号化済み";
+"End-to-end encrypted" = "エンドツーエンド暗号化済み";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "端末相互間で暗号化されたメッセージ";
+"End-to-end encrypted message" = "エンドツーエンド暗号化されたメッセージ";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "検証済みアドレスからの端末相互間の暗号化によるメッセージ";
+"End-to-end encrypted message from verified address" = "検証済みアドレスからのエンドツーエンド暗号化によるメッセージ";
 
 /* encryption lock description */
-"End-to-end encrypted to verified address" = "検証済みアドレスへの端末相互間の暗号化による送信";
+"End-to-end encrypted to verified address" = "検証済みアドレスへのエンドツーエンド暗号化による送信";
 
 /* Title */
-"End-to-End Encryption" = "端末相互間の暗号化";
+"End-to-End Encryption" = "エンドツーエンド暗号化";
 
 /* Action in 2fa popup view */
 "Enter" = "入力";
@@ -1128,7 +1131,7 @@
 "It is not possible to switch to %@ within our iOS app." = "iOSアプリからは%@に切り替えることができません。";
 
 /* No comment provided by engineer. */
-"It's not possible to swicth to another plan within the app. %1$@" = "アプリでは別のプランに切り替えることはできません。 %1$@";
+"It's not possible to switch to another plan within the app. %1$@" = "It's not possible to switch to another plan within the app. %1$@";
 
 /* Title */
 "Keep me updated about new features" = "新機能に関する情報を受け取る";
@@ -1623,6 +1626,9 @@
 /* (No Comment) */
 "Please try again." = "もう一度試してください。";
 
+/* Content of storage full alert */
+"Please upgrade your plan" = "Please upgrade your plan";
+
 /* Description */
 "Please use ProtonMail App login first." = "まずProtonMailアプリにログインしてください。";
 
@@ -1690,7 +1696,7 @@
 "ProtonMail Plus is required to customize your mobile signature" = "モバイル署名を編集するには、ProtonMail Plusプラン以上のご契約が必要です。";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary プランでは、名前とメールアドレス以外の情報も連絡先に追加や編集できるようになります。ProtonMailを使用することで、これらのデータは端末相互間で暗号化された電子メールと同等に安全になります。";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary プランでは、連絡先の名前とメール アドレス以外の連絡先詳細を編集することができます。ProtonMail を使用することで、このデータはエンドツーエンドで暗号化された電子メールと同じくらい安全になります。";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -1845,6 +1851,9 @@
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "アドレス%1$@からのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます";
 
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+
 /* menu title */
 "Sent" = "送信済み";
 
@@ -1855,7 +1864,7 @@
 "Sent by ProtonMail with zero access encryption" = "ProtonMailによってゼロアクセス暗号化で送信済み";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "端末相互間の暗号化による送信";
+"Sent by you with end-to-end encryption" = "エンドツーエンド暗号化による送信";
 
 /* Description */
 "Sent Failed" = "送信に失敗しました。";
@@ -1951,6 +1960,9 @@
 /* Title */
 "Storage" = "ストレージ容量";
 
+/* Storage warning */
+"Storage quota exceeded" = "Storage quota exceeded";
+
 /* Title */
 "Storage Warning" = "ストレージ容量の警告";
 
@@ -2030,6 +2042,9 @@
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "送信に失敗しました。下書きの書式にエラーがありました。";
 
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "The following files couldn't be attached:";
+
 /* key size note part 1 */
 "The highest level of encryption available." = "利用可能な暗号化の最高レベル";
 
@@ -2080,10 +2095,10 @@
 "The request timed out." = "要求がタイムアウトしました。";
 
 /* (No Comment) */
-"The total attachment size can't be bigger than 25MB" = "添付ファイルの合計サイズは25MB以内にしてください。";
+"The total attachment size can't be bigger than 25MB" = "添付ファイルの合計容量は 25 MB 以内にしてください。";
 
 /* Description */
-"The total attachment size cannot exceed 25MB" = "添付全体のサイズは25MBを越えることはできません。";
+"The total attachment size cannot exceed 25MB" = "添付ファイルの合計容量は 25 MB を越えてはいけません。";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "アクセスしようとしているURLは標準ではないため、正しく読み込まれない可能性があります。 端末の既定のブラウザで開きますか？";
@@ -2470,7 +2485,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "あなたの国の政府が、 Proton への接続を検閲(遮断)している可能性があります。 Proton にアクセスするには ProtonVPN （または他社のVPN）もしくは Tor を試してみてください。";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "受信箱は端末相互間で暗号化され、保護されています。メールを自動的に保護するには、友人にもProtonMailをご利用していただく必要があります。ProtonMailをご利用していない相手でも手動で暗号化が可能です。";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "受信箱はエンドツーエンド暗号化され保護されています。メールを自動的に保護するには、友人にも ProtonMail を利用していただく必要があります。ProtonMail を利用していない相手でも手動で暗号化が可能です。";
 
 /* *
  *  Onboarding */

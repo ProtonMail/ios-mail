@@ -51,6 +51,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         self.tableView.delegate = self
         self.tableView.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
         self.tableView.estimatedSectionFooterHeight = kUserCellHeight
+        self.tableView.separatorStyle = .none
         
         NotificationCenter.default.addObserver(forName: Notification.Name.didObtainMailboxPassword, object: nil, queue: .main) { _ in
             self.navigationController?.popToViewController(self, animated: true)
@@ -137,6 +138,7 @@ extension AccountManagerViewController: UITableViewDataSource {
             if let userCell = cell as? AccountManagerUserCell, let user =  self.viewModel.user(at: indexPath.row) {
                 userCell.configCell(name: user.defaultDisplayName, email: user.defaultEmail)
             }
+            cell.addSeparator(padding: 0)
             return cell
         case .disconnected:
             let cell = tableView.dequeueReusableCell(withIdentifier: "account_cell", for: indexPath)

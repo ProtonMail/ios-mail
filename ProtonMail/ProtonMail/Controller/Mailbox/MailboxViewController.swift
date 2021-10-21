@@ -92,6 +92,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var needToShowNewMessage : Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
+    private var editingMode = false
     
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
@@ -100,6 +101,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     // MARK: - Right bar buttons
     
     private var composeBarButtonItem: UIBarButtonItem!
+    private var storageExceededBarButtonItem: UIBarButtonItem!
     private var searchBarButtonItem: UIBarButtonItem!
     private var removeBarButtonItem: UIBarButtonItem!
     private var labelBarButtonItem: UIBarButtonItem!
@@ -319,6 +321,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.coordinator?.go(to: .composer)
         }
     }
+    
+    @objc func storageExceededButtonTapped() {
+        LocalString._storage_exceeded.alertToastBottom(view: self.view)
+    }
+    
     @objc internal func searchButtonTapped() {
         self.coordinator?.go(to: .search)
     }
@@ -702,6 +709,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func showMessageMoved(title : String) {
+        guard UIApplication.shared.applicationState == .active else { return }
         undoLabel.text = title
         self.undoBottomDistance.constant = self.kUndoShowPosition
         self.undoButton.isHidden = false
@@ -814,6 +822,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.handleRequestError(error)
         }
         
+        self.setupRightButtons(self.editingMode)
+        
         var loadMore: Int = 0
         if error == nil {
             self.onlineTimerReset()
@@ -921,6 +931,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func forceRefreshAllMessages() {
         stopAutoFetch()
+        viewModel.user.fetchUserInfo()
         viewModel.fetchMessageOnlyWithReset(time: 0) { [weak self] task, res, error in
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch(false)
@@ -1074,6 +1085,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
             }
             
+            if self.storageExceededBarButtonItem == nil {
+                self.storageExceededBarButtonItem = BarItem(image: UIImage.Top.compose, action: #selector(storageExceededButtonTapped))
+                self.storageExceededBarButtonItem.tintColor = UIColor.gray
+                self.storageExceededBarButtonItem.accessibilityLabel = LocalString._storage_exceeded
+            }
+            
             if (self.searchBarButtonItem == nil) {
                 self.searchBarButtonItem = BarItem(image: UIImage.Top.search, action: #selector(searchButtonTapped))
                 self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
@@ -1084,10 +1101,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.moreBarButtonItem.accessibilityLabel = LocalString._general_more
             }
             
+            let isStorageFull = self.viewModel.isStorageFull
+            let item: UIBarButtonItem = isStorageFull ? self.storageExceededBarButtonItem: self.composeBarButtonItem
+            
             if viewModel.isShowEmptyFolder() {
-                rightButtons = [self.moreBarButtonItem, self.composeBarButtonItem, self.searchBarButtonItem]
+                rightButtons = [self.moreBarButtonItem, item, self.searchBarButtonItem]
             } else {
-                rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+                rightButtons = [item, self.searchBarButtonItem]
             }
         } else {
             if (self.unreadBarButtonItem == nil) {
@@ -1175,6 +1195,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func updateNavigationController(_ editingMode: Bool) {
+        self.editingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)
@@ -1237,6 +1258,7 @@ extension MailboxViewController {
                             button2: BannerView.ButtonConfiguration? = nil,
                             from: BannerView.Base)
     {
+        guard UIApplication.shared.applicationState == .active else { return }
         guard let navigationBar = self.navigationController?.navigationBar else { return }
         let offset: CGFloat = (from == .top) ? (navigationBar.frame.size.height + navigationBar.frame.origin.y) : 8.0
 
@@ -1261,13 +1283,16 @@ extension MailboxViewController {
     }
     
     internal func showErrorMessage(_ error: NSError?) {
-        guard let error = error else { return }
+        guard let error = error, UIApplication.shared.applicationState == .active else { return }
         showBanner(error.localizedDescription,
                    appearance: .red,
                    from: .top)
     }
     
     internal func showTimeOutErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_request_timed_out,// + " --- this is a extra long error message. test message.",
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1275,6 +1300,9 @@ extension MailboxViewController {
     }
     
     internal func showNoInternetErrorMessage() {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_no_connectivity_detected,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1282,6 +1310,9 @@ extension MailboxViewController {
     }
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(error?.localizedDescription ?? LocalString._general_pm_offline,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1289,6 +1320,9 @@ extension MailboxViewController {
     }
     
     internal func show503ErrorMessage(_ error : NSError?) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         showBanner(LocalString._general_api_server_not_reachable,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
@@ -1296,6 +1330,9 @@ extension MailboxViewController {
     }
     
     internal func showError(_ error : NSError) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
         let message = error.localizedDescription
         showBanner(message,
                    appearance: .red,
@@ -1448,7 +1485,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             tableView.reloadData()
             return
         }
-        self.tableView.endUpdates()
+        self.tableView.reloadData()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -1459,82 +1496,25 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         if controller == self.viewModel.labelFetchedResults {
             return
         }
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        if controller == self.viewModel.labelFetchedResults {
-            return
-        }
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         if controller == self.viewModel.labelFetchedResults {
             return
         }
-        switch(type) {
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
+
+        switch type {
         case .insert:
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-                if self.needToShowNewMessage == true {
-                    if let newMsg = anObject as? Message {
-                        if let msgTime = newMsg.time, newMsg.unRead {
-                            if let updateTime = viewModel.lastUpdateTime() {
-                                if msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending {
-                                    self.newMessageCount += 1
-                                }
-                            }
-                        }
-                    }
-                }
+            if self.needToShowNewMessage == true,
+               let newMsg = anObject as? Message,
+               let msgTime = newMsg.time,
+               newMsg.unRead,
+               let updateTime = viewModel.lastUpdateTime(),
+               msgTime.compare(updateTime.startTime) != .orderedAscending {
+                self.newMessageCount += 1
             }
-        case .update:
-            //#3 is active
-            /// # 1
-            if let indexPath = indexPath {
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-            
-//            if let newIndexPath = newIndexPath {
-//                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
-//            }
-            
-            /// #2
-//            if let indexPath = indexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: indexPath)
-//            }
-
-//            if let newIndexPath = newIndexPath {
-//                let cell = tableView.cellForRow(at: newIndexPath)
-//                self.configure(cell: cell, indexPath: newIndexPath)
-//            }
-
-            /// #3
-//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: newIndexPath)
-//            }/
-        case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
-            break
         default:
-            return
+            break
         }
         
         if self.noResultLabel.isHidden == false {

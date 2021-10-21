@@ -106,7 +106,7 @@ class MenuViewModelImpl : MenuViewModel {
 
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
-            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil], user: self.currentUser)
+            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil])
             return nil
         }
         return labelService
