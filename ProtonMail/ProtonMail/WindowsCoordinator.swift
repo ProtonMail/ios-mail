@@ -34,6 +34,10 @@ fileprivate class PlaceholderVC: UIViewController {
         self.color = color
     }
     
+    override func loadView() {
+        view = UINib(nibName: "LaunchScreen", bundle: nil).instantiate(withOwner: nil, options: nil).first as? UIView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         #if DEBUG
@@ -266,7 +270,7 @@ class WindowsCoordinator: CoordinatorNew {
                     }
                 }
                 let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
-                self.navigate(from: self.currentWindow, to: newWindow) {
+                self.navigate(from: self.currentWindow, to: newWindow, animated: false) {
                     coordinator.start()
                 }
 
@@ -292,7 +296,7 @@ class WindowsCoordinator: CoordinatorNew {
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
                 self.lockWindow = lock
                 coordinator.startedOrSheduledForAStart = true
-                self.navigate(from: self.currentWindow, to: lock) { [weak coordinator] in
+                self.navigate(from: self.currentWindow, to: lock, animated: false) { [weak coordinator] in
                     if UIApplication.shared.applicationState != .background {
                         coordinator?.start()
                     } else {
@@ -308,7 +312,7 @@ class WindowsCoordinator: CoordinatorNew {
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
-                if self.navigate(from: self.currentWindow, to: self.appWindow), let deeplink = self.deeplink {
+                if self.navigate(from: self.currentWindow, to: self.appWindow, animated: true), let deeplink = self.deeplink {
                     self.handleDeepLinkIfNeeded(deeplink)
                 }
             }
@@ -325,7 +329,7 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, completion: (() -> Void)? = nil) -> Bool {
+    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
@@ -334,7 +338,7 @@ class WindowsCoordinator: CoordinatorNew {
         source?.addSubview(effectView)
         destination.alpha = 0.0
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: animated ? 0.5 : 0.0, animations: {
             effectView.effect = UIBlurEffect(style: .dark)
             destination.alpha = 1.0
         }, completion: { _ in
