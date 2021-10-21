@@ -2229,6 +2229,16 @@ extension MailboxViewController: UITableViewDelegate {
         }
     }
 
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? NewMailboxMessageCell {
+            cell.gestureRecognizers?.filter({ $0 is UIPanGestureRecognizer }).forEach { gesture in
+                // Cancel the existing pan gesture that user swipes the cell before the tableview reloads.
+                gesture.isEnabled = false
+                gesture.isEnabled = true
+            }
+        }
+    }
+
     private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
         if listEditing {
