@@ -448,6 +448,7 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
         }
         self.coordinator.header.view.endEditing(true)
         self.coordinator.editor.view.endEditing(true)
+        self.coordinator.attachmentView?.view.endEditing(true)
         self.view.endEditing(true)
         
         var sheet: PMActionSheet!
