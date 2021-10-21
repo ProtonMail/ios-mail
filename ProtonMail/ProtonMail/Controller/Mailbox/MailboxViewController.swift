@@ -2317,6 +2317,8 @@ extension MailboxViewController {
         self.unreadFilterButton.layer.masksToBounds = true
         self.unreadFilterButton.backgroundColor = UIColorManager.BackgroundSecondary
         self.unreadFilterButton.isSelected = viewModel.isCurrentUserSelectedUnreadFilterInInbox
+        self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
+        self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     }
 }
 
