@@ -327,6 +327,10 @@ extension EncryptedSearchIndexService {
             self.createSearchIndexTable(using: handle!)
         }
     }
+    
+    func updateLocationForMessage(for userID: String, messageID: String, location: Int){
+        
+    }
 }
 
 extension FileManager {
