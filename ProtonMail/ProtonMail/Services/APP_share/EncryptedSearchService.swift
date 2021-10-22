@@ -832,17 +832,16 @@ extension EncryptedSearchService {
             //print("action type: \(action.rawValue)")
             switch action {
                 case .delete:
-                    print("Delete message from search index")
-                    //self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
+                    print("Delete from core data")
+                    self.updateMessageMetadataInSearchIndex(message, action, indexPath, newIndexPath)
                 case .insert:
-                    //print("Insert new message to search index")
                     self.insertSingleMessageToSearchIndex(message)
                 case .move:
-                    print("Move message in search index")
-                    //self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
+                    print("Move message")
+                    //TODO how do I trigger this?
                 case .update:
                     print("Update message")
-                    //self.updateMessageMetadataInSearchIndex(message, action)
+                    //TODO how do I trigger this?
                 default:
                     return
             }
@@ -933,21 +932,30 @@ extension EncryptedSearchService {
         }
     }
     
-    func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType) {
-        if message == nil {
-            print("message nil!")
+    func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
+        guard let messageToUpdate = message else {
             return
         }
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (users.firstUser?.userInfo.userId)!
         
-        switch action {
-        case .delete:
-            print("DELETE: message location: \(message!.getLabelIDs()), labels: \(message!.labels)")
-        case .move:
-            print("MOVE: message location: \(message!.getLabelIDs()), labels: \(message!.labels)")
-        case .update:
-            print("UPDATE: message \(message!), labelid: \(message!.getLabelIDs()), labels: \(message!.labels)")
-        default:
-            return
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID){
+            switch action {
+            case .delete:
+                print("DELETE: message location: \(messageToUpdate.getLabelIDs())")
+                break
+            case .move:
+                break
+                //print("MOVE: message location: \(messageToUpdate.getLabelIDs()), labels: \(messageToUpdate.labels)")
+                //print("MOVE: old: \(indexPath?.description), new: \(newIndexPath?.description)")
+            case .update:
+                break
+                //print("UPDATE: message \(message!), labelid: \(message!.getLabelIDs()), labels: \(message!.labels)")
+            default:
+                break
+            }
+        } else {
+            print("No search index found for user: \(userID)")
         }
     }
     
