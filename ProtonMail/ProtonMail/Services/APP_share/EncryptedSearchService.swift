@@ -76,6 +76,38 @@ public class ESMessage: Codable {
     public var isDetailsDownloaded: Bool? = false
     //var tempAtts: [AttachmentInline]? = nil
     
+    init(id: String, order: Int, conversationID: String, subject: String, unread: Int, type: Int, senderAddress: String, senderName: String, sender: ESSender, toList: [ESSender?], ccList: [ESSender?], bccList: [ESSender?], time: Double, size: Int, isEncrypted: Int, expirationTime: Date?, isReplied: Int, isRepliedAll: Int, isForwarded: Int, spamScore: Int?, addressID: String?, numAttachments: Int, flags: Int, labelIDs: Set<String>, externalID: String?, body: String?, header: String?, mimeType: String?, userID: String) {
+        self.ID = id
+        self.Order = order
+        self.ConversationID = conversationID
+        self.Subject = subject
+        self.Unread = unread
+        self.`Type` = type
+        self.SenderAddress = senderAddress
+        self.SenderName = senderName
+        self.Sender = sender
+        self.ToList = toList
+        self.CCList = ccList
+        self.BCCList = bccList
+        self.Time = time
+        self.Size = size
+        self.IsEncrypted = isEncrypted
+        self.ExpirationTime = expirationTime
+        self.IsReplied = isReplied
+        self.IsRepliedAll = isRepliedAll
+        self.IsForwarded = isForwarded
+        self.SpamScore = spamScore
+        self.AddressID = addressID
+        self.NumAttachments = numAttachments
+        self.Flags = flags
+        self.LabelIDs = labelIDs
+        self.ExternalID = externalID
+        self.Body = body
+        self.Header = header
+        self.MIMEType = mimeType
+        self.UserID = userID
+    }
+    
     /// check if contains exclusive lable
     ///
     /// - Parameter label: Location
@@ -801,13 +833,13 @@ extension EncryptedSearchService {
             switch action {
                 case .delete:
                     print("Delete message from search index")
-                    self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
+                    //self.updateMessageMetadataInSearchIndex(message, action)    //delete just triggers a move to the bin folder
                 case .insert:
-                    print("Insert new message to search index")
+                    //print("Insert new message to search index")
                     self.insertSingleMessageToSearchIndex(message)
                 case .move:
                     print("Move message in search index")
-                    self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
+                    //self.updateMessageMetadataInSearchIndex(message, action)    //move just triggers a change in the location of the message
                 case .update:
                     print("Update message")
                     //self.updateMessageMetadataInSearchIndex(message, action)
@@ -830,21 +862,28 @@ extension EncryptedSearchService {
     }
     
     func insertSingleMessageToSearchIndex(_ message: Message?) {
-        //some simple error handling
-        if message == nil {
-            print("message nil!")
+        guard let messageToInsert = message else {
             return
         }
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (users.firstUser?.userInfo.userId)!
         
         //just insert a new message if the search index exists for the user - otherwise it needs to be build first
-        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-            //get message details
-            /*self.getMessageDetailsWithRecursion([message!]) { result in
-                self.decryptBodyAndExtractData(result) {
-                    print("Sucessfully inserted new message \(message!.messageID) in search index")
-                    //TODO update some flags?
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+            let esMessage:ESMessage? = self.convertMessageToESMessage(for: messageToInsert)
+            self.fetchMessageDetailForMessage(esMessage!) { [weak self] (error, messageWithDetails) in
+                if error == nil {
+                    self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!) {
+                        self?.processedMessages += 1
+                        self?.lastMessageTimeIndexed = Int((messageWithDetails!.Time))
+                        //print("Sucessfully inserted new message \(message!.messageID) in search index")
+                    }
+                } else {
+                    print("Error when fetching for message details...")
                 }
-            }*/
+            }
+    
+            print("No search index found for user: \(userID)")
         }
     }
     
@@ -952,6 +991,51 @@ extension EncryptedSearchService {
             }
             completionHandler()
         }
+    }
+    
+    private func convertMessageToESMessage(for message: Message) -> ESMessage {
+        let decoder = JSONDecoder()
+        
+        let jsonSenderData: Data = Data(message.sender!.utf8)
+        var sender: ESSender? = ESSender(Name: "", Address: "")
+        do {
+            sender = try decoder.decode(ESSender.self, from: jsonSenderData)
+        } catch {
+            print("Error when decoding message.sender")
+        }
+        
+        let senderAddress: String = sender?.Address ?? ""
+        let senderName: String = sender?.Name ?? ""
+        
+        var toList: [ESSender?] = []
+        var ccList: [ESSender?] = []
+        var bccList: [ESSender?] = []
+        let jsonToListData: Data = message.toList.data(using: .utf8)!
+        let jsonCCListData: Data = message.ccList.data(using: .utf8)!
+        let jsonBCCListData: Data = message.bccList.data(using: .utf8)!
+        
+        do {
+            toList = try decoder.decode([ESSender].self, from: jsonToListData)
+            ccList = try decoder.decode([ESSender].self, from: jsonCCListData)
+            bccList = try decoder.decode([ESSender].self, from: jsonBCCListData)
+        } catch {
+            print("Error when decoding message.tolist, ccList or bccList")
+        }
+        
+        let isReplied: Int = message.replied ? 1 : 0
+        let isRepliedAll: Int = message.repliedAll ? 1 : 0
+        let isForwarded: Int = message.forwarded ? 1 : 0
+        var labelIDs: Set<String> = Set()
+        message.labels.forEach { label in
+            labelIDs.insert((label as! Label).labelID)
+        }
+        let externalID: String = ""
+        let unread: Int = message.unRead ? 1 : 0
+        let time: Double = message.time!.timeIntervalSince1970
+        let isEncrypted: Int = message.isE2E ? 1 : 0
+
+        let newESMessage = ESMessage(id: message.messageID, order: Int(truncating: message.order), conversationID: message.conversationID, subject: message.subject, unread: unread, type: Int(truncating: message.messageType), senderAddress: senderAddress, senderName: senderName, sender: sender!, toList: toList, ccList: ccList, bccList: bccList, time: time, size: Int(truncating: message.size), isEncrypted: isEncrypted, expirationTime: message.expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: Int(truncating: message.spamScore), addressID: message.addressID, numAttachments: Int(truncating: message.numAttachments), flags: Int(truncating: message.flags), labelIDs: labelIDs, externalID: externalID, body: message.body, header: message.header, mimeType: message.mimeType, userID: message.userID)
+        return newESMessage
     }
     
     private func jsonStringToESMessage(jsonData: Data) throws -> ESMessage? {
