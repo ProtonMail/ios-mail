@@ -882,20 +882,23 @@ extension EncryptedSearchService {
                     print("Error when fetching for message details...")
                 }
             }
-    
+        } else {
             print("No search index found for user: \(userID)")
         }
     }
     
     func deleteMessageFromSearchIndex(_ message: Message?) {
-        if message == nil {
-            print("message nil!")
+        guard let messageToDelete = message else {
             return
         }
+        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String = (users.firstUser?.userInfo.userId)!
         
         //just delete a message if the search index exists for the user - otherwise it needs to be build first
-        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: self.user.userInfo.userId, message: message!.messageID)
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
+        } else {
+            print("No search index found for user: \(userID)")
         }
     }
     
