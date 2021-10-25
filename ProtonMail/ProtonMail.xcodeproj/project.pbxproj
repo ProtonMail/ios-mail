@@ -300,7 +300,6 @@
 		1CB744A8814845393C5009DB60A6F99C /* SingleMessageContentViewHistoryButtonContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD524EE7DA09FF7772F1EB0BC7B737C /* SingleMessageContentViewHistoryButtonContainer.swift */; };
 		1CC58F520248C984BA3972F67F5236C4 /* SingleMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEE16EAE669FF4CB6DB719616D59DF9 /* SingleMessageContentView.swift */; };
 		1CC9C8EC280602F8945A99536904FC6A /* ConversationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E19B0484D7119454ABA447C7C87DD2 /* ConversationCoordinator.swift */; };
-		1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */; };
 		1CD22D56BD03F904999CD5020296C976 /* ContactTypeAddCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */; };
 		1CF54FB5158C1C706999F0AE6E6DA0BE /* Attachment+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941D5FCDD408868B206C57C473DB5BD1 /* Attachment+Info.swift */; };
 		1D00C122279716F791F1613C45188CD4 /* ConversationExpandedMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FB513BD53FF598E3740880C9B0DB0 /* ConversationExpandedMessageViewModel.swift */; };
@@ -3727,7 +3726,6 @@
 		C28872D64A9C4592E94C081194877E7A /* LabelNameCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelNameCell.xib; sourceTree = "<group>"; };
 		C2DB40A3CE8A50ADB96BA8CF3A47B91E /* MailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailButton.swift; sourceTree = "<group>"; };
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
-		C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenPGP+ExtensionTests.swift"; sourceTree = "<group>"; };
 		C3A86E81FC1EB1180CFA9F18CB7DE806 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
 		C41BFF3EFB3A927144347B5CDBE36752 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -4713,7 +4711,6 @@
 				89FF81C7877846ED3BFEAE525C8470DE /* CryptoTests+Signature.swift */,
 				9FD74B485179D074463EE1A4D22B25EB /* CryptoTests.swift */,
 				EF1689FEA4DCBEAA9588C05672A8773F /* GoOpenPGPTests.swift */,
-				C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */,
 				7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */,
 				EA7FD349803F8BF6D4FA1C289CA44699 /* OpenPGPTests.swift */,
 				4FE06896ED2E4F0A50FAC94C872D3C93 /* OpenPGPTestsDefine.bundle */,
@@ -8379,7 +8376,6 @@
 				24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */,
 				7A5A4DCB3F06824FD01C01F0A19A64A8 /* MockLastUpdatedStore.swift in Sources */,
 				3A7A0B8EB1BEB5E8600400F8B84DE918 /* MockQueueHandler.swift in Sources */,
-				1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */,
 				2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */,
 				CE273390466B4BB5E34FF7C7A781E7AF /* OpenPGPTests.swift in Sources */,
 				5673DC3E61BD62F242B837A7C53C233E /* Operators_NSAttributedStringTests.swift in Sources */,

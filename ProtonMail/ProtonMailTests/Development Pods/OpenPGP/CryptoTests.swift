@@ -337,4 +337,15 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
         }
     }
 
+    func testGenerateRandomKeyPair() throws {
+        let keyPair = try Crypto.generateRandomKeyPair()
+        let message = "Hello my friend!"
+
+        let encrypted = try Crypto().encrypt(plainText: message, publicKey: keyPair.publicKey)
+        let unwrappedEncrypted = try XCTUnwrap(encrypted)
+        XCTAssertNotEqual(message, unwrappedEncrypted)
+
+        let decrypted = try Crypto().decrypt(encrytped: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
+        XCTAssertEqual(message, decrypted)
+    }
 }
