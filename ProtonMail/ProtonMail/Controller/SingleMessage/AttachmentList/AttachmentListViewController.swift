@@ -274,8 +274,7 @@ private extension AttachmentListViewController {
 // MARK: - Handle Network status changed
 private extension AttachmentListViewController {
     private func showInternetConnectionBanner() {
-        guard isInternetBannerPresented == false,
-              UIApplication.shared.applicationState == .active else { return }
+        guard isInternetBannerPresented == false else { return }
         let banner = MailBannerView()
         bannerContainer.addSubview(banner)
 
