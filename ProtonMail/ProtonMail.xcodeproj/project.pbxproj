@@ -235,7 +235,6 @@
 		1CA42EED8B03E7D10ABFFC16869E0BBD /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
 		1CB1DF32831CA69F132E0329820A4451 /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
 		1CB7A91A0142DBCC29FEFDAE4E55611D /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3977AEDAB0825DDAAB126EBAA72A22 /* CountryPickerViewController.swift */; };
-		1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */; };
 		1CD22D56BD03F904999CD5020296C976 /* ContactTypeAddCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */; };
 		1CF54FB5158C1C706999F0AE6E6DA0BE /* Attachment+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941D5FCDD408868B206C57C473DB5BD1 /* Attachment+Info.swift */; };
 		1D030E948CEBA0C23E4A86989618F9DF /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE57A0B78E8BC157323518DCA084E /* ComposeContainerViewController.swift */; };
@@ -2989,7 +2988,6 @@
 		C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionEmailCell.swift; sourceTree = "<group>"; };
 		C29317A6BB406175EC4E38250EE69C77 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
-		C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenPGP+ExtensionTests.swift"; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
 		C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProvider.swift; sourceTree = "<group>"; };
@@ -3836,7 +3834,6 @@
 				89FF81C7877846ED3BFEAE525C8470DE /* CryptoTests+Signature.swift */,
 				9FD74B485179D074463EE1A4D22B25EB /* CryptoTests.swift */,
 				EF1689FEA4DCBEAA9588C05672A8773F /* GoOpenPGPTests.swift */,
-				C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */,
 				7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */,
 				EA7FD349803F8BF6D4FA1C289CA44699 /* OpenPGPTests.swift */,
 				4FE06896ED2E4F0A50FAC94C872D3C93 /* OpenPGPTestsDefine.bundle */,
@@ -6705,7 +6702,6 @@
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
 				D101EF0D5DEB2C8654CA0A1D13956021 /* MigrateTests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,
-				1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */,
 				2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */,
 				CE273390466B4BB5E34FF7C7A781E7AF /* OpenPGPTests.swift in Sources */,
 				90130E07003C668A0681410D0753D57A /* PMNIBirthday+FormattedBirthdayTests.swift in Sources */,
