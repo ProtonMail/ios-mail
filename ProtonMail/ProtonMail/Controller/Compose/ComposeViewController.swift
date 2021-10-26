@@ -712,7 +712,7 @@ extension ComposeViewController : ComposeViewDelegate {
     func setupComposeFromMenu(for button: UIButton) {
         var multi_domains = self.viewModel.getAddresses()
         multi_domains.sort(by: { $0.order < $1.order })
-        let defaultAddr = self.viewModel.getDefaultSendAddress()
+        let defaultAddr = self.viewModel.fromAddress() ?? self.viewModel.getDefaultSendAddress()
         var actions: [UIAction] = []
         for addr in multi_domains {
             guard addr.status == .enabled && addr.receive == .active else {
@@ -731,8 +731,9 @@ extension ComposeViewController : ComposeViewDelegate {
                         self.htmlEditor.update(signature: signature)
                     }
                     MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
-                    self.updateSenderMail(addr: addr)
-                    self.setupComposeFromMenu(for: button)
+                    self.updateSenderMail(addr: addr) { [weak self] in
+                        self?.setupComposeFromMenu(for: button)
+                    }
                 }
             }
             item.accessibilityLabel = addr.email
@@ -755,7 +756,7 @@ extension ComposeViewController : ComposeViewDelegate {
         alertController.addAction(cancel)
         var multi_domains = self.viewModel.getAddresses()
         multi_domains.sort(by: { $0.order < $1.order })
-        let defaultAddr = self.viewModel.getDefaultSendAddress()
+        let defaultAddr = self.viewModel.fromAddress() ?? self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
             guard addr.status == .enabled && addr.receive == .active else {
                 continue
@@ -772,7 +773,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         self.htmlEditor.update(signature: signature)
                     }
                     MBProgressHUD.showAdded(to: self.parent!.navigationController!.view, animated: true)
-                    self.updateSenderMail(addr: addr)
+                    self.updateSenderMail(addr: addr, complete: nil)
                 }
             }
             selectEmail.accessibilityLabel = selectEmail.title
@@ -789,15 +790,17 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
     
-    private func updateSenderMail(addr: Address) {
+    private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync {
             self.viewModel.updateAddressID(addr.addressID).catch { (error ) in
                 let alertController = error.localizedDescription.alertController()
                 alertController.addOKAction()
                 self.present(alertController, animated: true, completion: nil)
+                complete?()
             }.finally {
                 self.headerView.updateFromValue(addr.email, pickerEnabled: true)
                 MBProgressHUD.hide(for: self.parent!.navigationController!.view, animated: true)
+                complete?()
             }
         }
     }
