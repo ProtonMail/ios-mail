@@ -37,6 +37,7 @@ final class ComposeToolbar: UIView {
     @IBOutlet private var hourButton: UIButton!
     @IBOutlet private var attachmentButton: UIButton!
     @IBOutlet private var attachmentNumView: UIView!
+    @IBOutlet private var numContainer: UIView!
     @IBOutlet private var attachmentNumLabel: UILabel!
 
     required init?(coder: NSCoder) {
@@ -62,12 +63,18 @@ final class ComposeToolbar: UIView {
     }
 
     func setAttachment(number: Int) {
+        guard number > 0 else {
+            self.numContainer.isHidden = true
+            return
+        }
+        self.numContainer.isHidden = false
         let text = number == 0 ? "": "\(number)"
         self.attachmentNumLabel.text = text
         self.attachmentNumView.isHidden = number == 0
         self.attachmentNumLabel.sizeToFit()
-        let height = max(self.attachmentNumLabel.frame.size.height, 24)
-        self.attachmentNumLabel.roundCorner(height / 2)
+        self.numContainer.sizeToFit()
+        let height = max(self.numContainer.frame.size.height, 24)
+        self.numContainer.roundCorner(height / 2)
     }
 
     @IBAction private func clickEOButton(_ sender: Any) {
@@ -113,7 +120,7 @@ extension ComposeToolbar {
         self.attachmentButton.tintColor = UIColorManager.IconNorm
         self.attachmentNumView.backgroundColor = .clear
         self.attachmentNumLabel.textColor = .white
-        self.attachmentNumLabel.backgroundColor = UIColorManager.InteractionNorm
+        self.numContainer.backgroundColor = UIColorManager.InteractionNorm
     }
 
     private func addTopBorder() {
