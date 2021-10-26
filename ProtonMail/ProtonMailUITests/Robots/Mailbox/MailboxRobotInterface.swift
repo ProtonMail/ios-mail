@@ -47,7 +47,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func spamMessageBySubject(_ subject: String) -> MailboxRobotInterface {
-        staticText(subject).swipeLeft()
+        cell(id.mailboxMessageCellIdentifier).containing(.staticText, subject).tapThenSwipeLeft(0.5, .slow)
         return self
     }
 

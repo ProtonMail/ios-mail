@@ -65,6 +65,8 @@ open class UiElement {
     private var titlePredicate: NSPredicate?
     private var valuePredicate: NSPredicate?
     private var tableToSwipeInto: XCUIElement?
+    private var containType: XCUIElement.ElementType?
+    private var containIdentifier: String?
 
     internal func getType() -> XCUIElement.ElementType {
         return self.uiElement().elementType
@@ -127,6 +129,12 @@ open class UiElement {
     /// Matchers
     public func byIndex(_ index: Int) -> UiElement {
         self.index = index
+        return self
+    }
+    
+    public func containing(_ elementType: XCUIElement.ElementType, _ identifier: String) -> UiElement {
+        self.containType = elementType
+        self.containIdentifier = identifier
         return self
     }
 
@@ -533,6 +541,11 @@ open class UiElement {
         /// Filer out XCUIElementQuery based on isHittable state.
         if elementHittable == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
+        }
+        
+        /// Matching elements by the sub-elements it contains
+        if containType != nil && containIdentifier != nil {
+            uiElementQuery = uiElementQuery!.containing(containType!, identifier: containIdentifier!)
         }
 
         /// Return element from XCUIElementQuery based on its index.
