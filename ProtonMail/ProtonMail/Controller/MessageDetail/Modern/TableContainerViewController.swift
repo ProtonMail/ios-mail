@@ -116,6 +116,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         let id = ComposerCell.reuseID(for: indexPath)
         let cell = self.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
         self.coordinator.embedChild(indexPath: indexPath, onto: cell)
+        cell.clipsToBounds = true
         return cell
     }
 
