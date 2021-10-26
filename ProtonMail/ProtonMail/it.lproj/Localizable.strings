@@ -1414,7 +1414,7 @@
 "Language" = "Lingua";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Dopo";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Invia ricevuta";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Inviare all'archivio?";
-
 /* Title */
 "Send Verification Code" = "Invia codice di verifica";
 
@@ -2413,10 +2410,10 @@
 "Storage" = "Archiviazione";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Memoria piena";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Limite d'archiviazione superato";
 
 /* Title */
 "Storage Warning" = "Avviso di archiviazione";

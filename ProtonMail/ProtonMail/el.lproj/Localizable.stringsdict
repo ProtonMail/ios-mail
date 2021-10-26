@@ -11,9 +11,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining</string>
+			<string>απομένει %d προσπάθεια</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>απομένουν %d προσπάθειες</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -27,9 +27,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining until secure data wipe!</string>
+			<string>απομένει %d προσπάθεια μέχρι την ασφαλή διαγραφή δεδομένων!</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>απομένουν %d προσπάθειες μέχρι την ασφαλή διαγραφή δεδομένων!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -43,14 +43,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d day</string>
+			<string>%d ημέρα</string>
 			<key>other</key>
-			<string>%d days</string>
+			<string>%d ημέρες</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
+		<string>%#@ΗΜΕΡΑ@</string>
 	</dict>
 	<key>%d hour</key>
 	<dict>
@@ -61,14 +61,14 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d hour</string>
+			<string>%d ώρα</string>
 			<key>other</key>
-			<string>%d hours</string>
+			<string>%d ώρες</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
+		<string>%#@ΩΡΑ@</string>
 	</dict>
 	<key>+%d others</key>
 	<dict>
@@ -81,9 +81,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d other</string>
+			<string>%d άλλος/η</string>
 			<key>other</key>
-			<string>%d others</string>
+			<string>%d άλλοι</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

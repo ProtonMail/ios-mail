@@ -1981,7 +1981,7 @@
 "Please upgrade your plan" = "Ulepsz plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Najpierw zaloguj się w aplikacji ProtonMail.";
@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Wyślij potwierdzenie";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Przenieś do Archiwum?";
-
 /* Title */
 "Send Verification Code" = "Wyślij kod weryfikacyjny";
 
@@ -2413,7 +2410,7 @@
 "Storage" = "Przestrzeń dyskowa";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Przestrzeń dyskowa jest pełna";
 
 /* Storage warning */
 "Storage quota exceeded" = "Limit przestrzeni dyskowej został przekroczony";
@@ -2517,7 +2514,7 @@
 "The draft format incorrectly sending failed!" = "Wysyłanie nie powiodło się. Wystąpił błąd z formatem szkicu.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Następujące pliki nie mogły zostać dołączone:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Najwyższy dostępny poziom szyfrowania.";
@@ -3025,14 +3022,14 @@
 "You have used %d%% of your storage space (%@)." = "Używasz %d%% przestrzeni dyskowej (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystałeś %1$d%% przestrzeni dyskowej (%2$@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Użyłeś całej przestrzeni dyskowej (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystałeś całą przestrzeń dyskową (%@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Wpisz co najmniej jednego odbiorcę, aby wysłać wiadomość";

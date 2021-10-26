@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Enviar confirmação de leitura";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Enviar para o arquivo?";
-
 /* Title */
 "Send Verification Code" = "Enviar código de verificação";
 

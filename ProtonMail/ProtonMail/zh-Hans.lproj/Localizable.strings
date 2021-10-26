@@ -955,7 +955,7 @@
 "Enable conversations" = "启用会话";
 
 /* Title */
-"Enable email notices" = "Enable email notices";
+"Enable email notices" = "开启邮件提醒";
 
 /* settings protection section title */
 "Enable Face ID" = "启用 Face ID";
@@ -1187,7 +1187,7 @@
 "Get more information" = "了解详细信息";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "入门";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "转至草稿";
@@ -1414,7 +1414,7 @@
 "Language" = "语言";
 
 /* Action */
-"Later" = "Later";
+"Later" = "之后再说";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1442,7 +1442,7 @@
 "Load images" = "加载图片";
 
 /* Action */
-"Load remote content" = "加载外部内容";
+"Load remote content" = "加载外链内容";
 
 /* (No Comment) */
 "Loading..." = "正在加载...";
@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "发送回执";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Send to archive?";
-
 /* Title */
 "Send Verification Code" = "发送验证码";
 
@@ -2624,7 +2621,7 @@
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "无法确定此邮件是否来自该域名，可能是欺诈邮件，也可能是投递过程出现了问题。";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 ProtonMail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";

@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Op EE, MMM d, jjjjj om %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
@@ -26,10 +26,10 @@
 "%@ storage capacity" = "%@ opslagcapaciteit";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "%d resterende poging";
 
 /* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+"%d attempt remaining until secure data wipe!" = "%d poging over tot het vernietigen van alle gegevens!";
 
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d gesprek";
@@ -38,10 +38,10 @@
 "%d conversations" = "%d conversaties";
 
 /* day */
-"%d day" = "%d day";
+"%d day" = "%d dag";
 
 /* hour */
-"%d hour" = "%d hour";
+"%d hour" = "%d uur";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
 "%d Member" = "%d lid";
@@ -248,13 +248,13 @@
 "App is locked" = "App is vergrendeld";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "Toepassing PIN-code";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "Toepassing PIN-code & Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "Toepassing PIN-code & Touch ID";
 
 /* section title in settings */
 "App settings" = "App instellingen";
@@ -299,7 +299,7 @@
 "Are you sure? This can't be undone." = "Weet u het zeker? Dit kan niet ongedaan worden gemaakt.";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "Om %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "Ten minste één e-mailadres in de groep kon niet worden gevonden";
@@ -320,7 +320,7 @@
 "Attachment" = "Bijlage";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Bevestigingsfout";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Bijlage geïmporteerd";
@@ -392,7 +392,7 @@
 "Birthday" = "Verjaardag";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatie mode.";
 
 /* Title */
 "Bug Description" = "Omschrijving van de bug";
@@ -623,13 +623,13 @@
 "Connect Account" = "Account Verbinden";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Contact verwijderd, zal gesynchroniseerd worden zodra verbinding beschikbaar is";
 
 /* contact section title */
 "Contact details" = "Contactgegevens";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Contact opgeslagen, zal worden gesynchroniseerd wanneer verbinding beschikbaar is";
 
 /* Title */
 "Contact the ProtonMail team" = "Neem contact op met het ProtonMail-team";
@@ -655,7 +655,7 @@
 "Conversation mode" = "Gesprek modus";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "Kopie";
 
 /* Title */
 "Copy address" = "Adres kopiëren";
@@ -711,7 +711,7 @@
 "Custom" = "Aangepast";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "Knippen";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -1024,7 +1024,7 @@
 "End-to-End Encryption" = "End-to-end versleuteling";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Geniet van end-to-end versleuteling met zelfs niet-Proton contacten: Nodig ze uit voor ProtonMail of codeer hun berichten handmatig.";
 
 /* Action in 2fa popup view */
 "Enter" = "Invoeren";
@@ -1033,7 +1033,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Enter current PIN code";
+"Enter current PIN code" = "Voer huidige PIN code in";
 
 /* Title */
 "Enter Verification Code" = "Voer verificatiecode in";
@@ -1060,7 +1060,7 @@
 "Enter your signature here" = "Voer hier uw handtekening in";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "Fout";
 
 /* settings debug section title */
 "Error Logs" = "Foutenlogboek";
@@ -1100,7 +1100,7 @@
 "Failed to initialize the application's saved data" = "Het initialiseren van de applicatiedata is mislukt";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+"Failed to load content!\nPlease try again." = "Inhoud niet geladen! Probeer het opnieuw.";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -1187,7 +1187,7 @@
 "Get more information" = "Meer informatie";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "Aan de slag";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ga naar concepten";
@@ -1226,7 +1226,7 @@
 "Hide" = "Verbergen";
 
 /* Title */
-"Hide details" = "Hide details";
+"Hide details" = "Details verbergen";
 
 /* (No Comment) */
 "Hide Details" = "Details verbergen";
@@ -1300,7 +1300,7 @@
 "Incorrect password" = "Onjuist wachtwoord";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "Onjuiste PIN-code.";
 
 /* Option title */
 "Inherit color from parent folder" = "Kleur van bovenliggende map overnemen";
@@ -1315,7 +1315,7 @@
 "Input Display Name ..." = "Weergavenaam invoeren ...";
 
 /* place holder */
-"Input Display Name…" = "Input Display Name…";
+"Input Display Name…" = "Invoer Weergave Naam…";
 
 /* place holder */
 "Input Notification Email …" = "Notificatie e-mailadres invoeren …";
@@ -1689,7 +1689,7 @@
 "New sign-in password" = "Nieuw inlogwachtwoord";
 
 /* title of the next button */
-"Next" = "Next";
+"Next" = "Volgende";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Bijnaam";
@@ -1787,13 +1787,13 @@
 "On" = "Aan";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "Op %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "Op %1$@ om %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
+"On E, MMM d, yyyy at %@" = "Op EE, MMM d, jjjjj om %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als u zeker weet dat al uw abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \r\n\r\n Weet u zeker dat u de activering wilt negeren?";
@@ -1805,7 +1805,7 @@
 "Open" = "Open";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Open account switcher";
+"Open account switcher" = "Open gebruiker wisselaar";
 
 /* (No Comment) */
 "OpenDraft" = "Open conceptbericht";
@@ -1927,7 +1927,7 @@
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep ProtonMail open until the operation is done." = "Houd ProtonMail open tot de operatie klaar is, alstublieft.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 labels te gebruiken";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Upgrade uw plan alstublieft";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Upgrade uw plan om e-mails te blijven verzenden en ontvangen a. u. b.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Gebruik eerst de ProtonMail App inlog.";
@@ -2083,7 +2083,7 @@
 "Reading device contacts data…" = "Apparaat contactgegevens lezen…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "Ontvangstbewijs verzonden";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Ontvangergegevens";
@@ -2120,7 +2120,7 @@
 "Remove All" = "Alles verwijderen";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "Metagegevens van afbeelding verwijderen";
 
 /* action title */
 "Remove password" = "Verwijder wachtwoord";
@@ -2225,10 +2225,7 @@
 "Send plain but stored encrypted" = "Verzend plain maar opgeslagen versleuteld";
 
 /* A button title to send read receipt */
-"Send receipt" = "Send receipt";
-
-/* No comment provided by engineer. */
-"Send to archive?" = "Verzenden naar archief?";
+"Send receipt" = "Ontvangstbewijs versturen";
 
 /* Title */
 "Send Verification Code" = "Verzend verificatiecode";
@@ -2243,7 +2240,7 @@
 "Sending failed" = "Verzenden mislukt";
 
 /* Alert title */
-"Sending in progress" = "Sending in progress";
+"Sending in progress" = "Verzenden aan de gang";
 
 /* Description */
 "Sending Message" = "Bericht wordt verzonden";
@@ -2255,7 +2252,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
+"Sending will be available\nwhen attachments are uploaded" = "Versturen zal beschikbaar zijn\nwanneer bijlagen zijn geupload";
 
 /* menu title */
 "Sent" = "Verzonden";
@@ -2306,7 +2303,7 @@
 "Show" = "Tonen";
 
 /* Title */
-"Show details" = "Show details";
+"Show details" = "Toon details";
 
 /* Title */
 "Sign in" = "Inloggen";
@@ -2344,10 +2341,10 @@
 "Signed out from %@ and signed in with %@" = "Afgemeld bij %1$@ en ingelogd met %2$@";
 
 /* Onboarding title */
-"Simply private" = "Simply private";
+"Simply private" = "Gewoon privé";
 
 /* skip button title in onboarding page */
-"Skip" = "Skip";
+"Skip" = "Overslaan";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Uitstellen";
@@ -2413,10 +2410,10 @@
 "Storage" = "Opslagruimte";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Opslag vol";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Opslagquota overschreden";
 
 /* Title */
 "Storage Warning" = "Opslagwaarschuwing";
@@ -2517,7 +2514,7 @@
 "The draft format incorrectly sending failed!" = "Het formaat van het concept is onjuist. Verzenden is mislukt!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "De volgende bestanden konden niet worden bijgevoegd:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Het hoogste niveau van versleuteling beschikbaar.";
@@ -2572,7 +2569,7 @@
 "The request timed out." = "De aanvraag duurde te lang.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "De zender heeft om een leesbevestiging gevraagd.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "De maximale grootte voor bijlagen is 25 MB.";
@@ -2636,13 +2633,13 @@
 "This message contains embedded images." = "Dit bericht bevat ingesloten afbeeldingen.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "Dit bericht bevat inhoud op afstand en ingesloten afbeeldingen";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Dit bericht bevat externe inhoud.";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "Dit bericht wordt automatisch gegenereerd als antwoord op een eerder bericht.";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "Dit bericht komt van een mailinglist.";
@@ -2666,7 +2663,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "De validatie van het TLS-certificaat is mislukt. Uw verbinding kan worden bewaakt en de app is tijdelijk geblokkeerd voor uw veiligheid.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "De validatie van het TLS-certificaat is mislukt. Uw gegevens kunnen onderschept worden en de app is voor uw veiligheid tijdelijk geblokkeerd.\n\nschakel direct van netwerk";
 
 /* message To: feild
    Title */
@@ -2974,7 +2971,7 @@
 "Yes, attach details of payment" = "Ja, voeg details toe van betaling";
 
 /* No comment provided by engineer. */
-"Yesterday" = "Yesterday";
+"Yesterday" = "Gisteren";
 
 /* link opeining confirmation */
 "You are about to launch the web browser and navigate to" = "U staat op het punt de webbrowser te starten en te navigeren naar";
@@ -3025,14 +3022,14 @@
 "You have used %d%% of your storage space (%@)." = "U heeft %d%% van uw opslagruimte gebruikt (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U heeft %1$d%% van uw opslagruimte gebruikt (%2$@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen a. u. b.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "U heeft al uw opslagruimte gebruikt (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U hebt al uw opslagruimte opgebruikt (%@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen a. u. b.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";

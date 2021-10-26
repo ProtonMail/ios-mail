@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Send kvittering";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Send til arkiv?";
-
 /* Title */
 "Send Verification Code" = "Afsend bekræftelseskode";
 

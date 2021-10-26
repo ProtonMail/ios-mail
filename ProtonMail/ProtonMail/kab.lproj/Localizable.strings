@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Azen talɣut ɣef tuṭṭfa";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Azen s iɣbaren?";
-
 /* Title */
 "Send Verification Code" = "Azen tangalt n usenqed";
 

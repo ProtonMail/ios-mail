@@ -11,9 +11,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining</string>
+			<string>%d resterende poging</string>
 			<key>other</key>
-			<string>%d attempts remaining</string>
+			<string>%d resterende poging</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -27,9 +27,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d attempt remaining until secure data wipe!</string>
+			<string>%d poging over tot het vernietigen van alle gegevens!</string>
 			<key>other</key>
-			<string>%d attempts remaining until secure data wipe!</string>
+			<string>%d pogingen over tot het vernietigen van alle gegevens!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -43,9 +43,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d day</string>
+			<string>%d dag</string>
 			<key>other</key>
-			<string>%d days</string>
+			<string>%d dagen</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
@@ -61,9 +61,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d hour</string>
+			<string>%d uur</string>
 			<key>other</key>
-			<string>%d hours</string>
+			<string>%d uren</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>

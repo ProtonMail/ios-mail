@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "傳送讀取回條";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "要送歸封存嗎？";
-
 /* Title */
 "Send Verification Code" = "傳送驗證碼";
 
