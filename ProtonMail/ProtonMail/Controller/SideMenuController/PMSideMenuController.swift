@@ -58,7 +58,8 @@ extension PMSideMenuController {
     
     /// add placeholder height to substitute status bar
     private func addAdditionalHeight(_ add: Bool) {
-        if UIDevice.hasNotch { return }
+        if UIDevice.hasNotch && UIDevice.current.userInterfaceIdiom == .phone { return }
+        
         let navigationController = self.contentViewController as? UINavigationController
         let top: CGFloat = add ? additionalHeight: 0.0
         self.additionalSafeAreaInsets.top = top

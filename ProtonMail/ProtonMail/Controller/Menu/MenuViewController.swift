@@ -107,7 +107,7 @@ extension MenuViewController {
 
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
-        if #available(iOS 13.0, *), !UIDevice.hasNotch {
+        if #available(iOS 13.0, *), (!UIDevice.hasNotch || UIDevice.current.userInterfaceIdiom == .pad) {
             self.accountSwitcherTopConstraint.constant = 10
         } else {
             self.accountSwitcherTopConstraint.constant = 0
