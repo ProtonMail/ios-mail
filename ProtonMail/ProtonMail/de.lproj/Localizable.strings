@@ -623,13 +623,13 @@
 "Connect Account" = "Konto verbinden";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Kontakt gelöscht. Synchronisation erfolgt, sobald wieder eine Verbindung besteht";
+"Contact deleted, will be synced when connection is available" = "Kontakt gelöscht. Synchronisation erfolgt, sobald eine Verbindung verfügbar ist";
 
 /* contact section title */
 "Contact details" = "Kontaktinformationen";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Kontakt gespeichert. Synchronisation erfolgt, sobald wieder eine Verbindung besteht";
+"Contact saved, will be synced when connection is available" = "Kontakt gespeichert. Synchronisation erfolgt, sobald eine Verbindung verfügbar ist";
 
 /* Title */
 "Contact the ProtonMail team" = "Kontaktieren Sie das ProtonMail-Team";
@@ -2083,7 +2083,7 @@
 "Reading device contacts data…" = "Gerätekontaktdaten lesen…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Lesebestätigung gesendet";
+"Receipt sent" = "Empfangsbestätigung senden";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Empfängerdaten";
@@ -2225,10 +2225,7 @@
 "Send plain but stored encrypted" = "Unverschlüsselt senden, aber verschlüsselt speichern";
 
 /* A button title to send read receipt */
-"Send receipt" = "Lesebestätigung senden";
-
-/* No comment provided by engineer. */
-"Send to archive?" = "In Archiv verschieben?";
+"Send receipt" = "Empfangsbestätigung senden";
 
 /* Title */
 "Send Verification Code" = "Verifizierungs-Code senden";
@@ -2572,7 +2569,7 @@
 "The request timed out." = "Die Anfrage ist abgelaufen.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "Der Absender hat einen Lesebestätigung angefordert.";
+"The sender has requested a read receipt." = "Der Absender hat eine Empfangsbestätigung angefordert.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Die max. Größe für Anhänge beträgt 25 MB.";

@@ -982,7 +982,7 @@
 "Encrypted by Proton" = "Dienkripsi oleh Proton";
 
 /* contact section title */
-"Encrypted contact details" = "Detail kontak terenkripsi";
+"Encrypted contact details" = "Rincian kontak yang terenkripsi";
 
 /* Title */
 "Encrypted for outside" = "Dienkripsi untuk di luar";
@@ -1531,7 +1531,7 @@
 "Message %@" = "Pesan %@";
 
 /* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat surel penerima yang tidak ada atau diformat buruk.";
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat email penerima yang hendak dituju tidak ada atau tidak tertulis dengan benar.";
 
 /* Composer expiration page title */
 "Message expiration" = "Pesan Kadaluwarsa";
@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Kirim bukti baca";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Kirim ke arsip?";
-
 /* Title */
 "Send Verification Code" = "Kirim kode verifikasi";
 
@@ -2597,7 +2594,7 @@
 "The verification failed!" = "Verifikasi gagal!";
 
 /* alert when sign out user if in queue still have tasks */
-"There are still some messages in queue. If you sign out, the draft will be deleted." = "Masih ada beberapa pesan dalam antrian. Jika Anda keluar, konsep tersebut akan dihapus.";
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "Masih ada beberapa pesan dalam antrian. Jika Anda keluar, draf tersebut akan dihapus.";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Masih ada pesan yang berlum terkirim yang akan hilang jika Anda keluar";
@@ -3013,10 +3010,10 @@
 "You have a new email!" = "Anda memiliki surel baru!";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Anda memasukkan paling tidak satu alamat surel yang tidak valid. Mohon verifikasi penerima Anda.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat email yang Anda ketikkan tidak valid. Mohon periksa kembali alamat-alamat email tujuan Anda.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Anda memasukkan paling tidak satu penerima tidak dikenal. Mohon verifikasi penerima Anda.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang Anda ketikkan tidak dikenal. Mohon periksa kembali alamat-alamat email tujuan Anda.";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Perubahan belum disimpan. Anda ingin menyimpannya?";

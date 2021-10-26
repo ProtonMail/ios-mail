@@ -135,13 +135,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%u разговоров</string>
+			<string>%u цепочки писем</string>
 			<key>many</key>
-			<string>%u разговоров</string>
+			<string>%u цепочки писем</string>
 			<key>one</key>
-			<string>%u разговор</string>
+			<string>%u цепочка писем</string>
 			<key>other</key>
-			<string>%u разговор</string>
+			<string>%u цепочка(и,ек) писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>

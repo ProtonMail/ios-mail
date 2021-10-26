@@ -81,9 +81,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d other</string>
+			<string>%d daha</string>
 			<key>other</key>
-			<string>%d others</string>
+			<string>%d daha</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

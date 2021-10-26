@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Send receipt";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Send to archive?";
-
 /* Title */
 "Send Verification Code" = "Ellenőrző kód küldése";
 

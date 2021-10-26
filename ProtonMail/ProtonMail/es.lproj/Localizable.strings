@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a las' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
@@ -29,7 +29,7 @@
 "%d attempt remaining" = "%d intento restante";
 
 /* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+"%d attempt remaining until secure data wipe!" = "¡%d intento restante hasta que los datos seguros se borren!";
 
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d conversación";
@@ -114,7 +114,7 @@
 "Account password invalid" = "Contraseña de la cuenta incorrecta";
 
 /* section title in settings */
-"Account settings" = "Account settings";
+"Account settings" = "Configuración de la cuenta";
 
 /* (No Comment) */
 "Add" = "Agregar";
@@ -248,16 +248,16 @@
 "App is locked" = "La aplicación está bloqueada";
 
 /* security title in settings */
-"App PIN" = "App PIN";
+"App PIN" = "PIN de la aplicación";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "PIN de la aplicación y Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "PIN de la aplicación y Touch ID";
 
 /* section title in settings */
-"App settings" = "App settings";
+"App settings" = "Configuración de la aplicación";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarifa de compra en la aplicación de Apple";
@@ -299,7 +299,7 @@
 "Are you sure? This can't be undone." = "¿Estás seguro? Esta acción no se puede deshacer.";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "A las %@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "No se ha podido encontrar al menos una dirección de correo electrónico del grupo";
@@ -623,13 +623,13 @@
 "Connect Account" = "Conectar cuenta";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "Contacto eliminado. Se sincronizará cuando la conexión esté disponible";
 
 /* contact section title */
 "Contact details" = "Datos de contacto";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "Contacto guardado. Se sincronizará cuando la conexión esté disponible";
 
 /* Title */
 "Contact the ProtonMail team" = "Contactar con el equipo de ProtonMail";
@@ -1033,7 +1033,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduce un código PIN entre 4 y 12 caracteres.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Enter current PIN code";
+"Enter current PIN code" = "Introduce el código PIN actual";
 
 /* Title */
 "Enter Verification Code" = "Introduce el código de verificación";
@@ -1100,7 +1100,7 @@
 "Failed to initialize the application's saved data" = "No se han podido inicializar los datos guardados de la aplicación";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+"Failed to load content!\nPlease try again." = "¡No se ha podido cargar el contenido!\nInténtalo de nuevo.";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -1112,7 +1112,7 @@
 "Fetch user info failed" = "Error al obtener información de usuario";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Archiva, etiqueta y clasifica por colores los mensajes para crear una perfecta y personalizada bandeja de entrada.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Carpeta";
@@ -1315,7 +1315,7 @@
 "Input Display Name ..." = "Introduce el nombre a mostrar ...";
 
 /* place holder */
-"Input Display Name…" = "Input Display Name…";
+"Input Display Name…" = "Introduce el nombre a mostrar…";
 
 /* place holder */
 "Input Notification Email …" = "Introducir correo electrónico de notificación …";
@@ -1414,7 +1414,7 @@
 "Language" = "Idioma";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Más tarde";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1649,7 +1649,7 @@
 "Name" = "Nombre";
 
 /* Onboarding title */
-"Neat and tidy" = "Neat and tidy";
+"Neat and tidy" = "Aseado y ordenado";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Regístrate gratis";
@@ -1680,7 +1680,7 @@
 "New mailbox password" = "Nueva contraseña del buzón";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "New Message";
+"New Message" = "Mensaje nuevo";
 
 /* Placeholder */
 "New password" = "Nueva contraseña";
@@ -1793,7 +1793,7 @@
 "On %@ at %@" = "El %1$@ a las %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
+"On E, MMM d, yyyy at %@" = "El E, d MMM, yyyy a las %@";
 
 /* Alert message */
 "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Solo ignora la activación de la compra si estás seguro de que todas tus suscripciones están actualizadas. Para obtener más ayuda, comunícate con el servicio de atención al cliente. \r\n\r\n ¿Estás seguro de que quieres ignorar la activación?";
@@ -1805,7 +1805,7 @@
 "Open" = "Abrir";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Open account switcher";
+"Open account switcher" = "Abrir cambiador de cuentas";
 
 /* (No Comment) */
 "OpenDraft" = "Abrir borrador";
@@ -1927,7 +1927,7 @@
 "Please input a valid email address." = "Por favor, introduce una dirección de correo electrónico válida.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep ProtonMail open until the operation is done." = "Mantén ProtonMail abierto hasta que finalice la operación.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Por favor, asegúrate de que tu conexión a internet funciona.";
@@ -1978,10 +1978,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Actualiza a un plan de pago para utilizar más de 3 etiquetas";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Actualiza tu plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Actualiza tu plan para continuar enviando y recibiendo correos electrónicos.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Primero inicia sesión en la app de ProtonMail.";
@@ -2044,7 +2044,7 @@
 "ProtonMail is currently offline…" = "ProtonMail está actualmente desconectado…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"ProtonMail needs photo library access in your device settings." = "ProtonMail necesita acceso a la galería de fotos en los ajustes de tu dispositivo.";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Es necesario tener ProtonMail Plus para editar la firma móvil";
@@ -2083,7 +2083,7 @@
 "Reading device contacts data…" = "Leyendo datos de contactos del dispositivo…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "Acuse de recibo enviado";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Datos del destinatario";
@@ -2120,7 +2120,7 @@
 "Remove All" = "Eliminar todo";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "Eliminar metadatos de la imagen";
 
 /* action title */
 "Remove password" = "Quitar contraseña";
@@ -2167,7 +2167,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Al notificar un mensaje como suplantación de identidad, enviarás una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Request link confirmation";
+"Request link confirmation" = "Solicitar confirmación de enlace";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "RESTABLECER CONTRASEÑA DEL BUZÓN";
@@ -2226,9 +2226,6 @@
 
 /* A button title to send read receipt */
 "Send receipt" = "Enviar acuse de recibo";
-
-/* No comment provided by engineer. */
-"Send to archive?" = "¿Enviar al archivo?";
 
 /* Title */
 "Send Verification Code" = "Enviar código de verificación";
@@ -2413,10 +2410,10 @@
 "Storage" = "Almacenamiento";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Almacenamiento lleno";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Límite de almacenamiento superado";
 
 /* Title */
 "Storage Warning" = "Advertencia de almacenamiento";
@@ -2517,7 +2514,7 @@
 "The draft format incorrectly sending failed!" = "Error al enviar el envío. Hubo un error con el formato de borrador.";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "No se pudieron adjuntar los siguientes archivos:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "El máximo nivel de cifrado disponible.";
@@ -2572,7 +2569,7 @@
 "The request timed out." = "Tiempo de espera agotado.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "El remitente ha solicitado un acuse de recibo.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "El límite de tamaño para los archivos adjuntos es de 25 MB.";
@@ -2618,7 +2615,7 @@
 "This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "This conversation contains trashed messages";
+"This conversation contains trashed messages" = "Esta conversación contiene mensajes de la papelera";
 
 /* No comment provided by engineer. */
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede estar falsificado o reenviado incorrectamente!";
@@ -2666,7 +2663,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "La validación del certificado TLS ha fallado. Tu conexión a Internet puede ser monitorizada. Por tu seguridad, la aplicación está temporalmente bloqueada.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "La validación del certificado TLS ha fallado. Tu conexión puede ser monitorizada y por tu seguridad, la aplicación se ha bloqueado temporalmente.\n\nCambia de red inmediatamente";
 
 /* message To: feild
    Title */
@@ -2917,7 +2914,7 @@
 "Warning" = "Advertencia";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Warning: Before you pass the human check you can't send email!";
+"Warning: Before you pass the human check you can't send email!" = "Advertencia: ¡Antes de pasar el control humano no puedes enviar correos electrónicos!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: No has establecido un correo electrónico de recuperación, por lo que la recuperación de la cuenta no será posible si olvidas tu contraseña. ¿Quieres continuar sin un correo electrónico de recuperación?";

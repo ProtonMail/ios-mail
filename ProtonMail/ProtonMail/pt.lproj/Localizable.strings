@@ -1624,10 +1624,10 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Mover para o assédio";
+"Move to spam" = "Mover para spam";
 
 /* move action */
-"Move to Spam" = "Mover para Assédio";
+"Move to Spam" = "Mover para spam";
 
 /* The title of the remove action in action sheet */
 "Move to trash" = "Mover para o lixo";
@@ -1725,7 +1725,7 @@
 "normal attachments" = "anexos normais";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Não é assédio (mover para a caixa de entrada)";
+"Not a spam (move to inbox)" = "Não é spam (mover para a caixa de entrada)";
 
 /* alert description */
 "Not all recipients support message expiration" = "Nem todos os destinatários suportam mensagens com validade";
@@ -2227,9 +2227,6 @@
 /* A button title to send read receipt */
 "Send receipt" = "Send receipt";
 
-/* No comment provided by engineer. */
-"Send to archive?" = "Enviar para o arquivo?";
-
 /* Title */
 "Send Verification Code" = "Enviar código de verificação";
 
@@ -2366,13 +2363,13 @@
 
 /* mail location desc
    menu title */
-"Spam" = "Assédio";
+"Spam" = "Spam";
 
 /* mail location title */
-"SPAM" = "Assédio";
+"SPAM" = "Spam";
 
 /* Description */
-"Spammed" = "Assediada";
+"Spammed" = "Contém spam";
 
 /* Error */
 "SRP Client" = "Cliente SRP";
@@ -2624,10 +2621,10 @@
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Esta mensagem falhou nos requisitos de autenticação do domínio. Pode ser uma fraude ou ter sido indevidamente encaminhado!";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Esta mensagem falhou os requisitos de autenticação do seu domínio. Pode estar falsificada ou ter sido reencaminhada incorrectamente!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail falhou os requisitos de autenticação do domínio. Pode ser falsificado ou ter sido reencaminhado incorretamente!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Esta mensagem parece vir dum endereço ProtonMail mas veio de um sistema externo e não cumpre os nossos requisitos de autenticação. Pode ser falsa ou reencaminhada incorrectamente!";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail aparenta ser oriundo de um endereço ProtonMail, mas foi enviado por um sistema externo e não cumpre os nossos requisitos de autenticação. Pode ser falsificado ou reencaminhado incorretamente!";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Esta pasta está vazia";

@@ -32,10 +32,10 @@
 "%d attempt remaining until secure data wipe!" = "%d попыток остается до тех пор, пока защищенные данные не будут стерты!";
 
 /* The title of single selected conversation of action sheet in inbox */
-"%d conversation" = "%d разговор";
+"%d conversation" = "%d цепочка писем";
 
 /* The title of multiple selected conversations of action sheet in inbox */
-"%d conversations" = "%d разговоров";
+"%d conversations" = "%d цепочки писем";
 
 /* day */
 "%d day" = "%d день";
@@ -392,7 +392,7 @@
 "Birthday" = "День рождения";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Просматривайте потоковые сообщения в режиме разговора.";
+"Breeze through threaded messages in conversation mode." = "Просматривайте потоковые сообщения в режиме цепочки писем.";
 
 /* Title */
 "Bug Description" = "Описание ошибки";
@@ -652,7 +652,7 @@
 "Conversation" = "Цепочка писем";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Режим диалога";
+"Conversation mode" = "Режим цепочки писем";
 
 /* Title */
 "Copy" = "Копировать";
@@ -952,7 +952,7 @@
 "Empty Label" = "Очистить ярлык";
 
 /* No comment provided by engineer. */
-"Enable conversations" = "Включить цепочки";
+"Enable conversations" = "Включить цепочки писем";
 
 /* Title */
 "Enable email notices" = "Включить уведомления о письмах";
@@ -2226,9 +2226,6 @@
 
 /* A button title to send read receipt */
 "Send receipt" = "Отправить квитанцию";
-
-/* No comment provided by engineer. */
-"Send to archive?" = "Отправить в архив?";
 
 /* Title */
 "Send Verification Code" = "Отправить код подтверждения";
