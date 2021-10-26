@@ -213,25 +213,14 @@ class NewMessageBodyViewModel {
     private(set) var shouldShowEmbeddedBanner = false
 
     private func checkBannerStatus(_ bodyToCheck: String) {
-        var shouldShowEmbeddedBanner = false
-        if embeddedContentPolicy != .allowed && message.isHavingEmbeddedImages(decryptedBody: bodyToCheck) {
-            shouldShowEmbeddedBanner = true
-        }
-
-        if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
-            DispatchQueue.global().async { [weak self] in
-                // this method is slow
-                let shouldShowRemoteBanner = bodyToCheck.hasImage()
-                DispatchQueue.main.async {
-                    self?.shouldShowRemoteBanner = shouldShowRemoteBanner
-                    self?.shouldShowEmbeddedBanner = shouldShowEmbeddedBanner
-                    self?.delegate?.updateBannerStatus()
-                }
-            }
-        } else {
-            self.shouldShowRemoteBanner = true
-            self.shouldShowEmbeddedBanner = shouldShowEmbeddedBanner
-            delegate?.updateBannerStatus()
+        let isHavingEmbeddedImages = message.isHavingEmbeddedImages(decryptedBody: bodyToCheck)
+        let helper = BannerHelper(embeddedContentPolicy: embeddedContentPolicy,
+                                  remoteContentPolicy: remoteContentPolicy,
+                                  isHavingEmbeddedImages: isHavingEmbeddedImages)
+        helper.calculateBannerStatus(bodyToCheck: bodyToCheck) { [weak self] showRemoteBanner, showEmbeddedBanner in
+            self?.shouldShowRemoteBanner = showRemoteBanner
+            self?.shouldShowEmbeddedBanner = showEmbeddedBanner
+            self?.delegate?.updateBannerStatus()
         }
     }
 
@@ -319,6 +308,37 @@ class NewMessageBodyViewModel {
                 }
             }
         }
+    }
+}
+
+struct BannerHelper {
+    let embeddedContentPolicy: WebContents.EmbeddedContentPolicy
+    let remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue
+    let isHavingEmbeddedImages: Bool
+
+    func calculateBannerStatus(bodyToCheck: String, result: @escaping (Bool, Bool) -> Void) {
+        calculateRemoteBannerStatus(bodyToCheck: bodyToCheck) { shouldShowRemoteBanner in
+            let shouldShowEmbeddedBanner = self.shouldShowEmbeddedBanner()
+            result(shouldShowRemoteBanner, shouldShowEmbeddedBanner)
+        }
+    }
+
+    func calculateRemoteBannerStatus(bodyToCheck: String, result: @escaping ((Bool) -> Void)) {
+        if remoteContentPolicy != WebContents.RemoteContentPolicy.allowed.rawValue {
+            DispatchQueue.global().async {
+                // this method is slow
+                let shouldShowRemoteBanner = bodyToCheck.hasImage()
+                DispatchQueue.main.async {
+                    result(shouldShowRemoteBanner)
+                }
+            }
+        } else {
+            result(false)
+        }
+    }
+
+    func shouldShowEmbeddedBanner() -> Bool {
+        return embeddedContentPolicy != .allowed && isHavingEmbeddedImages
     }
 }
 

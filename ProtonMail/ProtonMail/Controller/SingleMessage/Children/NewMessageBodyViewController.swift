@@ -139,27 +139,31 @@ class NewMessageBodyViewController: UIViewController {
         config.preferences = preferences
         loader?.inject(into: config)
 
-        self.webView = PMWebView(frame: .zero, configuration: config)
-        guard let webView = self.webView else {
-            return
-        }
+        if let existingWebView = self.webView {
+            existingWebView.stopLoading()
+        } else {
+            self.webView = PMWebView(frame: .zero, configuration: config)
+            guard let webView = self.webView else {
+                return
+            }
 
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        if viewMode == .singleMessage {
-            webView.scrollView.delegate = self
-            // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
-            webView.scrollView.isScrollEnabled = false
-        }
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
-        webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
-        webView.scrollView.bouncesZoom = false
-        webView.scrollView.isDirectionalLockEnabled = false
-        webView.scrollView.showsVerticalScrollIndicator = false
-        webView.scrollView.showsHorizontalScrollIndicator = true
+            webView.translatesAutoresizingMaskIntoConstraints = false
+            webView.navigationDelegate = self
+            webView.uiDelegate = self
+            if viewMode == .singleMessage {
+                webView.scrollView.delegate = self
+                // Work around for webview tap too sensitive. Disable the recognizer when the view is just loaded.
+                webView.scrollView.isScrollEnabled = false
+            }
+            webView.scrollView.contentInsetAdjustmentBehavior = .never
+            webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
+            webView.scrollView.bouncesZoom = false
+            webView.scrollView.isDirectionalLockEnabled = false
+            webView.scrollView.showsVerticalScrollIndicator = false
+            webView.scrollView.showsHorizontalScrollIndicator = true
 
-        self.customView.embed(webView)
+            self.customView.embed(webView)
+        }
 
         if viewMode == .singleMessage {
             self.prepareGestureRecognizer()
@@ -194,7 +198,7 @@ class NewMessageBodyViewController: UIViewController {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard placeholder == false else { return }
         if webView.isLoading {
-            updatesTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { [weak self] _ in
+            updatesTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
                 self?.viewModel.recalculateCellHeight?(false)
             })
