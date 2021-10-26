@@ -12,6 +12,7 @@ import pmtest
 fileprivate struct id {
     /// Composer identifiers.
     static let sendButtonIdentifier = "ComposeContainerViewController.sendButton"
+    static let sendButtonLabel = LocalString._general_send_action
     static let toTextFieldIdentifier = "To:TextField"
     static let ccTextFieldIdentifier = "ccTextField"
     static let bccTextFieldIdentifier = "bccTextField"
@@ -177,7 +178,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        button(id.sendButtonIdentifier).waitForHittable().tap()
+        button(id.sendButtonLabel).tap()
         return InboxRobot()
     }
     
