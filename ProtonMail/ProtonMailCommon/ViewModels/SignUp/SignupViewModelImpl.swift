@@ -390,10 +390,13 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
-        let defaultDomains = ["protonmail.com", "protonmail.ch"]
+        let defaultDomains = ["protonmail.com"]
         let api = GetAvailableDomainsRequest()
         self.apiService.exec(route: api) { (task, response: AvailableDomainsResponse) in
-            if let domains = response.domains {
+            if var domains = response.domains {
+                if let index = domains.firstIndex(of: "protonmail.ch") {
+                    domains.remove(at: index)
+                }
                 complete(domains)
             } else {
                 complete(defaultDomains)
