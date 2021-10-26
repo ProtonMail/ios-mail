@@ -75,7 +75,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
-        table(id.mailboxTableViewIdentifier).swipeDown()
+        table(id.mailboxTableViewIdentifier).tapThenSwipeDown(0.3, .slow)
         return self
     }
     

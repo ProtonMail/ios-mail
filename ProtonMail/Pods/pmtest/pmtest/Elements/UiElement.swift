@@ -250,6 +250,42 @@ open class UiElement {
         Wait().forElement(uiElement()).swipeUp()
         return self
     }
+    
+    @discardableResult
+    public func tapThenSwipeLeft( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeRight( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeDown( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeUp( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
 
     @discardableResult
     public func tap() -> UiElement {
