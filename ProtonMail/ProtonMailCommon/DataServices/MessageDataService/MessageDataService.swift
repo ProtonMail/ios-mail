@@ -1651,6 +1651,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     func encryptBody(_ message: Message, clearBody: String, mailbox_pwd: String, error: NSErrorPointer?) {
+        // TODO: Refactor this method later.
         let addressId = message.addressID ?? .empty
         if addressId.isEmpty {
             return
