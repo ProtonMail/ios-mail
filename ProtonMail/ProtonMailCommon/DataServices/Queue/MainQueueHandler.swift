@@ -681,25 +681,21 @@ extension MainQueueHandler {
                     guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                         continue
                     }
-                    context.performAndWait {
-                        att.keyPacket = newKeyPack
-                        att.keyChanged = true
-                    }
+                    att.keyPacket = newKeyPack
+                    att.keyChanged = true
                 }
                 guard let decryptedBody = try self.messageDataService
-                    .decryptBodyIfNeeded(message: message) else {
-                        // error: object is not a Message
-                        completion?(nil, nil, NSError.badParameter("decrypted body"))
-                        return
-                    }
-                context.performAndWait { [weak self] in
-                    message.addressID = addressID
-                    if message.nextAddressID == addressID {
-                        message.nextAddressID = nil
-                    }
-                    let mailbox_pwd = user.mailboxPassword
-                    self?.messageDataService.encryptBody(message, clearBody: decryptedBody, mailbox_pwd: mailbox_pwd, error: nil)
+                        .decryptBodyIfNeeded(message: message) else {
+                            // error: object is not a Message
+                            completion?(nil, nil, NSError.badParameter("decrypted body"))
+                            return
+                        }
+                message.addressID = addressID
+                if message.nextAddressID == addressID {
+                    message.nextAddressID = nil
                 }
+                let mailbox_pwd = user.mailboxPassword
+                self.messageDataService.encryptBody(message, clearBody: decryptedBody, mailbox_pwd: mailbox_pwd, error: nil)
                 self.messageDataService.saveDraft(message)
                 completion?(nil, nil, nil)
             } catch let ex as NSError {
