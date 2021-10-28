@@ -1,4 +1,5 @@
 import ProtonCore_UIFoundations
+import CoreData
 
 class ConversationViewModel {
 
@@ -97,6 +98,10 @@ class ConversationViewModel {
         conversationService.fetchConversation(with: conversation.conversationID, includeBodyOf: nil) { _ in
             completion?()
         }
+    }
+
+    func message(by objectID: NSManagedObjectID) -> Message? {
+        conversationMessagesProvider.message(by: objectID)
     }
 
     func observeConversationUpdate() {
