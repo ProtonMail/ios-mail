@@ -1722,6 +1722,7 @@ class MessageDataService : Service, HasLocalStorage {
                               body: String,
                               attachments: [Any]?,
                               mailbox_pwd: String,
+                              sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
         message.messageID = UUID().uuidString
@@ -1735,6 +1736,7 @@ class MessageDataService : Service, HasLocalStorage {
         message.messageStatus = 1
         message.setAsDraft()
         message.userID = self.userID
+        message.addressID = sendAddress.addressID
         
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

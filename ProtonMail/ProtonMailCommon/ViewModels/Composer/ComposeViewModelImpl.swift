@@ -604,13 +604,16 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+    override func collectDraft(_ title: String, body: String, expir: TimeInterval, pwd: String, pwdHit: String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
 
         let context = self.composerContext!
         context.performAndWait {
             if self.message == nil || self.message?.managedObjectContext == nil {
+                guard let sendAddress = getDefaultSendAddress() else {
+                    return
+                }
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
                                                                        bccList: self.toJsonString(self.bccSelectedContacts),
                                                                        ccList: self.toJsonString(self.ccSelectedContacts),
@@ -621,6 +624,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                                                                        body: body,
                                                                        attachments: nil,
                                                                        mailbox_pwd: mailboxPassword,
+                                                                       sendAddress: sendAddress,
                                                                        inManagedObjectContext: context)
                 self.message?.password = pwd
                 self.message?.unRead = false
