@@ -473,10 +473,12 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         //touch id
         getShared().removeObject(forKey: Key.autoLogoutTime)
         getShared().removeObject(forKey: Key.askEnableTouchID)
-        
-        //
+
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
-       
+
+        getShared().removeObject(forKey: Key.leftToRightSwipeAction)
+        getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
+
         getShared().synchronize()
     }
 
@@ -646,6 +648,7 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
             if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
+                self.leftToRightSwipeActionType = .readAndUnread
                 return .readAndUnread
             }
         }
@@ -659,6 +662,7 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
             if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
+                self.rightToLeftSwipeActionType = .trash
                 return .trash
             }
         }
