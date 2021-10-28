@@ -178,7 +178,7 @@ def send_to_slack(success, changelog, exception, bundle_version)
 end
 
 platform :ios do 
-  desc "Build app"
+  desc "Build the app and upload to testflight"
   lane :build do |options|
     xcversion(version: "~> 13.0.0")
     set_up_keychain(false)
@@ -241,10 +241,18 @@ platform :ios do
   # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
-  desc "Test code coverage"
+  desc "Run unit test and get test coverage"
   lane :unit_test do |options|
     xcversion(version: "~> 13.0.0")
-    scan(workspace: "Protonmail.xcworkspace", device: "iPhone 8", scheme: "ProtonMailTests", code_coverage: true, derived_data_path: "../test_output")
+    scan(
+      workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "ProtonMailTests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: APP_IDENTIFIER
+    )
 
     slather(build_directory: "../test_output/",
     scheme: "ProtonMailTests",
