@@ -67,8 +67,12 @@ class PinCodeView: PMView {
 
         lockImageView.tintColor = UIColorManager.TextNorm
 
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColorManager.TextHint
+        ]
         pinDisplayView.attributedPlaceholder = LocalString
-            ._enter_pin_to_unlock_inbox.apply(style: FontManager.DefaultSmallHint)
+            ._enter_pin_to_unlock_inbox.apply(style: attributes)
 
         attempsLabel.setCornerRadius(radius: 8.0)
 

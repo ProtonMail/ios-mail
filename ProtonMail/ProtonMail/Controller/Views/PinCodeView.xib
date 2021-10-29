@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,14 +31,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wci-cw-0Qd">
-                    <rect key="frame" x="0.0" y="18" width="375" height="144"/>
+                    <rect key="frame" x="0.0" y="18" width="414" height="144"/>
                     <subviews>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect PIN. 9 attemps remaining" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEc-sM-wxY">
-                            <rect key="frame" x="28" y="115.5" width="319" height="36"/>
+                            <rect key="frame" x="28" y="115.5" width="358" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="36" id="PiF-5W-nzr"/>
                             </constraints>
@@ -45,26 +47,26 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter PIN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRT-yh-ERt">
-                            <rect key="frame" x="150.5" y="-4.5" width="74.5" height="21"/>
+                            <rect key="frame" x="170" y="-4.5" width="74.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-lock-wide" translatesAutoresizingMaskIntoConstraints="NO" id="YmX-CC-apy">
-                            <rect key="frame" x="173.5" y="44.5" width="28" height="28"/>
+                            <rect key="frame" x="193" y="44.5" width="28" height="28"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="1et-As-Py0"/>
                                 <constraint firstAttribute="width" constant="28" id="XoK-Ml-B10"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ium-WR-J5s" userLabel="Top Pin Display">
-                            <rect key="frame" x="28" y="80.5" width="319" height="40"/>
+                            <rect key="frame" x="28" y="80.5" width="358" height="40"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mzr-Tn-Lq9">
-                                    <rect key="frame" x="0.0" y="0.0" width="319" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="358" height="30"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Enter your PIN to unlock you inbox" textAlignment="center" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="plR-r3-cPc">
-                                            <rect key="frame" x="0.0" y="8" width="319" height="22"/>
+                                            <rect key="frame" x="0.0" y="8" width="358" height="22"/>
                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -103,16 +105,16 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Qx0-Yp-brk" userLabel="KeyboardContainerView">
-                    <rect key="frame" x="0.0" y="180" width="375" height="367"/>
+                    <rect key="frame" x="8" y="180" width="398" height="520"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EcD-l5-JfY" userLabel="1 line">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
+                            <rect key="frame" x="0.0" y="0.0" width="398" height="130"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2YQ-k7-y6L">
-                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="92"/>
+                                    <rect key="frame" x="264" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePo-l9-EYx" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="3"/>
@@ -131,10 +133,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hMB-jP-Ame">
-                                    <rect key="frame" x="141.5" y="0.0" width="92" height="92"/>
+                                    <rect key="frame" x="134" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3h-zj-1Kd" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="72" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="2"/>
@@ -153,10 +155,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJe-HH-Q3r">
-                                    <rect key="frame" x="50" y="0.0" width="91.5" height="92"/>
+                                    <rect key="frame" x="4" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ruA-EE-Yxr" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="1"/>
@@ -189,13 +191,13 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-IW-foE" userLabel="2 line">
-                            <rect key="frame" x="0.0" y="92" width="375" height="91.5"/>
+                            <rect key="frame" x="0.0" y="130" width="398" height="130"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRF-R5-6v9">
-                                    <rect key="frame" x="50" y="0.0" width="91.5" height="91.5"/>
+                                    <rect key="frame" x="4" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dG0-wX-hWt" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="4"/>
@@ -214,10 +216,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTc-Fs-rHA">
-                                    <rect key="frame" x="141.5" y="0.0" width="92" height="91.5"/>
+                                    <rect key="frame" x="134" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ut4-0g-D6Q" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="72" height="71.5"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="5"/>
@@ -236,10 +238,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2U-py-UpY">
-                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="91.5"/>
+                                    <rect key="frame" x="264" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oap-vx-3Xa" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="6"/>
@@ -272,13 +274,13 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8u-Fp-tL4" userLabel="3 line">
-                            <rect key="frame" x="0.0" y="183.5" width="375" height="92"/>
+                            <rect key="frame" x="0.0" y="260" width="398" height="130"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KKT-eL-aId">
-                                    <rect key="frame" x="50" y="0.0" width="91.5" height="92"/>
+                                    <rect key="frame" x="4" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FI-Ld-5gG" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="7"/>
@@ -297,10 +299,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uci-V7-HfD">
-                                    <rect key="frame" x="141.5" y="0.0" width="92" height="92"/>
+                                    <rect key="frame" x="134" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJW-Pp-nUw" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="72" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="8"/>
@@ -319,10 +321,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tys-3n-60h">
-                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="92"/>
+                                    <rect key="frame" x="264" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNG-Ml-gC9" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="72"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="9"/>
@@ -355,13 +357,13 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM2-1N-P6W" userLabel="4 line">
-                            <rect key="frame" x="0.0" y="275.5" width="375" height="91.5"/>
+                            <rect key="frame" x="0.0" y="390" width="398" height="130"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nq3-iq-nRl">
-                                    <rect key="frame" x="233.5" y="0.0" width="91.5" height="91.5"/>
+                                    <rect key="frame" x="264" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgw-dA-i9G">
-                                            <rect key="frame" x="10" y="10" width="71.5" height="71.5"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal" image="pin_code_del"/>
                                             <connections>
@@ -379,10 +381,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0T6-dQ-iNz">
-                                    <rect key="frame" x="141.5" y="0.0" width="92" height="91.5"/>
+                                    <rect key="frame" x="134" y="0.0" width="130" height="130"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Pk-5l-6zT" customClass="RoundButton" customModule="ProtonMail" customModuleProvider="target">
-                                            <rect key="frame" x="10" y="10" width="72" height="71.5"/>
+                                            <rect key="frame" x="10" y="10" width="110" height="110"/>
                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <state key="normal" title="0"/>
@@ -401,7 +403,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdH-CX-apo">
-                                    <rect key="frame" x="0.0" y="0.0" width="92" height="91.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="130" height="130"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="gdH-CX-apo" secondAttribute="height" multiplier="1:1" id="kDA-Tg-Cz2"/>
@@ -445,7 +447,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZi-Xu-g8R" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                    <rect key="frame" x="24" y="579" width="327" height="48"/>
+                    <rect key="frame" x="24" y="774" width="366" height="48"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Owz-um-MLh"/>
                     </constraints>
@@ -455,7 +457,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q74-en-lkU">
-                    <rect key="frame" x="303" y="0.0" width="72" height="48"/>
+                    <rect key="frame" x="342" y="0.0" width="72" height="48"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="72" id="cl0-iY-I6i"/>
                         <constraint firstAttribute="height" constant="48" id="jfo-g3-dVb"/>
