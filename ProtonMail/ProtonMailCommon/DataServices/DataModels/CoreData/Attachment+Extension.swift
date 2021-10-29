@@ -167,62 +167,9 @@ extension Attachment {
         return sessionKey
     }
     
-//    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
-//    func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
-//        if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-//            complete( self.base64DecryptAttachment() )
-//            return
-//        }
-//
-//        if let data = self.fileData, data.count > 0 {
-//            complete( self.base64DecryptAttachment() )
-//            return
-//        }
-//
-//        self.localURL = nil
-//        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
-//            self.localURL = url;
-//            complete( self.base64DecryptAttachment() )
-//            if error != nil {
-//                PMLog.D("\(String(describing: error))")
-//            }
-//        })
-//    }
-    
-//    func fetchAttachmentBody() -> Promise<String> {
-//        return Promise { seal in
-//            async {
-//                if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-//                    seal.fulfill(self.base64DecryptAttachment())
-//                    return
-//                }
-//
-//                if let data = self.fileData, data.count > 0 {
-//                    seal.fulfill(self.base64DecryptAttachment())
-//                    return
-//                }
-//
-//                self.localURL = nil
-//                sharedMessageDataService.fetchAttachmentForAttachment(self,
-//                                                                      customAuthCredential: self.message.cachedAuthCredential,
-//                                                                      downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
-//                                                                      completion: { (_, url, error) -> Void in
-//                    self.localURL = url;
-//                    seal.fulfill(self.base64DecryptAttachment())
-//                    if error != nil {
-//                        PMLog.D("\(String(describing: error))")
-//                    }
-//                })
-//            }
-//
-//        }
-//    }
-    
     func base64DecryptAttachment(userInfo: UserInfo, passphrase: String) -> String {
-//        let userInfo = self.message.cachedUser ?? user.userInfo
         let userPrivKeys = userInfo.userPrivateKeysArray
         let addrPrivKeys = userInfo.addressKeys
-//        let passphrase = self.message.cachedPassphrase ?? user.mailboxPassword
 
         if let localURL = self.localURL {
             if let data : Data = try? Data(contentsOf: localURL as URL) {
@@ -379,8 +326,8 @@ extension UIImage: AttachmentConvertible {
                 seal.fulfill(nil)
                 return
             }
-            CoreDataService.shared.enqueue(context: context) { (context) in
-                if let fileData = self.toData() {
+            if let fileData = self.toData() {
+                context.perform {
                     let attachment = Attachment(context: context)
                     attachment.attachmentID = "0"
                     attachment.fileName = fileName
@@ -391,13 +338,13 @@ extension UIImage: AttachmentConvertible {
                     attachment.keyPacket = ""
                     let dataToWrite = stripMetadata ? fileData.strippingExif() : fileData
                     try? attachment.writeToLocalURL(data: dataToWrite)
-                
+
                     attachment.message = message
-                    
+
                     let number = message.numAttachments.int32Value
                     let newNum = number > 0 ? number + 1 : 1
                     message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                    
+
                     var error: NSError? = nil
                     error = context.saveUpstreamIfNeeded()
                     if error != nil {
@@ -426,8 +373,8 @@ extension Data: AttachmentConvertible {
                 seal.fulfill(nil)
                 return
             }
-            CoreDataService.shared.enqueue(context: context) { (context) in
-                let attachment = Attachment(context: context)//TODO:: need check context nil or not instead of !
+            context.perform {
+                let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
                 attachment.fileName = fileName
                 attachment.mimeType = type
@@ -437,11 +384,11 @@ extension Data: AttachmentConvertible {
                 attachment.keyPacket = ""
                 try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
                 attachment.message = message
-                
+
                 let number = message.numAttachments.int32Value
                 let newNum = number > 0 ? number + 1 : 1
                 message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
-                
+
                 var error: NSError? = nil
                 error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 if error != nil {
@@ -462,7 +409,7 @@ extension URL: AttachmentConvertible {
                 seal.fulfill(nil)
                 return
             }
-            CoreDataService.shared.enqueue(context: context) { (context) in
+            context.perform {
                 let attachment = Attachment(context: context)
                 attachment.attachmentID = "0"
                 attachment.fileName = fileName
@@ -472,13 +419,12 @@ extension URL: AttachmentConvertible {
                 attachment.isTemp = false
                 attachment.keyPacket = ""
                 attachment.localURL = stripMetadata ? self.strippingExif() : self
-                
                 attachment.message = message
-                
+
                 let number = message.numAttachments.int32Value
                 let newNum = number > 0 ? number + 1 : 1
                 message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-                
+
                 var error: NSError? = nil
                 error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 if error != nil {
