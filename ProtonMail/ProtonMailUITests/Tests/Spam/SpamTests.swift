@@ -42,7 +42,6 @@ class SpamTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .sendMessage(recipient.email, subject)
-            .refreshMailbox()
             .spamMessageBySubject(subject)
             .menuDrawer()
             .spams()
