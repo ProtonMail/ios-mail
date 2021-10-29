@@ -780,6 +780,12 @@ extension EncryptedSearchService {
                     //TODO just sent when indexing is actually completely finished
                     self?.sendIndexingMetrics(indexTime: self!.indexingStartTime - CFAbsoluteTimeGetCurrent())
                     
+                    //print("Size of search index (before compression): \(EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: (self?.user.userInfo.userId)!).asString)")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                        EncryptedSearchIndexService.shared.compressSearchIndex(for: (self?.user.userInfo.userId)!)
+                        //print("Size of search index (after compression): \(EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: (self?.user.userInfo.userId)!).asString)")
+                    }
+                    
                     return
                 }
             }
