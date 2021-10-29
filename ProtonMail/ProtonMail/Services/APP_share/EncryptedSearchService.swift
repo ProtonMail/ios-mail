@@ -2029,21 +2029,32 @@ extension EncryptedSearchService {
         //update necessary variables needed
         self.updateCurrentUserIfNeeded()
         
+        var cleanedQuery: String = ""
+        //normalize search query using NFKC
+        cleanedQuery = query.precomposedStringWithCompatibilityMapping
+        print("Query (normalized): ", cleanedQuery)
+        
+        //remove character distinctions such as case insensitivity, width insensitivity and diacritics
+        //use system locale
+        cleanedQuery = query.folding(options: [.caseInsensitive, .widthInsensitive, .diacriticInsensitive], locale: nil)
+        print("Query (character distinctions removed): ", cleanedQuery)
+        
         //if search query hasn't changed, but just the page, then just display results
-        if query == self.lastSearchQuery {
+        /*if cleanedQuery == self.lastSearchQuery {
             //TODO is searchedCount the same as searchresults.length?
             if self.searchState!.searchedCount == 0 {//self.searchResults!.length() == 0 {
                 self.isFirstSearch = false
                 completion!(nil, error)
             } else {
                 //TODO
-                /*self.extractSearchResults(self.searchResults!, page) { messages in
-                    completion!(messages, error)
-                }*/
+                //self.extractSearchResults(self.searchResults!, page) { messages in
+                //    completion!(messages, error)
+                //}
             }
-        } else {    //If there is a new search query, then trigger new search
+        } else {*/
+        //If there is a new search query, then trigger new search
             let startSearch: Double = CFAbsoluteTimeGetCurrent()
-            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
+            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(cleanedQuery)
             let cipher: EncryptedsearchAESGCMCipher = self.getCipher()
             let cache: EncryptedsearchCache? = self.getCache(cipher: cipher)
             self.searchState = EncryptedsearchSearchState()
@@ -2084,7 +2095,7 @@ extension EncryptedSearchService {
                     }
                 }
             }
-        }
+       // }
     }
 
     func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
