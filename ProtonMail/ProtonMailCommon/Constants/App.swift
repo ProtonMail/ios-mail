@@ -40,21 +40,33 @@ struct Constants {
         
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
+         
         
         // live api
-        static let URL_HOST : String = "api.protonmail.ch"
-        static let API_PATH : String = ""
+        static let URL_HOST = "api.protonmail.ch"
+        static let API_PATH = ""
         //static let URL_HOST : String = "beta.proton.black"
         //static let API_PATH : String = "/api"
         static let DOH_ENABLE : Bool = true
         
         ///
-        static let URL_Protocol : String = "https://"
-        static let API_PREFIXED: String = "mail/v4"
-        static var API_HOST_URL : String {
+        static let URL_Protocol = "https://"
+        static let API_PREFIXED = "mail/v4"
+        private static var API_HOST_URL : String {
             get {
                 return URL_Protocol + URL_HOST
             }
+        }
+        
+        static func apiHost() -> String {
+            if let apiURLOverrideString = UserDefaults.standard.string(forKey: "ch.protonmail.protonmail.APIURLOverride"), let apiURLOverride = URL(string: apiURLOverrideString) {
+                return apiURLOverride.absoluteString
+            }
+            return API_HOST_URL
+        }
+         
+        static func captchaHost() -> String {
+            return API_HOST_URL
         }
         
         //app share group
