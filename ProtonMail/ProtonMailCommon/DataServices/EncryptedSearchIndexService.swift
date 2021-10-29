@@ -330,7 +330,22 @@ extension EncryptedSearchIndexService {
     }
     
     func updateLocationForMessage(for userID: String, messageID: String, location: Int){
+        //TODO
+    }
+    
+    func compressSearchIndex(for userID: String) {
+        //If there is no search index for an user, then do nothing
+        if self.checkIfSearchIndexExists(for: userID) == false {
+            return
+        }
         
+        let handle: Connection? = self.connectToSearchIndex(for: userID)
+        
+        do {
+            try handle?.run("VACUUM")
+        } catch {
+            print("Error when compressing the search index db: \(error)")
+        }
     }
 }
 
