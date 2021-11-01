@@ -144,7 +144,7 @@ class PinInputRobot: CoreElements {
         
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
-            let errorMessage = String(format: "Incorrect PIN, %d attempts remaining", (10-count))
+            let errorMessage = String(format: "Incorrect PIN. %d attempt remaining", (10-count))
             staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
             return PinInputRobot()
         }

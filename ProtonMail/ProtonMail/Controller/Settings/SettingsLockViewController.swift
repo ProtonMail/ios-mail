@@ -125,10 +125,13 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             switch item {
             case .none:
                 cell.accessoryType = self.viewModel.lockOn ? .none : .checkmark
+                cell.accessibilityIdentifier = "SettingsLockView.nonCell"
             case .pinCode:
                 cell.accessoryType = self.viewModel.isPinCodeEnabled ? .checkmark : .none
+                cell.accessibilityIdentifier = "SettingsLockView.pinCodeCell"
             case .faceId:
                 cell.accessoryType = self.viewModel.isTouchIDEnabled ? .checkmark : .none
+                cell.accessibilityIdentifier = "SettingsLockView.faceIdCell"
             }
 
             let title = (item == .faceId ? viewModel.getBioProtectionTitle() : item.description)

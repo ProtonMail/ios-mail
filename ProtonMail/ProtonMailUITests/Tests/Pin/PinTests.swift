@@ -22,14 +22,14 @@ class PinTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enableAndSetPin(correctPins)
-            .verify.isUsePinToggleOn(true)
+            .enablePin().setPin(pin: "\(correctPins)")
+            .verify.isPinEnabled(true)
     }
     
     func testTurnOnAndOffPin() {
         pinRobot
             .disablePin()
-            .verify.isUsePinToggleOn(false)
+            .verify.isPinEnabled(false)
     }
     
     func testEnterCorrectPinCanUnlock() {
