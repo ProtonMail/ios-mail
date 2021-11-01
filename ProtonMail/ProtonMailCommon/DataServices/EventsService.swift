@@ -655,11 +655,19 @@ extension EventsService {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                                   fromJSONArray: contactObj.contacts,
                                                                                   in: context) as? [Contact] {
+                                let allLocalEmails = (try? context.fetch(NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)) as? [Email]) ?? []
                                 for c in outContacts {
                                     c.isDownloaded = false
                                     c.userID = self.userManager.userInfo.userId
                                     if let emails = c.emails.allObjects as? [Email] {
                                         emails.forEach { (e) in
+                                            allLocalEmails
+                                                .filter { localEmail in
+                                                    // Same email, same name, and emailID is a UUID, then it was a temporary email that we must delete to avoid duplicates
+                                                    localEmail.email == e.email
+                                                    && UUID(uuidString: localEmail.emailID) != nil
+                                                }
+                                                .forEach { context.delete($0) }
                                             e.userID = self.userManager.userInfo.userId
                                         }
                                     }
