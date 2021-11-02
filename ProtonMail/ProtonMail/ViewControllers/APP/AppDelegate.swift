@@ -315,8 +315,7 @@ extension AppDelegate: UIApplicationDelegate {
         //If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
         if EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
             EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
-            EncryptedSearchService.shared.viewModel?.pauseIndexing = false
-            EncryptedSearchService.shared.pauseAndResumeIndexing()
+            EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false)
         }
     }
 
