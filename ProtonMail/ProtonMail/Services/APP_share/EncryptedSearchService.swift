@@ -18,6 +18,7 @@ import BackgroundTasks
 
 import ProtonCore_Services
 import ProtonCore_DataModel
+import UIKit
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -572,6 +573,8 @@ public class EncryptedSearchService {
         
         //enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
+        //enable battery level monitoring
+        self.registerForBatteryLevelChangeNotifications()
     }
     
     internal var user: UserManager!
@@ -614,7 +617,8 @@ public class EncryptedSearchService {
     
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
-    internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+    internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime: Bool = false
+    internal var pauseIndexingDueToLowBattery: Bool = false
     internal var numPauses: Int = 0
     internal var numInterruptions: Int = 0
     
@@ -2324,6 +2328,23 @@ extension EncryptedSearchService {
         let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.user.userInfo.userId).asString
         
         print("Total Memory: \(totalMemory/1048576.0) mb, free Memory: \(freeMemory/1048576.0) mb, free disk space: \(freeDiskSpace), size of index: \(sizeOfIndex)")
+    }
+    
+    private func registerForBatteryLevelChangeNotifications() {
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToBatteryLevel(_:)), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
+    }
+    
+    @objc private func responseToBatteryLevel(_ notification: Notification) {
+        //if battery is low (Android < 15%), (iOS < 20%) we pause indexing
+        let batteryLevel: Float = UIDevice.current.batteryLevel
+        if batteryLevel < 0.2 && !self.pauseIndexingDueToLowBattery {   //if battery is < 20% and indexing is not already paused - then pause
+            print("Pause indexing due to low battery!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        } else if batteryLevel >= 0.2 && self.pauseIndexingDueToLowBattery {    // if battery >= 20% and indexing is paused - then resume
+            print("Resume indexing as battery is charged again!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+        }
     }
     
     private func registerForTermalStateChangeNotifications() {
