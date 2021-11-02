@@ -574,7 +574,8 @@ public class EncryptedSearchService {
         //enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
         //enable battery level monitoring
-        self.registerForBatteryLevelChangeNotifications()
+        //self.registerForBatteryLevelChangeNotifications()
+        self.registerForPowerStateChangeNotifications()
     }
     
     internal var user: UserManager!
@@ -806,7 +807,18 @@ extension EncryptedSearchService {
     func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: @escaping () -> Void = {}){
         if isPause {
             self.numInterruptions += 1
+            self.viewModel?.pauseIndexing = true
+        } else {
+            print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), background: \(self.pauseIndexingDueToBackgroundTaskRunningOutOfTime)")
+            //check if any of the flags is set to true
+            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+                self.viewModel?.pauseIndexing = true
+                completionHandler()
+                return
+            }
+            self.viewModel?.pauseIndexing = false
         }
+        
         self.pauseAndResumeIndexing(completionHandler: completionHandler)
     }
     
@@ -845,7 +857,6 @@ extension EncryptedSearchService {
         //then pause indexing
         if self.indexBuildingInProgress && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
             print("Pause indexing when using mobile data")
-            self.viewModel?.pauseIndexing = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         }
     }
@@ -2335,6 +2346,23 @@ extension EncryptedSearchService {
         NotificationCenter.default.addObserver(self, selector: #selector(responseToBatteryLevel(_:)), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
     }
     
+    private func registerForPowerStateChangeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToLowPowerMode(_:)), name: NSNotification.Name.NSProcessInfoPowerStateDidChange, object: nil)
+    }
+    
+    @objc private func responseToLowPowerMode(_ notification: Notification) {
+        print("low power mode: \(ProcessInfo.processInfo.isLowPowerModeEnabled)")
+        if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
+            // Low power mode is enabled - pause indexing
+            print("Pause indexing due to low battery!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
+            // Low power mode is disabled - continue indexing
+            print("Resume indexing as battery is charged again!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+        }
+    }
+    
     @objc private func responseToBatteryLevel(_ notification: Notification) {
         //if battery is low (Android < 15%), (iOS < 20%) we pause indexing
         let batteryLevel: Float = UIDevice.current.batteryLevel
@@ -2357,14 +2385,12 @@ extension EncryptedSearchService {
         case .nominal:
             print("Thermal state nomial. No further action required")
             if self.pauseIndexingDueToOverheating {
-                self.viewModel?.pauseIndexing = false
                 self.pauseIndexingDueToOverheating = false
                 self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
             }
         case .fair:
             print("Thermal state fair. No further action required")
             if self.pauseIndexingDueToOverheating {
-                self.viewModel?.pauseIndexing = false
                 self.pauseIndexingDueToOverheating = false
                 self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
             }
@@ -2373,7 +2399,6 @@ extension EncryptedSearchService {
         case .critical:
             print("Thermal state critical. Stop indexing!")
             self.pauseIndexingDueToOverheating = true
-            self.viewModel?.pauseIndexing = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
         @unknown default:
             print("Unknown temperature state. Do something?")
@@ -2390,11 +2415,8 @@ extension EncryptedSearchService {
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     private func endBackgroundTask() {
         print("Background task ended!")
-        //TODO check if indexing has finished, otherwise we can inform the user about it
-        //postUserNotification()
         //pause indexing before finishing up
         self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-        self.viewModel?.pauseIndexing = true
         self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         UIApplication.shared.endBackgroundTask(self.backgroundTask)
         self.backgroundTask = .invalid
@@ -2446,7 +2468,6 @@ extension EncryptedSearchService {
             if !skipBackgroundTask {
                 //pause indexing
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-                self.viewModel?.pauseIndexing = true
                 self.pauseAndResumeIndexingDueToInterruption(isPause: true)
                 
                 //set task to be completed - so that the systems does not terminate the app
@@ -2469,7 +2490,6 @@ extension EncryptedSearchService {
             //resume indexing in background
             if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
-                self.viewModel?.pauseIndexing = false
             }
             self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
                 //if indexing is finshed during background task - set to complete
@@ -2513,7 +2533,6 @@ extension EncryptedSearchService {
             if !skipBackgroundTask {
                 //pause indexing
                 self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-                self.viewModel?.pauseIndexing = true
                 self.pauseAndResumeIndexingDueToInterruption(isPause: true)
                 
                 //set task to be completed - so that the systems does not terminate the app

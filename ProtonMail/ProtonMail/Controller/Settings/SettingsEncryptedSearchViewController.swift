@@ -187,10 +187,11 @@ extension SettingsEncryptedSearchViewController {
                         self.viewModel.pauseIndexing.toggle()
                         if self.viewModel.pauseIndexing {
                             progressBarButtonCell.pauseButton.setTitle("Pause", for: UIControl.State.normal)
+                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
                         } else {
                             progressBarButtonCell.pauseButton.setTitle("Resume", for: UIControl.State.normal)
+                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
                         }
-                        EncryptedSearchService.shared.pauseAndResumeIndexing()
                     }
                 }
                 return cell
