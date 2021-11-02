@@ -2,7 +2,7 @@ stages:
   - i18n
   - test
   - test_flight
-  - enterprise_test
+  - enterprise_test_build
   - bot # comes from translations/generator job
 
 .before_script_mac: &before_script_mac
@@ -74,6 +74,7 @@ ui_tests:
     - develop
     - /^release\/.*$/
     - merge_requests
+  allow_failure: true
   artifacts:
     when: always
     name: "test-report"
@@ -185,8 +186,11 @@ nightly-build-and-upload:
 # --- Build enterprise app for test and upload
 build-test-enterprise-app-and-upload:
   dependencies: []
-  stage: enterprise_test
-  when: manual
+  stage: enterprise_test_build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
   variables:
     GIT_DEPTH: 1
   artifacts:
