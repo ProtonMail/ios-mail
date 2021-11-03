@@ -59,6 +59,16 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
+        
+        //Speed up indexing when on this view
+        EncryptedSearchService.shared.speedUpIndexing()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //slow down indexing when moving somewhere else in the app
+        EncryptedSearchService.shared.slowDownIndexing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
