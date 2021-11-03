@@ -28,6 +28,8 @@ class Analytics {
     typealias Event = Sentry.Event
     static var shared = Analytics()
     
+    private var isEnabled = false
+    
     private var sentryEndpoint: String {
         #if Enterprise
             return "https://3f5b27555fa64b519002266dcdc7744c@api.protonmail.ch/reports/sentry/25"
@@ -37,6 +39,12 @@ class Analytics {
     }
     
     func setup() {
+        // Disable Sentry for DEBUG runs
+        #if DEBUG
+        isEnabled = false
+        return
+        #endif
+        
         do {
             Client.shared = try Client(dsn: self.sentryEndpoint)
             try Client.shared?.startCrashHandler()
@@ -46,8 +54,11 @@ class Analytics {
                 guard let debugMeta = event.debugMeta else { return }
                 event.debugMeta = Array(debugMeta.prefix(50)) // prevents hitting 16KB cap on Sentry gzip requests
             }
+            
+            isEnabled = true
         } catch {
-            print("\(error)")
+            print("Error while initializing Sentry: \(error)")
+            isEnabled = false
         }
     }
     
@@ -55,6 +66,9 @@ class Analytics {
                file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
+        guard isEnabled else {
+            return
+        }
         
         let appendDic = self.getAppendInfo(file, function, line, column)
         let event = Event(level: .debug)
@@ -68,7 +82,10 @@ class Analytics {
                file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
-        
+        guard isEnabled else {
+            return
+        }
+
         let err = error as NSError
         let dic: [String: Any] = [
             "code" : err.code,
@@ -92,7 +109,10 @@ class Analytics {
                file: String = #file,
                function: String = #function, line: Int = #line,
                column: Int = #column) {
-        
+        guard isEnabled else {
+            return
+        }
+
         let dic: [String: Any] = [
             "error": error
         ]
@@ -106,6 +126,8 @@ class Analytics {
             Client.shared?.send(event: event)
         }
     }
+    
+    // MARK: - Private functions
     
     private func getAppendInfo(_ file: String, _ function: String, _ line: Int, _ column: Int) -> [String: Any] {
         var ver = "1.0.0"
