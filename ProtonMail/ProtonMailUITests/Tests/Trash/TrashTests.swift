@@ -28,7 +28,8 @@ class TrashTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .sendMessage(recipient.email, subject)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .deleteMessageWithLongClick(subject)
             .menuDrawer()
             .trash()
@@ -42,7 +43,8 @@ class TrashTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .sendMessage(recipient.email, subject)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .clickMessageBySubject(subject)
             .moveToTrash()
             .menuDrawer()
@@ -62,14 +64,17 @@ class TrashTests: BaseTestCase {
             .sendMessage(recipient.email, subject1)
             .compose()
             .sendMessage(recipient.email, subject2)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .deleteMultipleMessages(positions)
             .menuDrawer()
             .trash()
             .verify.messageSubjectsExist()
     }
     
-    func testClearTrashFolder() {
+    
+    //Clear trash folder no longer available in v4
+    func disabletestClearTrashFolder() {
         let user = testData.onePassUser
         LoginRobot()
             .loginUser(user)

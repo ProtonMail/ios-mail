@@ -7,6 +7,7 @@
 //
 
 import pmtest
+import SwiftUI
 
 fileprivate struct id {
     static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
@@ -15,6 +16,7 @@ fileprivate struct id {
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
     static let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
     static let mailboxMessageCellIdentifier = "NewMailboxMessageCell.mailboxMessageCell"
+    static let mailboxMessageTitleIdentifier = "mailboxMessageCell.titleLabel"
     static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
@@ -35,7 +37,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
+        staticText(id.mailboxMessageTitleIdentifier).containsLabel(subject).tap()
         return MessageRobot()
     }
     
@@ -69,7 +71,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-        cell().byIndex(position).tap()
+        cell(id.mailboxMessageCellIdentifier).byIndex(position).tap()
         return self
     }
     
@@ -104,7 +106,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func longClickMessageOnPositions(_ position: Int) -> MailboxRobotInterface {
-        cell().byIndex(position).longPress()
+        cell(id.mailboxMessageCellIdentifier).byIndex(position).longPress()
         subjects.append(Element.cell.getNameByIndex(position).replacingOccurrences(of: "_", with: " "))
         return MailboxRobotInterface()
     }

@@ -49,26 +49,32 @@ class PMToolBarView: UIView {
 
     func setUpUnreadAction(target: UIViewController, action: Selector) {
         unreadButton.addTarget(target, action: action, for: .touchUpInside)
+        unreadButton.accessibilityIdentifier = "PMToolBarView.unreadButton"
     }
 
     func setUpMoveToAction(target: UIViewController, action: Selector) {
         moveToButton.addTarget(target, action: action, for: .touchUpInside)
+        moveToButton.accessibilityIdentifier = "PMToolBarView.moveToButton"
     }
 
     func setUpLabelAsAction(target: UIViewController, action: Selector) {
         labelAsButton.addTarget(target, action: action, for: .touchUpInside)
+        labelAsButton.accessibilityIdentifier = "PMToolBarView.labelAsButton"
     }
 
     func setUpTrashAction(target: UIViewController, action: Selector) {
         trashButton.addTarget(target, action: action, for: .touchUpInside)
+        trashButton.accessibilityIdentifier = "PMToolBarView.trashButton"
     }
 
     func setUpMoreAction(target: UIViewController, action: Selector) {
         moreButton.addTarget(target, action: action, for: .touchUpInside)
+        moreButton.accessibilityIdentifier = "PMToolBarView.moreButton"
     }
 
     func setUpDeleteAction(target: UIViewController, action: Selector) {
         deleteButton.addTarget(target, action: action, for: .touchUpInside)
+        deleteButton.accessibilityIdentifier = "PMToolBarView.deleteButton"
     }
 
     private func addSubviews() {
