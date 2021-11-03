@@ -27,7 +27,8 @@ class SpamTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .sendMessage(recipient.email, subject)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .clickMessageBySubject(subject)
             .clickMoveToSpam()
             .menuDrawer()
@@ -35,20 +36,25 @@ class SpamTests: BaseTestCase {
             .verify.messageWithSubjectExists(subject)
     }
     
-    func testSwipeToSpamMessage() {
+    
+    //Spam is not the default swiping action
+    func disabletestSwipeToSpamMessage() {
         let user = testData.onePassUser
         let recipient = testData.onePassUser
         LoginRobot()
             .loginUser(user)
             .compose()
             .sendMessage(recipient.email, subject)
+            .menuDrawer()
+            .inbox()
             .spamMessageBySubject(subject)
             .menuDrawer()
             .spams()
             .verify.messageWithSubjectExists(subject)
     }
     
-    func testClearSpamMessages() {
+    //Clear spam messages is no longer available in v4
+    func disabletestClearSpamMessages() {
         let user = testData.onePassUser
         LoginRobot()
             .loginUser(user)

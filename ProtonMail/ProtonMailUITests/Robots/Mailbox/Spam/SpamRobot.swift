@@ -12,6 +12,7 @@ fileprivate struct id {
     static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
     static let emptyFolderButtonIdentifier = "Empty folder"
     static let spamStaticTextIdentifier = "MailboxViewController.navigationTitleLabel"
+    static let mailTitileIdentifier = "mailboxMessageCell.titleLabel"
 }
 
 class SpamRobot: MailboxRobotInterface {
@@ -53,7 +54,7 @@ class SpamRobot: MailboxRobotInterface {
     class Verify : MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).wait().checkExists()
+            staticText(id.mailTitileIdentifier).containsLabel(subject).wait().checkExists()
         }
     }
 }

@@ -12,10 +12,10 @@ fileprivate struct id {
     /// Navigation Bar buttons
     static let labelNavBarButtonIdentifier = "PMToolBarView.labelAsButton"
     static let folderNavBarButtonIdentifier = "PMToolBarView.moveToButton"
-    static let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
-    static let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
+    static let trashNavBarButtonIdentifier = "PMToolBarView.trashButton"
+    static let moreNavBarButtonIdentifier = "PMToolBarView.moreButton"
     static let backToInboxNavBarButtonIdentifier = LocalString._menu_inbox_title
-    static let moveToSpamButtonIdentifier = LocalString._locations_move_spam_action
+    static let moveToSpamButtonIdentifier = LocalString._move_to_spam
     static let moveToArchiveButtonIdentifier = LocalString._locations_move_archive_action
     static let backToSearchResultButtonIdentifier = LocalString._general_back_action
 
@@ -117,7 +117,7 @@ class MessageRobot: CoreElements {
     class MessageMoreOptions: CoreElements {
 
         func moveToSpam() -> MailboxRobotInterface {
-            button(id.moveToSpamButtonIdentifier).tap()
+            cell(id.moveToSpamButtonIdentifier).tap()
             return MailboxRobotInterface()
         }
         

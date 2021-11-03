@@ -67,6 +67,7 @@ open class UiElement {
     private var tableToSwipeInto: XCUIElement?
     private var containType: XCUIElement.ElementType?
     private var containIdentifier: String?
+    private var containLabel: String?
 
     internal func getType() -> XCUIElement.ElementType {
         return self.uiElement().elementType
@@ -135,6 +136,11 @@ open class UiElement {
     public func containing(_ elementType: XCUIElement.ElementType, _ identifier: String) -> UiElement {
         self.containType = elementType
         self.containIdentifier = identifier
+        return self
+    }
+    
+    public func containsLabel(_ label: String) -> UiElement {
+        self.containLabel = label
         return self
     }
 
@@ -546,6 +552,11 @@ open class UiElement {
         /// Matching elements by the sub-elements it contains
         if containType != nil && containIdentifier != nil {
             uiElementQuery = uiElementQuery!.containing(containType!, identifier: containIdentifier!)
+        }
+        
+        if containLabel != nil {
+            let predicate = NSPredicate(format: "label CONTAINS[c] %@", containLabel!)
+            uiElementQuery = uiElementQuery!.matching(predicate)
         }
 
         /// Return element from XCUIElementQuery based on its index.
