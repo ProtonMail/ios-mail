@@ -597,6 +597,7 @@ public class EncryptedSearchService {
     internal var indexSearchResults: EncryptedsearchResultList? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProgress: Bool = false
+    internal var slowDownIndexBuilding: Bool = false
     internal var indexingStartTime: Double = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
     internal lazy var indexBuildingTimer: Timer? = nil
@@ -2707,6 +2708,22 @@ extension EncryptedSearchService {
         } else {
             //TODO disabled in the meantime to not spam production
             //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+        }
+    }
+    
+    // Called to slow down indexing - so that a user can normally use the app
+    func slowDownIndexing(){
+        if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
+            self.messageIndexingQueue.maxConcurrentOperationCount = 10
+            self.slowDownIndexBuilding = true
+        }
+    }
+    
+    // speed up indexing again when in foreground
+    func speedUpIndexing(){
+        if self.indexBuildingInProgress && self.slowDownIndexBuilding {
+            self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+            self.slowDownIndexBuilding = false
         }
     }
 }
