@@ -2623,6 +2623,7 @@ extension EncryptedSearchService {
                 self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
                 print("Remaining indexing time: \(result.estimatedMinutes)")
                 print("Current progress: \(result.currentProgress)")
+                print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
                 
                 self.updateMemoryConsumption()
             }
@@ -2713,6 +2714,7 @@ extension EncryptedSearchService {
     
     // Called to slow down indexing - so that a user can normally use the app
     func slowDownIndexing(){
+        print("ES: Slow down indexing...")
         if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
             self.messageIndexingQueue.maxConcurrentOperationCount = 10
             self.slowDownIndexBuilding = true
@@ -2721,6 +2723,7 @@ extension EncryptedSearchService {
     
     // speed up indexing again when in foreground
     func speedUpIndexing(){
+        print("ES: Speed up indexing...")
         if self.indexBuildingInProgress && self.slowDownIndexBuilding {
             self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
             self.slowDownIndexBuilding = false
