@@ -10,7 +10,7 @@ import ProtonCore_TestingToolkit
 
 class SettingsTests : BaseTestCase {
     
-    let correctPins = [0,0,0]
+    let correctPins = [0,0,0,0]
     private let inboxRobot: InboxRobot = InboxRobot()
     private let loginRobot = LoginRobot()
 
@@ -25,12 +25,13 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enableAndSetPin(correctPins)
-            .autoLockTimer()
+            .enablePin()
+            .setPin(pin: "\(correctPins)")
+            .pinTimmer()
             .selectAutoLockNone()
             .backgroundApp()
             .activateAppWithoutPin()
-            .autoLockTimer()
+            .pinTimmer()
             .selectAutolockEveryTime()
             .backgroundApp()
             .activateAppWithPin()
@@ -49,7 +50,8 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enableAndSetPin(correctPins)
+            .enablePin()
+            .setPin(pin: "\(correctPins)")
             .backgroundApp()
             .activateAppWithPin()
             .inputCorrectPin(correctPins)

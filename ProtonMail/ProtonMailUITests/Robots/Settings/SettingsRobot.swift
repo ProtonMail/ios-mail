@@ -12,7 +12,7 @@ fileprivate struct id {
     static func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
     static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
     static let menuButton = LocalString._menu_button
-    static let pinStaticTextIdentifier = LocalString._pin
+    static let pinCellIdentifier = "SettingsGeneralCell.App_PIN"
     static let swipeActionStaticTextIdentifier = LocalString._swipe_actions
     static let clearLocalCacheStaticTextIdentifier = LocalString._clear_local_message_cache
 }
@@ -41,7 +41,7 @@ class SettingsRobot: CoreElements {
     }
     
     func pin() -> PinRobot {
-        staticText(id.pinStaticTextIdentifier).tap()
+        cell(id.pinCellIdentifier).tap()
         return PinRobot()
     }
     /**
