@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "Dana EE, d. MMM, yyyy u %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Zanemarite aktivaciju kupnje samo ako ste sigurni da su sve vaše pretplate ažurirane. Za daljnju pomoć obratite se korisničkoj podršci. \r\n\r\n Jeste li sigurni da želite zanemariti aktivaciju?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Zanemarite aktivaciju kupnje samo ako ste sigurni da su sve vaše pretplate ažurirane. Za daljnju pomoć obratite se korisničkoj podršci. \n\n Jeste li sigurni da želite zanemariti aktivaciju?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
@@ -2670,7 +2670,7 @@
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,\r\n morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,\n morate potvrditi da ste čovjek.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun\r\n e-pošte je spreman.";
+"Your new secure email\n account is ready." = "Vaš novi, sigurni račun\n e-pošte je spreman.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Vaš plan je trenutno aktivan do";

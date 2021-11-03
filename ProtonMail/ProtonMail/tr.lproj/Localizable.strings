@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "E, MMM d, yyyy 'tarihinde' %@ 'vaktinde'";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Yalnız tüm aboneliklerinizin güncel olduğuna eminseniz satın alma etkinleştirmesini göz ardı edin. Daha fazla destek için, müşteri desteğiyle iletişime geçin. \r\n\r\nEtkinleştirmeyi göz ardı etmek istediğinizden emin misiniz?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Yalnız tüm aboneliklerinizin güncel olduğuna eminseniz satın alma etkinleştirmesini göz ardı edin. Daha fazla destek için, müşteri desteğiyle iletişime geçin. \n\nEtkinleştirmeyi göz ardı etmek istediğinizden emin misiniz?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Sadece bir tane ücretsiz hesap eklenebilir";
@@ -2670,7 +2670,7 @@
 "To" = "Kime";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için,\r\ninsan olduğunuzu doğrulamamız gerekiyor.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için,\ninsan olduğunuzu doğrulamamız gerekiyor.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu şifrenizi sıfırlamak için lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifreli e-posta hesabınız kuruldu ve şifrelenmiş iletiler göndermeye ve almaya hazır.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Yeni güvenli e-posta\r\n hesabınız hazır.";
+"Your new secure email\n account is ready." = "Yeni güvenli e-posta\n hesabınız hazır.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Planınız şu anda tarihine kadar etkin";

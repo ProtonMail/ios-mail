@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Проигнорируйте активацию покупки, только если вы уверены, что все ваши подписки актуальны. Для получения дополнительной помощи обратитесь в службу поддержки. \r\n\r\n Вы уверены, что хотите проигнорировать активацию?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Проигнорируйте активацию покупки, только если вы уверены, что все ваши подписки актуальны. Для получения дополнительной помощи обратитесь в службу поддержки. \n\n Вы уверены, что хотите проигнорировать активацию?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
@@ -2670,7 +2670,7 @@
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail\r\n нам необходимо убедиться, что вы – человек.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail\n нам необходимо убедиться, что вы – человек.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ваш новый безопасный аккаунт\r\nэлектронной почты готов.";
+"Your new secure email\n account is ready." = "Ваш новый безопасный аккаунт\nэлектронной почты готов.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тариф сейчас активен до";

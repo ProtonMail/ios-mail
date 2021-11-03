@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "El E, d MMM, yyyy a les %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignoreu l'activació de la compra només si esteu segur de que totes les vostres subscripcions estan actualitzades. Per obtenir ajuda, contacteu amb atenció al client. \r\n\r\nN'esteu segur, de voler ignorar l'activació?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignoreu l'activació de la compra només si esteu segur de que totes les vostres subscripcions estan actualitzades. Per obtenir ajuda, contacteu amb atenció al client. \n\nN'esteu segur, de voler ignorar l'activació?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Només es pot afegir un compte gratuït";
@@ -2670,7 +2670,7 @@
 "To" = "Per a";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,\r\n necessitem verificar que sou humà.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,\n necessitem verificar que sou humà.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau feu servir la versió de ProtonMail a protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "La seva nova compte de correu electrònic ja està configurada i llesta per enviar i rebre missatges xifrats.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "El vostre nou compte de correu electrònic\r\nsegur està preparat.";
+"Your new secure email\n account is ready." = "El vostre nou compte de correu electrònic\nsegur està preparat.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "El vostre plà restarà actiu fins";
