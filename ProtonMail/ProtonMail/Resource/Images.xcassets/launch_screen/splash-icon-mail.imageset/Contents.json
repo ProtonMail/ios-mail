@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "splash-icon-mail.png",
+      "filename" : "ipad_app_ios_76pt.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "splash-icon-mail@2x.png",
+      "filename" : "ipad_app_ios_76pt@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "splash-icon-mail@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
