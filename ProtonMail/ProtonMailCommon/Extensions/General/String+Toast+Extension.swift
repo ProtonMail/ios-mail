@@ -23,21 +23,22 @@
 
 import Foundation
 import MBProgressHUD
+import UIKit
 
 extension String {
-    // Pass view to this function if you want to show alert in extension
-    public func alertToast(withTitle: Bool = true, view: UIView? = nil) -> Void {
-        var viewToShow: UIView?
-        #if APP_EXTENSION
-        viewToShow = view
-        #else
-        let application = UIApplication.shared
-        viewToShow = application.keyWindow
-        #endif
-        
-        guard let view = viewToShow else {
+    /// Pass view to this function if you want to show alert in extension
+    /// - Parameter withTitle: Should attach a default title yes/no
+    /// - Parameter view: The `view` to use as the spawn point
+    /// - Parameter preventCopies: Prevents multiple copies of previous huds on the same `view` yes/no
+    public func alertToast(withTitle: Bool = true, view: UIView? = nil, preventCopies: Bool = false) -> Void {
+        guard let view = determineSpawnView(for: view) else {
             return
         }
+        if preventCopies, MBProgressHUD(for: view) != nil {
+            // We are showing an alert already, no-op
+            return
+        }
+        
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         if withTitle {
@@ -51,15 +52,7 @@ extension String {
     }
     
     public func alertToastBottom(view: UIView? = nil) ->Void {
-        var viewToShow: UIView?
-        #if APP_EXTENSION
-        viewToShow = view
-        #else
-        let application = UIApplication.shared
-        viewToShow = application.keyWindow
-        #endif
-
-        guard let view = viewToShow else {
+        guard let view = determineSpawnView(for: view) else {
             return
         }
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -73,15 +66,7 @@ extension String {
     }
 
     public func alertToastBottom(view: UIView? = nil, subtitle: String) ->Void {
-        var viewToShow: UIView?
-        #if APP_EXTENSION
-        viewToShow = view
-        #else
-        let application = UIApplication.shared
-        viewToShow = application.keyWindow
-        #endif
-        
-        guard let view = viewToShow else {
+        guard let view = determineSpawnView(for: view) else {
             return
         }
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -92,6 +77,17 @@ extension String {
         hud.offset = CGPoint(x: 0, y: offset)
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
+    }
+    
+    private func determineSpawnView(for view: UIView?) -> UIView? {
+        var viewToShow: UIView?
+        #if APP_EXTENSION
+        viewToShow = view
+        #else
+        let application = UIApplication.shared
+        viewToShow = application.keyWindow
+        #endif
+        return viewToShow
     }
     
     /**

@@ -335,7 +335,7 @@ class BannerViewController: UIViewController {
     @objc
     private func sendReceipt() {
         guard self.isOnline else {
-            LocalString._no_internet_connection.alertToast()
+            LocalString._no_internet_connection.alertToast(withTitle: true, view: self.view, preventCopies: true)
             return
         }
         viewModel.sendReceipt()

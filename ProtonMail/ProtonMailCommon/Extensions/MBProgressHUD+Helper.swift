@@ -23,6 +23,7 @@
 
 import Foundation
 import MBProgressHUD
+import UIKit
 
 extension MBProgressHUD {
     // this will make MBProgressHUDs totally untappable. Make sure to fix this one if will need buttons on them
@@ -33,7 +34,7 @@ extension MBProgressHUD {
 
 extension MBProgressHUD
 {
-    class func alertToast(errorString: String) -> Void {
+    static func alertToast(errorString: String) -> Void {
         guard let window = UIApplication.shared.keyWindow else {
             return
         }
@@ -45,7 +46,7 @@ extension MBProgressHUD
         hud.hide(animated: true, afterDelay: 3)
     }
     
-    class func alert(at view: UIView, errorString: String) ->Void {
+    static func alert(at view: UIView, errorString: String) -> Void {
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.label.text = LocalString._general_alert_title
