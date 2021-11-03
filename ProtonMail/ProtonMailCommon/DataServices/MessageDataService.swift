@@ -289,7 +289,7 @@ class MessageDataService : Service, HasLocalStorage {
         var hasError = false
         context.performAndWait {
             self.queue(message, action: .delete, data1: label)
-            
+            let messageID = message.messageID
             if let lid = message.remove(labelID: label), message.unRead {
                 self.updateCounterSync(plus: false, with: lid, context: context)
                 if let id = message.selfSent(labelID: lid) {
@@ -310,6 +310,8 @@ class MessageDataService : Service, HasLocalStorage {
                 PMLog.D(" error: \(error)")
                 hasError = true
             }
+            
+            self.messageDelete([messageID], labelID: label, writeQueueUUID: UUID(), action: MessageAction.delete.rawValue, UID: self.userID, completion: nil)
         }
         
         if hasError {

@@ -317,6 +317,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
+        // If the flag is false that means the draft is discarded
+        guard self.headerView.shouldValidateTheEmail else { return }
         self.autoSaveTimer()
     }
 
