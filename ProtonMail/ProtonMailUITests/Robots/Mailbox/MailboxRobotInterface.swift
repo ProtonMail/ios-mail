@@ -134,7 +134,7 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
+        staticText(id.mailboxMessageTitleIdentifier).containsLabel(subject).wait().checkExists()
     }
     
     func messageIsEmpty() {

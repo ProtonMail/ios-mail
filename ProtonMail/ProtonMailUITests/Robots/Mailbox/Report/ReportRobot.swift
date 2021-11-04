@@ -21,10 +21,10 @@ class ReportRobot: CoreElements {
     
     required init() {
         super.init()
-        let label = LocalString._menu_bugs_title
-        staticText(id.titleStaticTextIdentifier).wait().checkHasLabel(label)
-        staticText(id.bugDescriptionStaticTextIdentifier).wait().checkExists()
-        button(id.sendButtonIdentifier).waitForHittable()
+        //let label = LocalString._menu_bugs_title
+        navigationBar(id.titleStaticTextIdentifier).onChild(staticText(id.titleStaticTextIdentifier)).byIndex(0).wait().checkExists()
+        textView(id.bugDescriptionTextViewIdentifier).wait().checkExists()
+        button(id.sendButtonIdentifier).wait().checkExists()
     }
     
     func menu() -> MenuRobot {
