@@ -42,6 +42,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var noResultLabel: UILabel!
     private let searchBar = SearchBarView()
+    private let searchInfoBanner: SearchInfoBannerView = SearchInfoBannerView()
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
     // TODO: need better UI solution for this progress bar
@@ -99,6 +100,17 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupProgressBar()
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
+        
+        if let esViewModel  = EncryptedSearchService.shared.viewModel {
+            if !esViewModel.isEncryptedSearch {
+                self.showAlertToEnableContentSearch()
+            } else {
+                self.setupSearchInfoBanner()    //display only when ES is on
+            }
+        } else {
+            //view model does not exist - therefore ES is disabled
+            self.showAlertToEnableContentSearch()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -167,6 +179,24 @@ extension SearchViewController {
         activityIndicator.color = ColorProvider.BrandNorm
         activityIndicator.isHidden = true
         activityIndicator.hidesWhenStopped = true
+    }
+    
+    private func setupSearchInfoBanner() {
+        searchInfoBanner.label.text = "blah"
+        self.view.addSubview(searchInfoBanner)
+    }
+    
+    private func showAlertToEnableContentSearch(){
+        let alert = UIAlertController(title: "Content search available", message: "You can now search within your messages.\n This feature can be enabled from settings at any time.", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { (action: UIAlertAction!) in
+            print("cancel pressed!")
+            self.view.reloadInputViews()
+        }))
+        alert.addAction(UIAlertAction(title: "Show me", style: UIAlertAction.Style.default, handler: { (action:UIAlertAction!) in
+            print("OK pressed!")
+            //TODO move to ES settings
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
