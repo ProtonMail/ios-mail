@@ -2076,7 +2076,7 @@ extension EncryptedSearchService {
             self.searchState = EncryptedsearchSearchState()
             
             let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, totalMessages: self.totalMessages)
-            //print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
+            print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
             
             //Check if there are enough results from the cached search
             let searchResultPageSize: Int = 15
@@ -2084,7 +2084,7 @@ extension EncryptedSearchService {
             if !self.searchState!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
                 numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch)
             }
-            
+            print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
             let endSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Search finished. Time: \(endSearch-startSearch)")
             
@@ -2115,69 +2115,55 @@ extension EncryptedSearchService {
     }
 
     func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
-        let pageSize: Int = 50
-        let numberOfPages: Int = Int(ceil(Double(searchResults.length()/pageSize)))
-        if page > numberOfPages {
+        if searchResults.length() == 0 {
             completionHandler([])
         } else {
-            let startIndex: Int = page * pageSize
-            var endIndex: Int = startIndex + (pageSize-1)
-            if page == numberOfPages {  //final page
-                endIndex = startIndex + (searchResults.length() % pageSize)-1
-            }
-            
-            print("Search results found: \(searchResults.length())")
-            
-            var messages: [Message] = []
-            /*let queue = OperationQueue()
-            queue.name = "Extract Search Results Queue"
-            queue.maxConcurrentOperationCount = 1
-            queue.qualityOfService = .userInitiated*/
-            let group = DispatchGroup()
-
-            for index in startIndex...endIndex {
-                group.enter()
-                let result: EncryptedsearchSearchResult? = searchResults.get(index)
-                /*let op: FetchSingleMessageAsyncOperation? = FetchSingleMessageAsyncOperation(result?.message)
-                op!.completionBlock = {
-                    messages.append((op?.m!)!)
+            let pageSize: Int = 50
+            let numberOfPages: Int = Int(ceil(Double(searchResults.length()/pageSize)))
+            if page > numberOfPages {
+                completionHandler([])
+            } else {
+                let startIndex: Int = page * pageSize
+                var endIndex: Int = startIndex + (pageSize-1)
+                if page == numberOfPages {  //final page
+                    endIndex = startIndex + (searchResults.length() % pageSize)-1
                 }
-                print("operation added for message: \(result?.message?.id_)")
-                queue.addOperation(op!)*/
-                /*queue.addOperation {
+                
+                var messages: [Message] = []
+                let group = DispatchGroup()
+
+                for index in startIndex...endIndex {
+                    group.enter()
+                    let result: EncryptedsearchSearchResult? = searchResults.get(index)
                     let id: String = (result?.message!.id_)!
                     self.getMessage(id) { message in
-                        messages.append(message!)
-                    }
-                }*/
-                let id: String = (result?.message!.id_)!
-                self.getMessage(id) { message in
-                    if message == nil {
-                        //print("Message NOT found locally - fetch from server")
-                        self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
-                            if error != nil {
-                                print("Error when fetching message from server: \(String(describing: error))")
-                                group.leave()
-                            } else {
-                                //print("Message \(id) successfully fetched from server.")
-                                self?.getMessage(id) { msg in
-                                    //print("Message fetched from core data: \(msg!.messageID)")
-                                    messages.append(msg!)
+                        if message == nil {
+                            //print("Message NOT found locally - fetch from server")
+                            self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
+                                if error != nil {
+                                    print("Error when fetching message from server: \(String(describing: error))")
                                     group.leave()
+                                } else {
+                                    //print("Message \(id) successfully fetched from server.")
+                                    self?.getMessage(id) { msg in
+                                        //print("Message fetched from core data: \(msg!.messageID)")
+                                        messages.append(msg!)
+                                        group.leave()
+                                    }
                                 }
                             }
+                        } else {
+                            //print("Message found locally")
+                            messages.append(message!)
+                            group.leave()
                         }
-                    } else {
-                        //print("Message found locally")
-                        messages.append(message!)
-                        group.leave()
                     }
                 }
-            }
-            
-            group.notify(queue: .main){
-                print("Extracting search results completed!")
-                completionHandler(messages)
+                
+                group.notify(queue: .main){
+                    print("Extracting search results completed!")
+                    completionHandler(messages)
+                }
             }
         }
     }
@@ -2252,20 +2238,27 @@ extension EncryptedSearchService {
     }
     
     func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, totalMessages: Int) -> Int {
-        let searchCacheDecryptedMessages: Bool = true
-        if searchCacheDecryptedMessages && !searchState!.cachedSearchDone && !searchState!.isComplete {
-            self.cacheSearchResults = EncryptedsearchResultList()
+        var found: Int = 0
+        let searchResultPageSize: Int = 50
+        let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
+        var batchCount: Int = 0
+        while !searchState!.cachedSearchDone && found < searchResultPageSize {
             let startCacheSearch: Double = CFAbsoluteTimeGetCurrent()
+            
+            self.cacheSearchResults = EncryptedsearchResultList()
             do {
-                self.cacheSearchResults = try cache.search(searchState, searcher: searcher)
+                self.cacheSearchResults = try cache.search(searchState, searcher: searcher, batchSize: batchSize)
             } catch {
-                print("Error while searching the cache: \(error)")
+                print("Error when doing cache search \(error)")
             }
+            found += (self.cacheSearchResults?.length())!
+            //TODO visualize intemediate results
+            
             let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
-            print("Cache search: \(endCacheSearch-startCacheSearch) seconds")
-            return self.cacheSearchResults!.length()
+            print("Cache batch \(batchCount) search: \(endCacheSearch-startCacheSearch) seconds, batchSize: \(batchSize)")
+            batchCount += 1
         }
-        return 0
+        return found
     }
     
     func getIndex() -> EncryptedsearchIndex {

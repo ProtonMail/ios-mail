@@ -34,7 +34,7 @@ public class EncryptedSearchCacheService {
     internal let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
     internal let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
     internal var maxCacheSize: Int64 = 0
-    internal var batchSize: Int64 = 0
+    var batchSize: Int64 = 0
     internal var cache: EncryptedsearchCache? = nil
     internal var currentUserID: String = ""
 }
@@ -45,9 +45,8 @@ extension EncryptedSearchCacheService {
         if currentUserID != userId || !(self.cache?.isBuilt())! {
             print("Build cache for user \(userId)")
             self.cache?.deleteAll()
-            let parallelDecryptions: Int = 100  //TODO why 100?
             do {
-                try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize), parallelDecryptions: parallelDecryptions)
+                try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
             } catch {
                 print("Error when building the cache: ", error)
             }
