@@ -58,8 +58,8 @@ class ConversationViewTrashedHintCell: UITableViewCell {
     private func setUpLayout() {
         [
             customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
-            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
-            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
         ].activate()
     }
