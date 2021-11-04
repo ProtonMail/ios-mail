@@ -78,7 +78,7 @@ private enum SubviewsFactory {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColorManager.BackgroundNorm
         view.layer.cornerRadius = 20
-        view.layer.apply(shadow: .custom(y: 1))
+        view.layer.apply(shadow: .custom(y: 2))
         return view
     }
 

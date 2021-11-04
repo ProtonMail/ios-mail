@@ -71,8 +71,8 @@ class ConversationMessageView: UIView {
 
         [
             container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 4),
-            container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 4),
-            container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -4),
+            container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 8),
+            container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -8),
             container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4)
         ].activate()
 
@@ -165,7 +165,6 @@ private enum SubviewsFactory {
         let view = UIView()
         view.backgroundColor = UIColorManager.BackgroundNorm
         view.layer.cornerRadius = 6
-        view.layer.apply(shadow: .custom(y: 1))
         view.isUserInteractionEnabled = false
         return view
     }
