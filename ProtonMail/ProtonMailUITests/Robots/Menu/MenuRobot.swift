@@ -15,7 +15,7 @@ fileprivate struct id {
     static let logoutCell = "MenuItemTableViewCell.Sign_out"
     static let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
     static let inboxStaticText = "MenuItemTableViewCell.\(LocalString._menu_inbox_title)"
-    static let reportBugStaticText = "MenuItemTableViewCell.Report_Bugs"
+    static let reportBugStaticText = "MenuItemTableViewCell.Report_a_bug"
     static let spamStaticText = "MenuItemTableViewCell.\(LocalString._menu_spam_title)"
     static let trashStaticText = "MenuItemTableViewCell.\(LocalString._menu_trash_title)"
     static let sentStaticText = "MenuItemTableViewCell.\(LocalString._menu_sent_title)"
@@ -38,7 +38,7 @@ fileprivate struct id {
         NSPredicate(format: "identifier CONTAINS[c] %@", name)}
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
-    static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuLabelViewCell.\(name)" }
+    static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
     static func signInButtonIdentifier(_ name: String) -> String { return
         "\(name).signInBtn"
     }
