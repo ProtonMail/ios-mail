@@ -124,7 +124,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             if !esViewModel.isEncryptedSearch {
                 self.showAlertToEnableContentSearch()
             } else {
-                self.setupSearchInfoBanner()    //display only when ES is on
+                //self.setupSearchInfoBanner()    //display only when ES is on
             }
         } else {
             //view model does not exist - therefore ES is disabled
@@ -199,8 +199,10 @@ extension SearchViewController {
     }
     
     private func setupSearchInfoBanner() {
-        searchInfoBanner.label.text = "blah"
-        self.view.addSubview(searchInfoBanner)
+        //searchInfoBanner.label.text = "blah"
+        //self.view.addSubview(searchInfoBanner)
+        let banner = BannerView(appearance: .gray, message: "test", buttons: nil, button2: nil, offset: 8.0)
+        self.view.addSubview(banner)
     }
     
     private func showAlertToEnableContentSearch(){
