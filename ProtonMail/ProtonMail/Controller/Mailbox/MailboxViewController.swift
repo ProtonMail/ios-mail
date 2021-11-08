@@ -148,6 +148,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if viewModel.reloadTable() {
             resetTableView()
         }
+        self.refreshPage()
     }
     
     func resetTableView() {
