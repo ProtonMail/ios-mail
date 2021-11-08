@@ -1276,8 +1276,8 @@ class LocalizedString {
     /// "Congratulations!"
     lazy var _congratulations = NSLocalizedString("Congratulations!", comment: "view top title")
 
-    /// "Your new secure email\r\n account is ready."
-    lazy var _your_new_secure_email_account_is_ready = NSLocalizedString("Your new secure email\r\n account is ready.", comment: "view top title")
+    /// "Your new secure email\n account is ready."
+    lazy var _your_new_secure_email_account_is_ready = NSLocalizedString("Your new secure email\n account is ready.", comment: "view top title")
 
     /// "When you send an email, this is the name that appears in the sender field."
     lazy var _send_an_email_this_name_that_appears_in_sender_field = NSLocalizedString("When you send an email, this is the name that appears in the sender field.", comment: "display name notes")
@@ -1297,8 +1297,8 @@ class LocalizedString {
     /// "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"
     lazy var _warning_did_not_set_a_recovery_email_so_account_recovery_is_impossible = NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description")
 
-    /// "To prevent abuse of ProtonMail,\r\n we need to verify that you are human."
-    lazy var _to_prevent_abuse_of_protonmail_we_need_to_verify_that_you_are_human = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
+    /// "To prevent abuse of ProtonMail,\n we need to verify that you are human."
+    lazy var _to_prevent_abuse_of_protonmail_we_need_to_verify_that_you_are_human = NSLocalizedString("To prevent abuse of ProtonMail,\n we need to verify that you are human.", comment: "human verification notes")
 
     /// "Please select one of the following options:"
     lazy var _please_select_one_of_the_following_options = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
@@ -1957,7 +1957,7 @@ class LocalizedString {
     lazy var _mailbox_draft_is_uploading = NSLocalizedString("Draft is still uploading…", comment: "title of toast message that user taps the message which is uploading")
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message…", comment: "content of the sending mesage that will display this text on the date label")
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
-    lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?", comment: "Alert message")
+    lazy var _ignore_IAP_error_descrption = NSLocalizedString("Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?", comment: "Alert message")
 
     lazy var _message_of_unavailable_to_upgrade_account = NSLocalizedString("It's not possible to switch to another plan within the app. %1$@", comment: "The string used to show in the plan update page when the user not able to upgrade the account")
     lazy var _message_of_unavailable_to_upgrade_url = NSLocalizedString("Plans can be edited on the web version.", comment: "")

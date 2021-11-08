@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "V E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Pokud jsou aktuální všechny předplatné aktivace plánu, ignorujte aktivaci předplatného. Pro další asistenci, prosím kontaktujte klientskou podporu. \r\n\r\n Chcete určitě ignorovat aktivaci?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Pokud jsou aktuální všechny předplatné aktivace plánu, ignorujte aktivaci předplatného. Pro další asistenci, prosím kontaktujte klientskou podporu. \n\n Chcete určitě ignorovat aktivaci?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Lze přidat pouze jeden bezplatný účet";
@@ -2670,7 +2670,7 @@
 "To" = "Komu";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,\r\n potřebujeme ověřit, že jste člověk.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Pro ochranu proti zneužití služby ProtonMail,\n potřebujeme ověřit, že jste člověk.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Chcete-li resetovat heslo poštovní schránky, použijte prosím webovou verzi ProtonMail na protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Váš nový šifrovaný e-mailový účet byl nastaven a je připraven k odesílání a přijímání šifrovaných zpráv.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Váš nový zabezpečený e-mail\r\n je připraven.";
+"Your new secure email\n account is ready." = "Váš nový zabezpečený e-mail\n je připraven.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Váš plán je v současné době aktivní do";

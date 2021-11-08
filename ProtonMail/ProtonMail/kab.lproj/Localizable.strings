@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "Deg EE, d MMM, yyyy ɣef %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ttu asermed n tiɣin ma yella kan tetḥeqqeḍ belli akk iltaɣen-inek•m ttweleqqemen. I wugar n tallelt, ttxil-k•m nermes tadhelt n umsaɣ.\r\n\r\n Tetḥeqqeḍ belli tebɣiḍ ad tettuḍ asermed?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ttu asermed n tiɣin ma yella kan tetḥeqqeḍ belli akk iltaɣen-inek•m ttweleqqemen. I wugar n tallelt, ttxil-k•m nermes tadhelt n umsaɣ.\n\n Tetḥeqqeḍ belli tebɣiḍ ad tettuḍ asermed?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Yiwen kan n umiḍan n baṭṭel i izemren ad yettwarnu";
@@ -2670,7 +2670,7 @@
 "To" = "I";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Akken ad nseḥbiber mgal yir aseqdec n ProtonMail,\r\n Nesra ad nsenqed d akken d amdan i telliḍ.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Akken ad nseḥbiber mgal yir aseqdec n ProtonMail,\n Nesra ad nsenqed d akken d amdan i telliḍ.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffir, seqdec lqem web n ProtonMail di protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Amiḍan-ik amaynut n yimaylen iwgelhanen yers, udiɣ ihegga i tuzna d urmas i yiznan iwgelhanen.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Amiḍan-ik•im amaynut n yimayl&\r\n aɣelsan ihegga.";
+"Your new secure email\n account is ready." = "Amiḍan-ik•im amaynut n yimayl&\n aɣelsan ihegga.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Aɣawas-ik/m yermed armi";

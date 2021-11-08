@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "Am EE, dd.MMM.yyyy um %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorieren Sie die Kaufaktivierung nur, wenn Sie sicher sind, dass alle Ihre Abonnements auf dem neuesten Stand sind. Für weitere Hilfe wenden Sie sich bitte an den Kundensupport. \r\n\r\n Möchten Sie die Aktivierung wirklich ignorieren?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorieren Sie die Kaufaktivierung nur, wenn Sie sicher sind, dass alle Ihre Abonnements auf dem neuesten Stand sind. Für weitere Hilfe wenden Sie sich bitte an den Kundensupport. \n\n Möchten Sie die Aktivierung wirklich ignorieren?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Nur ein kostenloses Konto kann hinzugefügt werden";
@@ -2670,7 +2670,7 @@
 "To" = "An";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,\r\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com.";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ihr neues sicheres E-Mail-\r\nKonto ist eingerichtet.";
+"Your new secure email\n account is ready." = "Ihr neues sicheres E-Mail-\nKonto ist eingerichtet.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ihr Abo ist derzeit aktiv bis";

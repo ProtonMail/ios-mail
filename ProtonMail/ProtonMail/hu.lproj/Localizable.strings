@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Csak egy ingyenes fiók adható hozzá";
@@ -2670,7 +2670,7 @@
 "To" = "Címzett";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
+"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "A jelenlegi csomagja aktív:";

@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \r\n\r\n アクティベーションを無視してもよろしいですか？";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \n\n アクティベーションを無視してもよろしいですか？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -2670,7 +2670,7 @@
 "To" = "宛先　";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\r\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "メールボックスのパスワードをリセットするには、protonmail.comからWeb版のProtonMailを使用してください。";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
+"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";

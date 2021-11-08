@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "于yyyy年MMM月d日E %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "只能同时登录一个免费账户";
@@ -2670,7 +2670,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "为防止滥用 ProtonMail，\r\n 我们需要对您进行人机验证。";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "为防止滥用 ProtonMail，\n 我们需要对您进行人机验证。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请使用ProtonMail网页版:protonmail.com 重置您的邮箱密码";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "您的全新安全电子邮件\r 账户已准备就绪。";
+"Your new secure email\n account is ready." = "您的全新安全电子邮件\r 账户已准备就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

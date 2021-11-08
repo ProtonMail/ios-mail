@@ -1796,7 +1796,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
@@ -2670,7 +2670,7 @@
 "To" = "Till";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail,\r\n måste vi verifiera att du är en människa.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail,\n måste vi verifiera att du är en människa.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
@@ -3067,7 +3067,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ditt nya krypterade e-postkonto har konfigurerats och är redo att skicka och ta emot krypterade meddelanden.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Your new secure email\r\n account is ready.";
+"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Din plan är aktiv fram till";
