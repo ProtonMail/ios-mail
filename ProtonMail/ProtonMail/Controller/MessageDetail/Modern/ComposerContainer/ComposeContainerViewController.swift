@@ -78,6 +78,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             setUpTitleView()
         }
     }
+
+    private var isSendButtonTapped = false
     
     deinit {
         self.childrenHeightObservations = []
@@ -193,6 +195,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     @objc
     func sendAction(_ sender: UIBarButtonItem) {
         // FIXME: that logic should be in VM of EditorViewController
+        isSendButtonTapped = true
         self.coordinator.sendAction(sender)
     }
     
@@ -276,6 +279,10 @@ extension ComposeContainerViewController {
     }
 
     private func setUpTitleView() {
+        guard !isSendButtonTapped else {
+            navigationItem.titleView = nil
+            return
+        }
         navigationItem.titleView = isUploadingAttachments ? ComposeAttachmentsAreUploadingTitleView() : nil
     }
     
