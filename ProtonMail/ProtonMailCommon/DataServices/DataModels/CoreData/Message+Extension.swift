@@ -224,10 +224,13 @@ extension Message {
             return
         }
         
-        // This is the basic labes for draft
-        let basic = [Message.Location.draft.rawValue,
-                     Message.Location.allmail.rawValue,
-                     Message.HidenLocation.draft.rawValue]
+        // Labes that can be applied to a draft
+        let basic = [
+            Message.Location.draft.rawValue,
+            Message.Location.allmail.rawValue,
+            Message.HidenLocation.draft.rawValue,
+            Message.Location.starred.rawValue
+        ]
         for label in labels {
             let id = label.labelID
             if basic.contains(id) {continue}
