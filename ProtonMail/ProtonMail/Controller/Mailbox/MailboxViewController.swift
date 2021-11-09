@@ -1899,9 +1899,10 @@ extension MailboxViewController {
     }
 
     private func showNoInternetErrorMessage() {
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
+        guard UIApplication.shared.applicationState == .active,
+              !isInternetBannerPresented else {
+                  return
+              }
         let banner = PMBanner(message: LocalString._general_no_connectivity_detected, style: PMBannerNewStyle.error, dismissDuration: 5.0)
         banner.addButton(text: LocalString._retry) { _ in
             banner.dismiss()
