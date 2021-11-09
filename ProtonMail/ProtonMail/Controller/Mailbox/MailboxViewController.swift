@@ -1240,30 +1240,36 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             showProgressHud()
             self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
                 self?.hideProgressHud()
-                guard let objectId = msg?.objectID,
-                      let message = self?.viewModel.object(by: objectId),
-                      message.body.isEmpty == false else
-                {
-                    if error != nil {
-                        PMLog.D("error: \(String(describing: error))")
-                        let alert = LocalString._unable_to_edit_offline.alertController()
-                        alert.addOKAction()
-                        self?.present(alert, animated: true, completion: nil)
+                if error != nil {
+                    PMLog.D("error: \(String(describing: error))")
+                    let alert = LocalString._unable_to_edit_offline.alertController()
+                    alert.addOKAction()
+                    self?.present(alert, animated: true, completion: nil)
+                    self?.tableView.indexPathsForSelectedRows?.forEach {
+                        self?.tableView.deselectRow(at: $0, animated: true)
+                    }
+                    self?.updateTapped(status: false)
+                    return
+                }
+                guard let objectId = msg?.objectID else {
+                    self?.tableView.indexPathsForSelectedRows?.forEach {
+                        self?.tableView.deselectRow(at: $0, animated: true)
+                    }
+                    self?.updateTapped(status: false)
+                    return
+                }
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                    guard let message = self?.viewModel.object(by: objectId),
+                          message.body.isEmpty == false else { return }
+                    timer.invalidate()
+                    if self?.checkHuman() == true {
+                        self?.coordinator?.go(to: .composeShow, sender: message)
                         self?.tableView.indexPathsForSelectedRows?.forEach {
                             self?.tableView.deselectRow(at: $0, animated: true)
                         }
                     }
                     self?.updateTapped(status: false)
-                    return
                 }
-                
-                if self?.checkHuman() == true {
-                    self?.coordinator?.go(to: .composeShow, sender: message)
-                    self?.tableView.indexPathsForSelectedRows?.forEach {
-                        self?.tableView.deselectRow(at: $0, animated: true)
-                    }
-                }
-                self?.updateTapped(status: false)
             }
         }
         

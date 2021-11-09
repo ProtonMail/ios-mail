@@ -1,5 +1,6 @@
 import ProtonCore_UIFoundations
 import UIKit
+import MBProgressHUD
 
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
@@ -179,7 +180,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             return
         }
         if messageViewModel.isDraft {
-            coordinator.handle(navigationAction: .draft(message: messageViewModel.message))
+            self.update(draft: messageViewModel.message)
         } else {
             messageViewModel.toggleState()
             customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
@@ -433,6 +434,40 @@ private extension ConversationViewController {
                 navigationItem.titleView = viewModel.detailedNavigationViewType.titleView
             }
         }
+    }
+
+    private func update(draft: Message) {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        guard !draft.isSending else {
+            LocalString._mailbox_draft_is_uploading.alertToast()
+            MBProgressHUD.hide(for: self.view, animated: true)
+            return
+        }
+        self.viewModel.messageService
+            .ForcefetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
+                guard let self = self else { return }
+                if error != nil {
+                    PMLog.D("error: \(String(describing: error))")
+                    let alert = LocalString._unable_to_edit_offline.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                guard let objectID = container?.objectID else {
+                    MBProgressHUD.hide(for: self.view, animated: true)
+                    return
+                }
+                // The fetch API is saved on operationContext
+                // But the fetchController is working on mainContext
+                // It take sometime to sync data
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                    guard let message = self.viewModel.message(by: objectID),
+                          !message.body.isEmpty else { return }
+                    timer.invalidate()
+                    MBProgressHUD.hide(for: self.view, animated: true)
+                    self.coordinator.handle(navigationAction: .draft(message: message))
+                }
+            }
     }
 }
 
