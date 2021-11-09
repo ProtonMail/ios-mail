@@ -279,14 +279,19 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
+
         if let _ = model as? ContactGroupVO {
+            complete?(nil, -1)
+            return
+        }
+
+        guard let context = self.composerContext else {
             complete?(nil, -1)
             return
         }
         
         progress()
-        
-        let context = self.composerContext! // VALIDATE
+
         guard let c = model as? ContactVO else {
             complete?(nil, -1)
             return
@@ -297,46 +302,35 @@ class ComposeViewModelImpl : ComposeViewModel {
             return
         }
 
-        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys.init(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
-        when(fulfilled: getEmail, getContact).done { [weak self] keyRes, contacts in
-            //internal emails
-            guard let self = self else {
-                complete?(c.lock, PGPType.none.rawValue)
+        getContact.done { [weak self] contacts in
+            guard let self = self, let message = self.message else {
+                complete?(PGPType.none.lockImage, PGPType.none.rawValue)
                 return
             }
-            c.pgpType = self.getPGPType(keyRes: keyRes, contacts: contacts)
-            complete?(c.lock, c.pgpType.rawValue)
+
+            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
+                                              apiService: self.user.apiService,
+                                              userSign: self.user.userinfo.sign,
+                                              localContacts: contacts)
+            let isMessageHavingPwd = message.password != .empty
+            helper.calculatePGPType(email: email,
+                                    isMessageHavingPwd: isMessageHavingPwd) { pgpType, errorCode, errorString in
+                c.pgpType = pgpType
+                if let errorCode = errorCode {
+                    complete?(pgpType.lockImage, errorCode)
+                } else {
+                    complete?(pgpType.lockImage, pgpType.rawValue)
+                }
+
+                if let errorString = errorString {
+                    self.showError?(errorString)
+                }
+
+            }
         }.catch(policy: .allErrors) { (error) in
-            var errCode: Int
-            if let error = error as? ResponseError {
-                errCode = error.responseCode ?? -1
-            } else {
-                let error = error as NSError
-                errCode = error.code
-            }
-            PMLog.D(error.localizedDescription)
-            defer {
-                complete?(nil, errCode)
-            }
-            
-            if errCode == 33101 {
-                c.pgpType = .failed_server_validation
-                self.showError?(LocalString._signle_address_invalid_error_content)
-                return
-            }
-            
-            // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {
-                self.showError?(LocalString._recipient_not_found)
-                return
-            }
-            
-            if !c.email.isValidEmail() {
-                errCode = 33102
-                c.pgpType = .failed_validation
-            }
+            complete?(nil, -1)
         }
     }
     
@@ -352,17 +346,29 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         let keyReqs = when(fulfilled: reqs)
         when(fulfilled: getContact, keyReqs).done { [weak self] (contacts, keyResponse) in
+            guard let self = self, let message = self.message else {
+                complete?(nil, -1)
+                return
+            }
+
+            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
+                                              apiService: self.user.apiService,
+                                              userSign: self.user.userinfo.sign,
+                                              localContacts: contacts)
+            let isMessageHavingPwd = message.password != .empty
+
             for (index, keyRes) in keyResponse.enumerated() {
-                guard let self = self,
-                      let mail = mails[safe: index] else {
+                guard let mail = mails[safe: index] else {
                     continue
                 }
                 var contactArray: [PreContact] = []
                 if let contact = contacts.first(where: { $0.email == mail }) {
                     contactArray.append(contact)
                 }
-                let pgpType = self.getPGPType(keyRes: keyRes,
-                                              contacts: contactArray)
+                let pgpType = helper.calculatePGPTypeWith(email: mail,
+                                                          keyRes: keyRes,
+                                                          contacts: contacts,
+                                                          isMessageHavingPwd: isMessageHavingPwd)
                 contactGroup.update(mail: mail, pgpType: pgpType)
             }
             complete?(nil, 0)
@@ -379,8 +385,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 complete?(nil, errCode)
             }
 
-            // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {
+            if errCode == PGPTypeErrorCode.recipientNotFound.rawValue {
                 LocalString._address_in_group_not_found_error.alertToast()
                 return
             }
@@ -389,7 +394,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 if mail.isValidEmail() {
                     continue
                 }
-                errCode = 33102
+                errCode = PGPTypeErrorCode.recipientNotFound.rawValue
                 LocalString._address_in_group_not_found_error.alertToast()
                 break
             }
@@ -918,35 +923,5 @@ extension ComposeViewModelImpl {
             PMLog.D(" func parseJson() -> error error \(error)")
         }
         return ["":""]
-    }
-    
-    private func getPGPType(keyRes: KeysResponse, contacts: [PreContact]) -> PGPType {
-        if keyRes.recipientType == 1 {
-            if let contact = contacts.first, contact.firstPgpKey != nil {
-                return .internal_trusted_key
-            } else {
-                return .internal_normal
-            }
-        } else {
-            if let contact = contacts.first {
-                if contact.encrypt, contact.firstPgpKey != nil {
-                    return .pgp_encrypt_trusted_key
-                } else if contact.sign {
-                    if let pwd = self.message?.password, pwd != "" {
-                        return .eo
-                    }
-                    return .pgp_signed
-                }
-            } else {
-                if let pwd = self.message?.password, pwd != "" {
-                    return .eo
-                } else if self.user.userInfo.sign == 1 {
-                    return .pgp_signed
-                } else {
-                    return .none
-                }
-            }
-        }
-        return .none
     }
 }

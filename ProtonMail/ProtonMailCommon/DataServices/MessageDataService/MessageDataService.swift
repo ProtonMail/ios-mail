@@ -1413,7 +1413,7 @@ class MessageDataService : Service, HasLocalStorage {
                     NSError.alertMessageSentToast()
                     completion?(nil, nil, nil)
                     return
-                } else if responseCode == 33101 {
+                } else if responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
                     //Email address validation failed
                     NSError.alertMessageSentError(details: err.localizedDescription)
                     
@@ -1437,7 +1437,7 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 
                 // show message now
-                let errorMsg = responseCode == 33101 ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
+                let errorMsg = responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue ? LocalString._messages_validation_failed_try_again : "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)"
                 self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                              error: errorMsg,
                                                                                              timeInterval: 1,

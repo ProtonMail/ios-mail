@@ -30,7 +30,7 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
         if self.message.contains(label: .sent) {
             c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
             self.senderContact = c
-            complete?(c.lock, c.pgpType.rawValue)
+            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             return
         }
         
@@ -39,7 +39,7 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
         if self.message.checkedSign {
             c.pgpType = self.message.pgpType
             self.senderContact = c
-            complete?(c.lock, c.pgpType.rawValue)
+            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             return
         }
         
@@ -102,7 +102,7 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
             self.message.checkedSign = true
             self.message.checkingSign = false
             self.senderContact = c
-            complete?(c.lock, c.pgpType.rawValue)
+            complete?(c.pgpType.lockImage, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { error in
             self.message.checkingSign = false
             PMLog.D(error.localizedDescription)

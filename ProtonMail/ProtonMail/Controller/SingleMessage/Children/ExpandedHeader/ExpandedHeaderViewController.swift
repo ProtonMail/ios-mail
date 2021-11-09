@@ -105,7 +105,7 @@ class ExpandedHeaderViewController: UIViewController {
             presentSizeRow(size: size)
         }
 
-        if let icon = viewModel.senderContact?.lock,
+        if let icon = viewModel.senderContact?.pgpType.lockImage,
            let reason = viewModel.senderContact?.inboxNotes {
             presentLockIconRow(icon: icon, reason: reason)
         }
@@ -117,8 +117,8 @@ class ExpandedHeaderViewController: UIViewController {
         guard customView.lockImageView.image == nil,
               viewModel.message.isDetailDownloaded,
               let contact = viewModel.senderContact else { return }
-        self.customView.lockImageView.image = contact.lock
-        self.customView.lockContainer.isHidden = contact.lock == nil
+        self.customView.lockImageView.image = contact.pgpType.lockImage
+        self.customView.lockContainer.isHidden = contact.pgpType.lockImage == nil
     }
 
     private func presentTags() {
