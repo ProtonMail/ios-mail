@@ -397,15 +397,18 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         toContactPicker.cellHeight = self.kDefaultRecipientHeight
         toContactPicker.datasource = self
         toContactPicker.delegate = self
+        toContactPicker.shouldExtendToShowAllContact = true
 
         ccContactPicker.cellHeight = self.kDefaultRecipientHeight
         ccContactPicker.datasource = self
         ccContactPicker.delegate = self
+        ccContactPicker.shouldExtendToShowAllContact = true
         ccContactPicker.alpha = 0
 
         bccContactPicker.cellHeight = self.kDefaultRecipientHeight
         bccContactPicker.datasource = self
         bccContactPicker.delegate = self
+        bccContactPicker.shouldExtendToShowAllContact = true
         bccContactPicker.alpha = 0
     }
 

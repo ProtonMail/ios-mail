@@ -118,6 +118,9 @@ class ContactPicker: UIView, AccessibleView {
             return self.contactCollectionView.selectedContacts
         }
     }
+
+    /// This flag controls if the component will extend its height to show all addresses
+    var shouldExtendToShowAllContact: Bool = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -286,17 +289,24 @@ class ContactPicker: UIView, AccessibleView {
 
     internal var currentContentHeight : CGFloat {
         get {
-            let minimumHeight: CGFloat = 48
+            let minimumHeight: CGFloat = 48.0
             var minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
             minimumSizeWithContent = max(minimumHeight, minimumSizeWithContent)
             let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
-            var result = min(minimumSizeWithContent, maximumSize)
-            if result > 48 {
-                let topPadding: CGFloat = 11
-                let bottomPadding: CGFloat = 10
-                result = result + topPadding + bottomPadding
+
+            var finalHeight: CGFloat
+            if shouldExtendToShowAllContact {
+                finalHeight = minimumSizeWithContent
+            } else {
+                finalHeight = min(minimumSizeWithContent, maximumSize)
             }
-            return result
+
+            if finalHeight > 48.0 {
+                let topPadding: CGFloat = 11.0
+                let bottomPadding: CGFloat = 10.0
+                finalHeight = finalHeight + topPadding + bottomPadding
+            }
+            return finalHeight
         }
     }
 
