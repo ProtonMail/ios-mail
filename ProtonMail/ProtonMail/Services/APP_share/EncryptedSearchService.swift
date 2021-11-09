@@ -578,6 +578,18 @@ public class EncryptedSearchService {
         self.registerForPowerStateChangeNotifications()
     }
     
+    enum EncryptedSearchIndexState: Int {
+        case disabled = 0
+        case partial = 1
+        case lowstorage = 2
+        case downloading = 3
+        case paused = 4
+        case refresh = 5
+        case complete = 6
+    }
+    
+    var state: EncryptedSearchIndexState = .disabled
+    
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil
     internal var apiService: APIService? = nil
@@ -677,6 +689,7 @@ extension EncryptedSearchService {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         
+        self.state = .downloading
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
@@ -792,6 +805,8 @@ extension EncryptedSearchService {
                         //print("Size of search index (after compression): \(EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: (self?.user.userInfo.userId)!).asString)")
                     }
                     
+                    self?.state = .complete
+
                     return
                 }
             }
@@ -828,6 +843,7 @@ extension EncryptedSearchService {
             print("Pause indexing!")
             self.messageIndexingQueue.cancelAllOperations()
             self.indexBuildingInProgress = false
+            self.state = .paused
         } else {    //resume indexing
             print("Resume indexing...")
             self.indexBuildingInProgress = true
