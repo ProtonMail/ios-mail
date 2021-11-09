@@ -42,7 +42,6 @@ protocol ContactPickerModelProtocol: NSCopying {
     var contactSubtitle : String? { get }
     var contactImage : UIImage? {get}
     var color: String? {get}
-    var lock: UIImage? {get}
     var hasPGPPined : Bool {get}
     var hasNonePM : Bool {get}
     func notes(type: Int) -> String

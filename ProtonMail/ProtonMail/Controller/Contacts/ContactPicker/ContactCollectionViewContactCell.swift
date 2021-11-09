@@ -181,13 +181,6 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.widthConstant.constant = 16
                 
                 self.contactTitleLabel.textAlignment = .left
-            } else if let lock = self.model.lock {
-                self.lockImage.image = lock
-                self.lockImage.isHidden = false
-                self.leftConstant.constant = 8
-                self.widthConstant.constant = 16
-                
-                self.contactTitleLabel.textAlignment = .left
             } else {
                 self.lockImage.image = nil
                 self.lockImage.isHidden = true
@@ -247,7 +240,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.isError = false
         // Code=33101 "Email address failed validation"
         // Code=33102 "Recipient could not be found"
-        let isBadMail = [33101, 33102].contains(type)
+        let isBadMail = [PGPTypeErrorCode.recipientNotFound.rawValue,
+                         PGPTypeErrorCode.emailAddressFailedValidation.rawValue].contains(type)
         guard isBadMail else { return true }
         self.isError = true
         self.bgView.backgroundColor = UIColorManager.NotificationError

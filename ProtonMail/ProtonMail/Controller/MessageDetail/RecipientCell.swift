@@ -120,9 +120,6 @@ class RecipientCell: UITableViewCell {
             if let img = image {
                 self.lockImage.image = img
                 self.lockImage.isHidden = false
-            } else if let lock = self.model.lock {
-                self.lockImage.image = lock
-                self.lockImage.isHidden = false
             } else {
                 self.lockImage.image =  nil
                 self.lockImage.isHidden = true

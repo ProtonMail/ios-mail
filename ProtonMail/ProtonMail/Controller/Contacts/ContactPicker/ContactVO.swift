@@ -33,7 +33,12 @@ enum SignStatus : Int {
     case failed = 3
 }
 
- enum PGPType : Int {
+enum PGPTypeErrorCode: Int {
+    case recipientNotFound = 33102
+    case emailAddressFailedValidation = 33101
+}
+
+enum PGPType : Int {
     //Do not use -1, this value will break the locker check function
     case failed_non_exist = 33102 // non existing internal user
     case failed_validation = -2 // not pass FE validation
@@ -54,6 +59,40 @@ enum SignStatus : Int {
     case zero_access_store = 14
     case sent_sender_server = 15
     case pgp_signed_verified = 16
+
+    var lockImage: UIImage? {
+        switch self {
+        case .internal_normal, .eo:
+            return UIImage(named: "internal_normal")
+        case .internal_trusted_key:
+            return UIImage(named: "internal_trusted_key")
+        case .pgp_encrypt_trusted_key:
+            return UIImage(named: "pgp_encrypt_trusted_key")
+        case .pgp_signed:
+            return UIImage(named: "pgp_signed")
+        case .pgp_encrypt_trusted_key_verify_failed:
+            return UIImage(named: "pgp_trusted_sign_failed")
+        case .pgp_signed_verify_failed:
+            return UIImage(named: "pgp_signed_verify_failed")
+        case .internal_trusted_key_verify_failed:
+            return UIImage(named: "internal_sign_failed")
+        case .internal_normal_verify_failed:
+            return UIImage(named: "internal_sign_failed")
+        case .pgp_encrypted:
+            return UIImage(named: "pgp_encrypted")
+        case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
+            return nil
+        case .sent_sender_out_side,
+                .zero_access_store:
+            return UIImage(named: "zero_access_encryption")
+        case .sent_sender_encrypted:
+            return UIImage(named: "internal_normal")
+        case .sent_sender_server:
+            return UIImage(named: "internal_normal")
+        case .pgp_signed_verified:
+            return UIImage(named: "pgp_signed_verified")
+        }
+    }
 }
 
 public class ContactVO: NSObject, ContactPickerModelProtocol {
@@ -127,43 +166,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
         return self.composerNotes
     }
-    
-    var lock: UIImage? {
-        get {
-            switch self.pgpType {
-            case .internal_normal, .eo:
-                return UIImage(named: "internal_normal")
-            case .internal_trusted_key:
-                return UIImage(named: "internal_trusted_key")
-            case .pgp_encrypt_trusted_key:
-                return UIImage(named: "pgp_encrypt_trusted_key")
-            case .pgp_signed:
-                return UIImage(named: "pgp_signed")
-            case .pgp_encrypt_trusted_key_verify_failed:
-                return UIImage(named: "pgp_trusted_sign_failed")
-            case .pgp_signed_verify_failed:
-                return UIImage(named: "pgp_signed_verify_failed")
-            case .internal_trusted_key_verify_failed:
-                return UIImage(named: "internal_sign_failed")
-            case .internal_normal_verify_failed:
-                return UIImage(named: "internal_sign_failed")
-            case .pgp_encrypted:
-                return UIImage(named: "pgp_encrypted")
-            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
-                return nil
-            case .sent_sender_out_side,
-                 .zero_access_store:
-                return UIImage(named: "zero_access_encryption")
-            case .sent_sender_encrypted:
-                return UIImage(named: "internal_normal")
-            case .sent_sender_server:
-                return UIImage(named: "internal_normal")
-            case .pgp_signed_verified:
-                return UIImage(named: "pgp_signed_verified")
-            }
-        }
-    }
-    
     
     var hasPGPPined : Bool {
         get {

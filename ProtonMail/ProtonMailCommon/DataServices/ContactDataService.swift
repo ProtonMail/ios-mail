@@ -633,7 +633,7 @@ class ContactDataService: Service, HasLocalStorage {
                         }
                     }
                 }
-                complete?(c.lock, c.pgpType.rawValue)
+                complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             }.catch(policy: .allErrors) { (error) in
                 PMLog.D(error.localizedDescription)
                 complete?(nil, -1)
