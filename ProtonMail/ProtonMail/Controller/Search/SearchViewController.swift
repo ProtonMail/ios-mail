@@ -42,7 +42,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var noResultLabel: UILabel!
     private let searchBar = SearchBarView()
-    private let searchInfoBanner: SearchInfoBannerView = SearchInfoBannerView()
+    private var searchInfoBanner: BannerView? = nil
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
     // TODO: need better UI solution for this progress bar
@@ -100,16 +100,11 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupProgressBar()
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
-        
-        if let esViewModel  = EncryptedSearchService.shared.viewModel {
-            if !esViewModel.isEncryptedSearch {
-                self.showAlertToEnableContentSearch()
-            } else {
-                //self.setupSearchInfoBanner()    //display only when ES is on
-            }
+
+        if userCachedStatus.isEncryptedSearchOn {
+            self.showSearchInfoBanner()    // display only when ES is on
         } else {
-            //view model does not exist - therefore ES is disabled
-            self.showAlertToEnableContentSearch()
+            self.showAlertToEnableContentSearch()   // show spotlight to turn ES on
         }
     }
     
@@ -180,14 +175,7 @@ extension SearchViewController {
         activityIndicator.isHidden = true
         activityIndicator.hidesWhenStopped = true
     }
-    
-    private func setupSearchInfoBanner() {
-        //searchInfoBanner.label.text = "blah"
-        //self.view.addSubview(searchInfoBanner)
-        let banner = BannerView(appearance: .gray, message: "test", buttons: nil, button2: nil, offset: 8.0)
-        self.view.addSubview(banner)
-    }
-    
+        
     private func showAlertToEnableContentSearch(){
         let alert = UIAlertController(title: "Content search available", message: "You can now search within your messages.\n This feature can be enabled from settings at any time.", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { (action: UIAlertAction!) in
@@ -200,6 +188,53 @@ extension SearchViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
+}
+
+extension SearchViewController {
+    internal func showSearchInfoBanner() {
+        var text: String = ""
+        let state = EncryptedSearchService.shared.state
+        switch state {
+        case .disabled:
+            text = LocalString._encrypted_search_info_search_off
+            break
+        case .partial:
+            text = LocalString._encrypted_search_info_search_partial_first
+            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String = (users.firstUser?.userInfo.userId)!
+            text += EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+            text += LocalString._encrypted_search_info_search_partial_second
+            text += LocalString._encrypted_search_info_search_partial_link
+            break
+        case .lowstorage:
+            text = LocalString._encrypted_search_info_search_partial_first
+            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String = (users.firstUser?.userInfo.userId)!
+            text += EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+            text += LocalString._encrypted_search_info_search_lowstorage
+            break
+        case .downloading:
+            text = LocalString._encrypted_search_info_search_downloading
+            text += LocalString._encrypted_search_info_search_downloading_link
+            break
+        case .paused:
+            text = LocalString._encrypted_search_info_search_paused
+            text += LocalString._encrypted_search_info_search_paused_link
+            break
+        case .refresh:
+            text = LocalString._encrypted_search_info_search_refresh
+            break
+        case .complete:
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity)
+            self.view.addSubview(self.searchInfoBanner!)
+            self.searchInfoBanner!.drop(on: self.view, from: .top)
+        }
+    }
+    
 }
 
 // MARK: Actions
