@@ -46,7 +46,9 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeeplink(deeplink)
+        } else {
+            self.coordinator.start()
         }
     }
     
@@ -58,8 +60,10 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
             self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            completionHandler(true)
+        } else {
+            completionHandler(false)
         }
-        completionHandler(true)
     }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -71,9 +75,9 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         if let shortcutItem = connectionOptions.shortcutItem,
-            let scene = scene as? UIWindowScene
+            let _ = scene as? UIWindowScene
         {
-            self.windowScene(scene, performActionFor: shortcutItem, completionHandler: { _ in })
+            handleShortcutAction(shortcutItem: shortcutItem)
             return
         } else if UIDevice.current.stateRestorationPolicy == .multiwindow,
             let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity
@@ -102,6 +106,17 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to prevent built-in restoration on iPhones, which is broken up to at least iOS 13.3 beta 2
         guard UIDevice.current.stateRestorationPolicy == .multiwindow else { return nil }
         return self.currentUserActivity(in: scene)
+    }
+
+    // handle the shorcut item in scene(_:willConnectTo:options:)
+    func handleShortcutAction(shortcutItem: UIApplicationShortcutItem) {
+        if let data = shortcutItem.userInfo?["deeplink"] as? Data,
+           let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        {
+            self.coordinator.followDeeplink(deeplink)
+        } else {
+            self.coordinator.start()
+        }
     }
     
     private func currentUserActivity(in scene: UIScene) -> NSUserActivity? {

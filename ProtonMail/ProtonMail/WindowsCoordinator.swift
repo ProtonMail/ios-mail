@@ -350,9 +350,12 @@ class WindowsCoordinator: CoordinatorNew {
             source?.topmostViewController()?.viewWillDisappear(false)
 
             // notify destination views they are about to show up
-            if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
-                topDestination.viewWillAppear(false)
-                topDestination.viewDidAppear(false)
+            if let topDestination = destination.topmostViewController() {
+                topDestination.loadViewIfNeeded()
+                if topDestination.isViewLoaded {
+                    topDestination.viewWillAppear(false)
+                    topDestination.viewDidAppear(false)
+                }
             }
             completion?()
         })
