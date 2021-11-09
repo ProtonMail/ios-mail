@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 protocol NewMessageBodyViewModelDelegate: AnyObject {
-    func reloadWebView()
+    func reloadWebView(forceRecreate: Bool)
     func showReloadError()
     func updateBannerStatus()
     func showDecryptionErrorBanner()
@@ -78,11 +78,14 @@ class NewMessageBodyViewModel {
             hasStrippedVersionObserver?(hasStrippedVersion)
         }
     }
+    private var shouldHoldReloading = false
     var displayMode: MessageDisplayMode = .collapsed {
         didSet {
             reload(from: message)
-            // No call to delegate?.reloadWebView() since contents will be changed and will trigger the call
-            // Otherwise, we would call it twice for nothing
+            // Calling reload will trigger contents to be set, so we prevent this to avoid having
+            shouldHoldReloading = true
+            delegate?.reloadWebView(forceRecreate: true)
+            shouldHoldReloading = false
         }
     }
 
@@ -93,21 +96,27 @@ class NewMessageBodyViewModel {
     var remoteContentPolicy: WebContents.RemoteContentPolicy.RawValue {
         didSet {
             reload(from: message)
-            delegate?.reloadWebView()
+            if !shouldHoldReloading {
+                delegate?.reloadWebView(forceRecreate: false)
+            }
         }
     }
 
     var embeddedContentPolicy: WebContents.EmbeddedContentPolicy {
         didSet {
             if reload(from: message) {
-                delegate?.reloadWebView()
+                if !shouldHoldReloading {
+                    delegate?.reloadWebView(forceRecreate: false)
+                }
             }
         }
     }
 
     private(set) var contents: WebContents? {
         didSet {
-            delegate?.reloadWebView()
+            if !shouldHoldReloading {
+                delegate?.reloadWebView(forceRecreate: false)
+            }
         }
     }
     private var hasAutoRetried = false
