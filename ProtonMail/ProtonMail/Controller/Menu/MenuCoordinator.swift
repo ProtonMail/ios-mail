@@ -132,6 +132,8 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             self.navigateToCreateFolder(type: .label)
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
+        case .provideFeedback:
+            self.navigateToMailBox(labelInfo: MenuLabel(location: .inbox), deepLink: deepLink, showFeedbackActionSheet: true)
         default:
             break
         }
@@ -251,12 +253,13 @@ extension MenuCoordinator {
         }
     }
     
-    private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?) {
+    private func navigateToMailBox(labelInfo: MenuLabel, deepLink: DeepLink?, showFeedbackActionSheet: Bool = false) {
         guard !scrollToLatestMessageInConversationViewIfPossible(deepLink) else {
             return
         }
 
         let vc = MailboxViewController.instance()
+        vc.shouldShowFeedbackActionSheet = showFeedbackActionSheet
         self.vmService.mailbox(fromMenu: vc)
         
         guard let user = self.usersManager.firstUser,
