@@ -197,6 +197,10 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/APIService/ReceiptService.swift
   - ${PWD}/ProtonMailCommon/ViewModels/SingleMessage/Children/HTML+BodyQuoteStripping.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/Content/SingleMessageContentViewHistoryButtonContainer.swift
+  - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackViewController.swift
+  - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackActionSheetView.swift
+  - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackTransitioner.swift
+  - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackViewModel.swift
 
 excluded:
   - ${PWD}/Pods

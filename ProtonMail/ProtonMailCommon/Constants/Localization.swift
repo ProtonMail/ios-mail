@@ -2188,4 +2188,14 @@ class LocalizedString {
     lazy var _attachmets_are_uploading_info = NSLocalizedString("Sending will be available\nwhen attachments are uploaded", comment: "text displayed in composer when attachments are uploading")
     lazy var _attachment_upload_failed_title = NSLocalizedString("Attachment failure", comment: "Alert title when attachment upload failed")
     lazy var _attachment_upload_failed_body = NSLocalizedString("The following files couldn't be attached:", comment: "Alert message when attachment upload failed")
+
+    // MARK: - In App Feedback
+    lazy var _your_feedback = NSLocalizedString("Your feedback", comment: "Title of user feedback view")
+    lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new ProtonMail?", comment: "Prompt of user feedback view")
+    lazy var _feedback_placeholder = NSLocalizedString("Tell us about your experience. (Optional)", comment: "Placeholder in text view destined to gather written user feedback")
+    lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
+    lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
+    lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
+    lazy var _provide_feedback = NSLocalizedString("Provide feedback", comment: "Title of menu action to trigger feedback view")
+    lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
 }

@@ -142,6 +142,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
     private var isSwipingCell = false
+    var shouldShowFeedbackActionSheet = false
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -340,8 +341,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         FileManager.default.cleanCachedAttsLegacy()
 
         checkHuman()
+        if shouldShowFeedbackActionSheet {
+            shouldShowFeedbackActionSheet = false
+            delay(0.2) {
+                self.showFeedbackActionSheet()
+            }
+        }
     }
-    
+
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: true, completion: nil )
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -2380,3 +2391,13 @@ extension MailboxViewController: SwipyCellDelegate {
     }
 }
 
+extension MailboxViewController {
+    private func showFeedbackActionSheet() {
+        let feedbackVC = InAppFeedbackViewController(viewModel: InAppFeedbackViewModel()) { [weak self] in
+            guard let self = self else { return }
+            let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.info)
+            banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+        }
+        self.present(feedbackVC, animated: true, completion: nil)
+    }
+}

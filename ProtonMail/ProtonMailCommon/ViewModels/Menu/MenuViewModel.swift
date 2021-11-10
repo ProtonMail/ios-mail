@@ -55,6 +55,7 @@ final class MenuViewModel: NSObject {
     
     private var rawData = [MenuLabel]()
     let sections: [MenuSection]
+    private let feedbackItems: [MenuLabel]
     private let inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
     private var labelItems: [MenuLabel] = []
@@ -68,7 +69,8 @@ final class MenuViewModel: NSObject {
         self.queueManager = queueManager
         self.coreDataService = coreDataService
         
-        self.sections = [.inboxes, .folders, .labels, .more]
+        self.sections = [.feedback, .inboxes, .folders, .labels, .more]
+        self.feedbackItems = [MenuLabel(location: .provideFeedback)]
         self.inboxItems = [MenuLabel(location: .inbox),
                            MenuLabel(location: .draft),
                            MenuLabel(location: .sent),
@@ -129,6 +131,8 @@ extension MenuViewModel: MenuVMProtocol {
         let row = indexPath.row
         
         switch self.sections[section] {
+        case .feedback:
+            return self.feedbackItems[row]
         case .inboxes:
             return self.inboxItems[row]
         case .folders:
@@ -143,6 +147,7 @@ extension MenuViewModel: MenuVMProtocol {
     
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
+        case .feedback: return self.feedbackItems.count
         case .inboxes: return self.inboxItems.count
         case .folders:
             return self.folderItems.getNumberOfRows()
