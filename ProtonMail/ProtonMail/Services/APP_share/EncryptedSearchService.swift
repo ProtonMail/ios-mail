@@ -576,6 +576,8 @@ public class EncryptedSearchService {
         //enable battery level monitoring
         //self.registerForBatteryLevelChangeNotifications()
         self.registerForPowerStateChangeNotifications()
+        
+        self.determineEncryptedSearchState()
     }
     
     enum EncryptedSearchIndexState: Int {
@@ -588,7 +590,7 @@ public class EncryptedSearchService {
         case complete = 6
     }
     
-    var state: EncryptedSearchIndexState = .refresh //TODO change to disabled
+    var state: EncryptedSearchIndexState = .disabled
     
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil
@@ -662,6 +664,42 @@ public class EncryptedSearchService {
 }
 
 extension EncryptedSearchService {
+    internal func determineEncryptedSearchState(){
+        //check if encrypted search is switched on in settings
+        if !userCachedStatus.isEncryptedSearchOn {
+            self.state = .disabled
+        } else {
+            //TODO low storage?
+            //self.state = .lowstorage
+            if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {   //TODO paused by user?
+                self.state = .paused
+                return
+            }
+            if self.indexBuildingInProgress {
+                self.state = .downloading
+            } else {
+                //check if search index exists and the number of messages in the search index
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                let userID: String = (usersManager.firstUser?.userInfo.userId)!
+                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+                    self.getTotalMessages {
+                        let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                        if self.totalMessages == numberOfEntriesInSearchIndex {
+                            self.state = .complete
+                        } else {
+                            self.state = .partial
+                        }
+                    }
+                } else {
+                    print("Error search index does not exist for user!")
+                }
+            }
+            //TODO refresh?
+            //self.state = .refresh
+        }
+        
+    }
+
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
         let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
