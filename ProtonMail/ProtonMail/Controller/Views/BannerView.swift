@@ -41,6 +41,9 @@ class BannerView : PMView {
     private var secondButtonConfig: ButtonConfiguration?
     private var link: String? = ""
     
+    typealias tapAttributedTextActionBlock = () -> Void
+    var callback: tapAttributedTextActionBlock?
+    
     @IBOutlet private weak var button: UIButton!
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var messageTextview: UITextView!
@@ -94,7 +97,8 @@ class BannerView : PMView {
          button2: ButtonConfiguration? = nil,
          offset: CGFloat,
          dismissDuration: TimeInterval = 4,
-         link: String? = "")
+         link: String? = "",
+         complete: tapAttributedTextActionBlock? = nil)
     {
         self.offset = offset
         self.dismissDuration = dismissDuration
@@ -123,6 +127,7 @@ class BannerView : PMView {
             self.messageTextview.addGestureRecognizer(tap)
             
             self.link = link
+            self.callback = complete
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -311,11 +316,12 @@ extension BannerView: UIGestureRecognizerDelegate {
         
         let characterIndex = layoutManager.characterIndex(for: location, in: myTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
         if range.contains(characterIndex) {
-            let value = myTextView.attributedText.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) as! [String:URL]
+            callback?()
+            /*let value = myTextView.attributedText.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) as! [String:URL]
             let url = value["NSLink"]!
             if (url.absoluteString).starts(with: "downloading") {
                 //TODO move to Settings ES screen
-            }
+            }*/
         }
     }
 }
