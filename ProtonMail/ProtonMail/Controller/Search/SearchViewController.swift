@@ -232,7 +232,44 @@ extension SearchViewController {
         }
         
         DispatchQueue.main.async {
-            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link)
+            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link){
+                switch state {
+                case .complete:
+                    break
+                case .disabled:
+                    break
+                case .partial:
+                    let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                    let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+                    vc.set(viewModel: vm)
+                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
+                    self.show(vc, sender: self)
+                    break
+                case .lowstorage:
+                    break
+                case .downloading:
+                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                    let vc = SettingsEncryptedSearchViewController()
+                    vc.set(viewModel: vm)
+                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
+                    self.show(vc, sender: self)
+                    break
+                case .paused:
+                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                    let vc = SettingsEncryptedSearchViewController()
+                    vc.set(viewModel: vm)
+                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
+                    self.show(vc, sender: self)
+                    break
+                case .refresh:
+                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                    let vc = SettingsEncryptedSearchViewController()
+                    vc.set(viewModel: vm)
+                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
+                    self.show(vc, sender: self)
+                    break
+                }
+            }
             self.view.addSubview(self.searchInfoBanner!)
             self.searchInfoBanner!.drop(on: self.view, from: .top)
         }
