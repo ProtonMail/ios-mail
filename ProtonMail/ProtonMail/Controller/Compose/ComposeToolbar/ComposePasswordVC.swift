@@ -162,6 +162,7 @@ extension ComposePasswordVC {
         self.passwordHintText.text = self.encryptionPasswordHint
         self.passwordHintPlaceholder.attributedText = LocalString._define_hint_optional.apply(style: .DefaultHint)
         self.passwordHintPlaceholder.isHidden = !self.encryptionPasswordHint.isEmpty
+        self.passwordHintView.accessibilityIdentifier = "ComposePasswordVC.passwordHintView"
     }
 
     private func setupApplyButton() {
@@ -169,6 +170,7 @@ extension ComposePasswordVC {
         let title = self.encryptionPassword.isEmpty ? LocalString._composer_password_apply: LocalString._save_changes
         self.applyButton.setTitle(title, for: .normal)
         self.checkApplyButtonStatus()
+        self.applyButton.accessibilityIdentifier = "ComposePasswordVC.applyButton"
     }
 
     private func setupRemoveView() {
