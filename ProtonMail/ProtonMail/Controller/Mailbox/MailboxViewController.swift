@@ -1084,10 +1084,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     var retryCounter = 0
-    @objc internal func getLatestMessages() {
+    private func getLatestMessages() {
         self.getLatestMessagesRaw() { [weak self] _ in
-            self?.deleteExpiredMessages()
-            
             self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
                 self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             }
@@ -2396,6 +2394,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
+        deleteExpiredMessages()
         guard self.hasNetworking, !fetchingMessage else { return }
         getLatestMessages()
     }
