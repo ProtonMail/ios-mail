@@ -527,10 +527,10 @@
 "Change Pin" = "PINコードの変更";
 
 /* settings protection section title */
-"Change PIN" = "Change PIN";
+"Change PIN" = "PIN を変更";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Change PIN code";
+"Change PIN code" = "PIN コードを変更";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "右スワイプ時の動作を変更";
@@ -649,13 +649,13 @@
 "Continue and Don't ask again" = "続行し、今後表示しない。";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversation";
+"Conversation" = "会話";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "会話モード";
 
 /* Title */
-"Copy" = "Copy";
+"Copy" = "コピー";
 
 /* Title */
 "Copy address" = "メールアドレスをコピー";
@@ -1205,10 +1205,10 @@
 "Government block" = "政府等による検閲";
 
 /* The title for the contact group detail view */
-"Group details" = "Group details";
+"Group details" = "グループの詳細";
 
 /* The instruction label for the group name textfield */
-"Group name" = "Group name";
+"Group name" = "グループ名";
 
 /* menu title (contact groups) */
 "Groups" = "グループ";
@@ -1226,7 +1226,7 @@
 "Hide" = "非表示";
 
 /* Title */
-"Hide details" = "Hide details";
+"Hide details" = "詳細を非表示";
 
 /* (No Comment) */
 "Hide Details" = "詳細を隠す";
@@ -1652,7 +1652,7 @@
 "Neat and tidy" = "Neat and tidy";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "無料登録\r r210321";
+"NEED AN ACCOUNT? SIGN UP." = "無料登録";
 
 /* section title 
    The title of alternative routing settings */
@@ -1689,7 +1689,7 @@
 "New sign-in password" = "New sign-in password";
 
 /* title of the next button */
-"Next" = "Next";
+"Next" = "次へ";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "ニックネーム";
@@ -1734,7 +1734,7 @@
 "Not Now" = "後で";
 
 /* No comment provided by engineer. */
-"Not set" = "Not set";
+"Not set" = "未設定";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "注意：ユーザー名はあなたのProtonMailアドレスとしても使用されます。";
@@ -1794,9 +1794,6 @@
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
-
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \n\n アクティベーションを無視してもよろしいですか？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -1897,10 +1894,10 @@
 "PIN" = "PIN";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN code";
+"PIN code" = "PIN コード";
 
 /* Description */
-"PIN code can't be empty." = "PIN code can't be empty.";
+"PIN code can't be empty." = "PIN コードは空欄にはできません。";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Plans can be edited on the web version.";
@@ -2139,7 +2136,7 @@
 
 /* The title of PIN code setup2 view 
    The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "Repeat PIN code";
+"Repeat PIN code" = "PIN コードを確認";
 
 /* *
  *  Controller Defined */
@@ -2285,7 +2282,7 @@
 "Set passwords" = "パスワードの設定";
 
 /* The title of PIN code setup1 view */
-"Set PIN code" = "Set PIN code";
+"Set PIN code" = "PIN コードを設定";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Set up swipe gestures to access most used actions.";
@@ -2668,9 +2665,6 @@
 /* message To: feild
    Title */
 "To" = "宛先　";
-
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "メールボックスのパスワードをリセットするには、protonmail.comからWeb版のProtonMailを使用してください。";
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";

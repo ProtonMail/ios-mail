@@ -320,7 +320,7 @@
 "Attachment" = "Archivo adjunto";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Fallo al adjuntar";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Archivo adjunto importado";
@@ -392,7 +392,7 @@
 "Birthday" = "Cumpleaños";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "Navega rápidamente a través de mensajes encadenados en modo conversación.";
 
 /* Title */
 "Bug Description" = "Descripción del error";
@@ -1024,7 +1024,7 @@
 "End-to-End Encryption" = "Cifrado de extremo a extremo";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Disfruta de cifrado de extremo a extremo incluso con contactos ajenos a Proton: Invítales a Protonmail o encripta manualmente sus mensajes.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ingresar";
@@ -1794,9 +1794,6 @@
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "El E, d MMM, yyyy a las %@";
-
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Solo ignora la activación de la compra si estás seguro de que todas tus suscripciones están actualizadas. Para obtener más ayuda, comunícate con el servicio de atención al cliente. \n\n ¿Estás seguro de que quieres ignorar la activación?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Solo se puede agregar una cuenta gratuita";
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "Para";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,\n necesitamos verificar que eres humano.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, por favor utiliza la versión web de ProtonMail en protonmail.com";
 
@@ -3022,14 +3016,14 @@
 "You have used %d%% of your storage space (%@)." = "Has utilizado %d%% de tu espacio de almacenamiento (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ha utilizado %1$d%% de su espacio de almacenamiento (%2$@). Actualice su plan para continuar enviando y recibiendo correos electrónicos.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Has utilizado todo tu espacio de almacenamiento (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ha utilizado todo su espacio de almacenamiento (%@). Actualice su plan para continuar enviando y recibiendo correos electrónicos.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Tu nueva cuenta de correo electrónico cifrado ha sido configurada y está lista para enviar y recibir mensajes cifrados.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Tu nueva cuenta de correo electrónico\n seguro está lista.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Tu plan está activo hasta";
