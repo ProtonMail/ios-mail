@@ -403,7 +403,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let vi = UIView()
         vi.backgroundColor = .clear
         
-        if section == .feedback { return vi }
+        if viewModel.currentUser?.userinfo.isInAppFeedbackEnabled ?? false {
+            if section == .feedback { return vi }
+        } else {
+            if section == .inboxes { return vi }
+        }
         
         let line = UIView()
         line.backgroundColor = UIColor(hexColorCode: "#303239")
