@@ -1795,9 +1795,6 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "E, d MMM yyyy la %@";
 
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției doar dacă sunteți sigur că toate abonamentele sunt actualizate. Pentru asistență suplimentară, contactați echipa de asistență a clienților. \n\n Sigur doriți să ignorați activarea?";
-
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
 
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "Către";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\ntrebuie să dovediţi că sunteți persoană.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, folosiți versiunea web a ProtonMail de la protonmail.com";
 
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul cont de e-mail criptat a fost configurat și este gata să trimită și să primească mesaje criptate.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Noul cont de e-mail\nsecurizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";

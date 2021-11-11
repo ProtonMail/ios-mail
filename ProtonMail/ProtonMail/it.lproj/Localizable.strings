@@ -1795,9 +1795,6 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Il E, MMM gg, aaaa alle %@";
 
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignora l'attivazione dell'acquisto solo se sei sicuro che tutti i tuoi abbonamenti siano aggiornati. Per ulteriore assistenza, sei pregato di contattare il supporto clienti. \n\n Sei sicuro di voler ignorare l'attivazione?";
-
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Può essere aggiunto solo un account gratuito";
 
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "A";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Per prevenire abusi di ProtonMail,\n dobbiamo verificare che tu sia umano.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com";
 
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Il tuo nuovo account di posta elettronica crittografata è stato impostato ed è pronto per inviare e ricevere messaggi crittografati.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Il tuo nuovo profilo email\n sicuro è pronto.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Il tuo piano è attualmente attivo fino al";

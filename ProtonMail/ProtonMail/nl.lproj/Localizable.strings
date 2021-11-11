@@ -1033,7 +1033,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Voer huidige PIN code in";
+"Enter current PIN code" = "Voer huidige PIN-code in";
 
 /* Title */
 "Enter Verification Code" = "Voer verificatiecode in";
@@ -1795,9 +1795,6 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Op EE, MMM d, jjjjj om %@";
 
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als u zeker weet dat al uw abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \n\n Weet u zeker dat u de activering wilt negeren?";
-
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
 
@@ -1927,7 +1924,7 @@
 "Please input a valid email address." = "Voer een geldig e-mailadres in.";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Houd ProtonMail open tot de operatie klaar is, alstublieft.";
+"Please keep ProtonMail open until the operation is done." = "Houd ProtonMail open tot de operatie klaar is.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
@@ -1978,10 +1975,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 labels te gebruiken";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Upgrade uw plan alstublieft";
+"Please upgrade your plan" = "Upgrade uw plan";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Upgrade uw plan om e-mails te blijven verzenden en ontvangen a. u. b.";
+"Please upgrade your plan to continue to send and receive emails." = "Upgrade uw plan om e-mails te blijven verzenden en ontvangen.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Gebruik eerst de ProtonMail App inlog.";
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "Aan";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen, moeten we\n controleren of u een natuurlijk persoon bent.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
 
@@ -3022,14 +3016,14 @@
 "You have used %d%% of your storage space (%@)." = "U heeft %d%% van uw opslagruimte gebruikt (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U heeft %1$d%% van uw opslagruimte gebruikt (%2$@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen a. u. b.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U heeft %1$d%% van uw opslagruimte gebruikt (%2$@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "U heeft al uw opslagruimte gebruikt (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U hebt al uw opslagruimte opgebruikt (%@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen a. u. b.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "U hebt al uw opslagruimte opgebruikt (%@). Upgrade uw abonnement om e-mails te blijven verzenden en ontvangen.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Uw nieuwe beveiligde e-mail\n account is klaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";

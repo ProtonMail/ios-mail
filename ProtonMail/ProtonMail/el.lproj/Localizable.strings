@@ -368,7 +368,7 @@
 "Back" = "Πίσω";
 
 /* Error */
-"Bad auth cache" = "Bad auth cache";
+"Bad auth cache" = "Κακή προσωρινή μνήμη ταυτότητας";
 
 /* title */
 "Bad parameter" = "Κακή παράμετρος";
@@ -392,7 +392,7 @@
 "Birthday" = "Γενέθλια";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "Περάστε τα μηνύματα με νήματα στη λειτουργία συνομιλίας.";
 
 /* Title */
 "Bug Description" = "Περιγραφή Σφάλματος";
@@ -754,7 +754,7 @@
 "Default error. Please try again." = "Σφάλμα προεπιλογής. Παρακαλώ προσπαθήστε ξανά.";
 
 /* Placeholder */
-"Define Expiration Date" = "Προσδιορίστε την ημερομηνία λήξης";
+"Define Expiration Date" = "Ορισμός Ημερομηνίας Λήξης";
 
 /* Placeholder */
 "Define Hint (Optional)" = "Προσδιορίστε Υπόδειξη (Προαιρετικό)";
@@ -1075,7 +1075,7 @@
 "Every time enter app" = "Κάθε φορά που ανοίγω την εφαρμογή";
 
 /* alert title */
-"Expiration not supported" = "Δεν υποστηρίζεται η λήξη";
+"Expiration not supported" = "Μη υποστηριζόμενη ημ/νία λήξης";
 
 /* VoiceOver: email can expire */
 "Expires" = "Λήγει";
@@ -1084,7 +1084,7 @@
 "Expiring Messages" = "Μηνύματα που λήγουν";
 
 /* Key size checkbox */
-"Extreme Security" = "Ακραία Ασφάλεια";
+"Extreme Security" = "Ακραία Διασφάλιση";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -1232,7 +1232,7 @@
 "Hide Details" = "Απόκρυψη λεπτομερειών";
 
 /* Key size checkbox */
-"High Security" = "Υψηλή ασφάλεια";
+"High Security" = "Υψηλή Διασφάλιση";
 
 /* hours */
 "hours" = "Ώρες";
@@ -1321,7 +1321,7 @@
 "Input Notification Email …" = "Εισαγωγή E-mail ειδοποίησης…";
 
 /* Cert pinning failed alert title */
-"Insecure connection" = "Μη-ασφαλής σύνδεση";
+"Insecure connection" = "Αδιασφάλιστη σύνδεση";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Η άμεση δημιουργία λογαριασμού ProtonMail έχει προσωρινά απενεργοποιηθεί. Μεταβείτε στη διεύθυνση https://protonmail.com/invite για να ζητήσετε μια πρόσκληση.";
@@ -1473,7 +1473,7 @@
 "Logs" = "Αρχεία καταγραφής";
 
 /* Upgrade warning title */
-"Looking to secure your contact's details?" = "Ψάχνετε να εξασφαλίσετε τα στοιχεία της επαφής σας;";
+"Looking to secure your contact's details?" = "Επιθυμείτε τη διασφάλιση των στοιχείων της επαφής σας;";
 
 /* cell title in device settings */
 "Mailbox" = "Θυρίδα";
@@ -1787,16 +1787,13 @@
 "On" = "Ενεργό";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "Στις %@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "Στις %1$@ στις %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
-
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε σίγουροι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. \n\n Είστε βέβαιοι ότι θέλετε να αγνοήσετε την ενεργοποίηση;";
+"On E, MMM d, yyyy at %@" = "Στις ΗΜ, ΜΗΝ η, χρον στις %@";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
@@ -2378,10 +2375,10 @@
 "SRP Server" = "Διακομιστής SRP";
 
 /* Description */
-"SRP single password keysalt invalid!" = "SRP single password keysalt invalid!";
+"SRP single password keysalt invalid!" = "Το SRP single password keysalt δεν είναι έγκυρο!";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+"Srp single password keyslat invalid!" = "Το Srp single password keysalt δεν είναι έγκυρο!";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -2456,7 +2453,7 @@
 "Swipe Right to Left" = "Σύρετε δεξιά προς τα αριστερά";
 
 /* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
+"Swipe to set up swipable actions" = "Σύρετε για να ρυθμίσετε τις ενέργειες με δυνατότητα ολίσθησης";
 
 /* cell title in device settings
    Swiping gestures */
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "Προς";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Για να αποτρέψουμε την κατάχρηση του ProtonMail,\n πρέπει να επαληθεύσουμε ότι είστε άνθρωπος.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Για επαναφορά του κωδικού της θυρίδας σας, παρακαλούμε χρησιμοποιήστε την έκδοση ιστού του ProtonMail στο protonmail.com";
 
@@ -2680,7 +2674,7 @@
 
 /* *
  *  API Error & alert title */
-"Token expired" = "Το token έχει λήξει";
+"Token expired" = "Ληγμένο διακριτικό";
 
 /* Alert title */
 "Too many recipients" = "Πάρα πολλοί παραλήπτες";
@@ -2748,7 +2742,7 @@
 "Two Factor Code" = "Κωδικός Δύο Παραγόντων (2FA)";
 
 /* Internal type casting error */
-"Type casting error" = "Type casting error";
+"Type casting error" = "Τύπος σφάλματος χύτευσης";
 
 /* Description */
 "Unable to connect to the server" = "Αδυναμία σύνδεσης στον διακομιστή";
@@ -2980,7 +2974,7 @@
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Πρόκειται να καταργήσετε όλους τους λογαριασμούς. Δεν θα έχετε πρόσβαση σε αυτά από αυτήν τη συσκευή, εκτός εάν τα προσθέσετε ξανά.\n\nΘέλετε να καταργήσετε όλους τους λογαριασμούς σας ούτως ή άλλως;";
 
 /* The main title of no result message */
-"You are all caught up" = "You are all caught up";
+"You are all caught up" = "Είστε έτοιμοι";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Δεν είστε συνδεδεμένος. Δεν μπορούμε να εμφανίσουμε το περιεχόμενο του μηνύματός σας.";
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail\n είναι έτοιμος.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";

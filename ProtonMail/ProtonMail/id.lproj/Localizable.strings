@@ -1795,9 +1795,6 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Pada E, d MMM yyyy pukul %@";
 
-/* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Hanya abaikan aktivasi pembayaran jika Anda yakin semua langganan Anda telah terperbaharui. Untuk bantuan lebih lanjut, silakan hubungi layanan konsumen. \n\n Apakah Anda yakin ingin mengabaikan aktivasi?";
-
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Hanya satu akun gratis yang bisa ditambahkan";
 
@@ -2669,9 +2666,6 @@
    Title */
 "To" = "Untuk";
 
-/* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,\n kami perlu memverifikasi bahwa Anda manusia.";
-
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
 
@@ -3065,9 +3059,6 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
-
-/* view top title */
-"Your new secure email\n account is ready." = "Akun email aman Anda\n telah siap digunakan.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Paket Anda aktif sampai";
