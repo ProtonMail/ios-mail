@@ -1649,18 +1649,19 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     func encryptBody(_ message: Message, clearBody: String, mailbox_pwd: String, error: NSErrorPointer?) {
-        let address_id = self.getAddressID(message)
-        if address_id.isEmpty {
+        // TODO: Refactor this method later.
+        let addressId = message.addressID ?? .empty
+        if addressId.isEmpty {
             return
         }
         
         do {
-            if let key = self.userDataSource?.getAddressKey(address_id: address_id) {
+            if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
                 message.body = try clearBody.encrypt(withKey: key,
                                                      userKeys: self.userDataSource!.userPrivateKeys,
                                                      mailbox_pwd: mailbox_pwd) ?? ""
             } else {//fallback
-                let key = self.userDataSource!.getAddressPrivKey(address_id: address_id)
+                let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
                 message.body = try clearBody.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
             }
         } catch let error {//TODO:: error handling
@@ -1719,6 +1720,7 @@ class MessageDataService : Service, HasLocalStorage {
                               body: String,
                               attachments: [Any]?,
                               mailbox_pwd: String,
+                              sendAddress: Address,
                               inManagedObjectContext context: NSManagedObjectContext) -> Message {
         let message = Message(context: context)
         message.messageID = UUID().uuidString
@@ -1732,6 +1734,7 @@ class MessageDataService : Service, HasLocalStorage {
         message.messageStatus = 1
         message.setAsDraft()
         message.userID = self.userID
+        message.addressID = sendAddress.addressID
         
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

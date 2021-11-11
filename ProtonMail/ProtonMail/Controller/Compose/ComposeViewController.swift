@@ -145,15 +145,20 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.headerView?.bccContactPicker?.contactCollectionView?.layoutIfNeeded()
             self.headerView?.ccContactPicker?.contactCollectionView?.layoutIfNeeded()
             
-            switch self.viewModel.messageAction
-            {
-            case .openDraft, .reply, .replyAll:
-                self.headerView?.notifyViewSize(true)
-            case .forward:
-                let _ = self.headerView?.toContactPicker.becomeFirstResponder()
-            default:
-                let _ = self.headerView?.toContactPicker.becomeFirstResponder()
+            delay(0.5) {
+                // There is a height observer in ComposeContainerViewController
+                // If the tableview reload, the keyboard will be dismissed
+                switch self.viewModel.messageAction
+                {
+                case .openDraft, .reply, .replyAll:
+                    self.headerView?.notifyViewSize(true)
+                case .forward:
+                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
+                default:
+                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
+                }
             }
+            
         }.catch { error in
             // TODO: handle error
             PMLog.D("Load all contacts and groups error \(error)")

@@ -48,8 +48,12 @@ extension Data { ///need follow the gomobile fixes
     }
 }
 
-//Helper
+/// Helper
 class Crypto {
+
+    enum CryptoError: Error {
+        case failedGeneratingKeypair(Error?)
+    }
 
     private enum Algo : String {
         case ThreeDES  = "3des"
@@ -935,6 +939,33 @@ class Crypto {
             }
         }
         return keyRing
+    }
+
+    static func generateRandomKeyPair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
+        let passphrase = UUID().uuidString
+        let username = UUID().uuidString
+        let domain = "protonmail.com"
+        let email = "\(username)@\(domain)"
+        let keyType = "x25519"
+        var error: NSError?
+
+        guard let unlockedKey = CryptoGenerateKey(username, email, keyType, 0, &error) else {
+            throw CryptoError.failedGeneratingKeypair(error)
+        }
+
+        let cryptoKey = try unlockedKey.lock(passphrase.data(using: .utf8))
+        unlockedKey.clearPrivateParams()
+
+        let publicKey = cryptoKey.getArmoredPublicKey(&error)
+        if let concreteError = error {
+            throw CryptoError.failedGeneratingKeypair(concreteError)
+        }
+        let privateKey = cryptoKey.armor(&error)
+        if let concreteError = error {
+            throw CryptoError.failedGeneratingKeypair(concreteError)
+        }
+
+        return (passphrase, publicKey, privateKey)
     }
 }
 

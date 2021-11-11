@@ -1,23 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "splash-icon-mail.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "splash-icon-mail@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "splash-icon-mail@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Icon_v3.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
