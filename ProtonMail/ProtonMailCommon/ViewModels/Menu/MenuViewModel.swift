@@ -69,8 +69,14 @@ final class MenuViewModel: NSObject {
         self.queueManager = queueManager
         self.coreDataService = coreDataService
         
-        self.sections = [.feedback, .inboxes, .folders, .labels, .more]
-        self.feedbackItems = [MenuLabel(location: .provideFeedback)]
+        var sections: [MenuSection] = [.inboxes, .folders, .labels, .more]
+        if usersManager.users.first?.userinfo.isInAppFeedbackEnabled ?? false {
+            sections.insert(.feedback, at: 0)
+            self.feedbackItems = [MenuLabel(location: .provideFeedback)]
+        } else {
+            self.feedbackItems = []
+        }
+        self.sections = sections
         self.inboxItems = [MenuLabel(location: .inbox),
                            MenuLabel(location: .draft),
                            MenuLabel(location: .sent),

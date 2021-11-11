@@ -2424,6 +2424,9 @@ extension MailboxViewController: SwipyCellDelegate {
 
 extension MailboxViewController {
     private func showFeedbackActionSheet() {
+        guard self.viewModel.user.userinfo.isInAppFeedbackEnabled else {
+            return
+        }
         let feedbackVC = InAppFeedbackViewController(viewModel: InAppFeedbackViewModel()) { [weak self] in
             guard let self = self else { return }
             let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.info)
