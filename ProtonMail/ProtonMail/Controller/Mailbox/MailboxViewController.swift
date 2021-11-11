@@ -2086,7 +2086,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
         
-        self.tableView.reloadData()
+        self.tableView.endUpdates()
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -2110,6 +2110,26 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             
             self.tableView.reloadData()
         }
+
+        if !shouldKeepSkeletonUntilManualDismissal {
+            tableView.beginUpdates()
+        }
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        if controller == self.viewModel.labelFetchedResults
+            || controller == self.viewModel.unreadFetchedResult
+            || shouldKeepSkeletonUntilManualDismissal {
+            return
+        }
+        switch(type) {
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        default:
+            return
+        }
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -2118,19 +2138,31 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         || shouldKeepSkeletonUntilManualDismissal {
             return
         }
-
         switch(type) {
         case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
             popPresentedItemIfNeeded(anObject)
             hideActionBarIfNeeded(anObject)
         case .insert:
-            guard let _ = newIndexPath,
-                  self.needToShowNewMessage,
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+            guard self.needToShowNewMessage,
                   let newMsg = anObject as? Message,
                   let msgTime = newMsg.time, newMsg.unRead,
                   let updateTime = viewModel.lastUpdateTime(),
                   msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending else { return }
             self.newMessageCount += 1
+        case .update:
+            if let indexPath = indexPath {
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
         default:
             return
         }
