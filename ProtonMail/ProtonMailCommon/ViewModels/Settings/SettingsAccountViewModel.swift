@@ -200,9 +200,9 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var defaultSignatureStatus: String {
         get {
             if self.userManager.defaultSignatureStatus {
-                return "On"
+                return LocalString._settings_On_title
             } else {
-                return "Off"
+                return LocalString._settings_Off_title
             }
         }
     }
@@ -210,9 +210,9 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var defaultMobileSignatureStatus: String {
         get {
             if self.userManager.showMobileSignature {
-                return "On"
+                return LocalString._settings_On_title
             } else {
-                return "Off"
+                return LocalString._settings_Off_title
             }
         }
     }

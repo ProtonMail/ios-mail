@@ -38,6 +38,8 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/IAP/StorefrontViewControllerTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/Formatters/PMDateFormatterTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ContactPGPTypeHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationStoredSizeHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/BannerHelperTests.swift
 
 excluded:
   - ${PWD}/Pods

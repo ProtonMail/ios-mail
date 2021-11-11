@@ -9,13 +9,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let coordinator: ConversationCoordinator
     private(set) lazy var customView = ConversationView()
     private var selectedMessageID: String?
-    private var storedSize: [String: HeightStoreInfo] = [:]
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
     private let conversationMessageCellPresenter = ConversationMessageCellPresenter()
     private let actionSheetPresenter = MessageViewActionSheetPresenter()
     private lazy var starBarButton = UIBarButtonItem.plain(target: self, action: #selector(starButtonTapped))
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
+    private let storedSizeHelper = ConversationStoredSizeHelper()
 
     init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
         self.coordinator = coordinator
@@ -261,7 +261,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             return 56
         }
 
-        guard let storedHeightInfo = storedSize[viewModel.message.messageID] else {
+        guard let storedHeightInfo = storedSizeHelper.getStoredSize(of: viewModel.message.messageID) else {
             return UITableView.automaticDimension
         }
 
@@ -361,7 +361,7 @@ private extension ConversationViewController {
         }
 
         viewModel.resetLoadedHeight = { [weak self] in
-            self?.storedSize[viewModel.message.messageID] = nil
+            self?.storedSizeHelper.resetStoredSize(of: viewModel.message.messageID)
         }
 
         return viewController
@@ -374,25 +374,17 @@ private extension ConversationViewController {
         isLoaded: Bool
     ) {
         let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        let newHeightInfo = HeightStoreInfo(height: height, isHeaderExpanded: isHeaderExpanded, loaded: isLoaded)
-        let storedHeightInfo = storedSize[messageId]
 
-        let shouldChangeLoadedHeight = storedHeightInfo?.loaded == true && newHeightInfo.loaded
-        let isHeightForLoadedPageStored = storedHeightInfo?.loaded == true
-        let isStoredHeightInfoEmpty = storedHeightInfo == nil
-        let headerStateHasChanged = newHeightInfo.isHeaderExpanded != storedHeightInfo?.isHeaderExpanded
-
-        if shouldChangeLoadedHeight ||
-            !isHeightForLoadedPageStored ||
-            isStoredHeightInfoEmpty ||
-            headerStateHasChanged {
-            storedSize[messageId] = newHeightInfo
+        let newHeightInfo = HeightStoreInfo(height: height,
+                                            isHeaderExpanded: isHeaderExpanded,
+                                            loaded: isLoaded)
+        if storedSizeHelper
+            .calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
+            UIView.setAnimationsEnabled(false)
+            customView.tableView.beginUpdates()
+            customView.tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
         }
-
-        UIView.setAnimationsEnabled(false)
-        customView.tableView.beginUpdates()
-        customView.tableView.endUpdates()
-        UIView.setAnimationsEnabled(true)
     }
 
     private func checkNavigationTitle() {
@@ -480,7 +472,7 @@ private extension Array where Element == ConversationViewItemType {
 
 }
 
-private struct HeightStoreInfo: Hashable, Equatable {
+struct HeightStoreInfo: Hashable, Equatable {
     let height: CGFloat
     let isHeaderExpanded: Bool
     let loaded: Bool
@@ -903,3 +895,40 @@ extension ConversationViewController: Deeplinkable {
     }
 }
 #endif
+
+class ConversationStoredSizeHelper {
+    var storedSize: [String: HeightStoreInfo] = [:]
+
+    func getStoredSize(of messageID: String) -> HeightStoreInfo? {
+        return storedSize[messageID]
+    }
+
+    func resetStoredSize(of messageID: String) {
+        storedSize[messageID] = nil
+    }
+
+    func calculateIfStoreSizeUpdateNeeded(newHeightInfo: HeightStoreInfo, messageID: String) -> Bool {
+        let oldHeightInfo = storedSize[messageID]
+
+        if let oldHeight = oldHeightInfo, oldHeight == newHeightInfo {
+            return false
+        }
+
+        let storedHeightInfo = storedSize[messageID]
+
+        let shouldChangeLoadedHeight = storedHeightInfo?.loaded == true &&
+                                        storedHeightInfo?.height != newHeightInfo.height
+        let isHeightForLoadedPageStored = storedHeightInfo?.loaded == true
+        let isStoredHeightInfoEmpty = storedHeightInfo == nil
+        let headerStateHasChanged = newHeightInfo.isHeaderExpanded != storedHeightInfo?.isHeaderExpanded
+
+        if shouldChangeLoadedHeight ||
+            !isHeightForLoadedPageStored ||
+            isStoredHeightInfoEmpty ||
+            headerStateHasChanged {
+            storedSize[messageID] = newHeightInfo
+        }
+
+        return true
+    }
+}

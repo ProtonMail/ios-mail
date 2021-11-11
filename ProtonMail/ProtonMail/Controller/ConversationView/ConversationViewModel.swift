@@ -272,9 +272,7 @@ class ConversationViewModel {
             if viewModel.state.isExpanded {
                 viewModel.state.expandedViewModel?.message = message
             } else {
-                let path = IndexPath(row: toRow, section: 1)
-                guard tableView.cellForRow(at: path) != nil else { return }
-                tableView.reloadRows(at: [path], with: .automatic)
+                viewModel.state.collapsedViewModel?.messageHasChanged(message: message)
             }
         case let .delete(row, messageID):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)

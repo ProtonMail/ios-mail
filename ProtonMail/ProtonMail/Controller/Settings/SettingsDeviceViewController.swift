@@ -231,7 +231,7 @@ extension SettingsDeviceViewController {
                     current.getNotificationSettings(completionHandler: { (settings) in
                         switch settings.authorizationStatus {
                         case .notDetermined:// Notification permission has not been asked yet, go for it!
-                            { cellToConfig.configure(right: "Off") } ~> .main
+                            { cellToConfig.configure(right: LocalString._settings_Off_title) } ~> .main
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
                                 guard granted else { return }
                                 DispatchQueue.main.async {
@@ -240,9 +240,9 @@ extension SettingsDeviceViewController {
                                 }
                             }
                         case .denied:// Notification permission was previously denied, go to settings & privacy to re-enable
-                            { cellToConfig.configure(right: "Off", imageType: .system) } ~> .main
+                            { cellToConfig.configure(right: LocalString._settings_Off_title, imageType: .system) } ~> .main
                         case .authorized:
-                            { cellToConfig.configure(right: "On", imageType: .system) } ~> .main
+                            { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
                         default:
                             break
                         }
