@@ -20,17 +20,32 @@ or alternatively using `brew install fastlane`
 ```
 fastlane ios build
 ```
-Build app
+Build the app and upload to testflight
 ### ios enterprise
 ```
 fastlane ios enterprise
 ```
 Build enterprise app
+### ios bump_major
+```
+fastlane ios bump_major
+```
+
+### ios bump_minor
+```
+fastlane ios bump_minor
+```
+
+### ios bump_patch
+```
+fastlane ios bump_patch
+```
+
 ### ios unit_test
 ```
 fastlane ios unit_test
 ```
-Test code coverage
+Run unit test and get test coverage
 
 ----
 
