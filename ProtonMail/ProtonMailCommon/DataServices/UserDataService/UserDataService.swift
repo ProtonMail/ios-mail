@@ -44,6 +44,7 @@ class UserDataService : Service, HasLocalStorage {
     
     let apiService : APIService
     var delegate : UserDataServiceDelegate?
+    private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
     
     struct CoderKey {//Conflict with Key object
         // need to remove and clean
@@ -515,254 +516,157 @@ class UserDataService : Service, HasLocalStorage {
             completion(nil, nil, NSError.lockError())
             return
         }
-        
-        /// will look up the address key. if found new schema we will run through new logci
-        let isKeyV2 = userInfo.isKeyV2
-        if isKeyV2 == true {
-            /// go through key v1.2 logic
-            /// v1.2. update the mailboxpassword or singlelogin password. only need to update userkeys and org keys
-            {//asyn
-                do {
-                    //generat keysalt
-                    let new_mpwd_salt : Data = try Crypto.random(byte: 16)
-                    //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
-                    let new_hashed_mpwd = PasswordUtils.getMailboxPassword(newPassword,
-                                                                           salt: new_mpwd_salt)
-                    let updated_userlevel_keys = try Crypto.updateKeysPassword(userInfo.userKeys,
-                                                                               old_pass: old_password,
-                                                                               new_pass: new_hashed_mpwd)
-                    var new_org_key : String?
-                    //create a key list for key updates
-                    if userInfo.role == 2 { //need to get the org keys
-                        //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
-                        if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
-                            do {
-                                new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
-                                                                          oldPassphrase: old_password,
-                                                                          newPassphrase: new_hashed_mpwd)
-                            } catch {
-                                //ignore it for now.
-                            }
-                        }
-                    }
 
-                    var authPacket : PasswordAuth?
-                    if buildAuth {
-                        
-                        ///
-                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
-                        guard let moduls_id = authModuls.ModulusID else {
-                            throw UpdatePasswordError.invalidModulusID.error
-                        }
-                        guard let new_moduls = authModuls.Modulus else {
-                            throw UpdatePasswordError.invalidModulus.error
-                        }
-                        //generat new verifier
-                        let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+        userDataServiceQueue.async {
+            do {
+                let resultOfKeyUpdate: UserDataServiceKeyHelper.UpdatedKeyResult
+                let helper = UserDataServiceKeyHelper()
 
-                        guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
-                            throw UpdatePasswordError.cantHashPassword.error
-                        }
+                if userInfo.isKeyV2 {
+                    /// go through key v1.2 logic
+                    /// v1.2. update the mailboxpassword or single-login password. We only need to update userkeys and org keys.
+                    resultOfKeyUpdate = try helper.updatePasswordV2(userKeys: userInfo.userKeys,
+                                                                        oldPassword: old_password,
+                                                                        newPassword: newPassword)
+                } else {
+                    resultOfKeyUpdate = try helper.updatePassword(userKeys: userInfo.userKeys,
+                                                                  addressKeys: userInfo.userAddresses,
+                                                                  oldPassword: old_password,
+                                                                  newPassword: newPassword)
+                }
 
-                        let verifier = try auth.generateVerifier(2048)
-                        
-                        authPacket = PasswordAuth(modulus_id: moduls_id,
-                                                  salt: new_lpwd_salt.encodeBase64(),
-                                                  verifer: verifier.encodeBase64())
-                    }
-
-                    //start check exsit srp
-                    var forceRetry = false
-                    var forceRetryVersion = 2
-                    repeat {
-                        // get auto info
-                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
-                        let authVersion = info.Version
-                        guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
-                            throw UpdatePasswordError.invalideAuthInfo.error
-                        }
-
-                        if authVersion <= 2 && !forceRetry {
-                            forceRetry = true
-                            forceRetryVersion = 2
-                        }
-                        //init api calls
-                        let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                        guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
-                            throw UpdatePasswordError.cantHashPassword.error
-                        }
-                        let srpClient = try auth.generateProofs(2048)
-                        
-                        guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
-                            throw UpdatePasswordError.cantGenerateSRPClient.error
-                        }
-
+                var new_org_key : String?
+                // check user role if equal 2 try to get the org key.
+                if userInfo.role == 2 {
+                    let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
+                    if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
                         do {
-                            let updatePrivkey = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                            new_org_key = try Crypto
+                                .updatePassphrase(privateKey: org_priv_key,
+                                                  oldPassphrase: old_password,
+                                                  newPassphrase: resultOfKeyUpdate.hashedNewPassword)
+                        } catch {
+                            //ignore it for now.
+                        }
+                    }
+                }
+
+                var authPacket : PasswordAuth?
+                if buildAuth {
+                    let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                    guard let moduls_id = authModuls.ModulusID else {
+                        throw UpdatePasswordError.invalidModulusID.error
+                    }
+                    guard let new_moduls = authModuls.Modulus else {
+                        throw UpdatePasswordError.invalidModulus.error
+                    }
+                    //generat new verifier
+                    let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+
+                    guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
+                        throw UpdatePasswordError.cantHashPassword.error
+                    }
+
+                    let verifier = try auth.generateVerifier(2048)
+
+                    authPacket = PasswordAuth(modulus_id: moduls_id,
+                                              salt: new_lpwd_salt.encodeBase64(),
+                                              verifer: verifier.encodeBase64())
+                }
+
+                //start check exsit srp
+                var forceRetry = false
+                var forceRetryVersion = 2
+                repeat {
+                    // get auto info
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
+                    let authVersion = info.Version
+                    guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
+                        throw UpdatePasswordError.invalideAuthInfo.error
+                    }
+
+                    if authVersion <= 2 && !forceRetry {
+                        forceRetry = true
+                        forceRetryVersion = 2
+                    }
+
+                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                    guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
+                        throw UpdatePasswordError.cantHashPassword.error
+                    }
+                    let srpClient = try auth.generateProofs(2048)
+
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
+
+                    do {
+                        let request: UpdatePrivateKeyRequest
+                        if userInfo.isKeyV2 {
+                            request = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                         clientProof:clientProof.encodeBase64(),
                                                                         SRPSession: session,
-                                                                        keySalt: new_mpwd_salt.encodeBase64(),
+                                                                        keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
                                                                         tfaCode: twoFACode,
                                                                         orgKey: new_org_key,
-                                                                        userKeys: updated_userlevel_keys,
+                                                                        userKeys: resultOfKeyUpdate.updatedUserKeys,
                                                                         auth: authPacket,
                                                                         authCredential: oldAuthCredential)
-                            let update_res = try `await`(self.apiService.run(route: updatePrivkey))
-                            guard update_res.responseCode == 1000 else {
-                                throw UpdatePasswordError.default.error
-                            }
-                            //update local keys
-                            userInfo.userKeys = updated_userlevel_keys
-                            //userInfo.userAddresses = updated_address_keys
-                            oldAuthCredential.udpate(password: new_hashed_mpwd)
-                            forceRetry = false
-                        } catch let error as NSError {
-                            if error.isInternetError() {
-                                throw error
-                            } else {
-                                if forceRetry && forceRetryVersion != 0 {
-                                    forceRetryVersion -= 1
-                                } else {
-                                    throw error
-                                }
-                            }
+                        } else {
+                            request = UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                  clientProof:clientProof.encodeBase64(),
+                                                                  SRPSession: session,
+                                                                  keySalt: resultOfKeyUpdate.saltOfNewPassword.encodeBase64(),
+                                                                  userlevelKeys: resultOfKeyUpdate.updatedUserKeys,
+                                                                  addressKeys:
+                                                                resultOfKeyUpdate.updatedAddresses?.toKeys() ?? [],
+                                                                  tfaCode: twoFACode,
+                                                                  orgKey: new_org_key,
+                                                                  userKeys: nil,
+                                                                  auth: authPacket,
+                                                                  authCredential: oldAuthCredential)
                         }
 
-                    } while(forceRetry && forceRetryVersion >= 0)
-                    return { completion(nil, nil, nil) } ~> .main
-                } catch let error as NSError {
-                    Analytics.shared.error(message: .updateMailBoxPassword,
-                                           error: error)
-                    return { completion(nil, nil, error) } ~> .main
-                }
-            } ~> .async
-            
-            
-        } else {
-            
-            {//asyn
-                do {
-                    //generat keysalt
-                    let new_mpwd_salt : Data = try Crypto.random(byte: 16)
-                    //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
-                    let new_hashed_mpwd = PasswordUtils.getMailboxPassword(newPassword,
-                                                                           salt: new_mpwd_salt)
+                        let update_res = try `await`(self.apiService.run(route: request))
+                        guard update_res.responseCode == 1000 else {
+                            throw UpdatePasswordError.default.error
+                        }
 
-                    let updated_address_keys = try Crypto.updateAddrKeysPassword(userInfo.userAddresses,
-                                                                                 old_pass: old_password,
-                                                                                 new_pass: new_hashed_mpwd)
-                    let updated_userlevel_keys = try Crypto.updateKeysPassword(userInfo.userKeys,
-                                                                               old_pass: old_password,
-                                                                               new_pass: new_hashed_mpwd)
-                    var new_org_key : String?
-                    //create a key list for key updates
-                    if userInfo.role == 2 { //need to get the org keys
-                        //check user role if equal 2 try to get the org key.
-                        let cur_org_key: OrgKeyResponse = try `await`(self.apiService.run(route: GetOrgKeys()))
-                        if let org_priv_key = cur_org_key.privKey, !org_priv_key.isEmpty {
-                            do {
-                                new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
-                                                                          oldPassphrase: old_password,
-                                                                          newPassphrase: new_hashed_mpwd)
-                            } catch {
-                                //ignore it for now.
+                        // update local keys and passphrase
+                        if userInfo.isKeyV2 {
+                            userInfo.userKeys = resultOfKeyUpdate.updatedUserKeys + resultOfKeyUpdate.originalUserKeys
+                        } else {
+                            userInfo.userKeys = resultOfKeyUpdate.updatedUserKeys + resultOfKeyUpdate.originalUserKeys
+                            userInfo.userAddresses = resultOfKeyUpdate.updatedAddresses ?? []
+                        }
+                        oldAuthCredential.udpate(password: resultOfKeyUpdate.hashedNewPassword)
+
+                        forceRetry = false
+                    } catch let error as NSError {
+                        if error.isInternetError() {
+                            throw error
+                        } else {
+                            if forceRetry && forceRetryVersion != 0 {
+                                forceRetryVersion -= 1
+                            } else {
+                                throw error
                             }
                         }
                     }
 
-                    var authPacket : PasswordAuth?
-                    if buildAuth {
-                        
-                        ///
-                        
-                        let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
-                        guard let moduls_id = authModuls.ModulusID else {
-                            throw UpdatePasswordError.invalidModulusID.error
-                        }
-                        guard let new_moduls = authModuls.Modulus else {
-                            throw UpdatePasswordError.invalidModulus.error
-                        }
-                        //generat new verifier
-                        let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-
-                        guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
-                            throw UpdatePasswordError.cantHashPassword.error
-                        }
-
-                        let verifier = try auth.generateVerifier(2048)
-                        authPacket = PasswordAuth(modulus_id: moduls_id,
-                                                  salt: new_lpwd_salt.encodeBase64(),
-                                                  verifer: verifier.encodeBase64())
-                    }
-
-                    //start check exsit srp
-                    var forceRetry = false
-                    var forceRetryVersion = 2
-                    repeat {
-                        // get auto info
-                        let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
-                        let authVersion = info.Version
-                        guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
-                            throw UpdatePasswordError.invalideAuthInfo.error
-                        }
-
-                        if authVersion <= 2 && !forceRetry {
-                            forceRetry = true
-                            forceRetryVersion = 2
-                        }
-
-                        //init api calls
-                        let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                        guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
-                            throw UpdatePasswordError.cantHashPassword.error
-                        }
-                        let srpClient = try auth.generateProofs(2048)
-                        
-                        guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
-                            throw UpdatePasswordError.cantGenerateSRPClient.error
-                        }
-
-                        do {
-                            let update_res = try `await`(self.apiService.run(route: UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
-                                                                                                          clientProof:clientProof.encodeBase64(),
-                                                                                                          SRPSession: session,
-                                                                                                          keySalt: new_mpwd_salt.encodeBase64(),
-                                                                                                          userlevelKeys: updated_userlevel_keys,
-                                                                                                          addressKeys: updated_address_keys.toKeys(),
-                                                                                                          tfaCode: twoFACode,
-                                                                                                          orgKey: new_org_key, userKeys: nil,
-                                                                                                          auth: authPacket,
-                                                                                                          authCredential: oldAuthCredential)))
-                            guard update_res.responseCode == 1000 else {
-                                throw UpdatePasswordError.default.error
-                            }
-                            //update local keys
-                            userInfo.userKeys = updated_userlevel_keys
-                            userInfo.userAddresses = updated_address_keys
-                            oldAuthCredential.udpate(password: new_hashed_mpwd)
-                            forceRetry = false
-                        } catch let error as NSError {
-                            if error.isInternetError() {
-                                throw error
-                            } else {
-                                if forceRetry && forceRetryVersion != 0 {
-                                    forceRetryVersion -= 1
-                                } else {
-                                    throw error
-                                }
-                            }
-                        }
-
-                    } while(forceRetry && forceRetryVersion >= 0)
-                    return { completion(nil, nil, nil) } ~> .main
-                } catch let error as NSError {
-                    Analytics.shared.error(message: .updateMailBoxPassword,
-                                           error: error)
-                    return { completion(nil, nil, error) } ~> .main
+                } while(forceRetry && forceRetryVersion >= 0)
+                DispatchQueue.main.async {
+                    completion(nil, nil, nil)
                 }
-            } ~> .async
-            
+                return
+            } catch let error as NSError {
+                Analytics.shared.error(message: .updateMailBoxPassword,
+                                       error: error)
+                DispatchQueue.main.async {
+                    completion(nil, nil, error)
+                }
+                return
+            }
         }
     }
     
