@@ -3123,13 +3123,10 @@ class MessageDataService : Service, HasLocalStorage {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(error.localizedDescription)
             }
-            
+            guard let primaryUser = self.usersManager?.firstUser,
+                  primaryUser.userinfo.userId == self.userID else { return }
             let unreadCount: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: context)
-            var badgeNumber = unreadCount
-            if  badgeNumber < 0 {
-                badgeNumber = 0
-            }
-            UIApplication.setBadge(badge: badgeNumber)
+            UIApplication.setBadge(badge: max(0, unreadCount))
         }
     }
     
