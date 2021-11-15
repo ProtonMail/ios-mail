@@ -32,6 +32,12 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        let testSearchIndexDBName: String = "encryptedSearchIndex_test.sqlite3"
+        let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(testSearchIndexDBName)
+        let urlToDB: URL? = URL(string: pathToTestDB)
+        sqlite3_close(self.connection.handle)
+        self.connection = nil
+        try FileManager.default.removeItem(atPath: urlToDB!.path)
     }
 
     func testEncryptedSearchIndexServiceSingleton() throws {
@@ -112,16 +118,37 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(fileExists, false)
     }
 
-    //TODO test getSizeOfSearchIndex
-    //TODO test getFreeDiskSpace
+    func testAddNewEntryToSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
+        let userID: String = "test"
+        let messageID: String = "testMessage"
+        let time: Int = 42
+        let labelIDs: Set<String> = ["5", "1"]
+        let isStarred: Bool = true
+        let unread: Bool = true
+        let location: Int = 1
+        let order: Int = 1
+        let hasBody: Bool = true
+        let decryptionFailed: Bool = false
+        let encryptionIV: Data = Data("iv".utf8)
+        let encryptedContent: Data = Data("content".utf8)
+        let encryptedContentFile: String = "test"
 
-    //TODO test addNewEntryToSearchIndex
+        let result: Int64? = sut(userID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
+
+        XCTAssertEqual(result, 1)
+    }
+
     //TODO test removeEntryFromSearchIndex
-    //TODO test getDBParams
+
     //TODO test getNumberOfEntriesInSearchIndex
     //TODO test getOldestMessageInSearchIndex
     //TODO test getNewestMessageInSearchIndex
-
+    
+    //TODO test getSizeOfSearchIndex
+    //TODO test getFreeDiskSpace
+    //TODO test getDBParams
+    
     //TODO test timeToDateString
     //TODO test updateLocationForMessage
     //TODO test compressSearchIndex
