@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Anche archivia";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Archivia anche?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Usato anche per riazzerare una password dimenticata.";
 
@@ -320,7 +323,7 @@
 "Attachment" = "Allegato";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Errore dell'allegato";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Allegato importato";
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
+
+/* Example feedback */
+"Awful" = "Terribile";
 
 /* top left back button */
 "Back" = "Indietro";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "Ore";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Come vorresti descrivere la tua esperienza con il nuovo ProtonMail?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Il E, MMM gg, aaaa alle %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignora l'attivazione dell'acquisto solo se sei sicuro che tutti i tuoi abbonamenti siano aggiornati. Per ulteriore assistenza, sei pregato di contattare il supporto clienti. \n\n Sei sicuro di voler ignorare l'attivazione?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Può essere aggiunto solo un account gratuito";
 
@@ -1975,10 +1987,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Sei pregato di passare a un piano di pagamento per usare più di 3 etichette";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Sei pregato di aggiornare il tuo piano";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Sei pregato di aggiornare il tuo piano per continuare a inviare e ricevere email.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Per favore, prima effettua la registrazione nell'app di ProtonMail.";
@@ -2041,7 +2053,7 @@
 "ProtonMail is currently offline…" = "ProtonMail è correntemente offline…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"ProtonMail needs photo library access in your device settings." = "ProtonMail necessita dell'accesso alla galleria nelle impostazioni del tuo dispositivo.";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "È richiesto ProtonMail Plus per modificare la firma mobile";
@@ -2054,6 +2066,9 @@
 
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN incluso";
+
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Fornisci un feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferenza del Proxy/Firewall";
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Invia comunque";
+
+/* Title of button to send feedback */
+"Send feedback" = "Invia il tuo feedback";
 
 /* when subject not empty */
 "Send message without subject?" = "Inviare il messaggio senza oggetto?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Tocca invia ugualmente per inviare senza scadenza a questi destinatari";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Parlaci della tua esperienza. (Facoltativo)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Disattivare o rimuovere temporaneamente il software antivirus.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Grazie per averci inviato una segnalazione di bug. La abbiamo aggiunta al nostro sistema di tracciamento dei bug.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Grazie per il tuo feedback!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Le 2 password non corrispondono";
@@ -2511,7 +2535,7 @@
 "The draft format incorrectly sending failed!" = "Il formato della bozza non è corretto. Invio non riuscito!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Impossibile allegare i seguenti file:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Il massimo livello di crittografia disponibile.";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "A";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Per prevenire gli abusi di ProtonMail\n dobbiamo verificare che tu sia umano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quando invii un'email, questo è il nome che compare nel campo del mittente.";
 
+/* Example feedback */
+"Wonderful" = "Fantastico";
+
 /* default vcard types */
 "Work" = "Lavoro";
 
@@ -3016,14 +3046,14 @@
 "You have used %d%% of your storage space (%@)." = "Hai usato il %d%% del tuo spazio di archiviazione (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Hai usato %1$d%% del tuo spazio d'archiviazione (%2$@). Sei pregato di aggiornare il tuo piano per continuare a inviare e ricevere email.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Hai usato tutto lo spazio di archiviazione (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Hai usato tutto il tuo spazio d'archiviazione (%@). Sei pregato di aggiornare il tuo piano per continuare a inviare e ricevere email.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Hai bisogno di almeno un destinatario per inviare";
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Il tuo paese potrebbe bloccare l'accesso a Proton. Prova ad utilizzare ProtonVPN (o qualsiasi altra VPN) o Tor per accedere a Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Il tuo feedback";
+
 /* The section title of folder manager table */
 "Your folders" = "Le tue cartelle";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Il tuo nuovo account di posta elettronica crittografata è stato impostato ed è pronto per inviare e ricevere messaggi crittografati.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Il tuo nuovo profilo email\n sicuro è pronto.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Il tuo piano è attualmente attivo fino al";

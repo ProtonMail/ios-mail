@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Archiver également";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Archiver également ?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Également utilisé pour réinitialiser un mot de passe oublié.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images incorporées";
+
+/* Example feedback */
+"Awful" = "Affreux";
 
 /* top left back button */
 "Back" = "Retour";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "heures";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Comment décririez-vous votre expérience avec le nouveau ProtonMail ?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Le EEEE d MMMM yyyy à %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "N'ignorez l'activation de l'achat que si vous êtes sûr que tous vos abonnements sont à jour. Pour obtenir de l'aide, veuillez contacter le service client.\n\n Voulez-vous vraiment ignorer l'activation ?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Un seul compte gratuit peut être ajouté";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inclus";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Donner un avis";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interférence avec le proxy/pare-feu";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Envoyer tout de même";
+
+/* Title of button to send feedback */
+"Send feedback" = "Envoyer un avis";
 
 /* when subject not empty */
 "Send message without subject?" = "Envoyer le message sans objet ?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Tapotez pour envoyer quand même sans expiration à ces destinataires";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Parlez nous de votre expérience. (optionnel)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Désactivez ou supprimez temporairement votre logiciel antivirus.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Merci d'avoir soumis un rapport d’erreur. Nous avons ajouté votre rapport à notre système de suivi des bogues.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Merci pour vos commentaires !";
 
 /* Error message */
 "The 2 passwords are not matching" = "Les 2 mots de passe ne sont pas identiques";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "À";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Afin de prévenir les abus sur ProtonMail,\n nous devons vérifier que vous êtes humain.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pour réinitialiser votre mot de passe de messagerie, veuillez utiliser la version Web de ProtonMail via protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Lorsque vous envoyez un courriel, c'est le nom qui apparaît dans le champ expéditeur.";
 
+/* Example feedback */
+"Wonderful" = "Merveilleux";
+
 /* default vcard types */
 "Work" = "Travail";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Votre pays bloque peut-être l'accès à Proton. Essayez d'utiliser ProtonVPN (ou n'importe quel autre VPN) ou Tor pour accéder à Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Votre retour d'expérience";
+
 /* The section title of folder manager table */
 "Your folders" = "Vos dossiers";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Votre nouveau compte de messagerie chiffrée a été mis en place et est prêt à envoyer et recevoir des messages chiffrés.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Votre nouveau compte\n de messagerie sécurisée est prêt.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Votre abonnement est actuellement actif jusqu'au";

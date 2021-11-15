@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Перенести в архив";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Also archive?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Также используется для сброса забытого пароля.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозагрузка встроенных изображений";
+
+/* Example feedback */
+"Awful" = "Ужасно";
 
 /* top left back button */
 "Back" = "Назад";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "часов";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "Включая ProtonVPN";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Оставить отзыв";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Конфликт с прокси-сервером/брандмауэром";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Всё равно отправить";
+
+/* Title of button to send feedback */
+"Send feedback" = "Отправить отзыв";
 
 /* when subject not empty */
 "Send message without subject?" = "Отправить сообщение без указания темы?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Нажмите \"Всё равно отправить\", чтобы отправить без срока действия этим получателям";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Расскажите нам о вашем опыте (не обязательно)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Временно отключите или удалите антивирус.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Благодарим вас за отправку отчёта об ошибке.  Мы добавили отчёт в нашу систему отслеживания ошибок.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Благодарим за Ваш отзыв!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Пароли не совпадают";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Кому";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Когда вы отправляете письмо, указанное имя будет отображено в графе отправителя.";
 
+/* Example feedback */
+"Wonderful" = "Прекрасно";
+
 /* default vcard types */
 "Work" = "Рабочий";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Возможно, в вашей стране доступ к Proton заблокирован. Попробуйте использовать ProtonVPN (или любой другой VPN) либо Tor для доступа к Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Ваш отзыв";
+
 /* The section title of folder manager table */
 "Your folders" = "Ваши папки";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Ваш новый и безопасный аккаунт электронной почты готов.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тариф сейчас активен до";
