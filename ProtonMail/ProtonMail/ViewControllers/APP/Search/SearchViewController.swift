@@ -241,6 +241,8 @@ extension SearchViewController {
             break
         case .complete:
             return
+        case .undetermined:
+            return
         }
         
         DispatchQueue.main.async {
@@ -249,6 +251,8 @@ extension SearchViewController {
                 case .complete:
                     break
                 case .disabled:
+                    break
+                case .undetermined:
                     break
                 case .partial:
                     let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
