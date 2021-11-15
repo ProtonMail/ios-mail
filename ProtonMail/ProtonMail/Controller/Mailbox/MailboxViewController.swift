@@ -142,7 +142,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
     private var isSwipingCell = false
+    private var notificationsAreScheduled = false
     var shouldShowFeedbackActionSheet = false
+    private lazy var inAppFeedbackScheduler = InAppFeedbackPromptScheduler { [weak self] in
+        guard let self = self else { return false }
+        if self.navigationController?.topViewController == self {
+            self.showFeedbackActionSheet()
+            return true
+        } else {
+            return false
+        }
+    }
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -165,6 +175,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         refetchAllIfNeeded()
         startAutoFetch()
+        inAppFeedbackScheduler.didEnterForeground()
     }
 
     @objc func doEnterBackground() {
@@ -262,31 +273,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.hideTopMessage()
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reachabilityChanged(_:)),
-                                               name: NSNotification.Name.reachabilityChanged,
-                                               object: nil)
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self,
-                                                   selector:#selector(doEnterForeground),
-                                                   name:  UIWindowScene.willEnterForegroundNotification,
-                                                   object: nil)
-
-            NotificationCenter.default.addObserver(self,
-                                                   selector:#selector(doEnterBackground),
-                                                   name:  UIWindowScene.didEnterBackgroundNotification,
-                                                   object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                    selector:#selector(doEnterForeground),
-                                                    name: UIApplication.willEnterForegroundNotification,
-                                                    object: nil)
-
-            NotificationCenter.default.addObserver(self,
-                                                    selector:#selector(doEnterBackground),
-                                                    name: UIApplication.didEnterBackgroundNotification,
-                                                    object: nil)
+        if !notificationsAreScheduled {
+            notificationsAreScheduled = true
+            scheduleNotifications()
         }
 
         if UIAccessibility.isVoiceOverRunning {
@@ -306,6 +295,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        notificationsAreScheduled = false
         self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
     }
@@ -356,6 +346,34 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
+    }
+
+    private func scheduleNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reachabilityChanged(_:)),
+                                               name: NSNotification.Name.reachabilityChanged,
+                                               object: nil)
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self,
+                                                   selector:#selector(doEnterForeground),
+                                                   name:  UIWindowScene.willEnterForegroundNotification,
+                                                   object: nil)
+
+            NotificationCenter.default.addObserver(self,
+                                                   selector:#selector(doEnterBackground),
+                                                   name:  UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self,
+                                                    selector:#selector(doEnterForeground),
+                                                    name: UIApplication.willEnterForegroundNotification,
+                                                    object: nil)
+
+            NotificationCenter.default.addObserver(self,
+                                                    selector:#selector(doEnterBackground),
+                                                    name: UIApplication.didEnterBackgroundNotification,
+                                                    object: nil)
+        }
     }
     
     private func addSubViews() {
@@ -2427,7 +2445,8 @@ extension MailboxViewController {
         guard self.viewModel.user.userinfo.isInAppFeedbackEnabled else {
             return
         }
-        let feedbackVC = InAppFeedbackViewController(viewModel: InAppFeedbackViewModel()) { [weak self] in
+        let iafVM = InAppFeedbackViewModel(updater: inAppFeedbackScheduler)
+        let feedbackVC = InAppFeedbackViewController(viewModel: iafVM) { [weak self] in
             guard let self = self else { return }
             let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.info)
             banner.show(at: .bottom, on: self, ignoreKeyboard: true)

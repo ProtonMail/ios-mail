@@ -89,6 +89,11 @@ final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {
     }
     private(set) var userComment: String?
     var updateViewCallback: (() -> Void)?
+    private let updater: InAppFeedbackSubmissionUpdater
+
+    init(updater: InAppFeedbackSubmissionUpdater) {
+        self.updater = updater
+    }
 
     var ratingScale: [Rating] {
         Rating.defaultScale
@@ -103,5 +108,7 @@ final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {
         self.userComment = comment
     }
 
-    func submitFeedback() {}
+    func submitFeedback() {
+        updater.setFeedbackWasSubmitted()
+    }
 }

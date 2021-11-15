@@ -17,14 +17,23 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+
+final class IAFUpdaterMock: InAppFeedbackSubmissionUpdater {
+    private(set) var feedbackWasSubmitted = false
+
+    func setFeedbackWasSubmitted() {
+        feedbackWasSubmitted = true
+    }
+}
 
 final class InAppFeedbackViewModelTests: XCTestCase {
+    private var updaterMock: IAFUpdaterMock!
     private var sut: InAppFeedbackViewModelProtocol!
 
     override func setUp() {
         super.setUp()
-        sut = InAppFeedbackViewModel()
+        updaterMock = IAFUpdaterMock()
+        sut = InAppFeedbackViewModel(updater: updaterMock)
     }
 
     override func tearDown() {
@@ -81,5 +90,11 @@ final class InAppFeedbackViewModelTests: XCTestCase {
         // We change the view mode by selecting a rating, proving first that it works with the test above
         sut.select(rating: .happy)
         XCTAssert(callCounter > 0)
+    }
+
+    func testCallingSubmitFeedbackShouldCallUpdater() {
+        XCTAssertFalse(updaterMock.feedbackWasSubmitted)
+        sut.submitFeedback()
+        XCTAssertTrue(updaterMock.feedbackWasSubmitted)
     }
 }

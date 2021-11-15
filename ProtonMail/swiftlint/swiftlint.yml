@@ -202,6 +202,7 @@ included:
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackTransitioner.swift
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackViewModel.swift
   - ${PWD}ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
+  - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackPromptScheduler.swift
 
 excluded:
   - ${PWD}/Pods
