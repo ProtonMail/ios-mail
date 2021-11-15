@@ -588,9 +588,10 @@ public class EncryptedSearchService {
         case paused = 4
         case refresh = 5
         case complete = 6
+        case undetermined = 7
     }
     
-    var state: EncryptedSearchIndexState = .disabled
+    var state: EncryptedSearchIndexState = .undetermined
     
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil
@@ -680,10 +681,14 @@ extension EncryptedSearchService {
             } else {
                 //check if search index exists and the number of messages in the search index
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+                let userID: String? = usersManager.firstUser?.userInfo.userId
+                if userID == nil {
+                    self.state = .undetermined
+                    return
+                }
+                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
                     self.getTotalMessages {
-                        let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                        let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID!)
                         if self.totalMessages == numberOfEntriesInSearchIndex {
                             self.state = .complete
                         } else {
@@ -692,6 +697,7 @@ extension EncryptedSearchService {
                     }
                 } else {
                     print("Error search index does not exist for user!")
+                    self.state = .undetermined
                 }
             }
             //TODO refresh?
