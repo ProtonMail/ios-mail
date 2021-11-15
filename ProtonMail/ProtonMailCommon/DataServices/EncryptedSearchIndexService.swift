@@ -13,29 +13,28 @@ import Crypto
 public class EncryptedSearchIndexService {
     //instance of Singleton
     static let shared = EncryptedSearchIndexService()
-    
+
     //set initializer to private - Singleton
     private init() {
-        //TODO initialize variables if needed
         databaseSchema = DatabaseEntries()
         searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
         fileByteCountFormatter = ByteCountFormatter()
         fileByteCountFormatter?.allowedUnits = [.useMB]
         fileByteCountFormatter?.countStyle = .file
 
-        //create initial connection if not existing
+        // Create initial connection if not existing
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        let userID: String = (usersManager.firstUser?.userInfo.userId)!
-        let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
-        //create table
-        self.createSearchIndexTable(using: handleToSQliteDB!)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        if let uid = userID {
+            let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: uid)
+            self.createSearchIndexTable(using: handleToSQliteDB!) // Create Table
+        }
     }
-    
+
     internal var databaseConnections = [String:Connection?]()
-    //internal var handleToSQliteDB: Connection?
     internal var databaseSchema: DatabaseEntries
     internal var searchableMessages: Table
-    
+
     private var fileByteCountFormatter: ByteCountFormatter? = nil
 }
 
