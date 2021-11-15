@@ -529,7 +529,7 @@
                 <entry key="JSONKeyPath" value="Unread"/>
             </userInfo>
         </attribute>
-        <attribute name="unsubscribeMethods" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String">
+        <attribute name="unsubscribeMethods" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String">
             <userInfo>
                 <entry key="JSONKeyPath" value="UnsubscribeMethods"/>
                 <entry key="JSONTransformerName" value="AnyJsonToStringTransformer"/>
