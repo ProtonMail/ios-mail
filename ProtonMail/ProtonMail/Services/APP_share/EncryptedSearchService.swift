@@ -2107,14 +2107,15 @@ extension EncryptedSearchService {
         self.updateCurrentUserIfNeeded()
         
         var cleanedQuery: String = ""
+        cleanedQuery = query    //cleaning is now done in es go code
         //normalize search query using NFKC
-        cleanedQuery = query.precomposedStringWithCompatibilityMapping
-        print("Query (normalized): ", cleanedQuery)
+        //cleanedQuery = query.precomposedStringWithCompatibilityMapping
+        //print("Query (normalized): ", cleanedQuery)
         
         //remove character distinctions such as case insensitivity, width insensitivity and diacritics
         //use system locale
-        cleanedQuery = query.folding(options: [.caseInsensitive, .widthInsensitive, .diacriticInsensitive], locale: nil)
-        print("Query (character distinctions removed): ", cleanedQuery)
+        //cleanedQuery = query.folding(options: [.caseInsensitive, .widthInsensitive, .diacriticInsensitive], locale: nil)
+        //print("Query (character distinctions removed): ", cleanedQuery)
         
         //if search query hasn't changed, but just the page, then just display results
         /*if cleanedQuery == self.lastSearchQuery {
