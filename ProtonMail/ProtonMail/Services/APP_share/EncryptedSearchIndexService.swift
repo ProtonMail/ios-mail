@@ -45,10 +45,9 @@ extension EncryptedSearchIndexService {
                 return connection
             }
         }
-        
+
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
-        
         do {
             let handleToSQliteDB = try Connection(pathToDB)
             self.databaseConnections[userID] = handleToSQliteDB
@@ -185,7 +184,6 @@ extension EncryptedSearchIndexService {
         let urlToDB: URL? = URL(string: pathToDB)
         
         if FileManager.default.fileExists(atPath: urlToDB!.path) {
-            //print("Search index already exists!")
             return true
         }
         
@@ -223,7 +221,7 @@ extension EncryptedSearchIndexService {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         let urlToDB: URL? = URL(string: pathToDB)
-        
+
         if FileManager.default.fileExists(atPath: urlToDB!.path) {
             do {
                 try FileManager.default.removeItem(atPath: urlToDB!.path)
@@ -234,7 +232,7 @@ extension EncryptedSearchIndexService {
             print("Error: cannot find search index at path: \(urlToDB!.path)")
             return false
         }
-        
+
         return true
     }
     
@@ -323,7 +321,6 @@ extension EncryptedSearchIndexService {
             let _ = try handle?.scalar(table.exists)
             //table exists
         } catch {
-            print("Search index does not exist. Create it now!")
             self.createSearchIndexTable(using: handle!)
         }
     }
