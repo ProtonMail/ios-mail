@@ -146,6 +146,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     var shouldShowFeedbackActionSheet = false
     private lazy var inAppFeedbackScheduler = InAppFeedbackPromptScheduler { [weak self] in
         guard let self = self else { return false }
+        guard self.viewModel.user.userinfo.isInAppFeedbackEnabled else {
+            return false
+        }
         if self.navigationController?.topViewController == self {
             self.showFeedbackActionSheet()
             return true
