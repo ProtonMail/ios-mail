@@ -28,12 +28,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    func testTODO() throws {
-        /*let body: String = "<div dir=\"ltr\">this is a testmessage<br></div>\n"
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, true)
-        
-        XCTAssertEqual(result, "this is a testmessage")*/
+    func testEncryptedSearchIndexServiceSingleton() throws {
+        XCTAssertNotNil(EncryptedSearchIndexService.shared)
     }
     
     //TODO test connectToSearchIndex
@@ -41,8 +37,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
     //TODO test addNewEntryToSearchIndex
     //TODO test removeEntryFromSearchIndex
     //TODO test getDBParams
-    //TODO test getSearchIndexName
-    
+
     func testGetSearchIndexName() throws {
         let sut = EncryptedSearchIndexService.shared.getSearchIndexName
         let testUserID: String = "123"
@@ -52,6 +47,15 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
     }
     
     //TODO test getSearchIndexPathToDB
+    func testGetSearchIndexPathToDB() throws {
+        let sut = EncryptedSearchIndexService.shared.getSearchIndexPathToDB
+        let dbName: String = "test.sqlite3"
+        let result: String = sut(dbName)
+        let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
+
+        XCTAssertEqual(result, pathToDocumentsDirectory+dbName)
+    }
+    
     //TODO test checkIfSearchIndexExists
     //TODO test getNumberOfEntriesInSearchIndex
     //TODO test deleteSearchIndex
