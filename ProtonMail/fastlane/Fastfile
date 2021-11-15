@@ -241,6 +241,12 @@ platform :ios do
   # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
+  %w{major minor patch}.each do |part|
+      lane "bump_#{part}".to_sym do
+        increment_version_number(bump_type: part)
+      end
+  end
+
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
     xcversion(version: "~> 13.0.0")
