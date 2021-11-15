@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Również archiwizuj";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Również archiwizuj?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Umożliwia również zresetowanie zapomnianego hasła.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Automatycznie załaduj osadzone obrazy";
+
+/* Example feedback */
+"Awful" = "Okropnie";
 
 /* top left back button */
 "Back" = "Wstecz";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "godzin";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Jak oceniasz nową aplikację ProtonMaila?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "EE, d MMM yyyy %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Zignoruj aktywację zakupu, jeśli wszystkie Twoje subskrypcje są aktualne. Skontaktuj się ze wsparciem klienta, aby otrzymać dalsze wsparcie. \n\n Czy na pewno chcesz zignorować aktywację?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Możesz dodać tylko jedno darmowe konto";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "Usługa ProtonVPN w zestawie";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Prześlij opinię";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Konflikt z zaporą sieciową/serwerem proxy";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Wyślij mimo to";
+
+/* Title of button to send feedback */
+"Send feedback" = "Wyślij opinię";
 
 /* when subject not empty */
 "Send message without subject?" = "Wysłać wiadomość bez tematu?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Wybierz \"wyślij mimo to\", aby wysłać bez wygasania do tych odbiorców";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Opowiedz nam o swoich wrażeniach. (opcjonalnie)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Tymczasowo wyłącz lub usuń oprogramowanie antywirusowe.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Dziękujemy za przesłanie zgłoszenia. Dodaliśmy Twój raport do naszego systemu śledzenia błędów.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Dziękujemy za opinię!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Hasła nie pasują do siebie";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Do";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail,\n musimy zweryfikować, czy jesteś człowiekiem.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Aby zresetować hasło skrzynki pocztowej, skorzystaj ze strony protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Kiedy wysyłasz wiadomość, ta nazwa pojawia się w oknie nadawcy.";
 
+/* Example feedback */
+"Wonderful" = "Wspaniale";
+
 /* default vcard types */
 "Work" = "Służbowy";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Twój kraj może blokować dostęp do usług Proton. Spróbuj połączyć się przez ProtonVPN (lub inną usługę VPN) albo sieć Tor, aby uzyskać połączenie.";
 
+/* Title of user feedback view */
+"Your feedback" = "Twoja opinia";
+
 /* The section title of folder manager table */
 "Your folders" = "Twoje foldery";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Twoje nowe szyfrowane konto e-mail zostało utworzone i jest gotowe do wysyłania i odbierania szyfrowanych wiadomości.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Twoje nowe bezpieczne konto e-mail jest gotowe.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Twój plan jest aktywny do";

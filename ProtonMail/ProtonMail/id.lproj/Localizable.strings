@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Arsipkan Juga";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Arsipkan juga?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Gunakan juga untuk mengatur ulang sandi yang terlupakan.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Muat gambar tertanam secara otomatis";
+
+/* Example feedback */
+"Awful" = "Mengecewakan";
 
 /* top left back button */
 "Back" = "Kembali";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "Jam";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan ProtonMail yang baru?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "Pada E, d MMM yyyy pukul %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Peringatan aktivasi ini hanya dapat diabaikan apabila Anda benar-benar yakin bahwa masa berlaku paket-paket yang Anda langgan masih belum habis. Untuk mendapatkan bantuan dan konfirmasi lebih lanjut, silakan hubungi layanan dukungan kami. \n\n Apakah Anda yakin untuk mengabaikan peringatan aktivasi ini?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Hanya satu akun gratis yang bisa ditambahkan";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "Termasuk ProtonVPN";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Berikan tanggapan";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Halangan dari Proxy/Firewall";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Kirim saja";
+
+/* Title of button to send feedback */
+"Send feedback" = "Kirim tanggapan";
 
 /* when subject not empty */
 "Send message without subject?" = "Kirim pesan tanpa subjek?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Ketuk tetap kirim untuk mengirimkan pesan tanpa kedaluwarsa ke penerima ini";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Mohon ceritakan pengalaman Anda lebih lanjut. (Opsional)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Nonaktifkan sementara atau hapus perangkat lunak antivirus anda.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Terima kasih telah mengirimkan laporan bug. Kami telah menambahkan laporan Anda ke sistem pelacakan bug kami.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Terima kasih atas tanggapan Anda!";
 
 /* Error message */
 "The 2 passwords are not matching" = "2 Sandi tidak cocok";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Untuk";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Untuk mencegah penyalahgunaan ProtonMail,\n kami perlu memverifikasi bahwa Anda adalah manusia.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Untuk mengatur ulang kata sandi kotak surat Anda, mohon gunakan ProtonMail versi web di protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Saat Anda mengirim surel, ini adalah nama yang muncul di bidang pengirim.";
 
+/* Example feedback */
+"Wonderful" = "Luar Biasa";
+
 /* default vcard types */
 "Work" = "Kerja";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Negara anda mungkin memblokir akses ke Proton. Coba gunakan ProtonVPN (atau VPN lainnya) atau Tor untuk mengakses Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Tanggapan Anda";
+
 /* The section title of folder manager table */
 "Your folders" = "Folder Anda";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Akun surel terenkripsi baru Anda sudah diatur dan siap untuk mengirim dan menerima pesan terenkripsi.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Akun email aman baru Anda\n telah siap.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Paket Anda aktif sampai";

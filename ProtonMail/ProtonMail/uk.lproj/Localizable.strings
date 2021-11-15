@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Також архівувати";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Також архівувати?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Також використовується, щоб скинути забутий пароль.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";
+
+/* Example feedback */
+"Awful" = "Жахливо";
 
 /* top left back button */
 "Back" = "Назад";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "Годин";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Як би ви описали свої враження від нового ProtonMail?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "E, d MMM, yyyy, %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ігноруйте активацію покупки лише якщо ви впевнені, що усі ваші передплати актуальні. Для отримання допомоги, зверніться до служби підтримки. \n\n Ви дійсно хочете ігнорувати активацію?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можна додати лише один безплатний обліковий запис";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN включено";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Написати відгук";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Взаємодія з проксі та мережевим екраном";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Все одно надіслати";
+
+/* Title of button to send feedback */
+"Send feedback" = "Надіслати відгук";
 
 /* when subject not empty */
 "Send message without subject?" = "Надіслати лист без теми?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Торкніться Надіслати для надсилання без терміну дії цим отримувачам";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Розкажіть нам про своє враження. (Необов'язково)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Тимчасово вимкніть чи вилучіть свою антивірусну програму.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Дякуємо за надсилання повідомлення про помилку. Ми додали ваш звіт до нашої системи відстеження помилок.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Дякуємо за ваш відгук!";
 
 /* Error message */
 "The 2 passwords are not matching" = "2 паролі не збігаються";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Кому";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Щоб запобігти зловживанню ProtonMail,\n нам необхідно переконатися, що ви людина.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Щоб скинути пароль поштової скриньки, скористайтеся вебверсією ProtonMail за адресою protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Коли ви надсилаєте лист, це ім'я з'являється в полі відправника.";
 
+/* Example feedback */
+"Wonderful" = "Дивовижно";
+
 /* default vcard types */
 "Work" = "Робочий";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися ProtonVPN (чи будь-який інший VPN) або Tor для доступу до Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Ваш відгук";
+
 /* The section title of folder manager table */
 "Your folders" = "Ваші теки";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша нова зашифрована поштова скринька вже налаштована і готова до надсилання та отримання зашифрованих повідомлень.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Ваш новий обліковий запис\n захищеної електронної пошти готовий.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тарифний план активний до";

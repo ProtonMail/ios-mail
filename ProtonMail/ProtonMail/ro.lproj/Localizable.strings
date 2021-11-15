@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Și arhivare";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "De asemenea, arhiva?";
+
 /* Description */
 "Also used to reset a forgotten password." = "Folosit și pentru resetarea parolelor uitate.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Autoîncarcare imagini încorporate";
+
+/* Example feedback */
+"Awful" = "Îngrozitor";
 
 /* top left back button */
 "Back" = "Înapoi";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "Ore";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența dumneavoastră cu noul ProtonMail?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "E, d MMM yyyy la %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției numai dacă sunteți sigur că toate abonamentele dumneavoastră sunt la zi. Pentru asistență suplimentară, vă rugăm să contactați serviciul de asistență pentru clienți. \n\n Sunteți sigur că doriți să ignorați activarea?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inclus";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Furnizați feedback";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferență Proxy/Paravan de protecție";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Trimitere așa";
+
+/* Title of button to send feedback */
+"Send feedback" = "Trimitere feedback";
 
 /* when subject not empty */
 "Send message without subject?" = "Trimiteți mesajul fără subiect?";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Atingeți «Trimite așa» pentru trimitere fără expirare acestor destinatari.";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Povestiți-ne despre experiența dumneavoastră. (Opțional)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Vă mulțumim pentru feedback-ul dumneavoastră!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Parolele nu se potrivesc.";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Către";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\n verificăm dacă sunteți persoană.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, folosiți versiunea web a ProtonMail de la protonmail.com";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Când trimiteți un e-mail, acesta este numele care apare în câmpul expeditorului.";
 
+/* Example feedback */
+"Wonderful" = "Minunat";
+
 /* default vcard types */
 "Work" = "Serviciu";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți ProtonVPN (sau orice alt VPN) sau Tor pentru a accesa Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Feedback-ul dumneavoastră";
+
 /* The section title of folder manager table */
 "Your folders" = "Foldere";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul cont de e-mail criptat a fost configurat și este gata să trimită și să primească mesaje criptate.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Noul cont de e-mail\n securizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";

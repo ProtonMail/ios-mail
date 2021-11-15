@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "Además archivar";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "¿También archivar?";
+
 /* Description */
 "Also used to reset a forgotten password." = "También se utiliza para restablecer una contraseña olvidada.";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "Cargar imágenes incrustadas automáticamente";
+
+/* Example feedback */
+"Awful" = "Awful";
 
 /* top left back button */
 "Back" = "Atrás";
@@ -649,10 +655,10 @@
 "Continue and Don't ask again" = "Continuar y no volver a preguntar";
 
 /* No comment provided by engineer. */
-"Conversation" = "Conversación";
+"Conversation" = "Vista de conversación";
 
 /* No comment provided by engineer. */
-"Conversation mode" = "Modo de conversación";
+"Conversation mode" = "Vista de conversación";
 
 /* Title */
 "Copy" = "Copiar";
@@ -872,7 +878,7 @@
 "DRAFTS" = "Borradores";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "Actualizado fácilmente";
 
 /* Action */
 "Edit" = "Editar";
@@ -1160,7 +1166,7 @@
 "From:" = "De:";
 
 /* abbreviation of forward: */
-"Fw:" = "Fw:";
+"Fw:" = "Rv:";
 
 /* abbreviation of forward: */
 "Fwd:" = "Rv:";
@@ -1187,7 +1193,7 @@
 "Get more information" = "Obtener más información";
 
 /* title of the next button */
-"Get Started" = "Empezar";
+"Get Started" = "Comenzar";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ir a borradores";
@@ -1239,6 +1245,9 @@
 
 /* Title */
 "Hours" = "horas";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "El E, d MMM, yyyy a las %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignora solo la activación de la compra si estás seguro de que todas tus suscripciones están actualizadas. Para obtener más ayuda, comunícate con el servicio de atención al cliente. \n\n ¿Estás seguro de que quieres ignorar la activación?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Solo se puede agregar una cuenta gratuita";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN incluido";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Provide feedback";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "Enviar de todos modos";
+
+/* Title of button to send feedback */
+"Send feedback" = "Send feedback";
 
 /* when subject not empty */
 "Send message without subject?" = "¿Enviar mensaje sin asunto?";
@@ -2453,7 +2471,7 @@
 "Swipe Right to Left" = "Deslizar de derecha a izquierda";
 
 /* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Deslizar para configurar acciones deslizables";
+"Swipe to set up swipable actions" = "Desliza para configurar acciones deslizables";
 
 /* cell title in device settings
    Swiping gestures */
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Pulsa enviar de todos modos para enviar sin caducidad a estos destinatarios";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Deshabilita temporalmente o elimina tu software de antivirus.";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos agregado tu informe a nuestro sistema de seguimiento de errores.";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Thank you for your feedback!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Las dos contraseñas no coinciden";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "Para";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,\n necesitamos verificar que eres humano.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de tu buzón, por favor utiliza la versión web de ProtonMail en protonmail.com";
@@ -2845,7 +2872,7 @@
 "Updated >1 hour ago" = "Actualizada hace >1 hora";
 
 /* The title of last update status of updated just now */
-"Updated just now" = "Actualizada justo ahora";
+"Updated just now" = "Actualizado justo ahora";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Actualiza a un plan de pago para obtener más beneficios";
@@ -2863,7 +2890,7 @@
 "URL" = "URL";
 
 /* Option title */
-"Use folder colors" = "Utilizar colores de carpeta";
+"Use folder colors" = "Utilizar colores de carpetas";
 
 /* error when user already exist */
 "User already exist!" = "Nombre de usuario ya registrado";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Cuando envías un correo, este es el nombre que aparecerá en el campo del remitente.";
 
+/* Example feedback */
+"Wonderful" = "Wonderful";
+
 /* default vcard types */
 "Work" = "Trabajo";
 
@@ -2983,7 +3013,7 @@
 "You are offline" = "No estás conectado";
 
 /* (No Comment) */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Puedes personalizar los gestos de deslizamiento en la configuración de la aplicación de ProtonMail.";
+"You can customize swipe gestures in the ProtonMail App Settings." = "Puedes personalizar las acciones al deslizar en los ajustes de la aplicación de ProtonMail.";
 
 /* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puedes obtener ayuda y soporte en protonmail.com/support. Los errores también pueden notificarse desde la aplicación.";
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando ProtonVPN (u otra VPN) o Tor para acceder a Proton.";
 
+/* Title of user feedback view */
+"Your feedback" = "Your feedback";
+
 /* The section title of folder manager table */
 "Your folders" = "Tus carpetas";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Tu nueva cuenta de correo electrónico cifrado ha sido configurada y está lista para enviar y recibir mensajes cifrados.";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Tu nueva cuenta de correo\n seguro está lista.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Tu plan está activo hasta";

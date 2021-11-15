@@ -220,6 +220,9 @@
 /* archive when apply label */
 "Also Archive" = "同時封存";
 
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Also archive?";
+
 /* Description */
 "Also used to reset a forgotten password." = "並用於重置密碼。";
 
@@ -363,6 +366,9 @@
 
 /* settings general section title */
 "Auto-load embedded images" = "自動載入內嵌圖片";
+
+/* Example feedback */
+"Awful" = "Awful";
 
 /* top left back button */
 "Back" = "返回";
@@ -1240,6 +1246,9 @@
 /* Title */
 "Hours" = "小時";
 
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
 
@@ -1795,6 +1804,9 @@
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "在 E, MMM d, yyyy 在 %@";
 
+/* Alert message */
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "僅可新增一個免費帳號";
 
@@ -2055,6 +2067,9 @@
 /* Service plan capability */
 "ProtonVPN included" = "包括 ProtonVPN";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Provide feedback";
+
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
 
@@ -2214,6 +2229,9 @@
 
 /* Action */
 "Send anyway" = "仍然傳送";
+
+/* Title of button to send feedback */
+"Send feedback" = "Send feedback";
 
 /* when subject not empty */
 "Send message without subject?" = "是否傳送沒有主旨的信件？";
@@ -2480,6 +2498,9 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "點擊發送，即使在沒有使用限時功能的情況下也直接寄給這些收件人。";
 
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "暫時停用或移除防毒軟體。";
 
@@ -2488,6 +2509,9 @@
 
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "我們已將您回報的 bug 加進追中系統中，感謝您的回報。";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Thank you for your feedback!";
 
 /* Error message */
 "The 2 passwords are not matching" = "兩組密碼並不匹配";
@@ -2665,6 +2689,9 @@
 /* message To: feild
    Title */
 "To" = "收件人";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail";
@@ -2949,6 +2976,9 @@
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "當你寄送郵件時，這個名稱將做為發件人欄位的名稱。";
 
+/* Example feedback */
+"Wonderful" = "Wonderful";
+
 /* default vcard types */
 "Work" = "公司";
 
@@ -3047,6 +3077,9 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 ProtonVPN （或其他VPN）或 Tor 存取 Proton。";
 
+/* Title of user feedback view */
+"Your feedback" = "Your feedback";
+
 /* The section title of folder manager table */
 "Your folders" = "您的資料夾";
 
@@ -3059,6 +3092,9 @@
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "新的加密電子郵件帳戶已經設置完成，您可以開始收發加密訊息。";
+
+/* view top title */
+"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的計畫當前處於啟用狀態直到";
