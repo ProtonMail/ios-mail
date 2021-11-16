@@ -79,10 +79,10 @@ unit_tests:
     - bundle install
     - bundle exec fastlane unit_test
     - export BUILD_NUMBER=$(git rev-list --count HEAD)
-    - VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
+    - export VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
     - echo $BUILD_NUMBER
     - echo $VERSION_NUMBER
-    - *git_tag_with_build_number
+    - ./ProtonMail/fastlane/add_git_tag.sh
   tags:
     - iOS_ARM_TAIPEI
 
