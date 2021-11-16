@@ -11,7 +11,7 @@ git_tag() {
 
 generate_tag_name() {
     local prefix="v" 
-    local build_number="${ci_commit_short_sha}"
+    local build_number="${CI_COMMIT_SHORT_SHA}"
     local version_number=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
     local git_tag_name="${prefix}${version_number}b${build_number}"
     return $git_tag_name
