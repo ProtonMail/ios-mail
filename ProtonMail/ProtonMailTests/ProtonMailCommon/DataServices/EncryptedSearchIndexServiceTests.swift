@@ -21,28 +21,32 @@ import SQLite
 
 class EncryptedSearchIndexServiceTests: XCTestCase {
     var connection: Connection!
+    var testUserID: String!
+    var testMessageID: String!
+    var testSearchIndexDBName: String!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // Create a test table for user 'test'.
-        let testSearchIndexDBName: String = "encryptedSearchIndex_test.sqlite3"
+        self.testUserID = "test"
+        self.testMessageID = "uniqueID"
+        self.testSearchIndexDBName = "encryptedSearchIndex_test.sqlite3"
         let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
-        let pathToTestDB: String = pathToDocumentsDirectory + testSearchIndexDBName
+        let pathToTestDB: String = pathToDocumentsDirectory + self.testSearchIndexDBName
         // Connect to test database.
         self.connection = try Connection(pathToTestDB)
         // Create the table
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
         // Add one entry in the table
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: "test", messageID: "uniqueID", time: 1, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
 
         // Create the path to the database for user 'test'.
-        let testSearchIndexDBName: String = "encryptedSearchIndex_test.sqlite3"
-        let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(testSearchIndexDBName)
+        let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(self.testSearchIndexDBName)
         let urlToDB: URL? = URL(string: pathToTestDB)
 
         // Explicitly close the handle of the connection to the database.
@@ -76,8 +80,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testCheckIfSearchIndexExists() throws {
         let sut = EncryptedSearchIndexService.shared.checkIfSearchIndexExists
-        let userID: String = "test"
-        let resultTrue: Bool = sut(userID)
+        let resultTrue: Bool = sut(self.testUserID)
         let userIDNonExisting: String = "abc"
         let resultFalse: Bool = sut(userIDNonExisting)
 
@@ -87,11 +90,10 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testConnectToSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.connectToSearchIndex
-        let userID: String = "test"
-        let result: Connection? = sut(userID)
+        let result: Connection? = sut(self.testUserID)
         XCTAssertEqual(result!.description, self.connection.description)
         
-        let resultSecond: Connection? = sut(userID)
+        let resultSecond: Connection? = sut(self.testUserID)
         XCTAssertEqual(result!.description, resultSecond!.description)
     }
 
@@ -106,8 +108,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testCreateSearchIndexDBIfNotExisting() throws {
         let sut = EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting
-        let userID: String = "test"
-        sut(userID)
+        sut(self.testUserID)
 
         //check if table exists
         let result: Bool = (try self.connection.scalar("SELECT EXISTS(SELECT name FROM sqlite_master WHERE name = ?)", EncryptedSearchIndexService.DatabaseConstants.Table_Searchable_Messages) as! Int64) > 0
@@ -133,7 +134,6 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testAddNewEntryToSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
-        let userID: String = "test"
         let messageID: String = "testMessage"
         let time: Int = 42
         let labelIDs: Set<String> = ["5", "1"]
@@ -147,12 +147,16 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let encryptedContent: Data = Data("content".utf8)
         let encryptedContentFile: String = "test"
 
-        let result: Int64? = sut(userID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
+        let result: Int64? = sut(self.testUserID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
 
         XCTAssertEqual(result, 2)   // There is already 1 entry in the db, therefore this should be entry number 2.
     }
 
-    //TODO test removeEntryFromSearchIndex
+    func testRemoveEntryFromSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex
+        let result: Int? = sut(self.testUserID, self.testMessageID)
+        XCTAssertEqual(result!, 1)
+    }
 
     //TODO test getNumberOfEntriesInSearchIndex
     //TODO test getOldestMessageInSearchIndex

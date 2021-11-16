@@ -1000,7 +1000,7 @@ extension EncryptedSearchService {
         
         //just delete a message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-            EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
+            _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
         } else {
             print("No search index found for user: \(userID)")
         }
