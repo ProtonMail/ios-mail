@@ -19,7 +19,8 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
             .selectFolder(folderName)
@@ -38,7 +39,8 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
-            .refreshMailbox()
+            .menuDrawer()
+            .inbox()
             .clickMessageByIndex(1)
             .createLabel(labelName)
             .selectLabel(labelName)

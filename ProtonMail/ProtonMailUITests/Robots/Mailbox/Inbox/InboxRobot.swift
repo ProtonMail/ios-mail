@@ -33,6 +33,12 @@ class InboxRobot : MailboxRobotInterface {
         return self
     }
     
+    @discardableResult
+    override func refreshGentlyMailbox() -> InboxRobot {
+        super.refreshGentlyMailbox()
+        return self
+    }
+    
     public func skipTutorialIfNeeded() -> InboxRobot {
         //check only once in the whole test run
         if(XCTestCase.tutorialSkipped == false && button(id.buttonSkipTutorial).wait().exists()) {

@@ -8,6 +8,7 @@
 
 import pmtest
 import SwiftUI
+import XCTest
 
 fileprivate struct id {
     static let menuButtonIdentifier = "MailboxViewController.menuBarButtonItem"
@@ -20,6 +21,7 @@ fileprivate struct id {
     static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
+    static let allowContacsAccessOkButtonLabel = LocalString._general_ok_action
 }
 
 var subjects = [String]()
@@ -43,7 +45,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        cell(id.mailboxMessageCellIdentifier).byIndex(index).tap()
+        staticText(id.mailboxMessageTitleIdentifier).byIndex(index).wait().forceTap()
         return MessageRobot()
     }
     
@@ -61,6 +63,10 @@ class MailboxRobotInterface: CoreElements {
     @discardableResult
     func compose() -> ComposerRobot {
         button(id.composeButtonLabelIdentifier).tap()
+        if (XCTestCase.enableContacts == false && button(id.allowContacsAccessOkButtonLabel).wait().exists()) {
+            button(id.allowContacsAccessOkButtonLabel).tap()
+        }
+        XCTestCase.enableContacts = true
         return ComposerRobot()
     }
 
@@ -78,6 +84,12 @@ class MailboxRobotInterface: CoreElements {
     @discardableResult
     func refreshMailbox() -> MailboxRobotInterface {
         table(id.mailboxTableViewIdentifier).tapThenSwipeDown(0.3, .slow)
+        return self
+    }
+    
+    @discardableResult
+    func refreshGentlyMailbox() -> MailboxRobotInterface {
+        table(id.mailboxTableViewIdentifier).swipeDown().wait(time: 3)
         return self
     }
     

@@ -47,6 +47,12 @@ fastlane ios unit_test
 ```
 Run unit test and get test coverage
 
+### ios ui_test
+```
+fastlane ios ui_test
+```
+Run ui test and get test coverage
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

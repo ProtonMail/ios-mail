@@ -30,6 +30,8 @@ import XCTest
 extension XCTestCase {
     public static var tutorialSkipped: Bool = false
     
+    public static var enableContacts: Bool = false
+    
     /**
      * Registers UI interruption monitor for a single XCUIElement and taps on it if triggered.
      *
