@@ -9,12 +9,16 @@ git_tag() {
     git push origin "$tag"
 }
 
-PREFIX="v" 
-BUILD_NUMBER="${CI_COMMIT_SHORT_SHA}"
-VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
-GIT_TAG_NAME="${PREFIX}${VERSION_NUMBER}b{$BUILD_NUMBER}"
+generate_tag_name() {
+    local prefix="v" 
+    local build_number="${ci_commit_short_sha}"
+    local version_number=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
+    local git_tag_name="${prefix}${version_number}b${build_number}"
+    return $git_tag_name
+}
 
-echo "Tagging with:"
-echo $GIT_TAG_NAME
+generate_tag_name
+GIT_TAG_NAME=$?
 
+echo "Tagging with: ${GIT_TAG_NAME}"
 git_tag "$GIT_TAG_NAME"
