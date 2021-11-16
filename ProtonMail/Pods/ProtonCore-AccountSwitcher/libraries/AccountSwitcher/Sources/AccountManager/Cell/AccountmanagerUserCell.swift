@@ -84,7 +84,8 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             // This will override IBAction
             self.configMoreButton(isSignin: isLogin)
         }
-        self.generateCellAccessibilityIdentifiers(name)
+        let nameId = mail.components(separatedBy: "@")[0]
+        self.generateCellAccessibilityIdentifiers(nameId)
     }
 
     @available(iOS 14.0, *)

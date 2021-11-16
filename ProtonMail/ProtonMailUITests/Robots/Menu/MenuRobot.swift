@@ -26,6 +26,8 @@ fileprivate struct id {
     static let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
     static let manageAccountsStaticTextLabel = CoreString._as_manage_accounts
     static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
+    static let primaryUserNameTextIdentifier = "AccountSwitcher.primaryUsername"
+    static let primaryUserMailTextIdentifier = "AccountSwitcher.primaryUsermail"
     static let iapErrorAlertTitle = LocalString._general_alert_title
     static let iapErrorAlertMessage = LocalString._iap_unavailable
     static let forceUpgrateAlertTitle = CoreString._fu_alert_title
@@ -40,7 +42,7 @@ fileprivate struct id {
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
     static func signInButtonIdentifier(_ name: String) -> String { return
-        "\(name).signInBtn"
+        "signInBtn.\(name)"
     }
 }
 
@@ -155,9 +157,8 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                cell(id.userAccountCellIdentifier(user.email)).wait().checkExists()
-                staticText(id.displayNameStaticTextdentifier(user.email)).wait().checkExists()
-                staticText(id.displayNameStaticTextdentifier(user.email)).wait().checkExists()
+                staticText(id.primaryUserMailTextIdentifier).wait().checkExists().checkContainsLabel(user.name)
+                staticText(id.primaryUserMailTextIdentifier).wait().checkExists().checkHasLabel(user.email)
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {

@@ -274,6 +274,8 @@ extension AccountSwitcher {
             self.shortUserName.text = user.name.initials()
             self.username.text = user.name
         }
+        self.username.accessibilityIdentifier = "AccountSwitcher.primaryUsername"
+        self.usermail.accessibilityIdentifier = "AccountSwitcher.primaryUsermail"
         self.usermail.text = user.mail
     }
 

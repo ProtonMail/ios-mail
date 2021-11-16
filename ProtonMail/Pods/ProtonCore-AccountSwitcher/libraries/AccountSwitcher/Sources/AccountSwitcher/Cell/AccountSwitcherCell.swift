@@ -69,6 +69,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         self.name.text = name
         self.shortName.text = self.name.text?.initials()
         self.mailAddress.text = data.mail
+        let nameId = data.mail.components(separatedBy: "@")[0]
         
         if data.isSignin {
             self.signInBtn.isHidden = true
@@ -77,9 +78,10 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         } else {
             self.unreadView.isHidden = true
             self.signInBtn.isHidden = false
+            self.signInBtn.accessibilityIdentifier = "signInBtn.\(nameId)"
         }
         self.setupLabelConstraint(isSignin: data.isSignin)
-        self.generateCellAccessibilityIdentifiers(name)
+        self.accessibilityIdentifier = "AccountSwitcherCell.\(nameId)"
     }
 
     private func setupLabelConstraint(isSignin: Bool) {
