@@ -20,21 +20,23 @@ fileprivate struct id {
     static let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
     static let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
     static let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
-    static let expirationButtonIdentifier = "ComposeHeaderViewController.expirationButton"
-    static let passwordButtonIdentifier = "ComposeHeaderViewController.encryptedButton"
+    static let expirationButtonIdentifier = "ComposeContainerViewController.hourButton"
+    static let passwordButtonIdentifier = "ComposeContainerViewController.lockButton"
     static let attachmentButtonIdentifier = "ComposeHeaderViewController.attachmentButton"
     static let showCcBccButtonIdentifier = "ComposeHeaderViewController.showCcBccButton"
     static let cancelNavBarButtonIdentifier = "ComposeContainerViewController.cancelButton"
     static let fromStaticTextIdentifier = "ComposeHeaderViewController.fromAddress"
     static let fromPickerButtonIdentifier = "ComposeHeaderViewController.fromPickerButton"
     static func getContactCellIdentifier(_ email: String) -> String { return "ContactsTableViewCell.\(email)" }
+    
+    
 
     /// Set Password modal identifiers.
-    static let messagePasswordSecureTextFieldIdentifier = "ComposePasswordViewController.passwordField"
-    static let confirmPasswordSecureTextFieldIdentifier = "ComposePasswordViewController.confirmPasswordField"
-    static let hintPasswordTextFieldIdentifier = "ComposePasswordViewController.hintField"
+    static let messagePasswordSecureTextFieldLabel = LocalString._composer_eo_msg_pwd_hint
+    static let confirmPasswordSecureTextFieldLabel = LocalString._composer_eo_repeat_pwd_placeholder
+    static let hintPasswordTextFieldIdentifier = "ComposePasswordVC.passwordHintView"
     static let cancelButtonIdentifier = "ComposePasswordViewController.cancelButton"
-    static let applyButtonIdentifier = "ComposePasswordViewController.applyButton"
+    static let applyButtonIdentifier = "ComposePasswordVC.applyButton"
 
     /// Expiration picker identifiers.
     static let expirationPickerIdentifier = "ExpirationPickerCell.picker"
@@ -44,6 +46,16 @@ fileprivate struct id {
     static let saveDraftButtonText = "saveDraftButton"
     static let invalidAddressStaticTextIdentifier = LocalString._signle_address_invalid_error_content
     static let recipientNotFoundStaticTextIdentifier = LocalString._recipient_not_found
+    
+    static let setExpirationButtonLabel = LocalString._general_set
+}
+
+enum expirationPeriod: String {
+    case oneHour = "1 hour"
+    case oneDay = "1 day"
+    case threeDaays = "3 days"
+    case oneWeek = "1 week"
+    case custom = ""
 }
 
 /**
@@ -128,22 +140,22 @@ class ComposerRobot: CoreElements {
             .send()
     }
     
-    func sendMessageExpiryTimeInDays(_ to: String, _ subjectText: String, _ body: String, expireInDays: Int = 1) -> InboxRobot {
+    func sendMessageExpiryTimeInDays(_ to: String, _ subjectText: String, _ body: String, expirePeriod: expirationPeriod) -> InboxRobot {
         recipients(to)
             .subject(subjectText)
             .messageExpiration()
-            .setExpirationInDays(expireInDays)
+            .setExpiration(expirePeriod)
             .send()
         return InboxRobot()
     }
     
-    func sendMessageEOAndExpiryTime(_ to: String, _ subjectText: String, _ password: String, _ hint: String, expireInDays: Int = 1) -> InboxRobot {
+    func sendMessageEOAndExpiryTime(_ to: String, _ subjectText: String, _ password: String, _ hint: String, expirePeriod: expirationPeriod) -> InboxRobot {
         recipients(to)
             .subject(subjectText)
             .setMessagePassword()
             .definePasswordWithHint(password, hint)
             .messageExpiration()
-            .setExpirationInDays(expireInDays)
+            .setExpiration(expirePeriod)
             .send()
         return InboxRobot()
     }
@@ -160,7 +172,7 @@ class ComposerRobot: CoreElements {
         return InboxRobot()
     }
     
-    func sendMessageEOAndExpiryTimeWithAttachment(_ to: String, _ subjectText: String, _ password: String, _ hint: String, attachmentsAmount: Int = 1, expireInDays: Int = 1) -> InboxRobot {
+    func sendMessageEOAndExpiryTimeWithAttachment(_ to: String, _ subjectText: String, _ password: String, _ hint: String, attachmentsAmount: Int = 1, expirePeriod: expirationPeriod) -> InboxRobot {
         recipients(to)
             .subject(subjectText)
             .addAttachment()
@@ -171,7 +183,7 @@ class ComposerRobot: CoreElements {
             .setMessagePassword()
             .definePasswordWithHint(password, hint)
             .messageExpiration()
-            .setExpirationInDays(expireInDays)
+            .setExpiration(expirePeriod)
             .send()
         return InboxRobot()
     }
@@ -190,6 +202,7 @@ class ComposerRobot: CoreElements {
 
     func recipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
+        cell(id.getContactCellIdentifier(email)).byIndex(0).tapIfExists()
         Element.other.tapIfExists(id.popoverDismissRegionOtherIdentifier)
         return self
     }
@@ -323,17 +336,18 @@ class ComposerRobot: CoreElements {
         }
 
         private func definePassword(_ password: String) -> MessagePasswordRobot {
-            secureTextField(id.messagePasswordSecureTextFieldIdentifier).tap().typeText(password)
+            secureTextField(id.messagePasswordSecureTextFieldLabel).tap().typeText(password)
             return self
         }
 
         private func confirmPassword(_ password: String) -> MessagePasswordRobot {
-            secureTextField(id.confirmPasswordSecureTextFieldIdentifier).tap().typeText(password)
+            secureTextField(id.confirmPasswordSecureTextFieldLabel).tap().typeText(password)
             return self
         }
 
         private func defineHint(_ hint: String) -> MessagePasswordRobot {
-            textField(id.hintPasswordTextFieldIdentifier).tap().typeText(hint)
+            otherElement(id.hintPasswordTextFieldIdentifier).tap().typeText(hint)
+            //textField(id.hintPasswordTextFieldIdentifier).tap().typeText(hint)
             return self
         }
 
@@ -348,25 +362,20 @@ class ComposerRobot: CoreElements {
      */
     class MessageExpirationRobot: CoreElements {
         @discardableResult
-        func setExpirationInDays(_ days: Int) -> ComposerRobot {
-            return expirationDays(days)
-                .confirmMessageExpiration()
+        func setExpiration(_ period: expirationPeriod) -> ComposerRobot {
+            return selectExpirationPeriod(period).setPeriod()
         }
 
-        private func expirationDays(_ days: Int) -> MessageExpirationRobot {
-            Element.pickerWheel.setPickerWheelValue(pickerWheelIndex: 0, value: days, dimension: "Days")
-            return self
+        private func selectExpirationPeriod(_ period: expirationPeriod) -> MessageExpirationRobot {
+            staticText(period.rawValue).tap()
+            return MessageExpirationRobot()
         }
         
-        private func expirationHours(_ hours: Int) -> MessageExpirationRobot {
-            Element.pickerWheel.setPickerWheelValue(pickerWheelIndex: 1, value: hours, dimension: "Hours")
-            return self
-        }
-
-        private func confirmMessageExpiration() -> ComposerRobot {
-            //Element.button.tapByIdentifier(expirationActionButtonIdentifier)
+        private func setPeriod() -> ComposerRobot {
+            button(id.setExpirationButtonLabel).tap()
             return ComposerRobot()
         }
+        
     }
     
     /**
