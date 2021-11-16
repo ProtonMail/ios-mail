@@ -72,7 +72,8 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountAdded(onePassUserWith2Fa)
     }
 
-    func testRemoveAllAccounts() {
+    //Remove all account function is no longer available in v4
+    func disabletestRemoveAllAccounts() {
         let onePassUser = testData.onePassUser
         loginRobot
             .loginUser(onePassUser)
@@ -96,7 +97,7 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser)
+            .logoutPrimaryAccount(twoPassUser)
             .menuDrawer()
             .accountsList()
             .verify.accountSignedOut(twoPassUser)
@@ -115,10 +116,11 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser)
+            .logoutSecindaryAccount(onePassUser)
+            .closeManageAccounts()
             .menuDrawer()
             .accountsList()
-            .verify.accountSignedOut(twoPassUser)
+            .verify.accountSignedOut(onePassUser)
     }
 
     func testRemovePrimaryAccount() {
@@ -133,7 +135,7 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser)
+            .logoutPrimaryAccount(twoPassUser)
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -154,7 +156,8 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser)
+            .logoutSecindaryAccount(onePassUser)
+            .closeManageAccounts()
             .menuDrawer()
             .accountsList()
             .manageAccounts()

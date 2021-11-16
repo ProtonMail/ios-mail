@@ -15,10 +15,11 @@ fileprivate struct id {
     static let swipeUserCellLogoutButtonIdentifier = "Log out"
     static let swipeUserCellDeleteButtonIdentifier = "Delete"
     static let removeAllLabel = "Remove All"
-    static let signOutButtonLabel = LocalString._signout_primary_account_from_manager_account
+    static let signOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
     static let confirmSignOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
     static let removeAccountButtonLabel = "Remove account"
     static let confirmRemoveButtonLabel = LocalString._general_remove_button
+    static let closeManageAccountsButtonLabel = "Dismiss account switcher"
     static func userAccountMoreBtnIdentifier(_ name: String) -> String {
         return "\(name).moreBtn"
     }
@@ -37,7 +38,13 @@ class AccountManagerRobot: CoreElements {
         return ConnectAccountRobot()
     }
 
-    func logoutAccount(_ user: User) -> InboxRobot {
+    func logoutPrimaryAccount(_ user: User) -> InboxRobot {
+        return tapMore(user.name)
+            .signOut()
+            .confirmSignOutPrimary()
+    }
+    
+    func logoutSecindaryAccount(_ user: User) -> AccountManagerRobot {
         return tapMore(user.name)
             .signOut()
             .confirmSignOut()
@@ -52,6 +59,11 @@ class AccountManagerRobot: CoreElements {
     func removeAllAccounts() -> LoginRobot {
         return removeAll()
             .confirmRemoveAll()
+    }
+    
+    func closeManageAccounts() -> InboxRobot {
+        button(id.closeManageAccountsButtonLabel).tap()
+        return InboxRobot()
     }
     
     private func removeAll() -> RemoveAllAlertRobot {
@@ -74,9 +86,14 @@ class AccountManagerRobot: CoreElements {
         return AccountManagerRobot()
     }
     
-    private func confirmSignOut() -> InboxRobot {
+    private func confirmSignOutPrimary() -> InboxRobot {
         button(id.confirmSignOutButtonLabel).tap()
         return InboxRobot()
+    }
+    
+    private func confirmSignOut() -> AccountManagerRobot {
+        button(id.confirmSignOutButtonLabel).tap()
+        return AccountManagerRobot()
     }
     
     private func removeAccount() -> AccountManagerRobot {
