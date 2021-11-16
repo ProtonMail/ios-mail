@@ -138,19 +138,16 @@ extension EncryptedSearchIndexService {
         return rowID
     }
     
-    func removeEntryFromSearchIndex(user userID: String, message messageID: String){
+    func removeEntryFromSearchIndex(user userID: String, message messageID: String) -> Int? {
         let filter = self.searchableMessages.filter(self.databaseSchema.messageID == messageID)
-        
+        var rowID:Int? = -1
         do {
             let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
-            if try (handleToSQLiteDB?.run(filter.delete()))! > 0 {
-                print("sucessfully deleted message \(messageID) from search index")
-            } else {
-                print("message \(messageID) not found in search index")
-            }
+            rowID = try handleToSQLiteDB?.run(filter.delete())
         } catch {
             print("deleting messages from search index failed: \(error)")
         }
+        return rowID
     }
     
     func getDBParams(_ userID: String) -> EncryptedsearchDBParams {
