@@ -271,6 +271,29 @@ platform :ios do
     )
   end
 
+  desc "Run ui test and get test coverage"
+  lane :ui_test do |options|
+    xcversion(version: "~> 13.0.0")
+
+    try_scan(
+      workspace: "Protonmail.xcworkspace",
+      device: "iPhone 12",
+      reset_simulator: true,
+      try_count: 2,
+      parallel_workers: 4,
+      try_parallel: true,
+      retry_parallel: true,
+      scheme: "ProtonMailUITests",
+      testplan: "SmokeTests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: APP_IDENTIFIER,
+      xcpretty_args: "-r junit -o report.xml"
+      #slack_url: ENV["SLACK_CI_BOT_URL"]
+    )
+  end
+
   error do |lane, exception|
     send_to_slack(false, "", exception, "")
     tear_down_keychain
