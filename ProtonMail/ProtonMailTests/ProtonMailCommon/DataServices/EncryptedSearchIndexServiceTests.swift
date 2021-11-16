@@ -17,6 +17,7 @@
 
 import XCTest
 import SQLite
+import Crypto
 @testable import ProtonMail
 
 class EncryptedSearchIndexServiceTests: XCTestCase {
@@ -39,7 +40,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         // Create the table
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
         // Add one entry in the table
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
     }
 
     override func tearDownWithError() throws {
@@ -65,7 +67,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let sut = EncryptedSearchIndexService.shared.getSearchIndexName
         let testUserID: String = "123"
         let result: String = sut(testUserID)
-        
+
         XCTAssertEqual(result, "encryptedSearchIndex_123.sqlite3")
     }
 
@@ -90,17 +92,23 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testConnectToSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.connectToSearchIndex
-        let result: Connection? = sut(self.testUserID)
+        var result: Connection? = sut(self.testUserID)
         XCTAssertEqual(result!.description, self.connection.description)
-        
-        let resultSecond: Connection? = sut(self.testUserID)
+
+        var resultSecond: Connection? = sut(self.testUserID)
         XCTAssertEqual(result!.description, resultSecond!.description)
+
+        //close connection
+        sqlite3_close(result?.handle)
+        result = nil
+        sqlite3_close(resultSecond?.handle)
+        resultSecond = nil
     }
 
     func testCreateSearchIndexTable() throws {
         let sut = EncryptedSearchIndexService.shared.createSearchIndexTable
         sut(self.connection)
-        
+
         //check if table exists
         let result: Bool = (try self.connection.scalar("SELECT EXISTS(SELECT name FROM sqlite_master WHERE name = ?)", EncryptedSearchIndexService.DatabaseConstants.Table_Searchable_Messages) as! Int64) > 0
         XCTAssertEqual(result, true)
@@ -149,24 +157,56 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
         let result: Int64? = sut(self.testUserID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
 
-        XCTAssertEqual(result, 2)   // There is already 1 entry in the db, therefore this should be entry number 2.
+        XCTAssertEqual(result, 3)   // There are already 2 entries in the db, therefore this should be entry number 3.
     }
 
     func testRemoveEntryFromSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex
         let result: Int? = sut(self.testUserID, self.testMessageID)
-        XCTAssertEqual(result!, 1)
+        XCTAssertEqual(result!, 1)  // We delete 1 entry from the db.
     }
 
-    //TODO test getNumberOfEntriesInSearchIndex
-    //TODO test getOldestMessageInSearchIndex
-    //TODO test getNewestMessageInSearchIndex
-    
-    //TODO test getSizeOfSearchIndex
-    //TODO test getFreeDiskSpace
-    //TODO test getDBParams
-    
-    //TODO test timeToDateString
-    //TODO test updateLocationForMessage
-    //TODO test compressSearchIndex
+    func testGetNumberOfEntriesInSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex
+        let result: Int = sut(self.testUserID)
+        XCTAssertEqual(result, 2)
+
+        // Test for non existing user
+        let resultZero: Int = sut("abc")
+        XCTAssertEqual(resultZero, 0)
+    }
+
+    func testGetOldestMessageInSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex
+        let result: String = sut(self.testUserID)
+        XCTAssertEqual(result, "Nov 16, 2021")
+    }
+
+    func testGetNewestMessageInSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex
+        let result: String = sut(self.testUserID)
+        XCTAssertEqual(result, "Nov 17, 2021")
+    }
+
+    func testGetSizeOfSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.getSizeOfSearchIndex
+        let resultString: String = sut(self.testUserID).asString
+        let resultInteger: Int64? = sut(self.testUserID).asInt64
+        XCTAssertEqual(resultString, "0 MB")
+        XCTAssertEqual(resultInteger, 12288)
+    }
+
+    /*func testGetDBParams() throws {
+        let sut = EncryptedSearchIndexService.shared.getDBParams
+        let result: EncryptedsearchDBParams = sut(self.testUserID)
+
+        let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
+        let pathToTestDB: String = pathToDocumentsDirectory + self.testSearchIndexDBName
+        let dbParams: EncryptedsearchDBParams? = EncryptedsearchNewDBParams(pathToTestDB, "SearchableMessage", "ID", "Time", "Location", "Unread", "IsStarred", "LabelIDs", "EncryptionIV", "EncryptedContent", "EncryptedContentFile")
+        XCTAssertEqual(result.description, dbParams!.description)
+    }*/
+
+    // func getFreeDiskSpace dependes on the hardware you run the test on.
+    // func timeToDateString is private
+    // func compressSearchIndex cannot easily be tested. It should defragment the sqlite database.
 }
