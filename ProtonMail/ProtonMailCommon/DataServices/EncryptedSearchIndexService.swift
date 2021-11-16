@@ -264,13 +264,12 @@ extension EncryptedSearchIndexService {
         
         return (freeSpace, size)
     }
-    
+
     func getOldestMessageInSearchIndex(for userID: String) -> String {
         let time: Expression<CLong> = self.databaseSchema.time
-        
         let query = self.searchableMessages.select(time).order(time.asc).limit(1)
         // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
-        
+
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var oldestMessage: CLong = 0
         do {
@@ -300,14 +299,14 @@ extension EncryptedSearchIndexService {
         }
         return self.timeToDateString(time: newestMessage)
     }
-    
+
     private func timeToDateString(time: CLong) -> String {
         let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd, yyyy"
         return dateFormatter.string(from: date)
     }
-    
+
     func createSearchIndexDBIfNotExisting(for userID: String){
         //check if db handle exists
         let handle: Connection? = self.connectToSearchIndex(for: userID)
@@ -322,9 +321,9 @@ extension EncryptedSearchIndexService {
         }
     }
     
-    func updateLocationForMessage(for userID: String, messageID: String, location: Int){
+    //func updateLocationForMessage(for userID: String, messageID: String, location: Int){
         //TODO
-    }
+    //}
     
     func compressSearchIndex(for userID: String) {
         //If there is no search index for an user, then do nothing
