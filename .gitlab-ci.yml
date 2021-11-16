@@ -82,7 +82,7 @@ unit_tests:
     - export VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
     - echo $BUILD_NUMBER
     - echo $VERSION_NUMBER
-    - ./ProtonMail/fastlane/add_git_tag.sh
+    - ./fastlane/add_git_tag.sh
   tags:
     - iOS_ARM_TAIPEI
 
