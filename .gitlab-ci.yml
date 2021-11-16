@@ -227,6 +227,7 @@ build-release-enterprise-app-and-upload:
   script:
     - *enterprise_config_setting
     - fastlane ios enterprise usingTimeStamp:false
+    - *git_tag_with_build_number
   tags:
     - iOS_ARM_TAIPEI
 
