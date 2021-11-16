@@ -17,7 +17,7 @@ stages:
   - PREFIX="v" 
   - BUILD_NUMBER=$(git rev-list --count HEAD)
   - VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
-  - GIT_TAG_NAME="$PREFIX$VERSION_NUMBERb$BUILD_NUMBER"
+  - GIT_TAG_NAME="${PREFIX}${VERSION_NUMBER}b{$BUILD_NUMBER}"
   - echo "Tagging with:"
   - echo $GIT_TAG_NAME
   - git remote set-url origin "https://${GIT_CI_USERNAME}:${PRIVATE_TOKEN_GITLAB_API_PROTON_CI}@$(awk -F '@' '{print $2}' <<< "$CI_REPOSITORY_URL")";
@@ -78,6 +78,10 @@ unit_tests:
     - cd ProtonMail
     - bundle install
     - bundle exec fastlane unit_test
+    - export BUILD_NUMBER=$(git rev-list --count HEAD)
+    - VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
+    - echo $BUILD_NUMBER
+    - echo $VERSION_NUMBER
     - *git_tag_with_build_number
   tags:
     - iOS_ARM_TAIPEI
