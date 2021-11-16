@@ -24,19 +24,32 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        // Create a test table for user 'test'.
         let testSearchIndexDBName: String = "encryptedSearchIndex_test.sqlite3"
         let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
         let pathToTestDB: String = pathToDocumentsDirectory + testSearchIndexDBName
+        // Connect to test database.
         self.connection = try Connection(pathToTestDB)
+        // Create the table
+        EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
+        // Add one entry in the table
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: "test", messageID: "uniqueID", time: 1, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+
+        // Create the path to the database for user 'test'.
         let testSearchIndexDBName: String = "encryptedSearchIndex_test.sqlite3"
         let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(testSearchIndexDBName)
         let urlToDB: URL? = URL(string: pathToTestDB)
+
+        // Explicitly close the handle of the connection to the database.
         sqlite3_close(self.connection.handle)
+        // Set to connection to nil.
         self.connection = nil
+        // Remove the database file.
         try FileManager.default.removeItem(atPath: urlToDB!.path)
     }
 
@@ -136,7 +149,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
         let result: Int64? = sut(userID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
 
-        XCTAssertEqual(result, 1)
+        XCTAssertEqual(result, 2)   // There is already 1 entry in the db, therefore this should be entry number 2.
     }
 
     //TODO test removeEntryFromSearchIndex
