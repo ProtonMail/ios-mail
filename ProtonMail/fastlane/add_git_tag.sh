@@ -10,7 +10,7 @@ git_tag() {
 }
 
 PREFIX="v" 
-BUILD_NUMBER=$(git rev-list --count HEAD)
+BUILD_NUMBER="${CI_COMMIT_SHORT_SHA}"
 VERSION_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$CI_PROJECT_DIR/ProtonMail/ProtonMail/Supporting Files/Info.plist")
 GIT_TAG_NAME="${PREFIX}${VERSION_NUMBER}b{$BUILD_NUMBER}"
 
