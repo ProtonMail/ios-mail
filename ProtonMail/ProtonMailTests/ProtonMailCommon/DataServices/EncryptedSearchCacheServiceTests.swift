@@ -22,6 +22,7 @@ import SQLite
 
 class EncryptedSearchCacheServiceTests: XCTestCase {
     var testUserID: String!
+    var testMessageID: String!
     var connectionToSearchIndexDB: Connection!
     var testSearchIndexDBName: String!
     var testCache: EncryptedsearchCache!
@@ -30,6 +31,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         self.testUserID = "test"
+        self.testMessageID = "uniqueID1"
 
         // Create a search index db for user 'test'.
         self.createTestSearchIndexDB()
@@ -52,7 +54,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.testSearchIndexDBName = "encryptedSearchIndex_test.sqlite3"
         self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(for: self.testUserID)!
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID1", time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
         _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
     }
     
@@ -107,9 +109,14 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         //TODO
     //}
 
-    //func testDeleteCachedMessage() throws {
-        //TODO
-    //}
+    func testDeleteCachedMessage() throws {
+        let sut = EncryptedSearchCacheService.shared.deleteCachedMessage
+        let result: Bool = sut(self.testUserID, self.testMessageID)
+        XCTAssertEqual(result, true)
+
+        let resultFalse: Bool = sut(self.testUserID, "unknownMessageID")
+        XCTAssertEqual(resultFalse, false)
+    }
 
     func testIsCacheBuilt() throws {
         let sut = EncryptedSearchCacheService.shared.isCacheBuilt
