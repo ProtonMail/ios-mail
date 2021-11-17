@@ -54,16 +54,32 @@ extension EncryptedSearchCacheService {
         }
         return self.cache!
     }
-    
-    func deleteCache(userID: String) {
+
+    func deleteCache(userID: String) -> Bool {
         if userID == currentUserID {
-            self.cache?.deleteAll()
-            self.currentUserID = ""
+            if let cache = self.cache {
+                cache.deleteAll()
+                self.currentUserID = ""
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
         }
+        return false
     }
-    
-    func updateCachedMessage(){
-        //TODO implement
+
+    func updateCachedMessage(userID: String, message: Message) -> Bool {
+        if userID == currentUserID {
+            if let cache = self.cache {
+                //TODO check what changed? or update everything?
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return false
     }
 
     func deleteCachedMessage(userID: String, messageID: String) -> Bool {
@@ -80,6 +96,93 @@ extension EncryptedSearchCacheService {
     }
 
     func isCacheBuilt(userID: String) -> Bool {
-        return self.currentUserID == userID && ((self.cache?.isBuilt()) != nil)
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.isBuilt()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return false
+    }
+
+    func isPartial(userID: String) -> Bool {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.isPartial()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return false
+    }
+
+    func getNumberOfCachedMessages(userID: String) -> Int {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.getLength()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return 0
+    }
+
+    func getLastIDCached(userID: String) -> String? {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.getLastIDCached()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return nil
+    }
+
+    func getLastTimeCached(userID: String) -> Int64? {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.getLastTimeCached()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return nil
+    }
+
+    func getSizeOfCache(userID: String) -> Int64? {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.getSize()
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return nil
+    }
+
+    func containsMessage(userID: String, messageID: String) -> Bool {
+        if self.currentUserID == userID {
+            if let cache = self.cache {
+                return cache.hasMessage(messageID)
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return false
     }
 }
