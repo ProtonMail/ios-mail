@@ -35,13 +35,13 @@ class MessageRobot: CoreElements {
     func addMessageToFolder(_ folderName: String) -> InboxRobot {
         openFoldersModal()
             .selectFolder(folderName)
-            .clickApplyButtonAndReturnToInbox()
+            .tapDoneSelectingFolderButton()
     }
     
     func assignLabelToMessage(_ folderName: String) -> MessageRobot {
         openLabelsModal()
             .selectFolder(folderName)
-            .clickLabelApplyButton()
+            .tapDoneSelectingLabelButton()
     }
     
     func createFolder(_ folderName: String) -> MoveToFolderRobotInterface {
@@ -144,16 +144,6 @@ class MessageRobot: CoreElements {
         override func selectFolder(_ folderName: String) -> MoveToFolderRobot {
             super.selectFolder(folderName)
             return MoveToFolderRobot()
-        }
-        
-        override func clickApplyButtonAndReturnToInbox() -> InboxRobot {
-            super.clickApplyButtonAndReturnToInbox()
-            return InboxRobot()
-        }
-        
-        override func clickLabelApplyButton() -> MessageRobot {
-            super.clickLabelApplyButton()
-            return MessageRobot()
         }
     }
     

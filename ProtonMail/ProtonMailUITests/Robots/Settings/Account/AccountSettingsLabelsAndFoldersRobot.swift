@@ -15,12 +15,13 @@ fileprivate struct id {
     static let createButtonIdentifier = "LabelEditViewController.applyButton"
     static let closeButtonIdentifier = "LabelEditViewController.closeButton"
     static let keyboardDoneIdentifier = "Done"
+    static let saveButtonLabel = LocalString._general_save_action
     static let deleteCellIdentifier = "LabelEditViewController.deleteCell"
     static let confirmDeleteButtonText = LocalString._general_delete_action
     static func labelFolderCellIdentifier(_ name: String) -> String { return "LabelTableViewCell.\(name)" }
     static func selectLabelFolderButtonText(_ name: String) -> String { return "\(name).name" }
-    static func editLabelFolderButtonIdentifier(_ name: String) -> String { return "\(name).editButton" }
-    static let colorCollectionViewIdentifier = "LabelEditViewController.collectionView"
+    static func editLabelFolderButtonIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
+    static let colorCollectionViewCellIdentifier = "LabelPaletteCell.LabelColorCell"
 }
 
 /**
@@ -46,7 +47,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
-        button(id.editLabelFolderButtonIdentifier(folderName)).tap()
+        staticText(id.selectLabelFolderButtonText(folderName)).byIndex(1).tap()
         return AddFolderLabelRobot()
     }
     
@@ -55,19 +56,9 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
         return AccountSettingsRobot()
     }
     
-    private func selectFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
+    func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
         staticText(id.selectLabelFolderButtonText(name)).byIndex(1).tap()
-        return self
-    }
-    
-    private func delete() -> AccountSettingsLabelsAndFoldersRobot {
-        cell(id.deleteCellIdentifier).tap()
-        return self
-    }
-    
-    private func confirmDelete() -> AccountSettingsLabelsAndFoldersRobot {
-        button(id.confirmDeleteButtonText).tap()
-        return self
+        return AddFolderLabelRobot()
     }
     
     /**
@@ -86,27 +77,32 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
         }
         
         func editFolderLabelName(_ name: String) -> AddFolderLabelRobot {
-            textField(id.folderNameTextFieldIdentifier).clearText().typeText(name)
+            textField(id.folderNameTextFieldIdentifier).tap().clearText().typeText(name)
             return AddFolderLabelRobot()
         }
         
         func selectFolderColorByIndex(_ index: Int) -> AddFolderLabelRobot {
-            collectionView(id.colorCollectionViewIdentifier).onChild(cell().byIndex(index)).tap()
+            image(id.colorCollectionViewCellIdentifier).byIndex(index).tap()
             return AddFolderLabelRobot()
         }
         
-        func done() -> AddFolderLabelRobot {
-            button(id.keyboardDoneIdentifier).tap()
-            return self
-        }
-        
-        func create() -> AccountSettingsLabelsAndFoldersRobot {
-            button(id.createButtonIdentifier).tap()
+        func save() -> AccountSettingsLabelsAndFoldersRobot {
+            button(id.saveButtonLabel).tap()
             return AccountSettingsLabelsAndFoldersRobot()
         }
         
         func doneCreatingLabel() -> AccountSettingsLabelsAndFoldersRobot {
             button(id.keyboardDoneIdentifier).tap()
+            return AccountSettingsLabelsAndFoldersRobot()
+        }
+        
+        func delete() -> AddFolderLabelRobot {
+            cell(id.deleteCellIdentifier).tap()
+            return self
+        }
+        
+        func confirmDelete() -> AccountSettingsLabelsAndFoldersRobot {
+            button(id.confirmDeleteButtonText).tap()
             return AccountSettingsLabelsAndFoldersRobot()
         }
     }
