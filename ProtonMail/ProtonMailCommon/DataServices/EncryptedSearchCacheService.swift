@@ -65,11 +65,20 @@ extension EncryptedSearchCacheService {
     func updateCachedMessage(){
         //TODO implement
     }
-    
-    func deleteCachedMessage(){
-        //TODO implement
+
+    func deleteCachedMessage(userID: String, messageID: String) -> Bool {
+        if userID == currentUserID {
+            if let cache = self.cache {
+                return cache.deleteMessage(messageID)
+            } else {
+                print("Error cache is nil!")
+            }
+        } else {
+            print("Error no cache for user \(userID) found!")
+        }
+        return false
     }
-    
+
     func isCacheBuilt(userID: String) -> Bool {
         return self.currentUserID == userID && ((self.cache?.isBuilt()) != nil)
     }
