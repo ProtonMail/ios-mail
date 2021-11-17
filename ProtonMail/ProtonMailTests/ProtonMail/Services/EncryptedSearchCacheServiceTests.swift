@@ -47,7 +47,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         try self.deleteTestSearchIndexDB()
 
         // delete cache for user 'test'
-        EncryptedSearchCacheService.shared.deleteCache(userID: self.testUserID)
+        _ = EncryptedSearchCacheService.shared.deleteCache(userID: self.testUserID)
     }
 
     func createTestSearchIndexDB(){
@@ -99,10 +99,9 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     func testDeleteCache() throws {
         let sut = EncryptedSearchCacheService.shared.deleteCache
-        sut(self.testUserID)
+        let result: Bool = sut(self.testUserID)
 
-        let isCacheStillExisting: Bool = EncryptedSearchCacheService.shared.isCacheBuilt(userID: self.testUserID)
-        XCTAssertEqual(isCacheStillExisting, false) // Cache should not exist anymore.
+        XCTAssertEqual(result, false) // Cache should not exist anymore.
     }
 
     //func testUpdateCachedMessage() throws {
@@ -127,5 +126,42 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.buildTestCache()
         let resultTrue: Bool = sut(self.testUserID)
         XCTAssertTrue(resultTrue)
+    }
+
+    func testIsPartial() throws {
+        //TODO
+    }
+
+    func testGetNumberOfCachedMessages() throws {
+        let sut = EncryptedSearchCacheService.shared.getNumberOfCachedMessages
+        let result: Int = sut(self.testUserID)
+        XCTAssertEqual(result, 2)   // There should be 2 messages in the cache
+    }
+
+    func testGetLastIDCached() throws {
+        let sut = EncryptedSearchCacheService.shared.getLastIDCached
+        let result: String? = sut(self.testUserID)
+        XCTAssertEqual(result!, "uniqueID2")
+    }
+
+    func testGetLastTimeCached() throws {
+        let sut = EncryptedSearchCacheService.shared.getLastTimeCached
+        let result: Int64? = sut(self.testUserID)
+        XCTAssertEqual(result!, 1637141557)
+    }
+
+    func testGetSizeOfCache() throws {
+        let sut = EncryptedSearchCacheService.shared.getSizeOfCache
+        let result: Int64? = sut(self.testUserID)
+        XCTAssertEqual(result!, 1)   //TODO check size of 2 messages
+    }
+
+    func testContainsMessage() throws {
+        let sut = EncryptedSearchCacheService.shared.containsMessage
+        let result: Bool = sut(self.testUserID, self.testMessageID)
+        XCTAssertEqual(result, true)
+
+        let resultFalse: Bool = sut(self.testUserID, "unknownMessageID")
+        XCTAssertFalse(resultFalse)
     }
 }
