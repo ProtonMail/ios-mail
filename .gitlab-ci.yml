@@ -167,6 +167,7 @@ build-app-and-upload:
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
+    - ./fastlane/add_git_tag.sh
   tags:
     - iOS_ARM_TAIPEI
 
