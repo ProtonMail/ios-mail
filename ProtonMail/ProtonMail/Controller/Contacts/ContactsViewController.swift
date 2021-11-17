@@ -142,6 +142,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.searchBar.backgroundColor = .clear
         if #available(iOS 15.0, *) {
             self.searchController.searchBar.searchTextField.leftView?.tintColor = .lightGray
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         }
 
         self.searchViewConstraint.constant = 0.0

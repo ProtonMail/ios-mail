@@ -47,8 +47,7 @@ struct PushSubscriptionSettings: Hashable, Codable {
     
     #if !APP_EXTENSION
     mutating func generateEncryptionKit() throws {
-        let crypto = PMNOpenPgp.createInstance()!
-        let keypair = try crypto.generateRandomKeypair()
+        let keypair = try Crypto.generateRandomKeyPair()
         self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }
     #endif

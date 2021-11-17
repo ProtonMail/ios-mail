@@ -26,6 +26,7 @@ import Foundation
 import Crypto
 import PMCommon
 import OpenPGP
+import Crypto
 
 extension Crypto {
     
@@ -140,41 +141,6 @@ extension Crypto {
     }
     
 }
-
-//
-extension PMNOpenPgp {
-    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
-        var out_new_key : PMNOpenPgpKey?
-        try ObjC.catchException {
-            let timeinterval = CryptoGetUnixTime()
-            let int32Value = NSNumber(value: timeinterval).int32Value
-            out_new_key = self.generateKey(userName,
-                                           domain: domain,
-                                           passphrase: passphrase,
-                                           bits: bits,
-                                           time: int32Value)
-            if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
-                out_new_key = nil
-            }
-        }
-        return out_new_key
-    }
-    
-    func generateRandomKeypair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
-        let passphrase = UUID().uuidString
-        let username = UUID().uuidString
-        let domain = "protonmail.com"
-        guard let keypair = try self.generateKey(passphrase,
-                                                 userName: (username + "@" + domain).isValidEmail() ? username : "noreply",
-                                                 domain: domain,
-                                                 bits: Int32(2048)) else
-        {
-            throw NSError(domain: #file, code: 1, localizedDescription: "Failed to generate random keypair")
-        }
-        return (passphrase, keypair.publicKey, keypair.privateKey)
-    }
-}
-
 
 extension Data {
     func decryptAttachment(keyPackage: Data, userKeys: [Data], passphrase: String, keys: [Key]) throws -> Data? {

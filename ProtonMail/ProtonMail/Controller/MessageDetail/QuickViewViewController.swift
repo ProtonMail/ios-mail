@@ -34,18 +34,38 @@ class QuickViewViewController: QLPreviewController {
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
     }
     
-    func configureNavigationBar(_ navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = .blackOpaque
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.tintColor = UIColor.white
+    @available(iOS 15, *)
+    private func configureNavigationBar_iOS15() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        let navigationBarTitleFont = Fonts.h2.light
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+            NSAttributedString.Key.font: navigationBarTitleFont
+        ]
+        let barAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [QLPreviewController.self])
+        barAppearance.standardAppearance = appearance
+        barAppearance.scrollEdgeAppearance = appearance
+        barAppearance.compactAppearance = appearance
+        barAppearance.compactScrollEdgeAppearance = appearance
+    }
 
+    func configureNavigationBar(_ navigationController: UINavigationController) {
+        if #available(iOS 15, *) {
+            self.configureNavigationBar_iOS15()
+        }
+        navigationController.navigationBar.tintColor = UIColor.black
         let navigationBarTitleFont = Fonts.h2.light
         navigationController.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.foregroundColor: UIColor.black,
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
     }
@@ -56,8 +76,8 @@ class QuickViewViewController: QLPreviewController {
         let views = self.children
         if views.count > 0 {
             if let nav = views[0] as? UINavigationController {
-                setNeedsStatusBarAppearanceUpdate()
                 configureNavigationBar(nav)
+                setNeedsStatusBarAppearanceUpdate()
             }
         }
     }

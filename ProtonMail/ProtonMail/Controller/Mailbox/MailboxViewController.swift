@@ -122,6 +122,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         return self.viewModel.user.userInfo.swipeRightAction
     }
     
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private var lastNetworkStatus : NetworkStatus? = nil
     
     ///

@@ -161,23 +161,18 @@ class SignupViewModelImpl : SignupViewModel {
                 self.keysalt = new_mpwd_salt
                 self.keypwd_with_keysalt = new_hashed_mpwd
                 //generate new key
-                
-//                self.newPrivateKey = try sharedOpenPGP.generateKey(self.userName,
-//                                                                   domain: self.domain,
-//                                                                   passphrase: new_hashed_mpwd,
-//                                                                   keyType: "rsa", bits: self.bit);
-                let pgp = PMNOpenPgp.createInstance()!
-                let newK = try pgp.generateKey(new_hashed_mpwd,
-                                               userName: self.userName,
-                                               domain: self.domain,
-                                               bits: Int32(self.bit))
-                self.newPrivateKey = newK?.privateKey;
+
+                let email = self.userName + "@" + self.domain
+                var error: NSError?
+                let armoredKey = HelperGenerateKey(email, email, new_hashed_mpwd.data(using: .utf8), "x25519", 0, &error)
+               
+                self.newPrivateKey = armoredKey;
                 
                 {
                     
                     // do some async stuff
                     if self.newPrivateKey == nil {
-                        complete(true, LocalString._key_generation_failed_please_try_again, nil)
+                        complete(true, LocalString._key_generation_failed_please_try_again, error)
                     } else {
                         complete(false, nil, nil);
                     }
@@ -390,10 +385,13 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
-        let defaultDomains = ["protonmail.com", "protonmail.ch"]
+        let defaultDomains = ["protonmail.com"]
         let api = GetAvailableDomainsRequest()
         self.apiService.exec(route: api) { (task, response: AvailableDomainsResponse) in
-            if let domains = response.domains {
+            if var domains = response.domains {
+                if let index = domains.firstIndex(of: "protonmail.ch") {
+                    domains.remove(at: index)
+                }
                 complete(domains)
             } else {
                 complete(defaultDomains)

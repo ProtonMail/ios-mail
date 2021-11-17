@@ -235,7 +235,6 @@
 		1CA42EED8B03E7D10ABFFC16869E0BBD /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
 		1CB1DF32831CA69F132E0329820A4451 /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
 		1CB7A91A0142DBCC29FEFDAE4E55611D /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3977AEDAB0825DDAAB126EBAA72A22 /* CountryPickerViewController.swift */; };
-		1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */; };
 		1CD22D56BD03F904999CD5020296C976 /* ContactTypeAddCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */; };
 		1CF54FB5158C1C706999F0AE6E6DA0BE /* Attachment+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941D5FCDD408868B206C57C473DB5BD1 /* Attachment+Info.swift */; };
 		1D030E948CEBA0C23E4A86989618F9DF /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE57A0B78E8BC157323518DCA084E /* ComposeContainerViewController.swift */; };
@@ -631,7 +630,6 @@
 		4C558A3C4C901D07A3DECBD805B51453 /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F5A5B64761ADF908ACA015D0526FA5 /* StorageViewCell.swift */; };
 		4C589FF94AF36E1771987D224277AA93 /* Contact+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D7F020AAC2AEBEFF6879F9FA893803 /* Contact+Extension.swift */; };
 		4C6B9B6F7A7D38B2FA6947B2DB5D05F1 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FAE4478843776BACC8DCA5D194552A /* JKBCrypt.swift */; };
-		4C6BD0BD97A9ACFA6672D3C82BE98603 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		4C93747741D5615EE2042B08F652FF65 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */; };
 		4C95D39687729D420B8BA6168F58D9B5 /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */; };
 		4CABA31AC4D928495019100BB06962F7 /* NSError+Alert+Extenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504A32ED034AFC87C9FF45FDA9B0D481 /* NSError+Alert+Extenion.swift */; };
@@ -1490,6 +1488,7 @@
 		B5C1DDB6FB9E7931A1375EDFE0D85171 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB1C20863F2073B64B8819A059F313F /* Onboarding.swift */; };
 		B5CF2FA3946DD548BD1F6E1D00A5C869 /* ContainableComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED601C211046B41D8C403F11D0C2A3 /* ContainableComposeViewController.swift */; };
 		B5E54E172352C4B4338D56DCAFBF0481 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
+		B5E616740A1A117A40647790B516541A /* PMSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE90A749EF6C527B9039B25AE88672DA /* PMSideMenuController.swift */; };
 		B5F72C16BABB8568E07B33C9E8F686E3 /* Keymaker+SharedKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */; };
 		B638CF7B1514F8C256EF84FD993CFD0A /* MessageBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6E5F8688A4243D81D67C05C1EA3A62 /* MessageBodyViewModel.swift */; };
 		B640CBCAE463E57AF50278259178E715 /* User+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D3D3F17C4B0AD143D49A6ADA612291 /* User+Locked.swift */; };
@@ -1580,6 +1579,7 @@
 		C13EF21802FF383942A0DE1C3A2371F0 /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */; };
 		C148D16BDA586BFC2E6BE3DBBCE20B4A /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
 		C15D7066549156F2DEE9AAB02EA2A2EE /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
+		C1875112FE1DC37F16CE34FBA57B18FC /* PMSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE90A749EF6C527B9039B25AE88672DA /* PMSideMenuController.swift */; };
 		C18E2005641D107221656BA12A9F448E /* WindowsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BCF9A240B28AE531F0FE2AF1DBFDCA /* WindowsCoordinator.swift */; };
 		C1912739064FD48E2D3E9EA9E0AA5933 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5505FE622849219F7CFD671821002B /* AppVersionTests.swift */; };
 		C1C16A3A376D817EBC890C1C0814FF0B /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D2272BFBD1D2F8E751E112D142E6D /* UIAlertController+Extension.swift */; };
@@ -2988,7 +2988,6 @@
 		C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionEmailCell.swift; sourceTree = "<group>"; };
 		C29317A6BB406175EC4E38250EE69C77 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
-		C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenPGP+ExtensionTests.swift"; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
 		C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProvider.swift; sourceTree = "<group>"; };
@@ -3085,6 +3084,7 @@
 		DDBC5EB7C6817D1E2655D2A6F38C1700 /* ContactCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCoordinator.swift; sourceTree = "<group>"; };
 		DDD33FB43FF1E3BBC252FE8EEE22868F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wait.swift; sourceTree = "<group>"; };
+		DE90A749EF6C527B9039B25AE88672DA /* PMSideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMSideMenuController.swift; sourceTree = "<group>"; };
 		DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModelImpl.swift; sourceTree = "<group>"; };
 		DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataService.swift; sourceTree = "<group>"; };
 		DF6E5F8688A4243D81D67C05C1EA3A62 /* MessageBodyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyViewModel.swift; sourceTree = "<group>"; };
@@ -3766,6 +3766,7 @@
 				267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */,
 				85778E8AEBF289AD3818C95FD0AA550F /* MenuUserViewCell.swift */,
 				86CC1C68F121EC52427410D7D6FA0753 /* MenuViewController.swift */,
+				DE90A749EF6C527B9039B25AE88672DA /* PMSideMenuController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -3833,7 +3834,6 @@
 				89FF81C7877846ED3BFEAE525C8470DE /* CryptoTests+Signature.swift */,
 				9FD74B485179D074463EE1A4D22B25EB /* CryptoTests.swift */,
 				EF1689FEA4DCBEAA9588C05672A8773F /* GoOpenPGPTests.swift */,
-				C3880932FE2E8B1B094ED8547F9500C4 /* OpenPGP+ExtensionTests.swift */,
 				7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */,
 				EA7FD349803F8BF6D4FA1C289CA44699 /* OpenPGPTests.swift */,
 				4FE06896ED2E4F0A50FAC94C872D3C93 /* OpenPGPTestsDefine.bundle */,
@@ -5592,7 +5592,7 @@
 				32FD8B84ACCEDCB9E7DCC6348BF41D03 /* Embed App Extensions */,
 				6EE58F9A6C6CBD84F7F37695EBB06601 /* Embed Frameworks */,
 				08D8F8B905057ED3C82192476BF66E6A /* [CP] Copy Pods Resources */,
-				AF3B9CB797432190F595AC1E8540B2F6 /* Run Proton Sentry script */,
+				569FF609BBE9D34567742EB7EF601776 /* Run Proton Sentry script */,
 			);
 			buildRules = (
 			);
@@ -6145,7 +6145,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C6BD0BD97A9ACFA6672D3C82BE98603 /* (null) in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6322,6 +6321,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		569FF609BBE9D34567742EB7EF601776 /* Run Proton Sentry script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Proton Sentry script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "#if which sentry-cli >/dev/null; then\n#source ~/.bashrc\n#ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
+		};
 		6D5C828D5F1C05690725F3B5335631C3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6425,24 +6442,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		AF3B9CB797432190F595AC1E8540B2F6 /* Run Proton Sentry script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Proton Sentry script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "#if which sentry-cli >/dev/null; then\n#source ~/.bashrc\n#ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
 		};
 		B067CAB9F3717BF234AE571C16B79A46 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6703,7 +6702,6 @@
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
 				D101EF0D5DEB2C8654CA0A1D13956021 /* MigrateTests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,
-				1CCD748C2CC41A57A5374CA93FC6560B /* OpenPGP+ExtensionTests.swift in Sources */,
 				2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */,
 				CE273390466B4BB5E34FF7C7A781E7AF /* OpenPGPTests.swift in Sources */,
 				90130E07003C668A0681410D0753D57A /* PMNIBirthday+FormattedBirthdayTests.swift in Sources */,
@@ -7144,6 +7142,7 @@
 				819F6BE796D91EBD4FBCE0CBA9184944 /* PMDocumentPickerViewController.swift in Sources */,
 				8A99489069F5835CF7B0E2AFA9D39007 /* PMImagePickerController.swift in Sources */,
 				67C2E60EE0AF36F0488E40BFE5F2C8F3 /* PMNIBirthday+FormattedBirthday.swift in Sources */,
+				B5E616740A1A117A40647790B516541A /* PMSideMenuController.swift in Sources */,
 				6E1200F91B4E11BC5955542B532E0FF8 /* PMView.swift in Sources */,
 				EDA34469508C3DCC374989DA1E621103 /* PMWebView.swift in Sources */,
 				36AE3CE81ADCD340524A24486FC29E29 /* Part.swift in Sources */,
@@ -7721,6 +7720,7 @@
 				D46FAC5275012CEA2B686470892376AD /* PMDocumentPickerViewController.swift in Sources */,
 				6349F11C87EEEE7BDF517E6CC6A131B1 /* PMImagePickerController.swift in Sources */,
 				E594A340920FC26D6B8BD342D744041E /* PMNIBirthday+FormattedBirthday.swift in Sources */,
+				C1875112FE1DC37F16CE34FBA57B18FC /* PMSideMenuController.swift in Sources */,
 				55EB2659F5F57DFEEB4BACF5EAF166E3 /* PMView.swift in Sources */,
 				0AD99F38855CD71A83F1626597D6C604 /* PMWebView.swift in Sources */,
 				764E2C83C9348ACA7169C7E4CCB81CDF /* Part.swift in Sources */,
@@ -8832,7 +8832,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -8896,7 +8896,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -8926,7 +8926,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8960,7 +8960,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8995,7 +8995,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9028,7 +9028,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
@@ -9064,7 +9064,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9103,7 +9103,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9206,7 +9206,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;
@@ -9246,7 +9246,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -9340,7 +9340,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9370,7 +9370,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9397,7 +9397,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9429,7 +9429,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Siri/InfoDev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
@@ -9472,7 +9472,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9534,7 +9534,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9575,7 +9575,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9618,7 +9618,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9683,7 +9683,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9719,7 +9719,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9752,7 +9752,7 @@
 				INFOPLIST_FILE = Siri/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
@@ -9782,7 +9782,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9846,7 +9846,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -9880,7 +9880,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail;
@@ -9923,7 +9923,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushServiceDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9963,7 +9963,7 @@
 				);
 				INFOPLIST_FILE = "${SRCROOT}/Share/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9993,7 +9993,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "${SRCROOT}/Push/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.mail.push;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10114,7 +10114,7 @@
 					"\"${PODS_ROOT}/../../OpenPGP/libs\"",
 					"\"${PODS_ROOT}/OpenSSL/lib\"",
 				);
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.PushService;
@@ -10145,7 +10145,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = Push/InfoDev.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.PushDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -10182,7 +10182,7 @@
 				INFOPLIST_FILE = "${SRCROOT}/ProtonMail/Supporting Files/InfoDev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail;

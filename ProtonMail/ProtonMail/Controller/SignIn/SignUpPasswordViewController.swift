@@ -22,6 +22,7 @@
 
 
 import UIKit
+import MBProgressHUD
 
 class SignUpPasswordViewController: UIViewController {
     
@@ -50,6 +51,8 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var noteTwoLabel: UILabel!
     
     fileprivate let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
+    fileprivate let kSegueToSignUpVerification = "sign_up_human_verify_segue"
+
     
     var viewModel : SignupViewModel!
     
@@ -113,6 +116,9 @@ class SignUpPasswordViewController: UIViewController {
         if segue.identifier == kSegueToEncryptionSetup {
             let viewController = segue.destination as! EncryptionSetupViewController
             viewController.viewModel = self.viewModel
+        } else if segue.identifier == kSegueToSignUpVerification {
+            let viewController = segue.destination as! HumanCheckMenuViewController
+            viewController.viewModel = self.viewModel
         }
     }
 
@@ -137,11 +143,35 @@ class SignUpPasswordViewController: UIViewController {
         if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
             //create user & login
             viewModel.setSinglePassword(login_pwd)
-            self.performSegue(withIdentifier: kSegueToEncryptionSetup, sender: self)
+
+            self.generateKey()
         } else {
             let alert = LocalString._signup_pwd_doesnt_match.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func generateKey() {
+        MBProgressHUD.showAdded(to: view, animated: true)
+        self.viewModel.generateKey { (_, _, error) -> Void in
+            if error == nil {
+                self.viewModel.fetchDirect { (directs) -> Void in
+                    MBProgressHUD.hide(for: self.view, animated: true)
+                    if directs.count > 0 {
+                        self.performSegue(withIdentifier: self.kSegueToSignUpVerification, sender: self)
+                    } else {
+                        let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
+                        alert.addOKAction()
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            } else {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let alert = error!.alertController(LocalString._key_generation_failed)
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     
