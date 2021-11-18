@@ -33,8 +33,12 @@ fileprivate struct MessagePath {
 //TODO :: all the request post put ... all could abstract a body layer, after change the request only need the url and request object.
 /// Messages extension
 extension APIService {
-
-    func GET( _ api : Request, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
+    func GET( _ api : Request, authCredential: AuthCredential? = nil, priority: String? = nil, completion: CompletionBlock?) {
+        var headers = api.header
+        headers[HTTPHeader.apiVersion] = api.version
+        if priority != nil {
+            headers["Priority"] = priority
+        }
         self.request(method: .get,
                      path: api.path,
                      parameters: api.parameters,
@@ -45,12 +49,16 @@ extension APIService {
                      completion: completion)
     }
 
-    func messageDetail(messageID: String, completion: @escaping CompletionBlock) {
+    func messageDetail(messageID: String, priority: String? = nil, completion: @escaping CompletionBlock) {
         let path = MessagePath.base + "/\(messageID)"
+        var headers: [String:Any] = [:]
+        if priority != nil {
+            headers["Priority"] = priority
+        }
         self.request(method: .get,
                      path: path,
                      parameters: nil,
-                     headers: .empty,
+                     headers: headers,
                      authenticated: true,
                      autoRetry: true,
                      customAuthCredential: nil,
