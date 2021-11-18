@@ -37,9 +37,6 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.createTestSearchIndexDB()
         let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
         print("Test database created: \(doesTestIndexExist)")
-        //do {
-        //    sleep(2)    //wait for 2 seconds
-        //}
 
         //build the cache for user 'test'
         self.buildTestCache()
@@ -63,11 +60,10 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
         let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
         let testMessage2: ESMessage = ESMessage(id: self.testMessageID, order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
-        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello")
-        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage2, cleanedBody: "hello2")
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
+        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage2, cleanedBody: "hello2", userID: self.testUserID)
         EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage, encryptedContent, false)
         EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage2, encryptedContent2, false)
-        
     }
     
     func deleteTestSearchIndexDB() throws {
@@ -85,9 +81,8 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     func buildTestCache(){
         let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
-        var error: NSError?
-        let testKey = CryptoRandomToken(32, &error)
-        let cipher = EncryptedsearchAESGCMCipher(testKey)
+        let testKey: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
         print("Build cache for test user! = start")
         self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
         print("Build cache for test user! = finish")
@@ -102,9 +97,8 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let dbname = EncryptedSearchIndexService.shared.getSearchIndexName(self.testUserID)
         print("path to db: \(EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbname))")
         let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
-        var error: NSError?
-        let testKey = CryptoRandomToken(32, &error)
-        let cipher = EncryptedsearchAESGCMCipher(testKey)
+        let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
 
         let result: EncryptedsearchCache = sut(self.testUserID, dbParams, cipher!)
 
