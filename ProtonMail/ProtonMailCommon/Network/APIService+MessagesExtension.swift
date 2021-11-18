@@ -35,7 +35,6 @@ fileprivate struct MessagePath {
 extension APIService {
     func GET( _ api : Request, authCredential: AuthCredential? = nil, priority: String? = nil, completion: CompletionBlock?) {
         var headers = api.header
-        headers[HTTPHeader.apiVersion] = api.version
         if priority != nil {
             headers["priority"] = priority
         }
