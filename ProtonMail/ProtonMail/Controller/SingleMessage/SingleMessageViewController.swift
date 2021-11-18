@@ -203,10 +203,12 @@ extension SingleMessageViewController {
     @objc
     func moreButtonTapped() {
         guard let navigationVC = self.navigationController else { return }
+        let isBodyDecryptable = viewModel.contentViewModel.messageBodyViewModel.isBodyDecryptable
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,
-                                                                   isStarred: viewModel.message.starred)
+                                                                   isStarred: viewModel.message.starred,
+                                                                   isBodyDecryptable: isBodyDecryptable)
         actionSheetPresenter.present(on: navigationVC,
                                      listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in

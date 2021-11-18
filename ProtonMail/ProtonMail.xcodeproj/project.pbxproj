@@ -2098,6 +2098,7 @@
 		CA824D3E15BACF8AC0CA1AE936B906FE /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		CA8D0FB0D8CAB31B89C9D7E7572781E8 /* MailListSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6721DAC239746B07DE95325E0ED196C /* MailListSheetAction.swift */; };
 		CA8FE5E036FABEEDA74DEB1FBEF81A45 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2125977F28202546D7525E9847C704 /* User.swift */; };
+		CA9B6FD8BE1ABD1A9BCB94AA35161DBF /* MessageViewActionSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */; };
 		CAAED218FE946433880EBCDCF71970A4 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DF826768B937E9DCA34E60159FA9C9 /* SettingsCoordinator.swift */; };
 		CAB9F84C08B17A9BB80FE0D30CB27638 /* UnsubscribeBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38CEE08F3ECE857C60015FBD1899F65 /* UnsubscribeBanner.swift */; };
 		CAC0CA49C8433FED4D25CD0E905E8FEF /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF7B5EADC1B632524F1B8C23C90E9A /* ContactGroupVO.swift */; };
@@ -3703,6 +3704,7 @@
 		ADE124BE2D5AF5FCDA78619AB220634F /* ConversationUpdateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationUpdateType.swift; sourceTree = "<group>"; };
 		AE1449C89BAF998E29518AF2A143C1EB /* KeyTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTestData.swift; sourceTree = "<group>"; };
 		AEED05C7EADA3DD772CA5DF3FDEC0155 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
+		AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessageViewActionSheetViewModelTests.swift; path = ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentRobot.swift; sourceTree = "<group>"; };
 		AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModelImpl.swift; sourceTree = "<group>"; };
 		AFD5F00BA4D8B92C42BE8672F2EBF7B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
@@ -5616,6 +5618,7 @@
 				4A52E383C5F5D14E597AE25EB30AAD85 /* CacheServiceTests.swift */,
 				85D8F3A8E87FFF2FED8F53518DEBA3D2 /* ContactPGPTypeHelperTests.swift */,
 				53F3C9F33AF248655C3788C468DE6614 /* ConversationStoredSizeHelperTests.swift */,
+				AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */,
 			);
 			path = CacheService;
 			sourceTree = "<group>";
@@ -8527,6 +8530,7 @@
 				36C52FBA006F9CDEF26FC2CEC0973C28 /* MessageActionCodableTests.swift in Sources */,
 				2C34C8036EE9CEDFB3E2AA8FA2F0AF02 /* MessageDataServiceTests.swift in Sources */,
 				37FD7D9D4577F1807C37DFD7A874320F /* MessageTestData.swift in Sources */,
+				CA9B6FD8BE1ABD1A9BCB94AA35161DBF /* MessageViewActionSheetViewModelTests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,
 				6AA8029DD3BDD60699A88A5C2DBE0D44 /* MockBackupExcluder.swift in Sources */,
 				24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */,
