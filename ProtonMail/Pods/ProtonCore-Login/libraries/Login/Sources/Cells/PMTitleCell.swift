@@ -42,7 +42,7 @@ final class PMTitleCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        descriptionLabel.textColor = UIColorManager.TextWeak
+        descriptionLabel.textColor = ColorProvider.TextWeak
 
         selectionStyle = .none
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)

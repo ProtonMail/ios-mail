@@ -172,6 +172,7 @@ extension Analytics {
         case usersRestoreFailed = "Users Restore Failed"
         case coredataIssue = "CoreData Issue"
         case decryptedMessageBodyFailed = "Decrypted Message Body Failed"
+        case paymentGetProductsListError = "Payment get products list error"
     }
     
     struct Reason {

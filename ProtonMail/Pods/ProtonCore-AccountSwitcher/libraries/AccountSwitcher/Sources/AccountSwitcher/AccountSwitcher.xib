@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,8 +16,11 @@
                 <outlet property="bgView" destination="ByU-wj-hcA" id="hZ8-oM-On2"/>
                 <outlet property="containerView" destination="tkZ-au-oti" id="Knl-rx-OhD"/>
                 <outlet property="containerViewTop" destination="oDt-SK-gVW" id="QLw-VB-hGt"/>
+                <outlet property="manageAccountIcon" destination="HNU-GI-Bcf" id="hyA-30-5Zv"/>
                 <outlet property="manageAccountLabel" destination="MbK-iw-Y2q" id="OFv-aL-YM4"/>
                 <outlet property="manageView" destination="XW5-cK-IL9" id="MAO-fW-BKF"/>
+                <outlet property="primaryView" destination="ikF-Cc-Mtz" id="oMe-e7-jVz"/>
+                <outlet property="primaryViewSeparator" destination="ZSJ-Mm-huo" id="bjQ-36-yud"/>
                 <outlet property="primaryViewTop" destination="NIh-xs-VQP" id="iaw-0f-UUS"/>
                 <outlet property="shortUserName" destination="cL9-R6-7Wh" id="yK6-2G-SXp"/>
                 <outlet property="shortUserNameView" destination="Kcf-50-6Qf" id="cs4-kN-D25"/>
@@ -46,17 +49,18 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZSJ-Mm-huo">
                             <rect key="frame" x="0.0" y="112" width="398" height="1"/>
-                            <color key="backgroundColor" red="0.91764705882352937" green="0.92549019607843142" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="BackgroundNorm"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="wm8-QZ-WAF"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PK6-yh-gfd">
                             <rect key="frame" x="0.0" y="113" width="398" height="128"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="BackgroundNorm"/>
                             <constraints>
                                 <constraint firstAttribute="height" priority="999" constant="128" id="ULy-eU-Ptc"/>
                             </constraints>
+                            <color key="separatorColor" name="InteractionWeak"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="phy-R2-OXs"/>
                                 <outlet property="delegate" destination="-1" id="odm-KG-8T6"/>
@@ -67,7 +71,7 @@
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_settings" translatesAutoresizingMaskIntoConstraints="NO" id="HNU-GI-Bcf">
                                     <rect key="frame" x="20" y="12" width="24" height="24"/>
-                                    <color key="tintColor" red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="tintColor" name="IconNorm"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="XtH-WW-0D6"/>
                                         <constraint firstAttribute="height" constant="24" id="f5b-l9-Dyf"/>
@@ -75,12 +79,13 @@
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbK-iw-Y2q">
                                     <rect key="frame" x="60" y="15" width="121.5" height="18"/>
+                                    <color key="backgroundColor" name="BackgroundNorm"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" name="TextNorm"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" name="BackgroundNorm"/>
                             <constraints>
                                 <constraint firstItem="HNU-GI-Bcf" firstAttribute="leading" secondItem="XW5-cK-IL9" secondAttribute="leading" constant="20" id="6Zs-ih-UvO"/>
                                 <constraint firstItem="HNU-GI-Bcf" firstAttribute="centerY" secondItem="XW5-cK-IL9" secondAttribute="centerY" id="akE-CL-Lgi"/>
@@ -98,7 +103,7 @@
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="XeE-Qa-dsc"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" name="TextNorm"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcf-50-6Qf" userLabel="shortNameView">
@@ -106,13 +111,13 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cL9-R6-7Wh">
                                             <rect key="frame" x="2" y="0.0" width="24" height="28"/>
-                                            <color key="backgroundColor" red="0.396078431372549" green="0.49411764705882355" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" name="BrandNorm"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" name="SidebarTextNorm"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.396078431372549" green="0.49411764705882355" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="BrandNorm"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="cL9-R6-7Wh" secondAttribute="bottom" id="4j0-L4-ct9"/>
                                         <constraint firstItem="cL9-R6-7Wh" firstAttribute="top" secondItem="Kcf-50-6Qf" secondAttribute="top" id="Ltz-Eb-des"/>
@@ -125,11 +130,11 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDR-ny-0mb">
                                     <rect key="frame" x="60" y="32" width="330" height="16"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <color key="textColor" red="0.44705882352941173" green="0.46274509803921571" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" name="TextWeak"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="BackgroundNorm"/>
                             <constraints>
                                 <constraint firstItem="Kcf-50-6Qf" firstAttribute="centerY" secondItem="ikF-Cc-Mtz" secondAttribute="centerY" id="0FH-1c-RO5"/>
                                 <constraint firstItem="Kcf-50-6Qf" firstAttribute="leading" secondItem="ikF-Cc-Mtz" secondAttribute="leading" constant="18" id="6m2-Y0-CIa"/>
@@ -148,11 +153,11 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjI-X4-Ter">
                                     <rect key="frame" x="163" y="14" width="72" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
+                                    <color key="textColor" name="TextNorm"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="BackgroundNorm"/>
                             <constraints>
                                 <constraint firstItem="CjI-X4-Ter" firstAttribute="centerX" secondItem="9VO-kw-Rv6" secondAttribute="centerX" id="1Ry-bA-3YW"/>
                                 <constraint firstAttribute="height" constant="40" id="Obj-Ir-Rnw"/>
@@ -160,7 +165,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" name="BackgroundNorm"/>
                     <constraints>
                         <constraint firstItem="ikF-Cc-Mtz" firstAttribute="leading" secondItem="tkZ-au-oti" secondAttribute="leading" id="05r-kN-uMW"/>
                         <constraint firstItem="XW5-cK-IL9" firstAttribute="leading" secondItem="tkZ-au-oti" secondAttribute="leading" id="Equ-Pi-fYm"/>
@@ -200,8 +205,26 @@
     </objects>
     <resources>
         <image name="menu_settings" width="24" height="24"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="BackgroundNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BrandNorm">
+            <color red="0.39599999785423279" green="0.49399998784065247" blue="0.89399999380111694" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="IconNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="InteractionWeak">
+            <color red="0.9179999828338623" green="0.92500001192092896" blue="0.94499999284744263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SidebarTextNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextWeak">
+            <color red="0.44699999690055847" green="0.46299999952316284" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

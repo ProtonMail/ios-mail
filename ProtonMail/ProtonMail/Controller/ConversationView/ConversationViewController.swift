@@ -109,7 +109,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             self.cellTapped(messageId: targetID)
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.dismissActionSheet()
@@ -201,7 +201,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
             Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
-        starBarButton.tintColor = starred ? UIColorManager.NotificationWarning : UIColorManager.IconWeak
+        starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
     }
 
     private func setUpTableView() {

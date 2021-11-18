@@ -120,7 +120,7 @@ class ExpandedHeaderView: UIView {
 private enum SubviewsFactory {
     static var container: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.InteractionWeak
         view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view

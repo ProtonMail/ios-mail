@@ -41,7 +41,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.isScrollEnabled = false
         self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.separatorColor = UIColorManager.InteractionWeak
+        self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in

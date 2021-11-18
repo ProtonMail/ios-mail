@@ -41,7 +41,7 @@ public final class PMCellSectionView: UITableViewHeaderFooterView {
     override public func awakeFromNib() {
         super.awakeFromNib()
 
-        titleLabel.textColor = UIColorManager.TextWeak
+        titleLabel.textColor = ColorProvider.TextWeak
         contentView.backgroundColor = UIColor.dynamic(light: .white, dark: .black)
     }
 }

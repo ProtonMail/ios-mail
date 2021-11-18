@@ -25,6 +25,7 @@ import ProtonCore_Doh
 import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
+import UIKit
 
 struct SignInCoordinatorEnvironment {
     typealias LoginCreationClosure = (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
@@ -67,16 +68,26 @@ extension SignInCoordinatorEnvironment {
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in
-                        LoginAndSignup(appName: appName,
-                                       doh: doh,
-                                       apiServiceDelegate: apiServiceDelegate,
-                                       forceUpgradeDelegate: forceUpgradeDelegate,
-                                       minimumAccountType: minimumAccountType,
-                                       signupMode: signupMode,
-                                       signupPasswordRestrictions: signupPasswordRestrictions,
-                                       isCloseButtonAvailable: isCloseButtonAvailable,
-                                       planTypes: .signupPlansDifferentForTestflightAndProd)
-                     },
+            let signup: SignupAvailability = .available(parameters: .init(mode: signupMode, passwordRestrictions: .atLeastEightCharactersLong, summaryScreenVariant: SummaryScreenVariant.mail(SummaryStartButtonText("Start using Proton Mail"))))
+            let payment: PaymentsAvailability
+            if UIApplication.isTestflightBeta {
+                payment = .notAvailable
+            } else {
+                payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs,
+                                                       reportBugAlertHandler: { receipt in
+                    let link = DeepLink(.toWebSupportForm, sender: nil)
+                    NotificationCenter.default.post(name: .switchView, object: link)
+                }))
+            }
+            return LoginAndSignup(appName: appName,
+                                  doh: doh,
+                                  apiServiceDelegate: apiServiceDelegate,
+                                  forceUpgradeDelegate: forceUpgradeDelegate,
+                                  minimumAccountType: minimumAccountType,
+                                  isCloseButtonAvailable: isCloseButtonAvailable,
+                                  paymentsAvailability: payment,
+                                  signupAvailability: signup)
+        },
                      shouldShowAlertOnError: true
         )
     }

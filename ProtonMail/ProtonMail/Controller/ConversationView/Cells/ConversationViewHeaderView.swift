@@ -14,7 +14,7 @@ class ConversationViewHeaderView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
     }
@@ -66,13 +66,13 @@ private enum SubviewsFactory {
 
     static var separator: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
+        view.backgroundColor = ColorProvider.Shade20
         return view
     }
 
     static var topView: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         return view
     }
 

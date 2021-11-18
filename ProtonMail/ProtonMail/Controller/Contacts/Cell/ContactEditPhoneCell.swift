@@ -36,7 +36,7 @@ final class ContactEditPhoneCell: UITableViewCell {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._phone_number
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func layoutSubviews() {

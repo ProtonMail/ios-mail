@@ -191,8 +191,8 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     // Some options need to pass to `CGImageSourceCopyPropertiesAtIndex` before `CGImageSourceCreateImageAtIndex`, or ImageIO will ignore them because they parse once :)
     // Parse the image properties
     NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, index, (__bridge CFDictionaryRef)options);
-    NSUInteger pixelWidth = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] unsignedIntegerValue];
-    NSUInteger pixelHeight = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] unsignedIntegerValue];
+    CGFloat pixelWidth = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] doubleValue];
+    CGFloat pixelHeight = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] doubleValue];
     CGImagePropertyOrientation exifOrientation = (CGImagePropertyOrientation)[properties[(__bridge NSString *)kCGImagePropertyOrientation] unsignedIntegerValue];
     if (!exifOrientation) {
         exifOrientation = kCGImagePropertyOrientationUp;
@@ -437,7 +437,14 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         if (scaleFactor != nil) {
             scale = MAX([scaleFactor doubleValue], 1);
         }
-        image = [self.class createFrameAtIndex:0 source:_imageSource scale:scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize options:nil];
+        CGImageSourceRef imageSource = _imageSource;
+        if (imageSource != NULL) {
+            CFRetain(imageSource);
+        } else {
+            return nil;
+        }
+        image = [self.class createFrameAtIndex:0 source:imageSource scale:scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize options:nil];
+        CFRelease(imageSource);
         if (image) {
             image.sd_imageFormat = self.class.imageFormat;
         }
@@ -496,8 +503,8 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         maxPixelSize = maxPixelSizeValue.CGSizeValue;
 #endif
     }
-    NSUInteger pixelWidth = CGImageGetWidth(imageRef);
-    NSUInteger pixelHeight = CGImageGetHeight(imageRef);
+    CGFloat pixelWidth = (CGFloat)CGImageGetWidth(imageRef);
+    CGFloat pixelHeight = (CGFloat)CGImageGetHeight(imageRef);
     CGFloat finalPixelSize = 0;
     if (maxPixelSize.width > 0 && maxPixelSize.height > 0 && pixelWidth > maxPixelSize.width && pixelHeight > maxPixelSize.height) {
         CGFloat pixelRatio = pixelWidth / pixelHeight;
@@ -650,7 +657,14 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         (__bridge NSString *)kCGImageSourceShouldCacheImmediately : @(YES),
         (__bridge NSString *)kCGImageSourceShouldCache : @(YES) // Always cache to reduce CPU usage
     };
-    UIImage *image = [self.class createFrameAtIndex:index source:_imageSource scale:_scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize options:options];
+    CGImageSourceRef imageSource = _imageSource;
+    if (imageSource != NULL) {
+        CFRetain(imageSource);
+    } else {
+        return nil;
+    }
+    UIImage *image = [self.class createFrameAtIndex:index source:imageSource scale:_scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize options:options];
+    CFRelease(imageSource);
     if (!image) {
         return nil;
     }

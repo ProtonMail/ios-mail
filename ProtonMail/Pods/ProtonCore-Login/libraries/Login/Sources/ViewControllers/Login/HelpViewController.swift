@@ -54,11 +54,11 @@ final class HelpViewController: UIViewController, AccessibleView {
     }
 
     private func setupUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
-        titleLabel.textColor = UIColorManager.TextNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
+        titleLabel.textColor = ColorProvider.TextNorm
         closeButton.setImage(.closeImage, for: .normal)
-        closeButton.tintColor = UIColorManager.TextNorm
+        closeButton.tintColor = ColorProvider.TextNorm
         titleLabel.text = CoreString._ls_help_screen_title
     }
 

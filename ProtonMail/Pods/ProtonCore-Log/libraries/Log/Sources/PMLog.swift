@@ -50,7 +50,7 @@ public class PMLog {
 
     // MARK: - Properties
 
-    public static let logsDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
+    public static var logsDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
 
     private static let maxLogLines = 2000
 

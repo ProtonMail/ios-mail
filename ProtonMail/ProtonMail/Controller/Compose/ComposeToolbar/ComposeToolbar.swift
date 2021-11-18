@@ -114,18 +114,18 @@ extension ComposeToolbar {
 
     private func setup() {
         addTopBorder()
-        self.contentView.backgroundColor = UIColorManager.BackgroundNorm
-        self.lockButton.tintColor = UIColorManager.IconNorm
-        self.hourButton.tintColor = UIColorManager.IconNorm
-        self.attachmentButton.tintColor = UIColorManager.IconNorm
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        self.lockButton.tintColor = ColorProvider.IconNorm
+        self.hourButton.tintColor = ColorProvider.IconNorm
+        self.attachmentButton.tintColor = ColorProvider.IconNorm
         self.attachmentNumView.backgroundColor = .clear
         self.attachmentNumLabel.textColor = .white
-        self.numContainer.backgroundColor = UIColorManager.InteractionNorm
+        self.numContainer.backgroundColor = ColorProvider.InteractionNorm
     }
 
     private func addTopBorder() {
         let view = UIView()
-        view.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.InteractionWeak
         addSubview(view)
 
         [

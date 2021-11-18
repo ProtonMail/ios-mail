@@ -68,7 +68,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     }()
     private lazy var separatorView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
+        view.backgroundColor = ColorProvider.Shade20
         return view
     }()
 
@@ -149,7 +149,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
-        self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
+        self.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
         self.navigationController?.navigationBar.isTranslucent = false
 
         self.setupSendButton()
@@ -261,14 +261,14 @@ extension ComposeContainerViewController {
             return
         }
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
-        let tintColor = isEnabled ? UIColorManager.IconNorm : UIColorManager.IconDisabled
+        let tintColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
         self.sendButton = icon.toUIBarButtonItem(
             target: self,
             action: isEnabled ? #selector(sendAction) : nil,
             style: .plain,
             tintColor: tintColor,
             squareSize: 21.74,
-            backgroundColor: UIColorManager.BackgroundNorm,
+            backgroundColor: ColorProvider.BackgroundNorm,
             backgroundSquareSize: 40,
             isRound: true,
             imageInsets: UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)

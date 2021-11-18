@@ -187,6 +187,8 @@
 
 - (void)clearStructuredName;
 
+- (void)purifyGroups;
+
 + (nullable PMNIVCard *)createInstance;
 
 @end

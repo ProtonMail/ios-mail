@@ -36,8 +36,8 @@ final class ContactEditFieldCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
-        self.valueField.tintColor = UIColorManager.TextHint
-        backgroundColor = UIColorManager.BackgroundNorm
+        self.valueField.tintColor = ColorProvider.TextHint
+        backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func layoutSubviews() {

@@ -76,7 +76,7 @@ private enum SubviewsFactory {
     static var moreImageView: UIImageView {
         let imageView = UIImageView()
         imageView.image = Asset.dotsButtonIcon.image
-        imageView.tintColor = UIColorManager.IconWeak
+        imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 }

@@ -159,7 +159,7 @@ extension SearchViewController {
     }
     
     private func setupActivityIndicator() {
-        activityIndicator.color = UIColorManager.BrandNorm
+        activityIndicator.color = ColorProvider.BrandNorm
         activityIndicator.isHidden = true
         activityIndicator.hidesWhenStopped = true
     }
@@ -237,7 +237,7 @@ extension SearchViewController {
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
-                                              itemColor: UIColorManager.TextInverted,
+                                              itemColor: ColorProvider.TextInverted,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
@@ -249,10 +249,10 @@ extension SearchViewController {
         }
         let separator = PMActionBarItem(width: 1,
                                         verticalPadding: 6,
-                                        color: UIColorManager.FloatyText)
+                                        color: ColorProvider.FloatyText)
         actionItems.insert(separator, at: 1)
         self.actionBar = PMActionBar(items: actionItems,
-                                         backgroundColor: UIColorManager.FloatyBackground,
+                                         backgroundColor: ColorProvider.FloatyBackground,
                                          floatingHeight: 42.0,
                                          width: .fit,
                                          height: 48.0)
@@ -359,7 +359,7 @@ extension SearchViewController {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
-        let banner = PMBanner(message: title, style: PMBannerStyle.info, dismissDuration: 3)
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, dismissDuration: 3)
         banner.show(at: .bottom, on: self)
     }
 

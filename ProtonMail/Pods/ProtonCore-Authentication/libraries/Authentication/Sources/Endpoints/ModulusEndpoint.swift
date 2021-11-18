@@ -23,7 +23,7 @@ import Foundation
 import ProtonCore_Networking
 
 extension AuthService {
-    public struct ModulusEndpointResponse: Codable {
+    public struct ModulusEndpointResponse: Codable, Equatable {
         public let modulus: String
         public let modulusID: String
         public let code: Int

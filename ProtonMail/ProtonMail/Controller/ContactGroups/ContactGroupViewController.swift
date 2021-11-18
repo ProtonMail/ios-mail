@@ -37,6 +37,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private var viewModel: ContactGroupsViewModel!
     private var queryString = ""
+    private var paymentsUI: PaymentsUI?
     
     // long press related vars
     private var isEditingState: Bool = false
@@ -94,8 +95,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         generateAccessibilityIdentifiers()
 
         emptyBackButtonTitleForNextView()
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,9 +114,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
     
     private func prepareFetchedResultsController() {
@@ -124,12 +126,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     private func prepareRefreshController() {
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColorManager.BackgroundNorm
+        refreshControl.backgroundColor = ColorProvider.BackgroundNorm
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
         tableView.addSubview(self.refreshControl)
-        refreshControl.tintColor = UIColorManager.InteractionNorm
+        refreshControl.tintColor = ColorProvider.InteractionNorm
         refreshControl.tintColorDidChange()
     }
     
@@ -325,9 +327,9 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = UIColorManager.TextNorm
-        self.searchController.searchBar.barTintColor = UIColorManager.TextHint
-        self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
+        self.searchController.searchBar.tintColor = ColorProvider.TextNorm
+        self.searchController.searchBar.barTintColor = ColorProvider.TextHint
+        self.searchController.searchBar.backgroundColor = ColorProvider.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true

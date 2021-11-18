@@ -23,11 +23,21 @@
 
 import Foundation
 import ProtonCore_CoreTranslation
+import ProtonCore_Log
 
 public struct ResponseError: Error, Equatable {
 
+    /// This is the http status code, like 200, 404, 500 etc. It will be nil if there was no http response,
+    /// for example in case of timeout
     public let httpCode: Int?
+    /// This is the code from the response body sent by our backend, like 1000, 1001. It will be nil if:
+    /// * there is not response,
+    /// * the response has no body
+    /// * the response body is not a JSON
+    /// * there is no "Code" key in the response body JSON
+    /// * the value for "Code" key in the response body JSON is not an integer
     public let responseCode: Int?
+    
     public let userFacingMessage: String?
     public let underlyingError: NSError?
 
@@ -66,8 +76,13 @@ public extension ResponseType {
         to: T.Type, response: URLResponse?, responseDict: [String: Any]?, error: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
         let apiRes = T()
+        
+        if let httpResponse = response as? HTTPURLResponse, let url = httpResponse.url {
+            PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
+        }
 
         if let error = error {
+            PMLog.debug("\(error)")
             let networkingError = apiRes.parseTaskError(response: response, taskError: error, responseDict: responseDict)
             return (apiRes, networkingError)
         }
@@ -98,9 +113,9 @@ public extension ResponseType {
         responseCode = responseCode(from: responseDict)
         let userFacingMessage = responseErrorMessage(from: responseDict)
         let networkingError = ResponseError(httpCode: httpCode,
-                                              responseCode: responseCode,
-                                              userFacingMessage: userFacingMessage,
-                                              underlyingError: taskError)
+                                            responseCode: responseCode,
+                                            userFacingMessage: userFacingMessage,
+                                            underlyingError: taskError)
         error = networkingError
         return networkingError
     }
@@ -186,7 +201,9 @@ public extension Error {
     }
 
     var messageForTheUser: String {
-        return localizedDescription
+        (self as? ResponseError)?.userFacingMessage
+            ?? (self as? ResponseError)?.localizedDescription
+            ?? self.localizedDescription
     }
     
     var isNetworkIssueError: Bool {

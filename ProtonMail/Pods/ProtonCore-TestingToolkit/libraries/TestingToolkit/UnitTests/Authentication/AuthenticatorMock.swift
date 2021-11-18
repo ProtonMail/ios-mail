@@ -25,14 +25,19 @@ import ProtonCore_APIClient
 import ProtonCore_Authentication
 import ProtonCore_DataModel
 import ProtonCore_Networking
+#if canImport(Crypto_VPN)
+import Crypto_VPN
+#elseif canImport(Crypto)
+import Crypto
+#endif
 
 public struct AuthenticatorMock: AuthenticatorInterface {
 
     public init() {}
 
     @FuncStub(Self.authenticate) public var authenticateStub
-    public func authenticate(username: String, password: String, completion: @escaping Authenticator.Completion) {
-        authenticateStub(username, password, completion)
+    public func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
+        authenticateStub(username, password, srpAuth, completion)
     }
 
     @FuncStub(Self.confirm2FA) public var confirm2FAStub

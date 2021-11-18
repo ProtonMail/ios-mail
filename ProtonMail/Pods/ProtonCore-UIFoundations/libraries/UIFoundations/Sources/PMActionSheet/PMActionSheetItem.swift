@@ -112,8 +112,8 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     /// - Parameters:
     ///   - title: Title of item
     ///   - icon: Icon of item
-    ///   - textColor: Color of text, default value is `AdaptiveTextColors._N5`
-    ///   - iconColor: Color of icon, default value is `AdaptiveTextColors._N5`
+    ///   - textColor: Color of text, default value is `ColorProvider.TextNorm`
+    ///   - iconColor: Color of icon, default value is `ColorProvider.TextNorm`
     ///   - isOn: A Boolean value that determines if the item is selected
     ///   - alignment: Alignment of title
     ///   - hasSeparator: Does the cell have bottom separator?
@@ -124,8 +124,8 @@ public struct PMActionSheetPlainItem: PMActionSheetItem {
     public init(title: String?, icon: UIImage?, textColor: UIColor? = nil, iconColor: UIColor? = nil, isOn: Bool = false, markType: MarkType? = nil, alignment: NSTextAlignment = .left, hasSeparator: Bool = true, userInfo: [String: Any]? = nil, indentationLevel: Int = 0, indentationWidth: CGFloat = 24, handler: ((PMActionSheetPlainItem) -> Void)?) {
         self.title = title
         self.icon = icon
-        self.textColor = textColor ?? AdaptiveTextColors._N5
-        self.iconColor = iconColor ?? AdaptiveTextColors._N5
+        self.textColor = textColor ?? ColorProvider.TextNorm
+        self.iconColor = iconColor ?? ColorProvider.TextNorm
         self.markType = isOn ? .checkMark : .none
         self.isOn = isOn
         if let type = markType {
@@ -156,8 +156,8 @@ public struct PMActionSheetToggleItem: PMActionSheetItem {
     /// - Parameters:
     ///   - title: Title of item
     ///   - icon: Icon of item
-    ///   - textColor: Color of text, default value is `AdaptiveTextColors._N5`
-    ///   - iconColor: Color of icon, default value is `AdaptiveTextColors._N5`
+    ///   - textColor: Color of text, default value is `ColorProvider.TextNorm`
+    ///   - iconColor: Color of icon, default value is `ColorProvider.TextNorm`
     ///   - toggleColor: Color of toggle color on `on` status, default is system value.
     ///   - isOn: A Boolean value that determines the on/off status of switch
     ///   - userInfo: Closure will excuted after item click
@@ -165,8 +165,8 @@ public struct PMActionSheetToggleItem: PMActionSheetItem {
                 isOn: Bool = false, userInfo: [String: Any]? = nil, indentationLevel: Int = 2, indentationWidth: CGFloat = 24) {
         self.title = title
         self.icon = icon
-        self.textColor = textColor ?? AdaptiveTextColors._N5
-        self.iconColor = iconColor ?? AdaptiveTextColors._N5
+        self.textColor = textColor ?? ColorProvider.TextNorm
+        self.iconColor = iconColor ?? ColorProvider.TextNorm
         self.toggleColor = toggleColor
         self.isOn = isOn
         self.userInfo = userInfo

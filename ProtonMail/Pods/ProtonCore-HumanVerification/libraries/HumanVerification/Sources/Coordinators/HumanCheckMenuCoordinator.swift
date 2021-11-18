@@ -66,10 +66,12 @@ class HumanCheckMenuCoordinator {
         self.recaptchaViewModel = RecaptchaViewModel(api: self.apiService, startToken: startToken)
         self.verifyViewModel = VerifyViewModel(api: self.apiService)
         self.verifyCheckViewModel = VerifyCheckViewModel(api: apiService)
-        self.recaptchaViewModel.onVerificationCodeBlock = { verificationCodeBlock in
+        self.recaptchaViewModel.onVerificationCodeBlock = { [weak self] verificationCodeBlock in
+            guard let self = self else { return }
             self.delegate?.verificationCode(tokenType: self.recaptchaViewModel.getToken(), verificationCodeBlock: verificationCodeBlock)
         }
-        self.verifyCheckViewModel.onVerificationCodeBlock = { verificationCodeBlock in
+        self.verifyCheckViewModel.onVerificationCodeBlock = { [weak self] verificationCodeBlock in
+            guard let self = self else { return }
             self.delegate?.verificationCode(tokenType: self.verifyCheckViewModel.getToken(), verificationCodeBlock: verificationCodeBlock)
         }
 

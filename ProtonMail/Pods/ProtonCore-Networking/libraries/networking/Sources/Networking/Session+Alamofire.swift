@@ -390,11 +390,11 @@ class AlamofireRequest: SessionRequest, URLRequestConvertible {
         super.init(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
         let url = URL.init(string: urlString)!
         self.request = URLRequest(url: url)
+        self.request?.timeoutInterval = timeout
+        self.request?.httpMethod = self.method.toString()
     }
     
     func asURLRequest() throws -> URLRequest {
-        self.request!.httpMethod = self.method.toString()
-        // self.request?.timeoutInterval  = ApiConstants.defaultRequestTimeout
         return try parameterEncoding.encode(request!, with: parameters as? [String: Any])
     }
 }

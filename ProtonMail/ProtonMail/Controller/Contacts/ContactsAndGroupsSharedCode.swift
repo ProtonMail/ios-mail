@@ -29,6 +29,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     var navigationItemLeftNotEditing: [UIBarButtonItem]? = nil
     private var addBarButtonItem: UIBarButtonItem!
     private var user: UserManager?
+    private var paymentsUI: PaymentsUI?
     
     let kAddContactSugue = "toAddContact"
     let kAddContactGroupSugue = "toAddContactGroup"
@@ -49,7 +50,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         self.addBarButtonItem = Asset.menuPlus.image.toUIBarButtonItem(
             target: self,
             action: #selector(addButtonTapped),
-            tintColor: UIColorManager.IconNorm,
+            tintColor: ColorProvider.IconNorm,
             backgroundSquareSize: 40,
             isRound: true
         )
@@ -79,19 +80,19 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         let newContactAction =
             PMActionSheetPlainItem(title: LocalString._contacts_new_contact,
                                    icon: Asset.contactsNew.image,
-                                   iconColor: UIColorManager.IconNorm) { _ in
+                                   iconColor: ColorProvider.IconNorm) { _ in
                 self.addContactTapped()
             }
         let newContactGroupAction =
             PMActionSheetPlainItem(title: LocalString._contact_groups_new,
                                    icon: Asset.contactGroupsNew.image,
-                                   iconColor: UIColorManager.IconNorm) { _ in
+                                   iconColor: ColorProvider.IconNorm) { _ in
                 self.addContactGroupTapped()
             }
         let uploadDeviceContactAction =
             PMActionSheetPlainItem(title: LocalString._contacts_upload_device_contacts,
                                    icon: Asset.contactDeviceUpload.image,
-                                   iconColor: UIColorManager.IconNorm) { _ in
+                                   iconColor: ColorProvider.IconNorm) { _ in
                 self.importButtonTapped()
             }
         let actionsGroup = PMActionSheetItemGroup(items: [newContactAction,
@@ -132,9 +133,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
 
     private func presentPlanUpgrade() {
         guard let user = user else { return }
-        PaymentsUI(servicePlanDataService: user.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: user.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 
 }

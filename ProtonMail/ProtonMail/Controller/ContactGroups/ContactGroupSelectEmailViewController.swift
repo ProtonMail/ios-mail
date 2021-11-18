@@ -46,7 +46,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         self.definesPresentationContext = true
         title = LocalString._contact_groups_add_contacts
         
@@ -58,7 +58,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(self.didTapDoneButton))
-        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneButton
 
@@ -102,7 +102,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.backgroundColor = UIColorManager.BackgroundNorm
+        self.searchController.searchBar.backgroundColor = ColorProvider.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true

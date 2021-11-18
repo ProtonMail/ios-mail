@@ -59,11 +59,11 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         customView.messageContentView.tagsView.tagViews = []
         customView.messageContentView.removeTagsView()
         customView.messageContentView.forwardImageView.isHidden = false
-        customView.messageContentView.tintColor = UIColorManager.IconWeak
+        customView.messageContentView.tintColor = ColorProvider.IconWeak
         customView.messageContentView.replyImageView.isHidden = false
-        customView.messageContentView.replyImageView.tintColor = UIColorManager.IconWeak
+        customView.messageContentView.replyImageView.tintColor = ColorProvider.IconWeak
         customView.messageContentView.replyAllImageView.isHidden = false
-        customView.messageContentView.replyAllImageView.tintColor = UIColorManager.IconWeak
+        customView.messageContentView.replyAllImageView.tintColor = ColorProvider.IconWeak
         customView.messageContentView.senderLabel.attributedText = nil
         customView.messageContentView.timeLabel.attributedText = nil
         customView.messageContentView.attachmentImageView.isHidden = false

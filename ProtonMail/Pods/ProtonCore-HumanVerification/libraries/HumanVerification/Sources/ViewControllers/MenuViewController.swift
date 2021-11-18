@@ -83,20 +83,20 @@ public class MenuViewController: UIViewController, AccessibleView {
     // MARK: - Private Interface
 
     private func configureUI() {
-        closeBarButtonItem.tintColor = UIColorManager.IconNorm
+        closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         self.title = CoreString._hv_title
         helpBarButtonItem.title = CoreString._hv_help_button
-        helpBarButtonItem.tintColor = UIColorManager.BrandNorm
+        helpBarButtonItem.tintColor = ColorProvider.BrandNorm
         segmentControl.removeAllSegments()
-        segmentControl.backgroundColor = UIColorManager.SeparatorNorm
-        segmentControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColorManager.TextNorm], for: .selected)
-        segmentControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColorManager.TextNorm], for: .normal)
+        segmentControl.backgroundColor = ColorProvider.SeparatorNorm
+        segmentControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm], for: .selected)
+        segmentControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm], for: .normal)
         if #available(iOS 13.0, *) {
-            segmentControl.selectedSegmentTintColor = UIColorManager.BackgroundNorm
+            segmentControl.selectedSegmentTintColor = ColorProvider.BackgroundNorm
         } else {
-            segmentControl.tintColor = UIColorManager.BackgroundNorm
+            segmentControl.tintColor = ColorProvider.BackgroundNorm
         }
         viewModel.verifySegments.forEach {
             segmentControl.insertSegment(withTitle: $0.title, at: $0.index, animated: true)

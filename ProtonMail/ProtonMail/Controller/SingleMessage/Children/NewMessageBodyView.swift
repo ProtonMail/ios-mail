@@ -54,7 +54,7 @@ class NewMessageBodyView: UIView {
 
     func addReloadView() {
         subviews.forEach({ $0.removeFromSuperview() })
-        reloadContainerView.backgroundColor = UIColorManager.BackgroundNorm
+        reloadContainerView.backgroundColor = ColorProvider.BackgroundNorm
         addSubview(reloadContainerView)
         reloadContainerView.addSubview(alertIconBackgroundView)
         reloadContainerView.addSubview(alertIconView)
@@ -99,7 +99,7 @@ class NewMessageBodyView: UIView {
 private enum SubViewsFactory {
     static var alertIconBackgroundView: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundSecondary
         view.setCornerRadius(radius: 9)
         return view
     }
@@ -107,7 +107,7 @@ private enum SubViewsFactory {
     static var alertIconView: UIImageView {
         let imageView = UIImageView(image: Asset.mailAlertIcon.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconHint
+        imageView.tintColor = ColorProvider.IconHint
         return imageView
     }
 
@@ -121,7 +121,7 @@ private enum SubViewsFactory {
     static var reloadButton: ProtonButton {
         let button = ProtonButton(frame: .zero)
         button.setMode(mode: .solid)
-        button.tintColor = UIColorManager.InteractionNorm
+        button.tintColor = ColorProvider.InteractionNorm
         return button
     }
 }

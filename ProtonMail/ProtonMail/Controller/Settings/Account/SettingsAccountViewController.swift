@@ -69,7 +69,7 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
 
         tableView.separatorInset = .zero
 
-        view.backgroundColor = UIColorManager.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundSecondary
         generateAccessibilityIdentifiers()
     }
 

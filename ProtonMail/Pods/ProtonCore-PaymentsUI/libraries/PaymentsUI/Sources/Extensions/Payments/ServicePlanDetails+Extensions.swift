@@ -23,34 +23,115 @@ import Foundation
 import ProtonCore_Payments
 import ProtonCore_CoreTranslation
 
-extension ServicePlanDetails {
-    var nameDescription: String {
-        return name.count > 0 ? name.prefix(1).capitalized + name.dropFirst() : ""
+extension Plan {
+
+    public var titleDescription: String {
+        return title
     }
-    
-    var usersDescription: String {
-        return maxMembers == 1 ? String(format: CoreString._pu_plan_details_n_user, maxMembers) : String(format: CoreString._pu_plan_details_n_users, maxMembers)
-    }
-    
-    var storageDescription: String {
+
+    private var storageFormatter: ByteCountFormatter {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
+        formatter.allowedUnits = [.useGB]
+        formatter.formattingContext = .beginningOfSentence
+        return formatter
+    }
 
-        let storageText = name == AccountPlan.free.rawValue ? CoreString._pu_plan_details_free_storage : CoreString._pu_plan_details_storage
-        return String(format: storageText, formatter.string(fromByteCount: Int64(maxSpace)))
+    private func roundedToOneDecimal(_ maxSpace: Int64) -> Int64 {
+        let bytesInGB: Double = 1024 * 1024 * 1024
+        let spaceInGB = Double(maxSpace) / bytesInGB
+        let roundedSpaceInGB = round(spaceInGB * 10) / 10
+        let roundedSpace = roundedSpaceInGB * bytesInGB
+        return Int64(roundedSpace)
     }
-    
-    var addressesDescription: String {
-        return maxAddresses == 1 ? String(format: CoreString._pu_plan_details_n_address, maxAddresses) : String(format: CoreString._pu_plan_details_n_addresses, maxAddresses)
+
+    var XGBStorageDescription: String {
+        String(format: CoreString._pu_plan_details_storage,
+               storageFormatter.string(fromByteCount: roundedToOneDecimal(maxSpace)))
     }
-    
-    var additionalDescription: [String] {
-        switch name {
-        case AccountPlan.mailPlus.rawValue, AccountPlan.pro.rawValue, AccountPlan.visionary.rawValue:
-            return [CoreString._pu_plan_details_unlimited_data,
-                    CoreString._pu_plan_details_custom_email]
-        default:
-            return []
+
+    var XGBStoragePerUserDescription: String {
+        return String(format: CoreString._pu_plan_details_storage_per_user,
+                      storageFormatter.string(fromByteCount: roundedToOneDecimal(maxSpace)))
+    }
+
+    var YAddressesDescription: String {
+        maxAddresses == 1
+            ? String(format: CoreString._pu_plan_details_n_address, maxAddresses)
+            : String(format: CoreString._pu_plan_details_n_addresses, maxAddresses)
+    }
+
+    var YAddressesPerUserDescription: String {
+        maxAddresses == 1
+            ? String(format: CoreString._pu_plan_details_n_address_per_user, maxAddresses)
+            : String(format: CoreString._pu_plan_details_n_addresses_per_user, maxAddresses)
+    }
+
+    var ZCalendarsDescription: String? {
+        guard let maxCalendars = maxCalendars else { return nil }
+        return maxCalendars == 1
+            ? String(format: CoreString._pu_plan_details_n_calendar, maxCalendars)
+            : String(format: CoreString._pu_plan_details_n_calendars, maxCalendars)
+    }
+
+    var ZCalendarsPerUserDescription: String? {
+        guard let maxCalendars = maxCalendars else { return nil }
+        return maxCalendars == 1
+            ? String(format: CoreString._pu_plan_details_n_calendar_per_user, maxCalendars)
+            : String(format: CoreString._pu_plan_details_n_calendars_per_user, maxCalendars)
+    }
+
+    var UVPNConnectionsDescription: String {
+        maxVPN == 1
+            ? String(format: CoreString._pu_plan_details_n_connection, maxVPN)
+            : String(format: CoreString._pu_plan_details_n_connections, maxVPN)
+    }
+
+    var UHighSpeedVPNConnectionsDescription: String {
+        maxVPN == 1
+            ? String(format: CoreString._pu_plan_details_n_high_speed_connection, maxVPN)
+            : String(format: CoreString._pu_plan_details_n_high_speed_connections, maxVPN)
+    }
+
+    var UHighSpeedVPNConnectionsPerUserDescription: String {
+        maxVPN == 1
+            ? String(format: CoreString._pu_plan_details_n_high_speed_connection_per_user, maxVPN)
+            : String(format: CoreString._pu_plan_details_n_high_speed_connections_per_user, maxVPN)
+    }
+
+    var VCustomDomainDescription: String {
+        maxDomains == 1
+            ? String(format: CoreString._pu_plan_details_n_custom_domain, maxDomains)
+            : String(format: CoreString._pu_plan_details_n_custom_domains, maxDomains)
+    }
+
+    var WUsersDescription: String {
+        maxMembers == 1
+            ? String(format: CoreString._pu_plan_details_n_user, maxMembers)
+            : String(format: CoreString._pu_plan_details_n_users, maxMembers)
+    }
+
+    var YAddressesAndZCalendars: String {
+        guard let ZCalendarsDescription = ZCalendarsDescription else { return YAddressesDescription }
+        if maxAddresses == maxCalendars {
+            return maxAddresses == 1
+                ? String(format: CoreString._pu_plan_details_n_address_and_calendar, maxAddresses)
+                : String(format: CoreString._pu_plan_details_n_addresses_and_calendars, maxAddresses)
+        } else {
+            return String(format: CoreString._pu_plan_details_n_uneven_amounts_of_addresses_and_calendars,
+                          YAddressesDescription, ZCalendarsDescription)
         }
+    }
+
+    var highSpeedDescription: String {
+        CoreString._pu_plan_details_high_speed
+    }
+
+    var highestSpeedDescription: String {
+        CoreString._pu_plan_details_highest_speed
+    }
+
+    var multiUserSupportDescription: String {
+        CoreString._pu_plan_details_multi_user_support
     }
 }

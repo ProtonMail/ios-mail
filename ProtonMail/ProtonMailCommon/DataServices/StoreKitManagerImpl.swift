@@ -26,12 +26,6 @@ import ProtonCore_Services
 
 class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
 
-    var shouldShowReportBugPage = false
-
-    func reportBugAlert() {
-        shouldShowReportBugPage = true
-    }
-    
     var apiService: APIService? {
         return sharedServices.get(by: UsersManager.self).firstUser?.apiService
     }
@@ -56,9 +50,9 @@ class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
         return sharedServices.get(by: UsersManager.self).firstUser?.userInfo.userId
     }
     
-    var servicePlanDataService: ServicePlanDataService? {
+    var payments: Payments? {
         #if !APP_EXTENSION
-            return sharedServices.get(by: UsersManager.self).firstUser?.sevicePlanService
+            return sharedServices.get(by: UsersManager.self).firstUser?.payments
         #else
             return nil
         #endif

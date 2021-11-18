@@ -72,7 +72,7 @@ public class ProtonButton: UIButton {
     }
 
     fileprivate func configuration() {
-        layer.cornerRadius = 3.0
+        layer.cornerRadius = 8.0
         clipsToBounds = true
         titleLabel?.numberOfLines = 0
         titleLabel?.lineBreakMode = .byWordWrapping
@@ -88,38 +88,38 @@ public class ProtonButton: UIButton {
             contentEdgeInsets = UIEdgeInsets(top: 12, left: 36, bottom: 12, right: 36)
         case .outlined:
             nonSolidLayout()
-            setTitleColor(UIColorManager.BrandLighten40, for: .disabled)
+            setTitleColor(ColorProvider.BrandLighten40, for: .disabled)
             titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
             updateOutline()
             layer.borderWidth = 1
             contentEdgeInsets = UIEdgeInsets(top: 12, left: 36, bottom: 12, right: 36)
         case .text:
             nonSolidLayout()
-            setTitleColor(UIColorManager.TextDisabled, for: .disabled)
+            setTitleColor(ColorProvider.TextDisabled, for: .disabled)
             titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
             contentEdgeInsets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
         }
     }
 
     fileprivate func solidLayout() {
-        setTitleColor(UIColorManager.White, for: .normal)
-        setTitleColor(UIColorManager.White, for: .highlighted)
-        setTitleColor(UIColorManager.White, for: .selected)
-        setTitleColor(UIColorManager.White.withAlphaComponent(0.4), for: .disabled)
-        setBackgroundColor(UIColorManager.BrandNorm, forState: .normal)
-        setBackgroundColor(UIColorManager.BrandDarken20, forState: .highlighted)
-        setBackgroundColor(UIColorManager.BrandDarken20, forState: .selected)
-        setBackgroundColor(UIColorManager.BrandLighten40, forState: .disabled)
+        setTitleColor(ProtonColorPallete.White, for: .normal)
+        setTitleColor(ProtonColorPallete.White, for: .highlighted)
+        setTitleColor(ProtonColorPallete.White, for: .selected)
+        setTitleColor(ProtonColorPallete.White.withAlphaComponent(0.4), for: .disabled)
+        setBackgroundColor(ColorProvider.BrandNorm, forState: .normal)
+        setBackgroundColor(ColorProvider.BrandDarken20, forState: .highlighted)
+        setBackgroundColor(ColorProvider.BrandDarken20, forState: .selected)
+        setBackgroundColor(ColorProvider.BrandLighten40, forState: .disabled)
     }
 
     fileprivate func nonSolidLayout() {
-        setTitleColor(UIColorManager.BrandNorm, for: .normal)
-        setTitleColor(UIColorManager.BrandDarken20, for: .highlighted)
-        setTitleColor(UIColorManager.BrandDarken20, for: .selected)
-        setBackgroundColor(UIColorManager.BackgroundNorm, forState: .normal)
-        setBackgroundColor(UIColorManager.BackgroundSecondary, forState: .highlighted)
-        setBackgroundColor(UIColorManager.BackgroundSecondary, forState: .selected)
-        setBackgroundColor(UIColorManager.BackgroundNorm, forState: .disabled)
+        setTitleColor(ColorProvider.BrandNorm, for: .normal)
+        setTitleColor(ColorProvider.BrandDarken20, for: .highlighted)
+        setTitleColor(ColorProvider.BrandDarken20, for: .selected)
+        setBackgroundColor(ColorProvider.BackgroundNorm, forState: .normal)
+        setBackgroundColor(ColorProvider.BackgroundSecondary, forState: .highlighted)
+        setBackgroundColor(ColorProvider.BackgroundSecondary, forState: .selected)
+        setBackgroundColor(ColorProvider.BackgroundNorm, forState: .disabled)
     }
 
     fileprivate func updateOutline() {

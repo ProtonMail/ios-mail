@@ -159,10 +159,10 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         guard !viewModel.isEmpty(section: sectionItem) else { return nil }
         return PMHeaderView(title: sectionItem.actionTitle,
                             fontSize: 15,
-                            titleColor: UIColorManager.TextWeak,
+                            titleColor: ColorProvider.TextWeak,
                             titleLeft: 16,
                             titleBottom: 8,
-                            background: UIColorManager.BackgroundNorm)
+                            background: ColorProvider.BackgroundNorm)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -217,8 +217,8 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
 private extension AttachmentListViewController {
     private func setUpSubviews() {
-        bannerContainer.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        bannerContainer.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         let stackView = UIStackView(arrangedSubviews: [bannerContainer, tableView])
         stackView.distribution = .fill

@@ -22,13 +22,36 @@
 import Foundation
 import AwaitKit
 import PromiseKit
+import ProtonCore_DataModel
+import ProtonCore_Log
 import ProtonCore_Services
 
+public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
+
+    var isIAPAvailable: Bool { get }
+    var credits: Credits? { get }
+    var plans: [Plan] { get }
+    var defaultPlanDetails: Plan? { get }
+    var availablePlansDetails: [Plan] { get }
+    var currentSubscription: Subscription? { get set }
+
+    var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
+
+    func detailsOfServicePlan(named name: String) -> Plan?
+
+    func updateServicePlans() -> Promise<Void> 
+    func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+
+    func updateCurrentSubscription(updateCredits: Bool) -> Promise<Void>
+    func updateCurrentSubscription(updateCredits: Bool, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+}
+
 public protocol ServicePlanDataStorage: AnyObject {
-    var servicePlansDetails: [ServicePlanDetails]? { get set }
+    var servicePlansDetails: [Plan]? { get set }
     var isIAPUpgradePlanAvailable: Bool { get set }
-    var defaultPlanDetails: ServicePlanDetails? { get set }
-    var currentSubscription: ServicePlanSubscription? { get set }
+    var defaultPlanDetails: Plan? { get set }
+    var currentSubscription: Subscription? { get set }
     var credits: Credits? { get set }
 }
 
@@ -37,10 +60,74 @@ public struct Credits {
     public let currency: String
 }
 
-public class ServicePlanDataService: NSObject, Service {
-    private let localStorage: ServicePlanDataStorage
+public protocol CurrentSubscriptionChangeDelegate: AnyObject {
+    func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?)
+}
+
+final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public let service: APIService
-    internal var paymentsApi: PaymentsApiProtocol = PaymentsApiImplementation()
+
+    private let paymentsApi: PaymentsApiProtocol
+    private let localStorage: ServicePlanDataStorage
+
+    let listOfIAPIdentifiers: ListOfIAPIdentifiersGet
+
+    public weak var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate?
+
+    public var isIAPAvailable: Bool {
+        guard isIAPUpgradePlanAvailable else { return false }
+        return true
+    }
+
+    public var availablePlansDetails: [Plan] {
+        willSet { localStorage.servicePlansDetails = newValue }
+    }
+
+    public var isIAPUpgradePlanAvailable: Bool {
+        willSet { localStorage.isIAPUpgradePlanAvailable = newValue }
+    }
+
+    public var defaultPlanDetails: Plan? {
+        willSet { localStorage.defaultPlanDetails = newValue }
+    }
+
+    public var plans: [Plan] {
+        let subscriptionDetails = currentSubscription.flatMap { $0.planDetails } ?? []
+        let defaultDetails = defaultPlanDetails.map { [$0] } ?? []
+        return subscriptionDetails + defaultDetails + availablePlansDetails 
+    }
+
+    public var currentSubscription: Subscription? {
+        willSet { localStorage.currentSubscription = newValue }
+        didSet { currentSubscriptionChangeDelegate?.onCurrentSubscriptionChange(old: oldValue, new: currentSubscription) }
+    }
+
+    public var credits: Credits? {
+        willSet { localStorage.credits = newValue }
+    }
+
+    init(inAppPurchaseIdentifiers: @escaping ListOfIAPIdentifiersGet,
+         paymentsApi: PaymentsApiProtocol,
+         apiService: APIService,
+         localStorage: ServicePlanDataStorage,
+         paymentsAlertManager: PaymentsAlertManager) {
+        self.localStorage = localStorage
+        self.availablePlansDetails = localStorage.servicePlansDetails ?? []
+        self.isIAPUpgradePlanAvailable = localStorage.isIAPUpgradePlanAvailable
+        self.defaultPlanDetails = localStorage.defaultPlanDetails
+        self.currentSubscription = localStorage.currentSubscription
+        self.paymentsApi = paymentsApi
+        self.service = apiService
+        self.listOfIAPIdentifiers = inAppPurchaseIdentifiers
+    }
+
+    public func detailsOfServicePlan(named name: String) -> Plan? {
+        if InAppPurchasePlan.isThisAFreePlan(protonName: name) {
+            return defaultPlanDetails
+        } else {
+            return availablePlansDetails.first(where: { $0.name == name })
+        }
+    }
 
     public static func cleanUpAll() -> Promise<Void> {
         return Promise()
@@ -48,65 +135,25 @@ public class ServicePlanDataService: NSObject, Service {
 
     public func cleanUp() -> Promise<Void> {
         return Promise { seal in
-            self.currentSubscription = nil
+            currentSubscription = nil
             seal.fulfill_()
         }
-    }
-
-    public init(localStorage: ServicePlanDataStorage, apiService: APIService) {
-        self.localStorage = localStorage
-        self.allPlanDetails = localStorage.servicePlansDetails ?? []
-        self.isIAPUpgradePlanAvailable = localStorage.isIAPUpgradePlanAvailable
-        self.defaultPlanDetails = localStorage.defaultPlanDetails
-        self.currentSubscription = localStorage.currentSubscription
-        self.service = apiService
-        super.init()
-    }
-
-    public var isIAPAvailable: Bool {
-        guard self.isIAPUpgradePlanAvailable else { return false }
-        return true
-    }
-
-    private var allPlanDetails: [ServicePlanDetails] {
-        willSet { self.localStorage.servicePlansDetails = newValue }
-    }
-
-    public var isIAPUpgradePlanAvailable: Bool {
-        willSet { self.localStorage.isIAPUpgradePlanAvailable = newValue }
-    }
-
-    public var defaultPlanDetails: ServicePlanDetails? {
-        willSet { self.localStorage.defaultPlanDetails = newValue }
-    }
-
-    @objc public dynamic var currentSubscription: ServicePlanSubscription? {
-        willSet { self.localStorage.currentSubscription = newValue }
-    }
-
-    public func detailsOfServicePlan(named name: String) -> ServicePlanDetails? {
-        return self.allPlanDetails.first(where: { $0.name == name }) ?? self.defaultPlanDetails
-    }
-
-    public var proceedTier54: Decimal = Decimal(0)
-    public var credits: Credits? {
-        willSet { self.localStorage.credits = newValue }
     }
 }
 
 extension ServicePlanDataService {
     public func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        _ = firstly {
+        firstly {
             updateServicePlans()
         }.done {
             success()
-        }.catch({ error in
-            failure(error)
-        })
+        }.catch {
+            failure($0)
+        }
     }
 
     @discardableResult public func updateServicePlans() -> Promise<Void> {
-        return Promise {seal in
+        return Promise { seal in
             async {
                 // get API atatus
                 let statusApi = self.paymentsApi.statusRequest(api: self.service)
@@ -116,94 +163,106 @@ extension ServicePlanDataService {
                 // get service plans
                 let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
                 let servicePlanRes = try AwaitKit.await(servicePlanApi.run())
-                self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
+                self.availablePlansDetails = servicePlanRes.availableServicePlans?
+                    .filter { InAppPurchasePlan.nameIsPresentInIAPIdentifierList(name: $0.name, identifiers: self.listOfIAPIdentifiers()) }
+                    ?? []
 
-                // get default service plan
                 let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
                 let defaultServicePlanRes = try AwaitKit.await(defaultServicePlanApi.run())
-                self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
-                seal.fulfill_()
+                self.defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
+                
+                seal.fulfill(())
             }.catch { error in
                 seal.reject(error)
             }
         }
     }
 
-    public func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    public func updateCurrentSubscription(updateCredits: Bool, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         _ = firstly {
-            updateCurrentSubscription()
+            updateCurrentSubscription(updateCredits: updateCredits)
         }.done {
             success()
-        }.catch({ error in
+        }.catch { error in
             failure(error)
-        })
+        }
+    }
+    
+    public func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        _ = firstly {
+            async {
+                try self.updateCredits()
+            }
+        }.done {
+            success()
+        }.catch { error in
+            failure(error)
+        }
     }
 
-    public func updateCurrentSubscription() -> Promise<Void> {
+    public func updateCurrentSubscription(updateCredits: Bool) -> Promise<Void> {
         return Promise { seal in
             async {
+                if updateCredits {
+                    try self.updateCredits()
+                }
                 let subscriptionApi = self.paymentsApi.getSubscriptionRequest(api: self.service)
                 let subscriptionRes = try AwaitKit.await(subscriptionApi.run())
                 self.currentSubscription = subscriptionRes.subscription
-                self.updatePaymentMethods()
-                self.updateTier()
-                self.getUser {
-                    seal.fulfill_()
-                }
+
+                try self.updatePaymentMethods()
+
+                let organizationsApi = self.paymentsApi.organizationsRequest(api: self.service)
+                let organizationsRes = try AwaitKit.await(organizationsApi.run())
+                self.currentSubscription?.organization = organizationsRes.organization
+
+                seal.fulfill(())
             }.catch { error in
                 if error.isNoSubscriptionError {
-                    // no subscription stands for free/default plan
-                    self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, defaultPlanDetails: self.defaultPlanDetails, paymentMethods: nil)
+                    self.currentSubscription = .userHasNoPlanAKAFreePlan
+                    self.credits = nil
+                    seal.fulfill(())
+                } else if error.accessTokenDoesNotHaveSufficientScopeToAccessResource {
+                    self.currentSubscription = .userHasUnsufficientScopeToFetchSubscription
+                    self.credits = nil
+                    seal.fulfill(())
                 } else {
                     self.currentSubscription = nil
-                }
-                self.credits = nil
-                self.updateTier()
-                self.getUser {
-                    seal.fulfill_()
+                    self.credits = nil
+                    seal.reject(error)
                 }
             }
         }
     }
 
-    internal func updatePaymentMethods() {
+    private func updatePaymentMethods() throws {
         do {
-            let paymentMethodsApi = self.paymentsApi.methodsRequest(api: self.service)
+            let paymentMethodsApi = paymentsApi.methodsRequest(api: service)
             let paymentMethodsRes = try AwaitKit.await(paymentMethodsApi.run())
-            self.currentSubscription?.paymentMethods = paymentMethodsRes.methods
+            currentSubscription?.paymentMethods = paymentMethodsRes.methods
         } catch {
-            self.currentSubscription?.paymentMethods = nil
+            currentSubscription?.paymentMethods = nil
+            throw error
+        }
+    }
+    
+    private func updateCredits() throws {
+        do {
+            let user = try AwaitKit.await(self.getUser())
+            self.credits = Credits(credit: Double(user.credit) / 100, currency: user.currency)
+        } catch {
+            self.credits = nil
+            throw error
         }
     }
 
-    internal func updateTier() {
-        self.currentSubscription?.plans.forEach {
-            do {
-                if let productId = $0.storeKitProductId,
-                    let price = StoreKitManager.default.priceLabelForProduct(identifier: productId),
-                    let currency = price.1.currencyCode,
-                    let countryCode = (price.1 as NSLocale).object(forKey: .countryCode) as? String {
-                    let proceedRequest = self.paymentsApi.appleRequest(api: self.service, currency: currency, country: countryCode)
-                    let proceed = try AwaitKit.await(proceedRequest.run())
-                    self.proceedTier54 = proceed.proceed
-                } else {
-                    self.proceedTier54 = Decimal(0)
+    private func getUser() -> Promise<User> {
+        return Promise { seal in
+            self.paymentsApi.getUser(api: self.service) { result in
+                switch result {
+                case .success(let user): seal.fulfill(user)
+                case .failure(let error): seal.reject(error)
                 }
-            } catch {
-                self.proceedTier54 = Decimal(0)
-            }
-        }
-    }
-
-    internal func getUser(completion: @escaping () -> Void) {
-        self.paymentsApi.getUser(api: self.service) { result in
-            switch result {
-            case .success(let user):
-                self.credits = Credits(credit: Double(user.credit) / 100, currency: user.currency)
-                completion()
-            case .failure:
-                self.credits = nil
-                completion()
             }
         }
     }

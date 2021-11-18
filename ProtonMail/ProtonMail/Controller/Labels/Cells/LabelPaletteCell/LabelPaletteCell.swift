@@ -39,8 +39,8 @@ final class LabelPaletteCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.backgroundColor = UIColorManager.BackgroundNorm
-        self.collectionView.backgroundColor = UIColorManager.BackgroundNorm
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        self.collectionView.backgroundColor = ColorProvider.BackgroundNorm
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(LabelColorCell.defaultNib(), forCellWithReuseIdentifier: LabelColorCell.identifier)

@@ -147,7 +147,7 @@ private enum SubviewsFactory {
 
     static var senderLabel: UILabel {
         let label = UILabel(frame: .zero)
-        label.textColor = UIColorManager.TextNorm
+        label.textColor = ColorProvider.TextNorm
         return label
     }
 
@@ -155,7 +155,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.mailAttachment.image
-        imageView.tintColor = UIColorManager.IconWeak
+        imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
@@ -167,7 +167,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.mailDraftIcon.image
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
@@ -195,7 +195,7 @@ private enum SubviewsFactory {
         let label = PaddingLabel(withInsets: 0, 0, 6, 6)
         label.layer.cornerRadius = 3
         label.layer.borderWidth = 1
-        label.layer.borderColor = UIColorManager.TextNorm.cgColor
+        label.layer.borderColor = ColorProvider.TextNorm.cgColor
         return label
     }
 }

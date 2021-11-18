@@ -59,13 +59,6 @@ public class HumanVerifyAPI: APIClient {
             return [:]
         }
 
-        public var apiVersion: Int {
-            switch self {
-            case .code, .check, .checkUsername, .userInfo:
-                return 3
-            }
-        }
-
         public var method: HTTPMethod {
             switch self {
             case .checkUsername, .userInfo:

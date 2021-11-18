@@ -74,7 +74,7 @@ final class InAppFeedbackViewController: UIViewController {
     }
 
     private func setup() {
-        self.view.backgroundColor = Blenders._P48
+        self.view.backgroundColor = ColorProvider.BlenderNorm
         self.view.addSubview(actionSheetView)
         let tapToDismiss = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped))
         self.view.addGestureRecognizer(tapToDismiss)
@@ -89,7 +89,7 @@ final class InAppFeedbackViewController: UIViewController {
 
     private func addWhiteView() {
         let whiteView = UIView(frame: .zero)
-        whiteView.backgroundColor = UIColorManager.BackgroundNorm
+        whiteView.backgroundColor = ColorProvider.BackgroundNorm
         self.view.insertSubview(whiteView, at: 0)
         [
             whiteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

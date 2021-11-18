@@ -32,13 +32,13 @@ class ExpandedHeaderViewModel {
 
     var sender: NSAttributedString {
         var style = FontManager.Default
-        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        style = style.addTruncatingTail(mode: .byTruncatingMiddle)
         return senderName.apply(style: style)
     }
 
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
-        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        style = style.addTruncatingTail(mode: .byTruncatingMiddle)
         return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
     }
 
@@ -137,7 +137,7 @@ class ExpandedHeaderViewModel {
             let emailToDisplay = email.isEmpty ? "" : "<\(email)>"
             let name = recipient.getName(userContacts: userContacts) ?? email
             var addressStyle = FontManager.body3RegularInteractionNorm
-            addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
+            addressStyle = addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
                 name: name.apply(style: FontManager.body3RegularInteractionNorm),

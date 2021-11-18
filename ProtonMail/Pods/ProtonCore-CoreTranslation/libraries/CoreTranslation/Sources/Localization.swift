@@ -487,6 +487,24 @@ public class LocalizedString {
     /// Signup complete view description
     public lazy var _su_complete_view_desc = NSLocalizedString("It usually takes no more than a minute.", bundle: Common.bundle, comment: "Complete view description")
 
+    /// Signup complete progress step creation
+    public lazy var _su_complete_step_creation = NSLocalizedString("Secure space creation...", bundle: Common.bundle, comment: "Signup complete progress step creation")
+    
+    /// Signup complete progress step created
+    public lazy var _su_complete_step_created = NSLocalizedString("Secure space created", bundle: Common.bundle, comment: "Signup complete progress step created")
+    
+    /// Signup complete progress step keys generation
+    public lazy var _su_complete_step_keys_generation = NSLocalizedString("Privacy keys generation...", bundle: Common.bundle, comment: "Signup complete progress step keys generation")
+    
+    /// Signup complete progress step keys generation
+    public lazy var _su_complete_step_keys_generated = NSLocalizedString("Privacy keys generated", bundle: Common.bundle, comment: "Signup complete progress step keys generated")
+    
+    /// Signup complete progress step payment validation
+    public lazy var _su_complete_step_payment_validation = NSLocalizedString("Payment validation...", bundle: Common.bundle, comment: "Signup complete progress step payment validation")
+    
+    /// Signup complete progress step payment validated
+    public lazy var _su_complete_step_payment_validated = NSLocalizedString("Payment validated", bundle: Common.bundle, comment: "Signup complete progress step payment validated")
+
     /// Signup email verification view title
     public lazy var _su_email_verification_view_title = NSLocalizedString("Account verification", bundle: Common.bundle, comment: "Email verification view title")
 
@@ -540,6 +558,21 @@ public class LocalizedString {
     /// Signup invalid verification change email address button
     public lazy var _su_invalid_verification_change_email_button = NSLocalizedString("Change email address", bundle: Common.bundle, comment: "Change email address button")
     
+    /// Signup summary title
+    public lazy var _su_summary_title = NSLocalizedString("Congratulations", bundle: Common.bundle, comment: "Signup summary title")
+    
+    /// Signup summary free plan description
+    public lazy var _su_summary_free_description = NSLocalizedString("Your Proton Free account was successfully created.", bundle: Common.bundle, comment: "Signup summary free plan description")
+    
+    /// Signup summary free plan description replacement
+    public lazy var _su_summary_free_description_replacement = NSLocalizedString("Proton Free", bundle: Common.bundle, comment: "Signup summary free plan description replacement")
+    
+    /// Signup summary paid plan description
+    public lazy var _su_summary_paid_description = NSLocalizedString("Your payment was confirmed and your %@ account successfully created.", bundle: Common.bundle, comment: "Signup summary paid plan description")
+    
+    /// Signup summary welcome text
+    public lazy var _su_summary_welcome = NSLocalizedString("Enjoy the world privacy.", bundle: Common.bundle, comment: "Signup summary welcome text")
+    
     // Payments UI
     
     /// Select a plan title
@@ -552,7 +585,7 @@ public class LocalizedString {
     public lazy var _pu_upgrade_plan_title = NSLocalizedString("Upgrade plan", bundle: Common.bundle, comment: "Plan selection title")
     
     /// Plan footer title
-    public lazy var _pu_plan_footer_title = NSLocalizedString("Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.", bundle: Common.bundle, comment: "Plan footer title")
+    public lazy var _pu_plan_footer_title = NSLocalizedString("Visit protonmail.com for more plans and pricing options.", bundle: Common.bundle, comment: "Plan footer title")
 
     /// Plan footer description
     public lazy var _pu_plan_footer_desc = NSLocalizedString("Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).", bundle: Common.bundle, comment: "Plan footer description")
@@ -570,31 +603,100 @@ public class LocalizedString {
     public lazy var _pu_plan_details_renew_auto_expired = NSLocalizedString("Your plan will automatically renew on %@", bundle: Common.bundle, comment: "Plan details renew automatically expired")
     
     /// Plan details renew expired
-    public lazy var _pu_plan_details_renew_expired = NSLocalizedString("Current plan will expire on %@", bundle: Common.bundle, comment: "Plan  details renew expired")
+    public lazy var _pu_plan_details_renew_expired = NSLocalizedString("Current plan will expire on %@", bundle: Common.bundle, comment: "Plan details renew expired")
+
+    /// Plan details unavailable contact administrator
+    public lazy var _pu_plan_details_plan_details_unavailable_contact_administrator = NSLocalizedString("Contact an administrator to make changes to your Proton subscription.", bundle: Common.bundle, comment: "Plan details unavailable contact administrator")
     
     /// Plan details n user
-    public lazy var _pu_plan_details_n_user = NSLocalizedString("%i user", bundle: Common.bundle, comment: "Plan delails n user")
+    public lazy var _pu_plan_details_n_user = NSLocalizedString("%i user", bundle: Common.bundle, comment: "Plan details n user")
     
     /// Plan details n users
-    public lazy var _pu_plan_details_n_users = NSLocalizedString("%i users", bundle: Common.bundle, comment: "Plan delails n users")
-    
-    /// Plan details free storage
-    public lazy var _pu_plan_details_free_storage = NSLocalizedString("%@ storage", bundle: Common.bundle, comment: "Plan delails free storage")
+    public lazy var _pu_plan_details_n_users = NSLocalizedString("%i users", bundle: Common.bundle, comment: "Plan details n users")
     
     /// Plan details storage
-    public lazy var _pu_plan_details_storage = NSLocalizedString("%@ storage *", bundle: Common.bundle, comment: "Plan delails storage")
+    public lazy var _pu_plan_details_storage = NSLocalizedString("%@ storage", bundle: Common.bundle, comment: "Plan details storage")
+
+    /// Plan details storage per user
+    public lazy var _pu_plan_details_storage_per_user = NSLocalizedString("%@ storage / user", bundle: Common.bundle, comment: "Plan details storage per user")
     
     /// Plan details n address
-    public lazy var _pu_plan_details_n_address = NSLocalizedString("%i address", bundle: Common.bundle, comment: "Plan delails n address")
+    public lazy var _pu_plan_details_n_address = NSLocalizedString("%i address", bundle: Common.bundle, comment: "Plan details n address")
     
     /// Plan details n addresses
-    public lazy var _pu_plan_details_n_addresses = NSLocalizedString("%i addresses", bundle: Common.bundle, comment: "Plan delails n addresses")
+    public lazy var _pu_plan_details_n_addresses = NSLocalizedString("%i addresses", bundle: Common.bundle, comment: "Plan details n addresses")
 
-    /// Plan details unlimited data
-    public lazy var _pu_plan_details_unlimited_data = NSLocalizedString("Unlimited folders / labels / filters", bundle: Common.bundle, comment: "Plan delails unlimited data")
+    /// Plan details n address per user
+    public lazy var _pu_plan_details_n_address_per_user = NSLocalizedString("%i address / user", bundle: Common.bundle, comment: "Plan details n address per user")
 
-    /// Plan details custom email
-    public lazy var _pu_plan_details_custom_email = NSLocalizedString("Custom email addresses", bundle: Common.bundle, comment: "Plan delails custom email")
+    /// Plan details n addresses per user
+    public lazy var _pu_plan_details_n_addresses_per_user = NSLocalizedString("%i addresses / user", bundle: Common.bundle, comment: "Plan details n addresses per user")
+
+    /// Plan details n calendars
+    public lazy var _pu_plan_details_n_calendar = NSLocalizedString("%i calendar", bundle: Common.bundle, comment: "Plan details n calendar")
+
+    /// Plan details n calendars
+    public lazy var _pu_plan_details_n_calendars = NSLocalizedString("%i calendars", bundle: Common.bundle, comment: "Plan details n calendars")
+
+    /// Plan details n calendars per user
+    public lazy var _pu_plan_details_n_calendar_per_user = NSLocalizedString("%i calendar / user", bundle: Common.bundle, comment: "Plan details n calendar per user")
+
+    /// Plan details n calendars per user
+    public lazy var _pu_plan_details_n_calendars_per_user = NSLocalizedString("%i calendars / user", bundle: Common.bundle, comment: "Plan details n calendars per user")
+
+    /// Plan details n connection
+    public lazy var _pu_plan_details_n_connection = NSLocalizedString("%i VPN connection", bundle: Common.bundle, comment: "Plan details n connection")
+
+    /// Plan details n connections
+    public lazy var _pu_plan_details_n_connections = NSLocalizedString("%i VPN connections", bundle: Common.bundle, comment: "Plan details n connections")
+
+    /// Plan details n high-speed connection
+    public lazy var _pu_plan_details_n_high_speed_connection = NSLocalizedString("%i high-speed VPN connection", bundle: Common.bundle, comment: "Plan details n high-speed connection")
+
+    /// Plan details n high-speed connections
+    public lazy var _pu_plan_details_n_high_speed_connections = NSLocalizedString("%i high-speed VPN connections", bundle: Common.bundle, comment: "Plan details n high-speed connections")
+
+    /// Plan details n high-speed connection per user
+    public lazy var _pu_plan_details_n_high_speed_connection_per_user = NSLocalizedString("%i high-speed VPN connection / user", bundle: Common.bundle, comment: "Plan details n connection per user")
+
+    /// Plan details n high-speed connections per user
+    public lazy var _pu_plan_details_n_high_speed_connections_per_user = NSLocalizedString("%i high-speed VPN connections / user", bundle: Common.bundle, comment: "Plan details n connections per user")
+
+    /// Plan details n custom domain
+    public lazy var _pu_plan_details_n_custom_domain = NSLocalizedString("%i custom domain", bundle: Common.bundle, comment: "Plan details n custom domain")
+
+    /// Plan details n custom domains
+    public lazy var _pu_plan_details_n_custom_domains = NSLocalizedString("%i custom domains", bundle: Common.bundle, comment: "Plan details n custom domains")
+
+    /// Plan details n address & calendar
+    public lazy var _pu_plan_details_n_address_and_calendar = NSLocalizedString("%i address & calendar", bundle: Common.bundle, comment: "Plan details n address & calendar")
+
+    /// Plan details n addresses & calendars
+    public lazy var _pu_plan_details_n_addresses_and_calendars = NSLocalizedString("%i addresses & calendars", bundle: Common.bundle, comment: "Plan details n addresses & calendars")
+
+    /// Plan details n uneven amount of addresses & calendars
+    public lazy var _pu_plan_details_n_uneven_amounts_of_addresses_and_calendars = NSLocalizedString("%@ & %@", bundle: Common.bundle, comment: "Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars")
+
+    /// Plan details high speed message
+    public lazy var _pu_plan_details_high_speed = NSLocalizedString("High speed", bundle: Common.bundle, comment: "Plan details high speed message")
+
+    /// Plan details highest speed message
+    public lazy var _pu_plan_details_highest_speed = NSLocalizedString("Highest speed", bundle: Common.bundle, comment: "Plan details highest speed message")
+
+    /// Plan details high speed message
+    public lazy var _pu_plan_details_multi_user_support = NSLocalizedString("Multi-user support", bundle: Common.bundle, comment: "Plan details multi-user support message")
+    
+    /// Unfinished operation error dialog title
+    public lazy var _pu_plan_unfinished_error_title = NSLocalizedString("Complete payment?", bundle: Common.bundle, comment: "Unfinished operation error dialog title")
+    
+    /// Unfinished operation error dialog description
+    public lazy var _pu_plan_unfinished_error_desc = NSLocalizedString("A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account", bundle: Common.bundle, comment: "Unfinished operation error dialog description")
+    
+    /// Unfinished operation error dialog retry button
+    public lazy var _pu_plan_unfinished_error_retry_button = NSLocalizedString("Complete payment", bundle: Common.bundle, comment: "Unfinished operation error dialog retry button")
+    
+    /// Unfinished operation dialog description
+    public lazy var _pu_plan_unfinished_desc = NSLocalizedString("The account setup process could not be finalized due to an unexpected error.\nPlease try again.", bundle: Common.bundle, comment: "Unfinished operation dialog description")
 
 // Splash
 

@@ -28,10 +28,10 @@ public struct ExternalUserParameters {
     public let salt: String
     public let verifer: String
     public let deviceToken: String
-    public let challenge: [String: Any]
+    public let challenge: [[String: Any]]
     public let verifyToken: String
     
-    public init(email: String, modulusID: String, salt: String, verifer: String, deviceToken: String, challenge: [String: Any] = [:], verifyToken: String) {
+    public init(email: String, modulusID: String, salt: String, verifer: String, deviceToken: String, challenge: [[String: Any]] = [], verifyToken: String) {
         self.email = email
         self.modulusID = modulusID
         self.salt = salt

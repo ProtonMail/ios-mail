@@ -33,11 +33,11 @@ import UIKit
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        switchView.onTintColor = UIColorManager.BrandNorm
-        switchView.tintColor = UIColorManager.Shade60
+        switchView.onTintColor = ColorProvider.BrandNorm
+        switchView.tintColor = ColorProvider.Shade60
         switchView.layer.cornerRadius = 16
         switchView.clipsToBounds = true
-        switchView.backgroundColor = UIColorManager.Shade60
+        switchView.backgroundColor = ColorProvider.Shade60
         selectionStyle = .none
     }
     
@@ -52,7 +52,7 @@ import UIKit
     
     override func prepareForReuse() {
         self.switchView.isEnabled = true
-        self.switchView.onTintColor = UIColorManager.BrandNorm
+        self.switchView.onTintColor = ColorProvider.BrandNorm
     }
     
     @IBAction func switchAction(_ sender: UISwitch) {

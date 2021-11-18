@@ -24,7 +24,7 @@ import ProtonCore_Networking
 
 extension AuthService {
     
-    public final class AuthInfoResponse: Response {
+    public final class AuthInfoResponse: Response, Codable {
         public var modulus: String?
         public var serverEphemeral: String?
         public var version: Int = 0

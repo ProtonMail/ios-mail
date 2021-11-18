@@ -21,7 +21,7 @@ class SettingsConversationViewController: UITableViewController {
 
         title = LocalString._conversation_settings_screen_top_title
         tableView.backgroundView = nil
-        tableView.backgroundColor = UIColorManager.BackgroundSecondary
+        tableView.backgroundColor = ColorProvider.BackgroundSecondary
         tableView.register(SwitchTableViewCell.self)
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         tableView.tableFooterView = UIView()
@@ -58,7 +58,7 @@ class SettingsConversationViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-        cell.backgroundColor = UIColorManager.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         guard let switchCell = cell as? SwitchTableViewCell else { return cell }
         viewModel.conversationViewModeHasChanged = { isConversationEnabled in
             switchCell.switchView.setOn(isConversationEnabled, animated: true)

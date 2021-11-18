@@ -42,10 +42,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -56,10 +57,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
 
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -70,10 +72,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -86,10 +89,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -100,10 +104,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -114,10 +119,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -127,11 +133,12 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let font = UIFont.systemFont(ofSize: 17)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
-
+ 
+        let foregroundColor: UIColor = ColorProvider.TextHint
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextHint,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -142,10 +149,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextDisabled
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextDisabled,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -156,10 +164,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18
 
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -172,10 +181,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -186,10 +196,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -200,10 +211,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -214,10 +226,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
+        let foregroundColor: UIColor = ColorProvider.TextDisabled
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextDisabled,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -228,10 +241,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.12
 
+        let foregroundColor: UIColor = ColorProvider.TextInverted
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -244,10 +258,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -258,10 +273,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
+        let foregroundColor: UIColor = ColorProvider.TextNorm
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -272,10 +288,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
+        let foregroundColor: UIColor = ColorProvider.TextWeak
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -286,10 +303,11 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.03
 
+        let foregroundColor: UIColor = ColorProvider.TextHint
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextHint,
+            .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -334,7 +352,8 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.07
             paragraphStyle.alignment = .center
-            return [.kern: 0.8, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: UIColorManager.Splash.TextNorm]
+            let foregroundColor: UIColor = ProtonColorPallete.Splash.TextNorm
+            return [.kern: 0.8, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: foregroundColor]
         }
 
         public static var footer: PMFontAttributes {
@@ -342,7 +361,8 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineHeightMultiple = 1.03
             paragraphStyle.alignment = .center
-            return [.kern: -0.08, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: UIColorManager.Splash.TextHint]
+            let foregroundColor: UIColor = ProtonColorPallete.Splash.TextHint
+            return [.kern: -0.08, .paragraphStyle: paragraphStyle, .font: font, .foregroundColor: foregroundColor]
         }
     }
 }

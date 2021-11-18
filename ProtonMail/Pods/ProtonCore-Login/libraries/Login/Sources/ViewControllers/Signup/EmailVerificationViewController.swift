@@ -41,13 +41,13 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     @IBOutlet weak var emailVerificationTitleLabel: UILabel! {
     didSet {
         emailVerificationTitleLabel.text = CoreString._su_email_verification_view_title
-        emailVerificationTitleLabel.textColor = UIColorManager.TextNorm
+        emailVerificationTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var emailVerificationDescriptionLabel: UILabel! {
     didSet {
         emailVerificationDescriptionLabel.text = String(format: CoreString._su_email_verification_view_desc, viewModel.email ?? "")
-        emailVerificationDescriptionLabel.textColor = UIColorManager.TextWeak
+        emailVerificationDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var verificationCodeTextField: PMTextField! {
@@ -88,7 +88,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         setUpBackArrow(action: #selector(EmailVerificationViewController.onBackButtonTap(_:)))
         setupGestures()
         setupNotifications()

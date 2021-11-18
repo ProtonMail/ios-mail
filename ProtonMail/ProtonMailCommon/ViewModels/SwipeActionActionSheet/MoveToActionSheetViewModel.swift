@@ -33,10 +33,10 @@ protocol MoveToActionSheetViewModel {
 extension MoveToActionSheetViewModel {
     func getColor(of label: MenuLabel) -> UIColor {
         guard label.location.icon == nil else {
-            return UIColorManager.IconNorm
+            return ColorProvider.IconNorm
         }
 
-        guard isEnableColor else { return UIColorManager.IconNorm }
+        guard isEnableColor else { return ColorProvider.IconNorm }
         if isInherit {
             guard let parent = menuLabels.getRootItem(of: label) else {
                 return UIColor(hexColorCode: "#FFFFFF")

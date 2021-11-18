@@ -38,13 +38,13 @@ class ConversationMessageCellPresenter {
 
     private func presentIcons(model: ConversationMessageModel, in view: ConversationMessageView) {
         view.replyImageView.isHidden = !model.isReplied
-        view.replyImageView.tintColor = model.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.replyImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
 
         view.replyAllImageView.isHidden = !model.isRepliedToAll
-        view.replyAllImageView.tintColor = model.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.replyAllImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
 
         view.forwardImageView.isHidden = !model.isForwarded
-        view.forwardImageView.tintColor = model.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.forwardImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
 
         view.attachmentImageView.isHidden = !model.hasAttachment
 
@@ -57,7 +57,7 @@ class ConversationMessageCellPresenter {
         let originImage = model.isCustomFolderLocation ?
             Asset.mailCustomFolder.image : model.messageLocation?.originImage(viewMode: .conversation)
         view.originImageView.image = originImage
-        view.originImageView.tintColor = model.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.originImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
     }
 
     private func presentTags(model: ConversationMessageModel, in view: ConversationMessageView) {

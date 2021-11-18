@@ -239,7 +239,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         SkeletonAppearance.default.renderSingleLineAsView = true
         
-        self.tableView.separatorColor = UIColorManager.InteractionWeak
+        self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         
@@ -257,8 +257,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoView.isHidden = true
         
         //Setup top actions
-        self.topActionsView.backgroundColor = UIColorManager.BackgroundNorm
-        self.updateTimeLabel.textColor = UIColorManager.TextHint
+        self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
+        self.updateTimeLabel.textColor = ColorProvider.TextHint
         
         self.updateUnreadButton()
         self.updateLastUpdateTimeLabel()
@@ -383,7 +383,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.navigationTitleLabel.backgroundColor = UIColor.clear
         self.navigationTitleLabel.font = Fonts.h3.semiBold
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
-        self.navigationTitleLabel.textColor = UIColorManager.TextNorm
+        self.navigationTitleLabel.textColor = ColorProvider.TextNorm
         self.navigationTitleLabel.text = self.title ?? LocalString._locations_inbox_title
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
@@ -391,10 +391,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = .clear
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
-        self.refreshControl.tintColor = UIColorManager.BrandNorm
+        self.refreshControl.tintColor = ColorProvider.BrandNorm
         self.refreshControl.tintColorDidChange()
         
-        self.view.backgroundColor = UIColorManager.BackgroundNorm
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
 
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
@@ -406,15 +406,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
         
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
-        self.menuBarButtonItem.tintColor = UIColorManager.IconNorm
+        self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
         
-        self.noResultMainLabel.textColor = UIColorManager.TextNorm
+        self.noResultMainLabel.textColor = ColorProvider.TextNorm
         self.noResultMainLabel.isHidden = true
         
-        self.noResultSecondaryLabel.textColor = UIColorManager.TextWeak
+        self.noResultSecondaryLabel.textColor = ColorProvider.TextWeak
         self.noResultSecondaryLabel.isHidden = true
         
-        self.noResultFooterLabel.textColor = UIColorManager.TextHint
+        self.noResultFooterLabel.textColor = ColorProvider.TextHint
         self.noResultFooterLabel.isHidden = true
         let attridutes = FontManager.CaptionHint
         self.noResultFooterLabel.attributedText = NSAttributedString(string: LocalString._mailbox_footer_no_result, attributes: attridutes)
@@ -899,10 +899,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         stackView.addArrangedSubview(label)
 
         var attribute = FontManager.CaptionStrong
-        attribute[.foregroundColor] = UIColorManager.TextInverted
+        attribute[.foregroundColor] = ColorProvider.TextInverted
         label.attributedText = messageSwipeAction.description.apply(style: attribute)
         iconView.image = messageSwipeAction.icon
-        iconView.tintColor = UIColorManager.TextInverted
+        iconView.tintColor = ColorProvider.TextInverted
 
         return stackView
     }
@@ -1337,7 +1337,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                            style: UIBarButtonItem.Style.plain,
                                            target: self,
                                            action: #selector(cancelButtonTapped))
-                item.tintColor = UIColorManager.BrandNorm
+                item.tintColor = ColorProvider.BrandNorm
                 self.cancelBarButtonItem = item
             }
             self.navigationItem.setRightBarButtonItems([self.cancelBarButtonItem],
@@ -1349,7 +1349,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             let button = Asset.composeIcon.image.toUIBarButtonItem(
                 target: self,
                 action: #selector(composeButtonTapped),
-                tintColor: UIColorManager.IconNorm,
+                tintColor: ColorProvider.IconNorm,
                 backgroundSquareSize: 40
             )
             self.composeBarButtonItem = button
@@ -1360,7 +1360,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             let button = Asset.composeIcon.image.toUIBarButtonItem(
                 target: self,
                 action: #selector(storageExceededButtonTapped),
-                tintColor: UIColorManager.Shade50,
+                tintColor: ColorProvider.Shade50,
                 backgroundSquareSize: 40
             )
             self.storageExceededBarButtonItem = button
@@ -1371,7 +1371,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             let button = Asset.searchIcon.image.toUIBarButtonItem(
                 target: self,
                 action: #selector(searchButtonTapped),
-                tintColor: UIColorManager.IconNorm,
+                tintColor: ColorProvider.IconNorm,
                 backgroundSquareSize: 40
             )
             self.searchBarButtonItem = button
@@ -1442,19 +1442,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func updateUnreadButton() {
         let unread = viewModel.lastUpdateTime()?.unread ?? 0
         let isInUnreadFilter = unreadFilterButton.isSelected
-        unreadFilterButton.backgroundColor = isInUnreadFilter ? UIColorManager.BrandNorm : UIColorManager.BackgroundSecondary
+        unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
         unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
         let number = unread > 9999 ? " +9999" : "\(unread)"
 
         if isInUnreadFilter {
             var selectedAttributes = FontManager.CaptionStrong
-            selectedAttributes[.foregroundColor] = UIColorManager.TextInverted
+            selectedAttributes[.foregroundColor] = ColorProvider.TextInverted
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: selectedAttributes),
                                                   for: .selected)
         } else {
             var normalAttributes = FontManager.CaptionStrong
-            normalAttributes[.foregroundColor] = UIColorManager.BrandNorm
+            normalAttributes[.foregroundColor] = ColorProvider.BrandNorm
 
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: normalAttributes),
                                                   for: .normal)
@@ -1468,7 +1468,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .NotReachable {
             var attribute = FontManager.CaptionHint
-            attribute[.foregroundColor] = UIColorManager.NotificationError
+            attribute[.foregroundColor] = ColorProvider.NotificationError
             updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
             return
         }
@@ -1602,7 +1602,7 @@ extension MailboxViewController {
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
-                                              itemColor: UIColorManager.TextInverted,
+                                              itemColor: ColorProvider.TextInverted,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
@@ -1614,10 +1614,10 @@ extension MailboxViewController {
         }
         let separator = PMActionBarItem(width: 1,
                                         verticalPadding: 6,
-                                        color: UIColorManager.FloatyText)
+                                        color: ColorProvider.FloatyText)
         actionItems.insert(separator, at: 1)
         self.mailActionBar = PMActionBar(items: actionItems,
-                                         backgroundColor: UIColorManager.FloatyBackground,
+                                         backgroundColor: ColorProvider.FloatyBackground,
                                          floatingHeight: 42.0,
                                          width: .fit,
                                          height: 48.0)
@@ -2385,8 +2385,8 @@ extension MailboxViewController {
     }
 
     private func configureUnreadFilterButton() {
-        self.unreadFilterButton.setTitleColor(UIColorManager.BrandNorm, for: .normal)
-        self.unreadFilterButton.setTitleColor(UIColorManager.BackgroundNorm, for: .selected)
+        self.unreadFilterButton.setTitleColor(ColorProvider.BrandNorm, for: .normal)
+        self.unreadFilterButton.setTitleColor(ColorProvider.BackgroundNorm, for: .selected)
         self.unreadFilterButton.setImage(Asset.mailLabelCrossIcon.image, for: .selected)
         self.unreadFilterButton.semanticContentAttribute = .forceRightToLeft
         self.unreadFilterButton.titleLabel?.isSkeletonable = true
@@ -2394,7 +2394,7 @@ extension MailboxViewController {
         self.unreadFilterButton.translatesAutoresizingMaskIntoConstraints = false
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
         self.unreadFilterButton.layer.masksToBounds = true
-        self.unreadFilterButton.backgroundColor = UIColorManager.BackgroundSecondary
+        self.unreadFilterButton.backgroundColor = ColorProvider.BackgroundSecondary
         self.unreadFilterButton.isSelected = viewModel.isCurrentUserSelectedUnreadFilterInInbox
         self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
         self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)

@@ -30,16 +30,9 @@ public enum PaymentsUIPresentationType {
 public enum PaymentsUIResultReason {
     case open(vc: PaymentsUIViewController, opened: Bool)
     case close
-    case purchasedPlan(accountPlan: AccountPlan)
+    case purchasedPlan(accountPlan: InAppPurchasePlan)
+    case planPurchaseProcessingInProgress(accountPlan: InAppPurchasePlan)
     case purchaseError(error: Error)
-}
-
-// Can be extended with other platform plans
-public enum PlanTypes {
-    case mail           // mail plans
-    case vpn            // vpn plans
-    case mailWithoutUpgrades // mail plans but with no ability to upgrade
-    case vpnWithoutUpgrades  // vpn plans but with no ability to upgrade
 }
 
 enum PaymentsUIMode {
@@ -48,28 +41,43 @@ enum PaymentsUIMode {
     case update         // presents plans to upgrade
 }
 
-public class PaymentsUI {
-    
-    private let servicePlan: ServicePlanDataService
+public final class PaymentsUI {
+
     private let coordinator: PaymentsUICoordinator
+    private let paymentsUIAlertManager: PaymentsUIAlertManager
     
-    public init(servicePlanDataService: ServicePlanDataService, planTypes: PlanTypes) {
-        self.servicePlan = servicePlanDataService
-        self.coordinator = PaymentsUICoordinator(planTypes: planTypes)
+    public init(payments: Payments, alertManager: AlertManagerProtocol? = nil) {
+        if let alertManager = alertManager {
+            self.paymentsUIAlertManager = AlwaysDelegatingPaymentsUIAlertManager(delegatedAlertManager: alertManager)
+        } else {
+            let paymentsUIAlertManager = LocallyPresentingPaymentsUIAlertManager(delegatedAlertManager: payments.alertManager)
+            payments.alertManager = paymentsUIAlertManager
+            self.paymentsUIAlertManager = paymentsUIAlertManager
+        }
+        self.coordinator = PaymentsUICoordinator(planService: payments.planService,
+                                                 storeKitManager: payments.storeKitManager,
+                                                 purchaseManager: payments.purchaseManager,
+                                                 alertManager: paymentsUIAlertManager)
     }
     
     // MARK: Public interface
     
     public func showSignupPlans(viewController: UIViewController, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
-        coordinator.start(viewController: viewController, servicePlan: servicePlan, completionHandler: completionHandler)
+        coordinator.start(viewController: viewController, completionHandler: completionHandler)
     }
     
-    public func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
-        coordinator.start(presentationType: presentationType, servicePlan: servicePlan, mode: .current, backendFetch: backendFetch, completionHandler: completionHandler)
+    public func showCurrentPlan(presentationType: PaymentsUIPresentationType,
+                                backendFetch: Bool,
+                                updateCredits: Bool,
+                                completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
+        coordinator.start(presentationType: presentationType, mode: .current, backendFetch: backendFetch, updateCredits: updateCredits, completionHandler: completionHandler)
     }
     
-    public func showUpgradePlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
-        coordinator.start(presentationType: presentationType, servicePlan: servicePlan, mode: .update, backendFetch: backendFetch, completionHandler: completionHandler)
+    public func showUpgradePlan(presentationType: PaymentsUIPresentationType,
+                                backendFetch: Bool,
+                                updateCredits: Bool,
+                                completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
+        coordinator.start(presentationType: presentationType, mode: .update, backendFetch: backendFetch, updateCredits: updateCredits, completionHandler: completionHandler)
     }
 
 }

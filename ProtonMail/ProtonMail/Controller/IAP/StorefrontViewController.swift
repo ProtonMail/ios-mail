@@ -49,7 +49,9 @@ class StorefrontViewController: UIViewController {
     }
 
     private func presentSubscriptions() {
-        paymentsUI.showCurrentPlan(presentationType: .none, backendFetch: true) { [weak self] result in
+        paymentsUI.showCurrentPlan(presentationType: .none,
+                                   backendFetch: true,
+                                   updateCredits: false) { [weak self] result in
             switch result {
             case let .open(viewController, opened) where !opened:
                 self?.present(paymentsViewController: viewController)
@@ -74,7 +76,7 @@ class StorefrontViewController: UIViewController {
             target: self,
             action: #selector(topMenuTapped)
         )
-        navigationItem.leftBarButtonItem?.tintColor = UIColorManager.IconNorm
+        navigationItem.leftBarButtonItem?.tintColor = ColorProvider.IconNorm
     }
 
     @objc

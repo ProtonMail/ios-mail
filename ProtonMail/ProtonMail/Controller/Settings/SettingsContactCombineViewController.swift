@@ -38,7 +38,7 @@ class SettingsContactCombineViewController: ProtonMailTableViewController, ViewM
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
 
@@ -96,7 +96,7 @@ extension SettingsContactCombineViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
 
         if let headerCell = header {
             let textLabel = UILabel()

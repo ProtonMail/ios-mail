@@ -26,7 +26,7 @@ class RemoteContentBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         setCornerRadius(radius: 8)
         addSubviews()
         setUpLayout()
@@ -79,7 +79,7 @@ private enum SubviewsFactory {
             LocalString._banner_load_remote_content.apply(style: FontManager.body3RegularNorm),
             for: .normal
         )
-        button.backgroundColor = UIColorManager.InteractionWeak
+        button.backgroundColor = ColorProvider.InteractionWeak
         button.setCornerRadius(radius: 3)
         return button
     }
@@ -94,7 +94,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.mailRemoteContentIcon.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 }

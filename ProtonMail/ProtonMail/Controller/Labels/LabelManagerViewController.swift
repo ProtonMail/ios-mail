@@ -82,7 +82,7 @@ extension LabelManagerViewController {
                                       target: self,
                                       action: #selector(self.enableReorderMode))
         var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = UIColorManager.InteractionNorm
+        attr[.foregroundColor] = ColorProvider.InteractionNorm
         reorder.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = reorder
     }
@@ -93,13 +93,13 @@ extension LabelManagerViewController {
                                    target: self,
                                    action: #selector(self.disableReorderMode))
         var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = UIColorManager.InteractionNorm
+        attr[.foregroundColor] = ColorProvider.InteractionNorm
         done.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = done
     }
 
     private func setupTable() {
-        self.tableView.backgroundColor = UIColorManager.BackgroundSecondary
+        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(MenuItemTableViewCell.defaultNib(),
@@ -198,8 +198,8 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         let title = self.viewModel.type == .folder ? LocalString._your_folders: LocalString._your_labels
         let view = PMHeaderView(title: title,
                                 fontSize: 15,
-                                titleColor: UIColorManager.TextWeak,
-                                background: UIColorManager.BackgroundSecondary)
+                                titleColor: ColorProvider.TextWeak,
+                                background: ColorProvider.BackgroundSecondary)
         return view
     }
 
@@ -226,7 +226,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
 
         imageView.image = Asset.icGripLinesVertical.image
         imageView.contentMode = .center
-        imageView.tintColor = UIColorManager.IconHint
+        imageView.tintColor = ColorProvider.IconHint
 
         imageView.frame.size.width = cell.bounds.height
         imageView.frame.size.height = cell.bounds.height
@@ -250,11 +250,11 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             feedback(true)
         }
         cell.selectionStyle = .none
-        cell.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         if self.tableView.isEditing {
             cell.switchView.isEnabled = false
-            cell.switchView.onTintColor = UIColorManager.IconDisabled
-            cell.topLineLabel.textColor = UIColorManager.TextDisabled
+            cell.switchView.onTintColor = ColorProvider.IconDisabled
+            cell.topLineLabel.textColor = ColorProvider.TextDisabled
         }
         cell.addSeparator(padding: 0)
         return cell
@@ -269,14 +269,14 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
         guard let instance = cell else { return .init() }
         instance.textLabel?.attributedText = self.viewModel.createTitle.apply(style: .DefaultHint)
         instance.imageView?.image = Asset.menuPlus.image
-        instance.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         if self.tableView.isEditing {
-            instance.imageView?.tintColor = UIColorManager.IconDisabled
-            instance.textLabel?.textColor = UIColorManager.TextDisabled
+            instance.imageView?.tintColor = ColorProvider.IconDisabled
+            instance.textLabel?.textColor = ColorProvider.TextDisabled
         } else {
-            instance.imageView?.tintColor = UIColorManager.IconWeak
-            instance.textLabel?.textColor = UIColorManager.TextWeak
+            instance.imageView?.tintColor = ColorProvider.IconWeak
+            instance.textLabel?.textColor = ColorProvider.TextWeak
         }
 
         return instance
@@ -295,9 +295,9 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
 
         let color = self.viewModel.getFolderColor(label: data)
         cell.update(iconColor: color)
-        cell.update(textColor: UIColorManager.TextNorm)
+        cell.update(textColor: ColorProvider.TextNorm)
         cell.update(attribure: FontManager.Default.lineBreakMode())
-        cell.backgroundColor = UIColorManager.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         cell.selectionStyle = .none
         cell.accessoryType = .disclosureIndicator
         cell.addSeparator(padding: 0)

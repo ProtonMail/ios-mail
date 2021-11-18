@@ -37,8 +37,8 @@ final class ContactEditUrlCell: UITableViewCell {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._contacts_vcard_url_placeholder
-        self.valueField.tintColor = UIColorManager.TextHint
-        backgroundColor = UIColorManager.BackgroundNorm
+        self.valueField.tintColor = ColorProvider.TextHint
+        backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func layoutSubviews() {

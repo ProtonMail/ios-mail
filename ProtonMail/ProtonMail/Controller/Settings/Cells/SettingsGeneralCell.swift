@@ -51,7 +51,7 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.rightArrowImage?.tintColor = UIColorManager.TextHint
+        self.rightArrowImage?.tintColor = ColorProvider.TextHint
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -97,7 +97,9 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         }
 
         self.accessibilityLabel = left
-        generateCellAccessibilityIdentifiers(leftText.text!)
+        if let text = leftText.text {
+            generateCellAccessibilityIdentifiers(text)
+        }
     }
 
     func configure(left: String, imageType: ImageType = .arrow) {

@@ -78,12 +78,12 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
     }
 
     private func configureUI() {
-        cancelButton.tintColor = UIColorManager.IconNorm
+        cancelButton.tintColor = ColorProvider.IconNorm
         contentView.layer.cornerRadius = 4
         searchBar.placeholder = viewModel.getSearchBarPlaceholderText()
         searchBar.delegate = self
-        contentView.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         let nib = UINib(nibName: countryCodeHeader, bundle: PMUIFoundations.bundle)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: countryCodeHeader)

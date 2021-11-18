@@ -33,8 +33,8 @@ class CountryCodeTableViewCell: UITableViewCell, AccessibleCell {
         imageView?.contentMode = .scaleAspectFit
         flagImageView.layer.cornerRadius = 4
         flagImageView.layer.masksToBounds = true
-        countryLabel.textColor = UIColorManager.TextNorm
-        codeLabel.textColor = UIColorManager.TextWeak
+        countryLabel.textColor = ColorProvider.TextNorm
+        codeLabel.textColor = ColorProvider.TextWeak
     }
 
     func configCell(_ countryCode: CountryCode) {

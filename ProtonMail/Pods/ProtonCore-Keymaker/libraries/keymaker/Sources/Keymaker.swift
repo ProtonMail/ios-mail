@@ -95,6 +95,10 @@ public class Keymaker: NSObject {
     
     @available(*, deprecated, message: "this shouldn't be used after the migration and this will be private.")
     public var mainKey: MainKey? {
+        privatelyAccessibleMainKey
+    }
+
+    private var privatelyAccessibleMainKey: MainKey? {
         if self.autolocker?.shouldAutolockNow() == true {
             self._mainKey = nil
         }
@@ -110,7 +114,7 @@ public class Keymaker: NSObject {
         }
         
         guard let protectionStrategy = protection else {
-            return self.mainKey
+            return self.privatelyAccessibleMainKey
         }
         if self._key == nil, let newKey = self.obtainMainKeyBackground(with: protectionStrategy) {
             self._key = newKey
@@ -132,7 +136,7 @@ public class Keymaker: NSObject {
         do {
             let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
             self._key = mainKeyBytes
-        } catch let error {
+        } catch {
             self._key = nil
         }
         return self._key
@@ -216,7 +220,7 @@ public class Keymaker: NSObject {
             NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return false
         }
-        if self.mainKey != nil {
+        if self.privatelyAccessibleMainKey != nil {
             self.resetAutolock()
         }
         return true
@@ -293,7 +297,7 @@ public class Keymaker: NSObject {
     {
         let isMainThread = Thread.current.isMainThread
         self.controlThread.addOperation {
-            guard let mainKey = self.mainKey,
+            guard let mainKey = self.privatelyAccessibleMainKey,
                   (try? protector.lock(value: mainKey)) != nil else
             {
                 isMainThread ? DispatchQueue.main.async{ completion(false) } : completion(false)
@@ -353,6 +357,6 @@ public class Keymaker: NSObject {
     
     public func updateAutolockCountdownStart() {
         self.autolocker?.updateAutolockCountdownStart()
-        _ = self.mainKey
+        _ = self.privatelyAccessibleMainKey
     }
 }

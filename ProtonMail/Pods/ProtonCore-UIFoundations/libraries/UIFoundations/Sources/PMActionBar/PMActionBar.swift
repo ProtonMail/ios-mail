@@ -70,7 +70,7 @@ public final class PMActionBar: UIView {
     ///   - height: Height of the action bar, default value is `48`
     ///   - autoInset: Auto adjust bottom inset of scrollview based element to prevent shade or not
     public convenience init(items: [PMActionBarItem],
-                            backgroundColor: UIColor = BackgroundColors._ActionBar,
+                            backgroundColor: UIColor = ColorProvider.FloatyBackground,
                             floatingHeight: CGFloat = 48,
                             width: Width = .extend,
                             height: CGFloat = 48,

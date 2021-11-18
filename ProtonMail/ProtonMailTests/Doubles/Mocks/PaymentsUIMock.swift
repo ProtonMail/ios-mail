@@ -38,18 +38,20 @@ class PaymentsUIMock: PaymentsUIProtocol {
     func showCurrentPlan(
         presentationType: PaymentsUIPresentationType,
         backendFetch: Bool,
+        updateCredits: Bool,
         completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
     ) {
-        showCurrentPlan(presentationType, backendFetch, completionHandler)
+        showCurrentPlan(presentationType, backendFetch, updateCredits, completionHandler)
     }
 
     @FuncStub(PaymentsUIMock.showUpgradePlan) var showUpgradePlan
     func showUpgradePlan(
         presentationType: PaymentsUIPresentationType,
         backendFetch: Bool,
+        updateCredits: Bool,
         completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
     ) {
-        showUpgradePlan(presentationType, backendFetch, completionHandler)
+        showUpgradePlan(presentationType, backendFetch, updateCredits, completionHandler)
     }
 
 }

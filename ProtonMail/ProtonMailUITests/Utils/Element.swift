@@ -48,7 +48,8 @@ struct Element {
         
         static func switchByIndexHasValue(_ index: Int, _ value: Int, file: StaticString = #file, line: UInt = #line) {
             let element = app.switches.element(boundBy: index)
-            XCTAssertTrue(Int((element.value as? String)!) == value, "Switch element \(element.debugDescription) should be in state \(value), but is \(element.value).", file: file, line: line)
+            let elementValue = Int((element.value as? String) ?? "999999999") ?? 999999999
+            XCTAssertTrue(elementValue == value, "Switch element \(element.debugDescription) should be in state \(value), but is \(elementValue).", file: file, line: line)
         }
     }
     

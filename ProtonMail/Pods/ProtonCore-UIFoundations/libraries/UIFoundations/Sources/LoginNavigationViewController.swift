@@ -67,9 +67,9 @@ public final class LoginNavigationViewController: UINavigationController {
     public func setUpNavigationBarWithShadow() {
         baseNavigationBarConfiguration()
         if #available(iOS 13.0, *) {
-            navigationBar.standardAppearance.shadowImage = .colored(with: UIColorManager.Shade20)
+            navigationBar.standardAppearance.shadowImage = .colored(with: ColorProvider.Shade20)
         } else {
-            navigationBar.shadowImage = .colored(with: UIColorManager.Shade20)
+            navigationBar.shadowImage = .colored(with: ColorProvider.Shade20)
         }
     }
 

@@ -28,8 +28,8 @@ class CountryCodeTableHeaderView: UITableViewHeaderFooterView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = UIColorManager.SeparatorNorm
-        titleLabel.textColor = UIColorManager.TextWeak
+        contentView.backgroundColor = ColorProvider.SeparatorNorm
+        titleLabel.textColor = ColorProvider.TextWeak
     }
 }
 #endif

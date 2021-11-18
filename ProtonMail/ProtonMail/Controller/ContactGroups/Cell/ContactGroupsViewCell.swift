@@ -58,9 +58,9 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         sendButtonImage.image = UIImage(named: "mail_send_icon")
-        sendButtonImage.tintColor = UIColorManager.IconWeak
+        sendButtonImage.tintColor = ColorProvider.IconWeak
     }
     
     func setCount(_ count: Int) {

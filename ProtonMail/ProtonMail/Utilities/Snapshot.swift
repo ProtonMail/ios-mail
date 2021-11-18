@@ -54,14 +54,14 @@ class Snapshot {
                 .loadNibNamed(NibName.Name, owner: nil, options: nil)?.first as? UIView else {
             return nil
         }
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.tag = Tag.snapshot
         return view
     }
 
     private func getDefaultView() -> UIView {
         let view = UIView(frame: CGRect.zero)
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.tag = Tag.snapshot
         return view
     }

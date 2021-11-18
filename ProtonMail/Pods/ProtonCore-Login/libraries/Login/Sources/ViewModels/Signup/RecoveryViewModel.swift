@@ -45,7 +45,7 @@ class RecoveryViewModel {
     func termsAttributedString(textView: UITextView) -> NSAttributedString {
         var text = CoreString._su_recovery_t_c_desc
         let linkText = CoreString._su_recovery_t_c_link
-        if ProcessInfo.processInfo.arguments.contains("testMode") {
+        if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             // Workaround for UI test automation to detect link in separated line
             let texts = text.components(separatedBy: linkText)
             if texts.count >= 2 {

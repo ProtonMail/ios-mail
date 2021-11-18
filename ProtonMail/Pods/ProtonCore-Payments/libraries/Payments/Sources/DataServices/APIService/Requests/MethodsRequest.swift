@@ -20,33 +20,22 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
 final class MethodsRequest: BaseApiRequest<MethodsResponse> {
 
-    override func path() -> String {
-        return super.path() + "/methods"
-    }
+    override var path: String { super.path + "/v4/methods" }
 }
 
-final class MethodsResponse: ApiResponse {
+final class MethodsResponse: Response {
     var methods: [PaymentMethod]?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        do {
-            let data = try JSONSerialization.data(withJSONObject: response["PaymentMethods"] as Any, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
-            self.methods = try decoder.decode(Array<PaymentMethod>.self, from: data)
-            return true
-        } catch let decodingError {
-            error = RequestErrors.methodsDecode.toResponseError(updating: error)
-            PMLog.debug("Failed to parse PaymentMethods: \(decodingError.localizedDescription)")
-            return false
-        }
+        let (result, methods) = decodeResponse(response["PaymentMethods"] as Any, to: [PaymentMethod].self)
+        self.methods = methods
+        return result
     }
 }

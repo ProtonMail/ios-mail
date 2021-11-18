@@ -183,7 +183,9 @@ class UnlockManager: Service {
             $0.messageService.injectTransientValuesIntoMessages()
         }
         self.updateCommonUserData()
-        StoreKitManager.default.continueRegistrationPurchase()
+        if let primaryUser = usersManager.firstUser {
+            primaryUser.payments.storeKitManager.continueRegistrationPurchase(finishHandler: nil)
+        }
         #endif
         
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock

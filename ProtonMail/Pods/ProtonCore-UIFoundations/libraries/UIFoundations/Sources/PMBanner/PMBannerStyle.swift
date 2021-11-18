@@ -54,7 +54,7 @@ extension PMBannerStyleProtocol {
 
     /// Banner border raius
     public var borderRadius: CGFloat {
-        return 4
+        return 8
     }
 
     /// Banner paddings
@@ -98,13 +98,13 @@ public enum PMBannerStyle: PMBannerStyleProtocol {
     public var bannerColor: UIColor {
         switch self {
         case .success:
-            return FunctionalColors._Green
+            return ColorProvider.NotificationSuccess
         case .warning:
-            return FunctionalColors._Yellow
+            return ColorProvider.NotificationWarning
         case .error:
-            return FunctionalColors._Red
+            return ColorProvider.NotificationError
         case .info:
-            return SolidColors._N9
+            return ColorProvider.BackgroundSecondary
         }
     }
 

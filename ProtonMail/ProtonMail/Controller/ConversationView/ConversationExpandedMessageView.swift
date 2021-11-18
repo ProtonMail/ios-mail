@@ -11,7 +11,7 @@ class ConversationExpandedMessageView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         addSubviews()
         setUpLayout()
         setUpActions()
@@ -76,7 +76,7 @@ private enum SubviewsFactory {
 
     static var container: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.layer.cornerRadius = 20
         view.layer.apply(shadow: .custom(y: 2))
         return view

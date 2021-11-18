@@ -135,7 +135,7 @@ class SignupService: Signup {
     private struct AuthParateters {
         let salt: Data
         let verifier: Data
-        let challenge: [String: Any]
+        let challenge: [[String: Any]]
     }
 
     private func gererateAuthParameters(password: String, modulus: String) throws -> AuthParateters {
@@ -146,7 +146,7 @@ class SignupService: Signup {
             throw SignupError.cantHashPassword
         }
         let verifier = try auth.generateVerifier(2048)
-        let challenge = self.challenge.export().toDictionary()
+        let challenge = self.challenge.export().toDictArray()
         return AuthParateters(salt: salt, verifier: verifier, challenge: challenge)
     }
 

@@ -26,7 +26,7 @@ class ErrorBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.NotificationError
+        backgroundColor = ColorProvider.NotificationError
         setCornerRadius(radius: 8)
         addSubviews()
         setUpLayout()
@@ -62,7 +62,7 @@ class ErrorBannerView: UIView {
 
     func setErrorTitle(_ title: String) {
         var titleAttribute = FontManager.DefaultSmall
-        titleAttribute[.foregroundColor] = UIColorManager.TextInverted
+        titleAttribute[.foregroundColor] = ColorProvider.TextInverted
         titleLabel.attributedText = NSAttributedString(string: title,
                                                        attributes: titleAttribute)
     }
@@ -79,7 +79,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.bannerExclamation.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconInverted
+        imageView.tintColor = ColorProvider.IconInverted
         return imageView
     }
 }

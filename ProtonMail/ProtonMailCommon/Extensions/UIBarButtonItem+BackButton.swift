@@ -27,7 +27,7 @@ extension UIBarButtonItem {
             .toUIBarButtonItem(target: target,
                                action: action,
                                style: .plain,
-                               tintColor: UIColorManager.TextNorm,
+                               tintColor: ColorProvider.TextNorm,
                                imageInsets: UIEdgeInsets(top: topInset, left: leftInset, bottom: .zero, right: .zero))
     }
 }

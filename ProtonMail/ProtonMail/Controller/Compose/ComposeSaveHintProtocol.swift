@@ -51,7 +51,7 @@ extension ComposeSaveHintProtocol {
               let messageID = cache.lastDraftMessageID else { return }
         let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext)
 
-        let banner = PMBanner(message: LocalString._composer_draft_saved, style: PMBannerStyle.info)
+        let banner = PMBanner(message: LocalString._composer_draft_saved, style: TempPMBannerNewStyle.info)
         banner.addButton(text: LocalString._menu_trash_title) { [weak self] _ in
             messageService.move(messages: messages,
                                 from: [LabelLocation.draft.labelID],
@@ -76,7 +76,7 @@ extension ComposeSaveHintProtocol {
                                     cache: UserCachedStatus,
                                     messageService: MessageDataService) {
         let banner = PMBanner(message: LocalString._composer_draft_moved_to_trash,
-                              style: PMBannerStyle.info)
+                              style: TempPMBannerNewStyle.info)
         banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
             messageService.move(messages: messages,
                                 from: [LabelLocation.trash.labelID],
@@ -89,12 +89,12 @@ extension ComposeSaveHintProtocol {
 
     func showDraftRestoredBanner(cache: UserCachedStatus) {
         // _composer_draft_restored
-        let banner = PMBanner(message: LocalString._composer_draft_restored, style: PMBannerStyle.info)
+        let banner = PMBanner(message: LocalString._composer_draft_restored, style: TempPMBannerNewStyle.info)
         banner.show(at: getPosition(), on: self)
     }
     
     func showMessageSendingHintBanner() {
-        let banner = PMBanner(message: LocalString._messages_sending_message, style: PMBannerStyle.info)
+        let banner = PMBanner(message: LocalString._messages_sending_message, style: TempPMBannerNewStyle.info)
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 

@@ -80,4 +80,8 @@ struct Constants {
             }
         }
     }
+    
+    static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
+                                           "iosmail_mail2021_12_usd_non_renewing",
+                                           "iosmail_bundle2021_12_usd_non_renewing"]
 }

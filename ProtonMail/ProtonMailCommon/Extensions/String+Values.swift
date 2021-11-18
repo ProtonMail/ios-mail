@@ -13,4 +13,12 @@ extension String {
     static var toSubscriptionPage: String {
         return "Subscription"
     }
+
+    static var toWebSupportForm: String {
+        return "toWebSupportForm"
+    }
+
+    static var webSupportFormLink: String {
+        return "https://protonmail.com/support-form"
+    }
 }

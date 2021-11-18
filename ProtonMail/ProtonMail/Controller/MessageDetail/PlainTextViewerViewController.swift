@@ -54,9 +54,9 @@ class PlainTextViewerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         navigationItem.title = subType.title
-        dropShadowView.backgroundColor = UIColorManager.IconWeak.withAlphaComponent(0.2)
+        dropShadowView.backgroundColor = ColorProvider.IconWeak.withAlphaComponent(0.2)
         buildLayout()
         textView.isEditable = false
         textView.attributedText = text.apply(style: FontManager.Default)

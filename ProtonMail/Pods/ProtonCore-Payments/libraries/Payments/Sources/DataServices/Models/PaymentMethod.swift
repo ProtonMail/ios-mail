@@ -23,13 +23,13 @@
 
 import Foundation
 
-struct PaymentMethod: Codable {
-    enum PaymentType: String, Codable {
+public struct PaymentMethod: Codable, Equatable {
+    public enum PaymentType: String, Codable, Equatable {
         case other
         case apple
         case card
 
-        init?(rawValue: String) {
+        public init?(rawValue: String) {
             if rawValue == PaymentType.apple.rawValue {
                 self = .apple
             } else if rawValue == PaymentType.card.rawValue {
@@ -40,6 +40,6 @@ struct PaymentMethod: Codable {
         }
     }
 
-    let iD: String
-    let type: PaymentType
+    public let iD: String
+    public let type: PaymentType
 }

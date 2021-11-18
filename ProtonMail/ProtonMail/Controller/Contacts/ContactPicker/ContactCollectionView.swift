@@ -102,7 +102,7 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         
         self.allowsMultipleSelection = false
         self.allowsSelection = true
-        self.backgroundColor = UIColorManager.BackgroundNorm
+        self.backgroundColor = ColorProvider.BackgroundNorm
         
         //        self.register(ContactCollectionViewContactCell.self, forCellWithReuseIdentifier: "ContactCell")
         self.register(UINib.init(nibName: "ContactCollectionViewContactCell", bundle: nil),

@@ -61,7 +61,7 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
     }
 
     private func setupUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         titleLabel.text = CoreString._ls_username_screen_title
         subtitleLabel.text = String(format: CoreString._ls_username_screen_info, viewModel.externalEmail, viewModel.appName)
         addressTextField.title = CoreString._ls_username_username_title

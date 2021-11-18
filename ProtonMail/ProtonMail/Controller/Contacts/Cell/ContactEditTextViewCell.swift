@@ -40,10 +40,10 @@ final class ContactEditTextViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.textView.delegate = self
-        self.textView.tintColor = UIColorManager.TextHint
-        self.textView.textColor = UIColorManager.TextNorm
-        self.textView.backgroundColor = UIColorManager.BackgroundNorm
-        backgroundColor = UIColorManager.BackgroundNorm
+        self.textView.tintColor = ColorProvider.TextHint
+        self.textView.textColor = ColorProvider.TextNorm
+        self.textView.backgroundColor = ColorProvider.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
     }
 
     @IBAction func notesClicked(_ sender: Any) {

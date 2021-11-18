@@ -26,10 +26,6 @@ import ProtonCore_Challenge
 protocol FingerprintProtocol {
     func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType)
     
-    func requestHumanVerification()
-    
-    func humanVerificationFinish()
-    
     func challengeExport() -> PMChallenge.Challenge
 }
 
@@ -133,16 +129,8 @@ class SignupViewModel : NSObject, FingerprintProtocol {
     func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType) {
         fatalError("This method must be overridden")
     }
-    
-    func requestHumanVerification() {
-        fatalError("This method must be overridden")
-    }
-    
+
     func challengeExport() -> PMChallenge.Challenge {
-        fatalError("This method must be overridden")
-    }
-    
-    func humanVerificationFinish() {
         fatalError("This method must be overridden")
     }
 }

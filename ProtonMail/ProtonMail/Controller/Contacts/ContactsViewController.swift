@@ -61,7 +61,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         
         tableView.register(ContactsTableViewCell.nib,
                            forCellReuseIdentifier: ContactsTableViewCell.cellID)
@@ -75,15 +75,15 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         tableView.dataSource = self
         tableView.delegate = self
         
-        refreshControl.tintColor = UIColorManager.BrandNorm
+        refreshControl.tintColor = ColorProvider.BrandNorm
         refreshControl.tintColorDidChange()
 
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.sectionIndexColor = UIColorManager.BrandNorm
-        self.tableView.backgroundColor = UIColorManager.BackgroundNorm
+        self.tableView.sectionIndexColor = ColorProvider.BrandNorm
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         
         //get all contacts
         self.viewModel.setupFetchedResults(delegate: self)
@@ -147,8 +147,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.searchBar.keyboardAppearance = .light
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = UIColorManager.TextNorm
-        self.searchController.searchBar.barTintColor = UIColorManager.BackgroundNorm
+        self.searchController.searchBar.tintColor = ColorProvider.TextNorm
+        self.searchController.searchBar.barTintColor = ColorProvider.BackgroundNorm
         self.searchController.searchBar.backgroundColor = .clear
 
         self.searchViewConstraint.constant = 0.0

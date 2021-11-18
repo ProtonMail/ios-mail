@@ -33,7 +33,7 @@ class SpamBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.NotificationError
+        backgroundColor = ColorProvider.NotificationError
         roundCorner(4)
         addSubviews()
         setUpLayout()
@@ -98,7 +98,7 @@ private enum SubviewsFactory {
 
     static var infoTextView: UITextView {
         let textView = UITextView(frame: .zero)
-        textView.linkTextAttributes = [.link: UIColorManager.TextInverted]
+        textView.linkTextAttributes = [.link: ColorProvider.TextInverted]
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.textContainerInset = .zero
@@ -108,7 +108,7 @@ private enum SubviewsFactory {
 
     static var iconImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.tintColor = UIColorManager.IconInverted
+        imageView.tintColor = ColorProvider.IconInverted
         return imageView
     }
 

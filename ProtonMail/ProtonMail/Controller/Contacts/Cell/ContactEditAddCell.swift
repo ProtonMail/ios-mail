@@ -25,8 +25,8 @@ import ProtonCore_UIFoundations
 final class ContactEditAddCell: UITableViewCell, AccessibleCell {
     @IBOutlet var valueLabel: UILabel!
 
-    func configCell(value: String, color: UIColor = UIColorManager.TextNorm) {
-        backgroundColor = UIColorManager.BackgroundNorm
+    func configCell(value: String, color: UIColor = ColorProvider.TextNorm) {
+        backgroundColor = ColorProvider.BackgroundNorm
 
         self.valueLabel.attributedText = value.apply(style: FontManager.Default.foregroundColor(color))
         generateCellAccessibilityIdentifiers(value)

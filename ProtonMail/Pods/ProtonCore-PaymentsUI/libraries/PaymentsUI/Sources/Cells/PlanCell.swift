@@ -25,7 +25,7 @@ import ProtonCore_Foundations
 import ProtonCore_CoreTranslation
 
 protocol PlanCellDelegate: AnyObject {
-    func userPressedSelectPlanButton(plan: Plan, completionHandler: @escaping () -> Void)
+    func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void)
 }
 
 final class PlanCell: UITableViewCell, AccessibleCell {
@@ -34,7 +34,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     static let nib = UINib(nibName: "PlanCell", bundle: PaymentsUI.bundle)
     
     weak var delegate: PlanCellDelegate?
-    var plan: Plan?
+    var plan: PlanPresentation?
 
     // MARK: - Outlets
     
@@ -42,18 +42,18 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         didSet {
             mainView.layer.borderWidth = 1.0
             mainView.layer.cornerRadius = 6.0
-            mainView.layer.borderColor = UIColorManager.Shade20.cgColor
+            mainView.layer.borderColor = ColorProvider.Shade20.cgColor
         }
     }
     @IBOutlet weak var planNameLabel: UILabel! {
         didSet {
-            planNameLabel.textColor = UIColorManager.TextNorm
+            planNameLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var planPriceSeparator: UIView!
     @IBOutlet weak var planPriceLabel: UILabel! {
         didSet {
-            planPriceLabel.textColor = UIColorManager.TextNorm
+            planPriceLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var planDetailsStackView: UIStackView!
@@ -67,19 +67,19 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var timeSeparator1View: UIView!
     @IBOutlet weak var separatorLineView: UIView! {
         didSet {
-            separatorLineView.backgroundColor = UIColorManager.Shade20
+            separatorLineView.backgroundColor = ColorProvider.Shade20
         }
     }
     @IBOutlet weak var timeSeparator2View: UIView!
     @IBOutlet weak var planTimeLabel: UILabel! {
         didSet {
-            planTimeLabel.textColor = UIColorManager.TextWeak
+            planTimeLabel.textColor = ColorProvider.TextWeak
         }
     }
     
     // MARK: - Properties
     
-    func configurePlan(plan: Plan, isSignup: Bool) {
+    func configurePlan(plan: PlanPresentation, isSignup: Bool) {
         planDetailsStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
         self.plan = plan
         planNameLabel.text = plan.name
@@ -87,17 +87,22 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         switch plan.title {
         case .price(let price):
             if let price = price {
-                let attributedText = NSMutableAttributedString(string: price, attributes: [.font: UIFont.systemFont(ofSize: 22), .foregroundColor: UIColorManager.TextNorm])
-                attributedText.append(NSAttributedString(string: CoreString._pu_plan_details_price_time_period, attributes: [.font: UIFont.systemFont(ofSize: 17), .foregroundColor: UIColorManager.TextWeak]))
+                let attributedText = NSMutableAttributedString(string: price, attributes: [.font: UIFont.systemFont(ofSize: 22), .foregroundColor: ColorProvider.TextNorm])
+                attributedText.append(NSAttributedString(string: CoreString._pu_plan_details_price_time_period, attributes: [.font: UIFont.systemFont(ofSize: 17), .foregroundColor: ColorProvider.TextWeak]))
                 planPriceLabel.attributedText = attributedText
             } else {
                 planPriceSeparator.isHidden = true
                 planPriceLabel.isHidden = true
             }
         case .current:
-            planPriceLabel.textColor = UIColorManager.TextWeak
+            planPriceLabel.textColor = ColorProvider.TextWeak
             planPriceLabel.font = .systemFont(ofSize: 17.0)
             planPriceLabel.text = CoreString._pu_current_plan_title
+
+        case .unavailable:
+            planNameLabel.text = ""
+            planPriceLabel.font = .systemFont(ofSize: 17.0)
+            planPriceLabel.text = CoreString._pu_plan_details_plan_details_unavailable_contact_administrator
         }
         
         plan.details.forEach {
@@ -105,7 +110,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             detailView.configure(text: $0)
             planDetailsStackView.addArrangedSubview(detailView)
         }
-        
+
         spacerView.isHidden = !plan.isSelectable
         selectPlanButton.isHidden = !plan.isSelectable
         if let endDate = plan.endDate {

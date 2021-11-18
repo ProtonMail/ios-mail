@@ -200,7 +200,7 @@ class SignupViewModelImpl : SignupViewModel {
             {
                 do {
                     let passwordAuth = try keyManager.generatPasswordAuth(password: self.plaintext_password)
-                    let challenge = self.challenge.export().toDictionary()
+                    let challenge = self.challenge.export().toDictArray()
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
                                             email: self.recoverEmail,
@@ -286,9 +286,7 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
-        
-        self.challenge.requestVerify()
-        
+
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         self.apiService.exec(route: api) { (task, response) in
             if response.error == nil {
@@ -396,14 +394,6 @@ class SignupViewModelImpl : SignupViewModel {
     
     override func observeTextField(textField: UITextField, type: PMChallenge.TextFieldType) {
         try! self.challenge.observeTextField(textField, type: type)
-    }
-    
-    override func requestHumanVerification() {
-        self.challenge.requestVerify()
-    }
-    
-    override func humanVerificationFinish() {
-        try? self.challenge.verificationFinish()
     }
     
     override func challengeExport() -> PMChallenge.Challenge {

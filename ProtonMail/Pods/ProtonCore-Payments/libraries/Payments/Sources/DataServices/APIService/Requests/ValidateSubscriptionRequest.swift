@@ -20,51 +20,42 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
 final class ValidateSubscriptionRequest: BaseApiRequest<ValidateSubscriptionResponse> {
-    private let planId: String
+    private let protonPlanName: String
+    private let isAuthenticated: Bool
 
-    init(api: API, planId: String) {
-        self.planId = planId
+    init(api: APIService, protonPlanName: String, isAuthenticated: Bool) {
+        self.protonPlanName = protonPlanName
+        self.isAuthenticated = isAuthenticated
         super.init(api: api)
     }
 
-    override func method() -> HTTPMethod {
-        return .put
-    }
+    override var isAuth: Bool { isAuthenticated }
 
-    override func path() -> String {
-        return super.path() + "/subscription/check"
-    }
+    override var method: HTTPMethod { .put }
 
-    override func toDictionary() -> [String: Any]? {
-        return [
+    override var path: String { super.path + "/v4/subscription/check" }
+
+    override var parameters: [String: Any]? {
+        [
             "Currency": "USD",
-            "PlanIDs": [planId: 1],
+            "Plans": [protonPlanName: 1],
             "Cycle": 12
         ]
     }
 }
 
-final class ValidateSubscriptionResponse: ApiResponse {
+final class ValidateSubscriptionResponse: Response {
     var validateSubscription: ValidateSubscription?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        do {
-            let data = try JSONSerialization.data(withJSONObject: response as Any, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
-            validateSubscription = try decoder.decode(ValidateSubscription.self, from: data)
-            return true
-        } catch let decodingError {
-            error = RequestErrors.validateSubscriptionDecode.toResponseError(updating: error)
-            PMLog.debug("Failed to parse ServicePlans: \(decodingError.localizedDescription)")
-            return false
-        }
+        let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self)
+        self.validateSubscription = validation
+        return result
     }
 }

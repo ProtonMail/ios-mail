@@ -84,7 +84,7 @@ public protocol PushCoordinator: DefaultCoordinator {
     var navigationController: UINavigationController? { get }
 }
 
-extension PushCoordinator where ViewController: UIViewController, ViewController: Coordinated {
+extension PushCoordinator where ViewController: Coordinated {
     public func start() {
         guard let viewController = viewController else {
             return
@@ -106,7 +106,7 @@ public protocol ModalVCBasedCoordinator: DefaultCoordinator {
     var rootViewController: UIViewController? { get }
 }
 
-extension ModalVCBasedCoordinator where ViewController: UIViewController, ViewController: Coordinated {
+extension ModalVCBasedCoordinator where ViewController: Coordinated {
     public func start() {
         guard let viewController = viewController else {
             return
@@ -147,7 +147,7 @@ public protocol ModalCoordinator: DefaultCoordinator {
     var destinationNavigationController: UINavigationController? { get }
 }
 
-extension ModalCoordinator where ViewController: UIViewController, ViewController: Coordinated {
+extension ModalCoordinator where ViewController: Coordinated {
     public func start() {
         guard let viewController = viewController else {
             return

@@ -48,6 +48,10 @@ class RecaptchaViewModel: BaseTokenViewModel {
         return startVerifyPattern.contains(where: urlString.contains)
     }
 
+    func isTermsAndPrivacyPattern(urlString: String) -> Bool {
+        return termsAndPrivacyPatternForReCaptcha.contains(where: urlString.contains)
+    }
+
     func isResultFalsePattern(urlString: String) -> Bool {
         return resultFalsePattern.contains(where: urlString.contains)
     }
@@ -83,10 +87,13 @@ class RecaptchaViewModel: BaseTokenViewModel {
                 "about:blank"]
     }
 
-    private var resultFalsePattern: [String] {
+    private var termsAndPrivacyPatternForReCaptcha: [String] {
         return ["https://www.google.com/intl/en/policies/privacy",
-                "how-to-solve-",
                 "https://www.google.com/intl/en/policies/terms"]
+    }
+
+    private var resultFalsePattern: [String] {
+        return ["how-to-solve-"]
     }
 
     private var expiredRecaptchaRes: String {

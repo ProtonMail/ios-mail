@@ -34,7 +34,7 @@ protocol SideMenuCoordinator: DefaultCoordinator {
 }
 
 
-extension SideMenuCoordinator where VC: UIViewController, VC: CoordinatedNew {
+extension SideMenuCoordinator where VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {
             return

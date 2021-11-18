@@ -75,7 +75,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
         }
 
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
     }
 
     deinit {

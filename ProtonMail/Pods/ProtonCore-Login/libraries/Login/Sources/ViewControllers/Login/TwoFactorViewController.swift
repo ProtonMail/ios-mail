@@ -69,7 +69,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     }
 
     private func setupUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         recoveryCodeButton.setMode(mode: .text)
 
         authenticateButton.setTitle(CoreString._ls_login_2fa_action_button_title, for: .normal)

@@ -32,6 +32,7 @@ class APIServiceSpy: APIService {
         authenticated: Bool,
         autoRetry: Bool,
         customAuthCredential: AuthCredential?,
+        nonDefaultTimeout: TimeInterval?,
         completion: CompletionBlock?
     ) {
         invokedRequestWithMethod.append(method)
@@ -47,6 +48,7 @@ class APIServiceSpy: APIService {
         headers: [String : Any]?,
         authenticated: Bool,
         customAuthCredential: AuthCredential?,
+        nonDefaultTimeout: TimeInterval?,
         downloadTask: ((URLSessionDownloadTask) -> Void)?,
         completion: @escaping ((URLResponse?, URL?, NSError?) -> Void))
     {}
@@ -60,6 +62,7 @@ class APIServiceSpy: APIService {
         headers: [String : Any]?,
         authenticated: Bool,
         customAuthCredential: AuthCredential?,
+        nonDefaultTimeout: TimeInterval?,
         completion: @escaping CompletionBlock
     ) {}
 
@@ -69,6 +72,7 @@ class APIServiceSpy: APIService {
                  headers: [String: Any]?,
                  authenticated: Bool,
                  customAuthCredential: AuthCredential?,
+                 nonDefaultTimeout: TimeInterval?,
                  uploadProgress: ProgressCompletion?,
                  completion: @escaping CompletionBlock
     ) {}
@@ -81,6 +85,7 @@ class APIServiceSpy: APIService {
                         headers: [String : Any]?,
                         authenticated: Bool,
                         customAuthCredential: AuthCredential?,
+                        nonDefaultTimeout: TimeInterval?,
                         completion: @escaping CompletionBlock
     ) {}
 }

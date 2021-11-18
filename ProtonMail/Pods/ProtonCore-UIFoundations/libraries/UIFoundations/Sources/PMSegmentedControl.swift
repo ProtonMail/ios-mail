@@ -24,7 +24,7 @@ import UIKit
 public final class PMSegmentedControl: UISegmentedControl {
 
     private let defaultFont = UIFont.systemFont(ofSize: 14)
-    private let defaultColor = UIColorManager.TextNorm
+    private let defaultColor: UIColor = ColorProvider.TextNorm
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

@@ -261,7 +261,7 @@ extension PMBanner {
         btn.setBackgroundColor(self.style.assistHighBgColor, forState: .highlighted)
         btn.setTitleColor(self.style.assistTextColor, for: .normal)
         btn.titleLabel?.font = style.buttonFont
-        btn.roundCorner(2)
+        btn.roundCorner(8)
         btn.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(btn)
         var buttonYPosConstraint: NSLayoutConstraint

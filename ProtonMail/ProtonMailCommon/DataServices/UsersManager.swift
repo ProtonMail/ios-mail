@@ -219,6 +219,7 @@ class UsersManager : Service, Migrate {
         self.users.insert(user, at: 0)
         self.save()
         self.firstUser?.refreshFeatureFlags()
+        self.firstUser?.activatePayments()
     }
     
     func active(index: Int) {
@@ -228,6 +229,8 @@ class UsersManager : Service, Migrate {
         let user = self.users.remove(at: index)
         self.users.insert(user, at: 0)
         self.save()
+        self.firstUser?.refreshFeatureFlags()
+        self.firstUser?.activatePayments()
     }
     //TODO:: referance could try to use weak.
     var firstUser : UserManager? {

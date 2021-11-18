@@ -59,9 +59,6 @@ public class TestApiClient: Client {
             }
             return [:]
         }
-        public var apiVersion: Int {
-            return 3
-        }
         public var method: HTTPMethod {
             switch self {
             case .humanverify:

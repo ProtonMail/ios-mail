@@ -43,7 +43,7 @@ class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         self.pinCodeView.delegate = self
 
         self.setUpView(true)

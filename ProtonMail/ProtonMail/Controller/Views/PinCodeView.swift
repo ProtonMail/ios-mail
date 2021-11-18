@@ -59,13 +59,13 @@ class PinCodeView: PMView {
 
     override func setup() {
         roundButtons.forEach { btn in
-            btn.setTitleColor(UIColorManager.TextNorm, for: .normal)
+            btn.setTitleColor(ColorProvider.TextNorm, for: .normal)
         }
-        backButton.tintColor = UIColorManager.TextNorm
+        backButton.tintColor = ColorProvider.TextNorm
         backButton.contentMode = .center
         backButton.imageView?.contentMode = .scaleAspectFit
 
-        lockImageView.tintColor = UIColorManager.TextNorm
+        lockImageView.tintColor = ColorProvider.TextNorm
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 15),
@@ -76,7 +76,7 @@ class PinCodeView: PMView {
 
         attempsLabel.setCornerRadius(radius: 8.0)
 
-        pinDisplayView.textColor = UIColorManager.InteractionNorm
+        pinDisplayView.textColor = ColorProvider.InteractionNorm
     }
 
     func updateBackButton(_ icon: UIImage) {
@@ -106,7 +106,7 @@ class PinCodeView: PMView {
     }
 
     func hideAttempError(_ hide: Bool) {
-        pinDisplayView.textColor = UIColorManager.InteractionNorm
+        pinDisplayView.textColor = ColorProvider.InteractionNorm
         attempsLabel.isHidden = hide
     }
 
@@ -163,7 +163,7 @@ class RoundButton: UIButton {
         let path = UIBezierPath(ovalIn: rect)
         let sublayer = CAShapeLayer()
 
-        sublayer.fillColor = UIColorManager.BackgroundSecondary.cgColor
+        sublayer.fillColor = ColorProvider.BackgroundSecondary.cgColor
         sublayer.path = path.cgPath
         sublayer.name = "pm_border"
 

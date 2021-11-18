@@ -36,7 +36,7 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
         title = LocalString._pin_code_setup1_title
         
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
 
         passwordTextField.isPassword = true
         passwordTextField.title = LocalString._pin_code_setup1_textfield_title

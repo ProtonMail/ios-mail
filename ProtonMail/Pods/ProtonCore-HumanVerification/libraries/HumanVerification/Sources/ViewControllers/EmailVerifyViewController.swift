@@ -81,9 +81,9 @@ class EmailVerifyViewController: BaseUIViewController, AccessibleView {
     // MARK: Private interface
 
     private func configureUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         topTitleLabel.text = CoreString._hv_email_enter_label
-        topTitleLabel.textColor = UIColorManager.TextWeak
+        topTitleLabel.textColor = ColorProvider.TextWeak
         emailTextFieldView.title = CoreString._hv_email_label
         emailTextFieldView.placeholder = "example@protonmail.com"
         emailTextFieldView.delegate = self

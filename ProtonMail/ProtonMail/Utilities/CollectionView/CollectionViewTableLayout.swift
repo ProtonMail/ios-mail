@@ -96,12 +96,12 @@ extension CollectionViewTableLayout {
     class SeparatorDecorationView: UICollectionReusableView {
         override init(frame: CGRect) {
             super.init(frame: frame)
-            self.backgroundColor = UIColorManager.SeparatorNorm
+            self.backgroundColor = ColorProvider.SeparatorNorm
         }
         
         required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-            self.backgroundColor = UIColorManager.SeparatorNorm
+            self.backgroundColor = ColorProvider.SeparatorNorm
         }
         
         override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

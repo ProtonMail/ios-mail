@@ -22,10 +22,12 @@
 import Foundation
 import ProtonCore_Payments
 
-extension AccountPlan {
-    var planPrice: String? {
-        guard let productId = storeKitProductId, let price = StoreKitManager.default.priceLabelForProduct(identifier: productId) else { return nil }
-            
+extension InAppPurchasePlan {
+    func planPrice(from storeKitManager: StoreKitManagerProtocol) -> String? {
+        guard let storeKitProductId = storeKitProductId,
+              let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
+        else { return nil }
+
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = price.1

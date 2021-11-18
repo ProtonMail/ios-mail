@@ -29,7 +29,7 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
     @IBOutlet weak var iconStackView: UIStackView!
     
     func configCell(title: String, value: String, contactGroupColors: [String]) {
-        contentView.backgroundColor = UIColorManager.BackgroundNorm
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.title.attributedText = title.apply(style: .DefaultSmallWeek)
         self.value.attributedText = value.apply(style: .Default)

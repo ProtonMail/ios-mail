@@ -111,9 +111,9 @@ public class PMTextFieldCombo: UIView {
                 textField.attributedPlaceholder = nil
                 return
             }
-
+            let foregroundColor: UIColor = ColorProvider.TextHint
             textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-                NSAttributedString.Key.foregroundColor: SolidColors._N5,
+                NSAttributedString.Key.foregroundColor: foregroundColor,
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)
             ])
         }
@@ -244,22 +244,23 @@ public class PMTextFieldCombo: UIView {
         addSubview(mainView)
         mainView.frame = bounds
         mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mainView.backgroundColor = UIColorManager.BackgroundNorm
+        mainView.backgroundColor = ColorProvider.BackgroundNorm
 
         textField.delegate = self
-        textField.textColor = UIColorManager.TextNorm
-        textField.backgroundColor = UIColorManager.InteractionWeakDisabled
+        textField.textColor = ColorProvider.TextNorm
+        textField.backgroundColor = ColorProvider.InteractionWeakDisabled
         textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
 
         pickerButton.layer.cornerRadius = textField.layer.cornerRadius
         pickerButton.contentHorizontalAlignment = .right
-        pickerButton.layer.borderColor = UIColorManager.BrandNorm.cgColor
-        pickerButton.tintColor = UIColorManager.IconNorm
-        pickerButton.backgroundColor = UIColorManager.InteractionWeakDisabled
+        let borderColor: UIColor = ColorProvider.BrandNorm
+        pickerButton.layer.borderColor = borderColor.cgColor
+        pickerButton.tintColor = ColorProvider.IconNorm
+        pickerButton.backgroundColor = ColorProvider.InteractionWeakDisabled
 
-        titleLabel.textColor = UIColorManager.TextNorm
-        assistiveTextLabel.textColor = UIColorManager.TextWeak
-        pickerLabel.textColor = UIColorManager.TextNorm
+        titleLabel.textColor = ColorProvider.TextNorm
+        assistiveTextLabel.textColor = ColorProvider.TextWeak
+        pickerLabel.textColor = ColorProvider.TextNorm
     }
 
     @objc private func textFieldDidChange(textField: UITextField) {

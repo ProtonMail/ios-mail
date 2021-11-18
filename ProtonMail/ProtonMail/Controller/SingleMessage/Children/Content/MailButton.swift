@@ -80,7 +80,7 @@ class MailButton: UIControl {
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         layer.borderWidth = 1.0
-        layer.borderColor = UIColorManager.InteractionWeak.cgColor
+        layer.borderColor = ColorProvider.InteractionWeak.cgColor
         roundCorner(20.0)
     }
 
@@ -101,7 +101,7 @@ class MailButton: UIControl {
         static var iconImageView: UIImageView {
             let view = UIImageView()
             view.contentMode = .scaleAspectFit
-            view.tintColor = UIColorManager.IconNorm
+            view.tintColor = ColorProvider.IconNorm
             return view
         }
 

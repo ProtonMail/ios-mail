@@ -36,6 +36,6 @@ class SelectableTableViewCell: UITableViewCell {
         self.accessoryType = isSelected ? .checkmark : .none
         itemNameLabel.attributedText = title.apply(style: FontManager.Default)
         iconView.image = icon
-        iconView.tintColor = UIColorManager.TextNorm
+        iconView.tintColor = ColorProvider.TextNorm
     }
 }

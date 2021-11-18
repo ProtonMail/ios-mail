@@ -78,7 +78,7 @@ extension PMActionSheetGridCell {
         guard let view = ges.view else { return }
         switch ges.state {
         case .began:
-            view.backgroundColor = BackgroundColors._CellHighlightColor
+            view.backgroundColor = ColorProvider.BackgroundSecondary
         case .ended:
             view.backgroundColor = .clear
             let point = ges.location(in: view)
@@ -181,7 +181,7 @@ extension PMActionSheetGridCell {
 
     private func addSeperateLine(_ axis: NSLayoutConstraint.Axis, in view: UIView) {
         let line = UIView()
-        line.backgroundColor = AdaptiveColors._N3
+        line.backgroundColor = ColorProvider.SeparatorNorm
         line.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(line)
 

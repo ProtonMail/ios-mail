@@ -60,10 +60,10 @@ class LabelAsActionSheetPresenter {
         }
         let archiveButton = PMActionSheetToggleItem(title: LocalString._label_as_also_archive,
                                                     icon: nil,
-                                                    toggleColor: UIColorManager.BrandNorm)
+                                                    toggleColor: ColorProvider.BrandNorm)
         let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
                                                 icon: nil,
-                                                textColor: UIColorManager.BrandNorm) { _ in
+                                                textColor: ColorProvider.BrandNorm) { _ in
             // Collect current label markType status of all options in the action sheet
             var currentMarkTypes = viewModel.initialLabelSelectionStatus
             let currentLabelOptions = labelSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
@@ -100,8 +100,8 @@ class LabelAsActionSheetPresenter {
                                                  rightItem: doneButton)
         let add = PMActionSheetPlainItem(title: LocalString._label_as_new_label,
                                          icon: Asset.menuPlus.image,
-                                         textColor: UIColorManager.TextWeak,
-                                         iconColor: UIColorManager.TextWeak) { _ in
+                                         textColor: ColorProvider.TextWeak,
+                                         iconColor: ColorProvider.TextWeak) { _ in
             addNewLabel()
         }
         let archiveGroup = PMActionSheetItemGroup(items: [archiveButton], style: .toggle)

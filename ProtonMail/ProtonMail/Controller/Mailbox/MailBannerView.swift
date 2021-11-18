@@ -56,7 +56,7 @@ class MailBannerView: UIView {
     }
 
     private func setUpSelf() {
-        contentContainer.backgroundColor = UIColorManager.NotificationError
+        contentContainer.backgroundColor = ColorProvider.NotificationError
         contentContainer.layer.cornerRadius = 8
         contentContainer.layer.apply(shadow: .banner)
     }
@@ -77,7 +77,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.circleArrow.image
-        imageView.tintColor = UIColorManager.IconInverted
+        imageView.tintColor = ColorProvider.IconInverted
         return imageView
     }
 

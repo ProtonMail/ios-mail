@@ -63,36 +63,38 @@ extension PMChallenge {
             self.mobileCountryCode = countryCode ?? ""
         }
     }
-
+    
+    public struct Frame: Codable {
+        private(set) var name: String
+        public init(name: String?) throws {
+            self.name = name ?? ""
+        }
+    }
+    static let VERSION = 2
     public struct Challenge: Codable {
         // MARK: Signup data
-        @available(*, deprecated, message: "This parameter will be removed in the future")
-        public internal(set) var usernameChecks: [String] = []
-        /// Number of seconds it took to verify sms/email/catpcha/payment
-        @available(*, deprecated, message: "This parameter will be removed in the future")
-        public internal(set) var time_human: Int = 0
-        /// Number of seconds that user focus on password textField.
-        @available(*, deprecated, message: "This parameter will be removed in the future")
-        public internal(set) var time_pass: Int = 0
+        
+        /// version: int   new value for tracking the challenge object version. this value only change when challenge schema changed
+        public internal(set) var v: Int = VERSION
 
         /// Number of seconds from signup form load to start filling username input
-        public internal(set) var time_user: [Int] = []
+        public internal(set) var timeUsername: [Int] = []
         /// Chars that typed in username input
-        public internal(set) var usernameTypedChars: [String] = []
+        public internal(set) var keydownUsername: [String] = []
         /// Chars that deleted in username input
-        public internal(set) var recoverTypedChars: [String] = []
+        public internal(set) var keydownRecovery: [String] = []
         /// Number of clicks/taps during username input
-        public internal(set) var click_user: Int = 0
+        public internal(set) var clickUsername: Int = 0
         /// Number of clicks/taps during recovery address input
-        public internal(set) var click_recovery: Int = 0
+        public internal(set) var clickRecovery: Int = 0
         /// Phrases copied during username inputs
-        public internal(set) var copy_username: [String] = []
+        public internal(set) var copyUsername: [String] = []
         /// Phrases copied during recovery inputs
-        public internal(set) var copy_recovery: [String] = []
+        public internal(set) var copyRecovery: [String] = []
         /// Phrases pasted during username inputs
-        public internal(set) var paste_username: [String] = []
+        public internal(set) var pasteUsername: [String] = []
         /// Phrases pasted during recovery inputs
-        public internal(set) var paste_recovery: [String] = []
+        public internal(set) var pasteRecovery: [String] = []
 
         // MARK: Device relative setting
         /// Timezone of Operating System, e.g. `Asia/Taipei`
@@ -119,6 +121,8 @@ extension PMChallenge {
         public private(set) var preferredContentSize: String = ""
         /// UUID for this app, will change after reinstall
         public private(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
+        /// same as web, iframe-  name: username, recovery
+        public private(set) var frame: [Frame] = []
 
         public func encode(to encoder: Encoder) throws {
             // Since some of variables are deprecated
@@ -126,15 +130,16 @@ extension PMChallenge {
             // implement this function
             // after removing these variables, consider to remove this function too
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(time_user, forKey: .time_user)
-            try container.encode(usernameTypedChars, forKey: .usernameTypedChars)
-            try container.encode(recoverTypedChars, forKey: .recoverTypedChars)
-            try container.encode(click_user, forKey: .click_user)
-            try container.encode(click_recovery, forKey: .click_recovery)
-            try container.encode(copy_username, forKey: .copy_username)
-            try container.encode(copy_recovery, forKey: .copy_recovery)
-            try container.encode(paste_username, forKey: .paste_username)
-            try container.encode(paste_recovery, forKey: .paste_recovery)
+            try container.encode(v, forKey: .v)
+            try container.encode(timeUsername, forKey: .timeUsername)
+            try container.encode(keydownUsername, forKey: .keydownUsername)
+            try container.encode(keydownRecovery, forKey: .keydownRecovery)
+            try container.encode(clickUsername, forKey: .clickUsername)
+            try container.encode(clickRecovery, forKey: .clickRecovery)
+            try container.encode(copyUsername, forKey: .copyUsername)
+            try container.encode(copyRecovery, forKey: .copyRecovery)
+            try container.encode(pasteUsername, forKey: .pasteUsername)
+            try container.encode(pasteRecovery, forKey: .pasteRecovery)
             try container.encode(timezone, forKey: .timezone)
             try container.encode(timezoneOffset, forKey: .timezoneOffset)
             try container.encode(isJailbreak, forKey: .isJailbreak)
@@ -147,18 +152,20 @@ extension PMChallenge {
             try container.encode(isDarkmodeOn, forKey: .isDarkmodeOn)
             try container.encode(preferredContentSize, forKey: .preferredContentSize)
             try container.encode(uuid, forKey: .uuid)
+            try container.encode(frame, forKey: .frame)
         }
 
         mutating func reset() {
-            self.time_user = []
-            self.usernameTypedChars = []
-            self.recoverTypedChars = []
-            self.click_user = 0
-            self.click_recovery = 0
-            self.copy_username = []
-            self.copy_recovery = []
-            self.paste_username = []
-            self.paste_recovery = []
+            self.timeUsername = []
+            self.keydownUsername = []
+            self.keydownRecovery = []
+            self.clickUsername = 0
+            self.clickRecovery = 0
+            self.copyUsername = []
+            self.copyRecovery = []
+            self.pasteUsername = []
+            self.pasteRecovery = []
+            self.frame = []
         }
         
         mutating func fetchValues() {
@@ -185,13 +192,9 @@ extension PMChallenge {
         /// 2. If object transfer to json dictionary failed, will try to transfer to string value, return this string value if successful
         /// 3. If object can't be transferred to json dictionary nor json string, will return error message
         
-        public func toDictionary() -> [String: Any] {
+        private func toDictionary() -> [String: Any] {
             do {
-                var challenge = try self.asDictionary()
-                challenge.removeValue(forKey: "usernameChecks")
-                challenge.removeValue(forKey: "time_human")
-                challenge.removeValue(forKey: "time_pass")
-                return challenge
+                return try self.asDictionary()
             } catch {
                 let err1 = error.localizedDescription
                 do {
@@ -200,6 +203,64 @@ extension PMChallenge {
                 } catch {
                     return ["Challenge-parse-dic-error": err1,
                             "Challenge-parse-string-error": error.localizedDescription]
+                }
+            }
+        }
+        
+        private func getUsernameChallenge() throws -> [String: Any] {
+            
+            var challenge = try self.asDictionary()
+
+            // remove the recovery keys in username
+            challenge["frame"] = ["name": "username"]
+            challenge.removeValue(forKey: "keydownRecovery")
+            challenge.removeValue(forKey: "pasteRecovery")
+            challenge.removeValue(forKey: "clickRecovery")
+            challenge.removeValue(forKey: "copyRecovery")
+            
+            return challenge
+        }
+        
+        private func getRecoveryChallenge() throws -> [String: Any] {
+            
+            var challenge = try self.asDictionary()
+
+            // remove the username keys in recovery
+            challenge["frame"] = ["name": "recovery"]
+            challenge.removeValue(forKey: "timeUsername")
+            challenge.removeValue(forKey: "clickUsername")
+            challenge.removeValue(forKey: "keydownUsername")
+            challenge.removeValue(forKey: "copyUsername")
+            challenge.removeValue(forKey: "pasteUsername")
+            
+            return challenge
+        }
+        
+        /// Transfer `PMChallenge` object to json dictionary array
+        ///
+        /// This function is the combination of `getUsernameChallenge()` and `getRecoveryChallenge()`. Recommend use this function to export challenge data
+        ///
+        /// There are 3 possible situations
+        /// 1. Object transfer to json dictionary successful, return this json dictionary
+        /// 2. If object transfer to json dictionary failed, will try to transfer to string value, return this string value if successful
+        /// 3. If object can't be transferred to json dictionary nor json string, will return error message
+        
+        public func toDictArray() -> [[String: Any]] {
+            do {
+                let username = try self.getUsernameChallenge()
+                let recovery = try self.getRecoveryChallenge()
+                let out = [username, recovery]
+                return out
+            } catch {
+                let err1 = error.localizedDescription
+                do {
+                    let challengeStr = try self.asString()
+                    return [["StringValue": challengeStr]]
+                } catch {
+                    return [
+                        ["Challenge-parse-dic-error": err1,
+                         "Challenge-parse-string-error": error.localizedDescription]
+                    ]
                 }
             }
         }

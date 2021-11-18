@@ -130,7 +130,7 @@ extension ComposePasswordVC {
         guard let url = URL(string: Link.encryptOutsideInfo) else {
             return
         }
-        self.infoIcon.tintColor = UIColorManager.IconWeak
+        self.infoIcon.tintColor = ColorProvider.IconWeak
         let descStr = LocalString._composer_eo_desc.apply(style: .DefaultSmallWeek)
         var moreAttr = FontManager.DefaultSmallWeak
         moreAttr[.link] = url
@@ -139,7 +139,7 @@ extension ComposePasswordVC {
         attrStr.append(moreStr)
         self.infoText.textContainerInset = .zero
         self.infoText.attributedText = attrStr
-        self.infoText.linkTextAttributes = [.foregroundColor: UIColorManager.InteractionNorm ]
+        self.infoText.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm ]
     }
 
     private func setupPasswordView() {
@@ -156,7 +156,7 @@ extension ComposePasswordVC {
 
     private func setupPasswordHintView() {
         self.passwordHintLabel.attributedText = LocalString._composer_password_hint_title.apply(style: .CaptionStrong)
-        self.passwordHintView.backgroundColor = UIColorManager.BackgroundSecondary
+        self.passwordHintView.backgroundColor = ColorProvider.BackgroundSecondary
         self.passwordHintText.contentInset = .zero
         self.passwordHintText.delegate = self
         self.passwordHintText.text = self.encryptionPasswordHint
@@ -179,8 +179,8 @@ extension ComposePasswordVC {
             return
         }
         self.removeView.isHidden = false
-        self.removeView.backgroundColor = UIColorManager.BackgroundSecondary
-        self.removeIcon.tintColor = UIColorManager.IconNorm
+        self.removeView.backgroundColor = ColorProvider.BackgroundSecondary
+        self.removeIcon.tintColor = ColorProvider.IconNorm
         self.removeLabel.attributedText = LocalString._composer_eo_remove_pwd.apply(style: FontManager.Caption)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickRemove))

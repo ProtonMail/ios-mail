@@ -66,9 +66,9 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
         precondition(viewModel != nil)
         precondition(coordinator != nil)
 
-        self.view.backgroundColor = UIColorManager.BackgroundNorm
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.infoIconImage.image = Asset.infoIcon.image
-        self.infoIconImage.tintColor = UIColorManager.TextWeak
+        self.infoIconImage.tintColor = ColorProvider.TextWeak
         self.topInfoTitle.attributedText = LocalString._setting_swipe_action_info_title
             .apply(style: FontManager.CaptionWeak)
 
@@ -91,7 +91,7 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
                                       style: .plain,
                                       target: self,
                                       action: #selector(self.dismissView))
-        let attr = FontManager.HeadlineSmall.foregroundColor( UIColorManager.InteractionNorm)
+        let attr = FontManager.HeadlineSmall.foregroundColor( ColorProvider.InteractionNorm)
         doneBtn.setTitleTextAttributes(attr, for: .normal)
         navigationItem.rightBarButtonItem = doneBtn
     }
@@ -101,7 +101,7 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
             .toUIBarButtonItem(target: self,
                                action: #selector(self.dismissView),
                                style: .done,
-                               tintColor: UIColorManager.TextNorm,
+                               tintColor: ColorProvider.TextNorm,
                                squareSize: 24)
         navigationItem.leftBarButtonItem = dismissBtn
     }
@@ -144,7 +144,7 @@ extension SettingsGesturesViewController: UITableViewDelegate, UITableViewDataSo
             if let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID,
                                                         for: indexPath) as? SettingsGeneralCell
             {
-                cell.backgroundColor = UIColorManager.BackgroundNorm
+                cell.backgroundColor = ColorProvider.BackgroundNorm
                 cell.addSeparator(padding: 0)
                 switch item {
                 case .left:

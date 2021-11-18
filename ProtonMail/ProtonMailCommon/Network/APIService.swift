@@ -23,7 +23,6 @@
 
 import CoreData
 import Foundation
-import AFNetworking
 import TrustKit
 import ProtonCore_Services
 

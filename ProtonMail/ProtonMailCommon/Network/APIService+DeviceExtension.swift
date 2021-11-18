@@ -69,7 +69,7 @@ extension PMAPIService {
         self.request(method: .post,
                      path: DevicePath.basePath,
                      parameters: parameters,
-                     headers: [HTTPHeader.apiVersion: 3], //will be deprecated
+                     headers: .empty,
                      authenticated: false,
                      autoRetry: true,
                      customAuthCredential: authCredential,
@@ -88,7 +88,7 @@ extension PMAPIService {
         self.request(method: .delete,
                      path: DevicePath.basePath,
                      parameters: parameters,
-                     headers: [HTTPHeader.apiVersion: 3], //will be deprecated
+                     headers: .empty, 
                      authenticated: false,
                      autoRetry: true,
                      customAuthCredential: nil,

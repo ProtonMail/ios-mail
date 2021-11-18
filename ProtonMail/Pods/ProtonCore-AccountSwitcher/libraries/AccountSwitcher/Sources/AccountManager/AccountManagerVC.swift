@@ -102,10 +102,11 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let title = section == 0 ? CoreString._as_signed_in_to_protonmail: CoreString._as_signed_out_of_protonmail
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
 
-        let label = UILabel(title, font: .systemFont(ofSize: 15), textColor: UIColorManager.TextWeak)
+        let label = UILabel(title, font: .systemFont(ofSize: 15), textColor: ColorProvider.TextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = ColorProvider.BackgroundNorm
         view.addSubview(label)
 
         NSLayoutConstraint.activate([
@@ -218,7 +219,8 @@ extension AccountManagerVC {
         self.setupNavgationBar()
         self.setupTableview()
         self.titleLabel.text = CoreString._as_manage_accounts
-        self.titleLabel.textColor = UIColorManager.TextNorm
+        self.titleLabel.textColor = ColorProvider.TextNorm
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
 
     private func setupNavgationBar() {
@@ -231,7 +233,7 @@ extension AccountManagerVC {
         // Left item
         let closeBtn = UIBarButtonItem(image: UIImage(named: "icon_cross", in: Bundle.switchBundle, compatibleWith: nil), style: .plain, target: self, action: #selector(self.dismissView))
         closeBtn.accessibilityLabel = CoreString._as_dismiss_button
-        closeBtn.tintColor = UIColorManager.TextNorm
+        closeBtn.tintColor = ColorProvider.TextNorm
         self.navigationItem.leftBarButtonItem = closeBtn
 
         self.setupRightBarItem()
@@ -242,11 +244,11 @@ extension AccountManagerVC {
         let size: CGFloat = 40
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColorManager.TextNorm
+        view.backgroundColor = ColorProvider.InteractionWeak
         view.roundCorner(size / 2)
 
         let icon = UIImageView(image: UIImage(named: "menu_plus", in: Bundle.switchBundle, compatibleWith: nil))
-        icon.tintColor = AdaptiveColors._N1
+        icon.tintColor = ColorProvider.TextNorm
         icon.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(icon)
 
@@ -272,6 +274,8 @@ extension AccountManagerVC {
     private func setupTableview() {
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.register(AccountmanagerUserCell.nib(), forCellReuseIdentifier: self.CELLID)
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
+        self.tableView.separatorColor = ColorProvider.InteractionWeak
     }
 }
 

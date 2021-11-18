@@ -102,10 +102,10 @@ extension UIViewController {
     class func configureNavigationBar(_ controller: UIViewController) {
         #if !APP_EXTENSION
         var attribute = FontManager.DefaultStrong
-        attribute[.foregroundColor] = UIColorManager.TextNorm
+        attribute[.foregroundColor] = ColorProvider.TextNorm
         controller.navigationController?.navigationBar.titleTextAttributes = attribute
-        controller.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
-        controller.navigationController?.navigationBar.tintColor = UIColorManager.TextNorm
+        controller.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
+        controller.navigationController?.navigationBar.tintColor = ColorProvider.TextNorm
         #else
         controller.navigationController?.navigationBar.barTintColor = UIColor(named: "launch_background_color")
         controller.navigationController?.navigationBar.tintColor = UIColor(named: "launch_text_color")
@@ -119,7 +119,7 @@ extension UIViewController {
         let navigationBarTitleFont = Fonts.h3.semiBold
         #if !APP_EXTENSION
         controller.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColorManager.TextNorm,
+            NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm,
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
         #else

@@ -26,7 +26,7 @@
                                 <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO" suppressesIncrementalRendering="YES">
                                     <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
+                                    <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="YES"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <stackView userInteractionEnabled="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4x-cs-f9F">
@@ -50,7 +50,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstItem="rV1-5S-G8s" firstAttribute="centerX" secondItem="q2W-eQ-QT3" secondAttribute="centerX" id="Ale-u5-3K4"/>
                             <constraint firstItem="rV1-5S-G8s" firstAttribute="top" secondItem="feB-ed-vnj" secondAttribute="bottom" id="EnG-rk-2oB"/>
@@ -109,7 +109,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstItem="2oH-br-rTi" firstAttribute="trailing" secondItem="LxC-bW-X5q" secondAttribute="trailingMargin" id="Bfe-Wl-ZAT"/>
                             <constraint firstItem="J5Y-XM-Jb6" firstAttribute="leading" secondItem="LxC-bW-X5q" secondAttribute="leadingMargin" id="CuI-eu-Wsl"/>
@@ -214,7 +214,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstItem="32w-b6-Cud" firstAttribute="top" secondItem="4AX-hs-bj2" secondAttribute="bottom" id="1GM-lc-UdF"/>
                             <constraint firstAttribute="bottom" secondItem="32w-b6-Cud" secondAttribute="bottom" id="Npa-HX-Niq"/>
@@ -317,7 +317,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstItem="dDN-fK-XPK" firstAttribute="leading" secondItem="VBF-OR-USr" secondAttribute="leading" id="28H-e9-EE4"/>
                             <constraint firstAttribute="bottom" secondItem="dDN-fK-XPK" secondAttribute="bottom" id="lUw-za-tIZ"/>
@@ -389,7 +389,7 @@
                                 <rect key="frame" x="232" y="98" width="560" height="1248"/>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstItem="91H-bP-4XQ" firstAttribute="top" secondItem="gTo-Gj-Owp" secondAttribute="bottom" constant="4" id="AkF-kk-Yti"/>
                             <constraint firstItem="9S1-d3-Gr5" firstAttribute="top" secondItem="nUY-be-uv0" secondAttribute="bottom" id="CC5-FA-Zz0"/>
@@ -528,7 +528,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" name="MainBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundNorm"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="VC6-kD-XEw" secondAttribute="bottom" id="Mg3-k1-itb"/>
                             <constraint firstItem="VC6-kD-XEw" firstAttribute="leading" secondItem="2yb-lg-m0B" secondAttribute="leadingMargin" constant="-16" id="cSw-oS-gtj"/>
@@ -571,11 +571,11 @@
     <resources>
         <image name="ic-arrow-left" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>
-        <namedColor name="IconNorm">
-            <color red="0.10999999940395355" green="0.090000003576278687" blue="0.097000002861022949" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="MainBackgroundColor">
+        <namedColor name="BackgroundNorm">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="IconNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

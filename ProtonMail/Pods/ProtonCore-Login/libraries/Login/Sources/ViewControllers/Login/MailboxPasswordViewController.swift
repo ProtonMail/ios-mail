@@ -75,7 +75,7 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     }
 
     private func setupUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         titleLabel.text = CoreString._ls_login_mailbox_screen_title
         mailboxPasswordTextField.title = CoreString._ls_login_mailbox_field_title
         mailboxPasswordTextField.isPassword = true

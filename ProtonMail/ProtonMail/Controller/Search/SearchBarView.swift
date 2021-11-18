@@ -101,14 +101,14 @@ private enum SubviewsFactory {
 
     static var container: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundSecondary
         view.roundCorner(3)
         return view
     }
 
     static var textField: UITextField {
         let textField = UITextField(frame: .zero)
-        textField.backgroundColor = UIColorManager.BackgroundSecondary
+        textField.backgroundColor = ColorProvider.BackgroundSecondary
         textField.roundCorner(3)
         textField.autocapitalizationType = .none
         textField.returnKeyType = .search
@@ -120,14 +120,14 @@ private enum SubviewsFactory {
     static var cancelButton: UIButton {
         let button = UIButton(type: .custom)
         button.setTitle(LocalString._general_cancel_button, for: .normal)
-        button.setTitleColor(UIColorManager.TextNorm, for: .normal)
+        button.setTitleColor(ColorProvider.TextNorm, for: .normal)
         return button
     }
 
     static var clearButton: UIButton {
         let button = UIButton(type: .custom)
         button.setImage(Asset.clearIcon.image, for: .normal)
-        button.tintColor = UIColorManager.IconWeak
+        button.tintColor = ColorProvider.IconWeak
         button.isHidden = true
         return button
     }
@@ -135,7 +135,7 @@ private enum SubviewsFactory {
     static var searchIcon: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.image = Asset.navSearchIcon.image
-        imageView.tintColor = UIColorManager.IconHint
+        imageView.tintColor = ColorProvider.IconHint
         return imageView
     }
 

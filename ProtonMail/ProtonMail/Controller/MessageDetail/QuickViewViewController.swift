@@ -86,9 +86,9 @@ class QuickViewViewController: QLPreviewController {
     }
 
     private func configureNavigationBar(_ navigationController: UINavigationController) {
-        navigationController.navigationBar.barTintColor = UIColorManager.BackgroundNorm
+        navigationController.navigationBar.barTintColor = ColorProvider.BackgroundNorm
         navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.tintColor = UIColorManager.TextNorm
+        navigationController.navigationBar.tintColor = ColorProvider.TextNorm
 
         navigationController.navigationBar.titleTextAttributes = FontManager.DefaultSmallStrong
     }

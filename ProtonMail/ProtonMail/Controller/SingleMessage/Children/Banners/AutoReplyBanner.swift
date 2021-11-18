@@ -31,7 +31,7 @@ class AutoReplyBanner: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         roundCorner(8)
     }
 
@@ -74,7 +74,7 @@ class AutoReplyBanner: UIView {
 private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.lightbulb.image)
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 

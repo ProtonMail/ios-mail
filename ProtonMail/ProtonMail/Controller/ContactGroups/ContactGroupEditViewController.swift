@@ -81,7 +81,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         doneButton = UIBarButtonItem(title: LocalString._general_done_button,
                                      style: .plain,
                                      target: self, action: #selector(self.saveAction(_:)))
-        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         doneButton.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneButton
 
@@ -93,7 +93,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
 
         cancelButton = Asset.actionSheetClose.image.toUIBarButtonItem(target: self,
                                                                       action: #selector(self.cancelItem(_:)),
-                                                                      tintColor: UIColorManager.IconNorm)
+                                                                      tintColor: ColorProvider.IconNorm)
         navigationItem.leftBarButtonItem = cancelButton
         
         contactGroupNameLabel.addBottomBorder()
@@ -144,12 +144,12 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
 
     private func setupStyle() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
-        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
-        changeColorButton.setTitleColor(UIColorManager.TextHint, for: .normal)
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
+        headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
+        changeColorButton.setTitleColor(ColorProvider.TextHint, for: .normal)
         contactGroupNameInstructionLabel.attributedText = LocalString._contact_groups_group_name_instruction_label.apply(style: .DefaultWeak)
-        contactGroupNameLabel.textColor = UIColorManager.TextNorm
+        contactGroupNameLabel.textColor = ColorProvider.TextNorm
     }
     
     private func dismissKeyboard() {
@@ -236,7 +236,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupManageCell", for: indexPath)
-            cell.textLabel?.attributedText = LocalString._contact_groups_manage_addresses.apply(style: FontManager.Default.foregroundColor(UIColorManager.InteractionNorm))
+            cell.textLabel?.attributedText = LocalString._contact_groups_manage_addresses.apply(style: FontManager.Default.foregroundColor(ColorProvider.InteractionNorm))
             cell.addSeparator(padding: 0)
             return cell
         case .email:

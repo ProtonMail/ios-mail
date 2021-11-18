@@ -112,13 +112,13 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
     var actionColor: UIColor {
         switch self {
         case .none, .labelAs, .moveTo, .archive, .spam:
-            return UIColorManager.IconHint
+            return ColorProvider.IconHint
         case .readAndUnread:
-            return UIColorManager.InteractionNorm
+            return ColorProvider.InteractionNorm
         case .starAndUnstar:
-            return UIColorManager.NotificationWarning
+            return ColorProvider.NotificationWarning
         case .trash:
-            return UIColorManager.NotificationError
+            return ColorProvider.NotificationError
         }
     }
     
@@ -180,13 +180,13 @@ enum MessageSwipeAction: CustomStringConvertible {
     var actionColor: UIColor {
         switch self {
         case .none, .unstar, .labelAs, .moveTo, .archive, .spam:
-            return UIColorManager.IconHint
+            return ColorProvider.IconHint
         case .unread, .read:
-            return UIColorManager.InteractionNorm
+            return ColorProvider.InteractionNorm
         case .star:
-            return UIColorManager.NotificationWarning
+            return ColorProvider.NotificationWarning
         case .trash:
-            return UIColorManager.NotificationError
+            return ColorProvider.NotificationError
         }
     }
 

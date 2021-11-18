@@ -50,7 +50,7 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.backgroundView = nil
-        self.tableView.backgroundColor = UIColorManager.BackgroundSecondary
+        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SettingsGeneralCell.self)
@@ -83,7 +83,7 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
         let row = indexPath.row
         let item = self.viewModel.privacySections[row]
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-        cell.backgroundColor = UIColorManager.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         switch item {
         case .autoLoadRemoteContent:
             configureAutoLoadImageCell(cell, item, tableView, indexPath)

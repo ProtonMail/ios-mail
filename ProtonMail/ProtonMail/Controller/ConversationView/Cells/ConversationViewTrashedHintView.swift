@@ -36,7 +36,7 @@ final class ConversationViewTrashedHintView: UIView {
     
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         setCornerRadius(radius: 6)
         addSubviews()
         setUpLayout()
@@ -94,7 +94,7 @@ private enum SubviewsFactory {
     static var trashIcon: UIImageView {
         let imageView = UIImageView(image: Asset.actionSheetTrash.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
@@ -117,7 +117,7 @@ private enum SubviewsFactory {
     
     static var buttonContainer: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.setCornerRadius(radius: 3)
         view.layer.borderColor = UIColor(hexString: "EAECF1", alpha: 1).cgColor
         view.layer.borderWidth = 1

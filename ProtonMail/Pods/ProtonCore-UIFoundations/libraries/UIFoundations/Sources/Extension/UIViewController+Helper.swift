@@ -40,7 +40,7 @@ public extension UIViewController {
     func setUpCloseButton(showCloseButton: Bool, action: Selector?) {
         if showCloseButton {
             let closeButton = UIBarButtonItem(image: .closeImage, style: .plain, target: self, action: action)
-            closeButton.tintColor = UIColorManager.CloseColor
+            closeButton.tintColor = ColorProvider.IconNorm
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.setLeftBarButton(closeButton, animated: true)
             navigationItem.assignNavItemIndentifiers()
@@ -49,7 +49,7 @@ public extension UIViewController {
 
     func setUpBackArrow(action: Selector?) {
         let backButton = UIBarButtonItem(image: .backImage, style: .plain, target: self, action: action)
-        backButton.tintColor = UIColorManager.CloseColor
+        backButton.tintColor = ColorProvider.IconNorm
         navigationItem.setHidesBackButton(true, animated: false)
         navigationItem.setLeftBarButton(backButton, animated: true)
         navigationItem.assignNavItemIndentifiers()

@@ -19,149 +19,345 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import AwaitKit
 import StoreKit
 import Reachability
 import ProtonCore_CoreTranslation
 import ProtonCore_Log
 import ProtonCore_SRP
+import ProtonCore_Services
 
-public class StoreKitManager: NSObject, StoreKitManagerProtocol {
+final class StoreKitManager: NSObject, StoreKitManagerProtocol {
+
+    typealias Errors = StoreKitManagerErrors
 
     // MARK: Public properties
-    public static var `default` = StoreKitManager()
-    public static let transactionFinishedNotification = Notification.Name("StoreKitManager.transactionFinished")
     public weak var delegate: StoreKitManagerDelegate?
     public var refreshHandler: (() -> Void)?
 
-    // MARK: Internal properties for testing proposes
-    internal var paymentsApi: PaymentsApiProtocol = PaymentsApiImplementation()
-    internal var paymentQueue: PaymentQueueProtocol = SKPaymentQueue.default()
-    internal var request = SKProductsRequest(productIdentifiers: Set(AccountPlan.allCases.compactMap { $0.storeKitProductId }))
-    
-    internal var paymentsAlertManager = PaymentsAlertManager()
-    internal var pendingRetryIn: Double = 30
-    internal var errorRetryIn: Double = 10
-    internal var alertViewDelay: Double = 1.0
-    internal var receiptError: Error?
-    internal var availableProducts: [SKProduct] = []
-    internal var validationManager = ValidationManager()
-    internal var paymentInternalCompletionStarted: (() -> Void)?
+    public var inAppPurchaseIdentifiers: ListOfIAPIdentifiers {
+        get { inAppPurchaseIdentifiersGet() }
+        set { inAppPurchaseIdentifiersSet(newValue) }
+    }
+    private let inAppPurchaseIdentifiersGet: ListOfIAPIdentifiersGet
+    private let inAppPurchaseIdentifiersSet: ListOfIAPIdentifiersSet
+    let planService: ServicePlanDataServiceProtocol
+    private let paymentsAlertManager: PaymentsAlertManager
+    private let paymentsApi: PaymentsApiProtocol
+    let apiService: APIService
+    var reportBugAlertHandler: BugAlertHandler
+
+    var paymentQueue: PaymentQueueProtocol = SKPaymentQueue.default()
+    private(set) var request: SKProductsRequest?
+    private var updateAvailableProductsListCompletionBlock: ((Error?) -> Void)?
+
+    var pendingRetryIn: Double = 30
+    var errorRetryIn: Double = 2
+    var alertViewDelay: Double = 1.0
+    var receiptError: Error?
+    var availableProducts: [SKProduct] = []
 
     // MARK: Private properties
-    private let processAuthenticated: ProcessProtocol = ProcessAuthenticated()
-    private let processUnathenticated: ProcessUnathenticatedProtocol = ProcessUnauthenticated()
-    private let processAddCredits: ProcessProtocol = ProcessAddCredits()
+    private lazy var processAuthenticated = ProcessAuthenticated(dependencies: self)
+    private lazy var processUnathenticated = ProcessUnauthenticated(dependencies: self)
+    private lazy var validationManager = ValidationManager(dependencies: self)
     private lazy var commonTokenStorage = TokenStorage(tokenStorage: storeKitDelegate?.tokenStorage)
 
-    private let queue = DispatchQueue(label: "StoreKitManager async queue")
-    private let reachability = try? Reachability()
+    private let reachability: Reachability?
     private var transactionsQueue: OperationQueue = {
-       let queue = OperationQueue()
+        let queue = OperationQueue()
         queue.qualityOfService = QualityOfService.userInteractive
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
+
     private var transactionsMadeBeforeSignup = [SKPaymentTransaction]()
+    private var notifyWhenTransactionsWaitingForTheSignupAppear: ([InAppPurchasePlan]) -> Void = { _ in }
+    func getNotifiedWhenTransactionsWaitingForTheSignupAppear(completion: @escaping ([InAppPurchasePlan]) -> Void) -> [InAppPurchasePlan] {
+        let currentTransactions = transactionsMadeBeforeSignup.compactMap {
+            InAppPurchasePlan(storeKitProductId: $0.payment.productIdentifier)
+        }
+        notifyWhenTransactionsWaitingForTheSignupAppear = completion
+        return currentTransactions
+    }
+    func stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear() {
+        notifyWhenTransactionsWaitingForTheSignupAppear = { _ in }
+    }
+
     private var transactionsFinishHandler: FinishCallback?
-    private var successCompletion: SuccessCallback?
-    private var deferredCompletion: FinishCallback?
-    private lazy var errorCompletion: ErrorCallback = { error in
-        DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) {
-            self.errorCompletionAlertView(error: error)
+
+    struct UserInitiatedPurchaseCache: Hashable {
+        let storeKitProductId: String
+        let hashedUserId: String?
+    }
+
+    final class ThreadSafeAsyncCache {
+
+        private let accessQueue = DispatchQueue(label: "ThreadSafeCache queue")
+
+        typealias Key = UserInitiatedPurchaseCache
+        var amountDue: [Key: Int] = [:]
+        var successCompletion: [Key: SuccessCallback] = [:]
+        var deferredCompletion: [Key: FinishCallback?] = [:]
+        var errorCompletion: [Key: ErrorCallback?] = [:]
+
+        func set<K, V>(value: V, for key: K, in dict: ReferenceWritableKeyPath<ThreadSafeAsyncCache, [K: V]>) {
+            accessQueue.async { self[keyPath: dict][key] = value }
+        }
+
+        func removeValue<K, V>(
+            for key: K, in dict: ReferenceWritableKeyPath<ThreadSafeAsyncCache, [K: V]>, completion: @escaping (V?) -> Void
+        ) {
+            accessQueue.async { completion(self[keyPath: dict].removeValue(forKey: key)) }
+        }
+
+        func removeValueSynchronously<K, V>(for key: K,
+                                            in dict: ReferenceWritableKeyPath<ThreadSafeAsyncCache, [K: V]>) -> V? {
+            accessQueue.sync { self[keyPath: dict].removeValue(forKey: key) }
+        }
+
+        func removeValue<K, V>(for key: K,
+                               in dict: ReferenceWritableKeyPath<ThreadSafeAsyncCache, [K: V]>,
+                               defaultValue: V,
+                               completion: @escaping (V) -> Void) {
+            removeValue(for: key, in: dict) { valueIfExists in
+                if let value = valueIfExists {
+                    completion(value)
+                } else {
+                    completion(defaultValue)
+                }
+            }
         }
     }
 
-    private lazy var confirmUserValidationBypass: (Error, @escaping () -> Void) -> Void = { [unowned self] error, completion in
-        DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) {
-            guard let currentUsername = self.delegate?.activeUsername else {
-                self.errorCompletion(Errors.noActiveUsername)
+    private var threadSafeCache: ThreadSafeAsyncCache = .init()
+
+    private func callSuccessCompletion(for cache: UserInitiatedPurchaseCache, with token: PaymentToken?) {
+        threadSafeCache.removeValue(for: cache, in: \.successCompletion) { $0?(token) }
+    }
+
+    private func callDeferredCompletion(for cache: UserInitiatedPurchaseCache) {
+        threadSafeCache.removeValue(for: cache, in: \.deferredCompletion, defaultValue: nil) { $0?() }
+    }
+
+    private func callErrorCompletion(for cache: UserInitiatedPurchaseCache, with error: Error) {
+        threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback) { $0?(error) }
+    }
+
+    private func getErrorCompletion(for cache: UserInitiatedPurchaseCache, completion: @escaping (ErrorCallback?) -> Void) {
+        threadSafeCache.removeValue(for: cache, in: \.errorCompletion, defaultValue: defaultErrorCallback, completion: completion)
+    }
+
+    private lazy var defaultErrorCallback: ErrorCallback = { [weak self] error in
+        guard let self = self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) { [weak self] in
+            self?.errorCompletionAlertView(error: error)
+        }
+    }
+
+    private lazy var confirmUserValidationBypass: (UserInitiatedPurchaseCache, Error, @escaping () -> Void) -> Void = { [weak self] cacheKey, error, completion in
+        guard let self = self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.alertViewDelay) { [weak self] in
+            guard let currentUsername = self?.delegate?.activeUsername else {
+                self?.callErrorCompletion(for: cacheKey, with: Errors.noActiveUsername)
                 return
             }
-            self.confirmUserValidationAlertView(error: error, userName: currentUsername, completion: completion)
+            self?.confirmUserValidationAlertView(error: error, userName: currentUsername, completion: completion)
         }
     }
 
-   override private init() {
+    private var processingType: ProcessingType {
+        guard applicationUserId() == nil else { return .existingUserNewSubscription }
+        return .registration
+    }
+
+    init(inAppPurchaseIdentifiersGet: @escaping ListOfIAPIdentifiersGet,
+         inAppPurchaseIdentifiersSet: @escaping ListOfIAPIdentifiersSet,
+         planService: ServicePlanDataServiceProtocol,
+         paymentsApi: PaymentsApiProtocol,
+         apiService: APIService,
+         paymentsAlertManager: PaymentsAlertManager,
+         reportBugAlertHandler: BugAlertHandler,
+         reachability: Reachability? = try? Reachability()) {
+        self.inAppPurchaseIdentifiersGet = inAppPurchaseIdentifiersGet
+        self.inAppPurchaseIdentifiersSet = inAppPurchaseIdentifiersSet
+        self.planService = planService
+        self.paymentsApi = paymentsApi
+        self.apiService = apiService
+        self.paymentsAlertManager = paymentsAlertManager
+        self.reportBugAlertHandler = reportBugAlertHandler
+        self.reachability = reachability
         super.init()
-        try? reachability?.startNotifier()
         reachability?.whenReachable = { [weak self] _ in self?.networkReachable() }
-        processAuthenticated.delegate = self
-        processUnathenticated.delegate = self
-        processAddCredits.delegate = self
-        validationManager.delegate = self
+        try? reachability?.startNotifier()
     }
 
     deinit {
         reachability?.stopNotifier()
     }
 
-    // MARK: Public interface
-
     public func subscribeToPaymentQueue() {
+        paymentQueue.remove(self)
         paymentQueue.add(self)
     }
 
-    public func updateAvailableProductsList() {
-        request.delegate = self
-        request.start()
+    public func updateAvailableProductsList(completion: @escaping (Error?) -> Void) {
+        updateAvailableProductsListCompletionBlock = { error in DispatchQueue.main.async { completion(error) } }
+        request = SKProductsRequest(productIdentifiers: inAppPurchaseIdentifiersGet())
+        request?.delegate = self
+        request?.start()
     }
 
-    public func priceLabelForProduct(identifier: String) -> (NSDecimalNumber, Locale)? {
-        guard let product = self.availableProducts.first(where: { $0.productIdentifier == identifier }) else { return nil }
+    public func priceLabelForProduct(storeKitProductId: String) -> (NSDecimalNumber, Locale)? {
+        guard let product = availableProducts.first(where: { $0.productIdentifier == storeKitProductId })
+        else { return nil }
         return (product.price, product.priceLocale)
-    }
-
-    public func isReadyToPurchaseProduct() -> Bool {
-        // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
-        return (!self.hasUnfinishedPurchase()) && (self.applicationUserId() != nil)
     }
 
     public func currentTransaction() -> SKPaymentTransaction? {
         return paymentQueue.transactions.filter { $0.transactionState != .failed }.first
     }
 
-    public func isValidPurchase(identifier: String, completion: @escaping (Bool) -> Void) {
-        updateServicePlanDataService { result in
-            switch result {
-            case .success:
-                completion(self.validationManager.isValidPurchase(identifier: identifier))
-            case .failure:
+    public func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void) {
+        let planService = planService
+        planService.updateServicePlans { [weak self] in
+            guard planService.isIAPAvailable else {
+                completion(false)
+                return
+            }
+            planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+                completion(self?.validationManager.isValidPurchase(storeKitProductId: storeKitProductId) ?? false)
+            } failure: { _ in
                 completion(false)
             }
+        } failure: { _ in
+            completion(false)
         }
     }
 
-    public func purchaseProduct(identifier: String,
+    public func purchaseProduct(plan: InAppPurchasePlan,
+                                amountDue: Int,
                                 successCompletion: @escaping SuccessCallback,
                                 errorCompletion: @escaping ErrorCallback,
                                 deferredCompletion: (() -> Void)? = nil) {
 
-        if delegate?.userId != nil {
-            updateServicePlanDataService { result in
-                switch result {
-                case .failure(let error):
-                    errorCompletion(error)
-                case .success:
-                    let result = self.validationManager.canPurchaseProduct(identifier: identifier)
-                    switch result {
-                    case .failure(let error):
-                        errorCompletion(error)
-                    case .success(let product):
-                        self.purchaseProduct(product: product, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
-                    }
-                }
+        guard let storeKitProductId = plan.storeKitProductId,
+              let product = availableProducts.first(where: { $0.productIdentifier == storeKitProductId })
+        else { return errorCompletion(Errors.unavailableProduct) }
+
+        planService.updateServicePlans { [weak self] in
+            guard let self = self else {
+                errorCompletion(Errors.transactionFailedByUnknownReason)
+                return
             }
-        } else {
-            guard let product = self.availableProducts.first(where: { $0.productIdentifier == identifier }) else {
-                return errorCompletion(Errors.unavailableProduct)
+            guard self.planService.isIAPAvailable,
+                  let details = self.planService.detailsOfServicePlan(named: plan.protonName),
+                  details.isPurchasable else {
+                errorCompletion(Errors.unavailableProduct)
+                return
             }
-            self.purchaseProduct(product: product, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
+
+            guard let userId = self.applicationUserId() else {
+                self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
+                                                            amountDue: amountDue,
+                                                            successCompletion: successCompletion,
+                                                            errorCompletion: errorCompletion,
+                                                            deferredCompletion: deferredCompletion)
+                return
+            }
+
+            self.purchaseProductBeingAuthorized(storeKitProduct: product,
+                                                amountDue: amountDue,
+                                                userId: userId,
+                                                successCompletion: successCompletion,
+                                                errorCompletion: errorCompletion,
+                                                deferredCompletion: deferredCompletion)
+
+        } failure: { error in
+            errorCompletion(error)
         }
+    }
+
+    private func purchaseProductWithoutAnAuthorizedUser(storeKitProduct: SKProduct,
+                                                        amountDue: Int,
+                                                        successCompletion: @escaping SuccessCallback,
+                                                        errorCompletion: @escaping ErrorCallback,
+                                                        deferredCompletion: (() -> Void)?) {
+        let amountDueCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier,
+                                                           hashedUserId: nil)
+        threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
+        initiateStoreKitInAppPurchaseFlow(storeKitProduct: storeKitProduct,
+                                           hashedUserId: nil,
+                                           successCompletion: successCompletion,
+                                           errorCompletion: errorCompletion,
+                                           deferredCompletion: deferredCompletion)
+    }
+
+    // swiftlint:disable function_parameter_count
+    private func purchaseProductBeingAuthorized(storeKitProduct: SKProduct,
+                                                amountDue: Int,
+                                                userId: String,
+                                                successCompletion: @escaping SuccessCallback,
+                                                errorCompletion: @escaping ErrorCallback,
+                                                deferredCompletion: (() -> Void)?) {
+
+        let hashedUserId = hash(userId: userId)
+
+        let amountDueCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier, hashedUserId: hashedUserId)
+        
+        threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
+
+        planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+            guard let self = self else {
+                errorCompletion(Errors.transactionFailedByUnknownReason)
+                return
+            }
+            guard self.planService.currentSubscription?.hasExistingProtonSubscription == false else {
+                errorCompletion(Errors.invalidPurchase)
+                return
+            }
+
+            self.initiateStoreKitInAppPurchaseFlow(storeKitProduct: storeKitProduct,
+                                                   hashedUserId: hashedUserId,
+                                                   successCompletion: successCompletion,
+                                                   errorCompletion: errorCompletion,
+                                                   deferredCompletion: deferredCompletion)
+        } failure: { error in
+            errorCompletion(error)
+        }
+    }
+
+    private func applicationUserId() -> String? {
+        guard let userId = delegate?.userId, !userId.isEmpty else { return nil }
+        return userId
+    }
+
+    private func hash(userId: String) -> String {
+        userId.sha256
+    }
+
+    private func initiateStoreKitInAppPurchaseFlow(storeKitProduct: SKProduct,
+                                                   hashedUserId: String?,
+                                                   successCompletion: @escaping SuccessCallback,
+                                                   errorCompletion: @escaping ErrorCallback,
+                                                   deferredCompletion: (() -> Void)? = nil) {
+
+        let callbackCacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProduct.productIdentifier,
+                                                          hashedUserId: hashedUserId)
+        threadSafeCache.set(value: successCompletion, for: callbackCacheKey, in: \.successCompletion)
+        threadSafeCache.set(value: deferredCompletion, for: callbackCacheKey, in: \.deferredCompletion)
+        threadSafeCache.set(value: errorCompletion, for: callbackCacheKey, in: \.errorCompletion)
+
+        let payment = SKMutablePayment(product: storeKitProduct)
+        payment.quantity = 1
+        payment.applicationUsername = hashedUserId
+        paymentQueue.add(payment)
+        PMLog.debug("StoreKit: Purchase started")
     }
 
     /// This method will be called after relogin and from the SKPaymentTransactionObserver
     public func continueRegistrationPurchase(finishHandler: FinishCallback? = nil) {
-        processAllTransactions(finishHandler: finishHandler)
+        processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: finishHandler)
     }
 
     public func hasUnfinishedPurchase() -> Bool {
@@ -176,97 +372,51 @@ public class StoreKitManager: NSObject, StoreKitManagerProtocol {
                 return "Test"
             }
         }
-        guard let receiptUrl = Bundle.main.appStoreReceiptURL/*,
-            !receiptUrl.lastPathComponent.contains("sandbox")*/ else {
-            throw Errors.sandboxReceipt
-        }
-        PMLog.debug(receiptUrl.path) // make use of this thing so maybe compiler will not screw it up while optimising
-        guard let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
-            throw Errors.receiptLost
-        }
+        guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+              let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString()
+        else { throw Errors.receiptLost }
         return receipt
     }
 
-    // MARK: Internal / private interface
-
-    internal var processingType: ProcessingType {
-        if applicationUserId() != nil {
-            if delegate?.servicePlanDataService?.currentSubscription?.endDate?.isFuture ?? false {
-                return .existingUserAddCredits
-            }
-            return .existingUserNewSubscription
-        }
-        return .registration
-    }
-
-    private func purchaseProduct(product: SKProduct,
-                                 successCompletion: @escaping SuccessCallback,
-                                 errorCompletion: @escaping ErrorCallback,
-                                 deferredCompletion: (() -> Void)? = nil) {
-        self.successCompletion = successCompletion
-        self.errorCompletion = errorCompletion
-        self.deferredCompletion = deferredCompletion
-
-        let payment = SKMutablePayment(product: product)
-        payment.quantity = 1
-        if let userId = self.applicationUserId() {
-            payment.applicationUsername = self.hash(userId: userId)
-        }
-        self.paymentQueue.add(payment)
-        self.paymentInternalCompletionStarted?()
-        PMLog.debug("StoreKit: Purchase started")
-    }
-
     private func networkReachable() {
-        processAllTransactions(finishHandler: transactionsFinishHandler)
-    }
-
-    private func updateServicePlanDataService(completion: @escaping (Result<(), Error>) -> Void) {
-        delegate?.servicePlanDataService?.updateServicePlans {
-            if let servicePlan = self.delegate?.servicePlanDataService, servicePlan.isIAPAvailable {
-                self.delegate?.servicePlanDataService?.updateCurrentSubscription {
-                    completion(.success(()))
-                } failure: { error in
-                    completion(.failure(error))
-                }
-            } else {
-                completion(.failure(Errors.transactionFailedByUnknownReason))
-            }
-        } failure: { error in
-            completion(.failure(error))
-        }
+        processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: transactionsFinishHandler)
     }
 }
 
 extension StoreKitManager: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        self.availableProducts = response.products
+        if !response.invalidProductIdentifiers.isEmpty {
+            PMLog.error("Some IAP identifiers are reported as invalid by the AppStore: \(response.invalidProductIdentifiers)")
+        }
+        inAppPurchaseIdentifiersSet(Set(response.products.map(\.productIdentifier)))
+        availableProducts = response.products
+        updateAvailableProductsListCompletionBlock?(nil)
+        updateAvailableProductsListCompletionBlock = nil
+        self.request = nil
     }
 
-    private func hash(userId: String) -> String {
-        return userId.sha256
-    }
-
-    private func applicationUserId() -> String? {
-        guard let userId = delegate?.userId, !userId.isEmpty else { return nil }
-        return userId
+    func request(_: SKRequest, didFailWithError error: Error) {
+        #if targetEnvironment(simulator)
+        if let skerror = error as? SKError, skerror.code == .unknown {
+            updateAvailableProductsListCompletionBlock?(nil)
+        } else {
+            updateAvailableProductsListCompletionBlock?(error)
+        }
+        #else
+        updateAvailableProductsListCompletionBlock?(error)
+        #endif
+        updateAvailableProductsListCompletionBlock = nil
+        self.request = nil
     }
 }
 
 extension StoreKitManager: SKPaymentTransactionObserver {
     // this will be called right after the purchase and after relaunch
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-
-//        // TEMPORARY SOLUTION: finish all pending operations if delegate is not set
-//        transactions.forEach {
-//            paymentQueue.finishTransaction($0)
-//        }
-//        return
-
-        processAllTransactions(finishHandler: transactionsFinishHandler)
+        processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: transactionsFinishHandler)
     }
 
-    private func processAllTransactions(finishHandler: FinishCallback?) {
+    private func processAllStoreKitTransactionsCurrentlyFoundInThePaymentQueue(finishHandler: FinishCallback?) {
         self.transactionsQueue.cancelAllOperations()
 
         guard !paymentQueue.transactions.isEmpty else {
@@ -276,26 +426,45 @@ extension StoreKitManager: SKPaymentTransactionObserver {
 
         PMLog.debug("StoreKit transaction queue contains transaction(s). Will handle it now.")
         transactionsFinishHandler = finishHandler
-        paymentQueue.transactions.forEach { transaction in
-            self.addOperation { self.process(transaction: transaction) }
+        paymentQueue.transactions.forEach { [weak self] transaction in
+            self?.addStoreKitTransactionProcessingOperation { [weak self] in
+                self?.processStoreKitTransaction(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: true)
+            }
         }
     }
 
-    private func process(transaction: SKPaymentTransaction, shouldVerifyPurchaseWasForSameAccount shouldVerify: Bool = true) {
+    private func processStoreKitTransaction(transaction: SKPaymentTransaction,
+                                            shouldVerifyPurchaseWasForSameAccount shouldVerify: Bool) {
+
+        let storeKitProductId = transaction.payment.productIdentifier
+        let cacheKey = UserInitiatedPurchaseCache(storeKitProductId: storeKitProductId, hashedUserId: applicationUserId().map(hash(userId:)))
+
         switch transaction.transactionState {
         case .failed:
-            proceed(withFailed: transaction)
+            processFailedStoreKitTransaction(transaction, cacheKey: cacheKey)
         case .purchased:
             // Flatten async calls inside `proceed()`
             let group = DispatchGroup()
             group.enter()
 
-            try? processPurchased(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify, group: group, completion: {
+            processPurchasedStoreKitTransaction(
+                transaction, cacheKey: cacheKey, shouldVerifyPurchaseWasForSameAccount: shouldVerify, group: group
+            ) { [weak self] result in
+                switch result {
+                case .finished:
+                    self?.callSuccessCompletion(for: cacheKey, with: nil)
+                case .paymentToken(let token):
+                    self?.callSuccessCompletion(for: cacheKey, with: token)
+                case .errored(let storeKitError):
+                    self?.callErrorCompletion(for: cacheKey, with: storeKitError)
+                case .erroredWithUnspecifiedError(let error):
+                    self?.callErrorCompletion(for: cacheKey, with: error)
+                }
                 group.leave()
-            })
+            }
 
         case .deferred, .purchasing:
-            self.deferredCompletion?()
+            callDeferredCompletion(for: cacheKey)
         case .restored:
             break // never happens in our flow
         @unknown default:
@@ -303,27 +472,37 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         }
     }
 
-    private func proceed(withFailed transaction: SKPaymentTransaction) {
+    private func processFailedStoreKitTransaction(_ transaction: SKPaymentTransaction, cacheKey: UserInitiatedPurchaseCache) {
         paymentQueue.finishTransaction(transaction)
         let error = transaction.error as NSError?
         switch error {
         case .some(let error):
             if error.code == SKError.paymentCancelled.rawValue {
-                self.errorCompletion(Errors.cancelled)
-                self.refreshHandler?()
+                getErrorCompletion(for: cacheKey) {
+                    $0?(Errors.cancelled)
+                    self.refreshHandler?()
+                }
             } else if error.code == SKError.unknown.rawValue {
-                self.errorCompletion(Errors.unknown)
-                self.refreshHandler?()
+                getErrorCompletion(for: cacheKey) {
+                    $0?(Errors.unknown)
+                    self.refreshHandler?()
+                }
             } else {
-                self.errorCompletion(error)
-                self.refreshHandler?()
+                getErrorCompletion(for: cacheKey) {
+                    $0?(error)
+                    self.refreshHandler?()
+                }
             }
         case .none:
-            self.errorCompletion(Errors.transactionFailedByUnknownReason)
+            getErrorCompletion(for: cacheKey) { $0?(Errors.transactionFailedByUnknownReason) }
         }
     }
 
-    private func processPurchased(transaction: SKPaymentTransaction, shouldVerifyPurchaseWasForSameAccount shouldVerify: Bool, group: DispatchGroup, completion: @escaping CompletionCallback) throws {
+    private func processPurchasedStoreKitTransaction(_ transaction: SKPaymentTransaction,
+                                                     cacheKey: UserInitiatedPurchaseCache,
+                                                     shouldVerifyPurchaseWasForSameAccount: Bool,
+                                                     group: DispatchGroup,
+                                                     completion: @escaping ProcessCompletionCallback) {
         do {
             guard delegate?.isSignedIn ?? false else {
                 throw Errors.pleaseSignIn
@@ -331,72 +510,101 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             guard delegate?.isUnlocked ?? false else {
                 throw Errors.appIsLocked
             }
-            try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify, completion: completion)
+
+            if shouldVerifyPurchaseWasForSameAccount, let transactionHashedUserId = transaction.payment.applicationUsername {
+                try verifyCurrentCredentialsMatch(usernameFromTransaction: transactionHashedUserId)
+            }
+
+            try informProtonBackendAboutPurchasedTransaction(transaction, cacheKey: cacheKey, completion: completion)
+
         } catch Errors.haveTransactionOfAnotherUser { // user login error
-            self.confirmUserValidationBypass(Errors.haveTransactionOfAnotherUser) {
-                self.transactionsQueue.addOperation { self.process(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+            confirmUserValidationBypass(cacheKey, Errors.haveTransactionOfAnotherUser) { [weak self] in
+                self?.transactionsQueue.addOperation { [weak self] in
+                    self?.processStoreKitTransaction(transaction: transaction, shouldVerifyPurchaseWasForSameAccount: false)
+                }
                 group.leave()
             }
-        } catch Errors.sandboxReceipt {  // receipt error
-            self.errorCompletion(Errors.sandboxReceipt)
-            paymentQueue.finishTransaction(transaction)
-            group.leave()
 
         } catch Errors.receiptLost { // receipt error
-            self.errorCompletion(Errors.receiptLost)
+            callErrorCompletion(for: cacheKey, with: Errors.receiptLost)
             paymentQueue.finishTransaction(transaction)
             group.leave()
 
         } catch Errors.noNewSubscriptionInSuccessfullResponse { // error on BE
-            self.errorCompletion(Errors.noNewSubscriptionInSuccessfullResponse)
+            callErrorCompletion(for: cacheKey, with: Errors.noNewSubscriptionInSuccessfullResponse)
             paymentQueue.finishTransaction(transaction)
             group.leave()
 
         } catch let error { // other errors
-            self.errorCompletion(error)
+            callErrorCompletion(for: cacheKey, with: error)
             group.leave()
         }
 
         group.wait()
     }
 
-    private func proceed(withPurchased transaction: SKPaymentTransaction, shouldVerifyPurchaseWasForSameAccount: Bool = true, completion: @escaping CompletionCallback) throws {
+    private func informProtonBackendAboutPurchasedTransaction(_ transaction: SKPaymentTransaction,
+                                                              cacheKey: UserInitiatedPurchaseCache,
+                                                              completion: @escaping ProcessCompletionCallback) throws {
 
-        if shouldVerifyPurchaseWasForSameAccount, let transactionHashedUserId = transaction.payment.applicationUsername {
-            try self.verifyCurrentCredentialsMatch(usernameFromTransaction: transactionHashedUserId)
+        guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
+        else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+
+        if planService.detailsOfServicePlan(named: plan.protonName) == nil {
+            try AwaitKit.await(planService.updateServicePlans())
         }
 
-        guard let plan = AccountPlan(storeKitProductId: transaction.payment.productIdentifier) else {
-            self.errorCompletion(Errors.alreadyPurchasedPlanDoesNotMatchBackend)
-            return
+        guard let details = planService.detailsOfServicePlan(named: plan.protonName),
+              let amount = details.pricing(for: plan.period),
+              let protonIdentifier = details.iD,
+              details.isPurchasable
+        else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+
+        let amountDue: Int
+        if let cachedAmountDue = threadSafeCache.removeValueSynchronously(for: cacheKey, in: \.amountDue) {
+            amountDue = cachedAmountDue
+        } else {
+            let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
+                api: apiService, protonPlanName: details.name, isAuthenticated: applicationUserId() != nil
+            )
+            let response = try AwaitKit.await(validateSubscriptionRequest.run())
+            guard let fetchedAmountDue = response.validateSubscription?.amountDue
+            else { throw Errors.transactionFailedByUnknownReason }
+            amountDue = fetchedAmountDue
         }
+
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: protonIdentifier, amount: amount, amountDue: amountDue)
 
         switch processingType {
         case .existingUserNewSubscription:
             if transactionsMadeBeforeSignup.contains(transaction) {
-                try processUnathenticated.processAuthenticatedBeforeSignup(transaction: transaction, plan: plan, completion: completion)
+                try processUnathenticated.processAuthenticatedBeforeSignup(
+                    transaction: transaction, plan: planToBeProcessed, completion: completion
+                )
             } else {
-                try self.processAuthenticated.process(transaction: transaction, plan: plan, completion: completion)
+                try processAuthenticated.process(
+                    transaction: transaction, plan: planToBeProcessed, completion: completion
+                )
             }
-        case .existingUserAddCredits:
-            try processAddCredits.process(transaction: transaction, plan: plan, completion: completion)
         case .registration:
-            try processUnathenticated.process(transaction: transaction, plan: plan, completion: completion)
+            try processUnathenticated.process(
+                transaction: transaction, plan: planToBeProcessed, completion: completion
+            )
         }
     }
 }
 
 extension StoreKitManager {
     /// Adds operation to queue plus adds additional operation that check if queue is empty and calls finish handler if available
-    private func addOperation(block: @escaping CompletionCallback) {
+    private func addStoreKitTransactionProcessingOperation(block: @escaping () -> Void) {
         let mainOperation = BlockOperation(block: block)
         let finishOperation = BlockOperation(block: { [weak self] in
             self?.handleQueueFinish()
         })
         finishOperation.addDependency(mainOperation)
         finishOperation.name = "Finish check"
-        self.transactionsQueue.addOperation(mainOperation)
-        self.transactionsQueue.addOperation(finishOperation)
+        transactionsQueue.addOperation(mainOperation)
+        transactionsQueue.addOperation(finishOperation)
     }
 
     private func handleQueueFinish() {
@@ -410,55 +618,59 @@ extension StoreKitManager {
 
 extension StoreKitManager {
     private func verifyCurrentCredentialsMatch(usernameFromTransaction hashedTransactionUserId: String) throws {
-        guard let userId = self.applicationUserId() else {
+        guard let userId = applicationUserId() else {
             throw Errors.noActiveUsername
         }
-        guard hashedTransactionUserId == self.hash(userId: userId) else {
+        guard hashedTransactionUserId == hash(userId: userId) else {
             throw Errors.haveTransactionOfAnotherUser
         }
     }
 
     private func errorCompletionAlertView(error: Error) {
-        paymentsAlertManager.errorAlert(message: error.localizedDescription)
+        paymentsAlertManager.errorAlert(message: error.messageForTheUser)
     }
 
-    private func confirmUserValidationAlertView(error: Error, userName: String, completion: @escaping CompletionCallback) {
+    private func confirmUserValidationAlertView(error: Error, userName: String, completion: @escaping () -> Void) {
         let activateMsg = String(format: CoreString._do_you_want_to_bypass_validation, userName)
         let message = """
-        \(error.localizedDescription)
+        \(error.messageForTheUser)
 
         \(activateMsg)
         """
         let confirmButtonTitle = CoreString._yes_bypass_validation + userName
-        paymentsAlertManager.userValidationAlert(message: message, confirmButtonTitle: confirmButtonTitle) { _ in
+        paymentsAlertManager.userValidationAlert(message: message, confirmButtonTitle: confirmButtonTitle) {
             completion()
         }
     }
 }
 
-extension StoreKitManager: ProcessDelegateProtocol {
+extension StoreKitManager: ProcessDependencies {
     var storeKitDelegate: StoreKitManagerDelegate? { return delegate }
-    var tokenStorage: PaymentTokenStorage? { return commonTokenStorage }
+    var tokenStorage: PaymentTokenStorage { return commonTokenStorage }
     var paymentsApiProtocol: PaymentsApiProtocol { return paymentsApi }
-    var paymentQueueProtocol: PaymentQueueProtocol { return paymentQueue }
     var alertManager: PaymentsAlertManager { return paymentsAlertManager }
-    var successCallback: StoreKitManager.SuccessCallback? { return successCompletion }
-    var errorCallback: StoreKitManager.ErrorCallback { return errorCompletion }
-    var transactionsBeforeSignup: [SKPaymentTransaction] {
-        get { return transactionsMadeBeforeSignup }
-        set { transactionsMadeBeforeSignup = newValue }
+    var updateSubscription: (Subscription) -> Void { { [weak self] in self?.planService.currentSubscription = $0 } }
+    var finishTransaction: (SKPaymentTransaction) -> Void { { [weak self] in self?.paymentQueue.finishTransaction($0) } }
+    func addTransactionsBeforeSignup(transaction: SKPaymentTransaction) {
+        // TODO: should it be thread safe?
+        transactionsMadeBeforeSignup.append(transaction)
+        notifyWhenTransactionsWaitingForTheSignupAppear(
+            transactionsMadeBeforeSignup.compactMap { InAppPurchasePlan(storeKitProductId: $0.payment.productIdentifier) }
+        )
+    }
+    func removeTransactionsBeforeSignup(transaction: SKPaymentTransaction) {
+        // TODO: should it be thread safe?
+        transactionsMadeBeforeSignup.removeAll(where: { $0 == transaction })
+        notifyWhenTransactionsWaitingForTheSignupAppear(
+            transactionsMadeBeforeSignup.compactMap { InAppPurchasePlan(storeKitProductId: $0.payment.productIdentifier) }
+        )
     }
     var pendingRetry: Double { return pendingRetryIn }
     var errorRetry: Double { return errorRetryIn }
     func getReceipt() throws -> String { return try readReceipt() }
+    var bugAlertHandler: BugAlertHandler { return reportBugAlertHandler }
 }
 
-extension StoreKitManager: ValidationManagerDelegate {
-    var servicePlanDataService: ServicePlanDataService? {
-        return delegate?.servicePlanDataService
-    }
-
-    var products: [SKProduct]? {
-        return availableProducts
-    }
+extension StoreKitManager: ValidationManagerDependencies {
+    var products: [SKProduct] { availableProducts }
 }

@@ -31,8 +31,8 @@ final class LabelInfoCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.iconView.tintColor = UIColorManager.IconHint
-        self.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        self.iconView.tintColor = ColorProvider.IconHint
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
     }
 
     func config(info: String, icon: UIImage, cellHeight: CGFloat) {

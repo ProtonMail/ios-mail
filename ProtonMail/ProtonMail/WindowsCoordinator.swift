@@ -442,6 +442,15 @@ class WindowsCoordinator: CoordinatorNew {
 
     private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
         self.deeplink = deepLink
+        if let head = deepLink?.head,
+           head.name == .toWebSupportForm,
+           let url = URL(string: .webSupportFormLink) {
+            self.deeplink = nil
+            DispatchQueue.main.async {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+            return
+        }
         guard arePrimaryUserSettingsFetched && appWindow != nil else {
             return
         }
