@@ -32,15 +32,15 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }*/
     
-    func testExtractKeyWordsFromBody() throws {
+    /*func testExtractKeyWordsFromBody() throws {
         let body: String = "<div dir=\"ltr\">this is a testmessage<br></div>\n"
         let sut = EncryptedSearchService.shared.extractKeywordsFromBody
         let result = sut(body, true)
         
         XCTAssertEqual(result, "this is a testmessage")
-    }
+    }*/
     
-    func testExtractKeyWordsFromBodyRemoveBlockQuotesProtonMail(){
+    /*func testExtractKeyWordsFromBodyRemoveBlockQuotesProtonMail(){
         let body: String = """
             <div>This a reply<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div><div><br></div><div class="protonmail_quote">
             ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐<br>
@@ -59,9 +59,9 @@ class EncryptedSearchTests: XCTestCase {
         let result = sut(body, true)
         
         XCTAssertEqual(result, bodyCleanedExpected)
-    }
+    }*/
     
-    func testExtractKeyWordsFromBodyLeaveBlockQuotesProtonMail(){
+    /*func testExtractKeyWordsFromBodyLeaveBlockQuotesProtonMail(){
         let body: String = """
             <div>This a reply<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div><div><br></div><div class="protonmail_quote">
             ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐<br>
@@ -85,9 +85,9 @@ class EncryptedSearchTests: XCTestCase {
         let result = sut(body, false)
         
         XCTAssertEqual(result, bodyCleanedExpected)
-    }
+    }*/
     
-    func testExtractKeyWordsFromBodyRemoveBlockQuotesGMail(){
+    /*func testExtractKeyWordsFromBodyRemoveBlockQuotesGMail(){
         let body: String = """
         <div dir="ltr">This is a reply<br></div><br><div class="gmail_quote"><div dir="ltr" class="gmail_attr">On Wed, Apr 28, 2021 at 6:38 PM marin.test &lt;<a href="mailto:marin.test@protonmail.com">marin.test@protonmail.com</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div>Some random word: peasant<br></div><div><br></div><div><div></div><div>Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div></blockquote></div>
         """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -96,9 +96,9 @@ class EncryptedSearchTests: XCTestCase {
         let result = sut(body, true)
         
         XCTAssertEqual(result, bodyCleanedExpected)
-    }
+    }*/
     
-    func testExtractKeyWordsFromBodyLeaveBlockQuotesGMail(){
+    /*func testExtractKeyWordsFromBodyLeaveBlockQuotesGMail(){
         let body: String = """
         <div dir="ltr">This is a reply<br></div><br><div class="gmail_quote"><div dir="ltr" class="gmail_attr">On Wed, Apr 28, 2021 at 6:38 PM marin.test &lt;<a href="mailto:marin.test@protonmail.com">marin.test@protonmail.com</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div>Some random word: peasant<br></div><div><br></div><div><div></div><div>Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div></blockquote></div>
         """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -115,6 +115,6 @@ class EncryptedSearchTests: XCTestCase {
         let result = sut(body, false)
         
         XCTAssertEqual(result, bodyCleanedExpected)
-    }
+    }*/
 
 }
