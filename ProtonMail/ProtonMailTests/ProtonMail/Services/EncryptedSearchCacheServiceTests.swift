@@ -35,6 +35,11 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
         // Create a search index db for user 'test'.
         self.createTestSearchIndexDB()
+        let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
+        print("Test database created: \(doesTestIndexExist)")
+        //do {
+        //    sleep(2)    //wait for 2 seconds
+        //}
 
         //build the cache for user 'test'
         self.buildTestCache()
@@ -43,6 +48,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
 
+        print("clean up after test!")
         // delete search index db for user 'test'
         try self.deleteTestSearchIndexDB()
 
@@ -54,8 +60,14 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.testSearchIndexDBName = "encryptedSearchIndex_test.sqlite3"
         self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(for: self.testUserID)!
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+
+        let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
+        let testMessage2: ESMessage = ESMessage(id: self.testMessageID, order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello")
+        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage2, cleanedBody: "hello2")
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage, encryptedContent, false)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage2, encryptedContent2, false)
+        
     }
     
     func deleteTestSearchIndexDB() throws {
@@ -76,7 +88,9 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         var error: NSError?
         let testKey = CryptoRandomToken(32, &error)
         let cipher = EncryptedsearchAESGCMCipher(testKey)
+        print("Build cache for test user! = start")
         self.testCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
+        print("Build cache for test user! = finish")
     }
 
     func testEncryptedSearchCacheServiceSingleton() throws {
