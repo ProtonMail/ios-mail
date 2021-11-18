@@ -38,6 +38,8 @@ final class LabelColorCell: UICollectionViewCell {
         }
 
         self.setSelected(isSelected: isSelected)
+        self.accessibilityIdentifier = "LabelPaletteCell.LabelColorCell"
+        self.accessibilityTraits = .image
     }
 
     func setSelected(isSelected: Bool) {

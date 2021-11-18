@@ -202,7 +202,7 @@ class ComposerRobot: CoreElements {
 
     func recipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
-        cell(id.getContactCellIdentifier(email)).byIndex(0).tapIfExists()
+        staticText(id.getContactCellIdentifier(email)).byIndex(0).tapIfExists()
         Element.other.tapIfExists(id.popoverDismissRegionOtherIdentifier)
         return self
     }
