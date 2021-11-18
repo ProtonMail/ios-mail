@@ -46,8 +46,8 @@ import UIKit
     
     func configCell(_ titleLine: String, _ topLine: String, _ estimatedTime: Int, _ currentProgress: Int, _ textButtonNormal: String, _ textButtonPressed: String, complete: buttonActionBlock?) {
         
-        var leftAttributes = FontManager.Default
-        leftAttributes.addTextAlignment(.left)
+        var leftAttributes = FontManager.Default.alignment(.left)
+        leftAttributes[.foregroundColor] = ColorProvider.InteractionNorm
         titleLabel.attributedText = NSMutableAttributedString(string: titleLine, attributes: leftAttributes)
         
         statusLabel.text = topLine
