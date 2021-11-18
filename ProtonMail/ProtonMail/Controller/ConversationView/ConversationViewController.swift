@@ -218,7 +218,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         nil
     }
 
-    private func presentActionSheet(for message: Message) {
+    private func presentActionSheet(for message: Message, isBodyDecrpytable: Bool) {
         let forbidden = [Message.Location.allmail.rawValue,
                           Message.Location.starred.rawValue,
                           Message.HiddenLocation.sent.rawValue,
@@ -239,7 +239,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         let viewModel = MessageViewActionSheetViewModel(title: message.subject,
                                                         labelID: location.labelID,
                                                         includeStarring: true,
-                                                        isStarred: message.starred)
+                                                        isStarred: message.starred,
+                                                        isBodyDecryptable: isBodyDecrpytable)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -617,7 +618,10 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
-                presentActionSheet(for: message)
+                let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
+                let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
+                    .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
+                presentActionSheet(for: message, isBodyDecrpytable: isBodyDecryptable)
             }
         case .url(let url):
             coordinator.handle(navigationAction: .url(url: url))

@@ -40,6 +40,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ContactPGPTypeHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationStoredSizeHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/BannerHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift
 
 excluded:
   - ${PWD}/Pods

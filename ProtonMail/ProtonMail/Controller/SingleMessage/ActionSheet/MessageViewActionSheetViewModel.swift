@@ -24,7 +24,11 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
     let title: String
     private(set) var items: [MessageViewActionSheetAction] = []
 
-    init(title: String, labelID: String, includeStarring: Bool, isStarred: Bool) {
+    init(title: String,
+         labelID: String,
+         includeStarring: Bool,
+         isStarred: Bool,
+         isBodyDecryptable: Bool) {
         self.title = title
 
         items.append(contentsOf: [
@@ -67,9 +71,13 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
         items.append(contentsOf: [
             .moveTo,
             .print,
-            .viewHeaders,
-            .viewHTML,
-            .reportPhishing
+            .viewHeaders
         ])
+
+        if isBodyDecryptable {
+            items.append(.viewHTML)
+        }
+
+        items.append(.reportPhishing)
     }
 }

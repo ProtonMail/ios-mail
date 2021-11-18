@@ -145,6 +145,8 @@ class NewMessageBodyViewModel {
         return config
     }
 
+    private(set) var isBodyDecryptable = false
+
     init(message: Message,
          messageService: MessageDataService,
          userManager: UserManager,
@@ -190,6 +192,7 @@ class NewMessageBodyViewModel {
             return true
         }
         if let decryptedBody = decryptBody(from: message) {
+            isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody)
 
             checkBannerStatus(decryptedBody)
