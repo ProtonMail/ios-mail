@@ -45,7 +45,10 @@ extension EncryptedSearchCacheService {
         if currentUserID != userId || !(self.cache?.isBuilt())! {
             print("Build cache for user \(userId)")
             self.cache?.deleteAll()
+            print("Cache deleted!")
+            print("Number of message in cache: \(String(describing: self.cache?.getLength()))")
             do {
+                print("batch size: \(self.batchSize)")
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
             } catch {
                 print("Error when building the cache: ", error)
