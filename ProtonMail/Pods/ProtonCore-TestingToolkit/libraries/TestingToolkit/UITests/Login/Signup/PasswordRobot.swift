@@ -67,7 +67,7 @@ public final class PasswordRobot: CoreElements {
     }
     
     public func insertPassword(password: String) -> PasswordRobot {
-        secureTextField(passwordNameTextFieldId).tap().typeText(password)
+        secureTextField(passwordNameTextFieldId).wait().tap().typeText(password)
         return self
     }
     

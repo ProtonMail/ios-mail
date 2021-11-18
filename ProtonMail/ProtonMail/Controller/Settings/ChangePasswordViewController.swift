@@ -47,7 +47,7 @@ class ChangePasswordViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
 
         saveButton.setMode(mode: .solid)
         saveButton.setTitle(LocalString._general_save_action, for: .normal)

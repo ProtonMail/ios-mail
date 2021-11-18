@@ -26,7 +26,7 @@ class RemoteAndEmbeddedBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         setCornerRadius(radius: 8)
         addSubviews()
         setUpLayout()
@@ -117,18 +117,18 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.mailRemoteContentIcon.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 
     private static func button(title: String) -> UIButton {
         let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColorManager.InteractionWeak
+        button.backgroundColor = ColorProvider.InteractionWeak
         button.setCornerRadius(radius: 3)
         let attributes = FontManager.body3RegularNorm
         button.setAttributedTitle(title.apply(style: attributes), for: .normal)
         button.setAttributedTitle(
-            title.apply(style: attributes.foregroundColor(UIColorManager.TextDisabled)),
+            title.apply(style: attributes.foregroundColor(ColorProvider.TextDisabled)),
             for: .disabled
         )
         return button

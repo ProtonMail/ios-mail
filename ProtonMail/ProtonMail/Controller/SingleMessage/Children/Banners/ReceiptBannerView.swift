@@ -36,7 +36,7 @@ final class ReceiptBannerView: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColorManager.NotificationWarning
+        backgroundColor = ColorProvider.NotificationWarning
         roundCorner(8)
     }
 
@@ -95,7 +95,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.icBell.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 

@@ -187,7 +187,11 @@ extension LoginService {
                                                    mailboxPassword: mailboxPassword,
                                                    completion: completion)
                 case let .failure(error):
-                    completion(.failure(.generic(message: error.messageForTheUser)))
+                    if case .generic(let message) = error {
+                        completion(.failure(.generic(message: message)))
+                    } else {
+                        completion(.failure(.generic(message: error.messageForTheUser)))
+                    }
                 }
             }
 

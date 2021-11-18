@@ -128,7 +128,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
             Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
-        starBarButton.tintColor = starred ? UIColorManager.NotificationWarning : UIColorManager.IconWeak
+        starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
     }
 
     required init?(coder: NSCoder) {

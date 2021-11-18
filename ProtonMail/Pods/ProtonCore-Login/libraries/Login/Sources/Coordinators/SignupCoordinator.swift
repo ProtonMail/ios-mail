@@ -44,71 +44,74 @@ final class SignupCoordinator {
     weak var delegate: SignupCoordinatorDelegate?
     
     private let container: Container
-    private let signupMode: SignupMode
-    private let signupPasswordRestrictions: SignupPasswordRestrictions
     private let isCloseButton: Bool
-    private let planTypes: PlanTypes?
+    private let signupAvailability: SignupAvailability
+    private var signupParameters: SignupParameters?
     private var navigationController: LoginNavigationViewController?
     private var signupViewController: SignupViewController?
     private var recoveryViewController: RecoveryViewController?
     private var countryPickerViewController: CountryPickerViewController?
     private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
+    private var completeViewModel: CompleteViewModel?
     
     private var signupAccountType: SignupAccountType = .internal
     private var name: String?
     private var deviceToken: String?
     private var password: String?
     private var verifyToken: String?
-    private var performBeforeFlowCompletion: WorkBeforeFlowCompletion?
+    private var loginData: LoginData?
+    private var performBeforeFlow: WorkBeforeFlow?
     
     // Payments
     private var paymentsManager: PaymentsManager?
 
     init(container: Container,
-         signupMode: SignupMode,
-         signupPasswordRestrictions: SignupPasswordRestrictions,
          isCloseButton: Bool,
-         planTypes: PlanTypes?,
-         performBeforeFlowCompletion: WorkBeforeFlowCompletion?
-    ) {
+         paymentsAvailability: PaymentsAvailability,
+         signupAvailability: SignupAvailability,
+         performBeforeFlow: WorkBeforeFlow?) {
         self.container = container
-        self.signupMode = signupMode
-        self.signupPasswordRestrictions = signupPasswordRestrictions
         self.isCloseButton = isCloseButton
-        self.planTypes = planTypes
-        self.performBeforeFlowCompletion = performBeforeFlowCompletion
-        if let planTypes = planTypes {
-            self.paymentsManager = container.makePaymentsCoordinator(planTypes: planTypes)
+        self.signupAvailability = signupAvailability
+        self.performBeforeFlow = performBeforeFlow
+        if case .available(let paymentParameters) = paymentsAvailability {
+            self.paymentsManager = container.makePaymentsCoordinator(
+                for: paymentParameters.listOfIAPIdentifiers, reportBugAlertHandler: paymentParameters.reportBugAlertHandler
+            )
         }
     }
     
     func start(kind: FlowStartKind) {
-        switch signupMode {
+        switch signupAvailability {
         case .notAvailable:
             assertionFailure("Signup flow should never be presented when it's not available")
             navigationController?.dismiss(animated: true)
             delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
-            return
-        case .internal, .both(.internal):
-            signupAccountType = .internal
-        case .external, .both(.external):
-            signupAccountType = .external
+        case .available(let parameters):
+            signupParameters = parameters
+            switch parameters.mode {
+            case .internal, .both(.internal):
+                signupAccountType = .internal
+            case .external, .both(.external):
+                signupAccountType = .external
+            }
+            showSignupViewController(kind: kind)
         }
-        showSignupViewController(kind: kind)
     }
     
     // MARK: - View controller internal account presentation methods
     
     private func showSignupViewController(kind: FlowStartKind) {
+        guard let signupParameters = signupParameters else { return }
         let signupViewController = UIStoryboard.instantiate(SignupViewController.self)
         signupViewController.viewModel = container.makeSignupViewModel()
         signupViewController.delegate = self
         self.signupViewController = signupViewController
-        if case .internal = signupMode {
+        if case .internal = signupParameters.mode {
             signupViewController.showOtherAccountButton = false
-        } else if case .external = signupMode {
+        } else if case .external = signupParameters.mode {
             signupViewController.showOtherAccountButton = false
-        } else if case .both = signupMode {
+        } else if case .both = signupParameters.mode {
             signupViewController.showOtherAccountButton = true
         }
         signupViewController.showCloseButton = isCloseButton
@@ -131,11 +134,12 @@ final class SignupCoordinator {
     }
     
     private func showPasswordViewController() {
+        guard let signupParameters = signupParameters else { return }
         let passwordViewController = UIStoryboard.instantiate(PasswordViewController.self)
         passwordViewController.viewModel = container.makePasswordViewModel()
         passwordViewController.delegate = self
         passwordViewController.signupAccountType = signupAccountType
-        passwordViewController.signupPasswordRestrictions = signupPasswordRestrictions
+        passwordViewController.signupPasswordRestrictions = signupParameters.passwordRestrictions
         
         navigationController?.pushViewController(passwordViewController, animated: true)
     }
@@ -150,18 +154,20 @@ final class SignupCoordinator {
     }
     
     private func finishSignupProcess(email: String? = nil, phoneNumber: String? = nil, completionHandler: (() -> Void)?) {
-        if planTypes != nil {
-            paymentsManager?.startPaymentProcess(signupViewController: signupViewController, planShownHandler: completionHandler, completionHandler: { result in
-                switch result {
-                case .success:
-                    self.showCompleteViewController(email: email, phoneNumber: phoneNumber)
-                case .failure(let error):
-                    self.errorHandler(error: error)
-                }
-            })
-        } else {
+        guard let paymentsManager = paymentsManager, let signupViewController = signupViewController else {
             completionHandler?()
             showCompleteViewController(email: email, phoneNumber: phoneNumber)
+            return
+        }
+
+        paymentsManager.startPaymentProcess(signupViewController: signupViewController,
+                                            planShownHandler: completionHandler) { [weak self] result in
+            switch result {
+            case .success:
+                self?.showCompleteViewController(email: email, phoneNumber: phoneNumber)
+            case .failure(let error):
+                self?.errorHandler(error: error)
+            }
         }
     }
 
@@ -170,9 +176,16 @@ final class SignupCoordinator {
             assertionFailure("deviceToken missing")
             return
         }
+        var initDisplaySteps: [DisplayProgressStep] = [.create, .login]
+        if !(paymentsManager?.selectedPlan?.isFreePlan ?? true) {
+            initDisplaySteps += [.payment]
+        }
+        if let performBeforeFlow = performBeforeFlow {
+            initDisplaySteps += [.custom(performBeforeFlow.waitingStepName, performBeforeFlow.doneStepName)]
+        }
         
         let completeViewController = UIStoryboard.instantiate(CompleteViewController.self)
-        let completeViewModel = container.makeCompleteViewModel(deviceToken: deviceToken)
+        completeViewModel = container.makeCompleteViewModel(deviceToken: deviceToken, initDisplaySteps: initDisplaySteps)
         completeViewController.viewModel = completeViewModel
         completeViewController.delegate = self
         completeViewController.signupAccountType = signupAccountType
@@ -225,18 +238,24 @@ final class SignupCoordinator {
         guard viewControllers.count > 1 else { return viewControllers.first }
         var completeVCIndex: Int?
         for (index, vc) in viewControllers.enumerated() where vc is CompleteViewController {
-            completeVCIndex = index
+            completeVCIndex = index - 1
         }
-        guard let completeVCIndex = completeVCIndex, viewControllers.count >= completeVCIndex - 1 else { return nil }
-        return viewControllers[completeVCIndex - 1]
+        guard let completeVCIndex = completeVCIndex, completeVCIndex >= 0, viewControllers.count > completeVCIndex else { return nil }
+        return viewControllers[completeVCIndex]
     }
     
     private func finalizeAccountCreation(loginData: LoginData) {
-        if planTypes != nil {
-            paymentsManager?.finishPaymentProcess(loginData: loginData) { [weak self] result in
+        if let paymentsManager = paymentsManager {
+            if !(paymentsManager.selectedPlan?.isFreePlan ?? true) {
+                completeViewModel?.processStepWaiting(step: .payment)
+            }
+            paymentsManager.finishPaymentProcess(loginData: loginData) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
                     switch result {
                     case .success:
+                        if !(paymentsManager.selectedPlan?.isFreePlan ?? true) {
+                            self?.completeViewModel?.processStepDone(step: .payment)
+                        }
                         self?.finishAccountCreation(loginData: loginData)
                     case .failure(let error):
                         self?.errorHandler(error: error)
@@ -249,16 +268,18 @@ final class SignupCoordinator {
     }
     
     private func finishAccountCreation(loginData: LoginData) {
-        guard let workBeforeFlowCompletion = performBeforeFlowCompletion else {
-            completeSignupFlow(data: loginData)
+        guard let performBeforeFlow = performBeforeFlow else {
+            summarySignupFlow(data: loginData)
             return
         }
         DispatchQueue.main.async { [weak self] in
-            workBeforeFlowCompletion(loginData) { [weak self] result in
+            self?.completeViewModel?.processStepWaiting(step: .custom(performBeforeFlow.waitingStepName, performBeforeFlow.doneStepName))
+            performBeforeFlow.completion(loginData) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
                     switch result {
                     case .success:
-                        self?.completeSignupFlow(data: loginData)
+                        self?.completeViewModel?.processStepDone(step: .custom(performBeforeFlow.waitingStepName, performBeforeFlow.doneStepName))
+                        self?.summarySignupFlow(data: loginData)
                     case .failure(let error):
                         self?.signinButtonPressed()
                         self?.errorHandler(error: error)
@@ -268,8 +289,33 @@ final class SignupCoordinator {
         }
     }
 
+    private func summarySignupFlow(data: LoginData) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.showSummaryViewController(data: data)
+        }
+    }
+    
+    private func showSummaryViewController(data: LoginData) {
+        guard let signupParameters = signupParameters else { return }
+        self.loginData = data
+        let summaryViewController = UIStoryboard.instantiate(SummaryViewController.self)
+        
+        let planName: String?
+        if let paymentsManager = paymentsManager, !(paymentsManager.selectedPlan?.isFreePlan ?? true) {
+            planName = paymentsManager.planTitle
+        } else {
+            planName = nil
+        }
+        summaryViewController.viewModel = container.makeSummaryViewModel(planName: planName, screenVariant: signupParameters.summaryScreenVariant)
+        summaryViewController.delegate = self
+
+        let navigationVC = LoginNavigationViewController(rootViewController: summaryViewController)
+        navigationVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navigationVC, animated: true)
+    }
+    
     private func completeSignupFlow(data: LoginData) {
-        navigationController?.dismiss(animated: true)
+        navigationController?.presentingViewController?.dismiss(animated: true)
         delegate?.signupCoordinatorDidFinish(signupCoordinator: self, loginData: data)
     }
 }
@@ -380,7 +426,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
             if let vc = errorVC as? SignUpErrorCapable {
                 vc.showError(error: error)
             }
-        } else if let error = error as? StoreKitManager.Errors {
+        } else if let error = error as? StoreKitManagerErrors {
             if let vc = errorVC as? PaymentErrorCapable {
                 vc.showError(error: error)
             }
@@ -406,6 +452,9 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
         if activeViewController != nil {
             navigationController?.popViewController(animated: true)
         }
+        if let vc = errorVC as? PaymentsUIViewController {
+            vc.planPurchaseError()
+        }
     }
 }
 
@@ -430,6 +479,15 @@ extension SignupCoordinator: EmailVerificationViewControllerDelegate {
     func emailAlreadyExists(email: String) {
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: email, navigationViewController: navigationController)
+    }
+}
+
+// MARK: SummaryViewControllerDelegate
+
+extension SignupCoordinator: SummaryViewControllerDelegate {
+    func startButtonTap() {
+        guard let loginData = loginData else { return }
+        completeSignupFlow(data: loginData)
     }
 }
 

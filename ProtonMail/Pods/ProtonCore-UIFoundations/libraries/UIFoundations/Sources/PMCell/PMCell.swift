@@ -107,19 +107,19 @@ public final class PMCell: UITableViewCell {
 
         setStateColors()
 
-        activityIndicator.color = UIColorManager.BrandNorm
+        activityIndicator.color = ColorProvider.BrandNorm
 
         // selection color
         selectionStyle = .gray
         let bgColorView = UIView()
-        bgColorView.backgroundColor = UIColorManager.Shade10
+        bgColorView.backgroundColor = ColorProvider.Shade10
         selectedBackgroundView = bgColorView
     }
 
     private func setStateColors() {
-        let color = isDisabled ? UIColorManager.TextDisabled : UIColorManager.TextNorm
+        let color: UIColor = isDisabled ? ColorProvider.TextDisabled : ColorProvider.TextNorm
         titleLabel.textColor = color
-        subtitleLabel.textColor = isDisabled ? UIColorManager.TextDisabled : UIColorManager.TextWeak
+        subtitleLabel.textColor = isDisabled ? ColorProvider.TextDisabled : ColorProvider.TextWeak
         iconImageView.tintColor = color
         arrowImageView.image = isDisabled ? UIImage(named: "CellArrowDisabled", in: PMUIFoundations.bundle, compatibleWith: nil) : UIImage(named: "CellArrow", in: PMUIFoundations.bundle, compatibleWith: nil)
     }

@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCore_UIFoundations
+import UIKit
 
 struct FontManager {
 
@@ -33,7 +34,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -47,7 +48,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -61,7 +62,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -75,7 +76,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.35,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -89,7 +90,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -103,7 +104,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -117,7 +118,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -131,7 +132,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -145,7 +146,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -159,7 +160,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextDisabled,
+            .foregroundColor: ColorProvider.TextDisabled,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -173,7 +174,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.41,
             .font: font,
-            .foregroundColor: UIColorManager.TextHint,
+            .foregroundColor: ColorProvider.TextHint,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -187,7 +188,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -201,7 +202,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -215,7 +216,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -229,7 +230,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextHint,
+            .foregroundColor: ColorProvider.TextHint,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -243,7 +244,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextDisabled,
+            .foregroundColor: ColorProvider.TextDisabled,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -258,7 +259,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -273,7 +274,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: ColorProvider.TextInverted,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -287,7 +288,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -301,7 +302,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: ColorProvider.TextInverted,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -315,7 +316,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -329,7 +330,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextDisabled,
+            .foregroundColor: ColorProvider.TextDisabled,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -343,7 +344,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
             .font: font,
-            .foregroundColor: UIColorManager.TextHint,
+            .foregroundColor: ColorProvider.TextHint,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -357,7 +358,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -371,7 +372,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: ColorProvider.TextInverted,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -385,7 +386,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -399,7 +400,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -409,11 +410,14 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 11.0)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
-
+        // NOTE: it should be ColorProvider.InteractionStrong
+        // But core library has a typo will cause crash
+        // Remove the tempColor after updating to the correct core library
+        let tempColor = UIColor(named: "InteractionStrong") ?? UIColor.black
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.InteractionStrong,
+            .foregroundColor: tempColor,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -427,7 +431,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -441,7 +445,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextWeak,
+            .foregroundColor: ColorProvider.TextWeak,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -455,7 +459,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: ColorProvider.TextInverted,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -469,7 +473,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -483,7 +487,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextNorm,
+            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -497,7 +501,7 @@ struct FontManager {
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: UIColorManager.TextInverted,
+            .foregroundColor: ColorProvider.TextInverted,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
@@ -512,7 +516,7 @@ struct FontManager {
         return [
             .kern: -0.24,
             .font: font,
-            .foregroundColor: UIColorManager.InteractionNorm,
+            .foregroundColor: ColorProvider.InteractionNorm,
             .paragraphStyle: paragraphStyle
         ]
     }()

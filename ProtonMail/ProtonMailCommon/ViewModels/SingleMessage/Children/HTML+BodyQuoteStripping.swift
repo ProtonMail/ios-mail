@@ -35,6 +35,7 @@ extension String {
         "blockquote[type=\"cite\"]",
         "[name=\"quote\"]" // gmx
     ]
+
     func body(strippedFromQuotes: Bool) -> String {
         do {
             let strippedHTML: String

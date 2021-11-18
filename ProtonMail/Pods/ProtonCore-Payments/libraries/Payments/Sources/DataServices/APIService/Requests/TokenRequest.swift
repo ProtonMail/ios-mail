@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -29,55 +28,44 @@ final class TokenRequest: BaseApiRequest<TokenResponse> {
     private let amount: Int
     private let receipt: String
 
-    init (api: API, amount: Int, receipt: String) {
+    init (api: APIService, amount: Int, receipt: String) {
         self.amount = amount
         self.receipt = receipt
         super.init(api: api)
     }
 
-    override func method() -> HTTPMethod {
-        return .post
-    }
+    override var method: HTTPMethod { .post }
 
-    override func getIsAuthFunction() -> Bool {
-        return false
-    }
+    override var isAuth: Bool { false }
 
-    override func path() -> String {
-        return super.path() + "/tokens"
-    }
+    override var path: String { super.path + "/v4/tokens" }
 
-    override func toDictionary() -> [String: Any]? {
-        return [
-            "Amount": amount,
-            "Currency": "USD",
-            "Payment": [
-                "Type": "apple",
-                "Details": [
-                    "Receipt": receipt
-                ]
+    override var parameters: [String: Any]? {
+        let paymentDict: [String: Any]
+        if let card = TemporaryHacks.testCardForPayments {
+            paymentDict = [
+                "Type": "card",
+                "Details": card
             ]
-        ]
+        } else {
+            paymentDict = [
+                "Type": "apple",
+                "Details": ["Receipt": receipt]
+            ]
+        }
+        return ["Amount": amount, "Currency": "USD", "Payment": paymentDict]
     }
 }
 
-final class TokenResponse: ApiResponse {
+final class TokenResponse: Response {
     var paymentToken: PaymentToken?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-
         guard let code = response["Code"] as? Int, code == 1000 else { return false }
-        do {
-            let data = try JSONSerialization.data(withJSONObject: response as Any, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
-            paymentToken = try decoder.decode(PaymentToken.self, from: data)
-            return true
-        } catch let decodingError {
-            error = RequestErrors.tokenDecode.toResponseError(updating: error)
-            PMLog.debug("Failed to parse payment token: \(decodingError.localizedDescription)")
-            return false
-        }
+
+        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self)
+        self.paymentToken = token
+        return result
     }
 }

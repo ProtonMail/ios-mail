@@ -14,7 +14,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '2.7.0'
+  '3.2.1'
 end
 
 def pm_shared_pods
@@ -94,6 +94,8 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Services', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Networking', proton_core_version
   pm_pods
 end
 

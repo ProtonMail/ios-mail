@@ -40,6 +40,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     private var editBarItem: UIBarButtonItem!
+    private var paymentsUI: PaymentsUI?
     
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
@@ -80,17 +81,17 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                       style: .plain,
                                       target: self,
                                       action: #selector(self.editButtonTapped(_:)))
-        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         editBarItem.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = editBarItem
 
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
+        headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
 
         sendImage.image = Asset.mailSendIcon.image.withRenderingMode(.alwaysTemplate)
-        sendImage.tintColor = UIColorManager.InteractionNorm
+        sendImage.tintColor = ColorProvider.InteractionNorm
 
         prepareTable()
     }
@@ -193,9 +194,10 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 
 }

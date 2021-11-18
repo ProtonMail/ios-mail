@@ -52,6 +52,7 @@ public protocol Session {
                         keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
                         completion: @escaping ResponseCompletion) throws
 
+    // swiftlint:disable function_parameter_count
     func uploadFromFile(with request: SessionRequest,
                         keyPacket: Data, dataPacketSourceFileURL: URL, signature: Data?,
                         completion: @escaping ResponseCompletion,
@@ -75,7 +76,8 @@ extension Session {
     public func uploadFromFile(with request: SessionRequest,
                                keyPacket: Data,
                                dataPacketSourceFileURL: URL,
-                               signature: Data?, completion: @escaping ResponseCompletion) throws {
+                               signature: Data?,
+                               completion: @escaping ResponseCompletion) throws {
         try self.uploadFromFile(with: request,
                                 keyPacket: keyPacket,
                                 dataPacketSourceFileURL: dataPacketSourceFileURL,

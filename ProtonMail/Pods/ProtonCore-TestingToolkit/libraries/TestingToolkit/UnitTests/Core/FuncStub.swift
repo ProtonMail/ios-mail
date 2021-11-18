@@ -21,65 +21,68 @@
 
 import XCTest
 
-public enum Absent: Int, Equatable, Codable { case nothing }
-
-public struct InitialReturn<Output> {
-    let closure: () -> Output
-
-    fileprivate init(_ closure: @escaping () -> Output) {
-        self.closure = closure
-    }
-
-    public static var crash: InitialReturn<Output> {
-        .init {
-            fatalError("Stub setup error — you must provide a default value of type \(Output.self) if this stub is ever called!")
-        }
-    }
-}
-
 @propertyWrapper
 public final class FuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
     public var wrappedValue: StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>
 
-    init(initialReturn: @escaping () -> Output, function: String, line: UInt, file: String) {
+    init(initialReturn: @escaping (Input) throws -> Output, function: String, line: UInt, file: String) {
         wrappedValue = StubbedFunction(initialReturn: .init(initialReturn), function: function, line: line, file: file)
     }
 
-    init(initialReturn: InitialReturn<Output>, function: String, line: UInt, file: String) {
+    init(initialReturn: InitialReturn<Input, Output>, function: String, line: UInt, file: String) {
         wrappedValue = StubbedFunction(initialReturn: initialReturn, function: function, line: line, file: file)
     }
 
     init(function: String, line: UInt, file: String) where Output == Void {
-        wrappedValue = StubbedFunction(initialReturn: .init {}, function: function, line: line, file: file)
+        wrappedValue = StubbedFunction(initialReturn: .init { _ in }, function: function, line: line, file: file)
     }
 }
 
 public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
-    public internal(set) var callCounter: UInt = .zero
-    private var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] = []
+    public private(set) var callCounter: UInt = .zero
+    public private(set) var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] = []
 
     public var description: String
     public var ensureWasCalled = false
     public var failOnBeingCalledUnexpectedly = false
 
-    private lazy var implementation: (UInt, Input) -> Output = { [unowned self] _, _ in
+    private lazy var implementation: (UInt, Input) -> Output = { [unowned self] _, input in
+        guard let initialReturn = initialReturn else {
+            XCTFail("initial return was not provided: \(self.description)")
+            fatalError()
+        }
         if self.failOnBeingCalledUnexpectedly {
             XCTFail("this method should not be called but was: \(self.description)")
+            return try! initialReturn.closure(input)
         }
-        return self.initialReturn.closure()
+        return try! initialReturn.closure(input)
     }
 
-    private let initialReturn: InitialReturn<Output>
+    private var initialReturn: InitialReturn<Input, Output>?
 
-    init(initialReturn: InitialReturn<Output>, function: String, line: UInt, file: String) {
+    init(initialReturn: InitialReturn<Input, Output>, function: String, line: UInt, file: String) {
         self.initialReturn = initialReturn
         description = "\(function) at line \(line) of file \(file)"
     }
 
-    func setBody(_ implementation: @escaping (UInt, Input) -> Output) {
-        self.implementation = implementation
+    func replaceBody(_ newImplementation: @escaping (UInt, Input) -> Output) {
+        initialReturn = nil
+        implementation = newImplementation
+    }
+
+    func appendBody(_ additionalImplementation: @escaping (UInt, Input) -> Output) {
+        guard initialReturn == nil else {
+            replaceBody(additionalImplementation)
+            return
+        }
+        let currentImplementation = implementation
+        implementation = {
+            // ignoring the first output
+            _ = currentImplementation($0, $1)
+            return additionalImplementation($0, $1)
+        }
     }
 
     func callAsFunction(input: Input, arguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>) -> Output {
@@ -93,21 +96,4 @@ public final class StubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8
             XCTFail("this method should be called but wasn't: \(description)")
         }
     }
-}
-
-// ergonomics
-extension StubbedFunction {
-
-    public var wasNotCalled: Bool { callCounter == .zero }
-    public var wasCalled: Bool { callCounter != .zero }
-
-    public var wasCalledExactlyOnce: Bool { callCounter == 1 }
-
-    public var lastArguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>? { capturedArguments.last }
-
-    public func arguments(forCallCounter: UInt) -> CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>? {
-        guard callCounter > 0, capturedArguments.count >= callCounter else { return nil }
-        return capturedArguments[Int(callCounter - 1)]
-    }
-
 }

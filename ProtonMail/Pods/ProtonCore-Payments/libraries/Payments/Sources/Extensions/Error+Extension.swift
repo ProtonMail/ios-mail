@@ -23,6 +23,15 @@ import Foundation
 import ProtonCore_Networking
 
 extension Error {
+
+    private var responseCode: Int? {
+        (self as? ResponseError)?.responseCode
+    }
+
+    private var httpCode: Int? {
+        (self as? ResponseError)?.httpCode
+    }
+
     var isNoSubscriptionError: Bool {
         return responseCode == 22110
     }
@@ -37,5 +46,34 @@ extension Error {
 
    var isPaymentAmmountMismatchError: Bool {
         return responseCode == 22101
+    }
+
+    var accessTokenDoesNotHaveSufficientScopeToAccessResource: Bool {
+        return httpCode == 403
+    }
+
+    var isNetworkIssueError: Bool {
+        guard let responseError = self as? ResponseError else { return false }
+        if responseError.responseCode == 3500 { // tls
+            return true
+        }
+        if responseError.httpCode == 451 || responseError.httpCode == 310 {
+            return true
+        }
+        switch responseError.underlyingError?.code {
+        case NSURLErrorTimedOut,
+             NSURLErrorCannotConnectToHost,
+             NSURLErrorNetworkConnectionLost,
+             NSURLErrorNotConnectedToInternet,
+             NSURLErrorDNSLookupFailed,
+             NSURLErrorCannotFindHost,
+             310,
+             -1200,
+             8 // No internet
+             :
+            return true
+        default:
+            return false
+        }
     }
 }

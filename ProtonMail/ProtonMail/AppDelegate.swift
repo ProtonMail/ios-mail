@@ -22,7 +22,6 @@
 
 
 import UIKit
-import AFNetworking
 import UserNotifications
 import Intents
 import SideMenuSwift
@@ -207,8 +206,6 @@ extension AppDelegate: UIApplicationDelegate {
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
         
-        AFNetworkActivityIndicatorManager.shared().isEnabled = true
-        
         //start network notifier
         sharedInternetReachability.startNotifier()
         
@@ -228,11 +225,7 @@ extension AppDelegate: UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
-        
-        StoreKitManager.default.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
-        StoreKitManager.default.subscribeToPaymentQueue()
-        StoreKitManager.default.updateAvailableProductsList()
-        
+
         #if DEBUG
         NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
@@ -563,7 +556,7 @@ extension AppDelegate {
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColorManager.BackgroundNorm
+        appearance.backgroundColor = ColorProvider.BackgroundNorm
         appearance.shadowColor = .clear
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance

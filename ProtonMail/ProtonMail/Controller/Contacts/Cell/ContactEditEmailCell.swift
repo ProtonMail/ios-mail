@@ -40,7 +40,7 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
                     callback: ContactEditCellDelegate?,
                     becomeFirstResponder: Bool = false)
     {
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
 
         self.email = obj
 
@@ -98,7 +98,7 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
-        self.valueField.tintColor = UIColorManager.TextHint
+        self.valueField.tintColor = ColorProvider.TextHint
         self.valueField.placeholder = LocalString._contacts_email_address_placeholder
         self.valueField.font = FontManager.Default[.font] as? UIFont
         self.valueField.textColor = FontManager.Default[.foregroundColor] as? UIColor

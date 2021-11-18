@@ -61,7 +61,7 @@ class UserManager : Service, HasLocalStorage {
         return Promise { seal in
             self.eventsService.stop()
             var wait = Promise<Void>()
-            var promises = [
+            let promises = [
                 self.messageService.cleanUp(),
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
@@ -71,7 +71,7 @@ class UserManager : Service, HasLocalStorage {
                 lastUpdatedStore.cleanUp(userId: self.userinfo.userId),
             ]
             #if !APP_EXTENSION
-            promises.append(self.sevicePlanService.cleanUp())
+            self.payments.planService.currentSubscription = nil
             #endif
             for p in promises {
                 wait = wait.then({ (_) -> Promise<Void> in
@@ -92,7 +92,7 @@ class UserManager : Service, HasLocalStorage {
     
     static func cleanUpAll() -> Promise<Void> {
         var wait = Promise<Void>()
-        var promises = [
+        let promises = [
             MessageDataService.cleanUpAll(),
             LabelsDataService.cleanUpAll(),
             ContactDataService.cleanUpAll(),
@@ -101,9 +101,6 @@ class UserManager : Service, HasLocalStorage {
             UserDataService.cleanUpAll(),
             LastUpdatedStore.cleanUpAll()
         ]
-        #if !APP_EXTENSION
-        promises.append(ServicePlanDataService.cleanUpAll())
-        #endif
         for p in promises {
             wait = wait.then({ (_) -> Promise<Void> in
                 return p
@@ -235,10 +232,13 @@ class UserManager : Service, HasLocalStorage {
     }
     
     #if !APP_EXTENSION
-    public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
-        let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
-        return service
-    }()
+    public lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+                                        apiService: self.apiService,
+                                        localStorage: userCachedStatus,
+                                        reportBugAlertHandler: { receipt in
+        let link = DeepLink("toBugPop", sender: nil)
+        NotificationCenter.default.post(name: .switchView, object: link)
+    })
     #endif
     
     init(api: APIService, userinfo: UserInfo, auth: AuthCredential, parent: UsersManager) {
@@ -292,7 +292,7 @@ class UserManager : Service, HasLocalStorage {
             guard let self = self,
                   let firstUser = self.parentManager?.firstUser,
                   firstUser.userInfo.userId == self.userInfo.userId else { return }
-
+            self.activatePayments()
             userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
             // When app launch, the app will show a skeleton view
             // After getting setting data, show inbox
@@ -303,6 +303,18 @@ class UserManager : Service, HasLocalStorage {
 
     func refreshFeatureFlags() {
         conversationStateService.refreshFlag()
+    }
+
+    func activatePayments() {
+        #if !APP_EXTENSION
+        self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
+        self.payments.storeKitManager.subscribeToPaymentQueue()
+        self.payments.storeKitManager.updateAvailableProductsList { error in
+            let errorMessage = error?.localizedDescription ?? "unKnow"
+            Analytics.shared.error(message: .paymentGetProductsListError,
+                                   error: errorMessage)
+        }
+        #endif
     }
 
     func usedSpace(plus size: Int64) {

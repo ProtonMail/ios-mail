@@ -73,11 +73,11 @@ private extension FigmaShadow {
 extension FigmaShadow {
 
     static var `default`: FigmaShadow {
-        .init(color: UIColorManager.Shade100.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
+        .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
     }
 
     static func custom(y: CGFloat) -> FigmaShadow {
-        .init(color: UIColorManager.Shade100.withAlphaComponent(0.1), x: 0, y: y, blur: 8, spread: 0)
+        .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: y, blur: 8, spread: 0)
     }
 
 }

@@ -71,7 +71,7 @@ class CreateNewUser : Request {
     let passwordAuth: PasswordAuth
     
     let deviceToken : String
-    let challenge: [String: Any]
+    let challenge: [[String: Any]]
     
     init(token : String,
          type : String,
@@ -79,7 +79,7 @@ class CreateNewUser : Request {
          email:String,
          passwordAuth: PasswordAuth,
          deviceToken: String,
-         challenge: [String: Any]) {
+         challenge: [[String: Any]]) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username

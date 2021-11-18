@@ -43,14 +43,14 @@ public extension AccessibleCell {
     }
     
     #if DEBUG
-    private func assignIdentifiers(_ mirror: Mirror, _ uniqueIdentifier: String, _ deepnessLevel: Int) {
+    private func assignIdentifiers(_ mirror: Mirror, _ originalUniqueIdentifier: String, _ deepnessLevel: Int) {
         
         if deepnessLevel > maxDeepness { return }
         
         let cell = self as? UIView
-        let replacedUniqueIdentifier = uniqueIdentifier.replacingOccurrences(of: " ", with: "_")
+        let uniqueIdentifier = originalUniqueIdentifier.replacingOccurrences(of: " ", with: "_")
         
-        cell?.accessibilityIdentifier = "\(type(of: self)).\(replacedUniqueIdentifier)"
+        cell?.accessibilityIdentifier = "\(type(of: self)).\(uniqueIdentifier)"
         cellIdentifiers.insert((cell?.accessibilityIdentifier)!)
         
         for child in mirror.children {

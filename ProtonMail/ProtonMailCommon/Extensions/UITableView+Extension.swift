@@ -55,7 +55,7 @@ extension UITableView {
         } else {
             loadingActivityView = UIActivityIndicatorView(style: .white)
         }
-        loadingActivityView.color = UIColorManager.BrandNorm
+        loadingActivityView.color = ColorProvider.BrandNorm
         view.addSubview(loadingActivityView)
 
         [

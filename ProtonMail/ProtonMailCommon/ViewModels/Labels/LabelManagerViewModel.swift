@@ -315,7 +315,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         }
 
         guard self.useFolderColor else {
-            return UIColorManager.IconNorm
+            return ColorProvider.IconNorm
         }
         guard self.inheritParentFolderColor else {
             return UIColor(hexColorCode: label.iconColor)

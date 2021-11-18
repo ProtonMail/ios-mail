@@ -23,11 +23,11 @@ import ProtonCore_UIFoundations
 import ProtonCore_Payments
 import ProtonCore_CoreTranslation
 
-extension ServicePlanDataService {
+extension ServicePlanDataServiceProtocol {
     
     // MARK: Public interface
     
-    func endDateString(plan: AccountPlan) -> NSAttributedString? {
+    func endDateString(plan: InAppPurchasePlan) -> NSAttributedString? {
         guard let endDate = currentSubscription?.endDate, endDate.isFuture else { return nil }
         
         let dateFormatter = DateFormatter()
@@ -39,21 +39,12 @@ extension ServicePlanDataService {
         } else {
             string = String(format: CoreString._pu_plan_details_renew_expired, endDateString)
         }
-        return getAttributedBoldString(string: string, boldString: endDateString)
+        return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
     }
 
     // MARK: Private interface
-    
-    private func getAttributedBoldString(string: String, boldString: String) -> NSMutableAttributedString {
-        let attrStr = NSMutableAttributedString(string: string)
-        if let range = string.range(of: boldString) {
-            let boldedRange = NSRange(range, in: string)
-            attrStr.addAttributes([.font: UIFont.systemFont(ofSize: 13, weight: .bold), .foregroundColor: UIColorManager.TextNorm], range: boldedRange)
-        }
-        return attrStr
-    }
 
-    private func willRenewAutomcatically(plan: AccountPlan) -> Bool {
+    private func willRenewAutomcatically(plan: InAppPurchasePlan) -> Bool {
         guard let subscription = currentSubscription else {
             return false
         }
@@ -68,9 +59,11 @@ extension ServicePlanDataService {
         return false
     }
 
-    private func hasEnoughCreditToExtendSubscription(plan: AccountPlan) -> Bool {
+    private func hasEnoughCreditToExtendSubscription(plan: InAppPurchasePlan) -> Bool {
         let credit = credits?.credit ?? 0
-        let yearlyCost = Double(plan.yearlyCost) / 100
-        return credit >= yearlyCost
+        guard let details = detailsOfServicePlan(named: plan.protonName), let amount = details.pricing(for: plan.period)
+        else { return false }
+        let cost = Double(amount) / 100
+        return credit >= cost
     }
 }

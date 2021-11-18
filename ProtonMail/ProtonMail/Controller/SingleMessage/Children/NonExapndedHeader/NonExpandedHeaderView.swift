@@ -46,7 +46,7 @@ class NonExpandedHeaderView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
     }
@@ -140,13 +140,13 @@ private enum SubviewsFactory {
 
     static var originImageView: UIImageView {
         let imageView = self.imageView
-        imageView.tintColor = UIColorManager.IconWeak
+        imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
     static var container: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.InteractionWeak
         view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view

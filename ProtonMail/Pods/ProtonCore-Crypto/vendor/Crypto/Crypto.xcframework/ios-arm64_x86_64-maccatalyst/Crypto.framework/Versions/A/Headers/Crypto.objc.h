@@ -181,6 +181,8 @@ It is a struct that keeps track of time skew between server and client.
 - (nullable instancetype)initFromArmored:(NSString* _Nullable)armored;
 // skipped constructor Key.NewKeyFromArmoredReader with unsupported parameter or return types
 
+// skipped constructor Key.NewKeyFromEntity with unsupported parameter or return types
+
 // skipped constructor Key.NewKeyFromReader with unsupported parameter or return types
 
 /**
@@ -203,6 +205,7 @@ the given headers. Empty parameters are omitted from the headers.
 /**
  * Check verifies if the public keys match the private key parameters by
 signing and verifying.
+Deprecated: all keys are now checked on parsing.
  */
 - (BOOL)check:(BOOL* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 - (BOOL)clearPrivateParams;
@@ -615,6 +618,7 @@ packet to obtain a PGP message.
 /**
  * NewPlainMessage generates a new binary PlainMessage ready for encryption,
 signature, or verification from the unencrypted binary data.
+This will encrypt the message with the binary flag and preserve the file as is.
  */
 - (nullable instancetype)init:(NSData* _Nullable)data;
 // skipped constructor PlainMessage.NewPlainMessageFromFile with unsupported parameter or return types
@@ -622,6 +626,9 @@ signature, or verification from the unencrypted binary data.
 /**
  * NewPlainMessageFromString generates a new text PlainMessage,
 ready for encryption, signature, or verification from an unencrypted string.
+This will encrypt the message with the text flag, canonicalize the line endings
+(i.e. set all of them to \r\n) and strip the trailing spaces for each line.
+This allows seamless conversion to clear text signed messages (see RFC 4880 5.2.1 and 7.1).
  */
 - (nullable instancetype)initFromString:(NSString* _Nullable)text;
 /**
@@ -909,6 +916,9 @@ FOUNDATION_EXPORT CryptoKey* _Nullable CryptoNewKeyFromArmored(NSString* _Nullab
 // skipped function NewKeyFromArmoredReader with unsupported parameter or return types
 
 
+// skipped function NewKeyFromEntity with unsupported parameter or return types
+
+
 // skipped function NewKeyFromReader with unsupported parameter or return types
 
 
@@ -953,6 +963,7 @@ FOUNDATION_EXPORT CryptoPGPSplitMessage* _Nullable CryptoNewPGPSplitMessageFromA
 /**
  * NewPlainMessage generates a new binary PlainMessage ready for encryption,
 signature, or verification from the unencrypted binary data.
+This will encrypt the message with the binary flag and preserve the file as is.
  */
 FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessage(NSData* _Nullable data);
 
@@ -962,6 +973,9 @@ FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessage(NSData* _N
 /**
  * NewPlainMessageFromString generates a new text PlainMessage,
 ready for encryption, signature, or verification from an unencrypted string.
+This will encrypt the message with the text flag, canonicalize the line endings
+(i.e. set all of them to \r\n) and strip the trailing spaces for each line.
+This allows seamless conversion to clear text signed messages (see RFC 4880 5.2.1 and 7.1).
  */
 FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessageFromString(NSString* _Nullable text);
 

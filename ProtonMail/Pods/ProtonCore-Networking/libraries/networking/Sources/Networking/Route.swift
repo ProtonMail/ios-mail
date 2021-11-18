@@ -56,10 +56,10 @@ public enum HTTPMethod {
 // APIClient is the api client base
 public protocol Request: Package {
     // those functions shdould be overrided
-    var version: Int { get }
     var path: String { get }
     var header: [String: Any] { get }
     var method: HTTPMethod { get }
+    var nonDefaultTimeout: TimeInterval? { get }
 
     var isAuth: Bool { get }
 
@@ -91,11 +91,8 @@ extension Request {
     public var parameters: [String: Any]? {
         return nil
     }
-}
-
-private let v_default: Int = 3
-public extension Request {
-     var version: Int {
-        return v_default
+    
+    public var nonDefaultTimeout: TimeInterval? {
+        return nil
     }
 }

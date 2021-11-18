@@ -115,7 +115,7 @@ public struct AuthAPI: APIClient {
     }
 }
 
-public final class AuthInfoResponse: Response {
+public final class AuthInfoResponse: Response, Codable {
     public var modulus: String?
     public var serverEphemeral: String?
     public var version: Int = 0
@@ -141,7 +141,7 @@ public final class AuthInfoRes: Codable {
     public var SRPSession: String?
 }
 
-public final class AuthModulusResponse: Response {
+public final class AuthModulusResponse: Response, Codable {
 
     public var Modulus: String?
     public var ModulusID: String?

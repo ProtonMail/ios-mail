@@ -40,10 +40,10 @@ public final class PMHeaderView: UIView {
 
     public init(title: String,
                 fontSize: CGFloat = 15,
-                titleColor: UIColor = UIColorManager.TextWeak,
+                titleColor: UIColor = ColorProvider.TextWeak,
                 titleLeft: CGFloat = 16,
                 titleBottom: CGFloat = 8,
-                background: UIColor = UIColorManager.BackgroundSecondary) {
+                background: UIColor = ColorProvider.BackgroundSecondary) {
         self.title = title
         self.fontSize = fontSize
         self.titleColor = titleColor

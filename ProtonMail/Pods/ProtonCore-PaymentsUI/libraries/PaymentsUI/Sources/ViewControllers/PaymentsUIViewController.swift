@@ -27,7 +27,8 @@ import ProtonCore_UIFoundations
 protocol PaymentsUIViewControllerDelegate: AnyObject {
     func userDidCloseViewController()
     func userDidDismissViewController()
-    func userDidSelectPlan(plan: Plan, completionHandler: @escaping () -> Void)
+    func userDidSelectPlan(plan: PlanPresentation, completionHandler: @escaping () -> Void)
+    func planPurchaseError()
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
@@ -37,19 +38,19 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableHeaderLabel: UILabel! {
         didSet {
-            tableHeaderLabel.textColor = UIColorManager.TextNorm
+            tableHeaderLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var tableFooterTextLabel: UILabel! {
         didSet {
             tableFooterTextLabel.text = CoreString._pu_plan_footer_title
-            tableFooterTextLabel.textColor = UIColorManager.TextNorm
+            tableFooterTextLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var tableFooterTextDescription: UILabel! {
         didSet {
             tableFooterTextDescription.text = CoreString._pu_plan_footer_desc
-            tableFooterTextDescription.textColor = UIColorManager.TextWeak
+            tableFooterTextDescription.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var tableView: UITableView! {
@@ -74,10 +75,10 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.tableHeaderView?.backgroundColor = UIColorManager.BackgroundNorm
-        tableView.tableFooterView?.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.tableHeaderView?.backgroundColor = ColorProvider.BackgroundNorm
+        tableView.tableFooterView?.backgroundColor = ColorProvider.BackgroundNorm
         tableView.tableHeaderView?.isHidden = true
         tableView.tableFooterView?.isHidden = true
         navigationItem.title = ""
@@ -109,14 +110,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         updateHeaderFooterViewHeight()
     }
     
-    // MARK: - Public methods
-    
-    func showError(message: String) {
-        if !activityIndicator.isHidden {
-            activityIndicator.isHidden = true
-        }
-        showBanner(message: message, position: .top)
-    }
+    // MARK: - Internal methods
     
     func reloadData() {
         isData = true
@@ -124,6 +118,18 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.reloadData()
             reloadUI()
         }
+    }
+
+    func showBanner(banner: PMBanner, position: PMBannerPosition) {
+        if !activityIndicator.isHidden {
+            activityIndicator.isHidden = true
+        }
+        PMBanner.dismissAll(on: self)
+        banner.show(at: position, on: self)
+    }
+    
+    public func planPurchaseError() {
+        delegate?.planPurchaseError()
     }
 
     // MARK: - Actions
@@ -218,11 +224,11 @@ extension PaymentsUIViewController: UITableViewDelegate {
 }
 
 extension PaymentsUIViewController: PlanCellDelegate {
-    func userPressedSelectPlanButton(plan: Plan, completionHandler: @escaping () -> Void) {
+    func userPressedSelectPlanButton(plan: PlanPresentation, completionHandler: @escaping () -> Void) {
         lockUI()
-        delegate?.userDidSelectPlan(plan: plan) {
-            self.unlockUI()
+        delegate?.userDidSelectPlan(plan: plan) { [weak self] in
             completionHandler()
+            self?.unlockUI()
         }
     }
 }

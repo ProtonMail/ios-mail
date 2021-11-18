@@ -43,7 +43,7 @@ class NewMailboxMessageCellPresenter {
         case .selection(let isSelected):
             view.initialsLabel.isHidden = true
             view.checkBoxView.isHidden = false
-            let backgroundColor = isSelected ? UIColorManager.InteractionNorm : UIColorManager.BackgroundSecondary
+            let backgroundColor = isSelected ? ColorProvider.InteractionNorm : ColorProvider.BackgroundSecondary
             view.checkBoxView.backgroundColor = backgroundColor
             view.checkBoxView.tickImageView.image = isSelected ? Asset.mailTickIcon.image : nil
         }
@@ -56,13 +56,13 @@ class NewMailboxMessageCellPresenter {
     }
 
     private func presentContent(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
-        view.forwardImageView.tintColor = viewModel.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.forwardImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.forwardImageView.isHidden = !viewModel.isForwarded
 
-        view.replyImageView.tintColor = viewModel.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.replyImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyImageView.isHidden = !viewModel.isReply
 
-        view.replyAllImageView.tintColor = viewModel.isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
         let sender = viewModel.sender
@@ -91,7 +91,7 @@ class NewMailboxMessageCellPresenter {
         view.messageCountLabel.isHidden = count == nil
         view.messageCountLabel.attributedText = count
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
-            UIColorManager.TextWeak.cgColor : UIColorManager.TextNorm.cgColor
+            ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm.cgColor
 
         if viewModel.displayOriginIcon {
             viewModel.folderIcons.forEach { image in
@@ -110,7 +110,7 @@ class NewMailboxMessageCellPresenter {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
-        imageView.tintColor = isRead ? UIColorManager.IconWeak : UIColorManager.IconNorm
+        imageView.tintColor = isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         return imageView
     }
 }

@@ -42,11 +42,11 @@ class SettingsAccountCell: UITableViewCell {
         self.shortNameLabel.adjustsFontSizeToFitWidth = true
 
         let pressView = UIView(frame: .zero)
-        pressView.backgroundColor = UIColorManager.BackgroundSecondary
+        pressView.backgroundColor = ColorProvider.BackgroundSecondary
         self.selectedBackgroundView = pressView
 
         self.iconImageView.image = #imageLiteral(resourceName: "cell_right_arrow").withRenderingMode(.alwaysTemplate)
-        self.iconImageView?.tintColor = UIColorManager.TextHint
+        self.iconImageView?.tintColor = ColorProvider.TextHint
     }
 
     func configure(name: String, email: String) {

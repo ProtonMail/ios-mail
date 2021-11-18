@@ -108,7 +108,7 @@ class PMToolBarView: UIView {
         btnStackView.addArrangedSubview(moveToButtonView)
         btnStackView.addArrangedSubview(labelAsButtonView)
         btnStackView.addArrangedSubview(moreButtonView)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
     }
 
     required init?(coder: NSCoder) {
@@ -120,7 +120,7 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarReadUnread.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
 
@@ -128,7 +128,7 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarDelete.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
 
@@ -136,7 +136,7 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarTrash.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
 
@@ -144,7 +144,7 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarMoveTo.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             button.accessibilityIdentifier = "PMToolBarView.moveToButton"
             return button
         }
@@ -153,7 +153,7 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarLabel.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             button.accessibilityIdentifier = "PMToolBarView.labelAsButton"
             return button
         }
@@ -162,13 +162,13 @@ class PMToolBarView: UIView {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
             button.setImage(Asset.actionBarMore.image, for: .normal)
-            button.tintColor = UIColorManager.IconNorm
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
 
         static var separatorView: UIView {
             let view = UIView()
-            view.backgroundColor = UIColorManager.Shade20
+            view.backgroundColor = ColorProvider.Shade20
             return view
         }
 

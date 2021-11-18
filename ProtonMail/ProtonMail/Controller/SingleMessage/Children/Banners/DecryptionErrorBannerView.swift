@@ -26,7 +26,7 @@ final class DecryptionErrorBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.NotificationError
+        backgroundColor = ColorProvider.NotificationError
         setCornerRadius(radius: 8)
         addSubviews()
         setUpLayout()
@@ -75,7 +75,7 @@ private enum SubviewsFactory {
     static var titleLabel: UILabel {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColorManager.TextInverted
+        label.textColor = ColorProvider.TextInverted
         label.numberOfLines = 0
         label.text = "\(LocalString._decryption_error): \(LocalString._decryption_of_this_message_failed)"
         label.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
@@ -86,7 +86,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.icExclamationTriangle.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconInverted
+        imageView.tintColor = ColorProvider.IconInverted
         return imageView
     }
 
@@ -94,7 +94,7 @@ private enum SubviewsFactory {
         let button = UIButton(frame: .zero)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColorManager.IconInverted.cgColor
+        button.layer.borderColor = ColorProvider.IconInverted.cgColor
         button.setTitle(" \(LocalString._general_try_again) ", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)

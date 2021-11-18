@@ -199,20 +199,20 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColorManager.BackgroundNorm
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         // 184 is default height of header view
         self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
         self.fromLable.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
-        self.fromPickerButton.tintColor = UIColorManager.IconWeak
+        self.fromPickerButton.tintColor = ColorProvider.IconWeak
         if #available(iOS 14.0, *) {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
             self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
         }
 
-        self.showCcBccButton.tintColor = UIColorManager.IconWeak
+        self.showCcBccButton.tintColor = ColorProvider.IconWeak
         self.showCcBccButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 7)
         
         self.configureContactPickerTemplate()
@@ -312,11 +312,11 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // Mark: -- Private Methods
     fileprivate func includeButtonBorder(_ view: UIView) {
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColorManager.SeparatorNorm.cgColor
+        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
     }
     
     fileprivate func configureContactPickerTemplate() {
-        ContactCollectionViewContactCell.appearance().tintColor = UIColorManager.BrandNorm
+        ContactCollectionViewContactCell.appearance().tintColor = ColorProvider.BrandNorm
         ContactCollectionViewContactCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewPromptCell.appearance().font = Fonts.h5.regular
         ContactCollectionViewEntryCell.appearance().font = Fonts.h5.regular
@@ -352,7 +352,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.leftViewMode = UITextField.ViewMode.always
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
-        self.subject.textColor = UIColorManager.TextNorm
+        self.subject.textColor = ColorProvider.TextNorm
         
         self.view.removeConstraint(self.subjectTopToBccContactPicker)
         self.view.addConstraint(self.subjectTopToToContactPicker)

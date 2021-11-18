@@ -70,10 +70,10 @@ class AttachmentListTableViewCell: UITableViewCell {
     }
 
     private func setupView() {
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
 
         arrowIconView.image = Asset.cellRightArrow.image.withRenderingMode(.alwaysTemplate)
-        arrowIconView.tintColor = UIColorManager.TextNorm
+        arrowIconView.tintColor = ColorProvider.TextNorm
 
         addSeparator(padding: 0)
     }
@@ -84,7 +84,7 @@ class AttachmentListTableViewCell: UITableViewCell {
                    isDownloading: Bool) {
         let type = MIMEType(rawValue: mimeType)
         fileIconView.image = type.bigIcon
-        fileIconView.tintColor = UIColorManager.TextNorm
+        fileIconView.tintColor = ColorProvider.TextNorm
 
         var fileNameAttribute = FontManager.Default
         var fileSizeAttribute = FontManager.DefaultSmallWeak

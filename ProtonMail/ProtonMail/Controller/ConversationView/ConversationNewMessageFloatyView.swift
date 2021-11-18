@@ -48,7 +48,7 @@ class ConversationNewMessageFloatyView: UIView {
             .addTruncatingTail()
         titleLabel.attributedText = LocalString._conversation_new_message_button.apply(style: attribute)
 
-        backgroundColor = UIColorManager.BrandNorm
+        backgroundColor = ColorProvider.BrandNorm
     }
 
     required init?(coder: NSCoder) {

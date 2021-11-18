@@ -127,7 +127,7 @@ extension ComposeExpirationVC {
 
         let attr = FontManager
             .HeadlineSmall
-            .foregroundColor(UIColorManager.InteractionNorm)
+            .foregroundColor(ColorProvider.InteractionNorm)
         setButton.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = setButton
 
@@ -241,12 +241,12 @@ extension ComposeExpirationVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath)
         let item = self.rows[indexPath.row]
         cell.selectionStyle = .none
-        cell.tintColor = UIColorManager.BrandNorm
+        cell.tintColor = ColorProvider.BrandNorm
         if self.selectedType == item {
             cell.textLabel?.attributedText = item.title.apply(style: FontManager.DefaultSmall)
             cell.accessoryType = .checkmark
         } else {
-            let attr = FontManager.DefaultSmallWeak.foregroundColor(UIColorManager.TextWeak)
+            let attr = FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.TextWeak)
             cell.textLabel?.attributedText = item.title.apply(style: attr)
             cell.accessoryType = .none
         }

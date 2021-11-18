@@ -225,6 +225,12 @@
 "Set recovery method" = "Set recovery method";
 "Your account is being created" = "Your account is being created…";
 "It usually takes no more than a minute." = "It usually takes no more than a minute.";
+"Secure space creation..." = "Secure space creation...";
+"Secure space created" = "Secure space created";
+"Privacy keys generation..." = "Privacy keys generation...";
+"Privacy keys generated" = "Privacy keys generated";
+"Payment validation..." = "Payment validation...";
+"Payment validated" = "Payment validated";
 "Account verification" = "Account verification";
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
 "Verification code" = "Verification code";
@@ -243,6 +249,11 @@
 "Email address already used." = "Email address already used.";
 "Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
 "Change email address" = "Change email address";
+"Congratulations" = "Congratulations!";
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+"Proton Free" = "Proton Free";
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+"Enjoy the world privacy." = "Enjoy the world privacy.";
 
 /**
  *  Payments UI
@@ -251,7 +262,7 @@
 "Select a plan" = "Select a plan";
 "Current plan" = "Current plan";
 "Upgrade plan" = "Upgrade plan";
-"Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan." = "Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan.";
+"Visit protonmail.com for more plans and pricing options." = "Visit protonmail.com for more plans and pricing options.";
 "Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).";
 "Select plan" = "Select plan";
 "Upgrade" = "Upgrade";
@@ -261,11 +272,33 @@
 "%i user" = "%i user";
 "%i users" = "%i users";
 "%@ storage" = "%@ storage";
-"%@ storage *" = "%@ storage *";
+"%@ storage / user" = "%@ storage / user";
 "%i address" = "%i address";
 "%i addresses" = "%i addresses";
-"Unlimited folders / labels / filters" = "Unlimited folders / labels / filters";
-"Custom email addresses" = "Custom email addresses";
+"%i address / user" = "%i address / user";
+"%i addresses / user" = "%i addresses / user";
+"%i calendar" = "%i calendar";
+"%i calendars" = "%i calendars";
+"%i calendar / user" = "%i calendar / user";
+"%i calendars / user" = "%i calendars / user";
+"%i VPN connection" = "%i VPN connection";
+"%i VPN connections" = "%i VPN connections";
+"%i high-speed VPN connection" = "%i high-speed VPN connection";
+"%i high-speed VPN connections" = "%i high-speed VPN connections";
+"%i high-speed VPN connection / user" = "%i high-speed VPN connection / user";
+"%i high-speed VPN connections / user" = "%i high-speed VPN connections / user";
+"%i custom domain" = "%i custom domain";
+"%i custom domains" = "%i custom domains";
+"%i address & calendar" = "%i address & calendar";
+"%i addresses & calendars" = "%i addresses & calendars";
+"%@ & %@" = "%@ & %@";
+"High speed" = "High speed";
+"Highest speed" = "Highest speed";
+"Multi-user support" = "Multi-user support";
+"Complete payment?" = "Complete payment?";
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+"Complete payment" = "Complete payment";
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
 
 /**
  * Splash

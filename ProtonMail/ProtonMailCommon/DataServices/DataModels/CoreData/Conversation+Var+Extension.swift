@@ -146,7 +146,7 @@ extension Conversation {
         return TagViewModel(
             title: expirationTime.countExpirationTime.apply(style: FontManager.OverlineRegularInteractionStrong),
             icon: Asset.mailHourglass.image,
-            color: UIColorManager.InteractionWeak
+            color: ColorProvider.InteractionWeak
         )
     }
 

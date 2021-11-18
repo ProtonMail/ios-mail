@@ -22,42 +22,37 @@
 import Foundation
 import ProtonCore_CoreTranslation
 
-extension StoreKitManager {
+public enum StoreKitManagerErrors: LocalizedError, Equatable {
+    case unavailableProduct
+    case invalidPurchase
+    case receiptLost
+    case haveTransactionOfAnotherUser
+    case alreadyPurchasedPlanDoesNotMatchBackend
+    case noActiveUsername
+    case transactionFailedByUnknownReason
+    case noNewSubscriptionInSuccessfullResponse
+    case creditsApplied
+    case wrongTokenStatus(PaymentToken.Status)
+    case cancelled
+    case unknown
+    case appIsLocked                            // (mail only)
+    case pleaseSignIn                           // (mail only)
 
-    public enum Errors: LocalizedError, Equatable {
-        case unavailableProduct
-        case invalidPurchase
-        case receiptLost
-        case haveTransactionOfAnotherUser
-        case alreadyPurchasedPlanDoesNotMatchBackend
-        case sandboxReceipt
-        case noActiveUsername
-        case transactionFailedByUnknownReason
-        case noNewSubscriptionInSuccessfullResponse
-        case creditsApplied
-        case wrongTokenStatus(PaymentToken.Status)
-        case cancelled
-        case unknown
-        case appIsLocked                            // (mail only)
-        case pleaseSignIn                           // (mail only)
-
-        public var errorDescription: String? {
-            switch self {
-            case .unavailableProduct: return CoreString._error_unavailable_product
-            case .invalidPurchase: return CoreString._error_invalid_purchase
-            case .receiptLost: return CoreString._error_reciept_lost
-            case .haveTransactionOfAnotherUser: return CoreString._error_another_user_transaction
-            case .alreadyPurchasedPlanDoesNotMatchBackend: return CoreString._error_backend_mismatch
-            case .sandboxReceipt: return CoreString._error_sandbox_receipt
-            case .noActiveUsername: return CoreString._error_no_active_username_in_user_data_service
-            case .transactionFailedByUnknownReason: return CoreString._error_transaction_failed_by_unknown_reason
-            case .noNewSubscriptionInSuccessfullResponse: return CoreString._error_no_new_subscription_in_response
-            case .appIsLocked: return CoreString._error_unlock_to_proceed_with_iap
-            case .pleaseSignIn: return CoreString._error_please_sign_in_iap
-            case .creditsApplied: return CoreString._error_credits_applied
-            case .wrongTokenStatus: return CoreString._error_wrong_token_status
-            case .cancelled, .unknown: return nil
-            }
+    public var errorDescription: String? {
+        switch self {
+        case .unavailableProduct: return CoreString._error_unavailable_product
+        case .invalidPurchase: return CoreString._error_invalid_purchase
+        case .receiptLost: return CoreString._error_reciept_lost
+        case .haveTransactionOfAnotherUser: return CoreString._error_another_user_transaction
+        case .alreadyPurchasedPlanDoesNotMatchBackend: return CoreString._error_backend_mismatch
+        case .noActiveUsername: return CoreString._error_no_active_username_in_user_data_service
+        case .transactionFailedByUnknownReason: return CoreString._error_transaction_failed_by_unknown_reason
+        case .noNewSubscriptionInSuccessfullResponse: return CoreString._error_no_new_subscription_in_response
+        case .appIsLocked: return CoreString._error_unlock_to_proceed_with_iap
+        case .pleaseSignIn: return CoreString._error_please_sign_in_iap
+        case .creditsApplied: return CoreString._error_credits_applied
+        case .wrongTokenStatus: return CoreString._error_wrong_token_status
+        case .cancelled, .unknown: return nil
         }
     }
 }

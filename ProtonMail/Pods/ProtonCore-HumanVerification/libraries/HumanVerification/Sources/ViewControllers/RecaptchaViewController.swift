@@ -25,6 +25,7 @@ import WebKit
 import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import ProtonCore_Foundations
+import ProtonCore_Networking
 
 class RecaptchaViewController: UIViewController, AccessibleView {
 
@@ -61,8 +62,9 @@ class RecaptchaViewController: UIViewController, AccessibleView {
     // MARK: Private interface
 
     private func configureUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.scrollView.isScrollEnabled = UIDevice.current.isSmallIphone
         setWaitingIndicatorState(state: .waiting)
         loadNewCaptcha()
@@ -92,19 +94,19 @@ class RecaptchaViewController: UIViewController, AccessibleView {
     private func checkCaptcha() {
         guard let finalToken = finalToken else { return }
         setWaitingIndicatorState(state: .verifying)
-        viewModel.finalToken(token: finalToken, complete: { res, error, finish in
-            DispatchQueue.main.async {
-                self.setWaitingIndicatorState(state: .off)
+        viewModel.finalToken(token: finalToken, complete: { [weak self] res, error, finish in
+            DispatchQueue.main.async { [weak self] in
+                self?.setWaitingIndicatorState(state: .off)
                 if res {
-                    self.navigationController?.dismiss(animated: true) {
+                    self?.navigationController?.dismiss(animated: true) {
                         finish?()
                     }
                 } else {
-                    if let error = error {
+                    if let error = error, let self = self {
                         let banner = PMBanner(message: error.localizedDescription, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-                        banner.addButton(text: CoreString._hv_ok_button) { _ in
+                        banner.addButton(text: CoreString._hv_ok_button) { [weak self] _ in
                             banner.dismiss()
-                            self.loadNewCaptcha()
+                            self?.loadNewCaptcha()
                         }
                         banner.show(at: .topCustom(.baner), on: self)
                     }
@@ -118,20 +120,27 @@ class RecaptchaViewController: UIViewController, AccessibleView {
 
 extension RecaptchaViewController: WKNavigationDelegate {
 
-    // old webView(_ webView: WKWebView, shouldStartLoadWith request: URLRequest, navigationType: WKWebView.NavigationType)
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
         enableUserInteraction(for: webView)
 
-        guard let urlString = navigationAction.request.url?.absoluteString else {
+        guard let url = navigationAction.request.url else {
             decisionHandler(.allow)
             return
         }
 
+        let urlString = url.absoluteString
+
         if viewModel.isStartVerifyPattern(urlString: urlString) {
             startVerify = true
+        }
+
+        if viewModel.isTermsAndPrivacyPattern(urlString: urlString) {
+            decisionHandler(.cancel)
+            UIApplication.openURLIfPossible(url)
+            return
         }
 
         if viewModel.isResultFalsePattern(urlString: urlString) {
@@ -170,6 +179,18 @@ extension RecaptchaViewController: WKNavigationDelegate {
 
     private func enableUserInteraction(for webView: WKWebView) {
         webView.window?.isUserInteractionEnabled = true
+    }
+}
+
+extension RecaptchaViewController: WKUIDelegate {
+
+    func webView(_ webView: WKWebView,
+                 createWebViewWith configuration: WKWebViewConfiguration,
+                 for navigationAction: WKNavigationAction,
+                 windowFeatures: WKWindowFeatures) -> WKWebView? {
+        guard let url = navigationAction.request.url else { return nil }
+        UIApplication.openURLIfPossible(url)
+        return nil
     }
 }
 

@@ -37,6 +37,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var signInBtn: UIButton!
     @IBOutlet private var unreadView: UIView!
     @IBOutlet private var unread: UILabel!
+    @IBOutlet private var separatorView: UIView!
 
     private weak var delegate: AccountSwitchCellProtocol?
     private var userID: String?
@@ -49,15 +50,26 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
 
         self.unreadView.roundCorner(10)
-        self.signInBtn.roundCorner(3)
+        self.signInBtn.roundCorner(8)
         self.avatar.roundCorner(2)
-        self.shortNameView.roundCorner(2)
+        self.shortNameView.roundCorner(8)
         self.shortName.adjustsFontSizeToFitWidth = true
-
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        self.name.textColor = ColorProvider.TextNorm
+        self.mailAddress.textColor = ColorProvider.TextWeak
+        self.shortNameView.backgroundColor = ColorProvider.BrandNorm
+        self.shortName.backgroundColor = ColorProvider.BrandNorm
+        self.shortName.textColor = ColorProvider.SidebarTextNorm
+        self.signInBtn.backgroundColor = ColorProvider.InteractionWeak
+        self.signInBtn.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        self.unreadView.backgroundColor = ColorProvider.BrandNorm
+        self.unread.backgroundColor = ColorProvider.BrandNorm
+        self.unread.textColor = ColorProvider.SidebarTextNorm
+        self.separatorView.backgroundColor = ColorProvider.InteractionWeak
         let pressView = UIView(frame: .zero)
-        pressView.backgroundColor = UIColorManager.BackgroundSecondary
+        pressView.backgroundColor = ColorProvider.BackgroundSecondary
         self.selectedBackgroundView = pressView
-
+        
     }
 
     public func config(data: AccountSwitcher.AccountData, delegate: AccountSwitchCellProtocol) {
@@ -75,10 +87,11 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
             self.signInBtn.isHidden = true
             self.unreadView.isHidden = data.unread == 0
             self.setupUnread(num: data.unread)
+            self.name.textColor = ColorProvider.TextNorm
         } else {
             self.unreadView.isHidden = true
             self.signInBtn.isHidden = false
-            self.signInBtn.accessibilityIdentifier = "signInBtn.\(nameId)"
+            self.name.textColor = ColorProvider.TextWeak
         }
         self.setupLabelConstraint(isSignin: data.isSignin)
         self.accessibilityIdentifier = "AccountSwitcherCell.\(nameId)"

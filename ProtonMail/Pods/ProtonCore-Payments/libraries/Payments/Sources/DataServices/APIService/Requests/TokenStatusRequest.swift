@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -28,35 +27,23 @@ import ProtonCore_Services
 final class TokenStatusRequest: BaseApiRequest<TokenStatusResponse> {
     private let token: PaymentToken
 
-    init (api: API, token: PaymentToken) {
+    init (api: APIService, token: PaymentToken) {
         self.token = token
         super.init(api: api)
     }
 
-    override func getIsAuthFunction() -> Bool {
-        return false
-    }
+    override var isAuth: Bool { false }
 
-    override func path() -> String {
-        return super.path() + "/tokens/" + token.token
-    }
+    override var path: String { super.path + "/v4/tokens/" + token.token }
 }
 
-final class TokenStatusResponse: ApiResponse {
+final class TokenStatusResponse: Response {
     var paymentTokenStatus: PaymentTokenStatus?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        do {
-            let data = try JSONSerialization.data(withJSONObject: response as Any, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
-            paymentTokenStatus = try decoder.decode(PaymentTokenStatus.self, from: data)
-            return true
-        } catch let decodeError {
-            error = RequestErrors.tokenStatusDecode.toResponseError(updating: error)
-            PMLog.debug("Failed to parse payment token status: \(decodeError.localizedDescription)")
-            return false
-        }
+        let (result, tokenStatus) = decodeResponse(response as Any, to: PaymentTokenStatus.self)
+        self.paymentTokenStatus = tokenStatus
+        return result
     }
 }

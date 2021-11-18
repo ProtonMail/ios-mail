@@ -132,7 +132,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.image = Asset.mailAttachment.image
-        imageView.tintColor = UIColorManager.IconWeak
+        imageView.tintColor = ColorProvider.IconWeak
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
     }
@@ -155,7 +155,7 @@ private enum SubviewsFactory {
     static var draftIconImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.image = Asset.mailDraftIcon.image
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         imageView.contentMode = .scaleAspectFit
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return imageView
@@ -163,7 +163,7 @@ private enum SubviewsFactory {
 
     static var container: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view
@@ -171,7 +171,7 @@ private enum SubviewsFactory {
 
     static var initialsContainer: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.InteractionWeak
         view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view
@@ -180,7 +180,7 @@ private enum SubviewsFactory {
     static var expirationView: TagIconView {
         let tagView = TagIconView()
         tagView.imageView.image = Asset.iconHourglass.image
-        tagView.backgroundColor = UIColorManager.InteractionWeak
+        tagView.backgroundColor = ColorProvider.InteractionWeak
         return tagView
     }
 

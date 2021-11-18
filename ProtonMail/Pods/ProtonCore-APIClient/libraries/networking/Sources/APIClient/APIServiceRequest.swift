@@ -49,15 +49,6 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
         return nil
     }
 
-    /**
-     get current api request
-     
-     :returns: int version number
-     */
-    func apiVersion() -> Int {
-        return 1
-    }
-
     func getHeaders() -> [String: Any] {
         return [String: Any]()
     }
@@ -101,15 +92,10 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
             }
         }
 
-        var header = self.getHeaders()
-        if self.apiVersion() != -1 {
-            header["x-pm-apiversion"] = self.apiVersion()
-        }
-
         api.request(method: self.method(),
                     path: self.path(),
                     parameters: self.toDictionary(),
-                    headers: header,
+                    headers: self.getHeaders(),
                     authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(),
                     customAuthCredential: self.authCredential,
                     completion: completionWrapper)
@@ -134,8 +120,9 @@ open class ApiRequest<T: ApiResponse>: ApiPackage {
 
         // TODO:: missing auth
         api.request(method: self.method(), path: self.path(),
-                    parameters: self.toDictionary(), headers: [HTTPHeader.apiVersion: self.apiVersion()],
-                    authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(), customAuthCredential: self.authCredential, completion: completionWrapper)
+                    parameters: self.toDictionary(), headers: [:],
+                    authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(),
+                    customAuthCredential: self.authCredential, completion: completionWrapper)
 
         // wait operations
         _ = sema.wait(timeout: DispatchTime.distantFuture)
@@ -159,15 +146,6 @@ open class ApiRequestNew<T: ApiResponse>: ApiPackage {
 
     open func toDictionary() -> [String: Any]? {
         return nil
-    }
-
-    /**
-     get current api request
-     
-     :returns: int version number
-     */
-    open func apiVersion() -> Int {
-        return 1
     }
 
     /**
@@ -215,8 +193,9 @@ open class ApiRequestNew<T: ApiResponse>: ApiPackage {
 
         // TODO:: missing auth
         apiService.request(method: self.method(), path: self.path(),
-                    parameters: self.toDictionary(), headers: [HTTPHeader.apiVersion: self.apiVersion()],
-                    authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(), customAuthCredential: self.authCredential, completion: completionWrapper)
+                           parameters: self.toDictionary(), headers: [:],
+                           authenticated: self.getIsAuthFunction(), autoRetry: self.authRetry(),
+                           customAuthCredential: self.authCredential, completion: completionWrapper)
 
         return deferred.promise
 

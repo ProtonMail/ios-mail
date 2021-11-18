@@ -140,7 +140,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
     /// Get folder color, will handle inheritParentColor
     func getFolderColor(label: MenuLabel) -> UIColor {
         guard self.useFolderColor else {
-            return UIColorManager.IconNorm
+            return ColorProvider.IconNorm
         }
 
         guard self.inheritParentColor else {

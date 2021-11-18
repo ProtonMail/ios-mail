@@ -71,7 +71,7 @@ final class LabelEditViewController: ProtonMailViewController {
 // MARK: UI related
 extension LabelEditViewController {
     private func setupViews() {
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.setupNavigationBar()
         self.setupTableView()
     }
@@ -84,14 +84,14 @@ extension LabelEditViewController {
             .toUIBarButtonItem(target: self,
                                action: #selector(self.clickDiscardButton),
                                style: .plain,
-                               tintColor: UIColorManager.IconNorm,
+                               tintColor: ColorProvider.IconNorm,
                                squareSize: 24,
                                backgroundColor: nil,
                                backgroundSquareSize: nil,
                                isRound: false)
         self.navigationItem.leftBarButtonItem = discardBtn
 
-        self.navigationController?.navigationBar.barTintColor = UIColorManager.BackgroundNorm
+        self.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
     }
@@ -103,11 +103,11 @@ extension LabelEditViewController {
                                        action: #selector(self.clickDoneButton))
 
         var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = UIColorManager.InteractionNorm
+        attr[.foregroundColor] = ColorProvider.InteractionNorm
         self.doneBtn.setTitleTextAttributes(attr, for: .normal)
 
         var disableAttr = FontManager.HeadlineSmall
-        disableAttr[.foregroundColor] = UIColorManager.InteractionNormDisabled
+        disableAttr[.foregroundColor] = ColorProvider.InteractionNormDisabled
         self.doneBtn.setTitleTextAttributes(disableAttr, for: .disabled)
 
         self.navigationItem.rightBarButtonItem = self.doneBtn
@@ -116,7 +116,7 @@ extension LabelEditViewController {
 
     private func setupTableView() {
         self.tableView.tableFooterView = UIView(frame: .zero)
-        self.tableView.backgroundColor = UIColorManager.BackgroundSecondary
+        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(LabelPaletteCell.defaultNib(), forCellReuseIdentifier: LabelPaletteCell.defaultID())
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(LabelNameCell.defaultNib(), forCellReuseIdentifier: LabelNameCell.defaultID())
@@ -318,7 +318,7 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(left: LocalString._parent_folder)
         cell.configure(right: self.viewModel.parentLabelName)
         cell.addSeparator(padding: 0)
-        cell.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         return cell
     }
 
@@ -337,7 +337,7 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.selectionStyle = .none
         cell.addSeparator(padding: 0)
-        cell.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         return cell
     }
 
@@ -378,11 +378,11 @@ extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
         guard let instance = cell else { return .init() }
 
         var attr = FontManager.Default
-        attr[.foregroundColor] = UIColorManager.NotificationError
+        attr[.foregroundColor] = ColorProvider.NotificationError
         instance.textLabel?.attributedText = self.viewModel.deleteTitle.apply(style: attr)
         instance.textLabel?.textAlignment = .center
         instance.addSeparator(padding: 0)
-        instance.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
         instance.accessibilityIdentifier = "LabelEditViewController.deleteCell"
         return instance
     }

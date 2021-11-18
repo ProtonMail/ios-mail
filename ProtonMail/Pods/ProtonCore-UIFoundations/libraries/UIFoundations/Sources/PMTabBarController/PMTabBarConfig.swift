@@ -39,13 +39,13 @@ struct PMTabBarConfig {
     /// - Parameters:
     ///   - items: Tabbar items, note the number of items must equal number of viewcontrollers, or it will cause error
     ///   - height: Height of tabbar, default value is `48`
-    ///   - backgroundColor: Background color of tabbar, default value is `BackgroundColors._ActionBar`
+    ///   - backgroundColor: Background color of tabbar, default value is `ColorProvider.FloatyBackground`
     ///   - floatingHeight: The floating distance between the tab bar and the bottom of the screen. If the `floatingHeight` is `nil`, then the tab bar won't float. Otherwise, the tab bar will be floating with the designated height. Default value is `nil`, which means the bar won't float.
     init(items: [PMTabBarItem], height: CGFloat?=nil, backgroundColor: UIColor?=nil, floatingHeight: CGFloat?=nil) {
         self.items = items
         self.height = height ?? 48
         self.floatingHeight = floatingHeight
-        self.backgroundColor = backgroundColor ?? BackgroundColors._ActionBar
+        self.backgroundColor = backgroundColor ?? ColorProvider.FloatyBackground
     }
 }
 
@@ -59,28 +59,28 @@ public struct PMTabBarItem {
     /// Initialize `PMTabBarItem` with title string
     /// - Parameters:
     ///   - title: Item title
-    ///   - color: Title color in normal status, default value is `AdaptiveTextColors._N2`
+    ///   - color: Title color in normal status, default value is `ColorProvider.FloatyText`
     ///   - selectedColor: Title color in selected status, default value is `.white`
-    ///   - selectedBgColor: Background color in selected status, default value is `SolidColors._N9`
+    ///   - selectedBgColor: Background color in selected status, default value is `ColorProvider.FloatyPressed`
     public init(title: String, color: UIColor?=nil, selectedColor: UIColor?=nil, selectedBgColor: UIColor?=nil) {
         self.title = title
-        self.color = color ?? AdaptiveTextColors._N2
+        self.color = color ?? ColorProvider.FloatyText
         self.selectedColor = selectedColor ?? .white
-        self.selectedBgColor = selectedBgColor ?? SolidColors._N9
+        self.selectedBgColor = selectedBgColor ?? ColorProvider.FloatyPressed
         self.icon = nil
     }
 
     /// Initialize `PMTabBarItem` with icon image
     /// - Parameters:
     ///   - icon: Item icon image
-    ///   - color: Title color in normal status, default value is `AdaptiveTextColors._N2`
+    ///   - color: Title color in normal status, default value is `ColorProvider.FloatyText`
     ///   - selectedColor: Title color in selected status, default value is `.white`
-    ///   - selectedBgColor: Background color in selected status, default value is `SolidColors._N9`
+    ///   - selectedBgColor: Background color in selected status, default value is `ColorProvider.FloatyPressed`
     public init(icon: UIImage, color: UIColor?=nil, selectedColor: UIColor?=nil, selectedBgColor: UIColor?=nil) {
         self.icon = icon
-        self.color = color ?? AdaptiveTextColors._N2
+        self.color = color ?? ColorProvider.FloatyText
         self.selectedColor = selectedColor ?? .white
-        self.selectedBgColor = selectedBgColor ?? SolidColors._N9
+        self.selectedBgColor = selectedBgColor ?? ColorProvider.FloatyPressed
         self.title = nil
     }
 }

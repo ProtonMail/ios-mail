@@ -83,7 +83,7 @@ private enum SubviewsFactory {
 
     static var iconImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
-        imageView.tintColor = UIColorManager.IconWeak
+        imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 

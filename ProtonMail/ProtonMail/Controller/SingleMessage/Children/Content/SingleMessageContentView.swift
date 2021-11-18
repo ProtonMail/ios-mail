@@ -58,7 +58,7 @@ private enum SubviewsFactory {
 
     static var smallSeparatorView: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
+        view.backgroundColor = ColorProvider.Shade20
         return view
     }
 

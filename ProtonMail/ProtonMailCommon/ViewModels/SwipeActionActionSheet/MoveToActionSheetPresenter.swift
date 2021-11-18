@@ -38,7 +38,7 @@ class MoveToActionSheetPresenter {
         var folderSelectionActionSheet: PMActionSheet?
         let doneButton = PMActionSheetPlainItem(title: LocalString._move_to_done_button_title,
                                                 icon: nil,
-                                                textColor: UIColorManager.BrandNorm) { _ in
+                                                textColor: ColorProvider.BrandNorm) { _ in
             // Collect current label markType status of all options in the action sheet
             var currentMarkTypes = viewModel.initialLabelSelectionStatus
             let currentLabelOptions = folderSelectionActionSheet?.itemGroups?.last?.items.compactMap({ $0 as? PMActionSheetPlainItem })
@@ -109,7 +109,7 @@ class MoveToActionSheetPresenter {
                                                  rightItem: doneButton)
         let add = PMActionSheetPlainItem(title: LocalString._move_to_new_folder,
                                          icon: Asset.menuPlus.image,
-                                         textColor: UIColorManager.TextWeak) { _ in
+                                         textColor: ColorProvider.TextWeak) { _ in
             addNewFolder()
         }
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)

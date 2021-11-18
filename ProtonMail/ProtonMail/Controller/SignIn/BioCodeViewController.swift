@@ -68,7 +68,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
                                            style: .plain,
                                            target: self,
                                            action: #selector(self.logoutButtonTapped))
-        logoutButton.tintColor = UIColorManager.IconNorm
+        logoutButton.tintColor = ColorProvider.IconNorm
         self.navigationItem.leftBarButtonItem = logoutButton
         
         if let bar = self.navigationController?.navigationBar {

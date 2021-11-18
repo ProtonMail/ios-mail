@@ -23,6 +23,7 @@
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
+import ProtonCore_Payments
 
 public enum AccountType {
     case `internal`
@@ -100,8 +101,32 @@ public enum SignupInitalMode {
     case external
 }
 
-public enum SignupMode: Equatable {
+public enum LoginFeatureAvailability<Parameters> {
     case notAvailable
+    case available(parameters: Parameters)
+    
+    public var isNotAvailable: Bool {
+        if case .notAvailable = self { return true }
+        return false
+    }
+}
+
+public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
+
+public struct SignupParameters {
+    
+    let mode: SignupMode
+    let passwordRestrictions: SignupPasswordRestrictions
+    let summaryScreenVariant: SummaryScreenVariant
+    
+    public init(mode: SignupMode, passwordRestrictions: SignupPasswordRestrictions, summaryScreenVariant: SummaryScreenVariant) {
+        self.mode = mode
+        self.passwordRestrictions = passwordRestrictions
+        self.summaryScreenVariant = summaryScreenVariant
+    }
+}
+
+public enum SignupMode: Equatable {
     case `internal`
     case external
     case both(initial: SignupInitalMode)
@@ -125,5 +150,18 @@ public struct SignupPasswordRestrictions: OptionSet {
             failedRestrictions.insert(.atLeastEightCharactersLong)
         }
         return failedRestrictions
+    }
+}
+
+public typealias PaymentsAvailability = LoginFeatureAvailability<PaymentsParameters>
+
+public struct PaymentsParameters {
+    
+    let listOfIAPIdentifiers: ListOfIAPIdentifiers
+    var reportBugAlertHandler: BugAlertHandler
+    
+    public init(listOfIAPIdentifiers: ListOfIAPIdentifiers, reportBugAlertHandler: BugAlertHandler) {
+        self.listOfIAPIdentifiers = listOfIAPIdentifiers
+        self.reportBugAlertHandler = reportBugAlertHandler
     }
 }

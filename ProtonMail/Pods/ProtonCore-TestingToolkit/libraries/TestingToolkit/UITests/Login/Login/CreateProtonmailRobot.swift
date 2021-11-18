@@ -25,6 +25,7 @@ private let createProtonmailTitleId = "ChooseUsernameViewController.titleLabel"
 private let usernameFieldId = "ChooseUsernameViewController.addressTextField.textField"
 private let buttonNextId = "ChooseUsernameViewController.nextButton"
 private let buttonCreateAddressId = "CreateAddressViewController.createButton"
+private let createPMAddressTitle = "Create ProtonMail address"
 
 public final class CreateProtonmailRobot: CoreElements {
     
@@ -41,5 +42,9 @@ public final class CreateProtonmailRobot: CoreElements {
     public func pressCreateAddress<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(buttonCreateAddressId).wait().tap()
         return Robot()
+    }
+    
+    public func createPMAddressIsShown() {
+            staticText(createPMAddressTitle).wait().checkExists()
     }
 }

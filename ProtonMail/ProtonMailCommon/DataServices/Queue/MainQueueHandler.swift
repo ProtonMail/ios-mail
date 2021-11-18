@@ -599,7 +599,7 @@ extension MainQueueHandler {
                                                      keyPackets: keyPacket,
                                                      dataPacketSourceFileURL: dataPacketURL,
                                                      signature: signed,
-                                                     headers: [HTTPHeader.apiVersion: 3],
+                                                     headers: .empty,
                                                      authenticated: true,
                                                      customAuthCredential: attachment.message.cachedAuthCredential,
                                                      completion: completionWrapper)

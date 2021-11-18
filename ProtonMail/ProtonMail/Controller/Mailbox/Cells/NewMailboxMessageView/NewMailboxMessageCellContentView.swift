@@ -33,7 +33,7 @@ class NewMailboxMessageCellContentView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
     }
@@ -92,7 +92,7 @@ class NewMailboxMessageCellContentView: UIView {
 private enum SubviewsFactory {
     static var container: UIView {
         let view = UIView()
-        view.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.InteractionWeak
         view.layer.cornerRadius = 6
         view.isUserInteractionEnabled = false
         return view

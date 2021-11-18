@@ -8,7 +8,7 @@ class ConversationView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         addSubviews()
         setUpLayout()
     }
@@ -74,13 +74,13 @@ private enum SubviewsFactory {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColorManager.BackgroundSecondary
+        tableView.backgroundColor = ColorProvider.BackgroundSecondary
         return tableView
     }
 
     static var separator: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
+        view.backgroundColor = ColorProvider.Shade20
         return view
     }
 

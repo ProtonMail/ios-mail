@@ -67,17 +67,17 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     }
 
     private func setupUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         titleLabel.text = String(format: CoreString._ls_create_address_available, viewModel.address)
         subtitleLabel.text = CoreString._ls_create_address_info
         recoveryTitleLabel.text = CoreString._ls_create_address_recovery_title
         recoveryInfoLabel.text = viewModel.recoveryEmail
         createButton.setTitle(CoreString._ls_create_address_button_title, for: .normal)
 
-        termsLabel.textColor = UIColorManager.TextWeak
+        termsLabel.textColor = ColorProvider.TextWeak
         let termsText = NSMutableAttributedString(string: CoreString._ls_create_address_terms_full)
         if termsText.setAttributes(textToFind: CoreString._ls_create_address_terms_link, attributes: [
-            NSAttributedString.Key.foregroundColor: UIColorManager.InteractionNorm,
+            NSAttributedString.Key.foregroundColor: ColorProvider.InteractionNorm,
             NSAttributedString.Key.underlineColor: UIColor.clear
         ]) {
             termsLabel.attributedText = termsText
@@ -88,8 +88,8 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
             PMLog.error("Cannot set Terms and Conditions as link. Wrong translation?")
         }
 
-        recoveryTitleLabel.textColor = UIColorManager.TextNorm
-        recoveryInfoLabel.textColor = UIColorManager.TextWeak
+        recoveryTitleLabel.textColor = ColorProvider.TextNorm
+        recoveryInfoLabel.textColor = ColorProvider.TextWeak
 
         setUpBackArrow(action: #selector(CreateAddressViewController.goBack(_:)))
     }

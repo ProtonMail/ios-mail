@@ -38,7 +38,7 @@ public extension LineSeparatable where Self: UIView {
             line.bottomAnchor.constraint(equalTo: bottomAnchor),
             line.heightAnchor.constraint(equalToConstant: 1)
         ])
-        line.backgroundColor = UIColorManager.SeparatorNorm
+        line.backgroundColor = ColorProvider.SeparatorNorm
         return line
     }
 
@@ -54,7 +54,7 @@ public extension LineSeparatable where Self: UIView {
             line.bottomAnchor.constraint(equalTo: bottomAnchor),
             line.heightAnchor.constraint(equalToConstant: 1)
         ])
-        line.backgroundColor = UIColorManager.SeparatorNorm
+        line.backgroundColor = ColorProvider.SeparatorNorm
         return line
     }
 }

@@ -38,7 +38,7 @@ class ContactAddEmailCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._contacts_email_address_placeholder
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
     }
 
     override func layoutSubviews() {

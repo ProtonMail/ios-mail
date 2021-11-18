@@ -34,6 +34,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     
     private let kInvalidEmailShakeTimes: Float         = 3.0
     private let kInvalidEmailShakeOffset: CGFloat      = 10.0
+    private var paymentsUI: PaymentsUI?
     
     fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
@@ -78,13 +79,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
 
         self.doneItem = UIBarButtonItem(title: LocalString._general_edit_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(didTapEditButton(sender:)))
         var attributes = FontManager.DefaultStrong
-        attributes[.foregroundColor] = UIColorManager.InteractionNorm
+        attributes[.foregroundColor] = ColorProvider.InteractionNorm
         self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.assignNavItemIndentifiers()
@@ -111,13 +112,13 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60.0
         tableView.noSeparatorsBelowFooter()
-        tableView.backgroundColor = UIColorManager.BackgroundNorm
+        tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         navigationItem.largeTitleDisplayMode = .never
     }
 
     private func configureStyle() {
-        headerContainerView.backgroundColor = UIColorManager.BackgroundNorm
+        headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
     }
     
     /// config header style only need once
@@ -137,7 +138,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         emailContactImageView.image = Asset.envelope.image
         emailContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
-                                         backgroundColor: UIColorManager.BrandNorm)
+                                         backgroundColor: ColorProvider.BrandNorm)
         sendToPrimaryEmailButton.isUserInteractionEnabled = false
         emailContactImageView.backgroundColor = UIColor.lightGray
         // call contact
@@ -145,7 +146,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
         callContactImageView.setupImage(scale: 0.5,
                                         tintColor: UIColor.white,
-                                        backgroundColor: UIColorManager.BrandNorm)
+                                        backgroundColor: ColorProvider.BrandNorm)
         callContactButton.isUserInteractionEnabled = false
         callContactImageView.backgroundColor = UIColor.lightGray
         
@@ -154,7 +155,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         shareContactImageView.image = Asset.icArrowOutBox.image
         shareContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
-                                         backgroundColor: UIColorManager.BrandNorm)
+                                         backgroundColor: ColorProvider.BrandNorm)
         shareContactImageView.isUserInteractionEnabled = false
         shareContactImageView.backgroundColor = UIColor.lightGray
     }
@@ -207,7 +208,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             sendToPrimaryEmailButton.isUserInteractionEnabled = true
-            emailContactImageView.backgroundColor = UIColorManager.BrandNorm
+            emailContactImageView.backgroundColor = ColorProvider.BrandNorm
         }
         
         // call contact
@@ -217,9 +218,9 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
         } else {
             callContactButton.isUserInteractionEnabled = true
-            callContactImageView.backgroundColor = UIColorManager.BrandNorm
+            callContactImageView.backgroundColor = ColorProvider.BrandNorm
         }
-        shareContactImageView.backgroundColor = UIColorManager.BrandNorm
+        shareContactImageView.backgroundColor = ColorProvider.BrandNorm
 
     }
     
@@ -343,9 +344,10 @@ extension ContactDetailViewController : ContactUpgradeCellDelegate {
     }
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 }
 

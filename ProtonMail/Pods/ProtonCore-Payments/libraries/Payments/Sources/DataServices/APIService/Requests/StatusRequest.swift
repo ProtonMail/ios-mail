@@ -20,23 +20,18 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
 final class StatusRequest: BaseApiRequest<StatusResponse> {
 
-    override func path() -> String {
-        return super.path() + "/status"
-    }
-    
-    override func getIsAuthFunction() -> Bool {
-        return false
-    }
+    override var path: String { super.path + "/v4/status" }
+
+    override var isAuth: Bool { false }
 }
 
-final class StatusResponse: ApiResponse {
+final class StatusResponse: Response {
     var isAvailable: Bool?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {

@@ -86,20 +86,20 @@ private enum SubViewsFactory {
     static var iconView: UIImageView {
         let view = UIImageView(image: Asset.mailAttachment.image.withRenderingMode(.alwaysTemplate))
         view.contentMode = .scaleAspectFit
-        view.tintColor = UIColorManager.TextNorm
+        view.tintColor = ColorProvider.TextNorm
         return view
     }
 
     static var arrowIcon: UIImageView {
         let view = UIImageView(image: Asset.icArrowRight.image.withRenderingMode(.alwaysTemplate))
         view.contentMode = .scaleAspectFit
-        view.tintColor = UIColorManager.IconWeak
+        view.tintColor = ColorProvider.IconWeak
         return view
     }
 
     static var separator: UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColorManager.Shade20
+        view.backgroundColor = ColorProvider.Shade20
         return view
     }
 

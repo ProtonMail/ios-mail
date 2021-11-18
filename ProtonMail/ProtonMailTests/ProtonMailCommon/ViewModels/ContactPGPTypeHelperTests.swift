@@ -326,7 +326,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
                                    apiService: apiServiceMock,
                                    userSign: 1,
                                    localContacts: localContactsStub)
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, completion in
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion?(nil, ["Code": 33101, "Error": "Server failed validation"], nil)
             } else {
@@ -354,7 +354,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
                                    apiService: apiServiceMock,
                                    userSign: 1,
                                    localContacts: localContactsStub)
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, completion in
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion?(nil, ["Code": 33102, "Error": "Recipient not found"], nil)
             } else {
@@ -382,7 +382,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
                                    apiService: apiServiceMock,
                                    userSign: 1,
                                    localContacts: localContactsStub)
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, completion in
+        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion?(nil, ["Code": 9999, "Error": "Error"], nil)
             } else {

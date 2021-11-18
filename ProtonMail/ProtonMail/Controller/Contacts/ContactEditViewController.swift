@@ -63,6 +63,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
     
     private var imagePicker: UIImagePickerController? = nil
+    private var paymentsUI: PaymentsUI?
     
     //
     fileprivate var doneItem: UIBarButtonItem!
@@ -127,9 +128,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.cancelItem = Asset.actionSheetClose.image
             .toUIBarButtonItem(target: self,
                                action: #selector(self.cancelAction(_:)),
-                               tintColor: UIColorManager.IconNorm)
+                               tintColor: ColorProvider.IconNorm)
 
-        let attributes = FontManager.DefaultStrong.foregroundColor(UIColorManager.InteractionNorm)
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
         self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
         self.navigationItem.leftBarButtonItem = cancelItem
@@ -139,9 +140,9 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             self.title = LocalString._edit_contact
         }
 
-        self.editPhotoButton.setTitleColor(UIColorManager.InteractionNorm, for: .normal)
+        self.editPhotoButton.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
 
-        UITextField.appearance().tintColor = UIColorManager.TextHint
+        UITextField.appearance().tintColor = ColorProvider.TextHint
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
         
@@ -149,13 +150,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         self.tableView.estimatedRowHeight = 70
         self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.backgroundColor = UIColorManager.BackgroundNorm
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
 
-        self.view.backgroundColor = UIColorManager.BackgroundNorm
-        self.topContainerView.backgroundColor = UIColorManager.BackgroundNorm
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
+        self.topContainerView.backgroundColor = ColorProvider.BackgroundNorm
         
         // profile image picker
         self.imagePicker = UIImagePickerController()
@@ -386,9 +387,10 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     }
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.user.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 }
 
@@ -537,7 +539,7 @@ extension ContactEditViewController: UITableViewDataSource {
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
             cell.configCell(value: LocalString._delete_contact,
-                            color: UIColorManager.NotificationError)
+                            color: ColorProvider.NotificationError)
             cell.selectionStyle = .default
             outCell = cell
         case .upgrade:
@@ -710,7 +712,7 @@ extension ContactEditViewController: UITableViewDelegate {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
             return nil
         }
-        cell.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         let sections = viewModel.getSections()
         let sc = sections[section]
         if sc == .encrypted_header {

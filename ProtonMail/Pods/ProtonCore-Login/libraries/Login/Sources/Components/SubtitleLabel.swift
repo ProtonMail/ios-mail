@@ -35,7 +35,7 @@ final class SubtitleLabel: UILabel {
     }
 
     private func setup() {
-        textColor = UIColorManager.TextWeak
+        textColor = ColorProvider.TextWeak
         font = UIFont.systemFont(ofSize: 15)
         setLineHeight(lineHeight: 1.2)
     }

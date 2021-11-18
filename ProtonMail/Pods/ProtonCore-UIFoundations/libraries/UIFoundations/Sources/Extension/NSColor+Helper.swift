@@ -22,9 +22,6 @@
 #if os(macOS)
 import AppKit
 
-typealias UIColor = NSColor
-
-@available(macOS 10.13, *)
 extension NSColor {
     convenience init?(named name: String, in bundle: Bundle?, compatibleWith: Any?) {
         self.init(named: name, bundle: bundle)

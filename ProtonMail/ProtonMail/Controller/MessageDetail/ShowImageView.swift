@@ -41,7 +41,7 @@ class ShowImageView: PMView {
     }
     
     override func setup() {
-        showImageButton.layer.borderColor = UIColorManager.SeparatorNorm.cgColor
+        showImageButton.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
         showImageButton.setTitle(LocalString._load_remote_content, for: .normal)

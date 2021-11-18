@@ -22,19 +22,33 @@
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 
-#if canImport(UIKit)
-import UIKit
+public enum AlertActionStyle {
+    case `default`
+    case cancel
+    case destructive
+}
 
-public typealias ActionCallback = ((UIAlertAction) -> Void)?
+public protocol AlertManagerProtocol: AnyObject {
+    var title: String? { get set }
+    var message: String { get set }
+    var confirmButtonTitle: String? { get set }
+    var cancelButtonTitle: String? { get set }
+    var confirmButtonStyle: AlertActionStyle { get set }
+    var cancelButtonStyle: AlertActionStyle { get set }
+    func showAlert(confirmAction: ActionCallback, cancelAction: ActionCallback)
+}
 
-class PaymentsAlertManager {
-    let alertManager: AlertManagerProtocol
+public typealias ActionCallback = (() -> Void)?
 
-    init (alertManager: AlertManagerProtocol = AlertManager()) {
+struct PaymentsAlertManager {
+
+    var alertManager: AlertManagerProtocol
+
+    init (alertManager: AlertManagerProtocol) {
         self.alertManager = alertManager
     }
 
-    func retryAlert(confirmAction: ActionCallback = nil, cancelAction: ActionCallback = nil) {
+    func retryAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
         alertManager.title = CoreString._error_apply_payment_on_registration_title
         alertManager.message = CoreString._error_apply_payment_on_registration_message
         alertManager.confirmButtonTitle = CoreString._retry
@@ -44,8 +58,8 @@ class PaymentsAlertManager {
         alertManager.showAlert(confirmAction: confirmAction, cancelAction: cancelAction)
     }
 
-    func userValidationAlert(message: String, confirmButtonTitle: String, confirmAction: ActionCallback = nil) {
-        alertManager.title = CoreString._warning
+    func userValidationAlert(message: String, confirmButtonTitle: String, confirmAction: ActionCallback) {
+        alertManager.title = nil
         alertManager.message = message
         alertManager.confirmButtonTitle = confirmButtonTitle
         alertManager.cancelButtonTitle = CoreString._no_dont_bypass_validation
@@ -55,7 +69,7 @@ class PaymentsAlertManager {
     }
 
     func errorAlert(message: String) {
-        alertManager.title = CoreString._error_occured
+        alertManager.title = nil
         alertManager.message = message
         alertManager.confirmButtonTitle = CoreString._general_ok_action
         alertManager.cancelButtonTitle = nil
@@ -65,39 +79,45 @@ class PaymentsAlertManager {
     }
 }
 
-public protocol AlertManagerProtocol: AnyObject {
-    var title: String? { get set }
-    var message: String? { get set }
-    var confirmButtonTitle: String? { get set }
-    var cancelButtonTitle: String? { get set }
-    var confirmButtonStyle: UIAlertAction.Style { get set }
-    var cancelButtonStyle: UIAlertAction.Style { get set }
-    func showAlert(confirmAction: ActionCallback, cancelAction: ActionCallback)
+#if canImport(UIKit)
+import UIKit
+
+extension AlertActionStyle {
+    var toUIAlertActionStyle: UIAlertAction.Style {
+        switch self {
+        case .default: return .default
+        case .cancel: return .cancel
+        case .destructive: return .destructive
+        }
+    }
 }
 
-private class AlertManager: AlertManagerProtocol {
+final class AlertManager: AlertManagerProtocol {
     var title: String?
-    var message: String?
+    var message: String = ""
     var confirmButtonTitle: String?
     var cancelButtonTitle: String?
-    var confirmButtonStyle: UIAlertAction.Style = .default
-    var cancelButtonStyle: UIAlertAction.Style = .default
+    var confirmButtonStyle: AlertActionStyle = .default
+    var cancelButtonStyle: AlertActionStyle = .default
+
+    init() {}
 
     func showAlert(confirmAction: ActionCallback = nil, cancelAction: ActionCallback = nil) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: self.title, message: self.message, preferredStyle: .alert)
             if let cancelButtonTitle = self.cancelButtonTitle {
-                alert.addAction(UIAlertAction(title: cancelButtonTitle, style: self.cancelButtonStyle, handler: { action in
+                alert.addAction(UIAlertAction(title: cancelButtonTitle, style: self.cancelButtonStyle.toUIAlertActionStyle, handler: { action in
                     self.alertWindow = nil
-                    cancelAction?(action)
+                    cancelAction?()
                 }))
             }
             if let confirmButtonTitle = self.confirmButtonTitle {
-                alert.addAction(UIAlertAction(title: confirmButtonTitle, style: self.confirmButtonStyle, handler: { action in
+                alert.addAction(UIAlertAction(title: confirmButtonTitle, style: self.confirmButtonStyle.toUIAlertActionStyle, handler: { action in
                     self.alertWindow = nil
-                    confirmAction?(action)
+                    confirmAction?()
                 }))
             }
+            if self.alertWindow == nil { self.alertWindow = self.createAlertWindow() }
             self.alertWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
@@ -107,8 +127,10 @@ private class AlertManager: AlertManagerProtocol {
         return UIApplication.getInstance()?.connectedScenes.first { $0.activationState == .foregroundActive && $0 is UIWindowScene } as? UIWindowScene
     }
 
-    private lazy var alertWindow: UIWindow? = {
-        let alertWindow: UIWindow?
+    private var alertWindow: UIWindow?
+
+    private func createAlertWindow() -> UIWindow? {
+        let alertWindow: UIWindow
         if #available(iOS 13.0, *) {
             if let windowScene = windowScene {
                 alertWindow = UIWindow(windowScene: windowScene)
@@ -118,31 +140,30 @@ private class AlertManager: AlertManagerProtocol {
         } else {
             alertWindow = UIWindow(frame: UIScreen.main.bounds)
         }
-        alertWindow?.rootViewController = UIViewController()
-        alertWindow?.backgroundColor = UIColor.clear
-        alertWindow?.windowLevel = .alert
-        alertWindow?.makeKeyAndVisible()
+        alertWindow.rootViewController = UIViewController()
+        alertWindow.backgroundColor = UIColor.clear
+        alertWindow.windowLevel = .alert
+        alertWindow.makeKeyAndVisible()
         return alertWindow
-    }()
+    }
 }
 
 #else
 
-// swiftlint:disable:next empty_parameters
-typealias ActionCallback = ((Void) -> Void)?
+final class AlertManager: AlertManagerProtocol {
+    var title: String?
+    var message: String = ""
+    var confirmButtonTitle: String?
+    var cancelButtonTitle: String?
+    var confirmButtonStyle: AlertActionStyle = .default
+    var cancelButtonStyle: AlertActionStyle = .default
 
-class PaymentsAlertManager {
-
-    func retryAlert(confirmAction: ActionCallback = nil, cancelAction: ActionCallback = nil) {
-        // unimplemented outside UIKit
+    init() {
+        assertionFailure("Currently only UIKit version of default AlertManager is available — please provide your own implementation")
     }
 
-    func userValidationAlert(message: String, confirmButtonTitle: String, confirmAction: ActionCallback = nil) {
-        // unimplemented outside UIKit
-    }
-
-    func errorAlert(message: String) {
-        // unimplemented outside UIKit
+    func showAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
+        assertionFailure("Currently only UIKit version of default AlertManager is available — please provide your own implementation")
     }
 }
 

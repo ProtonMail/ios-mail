@@ -29,13 +29,13 @@ class NonExpandedHeaderViewModel {
 
     var sender: NSAttributedString {
         var style = FontManager.Default
-        style.addTruncatingTail()
+        style = style.addTruncatingTail()
         return senderName.apply(style: style)
     }
 
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
-        style.addTruncatingTail(mode: .byTruncatingMiddle)
+        style = style.addTruncatingTail(mode: .byTruncatingMiddle)
         return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
     }
 
@@ -106,11 +106,11 @@ class NonExpandedHeaderViewModel {
 private extension Dictionary where Key == NSAttributedString.Key, Value == Any {
 
     static var toAttributes: Self {
-        attributes(color: UIColorManager.TextNorm)
+        attributes(color: ColorProvider.TextNorm)
     }
 
     static var recipientAttibutes: Self {
-        attributes(color: UIColorManager.TextWeak)
+        attributes(color: ColorProvider.TextWeak)
     }
 
     private static func attributes(color: UIColor) -> Self {

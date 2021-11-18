@@ -30,8 +30,8 @@ public final class PropertyStub<Property> {
         wrappedValue = StubbedProperty(keyPath, initialGet)
     }
 
-    public init<T>(_ keyPath: KeyPath<T, Property>, initialGet: InitialReturn<Property>) {
-        wrappedValue = StubbedProperty(keyPath, initialGet.closure)
+    public init<T>(_ keyPath: KeyPath<T, Property>, initialGet: InitialReturn<Void, Property>) {
+        wrappedValue = StubbedProperty(keyPath, { try! initialGet.closure(()) })
     }
 }
 

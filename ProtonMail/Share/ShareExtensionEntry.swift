@@ -69,7 +69,7 @@ extension ShareExtensionEntry {
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColorManager.BackgroundNorm
+        appearance.backgroundColor = ColorProvider.BackgroundNorm
         appearance.shadowColor = .clear
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance

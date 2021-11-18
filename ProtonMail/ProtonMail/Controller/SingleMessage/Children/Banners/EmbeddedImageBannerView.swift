@@ -26,7 +26,7 @@ class EmbeddedImageBannerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         setCornerRadius(radius: 8)
         addSubviews()
         setUpLayout()
@@ -75,7 +75,7 @@ private enum SubviewsFactory {
 
     static var loadContentButton: UIButton {
         let button = UIButton(frame: .zero)
-        button.backgroundColor = UIColorManager.InteractionWeak
+        button.backgroundColor = ColorProvider.InteractionWeak
         button.setCornerRadius(radius: 3)
         button.setAttributedTitle(
             LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
@@ -94,7 +94,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.mailRemoteContentIcon.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 }

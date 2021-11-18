@@ -27,11 +27,6 @@ import ProtonCore_Log
 import ProtonCore_Utilities
 import ProtonCore_Networking
 
-/// http headers key
-public struct HTTPHeader {
-    public static let apiVersion = "x-pm-apiversion"
-}
-
 extension Bundle {
     /// Returns the app version in a nice to read format
     var appVersion: String {
@@ -49,7 +44,6 @@ extension Bundle {
     }
 }
 
-///
 public protocol APIServerConfig {
     
     // host name    xxx.xxxxxxx.com
@@ -76,48 +70,126 @@ public typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [St
 
 public protocol API {
 
-    func request(method: HTTPMethod, path: String,
+    func request(method: HTTPMethod,
+                 path: String,
                  parameters: Any?,
                  headers: [String: Any]?,
-                 authenticated: Bool, autoRetry: Bool,
+                 authenticated: Bool,
+                 autoRetry: Bool,
                  customAuthCredential: AuthCredential?,
+                 nonDefaultTimeout: TimeInterval?,
                  completion: CompletionBlock?)
 
-    func download(byUrl url: String, destinationDirectoryURL: URL,
+    func download(byUrl url: String,
+                  destinationDirectoryURL: URL,
+                  headers: [String: Any]?,
+                  authenticated: Bool,
+                  customAuthCredential: AuthCredential?,
+                  nonDefaultTimeout: TimeInterval?,
+                  downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void))
+
+    func upload(byPath path: String,
+                parameters: [String: String],
+                keyPackets: Data,
+                dataPacket: Data,
+                signature: Data?,
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                nonDefaultTimeout: TimeInterval?,
+                completion: @escaping CompletionBlock)
+    
+    func upload(byPath path: String,
+                parameters: Any?,
+                files: [String: URL],
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                nonDefaultTimeout: TimeInterval?,
+                uploadProgress: ProgressCompletion?,
+                completion: @escaping CompletionBlock)
+
+    func uploadFromFile(byPath path: String,
+                        parameters: [String: String],
+                        keyPackets: Data,
+                        dataPacketSourceFileURL: URL,
+                        signature: Data?,
+                        headers: [String: Any]?,
+                        authenticated: Bool,
+                        customAuthCredential: AuthCredential?,
+                        nonDefaultTimeout: TimeInterval?,
+                        completion: @escaping CompletionBlock)
+}
+
+public extension API {
+
+    func request(method: HTTPMethod,
+                 path: String,
+                 parameters: Any?,
+                 headers: [String: Any]?,
+                 authenticated: Bool,
+                 autoRetry: Bool,
+                 customAuthCredential: AuthCredential?,
+                 completion: CompletionBlock?) {
+        self.request(method: method, path: path, parameters: parameters, headers: headers,
+                     authenticated: authenticated, autoRetry: autoRetry, customAuthCredential: customAuthCredential,
+                     nonDefaultTimeout: nil, completion: completion)
+    }
+
+    func download(byUrl url: String,
+                  destinationDirectoryURL: URL,
                   headers: [String: Any]?,
                   authenticated: Bool,
                   customAuthCredential: AuthCredential?,
                   downloadTask: ((URLSessionDownloadTask) -> Void)?,
-                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void))
+                  completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
+        self.download(byUrl: url, destinationDirectoryURL: destinationDirectoryURL, headers: headers,
+                      authenticated: authenticated, customAuthCredential: customAuthCredential, nonDefaultTimeout: nil,
+                      downloadTask: downloadTask, completion: completion)
+    }
 
-    func upload (byPath path: String,
-                 parameters: [String: String],
-                 keyPackets: Data,
-                 dataPacket: Data,
-                 signature: Data?,
-                 headers: [String: Any]?,
-                 authenticated: Bool,
-                 customAuthCredential: AuthCredential?,
-                 completion: @escaping CompletionBlock)
+    func upload(byPath path: String,
+                parameters: [String: String],
+                keyPackets: Data,
+                dataPacket: Data,
+                signature: Data?,
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                completion: @escaping CompletionBlock) {
+        self.upload(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacket: dataPacket,
+                    signature: signature, headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
+                    nonDefaultTimeout: nil, completion: completion)
+    }
     
-    func upload (byPath path: String,
-                 parameters: Any?,
-                 files: [String: URL],
-                 headers: [String: Any]?,
-                 authenticated: Bool,
-                 customAuthCredential: AuthCredential?,
-                 uploadProgress: ProgressCompletion?,
-                 completion: @escaping CompletionBlock)
+    func upload(byPath path: String,
+                parameters: Any?,
+                files: [String: URL],
+                headers: [String: Any]?,
+                authenticated: Bool,
+                customAuthCredential: AuthCredential?,
+                uploadProgress: ProgressCompletion?,
+                completion: @escaping CompletionBlock) {
+        self.upload(byPath: path, parameters: parameters, files: files, headers: headers, authenticated: authenticated,
+                    customAuthCredential: customAuthCredential, nonDefaultTimeout: nil,
+                    uploadProgress: uploadProgress, completion: completion)
+    }
 
-    func uploadFromFile (byPath path: String,
-                         parameters: [String: String],
-                         keyPackets: Data,
-                         dataPacketSourceFileURL: URL,
-                         signature: Data?,
-                         headers: [String: Any]?,
-                         authenticated: Bool,
-                         customAuthCredential: AuthCredential?,
-                         completion: @escaping CompletionBlock)
+    func uploadFromFile(byPath path: String,
+                        parameters: [String: String],
+                        keyPackets: Data,
+                        dataPacketSourceFileURL: URL,
+                        signature: Data?,
+                        headers: [String: Any]?,
+                        authenticated: Bool,
+                        customAuthCredential: AuthCredential?,
+                        completion: @escaping CompletionBlock) {
+        self.uploadFromFile(byPath: path, parameters: parameters, keyPackets: keyPackets, dataPacketSourceFileURL: dataPacketSourceFileURL,
+                            signature: signature, headers: headers, authenticated: authenticated, customAuthCredential: customAuthCredential,
+                            nonDefaultTimeout: nil, completion: completion)
+        
+    }
 }
 
 /// this is auth UI related
@@ -172,7 +244,6 @@ public protocol AuthDelegate: AnyObject {
     func onLogout(sessionUID uid: String)
     func onUpdate(auth: Credential)
     func onRefresh(bySessionUID uid: String, complete:  @escaping AuthRefreshComplete)
-    func onForceUpgrade()
 }
 
 public protocol APIService: API {
@@ -214,14 +285,14 @@ public extension APIService {
             }
         }
         // TODO:: missing auth
-        var header = route.header
-        header[HTTPHeader.apiVersion] = route.version
-        self.request(method: route.method, path: route.path,
+        self.request(method: route.method,
+                     path: route.path,
                      parameters: route.parameters,
-                     headers: header,
+                     headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
                      customAuthCredential: route.authCredential,
+                     nonDefaultTimeout: route.nonDefaultTimeout,
                      completion: completionWrapper)
 
         // wait operations
@@ -254,14 +325,13 @@ public extension APIService {
             }
         }
 
-        var header = route.header
-        header[HTTPHeader.apiVersion] = route.version
         self.request(method: route.method, path: route.path,
                      parameters: route.parameters,
-                     headers: header,
+                     headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
                      customAuthCredential: route.authCredential,
+                     nonDefaultTimeout: route.nonDefaultTimeout,
                      completion: completionWrapper)
     }
 
@@ -285,14 +355,13 @@ public extension APIService {
             }
         }
 
-        var header = route.header
-        header[HTTPHeader.apiVersion] = route.version
         self.request(method: route.method, path: route.path,
                      parameters: route.parameters,
-                     headers: header,
+                     headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
                      customAuthCredential: route.authCredential,
+                     nonDefaultTimeout: route.nonDefaultTimeout,
                      completion: completionWrapper)
     }
 
@@ -301,6 +370,13 @@ public extension APIService {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, res, error in
             do {
+                if let httpResponse = task?.response as? HTTPURLResponse,
+                    let url = httpResponse.url {
+                    PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
+                }
+                if let error = error {
+                    PMLog.debug("\(error)")
+                }
                 if let res = res {
                     // this is a workaround for afnetworking, will change it
                     let responseData = try JSONSerialization.data(withJSONObject: res, options: .prettyPrinted)
@@ -350,14 +426,15 @@ public extension APIService {
                 }
             }
         }
-        var header = route.header
-        header[HTTPHeader.apiVersion] = route.version
-        self.request(method: route.method, path: route.path,
+
+        self.request(method: route.method,
+                     path: route.path,
                      parameters: route.parameters,
-                     headers: header,
+                     headers: route.header,
                      authenticated: route.isAuth,
                      autoRetry: route.autoRetry,
                      customAuthCredential: route.authCredential,
+                     nonDefaultTimeout: route.nonDefaultTimeout,
                      completion: completionWrapper)
     }
 
@@ -378,6 +455,13 @@ public extension APIService {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, res, error in
             do {
+                if let httpResponse = task?.response as? HTTPURLResponse,
+                    let url = httpResponse.url {
+                    PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
+                }
+                if let error = error {
+                    PMLog.debug("\(error)")
+                }
                 if let res = res {
                     // this is a workaround for afnetworking, will change it
                     let responseData = try JSONSerialization.data(withJSONObject: res, options: .prettyPrinted)
@@ -427,14 +511,13 @@ public extension APIService {
                 }
             }
         }
-        var header = route.header
-        header[HTTPHeader.apiVersion] = route.version
         
         self.upload(byPath: route.path,
                     parameters: route.parameters,
-                    files: files, headers: header,
+                    files: files, headers: route.header,
                     authenticated: route.isAuth,
                     customAuthCredential: route.authCredential,
+                    nonDefaultTimeout: route.nonDefaultTimeout,
                     uploadProgress: uploadProgress,
                     completion: completionWrapper)
     }

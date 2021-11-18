@@ -21,45 +21,45 @@
 
 import StoreKit
 import AwaitKit
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class ProcessAuthenticated: ProcessProtocol {
+final class ProcessAuthenticated: ProcessProtocol {
 
-    weak var delegate: ProcessDelegateProtocol?
-    let queue = DispatchQueue(label: "ProcessAuthenticated async queue")
+    unowned let dependencies: ProcessDependencies
 
-    func process(transaction: SKPaymentTransaction, plan: AccountPlan, completion: @escaping CompletionCallback) throws {
-        guard let delegate = delegate, let storeKitDelegate = delegate.storeKitDelegate else {
-            throw StoreKitManager.Errors.transactionFailedByUnknownReason
-        }
-        guard let details = storeKitDelegate.servicePlanDataService?.detailsOfServicePlan(named: plan.rawValue),
-            let planId = details.iD else {
-            delegate.errorCallback(StoreKitManager.Errors.alreadyPurchasedPlanDoesNotMatchBackend)
-            completion()
-            return
-        }
+    init(dependencies: ProcessDependencies) {
+        self.dependencies = dependencies
+    }
+
+    let queue = DispatchQueue(label: "ProcessAuthenticated async queue", qos: .userInitiated)
+
+    func process(transaction: SKPaymentTransaction,
+                 plan: PlanToBeProcessed,
+                 completion: @escaping ProcessCompletionCallback) throws {
 
         // Create token
-        guard let token = delegate.tokenStorage?.get() else {
-            return try getToken(transaction: transaction, plan: plan, planId: planId, completion: completion)
+        guard let token = dependencies.tokenStorage.get() else {
+            return try getToken(transaction: transaction, plan: plan, completion: completion)
         }
 
         do {
-            guard let apiService = storeKitDelegate.apiService else {
-                throw StoreKitManager.Errors.transactionFailedByUnknownReason
-            }
-            let tokenStatusApi = delegate.paymentsApiProtocol.tokenStatusRequest(api: apiService, token: token)
+            PMLog.debug("Making TokenRequestStatus")
+            let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
             let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:
                 // Waiting for the token to get ready to be charged (should not happen with IAP)
-                PMLog.debug("StoreKit: token not ready yet. Scheduling retry in \(delegate.pendingRetry) seconds")
-                queue.asyncAfter(deadline: .now() + delegate.pendingRetry) {
-                    try? self.process(transaction: transaction, plan: plan, completion: completion)
+                PMLog.debug("StoreKit: token not ready yet. Scheduling retry in \(dependencies.pendingRetry) seconds")
+                queue.asyncAfter(deadline: .now() + dependencies.pendingRetry) { [weak self] in
+                    do {
+                        guard let self = self else { return }
+                        try self.process(transaction: transaction, plan: plan, completion: completion)
+                    } catch {
+                        completion(.erroredWithUnspecifiedError(error))
+                    }
                 }
                 return
             case .chargeable:
@@ -68,108 +68,99 @@ class ProcessAuthenticated: ProcessProtocol {
             case .failed, .notSupported:
                 // throw away token and retry with the new one
                 PMLog.debug("StoreKit: token \(status == .failed ? "failed" : "not supported")")
-                delegate.tokenStorage?.clear()
-                delegate.errorCallback(StoreKitManager.Errors.wrongTokenStatus(status))
-                completion()
+                dependencies.tokenStorage.clear()
+                completion(.errored(.wrongTokenStatus(status)))
             case .consumed:
                 // throw away token and receipt
                 PMLog.debug("StoreKit: token already consumed")
-                delegate.paymentQueueProtocol.finishTransaction(transaction)
-                delegate.tokenStorage?.clear()
-                delegate.successCallback?(nil)
-                completion()
+                dependencies.finishTransaction(transaction)
+                dependencies.tokenStorage.clear()
+                completion(.finished)
             }
         } catch let error {
-            PMLog.debug("StoreKit: Get token info failed: \(error.localizedDescription)")
-            delegate.errorCallback(error)
-            completion()
+            PMLog.debug("StoreKit: Get token info failed: \(error.messageForTheUser)")
+            completion(.erroredWithUnspecifiedError(error))
         }
     }
 
-    private func getToken(transaction: SKPaymentTransaction, plan: AccountPlan, planId: String, completion: @escaping CompletionCallback) throws {
-        guard let delegate = delegate, let storeKitDelegate = delegate.storeKitDelegate, let apiService = storeKitDelegate.apiService else { throw StoreKitManager.Errors.transactionFailedByUnknownReason }
-        let receipt = try delegate.getReceipt()
+    private func getToken(transaction: SKPaymentTransaction, plan: PlanToBeProcessed, completion: @escaping ProcessCompletionCallback) throws {
 
-        PMLog.debug("StoreKit: No proton token found")
         do {
-            let tokenApi = delegate.paymentsApiProtocol.tokenRequest(api: apiService, amount: plan.yearlyCost, receipt: receipt)
+            let receipt = try dependencies.getReceipt()
+            PMLog.debug("StoreKit: No proton token found")
+            let tokenApi = dependencies.paymentsApiProtocol.tokenRequest(
+                api: dependencies.apiService, amount: plan.amount, receipt: receipt
+            )
+            PMLog.debug("Making TokenRequest")
             let tokenRes = try AwaitKit.await(tokenApi.run())
-            guard let token = tokenRes.paymentToken else { return }
-            delegate.tokenStorage?.add(token)
-            try? self.process(transaction: transaction, plan: plan, completion: completion) // Exception would've been thrown on the first call
+            guard let token = tokenRes.paymentToken else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
+            dependencies.tokenStorage.add(token)
+            try self.process(transaction: transaction, plan: plan, completion: completion) // Exception would've been thrown on the first call
+
         } catch let error where error.isSandboxReceiptError {
             // sandbox receipt sent to BE
             PMLog.debug("StoreKit: sandbox receipt sent to BE")
-            delegate.paymentQueueProtocol.finishTransaction(transaction)
-            delegate.tokenStorage?.clear()
-            delegate.errorCallback(error)
-            completion()
+            dependencies.finishTransaction(transaction)
+            dependencies.tokenStorage.clear()
+            completion(.erroredWithUnspecifiedError(error))
+
         } catch let error where error.isApplePaymentAlreadyRegisteredError {
             // Apple payment already registered
             PMLog.debug("StoreKit: apple payment already registered (2)")
-            delegate.paymentQueueProtocol.finishTransaction(transaction)
-            delegate.tokenStorage?.clear()
-            delegate.successCallback?(nil)
-            completion()
+            dependencies.finishTransaction(transaction)
+            dependencies.tokenStorage.clear()
+            completion(.finished)
+
         }
-        return
     }
 
-    private func buySubscription(transaction: SKPaymentTransaction, plan: AccountPlan, token: PaymentToken, completion: @escaping CompletionCallback) throws {
-        guard let delegate = delegate, let storeKitDelegate = delegate.storeKitDelegate, let apiService = storeKitDelegate.apiService else { throw StoreKitManager.Errors.transactionFailedByUnknownReason }
-
-        let planId = try servicePlan(for: transaction.payment.productIdentifier)
+    private func buySubscription(transaction: SKPaymentTransaction,
+                                 plan: PlanToBeProcessed,
+                                 token: PaymentToken,
+                                 completion: @escaping ProcessCompletionCallback) throws {
         do {
             // buy plan
-            var request: SubscriptionRequest
-            if let recieptApi = try delegate.paymentsApiProtocol.buySubscriptionRequest(api: apiService, planId: planId, amount: plan.yearlyCost, paymentAction: .token(token: token.token)) {
-                request = recieptApi
-            } else {
-                // error from validate subscription
-                request = SubscriptionRequest(api: apiService, planId: planId, amount: plan.yearlyCost, paymentAction: .token(token: token.token))
-            }
+            let request = try dependencies.paymentsApiProtocol.buySubscriptionRequest(
+                api: dependencies.apiService,
+                planId: plan.protonIdentifier,
+                amount: plan.amount,
+                amountDue: plan.amountDue,
+                paymentAction: .token(token: token.token)
+            )
             let recieptRes = try AwaitKit.await(request.run())
             PMLog.debug("StoreKit: success (1)")
             if let newSubscription = recieptRes.newSubscription {
-                storeKitDelegate.servicePlanDataService?.currentSubscription = newSubscription
-                delegate.paymentQueueProtocol.finishTransaction(transaction)
-                delegate.tokenStorage?.clear()
-                delegate.successCallback?(nil)
-                completion()
+                dependencies.updateSubscription(newSubscription)
+                dependencies.finishTransaction(transaction)
+                dependencies.tokenStorage.clear()
+                completion(.finished)
             } else {
                 throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
             }
+
         } catch let error where error.isPaymentAmmountMismatchError {
             PMLog.debug("StoreKit: amount mismatch")
             // ammount mismatch
             do {
-                let serverUpdateApi = delegate.paymentsApiProtocol.creditRequest(api: apiService, amount: plan.yearlyCost, paymentAction: .token(token: token.token))
+                let serverUpdateApi = dependencies.paymentsApiProtocol.creditRequest(
+                    api: dependencies.apiService, amount: plan.amount, paymentAction: .token(token: token.token)
+                )
                 _ = try AwaitKit.await(serverUpdateApi.run())
-                delegate.paymentQueueProtocol.finishTransaction(transaction)
-                delegate.tokenStorage?.clear()
-                delegate.errorCallback(StoreKitManager.Errors.creditsApplied)
-                completion()
+                dependencies.finishTransaction(transaction)
+                dependencies.tokenStorage.clear()
+                completion(.errored(.creditsApplied))
             } catch let error where error.isApplePaymentAlreadyRegisteredError {
                 PMLog.debug("StoreKit: apple payment already registered")
-                delegate.paymentQueueProtocol.finishTransaction(transaction)
-                delegate.tokenStorage?.clear()
-                delegate.successCallback?(nil)
-                completion()
+                dependencies.finishTransaction(transaction)
+                dependencies.tokenStorage.clear()
+                completion(.finished)
             }
+
         } catch let error as ResponseError where error.toRequestErrors == RequestErrors.subscriptionDecode {
             throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
-        } catch let error {
-            delegate.errorCallback(error)
-            completion()
-        }
-    }
 
-    private func servicePlan(for productId: String) throws -> String {
-        guard let plan = AccountPlan(storeKitProductId: productId),
-              let details = delegate?.storeKitDelegate?.servicePlanDataService?.detailsOfServicePlan(named: plan.rawValue),
-            let planId = details.iD else {
-            throw StoreKitManager.Errors.alreadyPurchasedPlanDoesNotMatchBackend
+        } catch let error {
+            completion(.erroredWithUnspecifiedError(error))
         }
-        return planId
     }
 }

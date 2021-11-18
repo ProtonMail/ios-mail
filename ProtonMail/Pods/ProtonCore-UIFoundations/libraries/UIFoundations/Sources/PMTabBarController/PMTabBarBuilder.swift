@@ -24,7 +24,7 @@ import UIKit
 public final class PMTabBarBuilder {
     private var items: [PMTabBarItem] = []
     private var height: CGFloat = 48
-    private var backgroundColor: UIColor = BackgroundColors._ActionBar
+    private var backgroundColor: UIColor = ColorProvider.FloatyBackground
     private var floatingHeight: CGFloat?
     private var vcs: [UIViewController] = []
     private var selectedIndex: Int = 0
@@ -37,7 +37,7 @@ public final class PMTabBarBuilder {
         return self
     }
 
-    /// Sets background color of the tab bar controller, default value is `BackgroundColors._ActionBar`
+    /// Sets background color of the tab bar controller, default value is `ColorProvider.FloatyBackground`
     public func setBackgroundColor(_ color: UIColor) -> PMTabBarBuilder {
         self.backgroundColor = color
         return self

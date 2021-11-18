@@ -43,12 +43,12 @@ class ExpirationIconView: PMView {
     
     override func setupView() {
         super.setupView()
-        self.view.backgroundColor = UIColorManager.InteractionWeak
+        self.view.backgroundColor = ColorProvider.InteractionWeak
         self.view.layer.cornerRadius = Constant.height / 2.0
         self.view.layer.masksToBounds = true
         
         iconImageView.image = UIImage(named: "mail_list_expiration")?.toTemplateUIImage()
-        iconImageView.tintColor = UIColorManager.IconNorm
+        iconImageView.tintColor = ColorProvider.IconNorm
     }
     
     func configureView(time: Date) {

@@ -43,6 +43,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var name: UILabel!
     @IBOutlet private var mail: UILabel!
     @IBOutlet private var moreBtn: UIButton!
+    @IBOutlet private var separatorView: UIView!
     private var userID: String = ""
     private var isLogin: Bool = false
     private weak var delegate: AccountmanagerUserCellDelegate?
@@ -60,8 +61,16 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             self.moreBtn.showsMenuAsPrimaryAction = true
         }
         self.moreBtn.roundCorner(20)
-        self.shortNameView.roundCorner(2)
+        self.shortNameView.roundCorner(8)
         self.shortNameLabel.adjustsFontSizeToFitWidth = true
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        self.name.textColor = ColorProvider.TextNorm
+        self.mail.textColor = ColorProvider.TextWeak
+        self.shortNameView.backgroundColor = ColorProvider.BrandNorm
+        self.shortNameLabel.textColor = ColorProvider.SidebarTextNorm
+        self.separatorView.backgroundColor = ColorProvider.InteractionWeak
+        self.moreBtn.backgroundColor = ColorProvider.InteractionWeak
+        self.moreBtn.tintColor = ColorProvider.TextNorm
     }
 
     func config(userID: String, name: String,
@@ -73,9 +82,9 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.name.text = name
         self.shortNameLabel.text = self.name.text?.initials()
         if isLogin {
-            self.name.textColor = UIColorManager.TextNorm
+            self.name.textColor = ColorProvider.TextNorm
         } else {
-            self.name.textColor = UIColorManager.TextWeak
+            self.name.textColor = ColorProvider.TextWeak
         }
         self.mail.text = mail
         

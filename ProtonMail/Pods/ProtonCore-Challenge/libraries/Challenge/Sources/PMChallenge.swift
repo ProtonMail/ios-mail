@@ -119,9 +119,9 @@ extension PMChallenge {
         }
 
         switch type {
-        case .username:
+        case .username, .username_email:
             self.usernameEditingTime = 0
-            self.challenge.time_user = []
+            self.challenge.timeUsername = []
         default:
             break
         }
@@ -136,7 +136,7 @@ extension PMChallenge {
         }
 
         let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
-        self.challenge.time_user.append(time)
+        self.challenge.timeUsername.append(time)
 
         self.usernameEditingTime = 0
         guard let interceptor = self.interceptors.first(where: { $0.type == .username }) else {
@@ -194,11 +194,11 @@ extension PMChallenge {
 
         guard let copyText = UIPasteboard.general.string else { return }
         switch interceptor.type {
-        case .username:
-            self.challenge.copy_username.append(copyText)
-            self.challenge.usernameTypedChars.append("Copy")
+        case .username, .username_email:
+            self.challenge.copyUsername.append(copyText)
+            self.challenge.keydownUsername.append("Copy")
         case .recovery:
-            self.challenge.copy_recovery.append(copyText)
+            self.challenge.copyRecovery.append(copyText)
         default:
             break
         }
@@ -209,7 +209,7 @@ extension PMChallenge {
 extension PMChallenge: TextFieldInterceptorDelegate {
     func beginEditing(type: TextFieldType) {
         switch type {
-        case .username:
+        case .username, .username_email:
             if self.usernameEditingTime == 0 {
                 self.usernameEditingTime = Date().timeIntervalSince1970
             }
@@ -223,15 +223,15 @@ extension PMChallenge: TextFieldInterceptorDelegate {
     func charactersTyped(chars: String, type: TextFieldType) throws {
         let value: String = chars.count > 1 ? "Paste": chars
         switch type {
-        case .username:
-            self.challenge.usernameTypedChars.append(value)
+        case .username, .username_email:
+            self.challenge.keydownUsername.append(value)
             if chars.count > 1 {
-                self.challenge.paste_username.append(chars)
+                self.challenge.pasteUsername.append(chars)
             }
         case .recovery:
-            self.challenge.recoverTypedChars.append(value)
+            self.challenge.keydownRecovery.append(value)
             if chars.count > 1 {
-                self.challenge.paste_recovery.append(chars)
+                self.challenge.pasteRecovery.append(chars)
             }
         default:
             break
@@ -240,10 +240,10 @@ extension PMChallenge: TextFieldInterceptorDelegate {
 
     func charactersDeleted(chars: String, type: TextFieldType) {
         switch type {
-        case .username:
-            self.challenge.usernameTypedChars.append("Backspace")
+        case .username, .username_email:
+            self.challenge.keydownUsername.append("Backspace")
         case .recovery:
-            self.challenge.recoverTypedChars.append("Backspace")
+            self.challenge.keydownRecovery.append("Backspace")
         default:
             break
         }
@@ -251,10 +251,10 @@ extension PMChallenge: TextFieldInterceptorDelegate {
 
     func tap(textField: UITextField, type: TextFieldType) {
         switch type {
-        case .username:
-            self.challenge.click_user += 1
+        case .username, .username_email:
+            self.challenge.clickUsername += 1
         case .recovery:
-            self.challenge.click_recovery += 1
+            self.challenge.clickRecovery += 1
         default:
             break
         }

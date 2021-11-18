@@ -68,10 +68,11 @@ public final class PMActionSheetHeaderView: UIView {
 extension PMActionSheetHeaderView {
     private func setup(hasSeparator: Bool = false) {
         guard self.title != nil else { return }
-        self.backgroundColor = BackgroundColors._Main
+        self.backgroundColor = ColorProvider.BackgroundNorm
         let titleView = self.createTitleView()
         self.setupTitleViewConstraint(titleView)
-        let refTitle = titleView.arrangedSubviews.sorted(by: { $0.frame.size.width >=  $1.frame.size.width}).first
+        // swiftlint:disable:next sorted_first_last
+        let refTitle = titleView.arrangedSubviews.sorted(by: { $0.frame.size.width >=  $1.frame.size.width }).first
         self.setupItem(item: self.leftItem,
                        isRightBtn: false,
                        refTitle: refTitle)
@@ -89,7 +90,7 @@ extension PMActionSheetHeaderView {
         if let title = self.title {
             let fontSize: CGFloat = self.subtitle == nil ? 17: 15
             let font: UIFont = .systemFont(ofSize: fontSize, weight: .semibold)
-            let color: UIColor = AdaptiveTextColors._N5
+            let color: UIColor = ColorProvider.TextNorm
             let lbl = UILabel(title, font: font, textColor: color)
             lbl.sizeToFit()
             stack.addArrangedSubview(lbl)
@@ -97,7 +98,7 @@ extension PMActionSheetHeaderView {
 
         if let subtitle = self.subtitle {
             let font: UIFont = .systemFont(ofSize: 12)
-            let color: UIColor = AdaptiveTextColors._N3
+            let color: UIColor = ColorProvider.TextWeak
             let lbl = UILabel(subtitle, font: font, textColor: color)
             lbl.numberOfLines = 2
             lbl.textAlignment = .center
@@ -165,7 +166,7 @@ extension PMActionSheetHeaderView {
 
     private func addLine() {
         let line = UIView()
-        line.backgroundColor = AdaptiveColors._N2
+        line.backgroundColor = ColorProvider.SeparatorNorm
         line.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(line)
         NSLayoutConstraint.activate([

@@ -234,13 +234,8 @@ extension MenuCoordinator {
     }
 
     private func presentInitialPage() {
-        if storeKitManager.shouldShowReportBugPage {
-            navigateToBugReport()
-            storeKitManager.shouldShowReportBugPage = false
-        } else {
-            let label = MenuLabel(location: .inbox)
-            navigateToMailBox(labelInfo: label, deepLink: nil)
-        }
+        let label = MenuLabel(location: .inbox)
+        navigateToMailBox(labelInfo: label, deepLink: nil)
     }
     
     private func handleCustomLabel(labelInfo: MenuLabel, deepLink: DeepLink?) {
@@ -312,8 +307,7 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = self.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = PaymentsUI(servicePlanDataService: user.sevicePlanService,
-                                    planTypes: .currentPlanDifferentForTestflightAndProd)
+        let paymentsUI = PaymentsUI(payments: user.payments)
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,

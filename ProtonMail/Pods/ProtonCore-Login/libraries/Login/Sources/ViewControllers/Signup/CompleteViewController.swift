@@ -48,26 +48,27 @@ class CompleteViewController: UIViewController, AccessibleView {
     @IBOutlet weak var completeTitleLabel: UILabel! {
         didSet {
             completeTitleLabel.text = CoreString._su_complete_view_title
-            completeTitleLabel.textColor = UIColorManager.TextNorm
+            completeTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var completeDescriptionLabel: UILabel! {
         didSet {
             completeDescriptionLabel.text = CoreString._su_complete_view_desc
-            completeDescriptionLabel.textColor = UIColorManager.TextWeak
+            completeDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
-
+    @IBOutlet weak var progressTableView: UITableView! {
+        didSet {
+            progressTableView.backgroundColor = ColorProvider.BackgroundNorm
+        }
+    }
+    
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        navigationItem.setHidesBackButton(true, animated: false)
-        animationView.animation = Animation.named("sign-up-create-account", bundle: LoginAndSignup.bundle)
-        animationView.loopMode = .loop
-        animationView.backgroundBehavior = .pauseAndRestore
-        animationView.play()
+        viewModel.progressCompletion = { self.progressTableView.reloadData() }
+        setupUI()
         if signupAccountType == .internal {
             createAccount()
         } else {
@@ -78,6 +79,16 @@ class CompleteViewController: UIViewController, AccessibleView {
 
     // MARK: Private methods
     
+    private func setupUI() {
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        navigationItem.setHidesBackButton(true, animated: false)
+        animationView.animation = Animation.named("sign-up-create-account", bundle: LoginAndSignup.bundle)
+        animationView.loopMode = .loop
+        animationView.backgroundBehavior = .pauseAndRestore
+        animationView.play()
+        progressTableView.dataSource = self
+    }
+    
     private func createAccount() {
         guard let userName = name, let password = password else {
             assertionFailure("Create internal account input data missing")
@@ -85,6 +96,7 @@ class CompleteViewController: UIViewController, AccessibleView {
         }
         do {
             try viewModel?.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
+                self.unlockUI()
                 switch result {
                 case .success(let loginData):
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -95,6 +107,7 @@ class CompleteViewController: UIViewController, AccessibleView {
                 }
             }
         } catch let error {
+            unlockUI()
             delegate?.accountCreationError(error: error)
         }
     }
@@ -106,6 +119,7 @@ class CompleteViewController: UIViewController, AccessibleView {
         }
         do {
             try viewModel?.createNewExternalUser(email: email, password: password, verifyToken: verifyToken) { result in
+                self.unlockUI()
                 switch result {
                 case .success(let loginData):
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -116,8 +130,23 @@ class CompleteViewController: UIViewController, AccessibleView {
                 }
             }
         } catch let error {
+            unlockUI()
             delegate?.accountCreationError(error: error)
         }
+    }
+}
+
+extension CompleteViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.displayProgress.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SummaryProgressCell.reuseIdentifier, for: indexPath)
+        if let cell = cell as? SummaryProgressCell {
+            cell.configureCell(displayProgress: viewModel.displayProgress[indexPath.row])
+        }
+        return cell
     }
 }
 

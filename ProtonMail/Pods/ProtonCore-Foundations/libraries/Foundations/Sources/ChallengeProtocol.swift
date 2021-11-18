@@ -27,6 +27,7 @@ import UIKit
 public enum ChallengeTextFieldType {
     /// TextField for username
     case username
+    case username_email
     /// TextField for password
     case password
     /// TextField for password confirm

@@ -592,12 +592,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         set { }
     }
 
-    var servicePlansDetails: [ServicePlanDetails]? {
+    var servicePlansDetails: [Plan]? {
         get {
             guard let data = self.getShared().data(forKey: Key.servicePlans) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(Array<ServicePlanDetails>.self, from: data)
+            return try? PropertyListDecoder().decode(Array<Plan>.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
@@ -605,12 +605,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var defaultPlanDetails: ServicePlanDetails? {
+    var defaultPlanDetails: Plan? {
         get {
             guard let data = self.getShared().data(forKey: Key.defaultPlanDetails) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(ServicePlanDetails.self, from: data)
+            return try? PropertyListDecoder().decode(Plan.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
@@ -618,12 +618,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var currentSubscription: ServicePlanSubscription? {
+    var currentSubscription: Subscription? {
         get {
             guard let data = self.getShared().data(forKey: Key.currentSubscription) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(ServicePlanSubscription.self, from: data)
+            return try? PropertyListDecoder().decode(Subscription.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)

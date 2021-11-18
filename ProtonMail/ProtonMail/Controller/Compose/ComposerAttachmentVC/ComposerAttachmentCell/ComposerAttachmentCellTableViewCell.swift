@@ -42,10 +42,10 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .none
         self.contentView.backgroundColor = .clear
-        self.containerView.backgroundColor = UIColorManager.BackgroundNorm
+        self.containerView.backgroundColor = ColorProvider.BackgroundNorm
         self.containerView.roundCorner(8)
         self.containerView.layer.borderWidth = 1
-        self.containerView.layer.borderColor = UIColorManager.IconDisabled.cgColor
+        self.containerView.layer.borderColor = ColorProvider.IconDisabled.cgColor
     }
 
     func config(objectID: String,
@@ -55,7 +55,7 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
                 isUploading: Bool,
                 delegate: ComposerAttachmentCellDelegate?) {
         self.objectID = objectID
-        self.deleteButton.tintColor = UIColorManager.IconNorm
+        self.deleteButton.tintColor = ColorProvider.IconNorm
         self.delegate = delegate
 
         var nameAttr = isUploading ? FontManager.DefaultSmallDisabled: .DefaultSmall

@@ -37,8 +37,8 @@ final class ContactEditInformationCell: UITableViewCell {
         self.valueField.delegate = self
         self.typeButton.isHidden = true
         self.typeButton.isEnabled = false
-        valueField.tintColor = UIColorManager.TextHint
-        backgroundColor = UIColorManager.BackgroundNorm
+        valueField.tintColor = ColorProvider.TextHint
+        backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func layoutSubviews() {

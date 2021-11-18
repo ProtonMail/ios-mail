@@ -27,34 +27,48 @@ import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 
 class PaymentsManager {
-    
+
     private let api: APIService
-    private let storeKitManager = StoreKitManager.default
-    private var servicePlan: ServicePlanDataService?
+    private let payments: Payments
     private var paymentsUI: PaymentsUI?
-    private var selectedPlan: AccountPlan = .free
-    private var planTypes: PlanTypes
+    private(set) var selectedPlan: InAppPurchasePlan?
     private var loginData: LoginData?
     private weak var existingDelegate: StoreKitManagerDelegate?
     
-    init(apiService: APIService, planTypes: PlanTypes) {
+    init(apiService: APIService, iaps: ListOfIAPIdentifiers, reportBugAlertHandler: BugAlertHandler) {
         self.api = apiService
-        self.planTypes = planTypes
-        storeKitSetup()
+        self.payments = Payments(inAppPurchaseIdentifiers: iaps,
+                                 apiService: api,
+                                 localStorage: DataStorageImpl(),
+                                 reportBugAlertHandler: reportBugAlertHandler)
+        payments.storeKitManager.updateAvailableProductsList { [weak self] error in
+            self?.payments.storeKitManager.subscribeToPaymentQueue()
+        }
+        storeExistingDelegate()
+        payments.storeKitManager.delegate = self
+        paymentsUI = PaymentsUI(payments: payments)
     }
     
-    func startPaymentProcess(signupViewController: SignupViewController?, planShownHandler: (() -> Void)?, completionHandler: @escaping (Result<(), Error>) -> Void) {
-        if let servicePlan = servicePlan, let signupViewController = signupViewController {
-            paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, planTypes: planTypes)
-            
+    func startPaymentProcess(signupViewController: SignupViewController,
+                             planShownHandler: (() -> Void)?,
+                             completionHandler: @escaping (Result<(), Error>) -> Void) {
+
+        payments.storeKitManager.updateAvailableProductsList { [weak self] error in
+
+            if let error = error {
+                planShownHandler?()
+                completionHandler(.failure(error))
+                return
+            }
+
             var shownHandlerCalled = false
-            paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { reason in
+            self?.paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { [weak self] reason in
                 switch reason {
                 case .open:
                     shownHandlerCalled = true
                     planShownHandler?()
                 case .purchasedPlan(let plan):
-                    self.selectedPlan = plan
+                    self?.selectedPlan = plan
                     completionHandler(.success(()))
                 case .purchaseError(let error):
                     if !shownHandlerCalled {
@@ -65,15 +79,16 @@ class PaymentsManager {
                     break
                 }
             })
+
         }
     }
     
     func finishPaymentProcess(loginData: LoginData, completionHandler: @escaping (Result<(), Error>) -> Void) {
         self.loginData = loginData
-        if selectedPlan != .free {
-            servicePlan?.updateCurrentSubscription {
-                self.storeKitManager.continueRegistrationPurchase {
-                    self.restoreExistingDelegate()
+        if selectedPlan != nil {
+            payments.planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+                self?.payments.storeKitManager.continueRegistrationPurchase { [weak self] in
+                    self?.restoreExistingDelegate()
                     completionHandler(.success(()))
                 }
             } failure: { error in
@@ -84,24 +99,18 @@ class PaymentsManager {
             completionHandler(.success(()))
         }
     }
-    
-    private func storeKitSetup() {
-        let dataStorage = DataStorageImpl()
-        let servicePlan = ServicePlanDataService(localStorage: dataStorage, apiService: api)
-        self.servicePlan = servicePlan
-        storeKitManager.subscribeToPaymentQueue()
-        storeKitManager.updateAvailableProductsList()
-        storeExistingDelegate()
-        storeKitManager.delegate = self
-        paymentsUI = PaymentsUI(servicePlanDataService: servicePlan, planTypes: planTypes)
-    }
-    
+
     private func storeExistingDelegate() {
-        existingDelegate = storeKitManager.delegate
+        existingDelegate = payments.storeKitManager.delegate
     }
     
     private func restoreExistingDelegate() {
-        storeKitManager.delegate = existingDelegate
+        payments.storeKitManager.delegate = existingDelegate
+    }
+    
+    var planTitle: String? {
+        guard let name = selectedPlan?.protonName else { return nil }
+        return servicePlanDataService?.detailsOfServicePlan(named: name)?.titleDescription
     }
 }
 
@@ -144,12 +153,8 @@ extension PaymentsManager: StoreKitManagerDelegate {
         }
     }
 
-    var servicePlanDataService: ServicePlanDataService? {
-        return servicePlan
-    }
-    
-    func reportBugAlert() {
-        existingDelegate?.reportBugAlert()
+    var servicePlanDataService: ServicePlanDataServiceProtocol? {
+        return payments.planService
     }
 }
 
@@ -171,20 +176,20 @@ class TokenStorageImp: PaymentTokenStorage {
 }
     
 class DataStorageImpl: ServicePlanDataStorage {
-    var servicePlansDetails: [ServicePlanDetails]?
-    var defaultPlanDetails: ServicePlanDetails?
+    var servicePlansDetails: [Plan]?
+    var defaultPlanDetails: Plan?
     var isIAPUpgradePlanAvailable: Bool = false
     var credits: Credits?
-    var currentSubscription: ServicePlanSubscription?
+    var currentSubscription: Subscription?
 }
 
 protocol PaymentErrorCapable: ErrorCapable {
-    func showError(error: StoreKitManager.Errors)
+    func showError(error: StoreKitManagerErrors)
     var bannerPosition: PMBannerPosition { get }
 }
 
 extension PaymentErrorCapable {
-    func showError(error: StoreKitManager.Errors) {
+    func showError(error: StoreKitManagerErrors) {
         guard let errorDescription = error.errorDescription else { return }
         showBanner(message: errorDescription)
     }

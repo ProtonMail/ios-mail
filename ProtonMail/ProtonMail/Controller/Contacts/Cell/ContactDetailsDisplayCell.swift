@@ -28,7 +28,7 @@ final class ContactDetailsDisplayCell: UITableViewCell {
     @IBOutlet weak var value: UILabel!
 
     func configCell(title : String, value : String) {
-        contentView.backgroundColor = UIColorManager.BackgroundNorm
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.title.attributedText = title.apply(style: .DefaultSmallWeek)
         

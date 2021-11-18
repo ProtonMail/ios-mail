@@ -177,14 +177,14 @@ final class WelcomeView: UIView {
         }
 
         switch variant {
-        case .mail: UIColorManager.brand = .proton
-        case .calendar: UIColorManager.brand = .proton
-        case .drive: UIColorManager.brand = .proton
-        case .vpn: UIColorManager.brand = .vpn
-        case .custom(let data): UIColorManager.brand = data.brand
+        case .mail: ColorProvider.brand = .proton
+        case .calendar: ColorProvider.brand = .proton
+        case .drive: ColorProvider.brand = .proton
+        case .vpn: ColorProvider.brand = .vpn
+        case .custom(let data): ColorProvider.brand = data.brand
         }
 
-        backgroundColor = UIColorManager.Splash.Background
+        backgroundColor = ProtonColorPallete.Welcome.Background
     }
 
     private func topImage(for variant: WelcomeScreenVariant) -> UIImageView {
@@ -234,7 +234,7 @@ final class WelcomeView: UIView {
         case .custom(let data): text = data.body
         }
         var attributes = PMFontAttributes.DefaultSmall
-        attributes[.foregroundColor] = UIColorManager.Splash.TextHintForProtonBrand
+        attributes[.foregroundColor] = ColorProvider.TextWeak
         body.attributedText = NSAttributedString(string: text, attributes: attributes)
         body.textAlignment = .center
         body.numberOfLines = 0
@@ -248,7 +248,7 @@ final class WelcomeView: UIView {
         let iconsInFooter = UIStackView(
             arrangedSubviews: iconsNamesInOrder.map(image(named:)).map(UIImageView.init(image:))
         )
-        iconsInFooter.tintColor = UIColorManager.Splash.TextHint
+        iconsInFooter.tintColor = ColorProvider.TextWeak
         iconsInFooter.axis = .horizontal
         iconsInFooter.spacing = 32
         iconsInFooter.alignment = .center
@@ -260,7 +260,7 @@ final class WelcomeView: UIView {
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
-            .foregroundColor: UIColorManager.Splash.TextHint,
+            .foregroundColor: ColorProvider.TextWeak,
             .kern: 0.07,
             .paragraphStyle: paragraphStyle
         ]
@@ -291,14 +291,14 @@ final class WelcomeView: UIView {
         var disabled: PMFontAttributes = .DefaultSmallDisabled
         var highlighted: PMFontAttributes = .DefaultSmallWeek
         var selected: PMFontAttributes = .DefaultSmallWeek
-        switch UIColorManager.brand {
+        switch ColorProvider.brand {
         case .proton:
             break
         case .vpn:
-            normal[.foregroundColor] = UIColorManager.BrandNorm
-            disabled[.foregroundColor] = UIColorManager.BrandLighten40
-            highlighted[.foregroundColor] = UIColorManager.BrandDarken20
-            selected[.foregroundColor] = UIColorManager.BrandDarken20
+            normal[.foregroundColor] = ColorProvider.BrandNorm
+            disabled[.foregroundColor] = ColorProvider.BrandLighten40
+            highlighted[.foregroundColor] = ColorProvider.BrandDarken20
+            selected[.foregroundColor] = ColorProvider.BrandDarken20
         }
         signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: normal), for: .normal)
         signupButton.setAttributedTitle(NSAttributedString(string: signUpTitle, attributes: disabled), for: .disabled)

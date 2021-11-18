@@ -37,7 +37,7 @@ final class LabelNameCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
         self.nameField.delegate = self
         self.nameField.backgroundColor = .clear
-        self.contentView.backgroundColor = UIColorManager.BackgroundNorm
+        self.contentView.backgroundColor = ColorProvider.BackgroundNorm
     }
 
     func config(name: String, type: PMLabelType, delegate: LabelNameDelegate?) {

@@ -43,8 +43,8 @@ class MessageViewActionSheetPresenter {
         let actions = viewModel.items.map { item in
             PMActionSheetPlainItem(title: item.title,
                                    icon: item.icon.withRenderingMode(.alwaysTemplate),
-                                   textColor: UIColorManager.TextNorm,
-                                   iconColor: UIColorManager.IconNorm) { (_) in
+                                   textColor: ColorProvider.TextNorm,
+                                   iconColor: ColorProvider.IconNorm) { (_) in
                 action(item)
             }
         }

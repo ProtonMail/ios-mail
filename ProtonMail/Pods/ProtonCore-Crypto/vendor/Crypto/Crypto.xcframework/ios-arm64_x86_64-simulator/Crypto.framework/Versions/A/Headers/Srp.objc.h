@@ -66,6 +66,7 @@ Warnings:
 @property (nonatomic) NSData* _Nullable modulus;
 @property (nonatomic) NSData* _Nullable serverEphemeral;
 @property (nonatomic) NSData* _Nullable hashedPassword;
+@property (nonatomic) long version;
 /**
  * GenerateProofs calculates SPR proofs.
  */
@@ -133,6 +134,9 @@ It concludes the exchange in valid state if successful.
 - (NSData* _Nullable)verifyProofs:(NSData* _Nullable)clientEphemeralBytes clientProofBytes:(NSData* _Nullable)clientProofBytes error:(NSError* _Nullable* _Nullable)error;
 @end
 
+FOUNDATION_EXPORT const int64_t SrpECDLPEphemeralSize;
+FOUNDATION_EXPORT NSString* _Nonnull const SrpVersion;
+
 @interface Srp : NSObject
 /**
  * ErrDataAfterModulus found extra data after decode the modulus
@@ -149,6 +153,8 @@ It concludes the exchange in valid state if successful.
 // skipped variable RandReader with unsupported type: io.Reader
 
 @end
+
+FOUNDATION_EXPORT BOOL SrpECDLPChallenge(NSString* _Nullable b64Challenge, int64_t* _Nullable solution, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull SrpGetModulusKey(void);
 

@@ -43,7 +43,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     didSet {
         let title = signupAccountType == .internal ? CoreString._su_password_proton_view_title : CoreString._su_password_email_view_title
         createPasswordTitleLabel.text = title
-        createPasswordTitleLabel.textColor = UIColorManager.TextNorm
+        createPasswordTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var passwordTextField: PMTextField! {
@@ -79,7 +79,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         passwordTextField.returnKeyType = .next
         setUpBackArrow(action: #selector(PasswordViewController.onBackButtonTap(_:)))
         setupGestures()

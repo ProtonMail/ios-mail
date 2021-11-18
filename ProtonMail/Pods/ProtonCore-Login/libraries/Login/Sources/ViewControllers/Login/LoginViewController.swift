@@ -104,8 +104,8 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         loginTextField.title = CoreString._ls_username_title
         passwordTextField.title = CoreString._ls_password_title
 
-        view.backgroundColor = UIColorManager.BackgroundNorm
-        separatorView.backgroundColor = UIColorManager.InteractionWeak
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        separatorView.backgroundColor = ColorProvider.InteractionWeak
         signUpButton.setMode(mode: .text)
         helpButton.setMode(mode: .text)
 

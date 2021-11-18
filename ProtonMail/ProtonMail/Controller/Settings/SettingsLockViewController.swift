@@ -55,7 +55,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         super.viewDidLoad()
         self.updateTitle()
 
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         
@@ -145,7 +145,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         case .changePin:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.changePinCodeCell, for: indexPath)
             var attribute = FontManager.Default
-            attribute[.foregroundColor] = UIColorManager.InteractionNorm
+            attribute[.foregroundColor] = ColorProvider.InteractionNorm
             cell.textLabel?.attributedText = NSAttributedString(string: LocalString._settings_change_pin_code_title, attributes: attribute)
             return cell
         case .timing:

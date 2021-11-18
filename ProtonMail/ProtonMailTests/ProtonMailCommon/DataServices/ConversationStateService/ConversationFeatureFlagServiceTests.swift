@@ -33,8 +33,6 @@ class ConversationFeatureFlagServiceTests: XCTestCase {
         XCTAssertEqual(apiServiceSpy.invokedRequestWithMethod, [.get])
         XCTAssertEqual(apiServiceSpy.invokedRequestWithPath, ["/core/v4/features/ThreadingIOS"])
         XCTAssertEqual(apiServiceSpy.invokedRequestWithParameters.count, 1)
-        let headers = apiServiceSpy.invokedRequestWithHeaders.first as? [String: Int]
-        XCTAssertEqual(headers?["x-pm-apiversion"], 3)
         XCTAssertEqual(apiServiceSpy.invokedRequestWithCompletion.count, 1)
 
         let urlSessionDataTaskStub = URLSessionDataTaskStub()

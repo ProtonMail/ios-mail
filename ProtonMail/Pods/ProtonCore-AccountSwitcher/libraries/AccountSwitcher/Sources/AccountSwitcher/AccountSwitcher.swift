@@ -45,7 +45,7 @@ public extension AccountSwitcher {
     }
 }
 
-public final class AccountSwitcher: UIView {
+public final class AccountSwitcher: UIView, AccessibleView {
 
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var containerViewTop: NSLayoutConstraint!
@@ -61,8 +61,11 @@ public final class AccountSwitcher: UIView {
     @IBOutlet private var usermail: UILabel!
     @IBOutlet private var accountTable: UITableView!
     @IBOutlet private var accountTableHeight: NSLayoutConstraint!
+    @IBOutlet private var primaryView: UIView!
     @IBOutlet private var manageView: UIView!
     @IBOutlet private var manageAccountLabel: UILabel!
+    @IBOutlet private var manageAccountIcon: UIImageView!
+    @IBOutlet private var primaryViewSeparator: UIView!
 
     private var accounts: [AccountData]
     private let origin: CGPoint
@@ -143,7 +146,7 @@ public final class AccountSwitcher: UIView {
 
         self.accountTable.beginUpdates()
         let path = IndexPath(row: idx - 1, section: 0)
-        self.accountTable.reloadRows(at: [path], with: .automatic)
+        self.accountTable.reloadRows(at: [path], with: .none)
         self.accountTable.endUpdates()
     }
 
@@ -172,8 +175,12 @@ public final class AccountSwitcher: UIView {
     }
 
     private func setManageView(hightlight: Bool) {
-        let color = hightlight ? UIColorManager.BackgroundSecondary: UIColor.white
+        let color = hightlight ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
         self.manageView.backgroundColor = color
+        self.manageAccountLabel.backgroundColor = color
+        self.manageAccountLabel.textColor = ColorProvider.TextNorm
+        self.manageAccountIcon.backgroundColor = color
+        self.manageAccountIcon.tintColor = ColorProvider.IconNorm
     }
 
     private func presentAccountManager() {
@@ -199,7 +206,6 @@ extension AccountSwitcher {
         view.frame = bounds
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.translatesAutoresizingMaskIntoConstraints = true
-
         addSubview(view)
         self.setup()
     }
@@ -219,18 +225,25 @@ extension AccountSwitcher {
         self.setupTitleView()
         self.setupPrimaryUserData()
         self.setupAccountTable()
+        self.setManageView(hightlight: false)
         self.accessibilityViewIsModal = true
         self.shouldGroupAccessibilityChildren = true
         self.accessibilityContainerType = .list
         self.manageAccountLabel.text = CoreString._as_manage_accounts
+        self.generateAccessibilityIdentifiers()
     }
 
     private func setupContainerView() {
         self.containerViewTop.constant = self.origin.y
+        self.containerView.backgroundColor = ColorProvider.BackgroundNorm
         self.containerView.roundCorner(6)
     }
 
     private func setupTitleView() {
+        self.titleView.backgroundColor = ColorProvider.BackgroundNorm
+        self.titleLabel.backgroundColor = ColorProvider.BackgroundNorm
+        self.titleLabel.textColor = ColorProvider.TextNorm
+        self.primaryViewSeparator.backgroundColor = ColorProvider.InteractionWeak
         if UIDevice.current.userInterfaceIdiom == .pad {
             self.titleView.isHidden = false
             self.titleLabel.text = CoreString._as_accounts
@@ -265,7 +278,7 @@ extension AccountSwitcher {
 
     private func setupPrimaryUserData() {
         let user = self.accounts[0]
-        self.shortUserNameView.roundCorner(2)
+        self.shortUserNameView.roundCorner(8)
         self.shortUserName.adjustsFontSizeToFitWidth = true
         if user.name.isEmpty {
             self.shortUserName.text = user.mail.initials()
@@ -277,6 +290,14 @@ extension AccountSwitcher {
         self.username.accessibilityIdentifier = "AccountSwitcher.primaryUsername"
         self.usermail.accessibilityIdentifier = "AccountSwitcher.primaryUsermail"
         self.usermail.text = user.mail
+        self.username.textColor = ColorProvider.TextNorm
+        self.usermail.textColor = ColorProvider.TextWeak
+        self.primaryView.backgroundColor = ColorProvider.BackgroundNorm
+        self.username.backgroundColor = ColorProvider.BackgroundNorm
+        self.usermail.backgroundColor = ColorProvider.BackgroundNorm
+        self.shortUserNameView.backgroundColor = ColorProvider.BrandNorm
+        self.shortUserName.backgroundColor = ColorProvider.BrandNorm
+        self.shortUserName.textColor = ColorProvider.SidebarTextNorm
     }
 
     private func setupAccountTable() {
@@ -285,7 +306,9 @@ extension AccountSwitcher {
         self.accountTableHeight.constant = height
         self.accountTable.register(AccountSwitcherCell.nib(), forCellReuseIdentifier: self.CELLID)
         self.accountTable.tableFooterView = UIView(frame: .zero)
-        self.accountTable.backgroundColor = .white
+        self.accountTable.backgroundColor = ColorProvider.BackgroundNorm
+        self.accountTable.separatorColor = .clear
+        self.accountTable.separatorStyle = .none
     }
 }
 
@@ -304,10 +327,11 @@ extension AccountSwitcher: UITableViewDataSource, UITableViewDelegate, AccountSw
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
-        let label = UILabel(CoreString._as_switch_to_title, font: .systemFont(ofSize: 15), textColor: UIColorManager.TextWeak)
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        let label = UILabel(CoreString._as_switch_to_title, font: .systemFont(ofSize: 15), textColor: ColorProvider.TextWeak)
         view.addSubview(label)
         label.constraintToSuperview(top: 24, right: 0, bottom: -8, left: 16)
+        label.backgroundColor = ColorProvider.BackgroundNorm
         return view
     }
 

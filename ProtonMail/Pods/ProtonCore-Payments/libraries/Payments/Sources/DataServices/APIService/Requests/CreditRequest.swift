@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -51,30 +50,22 @@ enum PaymentAction {
     }
 }
 
-class CreditRequest<T: ApiResponse>: BaseApiRequest<T> {
+class CreditRequest<T: Response>: BaseApiRequest<T> {
     private let paymentAction: PaymentAction
     private let amount: Int
 
-    init(api: API, amount: Int, paymentAction: PaymentAction) {
+    init(api: APIService, amount: Int, paymentAction: PaymentAction) {
         self.paymentAction = paymentAction
         self.amount = amount
         super.init(api: api)
     }
 
-    override func method() -> HTTPMethod {
-        return .post
-    }
+    override var method: HTTPMethod { .post }
 
-    override func path() -> String {
-        return basePath() + "/credit"
-    }
+    override var path: String { super.path + "/v4/credit" }
 
-    func basePath() -> String {
-        return super.path()
-    }
-
-    override func toDictionary() -> [String: Any]? {
-        return [
+    override var parameters: [String: Any]? {
+        [
             "Amount": amount,
             "Currency": "USD",
             "Payment": ["Type": paymentAction.getType,
@@ -84,8 +75,8 @@ class CreditRequest<T: ApiResponse>: BaseApiRequest<T> {
     }
 }
 
-final class CreditResponse: ApiResponse {
-    var newSubscription: ServicePlanSubscription?
+final class CreditResponse: Response {
+    var newSubscription: Subscription?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
@@ -93,6 +84,7 @@ final class CreditResponse: ApiResponse {
             error = RequestErrors.creditDecode.toResponseError(updating: error)
             return false
         }
+        
         return true
     }
 }

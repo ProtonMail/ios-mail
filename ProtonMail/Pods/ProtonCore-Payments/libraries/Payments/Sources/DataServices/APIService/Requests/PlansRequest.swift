@@ -20,44 +20,31 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
 final class PlansRequest: BaseApiRequest<PlansResponse> {
 
-    override func path() -> String {
-        return super.path() + "/plans"
-    }
+    override var path: String { super.path + "/v4/plans" }
 
-    override func toDictionary() -> [String: Any]? {
-        return  [
+    override var isAuth: Bool { false }
+
+    override var parameters: [String: Any]? {
+        [
             "Currency": "USD",
             "Cycle": 12
         ]
     }
-    
-    override func getIsAuthFunction() -> Bool {
-        return false
-    }
 }
 
-final class PlansResponse: ApiResponse {
-    internal var availableServicePlans: [ServicePlanDetails]?
+final class PlansResponse: Response {
+    internal var availableServicePlans: [Plan]?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        do {
-            let data = try JSONSerialization.data(withJSONObject: response["Plans"] as Any, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
-            self.availableServicePlans = try decoder.decode(Array<ServicePlanDetails>.self, from: data)
-            return true
-        } catch let decodingError {
-            error = RequestErrors.plansDecode.toResponseError(updating: error)
-            PMLog.debug("Failed to parse ServicePlans: \(decodingError.localizedDescription)")
-            return false
-        }
+        let (result, plans) = decodeResponse(response["Plans"] as Any, to: [Plan].self)
+        availableServicePlans = plans
+        return result
     }
 }

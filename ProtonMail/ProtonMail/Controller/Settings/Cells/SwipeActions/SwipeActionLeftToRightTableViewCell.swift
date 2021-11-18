@@ -35,9 +35,9 @@ class SwipeActionLeftToRightTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        self.contentView.backgroundColor = ColorProvider.BackgroundSecondary
         swipeActionColorView.setCornerRadius(radius: 6)
-        messageCellView.backgroundColor = UIColorManager.BackgroundNorm
+        messageCellView.backgroundColor = ColorProvider.BackgroundNorm
         messageCellView.setCornerRadius(radius: 6)
     }
 
@@ -60,9 +60,9 @@ class SwipeActionLeftToRightTableViewCell: UITableViewCell {
             .CaptionStrong
             .alignment(.center)
             .addTruncatingTail()
-        attribute[.foregroundColor] = UIColorManager.TextInverted
+        attribute[.foregroundColor] = ColorProvider.TextInverted
         swipeActionTitleLabel.attributedText = title.apply(style: attribute)
-        swipeActionIconView.tintColor = UIColorManager.TextInverted
+        swipeActionIconView.tintColor = ColorProvider.TextInverted
         swipeActionColorView.backgroundColor = color
     }
 }

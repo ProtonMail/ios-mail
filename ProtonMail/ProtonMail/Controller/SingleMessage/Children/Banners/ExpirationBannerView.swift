@@ -31,7 +31,7 @@ class ExpirationBannerView: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
-        backgroundColor = UIColorManager.NotificationWarning
+        backgroundColor = ColorProvider.NotificationWarning
     }
 
     required init?(coder: NSCoder) {
@@ -81,7 +81,7 @@ private enum SubviewsFactory {
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.mailHourglass.image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 }

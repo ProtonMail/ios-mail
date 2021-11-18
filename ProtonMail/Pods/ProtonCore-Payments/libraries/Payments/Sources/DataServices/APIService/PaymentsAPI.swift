@@ -21,25 +21,38 @@
 
 import Foundation
 import AwaitKit
-import ProtonCore_APIClient
+import PromiseKit
 import ProtonCore_Authentication
 import ProtonCore_Log
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class BaseApiRequest<T: ApiResponse>: ApiRequestNew<T> {
-    override func method() -> HTTPMethod {
-        return .get
+class BaseApiRequest<T: Response>: Request {
+
+    let api: APIService
+
+    init(api: APIService) {
+        self.api = api
     }
 
-    override func apiVersion() -> Int {
-        return 3
+    func run() -> Promise<T> where T: Response {
+        api.run(route: self)
     }
 
-    override func path() -> String {
-        return "/payments"
-    }
+    var path: String { "/payments" }
+
+    var method: HTTPMethod { .get }
+
+    var header: [String: Any] { [:] }
+
+    var parameters: [String: Any]? { nil }
+
+    var isAuth: Bool { true }
+
+    var authCredential: AuthCredential? { nil }
+
+    var autoRetry: Bool { true }
 }
 
 let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil)
@@ -47,38 +60,35 @@ let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil
 protocol PaymentsApiProtocol {
     func statusRequest(api: APIService) -> StatusRequest
     func methodsRequest(api: APIService) -> MethodsRequest
-    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest?
+    func buySubscriptionRequest(
+        api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction
+    ) throws -> SubscriptionRequest
+    func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest
-    func appleRequest(api: APIService, currency: String, country: String) -> AppleRequest
+    func organizationsRequest(api: APIService) -> OrganizationsRequest
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
     func plansRequest(api: APIService) -> PlansRequest
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
-    func validateSubscriptionRequest(api: APIService, planId: String) -> ValidateSubscriptionRequest
-    func getUser(api: APIService, completion: @escaping (Result<User, Error>) -> Void)
+    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
+    func getUser(api: APIService, completion: @escaping (Swift.Result<User, Error>) -> Void)
 }
 
 class PaymentsApiImplementation: PaymentsApiProtocol {
+
     func statusRequest(api: APIService) -> StatusRequest {
-        return StatusRequest(api: api)
+        StatusRequest(api: api)
     }
 
     func methodsRequest(api: APIService) -> MethodsRequest {
-        return MethodsRequest(api: api)
+        MethodsRequest(api: api)
     }
 
-    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest? {
-        var validateSubscriptionProcessing = true
-        do {
-            // validate subscription to get amountDue
-            let validateReq = validateSubscriptionRequest(api: api, planId: planId)
-            let res = try AwaitKit.await(validateReq.run())
-            validateSubscriptionProcessing = false
-            guard let validateSubscription = res.validateSubscription else { throw(decodeError) }
-            if validateSubscription.amountDue == amount {
+    func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {
+            if amountDue == amount {
                 // if amountDue is equal to amount, request subscription
-                return SubscriptionRequest(api: api, planId: planId, amount: validateSubscription.amountDue, paymentAction: paymentAction)
+                return SubscriptionRequest(api: api, planId: planId, amount: amount, paymentAction: paymentAction)
             } else {
                 // if amountDue is not equal to amount, request credit for a full amount
                 let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
@@ -86,48 +96,47 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
                 // then request subscription for amountDue = 0
                 return SubscriptionRequest(api: api, planId: planId, amount: 0, paymentAction: paymentAction)
             }
-        } catch {
-            if validateSubscriptionProcessing {
-                return nil
-            } else {
-                throw error
-            }
-        }
+    }
+
+    func buySubscriptionForZeroRequest(api: APIService, planId: String) -> SubscriptionRequest {
+        SubscriptionRequest(api: api, planId: planId)
     }
 
     func getSubscriptionRequest(api: APIService) -> GetSubscriptionRequest {
-        return GetSubscriptionRequest(api: api)
+        GetSubscriptionRequest(api: api)
     }
 
-    func appleRequest(api: APIService, currency: String, country: String) -> AppleRequest {
-        return AppleRequest(api: api, currency: currency, country: country)
+    func organizationsRequest(api: APIService) -> OrganizationsRequest {
+        OrganizationsRequest(api: api)
     }
 
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest {
-        return DefaultPlanRequest(api: api)
+        DefaultPlanRequest(api: api)
     }
 
     func plansRequest(api: APIService) -> PlansRequest {
-        return PlansRequest(api: api)
+        PlansRequest(api: api)
     }
 
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
-        return CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
+        CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
     }
 
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest {
-        return TokenRequest(api: api, amount: amount, receipt: receipt)
+        TokenRequest(api: api, amount: amount, receipt: receipt)
     }
 
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest {
-        return TokenStatusRequest(api: api, token: token)
+        TokenStatusRequest(api: api, token: token)
     }
 
-    func validateSubscriptionRequest(api: APIService, planId: String) -> ValidateSubscriptionRequest {
-        return ValidateSubscriptionRequest(api: api, planId: planId)
+    func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest {
+        ValidateSubscriptionRequest(api: api,
+                                    protonPlanName: protonPlanName,
+                                    isAuthenticated: isAuthenticated)
     }
 
-    func getUser(api: APIService, completion: @escaping (Result<User, Error>) -> Void) {
+    func getUser(api: APIService, completion: @escaping (Swift.Result<User, Error>) -> Void) {
         let authenticator = Authenticator(api: api)
         authenticator.getUserInfo { result in
             switch result {
@@ -140,7 +149,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
     }
 }
 
-extension ApiResponse {
+extension Response {
     private struct Key: CodingKey {
         var stringValue: String
         var intValue: Int?
@@ -160,6 +169,20 @@ extension ApiResponse {
         let original: String = path.last!.stringValue
         let uncapitalized = original.prefix(1).lowercased() + original.dropFirst()
         return Key(stringValue: uncapitalized) ?? path.last!
+    }
+
+    func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type) -> (Bool, T?) {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: response, options: [])
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
+            let object = try decoder.decode(T.self, from: data)
+            return (true, object)
+        } catch let decodingError {
+            error = RequestErrors.defaultPlanDecode.toResponseError(updating: error)
+            PMLog.debug("Failed to parse \(T.self): \(decodingError)")
+            return (false, nil)
+        }
     }
 }
 

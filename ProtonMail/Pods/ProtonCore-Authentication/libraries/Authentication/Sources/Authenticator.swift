@@ -54,7 +54,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     override private init() { }
 
     /// Clear login, when preiously unauthenticated
-    public func authenticate(username: String, password PASSWORD: String, completion: @escaping Completion) {
+    public func authenticate(username: String, password PASSWORD: String, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
         // 1. auth info request
         let authClient = AuthService(api: self.apiService)
         authClient.info(username: username) { (response) in
@@ -75,7 +75,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             // 2. build SRP things
             do {
                 let passSlic = PASSWORD.data(using: .utf8)
-                guard let auth = SrpAuth.init(response.version,
+                guard let auth = srpAuth ?? SrpAuth.init(response.version,
                                               username: username,
                                               password: passSlic,
                                               b64salt: salt,

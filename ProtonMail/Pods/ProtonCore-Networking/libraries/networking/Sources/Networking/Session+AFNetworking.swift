@@ -39,6 +39,7 @@ public class AFNetworkingSession: Session {
         let afnRequest = try self.sessionManager.requestSerializer.request(withMethod: request.method.toString(),
                                                                            urlString: request.urlString,
                                                                            parameters: request.parameters)
+        afnRequest.timeoutInterval = request.timeout
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var task: URLSessionDataTask?
@@ -68,6 +69,7 @@ public class AFNetworkingSession: Session {
                                         data.appendPart(withFileData: sign, name: "Signature", fileName: "Signature.txt", mimeType: "" )
                                     }
                                   }, error: nil)
+        afnRequest.timeoutInterval = request.timeout
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var uploadTask: URLSessionDataTask?
@@ -105,6 +107,7 @@ public class AFNetworkingSession: Session {
                                         try? data.appendPart(withFileURL: file, name: name)
                                     }
                                   }, error: nil)
+        afnRequest.timeoutInterval = request.timeout
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var uploadTask: URLSessionDataTask?
@@ -135,6 +138,7 @@ public class AFNetworkingSession: Session {
                                         data.appendPart(withFileData: sign, name: "Signature", fileName: "Signature.txt", mimeType: "" )
                                     }
                                   }, error: nil)
+        afnRequest.timeoutInterval = request.timeout
         request.request = afnRequest as URLRequest
         request.updateHeader()
         var uploadTask: URLSessionDataTask?
@@ -152,6 +156,7 @@ public class AFNetworkingSession: Session {
                                                                            urlString: request.urlString,
                                                                            parameters: request.parameters)
         request.request = afnRequest as URLRequest
+        afnRequest.timeoutInterval = request.timeout
         request.updateHeader()
         let sessionDownloadTask = self.sessionManager.downloadTask(with: request.request!, progress: { (_) in
             

@@ -32,7 +32,7 @@ class OnboardView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
     }
@@ -106,8 +106,8 @@ private enum SubviewsFactory {
 
     static var pageControl: UIPageControl {
         let control = UIPageControl(frame: .zero)
-        control.pageIndicatorTintColor = UIColorManager.InteractionWeak
-        control.currentPageIndicatorTintColor = UIColorManager.InteractionNorm
+        control.pageIndicatorTintColor = ColorProvider.InteractionWeak
+        control.currentPageIndicatorTintColor = ColorProvider.InteractionNorm
         return control
     }
 
@@ -119,7 +119,7 @@ private enum SubviewsFactory {
 
     static var skipButton: UIButton {
         let button = UIButton(frame: .zero)
-        button.setTitleColor(UIColorManager.InteractionNorm, for: .normal)
+        button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
         button.setTitle(LocalString._skip_btn_title, for: .normal)
         return button
     }

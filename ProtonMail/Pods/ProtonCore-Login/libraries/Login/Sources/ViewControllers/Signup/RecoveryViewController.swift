@@ -48,13 +48,13 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var recoveryMethodTitleLabel: UILabel! {
         didSet {
             recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title
-            recoveryMethodTitleLabel.textColor = UIColorManager.TextNorm
+            recoveryMethodTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var recoveryMethodDescriptionLabel: UILabel! {
         didSet {
             recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
-            recoveryMethodDescriptionLabel.textColor = UIColorManager.TextWeak
+            recoveryMethodDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var recoveryEmailTextField: PMTextField! {
@@ -97,9 +97,9 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         didSet {
             termsTextView.delegate = self
             termsTextView.attributedText = viewModel?.termsAttributedString(textView: termsTextView)
-            termsTextView.linkTextAttributes = [.foregroundColor: UIColorManager.BrandNorm]
-            termsTextView.backgroundColor = UIColorManager.BackgroundNorm
-            termsTextView.textColor = UIColorManager.TextWeak
+            termsTextView.linkTextAttributes = [.foregroundColor: ColorProvider.BrandNorm]
+            termsTextView.backgroundColor = ColorProvider.BackgroundNorm
+            termsTextView.textColor = ColorProvider.TextWeak
         }
     }
 
@@ -112,12 +112,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
                                          style: .done,
                                          target: self,
                                          action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
-        skipButton.tintColor = UIColorManager.BrandNorm
+        skipButton.tintColor = ColorProvider.BrandNorm
         navigationItem.rightBarButtonItem = skipButton
         setUpBackArrow(action: #selector(RecoveryViewController.onBackButtonTap))
         setupGestures()

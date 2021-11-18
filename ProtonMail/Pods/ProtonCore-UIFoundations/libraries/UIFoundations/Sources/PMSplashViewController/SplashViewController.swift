@@ -93,8 +93,8 @@ public final class SplashView: UIView {
     }
 
     private func setupMainView() {
-        UIColorManager.brand = brand
-        backgroundColor = UIColorManager.Splash.Background
+        ProtonColorPallete.brand = brand
+        backgroundColor = ProtonColorPallete.Splash.Background
     }
 
     private func setupAppName() {

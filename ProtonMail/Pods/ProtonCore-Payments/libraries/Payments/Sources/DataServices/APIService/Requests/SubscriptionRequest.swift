@@ -20,39 +20,45 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class SubscriptionRequest: CreditRequest<SubscriptionResponse> {
+final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     private let planId: String
     private let amount: Int
+    private let paymentAction: PaymentAction?
 
-    init(api: API, planId: String, amount: Int, paymentAction: PaymentAction) {
+    init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
         self.planId = planId
         self.amount = amount
-        super.init(api: api, amount: amount, paymentAction: paymentAction)
+        self.paymentAction = paymentAction
+        super.init(api: api)
     }
 
-    override func method() -> HTTPMethod {
-        return .post
+    init(api: APIService, planId: String) {
+        self.planId = planId
+        self.amount = 0
+        self.paymentAction = nil
+        super.init(api: api)
     }
 
-    override func path() -> String {
-        return super.basePath() + "/subscription"
-    }
+    override var method: HTTPMethod { .post }
 
-    override func toDictionary() -> [String: Any]? {
-        var params = super.toDictionary()
-        params?["PlanIDs"] = [planId: 1]
-        params?["Cycle"] = 12
+    override var path: String { super.path + "/v4/subscription" }
+
+    override var parameters: [String: Any]? {
+        var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": 12]
+        guard amount != .zero, let paymentAction = paymentAction else {
+            return params
+        }
+        params["Payment"] = ["Type": paymentAction.getType, "Details": [paymentAction.getKey: paymentAction.getValue]]
         return params
     }
 }
 
-final class SubscriptionResponse: ApiResponse {
-    var newSubscription: ServicePlanSubscription?
+final class SubscriptionResponse: Response {
+    var newSubscription: Subscription?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
@@ -74,30 +80,25 @@ final class SubscriptionResponse: ApiResponse {
 
 final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
 
-    override func path() -> String {
-        return super.path() + "/subscription"
-    }
+    override var path: String { super.path + "/v4/subscription" }
 }
 
-final class GetSubscriptionResponse: ApiResponse {
-    var subscription: ServicePlanSubscription?
+final class GetSubscriptionResponse: Response {
+    var subscription: Subscription?
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
+
         guard let response = response["Subscription"] as? [String: Any],
             let startRaw = response["PeriodStart"] as? Int,
             let endRaw = response["PeriodEnd"] as? Int else { return false }
-
-        let couponCode = response["PeriodEnd"] as? String
+        let couponCode = response["CouponCode"] as? String
         let cycle = response["Cycle"] as? Int
-
-        let plansParser = PlansResponse()
-        guard plansParser.ParseResponse(response) else { return false }
-
-        let plans = plansParser.availableServicePlans
+        let (plansParsed, plans) = decodeResponse(response["Plans"] as Any, to: [Plan].self)
+        guard plansParsed else { return false }
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, defaultPlanDetails: nil, paymentMethods: nil, couponCode: couponCode, cycle: cycle)
+        self.subscription = Subscription(start: start, end: end, planDetails: plans, paymentMethods: nil, couponCode: couponCode, cycle: cycle)
         return true
     }
 }

@@ -30,11 +30,11 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var bannerColor: UIColor {
         switch self {
         case .success:
-            return UIColorManager.NotificationSuccess
+            return ColorProvider.NotificationSuccess
         case .warning:
-            return UIColorManager.NotificationWarning
+            return ColorProvider.NotificationWarning
         case .error:
-            return UIColorManager.NotificationError
+            return ColorProvider.NotificationError
         }
     }
 
@@ -52,7 +52,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var assistBgColor: UIColor {
         switch self {
         case .success, .warning, .error:
-            return UIColorManager.TextInverted.withAlphaComponent(0.2)
+            return ColorProvider.TextInverted.withAlphaComponent(0.2)
         }
     }
 
@@ -60,7 +60,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var assistHighBgColor: UIColor {
         switch self {
         case .success, .warning, .error:
-            return UIColorManager.TextInverted.withAlphaComponent(0.4)
+            return ColorProvider.TextInverted.withAlphaComponent(0.4)
         }
     }
 

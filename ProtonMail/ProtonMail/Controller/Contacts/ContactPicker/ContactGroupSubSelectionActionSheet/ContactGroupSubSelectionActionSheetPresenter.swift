@@ -55,7 +55,7 @@ final class ContactGroupSubSelectionActionSheetPresenter {
         
         let applyItem = PMActionSheetPlainItem(title: LocalString._general_apply_button,
                                                icon: nil,
-                                               textColor: UIColorManager.BrandNorm) { [weak self] _ in
+                                               textColor: ColorProvider.BrandNorm) { [weak self] _ in
             guard let self = self else { return }
             self.callback?(self.viewModel.getCurrentlySelectedEmails())
             self.actionSheet?.dismiss(animated: true)

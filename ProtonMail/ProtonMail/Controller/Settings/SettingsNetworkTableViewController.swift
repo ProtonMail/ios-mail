@@ -34,7 +34,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
 
@@ -79,7 +79,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
         }
 
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
-        header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
 
         if let headerCell = header {
@@ -104,7 +104,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
-        header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
 
         if let headerCell = header {
@@ -125,7 +125,7 @@ class SettingsNetworkTableViewController: ProtonMailTableViewController {
                 attributedString.addAttribute(.link,
                                               value: Link.alternativeRouting,
                                               range: nsRange)
-                textView.linkTextAttributes = [.foregroundColor: UIColorManager.InteractionNorm]
+                textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm]
             }
             textView.attributedText = attributedString
             textView.translatesAutoresizingMaskIntoConstraints = false

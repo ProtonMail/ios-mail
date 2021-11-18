@@ -51,13 +51,13 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var createAccountTitleLabel: UILabel! {
         didSet {
             createAccountTitleLabel.text = CoreString._su_main_view_title
-            createAccountTitleLabel.textColor = UIColorManager.TextNorm
+            createAccountTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var createAccountDescriptionLabel: UILabel! {
         didSet {
             createAccountDescriptionLabel.text = CoreString._su_main_view_desc
-            createAccountDescriptionLabel.textColor = UIColorManager.TextWeak
+            createAccountDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var internalNameTextField: PMTextField! {
@@ -133,7 +133,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
@@ -144,9 +144,9 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         requestDomain()
         configureAccountType()
         generateAccessibilityIdentifiers()
-        [internalNameTextField, externalEmailTextField].forEach {
-            try? $0.setUpChallenge(viewModel.challenge, type: .username)
-        }
+        
+        try? internalNameTextField.setUpChallenge(viewModel.challenge, type: .username)
+        try? externalEmailTextField.setUpChallenge(viewModel.challenge, type: .username_email)
     }
 
     override func viewDidLayoutSubviews() {

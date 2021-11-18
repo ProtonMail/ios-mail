@@ -53,18 +53,18 @@ final class ContactEditAddressCell: UITableViewCell {
         self.countyField.delegate = self
         
         self.valueField.placeholder  = LocalString._contacts_street_field_placeholder
-        self.valueField.tintColor = UIColorManager.TextHint
+        self.valueField.tintColor = ColorProvider.TextHint
         self.street_two.placeholder  = LocalString._contacts_street_field_placeholder
-        self.street_two.tintColor = UIColorManager.TextHint
+        self.street_two.tintColor = ColorProvider.TextHint
         self.cityField.placeholder   = LocalString._contacts_city_field_placeholder
-        self.cityField.tintColor = UIColorManager.TextHint
+        self.cityField.tintColor = ColorProvider.TextHint
         self.stateField.placeholder  = LocalString._contacts_state_field_placeholder
-        self.stateField.tintColor = UIColorManager.TextHint
+        self.stateField.tintColor = ColorProvider.TextHint
         self.zipField.placeholder    = LocalString._contacts_zip_field_placeholder
-        self.zipField.tintColor = UIColorManager.TextHint
+        self.zipField.tintColor = ColorProvider.TextHint
         self.countyField.placeholder = LocalString._contacts_country_field_placeholder
-        self.countyField.tintColor = UIColorManager.TextHint
-        self.backgroundColor = UIColorManager.BackgroundNorm
+        self.countyField.tintColor = ColorProvider.TextHint
+        self.backgroundColor = ColorProvider.BackgroundNorm
     }
     
     

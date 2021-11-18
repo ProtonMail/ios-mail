@@ -25,7 +25,7 @@ import pmtest
 import ProtonCore_CoreTranslation
 
 private let titleName = CoreString._hv_title
-private let recaptchaButtonCheckName = "Recaptcha requires verification. I'm not a robot"
+private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
 private let closeButtonAccessibilityId = "closeButton"
 
 public final class SignupHumanVerificationRobot: CoreElements {
@@ -38,7 +38,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
             case .humanVerification(let hvRobot):
                 return hvRobot
                     .verify.humanVerificationScreenIsShown()
-                    .humanVerificationReCaptchaTap(to: CompleteRobot.self)
+                    .humanVerificationCaptchaTap(to: CompleteRobot.self)
                     .verify.completeScreenIsShown(robot: T.self)
             case .complete(let completeRobot):
                 return completeRobot
@@ -52,7 +52,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func humanVerificationScreenIsShown() -> SignupHumanVerificationRobot {
-            staticText(titleName).wait().checkExists()
+            staticText(titleName).wait(time: 15).checkExists()
             return SignupHumanVerificationRobot()
         }
         
@@ -64,15 +64,7 @@ public final class SignupHumanVerificationRobot: CoreElements {
     }
 
     public func humanVerificationCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {
-        let element = XCUIApplication().webViews["RecaptchaViewController.webView"].webViews.switches["0"]
-        Wait().forElement(element)
-        element.tap()
-        return Robot()
-    }
-    
-    // TODO remove it once recaptcha is changed to hCaptcha on all environments
-    public func humanVerificationReCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {
-        let element = XCUIApplication().webViews["RecaptchaViewController.webView"].webViews.switches[recaptchaButtonCheckName]
+        let element = XCUIApplication().webViews["RecaptchaViewController.webView"].webViews.switches[hCaptchaButtonCheckName]
         Wait().forElement(element)
         element.tap()
         return Robot()

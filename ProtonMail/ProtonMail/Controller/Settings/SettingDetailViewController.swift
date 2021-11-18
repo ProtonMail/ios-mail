@@ -49,6 +49,7 @@ class SettingDetailViewController: UIViewController {
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel : SettingDetailsViewModel!
+    private var paymentsUI: PaymentsUI?
     func setViewModel(_ vm:SettingDetailsViewModel) -> Void
     {
         self.viewModel = vm
@@ -56,33 +57,33 @@ class SettingDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
         UIViewController.configureNavigationBar(self)
 
-        switchView.backgroundColor = UIColorManager.BackgroundNorm
+        switchView.backgroundColor = ColorProvider.BackgroundNorm
         
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = LocalString._general_save_action
         var attribute = FontManager.DefaultStrong
-        attribute[.foregroundColor] = UIColorManager.InteractionNorm
+        attribute[.foregroundColor] = ColorProvider.InteractionNorm
         doneButton.setTitleTextAttributes(attribute, for: .normal)
-        attribute[.foregroundColor] = UIColorManager.InteractionNormDisabled
+        attribute[.foregroundColor] = ColorProvider.InteractionNormDisabled
         doneButton.setTitleTextAttributes(attribute, for: .disabled)
         doneButton.isEnabled = false
 
         self.navigationItem.rightBarButtonItem = doneButton
 
-        switcher.onTintColor = UIColorManager.BrandNorm
+        switcher.onTintColor = ColorProvider.BrandNorm
 
         inputTextField.font = .systemFont(ofSize: 17.0)
-        inputTextField.textColor = UIColorManager.TextNorm
-        inputTextField.backgroundColor = UIColorManager.BackgroundNorm
+        inputTextField.textColor = ColorProvider.TextNorm
+        inputTextField.backgroundColor = ColorProvider.BackgroundNorm
 
-        inputTextView.backgroundColor = UIColorManager.BackgroundNorm
+        inputTextView.backgroundColor = ColorProvider.BackgroundNorm
 
-        inputTextGroupView.backgroundColor = UIColorManager.BackgroundNorm
+        inputTextGroupView.backgroundColor = ColorProvider.BackgroundNorm
         
         self.navigationItem.title = viewModel.getNavigationTitle()
         
@@ -107,7 +108,7 @@ class SettingDetailViewController: UIViewController {
             inputTextView.text = viewModel.getCurrentValue()
             if viewModel.getCurrentValue().isEmpty {
                 inputTextView.text = viewModel.getPlaceholdText()
-                inputTextView.textColor = UIColorManager.TextHint
+                inputTextView.textColor = ColorProvider.TextHint
             }
         } else {
             inputViewHight.constant = 48.0
@@ -201,9 +202,10 @@ class SettingDetailViewController: UIViewController {
     // MARK: private methods
 
     private func presentPlanUpgrade() {
-        PaymentsUI(servicePlanDataService: viewModel.userManager.sevicePlanService,
-                   planTypes: .currentPlanDifferentForTestflightAndProd)
-            .showUpgradePlan(presentationType: .modal, backendFetch: true, completionHandler: { _ in })
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 
     fileprivate func dismissKeyboard() {
@@ -234,7 +236,7 @@ class SettingDetailViewController: UIViewController {
     
     fileprivate func getTextValue () -> String {
         if viewModel.isShowTextView() {
-            guard inputTextView.textColor != UIColorManager.TextHint else {
+            guard inputTextView.textColor != ColorProvider.TextHint else {
                 return ""
             }
             return inputTextView.text
@@ -357,16 +359,16 @@ extension SettingDetailViewController: UITextFieldDelegate {
 
 extension SettingDetailViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColorManager.TextHint {
+        if textView.textColor == ColorProvider.TextHint {
             textView.text = nil
-            textView.textColor = UIColorManager.TextNorm
+            textView.textColor = ColorProvider.TextNorm
         }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = viewModel.getPlaceholdText()
-            textView.textColor = UIColorManager.TextHint
+            textView.textColor = ColorProvider.TextHint
         }
     }
     

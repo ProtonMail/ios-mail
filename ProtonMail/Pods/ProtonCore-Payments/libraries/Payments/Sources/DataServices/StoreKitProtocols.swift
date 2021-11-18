@@ -21,9 +21,8 @@
 
 import Foundation
 import StoreKit
+import ProtonCore_DataModel
 import ProtonCore_Services
-
-typealias CompletionCallback = () -> Void
 
 public protocol PaymentTokenStorage {
     func add(_ token: PaymentToken)
@@ -32,29 +31,52 @@ public protocol PaymentTokenStorage {
 }
 
 public protocol StoreKitManagerDelegate: AnyObject {
-    var apiService: APIService? { get }
     var tokenStorage: PaymentTokenStorage? { get }
     var isUnlocked: Bool { get }
     var isSignedIn: Bool { get }
     var activeUsername: String? { get }
     var userId: String? { get }
-    var servicePlanDataService: ServicePlanDataService? { get }
-    func reportBugAlert()
 }
 
 public protocol StoreKitManagerProtocol: NSObjectProtocol {
     typealias SuccessCallback = (PaymentToken?) -> Void
-    typealias ErrorCallback = (Error) -> Void
+    typealias ErrorCallback = (Error) -> Void // StoreKitErrors?
     typealias FinishCallback = () -> Void
 
     func subscribeToPaymentQueue()
-    func isValidPurchase(identifier: String, completion: @escaping (Bool) -> Void)
-    func purchaseProduct(identifier: String, successCompletion: @escaping SuccessCallback, errorCompletion: @escaping ErrorCallback, deferredCompletion: FinishCallback?)
+    func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void)
+    func purchaseProduct(plan: InAppPurchasePlan,
+                         amountDue: Int,
+                         successCompletion: @escaping SuccessCallback,
+                         errorCompletion: @escaping ErrorCallback,
+                         deferredCompletion: FinishCallback?)
     func continueRegistrationPurchase(finishHandler: FinishCallback?)
-    func updateAvailableProductsList()
-    func isReadyToPurchaseProduct() -> Bool
+    func updateAvailableProductsList(completion: @escaping (Error?) -> Void)
+    func hasUnfinishedPurchase() -> Bool
+    func readReceipt() throws -> String
+    func getNotifiedWhenTransactionsWaitingForTheSignupAppear(completion: @escaping ([InAppPurchasePlan]) -> Void) -> [InAppPurchasePlan]
+    func stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()
     func currentTransaction() -> SKPaymentTransaction?
-    func priceLabelForProduct(identifier: String) -> (NSDecimalNumber, Locale)?
+    func priceLabelForProduct(storeKitProductId: String) -> (NSDecimalNumber, Locale)?
+    var inAppPurchaseIdentifiers: ListOfIAPIdentifiers { get }
+    var delegate: StoreKitManagerDelegate? { get set }
+    var reportBugAlertHandler: BugAlertHandler { get }
+}
+
+public typealias BugAlertHandler = ((String?) -> Void)?
+
+public extension StoreKitManagerProtocol {
+
+    func purchaseProduct(plan: InAppPurchasePlan,
+                         amountDue: Int,
+                         successCompletion: @escaping SuccessCallback,
+                         errorCompletion: @escaping ErrorCallback) {
+        purchaseProduct(plan: plan,
+                        amountDue: amountDue,
+                        successCompletion: successCompletion,
+                        errorCompletion: errorCompletion,
+                        deferredCompletion: nil)
+    }
 }
 
 protocol PaymentQueueProtocol {
@@ -74,31 +96,54 @@ protocol PaymentQueueProtocol {
 
 enum ProcessingType {
     case existingUserNewSubscription
-    case existingUserAddCredits
     case registration
 }
 
+typealias ProcessCompletionCallback = (ProcessCompletionResult) -> Void
+
+enum ProcessCompletionResult {
+    case finished
+    case paymentToken(PaymentToken)
+    case errored(StoreKitManagerErrors)
+    case erroredWithUnspecifiedError(Error)
+}
+
+struct PlanToBeProcessed {
+    let protonIdentifier: String
+    let amount: Int
+    let amountDue: Int
+}
+
 protocol ProcessProtocol: AnyObject {
-    func process(transaction: SKPaymentTransaction, plan: AccountPlan, completion: @escaping () -> Void) throws
-    var delegate: ProcessDelegateProtocol? { get set }
+    func process(
+        transaction: SKPaymentTransaction,
+        plan: PlanToBeProcessed,
+        completion: @escaping ProcessCompletionCallback
+    ) throws
 }
 
 protocol ProcessUnathenticatedProtocol: ProcessProtocol {
-    func processAuthenticatedBeforeSignup(transaction: SKPaymentTransaction, plan: AccountPlan, completion: @escaping () -> Void) throws
+    func processAuthenticatedBeforeSignup(
+        transaction: SKPaymentTransaction,
+        plan: PlanToBeProcessed,
+        completion: @escaping ProcessCompletionCallback
+    ) throws
 }
 
-protocol ProcessDelegateProtocol: AnyObject {
+protocol ProcessDependencies: AnyObject {
     var storeKitDelegate: StoreKitManagerDelegate? { get }
-    var tokenStorage: PaymentTokenStorage? { get }
+    var tokenStorage: PaymentTokenStorage { get }
     var paymentsApiProtocol: PaymentsApiProtocol { get }
-    var paymentQueueProtocol: PaymentQueueProtocol { get }
     var alertManager: PaymentsAlertManager { get }
-    var successCallback: StoreKitManager.SuccessCallback? { get }
-    var errorCallback: StoreKitManager.ErrorCallback { get }
-    var transactionsBeforeSignup: [SKPaymentTransaction] { get set }
+    var updateSubscription: (Subscription) -> Void { get }
+    var finishTransaction: (SKPaymentTransaction) -> Void { get }
+    var apiService: APIService { get }
+    func addTransactionsBeforeSignup(transaction: SKPaymentTransaction)
+    func removeTransactionsBeforeSignup(transaction: SKPaymentTransaction)
     var pendingRetry: Double { get }
     var errorRetry: Double { get }
     func getReceipt() throws -> String
+    var bugAlertHandler: BugAlertHandler { get }
 }
 
 extension SKPaymentQueue: PaymentQueueProtocol {

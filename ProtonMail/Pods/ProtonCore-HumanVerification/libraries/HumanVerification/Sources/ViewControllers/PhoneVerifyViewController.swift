@@ -91,9 +91,9 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
     }
 
     private func configureUI() {
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         topTitleLabel.text = CoreString._hv_sms_enter_label
-        topTitleLabel.textColor = UIColorManager.TextWeak
+        topTitleLabel.textColor = ColorProvider.TextWeak
         sendCodeButton.setTitle(CoreString._hv_email_verification_button, for: UIControl.State())
         updateCountryCode(initialCountryCode)
         phoneNumberTextFieldView.title = CoreString._hv_sms_label

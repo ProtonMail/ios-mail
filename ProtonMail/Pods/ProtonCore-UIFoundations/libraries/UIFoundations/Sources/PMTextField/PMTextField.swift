@@ -131,7 +131,7 @@ public class PMTextField: UIView {
     @IBInspectable public var isError: Bool = false {
         didSet {
             textField.isError = isError
-            titleLabel.textColor = isError ? UIColorManager.NotificationError : UIColorManager.TextNorm
+            titleLabel.textColor = isError ? ColorProvider.NotificationError : ColorProvider.TextNorm
             errorLabel.isHidden = !isError
         }
     }
@@ -164,9 +164,10 @@ public class PMTextField: UIView {
                 textField.attributedPlaceholder = nil
                 return
             }
-
+            
+            let foregroundColor: UIColor = ColorProvider.TextHint
             textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-                NSAttributedString.Key.foregroundColor: UIColorManager.TextHint,
+                NSAttributedString.Key.foregroundColor: foregroundColor,
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)
             ])
         }
@@ -304,17 +305,17 @@ public class PMTextField: UIView {
         addSubview(mainView)
         mainView.frame = bounds
         mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mainView.backgroundColor = UIColorManager.BackgroundNorm
+        mainView.backgroundColor = ColorProvider.BackgroundNorm
 
         textField.delegate = self
-        textField.textColor = UIColorManager.TextNorm
-        textField.backgroundColor = UIColorManager.InteractionWeakDisabled
+        textField.textColor = ColorProvider.TextNorm
+        textField.backgroundColor = ColorProvider.InteractionWeakDisabled
         textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
 
-        titleLabel.textColor = UIColorManager.TextNorm
-        errorLabel.textColor = UIColorManager.NotificationError
-        assistiveTextLabel.textColor = UIColorManager.TextWeak
-        suffixLabel.textColor = UIColorManager.TextWeak
+        titleLabel.textColor = ColorProvider.TextNorm
+        errorLabel.textColor = ColorProvider.NotificationError
+        assistiveTextLabel.textColor = ColorProvider.TextWeak
+        suffixLabel.textColor = ColorProvider.TextWeak
     }
 
     @objc private func textFieldDidChange(textField: UITextField) {

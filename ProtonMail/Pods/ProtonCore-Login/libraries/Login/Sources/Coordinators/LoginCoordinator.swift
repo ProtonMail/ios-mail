@@ -43,13 +43,13 @@ final class LoginCoordinator {
     private var navigationController: LoginNavigationViewController?
     private var childCoordinators: [ChildCoordinators: Any] = [:]
     private let externalLinks: ExternalLinks
-    private var performBeforeFlowCompletion: WorkBeforeFlowCompletion?
+    private var performBeforeFlow: WorkBeforeFlow?
 
-    init(container: Container, isCloseButtonAvailable: Bool, isSignupAvailable: Bool, performBeforeFlowCompletion: WorkBeforeFlowCompletion?) {
+    init(container: Container, isCloseButtonAvailable: Bool, isSignupAvailable: Bool, performBeforeFlow: WorkBeforeFlow?) {
         self.container = container
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.isSignupAvailable = isSignupAvailable
-        self.performBeforeFlowCompletion = performBeforeFlowCompletion
+        self.performBeforeFlow = performBeforeFlow
         externalLinks = container.makeExternalLinks()
     }
 
@@ -146,12 +146,12 @@ final class LoginCoordinator {
     }
 
     private func finish(endLoading: @escaping () -> Void, data: LoginData) {
-        guard let workBeforeFlowCompletion = performBeforeFlowCompletion else {
+        guard let performBeforeFlow = performBeforeFlow else {
             completeLoginFlow(data: data)
             return
         }
         DispatchQueue.main.async { [weak self] in
-            workBeforeFlowCompletion(data) { [weak self] result in
+            performBeforeFlow.completion(data) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
                     endLoading()
                     switch result {

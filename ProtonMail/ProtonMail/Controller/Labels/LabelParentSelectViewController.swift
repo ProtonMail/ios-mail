@@ -65,7 +65,7 @@ final class LabelParentSelectViewController: ProtonMailViewController {
                                   target: self,
                                   action: #selector(self.clickDoneButton))
         var attr = FontManager.HeadlineSmall
-        attr[.foregroundColor] = UIColorManager.InteractionNorm
+        attr[.foregroundColor] = ColorProvider.InteractionNorm
         btn.setTitleTextAttributes(attr, for: .normal)
         self.navigationItem.rightBarButtonItem = btn
     }
@@ -109,7 +109,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
         guard let cellInstance = cell else { return .init() }
 
         cellInstance.textLabel?.text = LocalString._general_none
-        cellInstance.textLabel?.textColor = UIColorManager.TextNorm
+        cellInstance.textLabel?.textColor = ColorProvider.TextNorm
         cellInstance.accessoryType = self.viewModel.parentID.isEmpty ? .checkmark: .none
         cellInstance.selectionStyle = .none
         cellInstance.addSeparator(padding: 0)
@@ -128,10 +128,10 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
         }
         cell.config(by: label, showArrow: false, useFillIcon: self.viewModel.useFolderColor, delegate: nil)
         if self.viewModel.isAllowToSelect(row: indexPath.row) {
-            cell.update(textColor: UIColorManager.TextNorm)
+            cell.update(textColor: ColorProvider.TextNorm)
             cell.update(iconColor: self.viewModel.getFolderColor(label: label))
         } else {
-            cell.update(textColor: UIColorManager.TextDisabled)
+            cell.update(textColor: ColorProvider.TextDisabled)
             cell.update(iconColor: self.viewModel.getFolderColor(label: label), alpha: 0.4)
         }
         cell.update(badge: 0)

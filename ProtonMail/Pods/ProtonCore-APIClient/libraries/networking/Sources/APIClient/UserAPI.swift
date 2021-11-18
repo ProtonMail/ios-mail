@@ -74,9 +74,6 @@ public class UserAPI: APIClient {
     ///
     static let vpnType = 2
 
-    /// default user route version
-    static let v_user_default: Int = 3
-
     public enum Router: Request {
         case code(type: HumanVerificationToken.TokenType, receiver: String)
         case check(token: HumanVerificationToken)
@@ -109,13 +106,6 @@ public class UserAPI: APIClient {
 
         public var header: [String: Any] {
             return [:]
-        }
-
-        public var apiVersion: Int {
-            switch self {
-            case .code, .check, .checkUsername, .userInfo:
-                return v_user_default
-            }
         }
 
         public var method: HTTPMethod {

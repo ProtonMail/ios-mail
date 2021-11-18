@@ -37,7 +37,7 @@ class UnsubscribeBanner: UIView {
     }
 
     private func setUpSelf() {
-        backgroundColor = UIColorManager.BackgroundSecondary
+        backgroundColor = ColorProvider.BackgroundSecondary
         roundCorner(8)
     }
 
@@ -82,14 +82,14 @@ private enum SubviewsFactory {
     static var unsubscribeButton: UIButton {
         let button = UIButton(frame: .zero)
         button.setAttributedTitle(LocalString._unsubscribe.apply(style: FontManager.body3RegularNorm), for: .normal)
-        button.setBackgroundImage(.color(UIColorManager.InteractionWeak), for: .normal)
+        button.setBackgroundImage(.color(ColorProvider.InteractionWeak), for: .normal)
         button.setCornerRadius(radius: 3)
         return button
     }
 
     static var iconImageView: UIImageView {
         let imageView = UIImageView(image: Asset.envelope.image)
-        imageView.tintColor = UIColorManager.IconNorm
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 

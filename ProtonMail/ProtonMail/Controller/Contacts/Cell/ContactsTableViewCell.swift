@@ -48,8 +48,8 @@ final class ContactsTableViewCell: MCSwipeTableViewCell, AccessibleCell {
     override func awakeFromNib() {
         // 20 because the width is 40 hard coded
         self.shortName.layer.cornerRadius = 20
-        self.shortName.backgroundColor = UIColorManager.InteractionWeak
-        self.backgroundColor = UIColorManager.BackgroundNorm
+        self.shortName.backgroundColor = ColorProvider.InteractionWeak
+        self.backgroundColor = ColorProvider.BackgroundNorm
     }
     
     /// config cell when cellForRowAt

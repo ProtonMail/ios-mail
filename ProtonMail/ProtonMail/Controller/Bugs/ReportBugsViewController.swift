@@ -52,18 +52,18 @@ class ReportBugsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColorManager.BackgroundSecondary
+        view.backgroundColor = ColorProvider.BackgroundSecondary
         self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
                                           style: UIBarButtonItem.Style.plain,
                                           target: self,
                                           action: #selector(ReportBugsViewController.sendAction(_:)))
         let sendButtonAttributes = FontManager.HeadlineSmall
         self.sendButton.setTitleTextAttributes(
-            sendButtonAttributes.foregroundColor(UIColorManager.InteractionNormDisabled),
+            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNormDisabled),
             for: .disabled
         )
         self.sendButton.setTitleTextAttributes(
-            sendButtonAttributes.foregroundColor(UIColorManager.InteractionNorm),
+            sendButtonAttributes.foregroundColor(ColorProvider.InteractionNorm),
             for: .normal
         )
         self.navigationItem.rightBarButtonItem = sendButton
@@ -134,7 +134,7 @@ class ReportBugsViewController: ProtonMailViewController {
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.attributedText = LocalString._bug_description.apply(style: FontManager.Default.foregroundColor(UIColorManager.TextHint))
+        textView.attributedText = LocalString._bug_description.apply(style: FontManager.Default.foregroundColor(ColorProvider.TextHint))
     }
 
     fileprivate func removePlaceholder() {
@@ -160,9 +160,10 @@ class ReportBugsViewController: ProtonMailViewController {
         guard let text = textView.text, !text.isEmpty else {
             return
         }
-        
-        if StoreKitManager.default.hasUnfinishedPurchase(),
-            let receipt = try? StoreKitManager.default.readReceipt()
+
+        let storeKitManager = self.user.payments.storeKitManager
+        if storeKitManager.hasUnfinishedPurchase(),
+            let receipt = try? storeKitManager.readReceipt()
         {
             let alert = UIAlertController(title: LocalString._iap_bugreport_title, message: LocalString._iap_bugreport_user_agreement, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._iap_bugreport_yes, style: .default, handler: { _ in

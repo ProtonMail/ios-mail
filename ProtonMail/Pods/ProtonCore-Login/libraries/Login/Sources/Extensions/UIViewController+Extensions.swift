@@ -26,6 +26,7 @@ import ProtonCore_UIFoundations
 
 extension UIViewController {
     func showBanner(message: String, position: PMBannerPosition) {
+        unlockUI()
         let banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
         banner.addButton(text: CoreString._hv_ok_button) { _ in
             banner.dismiss()

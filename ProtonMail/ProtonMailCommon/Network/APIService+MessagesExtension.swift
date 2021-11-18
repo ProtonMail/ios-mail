@@ -35,12 +35,10 @@ fileprivate struct MessagePath {
 extension APIService {
 
     func GET( _ api : Request, authCredential: AuthCredential? = nil, completion: CompletionBlock?) {
-        var headers = api.header
-        headers[HTTPHeader.apiVersion] = api.version
         self.request(method: .get,
                      path: api.path,
                      parameters: api.parameters,
-                     headers: headers,
+                     headers: api.header,
                      authenticated: api.isAuth,
                      autoRetry: api.autoRetry,
                      customAuthCredential: api.authCredential,
@@ -52,7 +50,7 @@ extension APIService {
         self.request(method: .get,
                      path: path,
                      parameters: nil,
-                     headers: [:],
+                     headers: .empty,
                      authenticated: true,
                      autoRetry: true,
                      customAuthCredential: nil,

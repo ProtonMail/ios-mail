@@ -69,8 +69,8 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.bgView.clipsToBounds = true
         self.bgView.layer.cornerRadius = 8.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
-        self.bgView.backgroundColor = UIColorManager.InteractionWeak
-        self.contactTitleLabel.textColor = UIColorManager.TextNorm
+        self.bgView.backgroundColor = ColorProvider.InteractionWeak
+        self.contactTitleLabel.textColor = ColorProvider.TextNorm
         
         let long = UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu(gesture:)))
         long.minimumPressDuration = 1
@@ -100,23 +100,23 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         set {
             _pickerFocused = newValue
             if self._pickerFocused {
-                self.contactTitleLabel.textColor = UIColorManager.TextInverted
-                self.lockImage.tintColor = UIColorManager.IconInverted
-                self.bgView.backgroundColor = UIColorManager.InteractionNorm
+                self.contactTitleLabel.textColor = ColorProvider.TextInverted
+                self.lockImage.tintColor = ColorProvider.IconInverted
+                self.bgView.backgroundColor = ColorProvider.InteractionNorm
                 return
             }
             
             if isError {
-                self.bgView.backgroundColor = UIColorManager.NotificationError
+                self.bgView.backgroundColor = ColorProvider.NotificationError
                 self.contactTitleLabel.textColor = .white
                 return
             }
-            self.bgView.backgroundColor = UIColorManager.InteractionWeak
-            self.contactTitleLabel.textColor = UIColorManager.TextNorm
+            self.bgView.backgroundColor = ColorProvider.InteractionWeak
+            self.contactTitleLabel.textColor = ColorProvider.TextNorm
             
             if self.model is ContactGroupVO {
                 self.lockImage.isHighlighted = false
-                self.lockImage.tintColor = UIColorManager.IconNorm
+                self.lockImage.tintColor = ColorProvider.IconNorm
             }
         }
     }
@@ -208,7 +208,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             guard self?.isEmailVerified(type: type) ?? true else { return }
             // FIXME: use Asset
             self?.lockImage.image = UIImage(named: "ic-contact-groups-filled")
-            self?.lockImage.tintColor = UIColorManager.IconNorm
+            self?.lockImage.tintColor = ColorProvider.IconNorm
             self?.lockImage.backgroundColor = .clear
             self?.lockImage.isHidden = false
         })
@@ -244,7 +244,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                          PGPTypeErrorCode.emailAddressFailedValidation.rawValue].contains(type)
         guard isBadMail else { return true }
         self.isError = true
-        self.bgView.backgroundColor = UIColorManager.NotificationError
+        self.bgView.backgroundColor = ColorProvider.NotificationError
         self.contactTitleLabel.textColor = .white
         // FIXME: use Asset
         self.lockImage.image = UIImage(named: "ic-exclamation-circle")

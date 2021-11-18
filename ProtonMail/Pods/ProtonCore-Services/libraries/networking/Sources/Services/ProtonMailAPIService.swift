@@ -149,8 +149,10 @@ public class PMAPIService: APIService {
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
                             // NSError.alertBadTokenToast()
-                            completion(newCredential?.accessToken, self.sessionUID, responseError.underlyingError)
-                            self.authDelegate?.onLogout(sessionUID: self.sessionUID)
+                            let sessionUID = self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID
+                            
+                            completion(newCredential?.accessToken, sessionUID, responseError.underlyingError)
+                            self.authDelegate?.onLogout(sessionUID: sessionUID)
                             // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])error
                         }
                     } else if case .networkingError(let responseError) = error,
@@ -168,7 +170,9 @@ public class PMAPIService: APIService {
                         pthread_mutex_unlock(&self.mutex)
                         self.tokenReset()
                         DispatchQueue.main.async {
-                            completion(newCredential?.accessToken, self.sessionUID, error?.underlyingError)
+                            completion(newCredential?.accessToken,
+                                       self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID,
+                                       error?.underlyingError)
                         }
                     }
                 }
@@ -202,13 +206,19 @@ public class PMAPIService: APIService {
         self.authDelegate?.onUpdate(auth: Credential( authCredential))
     }
     
-    public func request(method: HTTPMethod, path: String,
-                        parameters: Any?, headers: [String: Any]?,
-                        authenticated: Bool, autoRetry: Bool, customAuthCredential: AuthCredential?, completion: CompletionBlock?) {
+    public func request(method: HTTPMethod,
+                        path: String,
+                        parameters: Any?,
+                        headers: [String: Any]?,
+                        authenticated: Bool,
+                        autoRetry: Bool,
+                        customAuthCredential: AuthCredential?,
+                        nonDefaultTimeout: TimeInterval?,
+                        completion: CompletionBlock?) {
         
         self.request(method: method, path: path, parameters: parameters,
                      headers: headers, authenticated: authenticated, authRetry: autoRetry, authRetryRemains: 10,
-                     customAuthCredential: customAuthCredential, completion: completion)
+                     customAuthCredential: customAuthCredential, nonDefaultTimeout: nonDefaultTimeout, completion: completion)
         
     }
     
@@ -224,6 +234,7 @@ public class PMAPIService: APIService {
                  authRetry: Bool = true,
                  authRetryRemains: Int = 3,
                  customAuthCredential: AuthCredential? = nil,
+                 nonDefaultTimeout: TimeInterval?,
                  completion: CompletionBlock?) {
         let authBlock: AuthTokenBlock = { [self] token, userID, error in
             if let error = error {
@@ -253,10 +264,11 @@ public class PMAPIService: APIService {
                                     self.request(method: method,
                                                  path: path,
                                                  parameters: parameters,
-                                                 headers: [HTTPHeader.apiVersion: 3],
+                                                 headers: [:],
                                                  authenticated: authenticated,
                                                  authRetryRemains: authRetryRemains - 1,
                                                  customAuthCredential: customAuthCredential,
+                                                 nonDefaultTimeout: nonDefaultTimeout,
                                                  completion: completion)
                                 } else {
                                     completion?(task, nil, error)
@@ -283,6 +295,7 @@ public class PMAPIService: APIService {
                                                               authRetry: authRetry,
                                                               authRetryRemains: authRetryRemains,
                                                               customAuthCredential: customAuthCredential,
+                                                              nonDefaultTimeout: nonDefaultTimeout,
                                                               error: displayError,
                                                               response: response,
                                                               task: task,
@@ -335,6 +348,7 @@ public class PMAPIService: APIService {
                                                      authenticated: authenticated,
                                                      authRetryRemains: authRetryRemains - 1,
                                                      customAuthCredential: customAuthCredential,
+                                                     nonDefaultTimeout: nonDefaultTimeout,
                                                      completion: completion)
                                     } else {
                                         completion?(task, nil, error)
@@ -352,6 +366,7 @@ public class PMAPIService: APIService {
                                                               authRetry: authRetry,
                                                               authRetryRemains: authRetryRemains,
                                                               customAuthCredential: customAuthCredential,
+                                                              nonDefaultTimeout: nonDefaultTimeout,
                                                               error: error,
                                                               response: response,
                                                               task: task,
@@ -386,37 +401,10 @@ public class PMAPIService: APIService {
                         return
                     }
                     
-                    let requestTimeout = self.doh.status == .off ? 60.0 : 30.0
-                    let request = try self.session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
-                    if let header = headers {
-                        for (k, v) in header {
-                            request.setValue(header: k, "\(v)")
-                        }
-                    }
-                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
-                    
-                    if let userid = userID {
-                        request.setValue(header: "x-pm-uid", userid)
-                    }
-                    
-                    var appversion = "iOS_\(Bundle.main.majorVersion)"
-                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
-                        appversion = delegateAppVersion
-                    }
-                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
-                    request.setValue(header: "x-pm-appversion", appversion)
-                    
-                    var locale = "en_US"
-                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
-                        locale = lc
-                    }
-                    request.setValue(header: "x-pm-locale", locale)
-                    
-                    var ua = UserAgent.default.ua
-                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
-                        ua = delegateAgent
-                    }
-                    request.setValue(header: "User-Agent", ua)
+                    let request = try self.createRequest(
+                        url: url, method: method, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
+                        headers: headers, userID: userID, accessToken: accessToken
+                    )
                     
                     try self.session.request(with: request) { task, res, error in
                         self.debugError(error)
@@ -439,7 +427,9 @@ public class PMAPIService: APIService {
                                          authenticated: authenticated,
                                          authRetry: authRetry,
                                          authRetryRemains: authRetryRemains,
-                                         customAuthCredential: customAuthCredential, completion: completion)
+                                         customAuthCredential: customAuthCredential,
+                                         nonDefaultTimeout: nonDefaultTimeout,
+                                         completion: completion)
                         } else {
                             /// parse urlresponse
                             parseBlock(task, res, error)
@@ -458,15 +448,16 @@ public class PMAPIService: APIService {
         }
     }
     
-    public func upload (byPath path: String,
-                        parameters: [String: String],
-                        keyPackets: Data,
-                        dataPacket: Data,
-                        signature: Data?,
-                        headers: [String: Any]?,
-                        authenticated: Bool = true,
-                        customAuthCredential: AuthCredential? = nil,
-                        completion: @escaping CompletionBlock) {
+    public func upload(byPath path: String,
+                       parameters: [String: String],
+                       keyPackets: Data,
+                       dataPacket: Data,
+                       signature: Data?,
+                       headers: [String: Any]?,
+                       authenticated: Bool = true,
+                       customAuthCredential: AuthCredential? = nil,
+                       nonDefaultTimeout: TimeInterval?,
+                       completion: @escaping CompletionBlock) {
         
         let url = self.doh.getHostUrl() + path
         let authBlock: AuthTokenBlock = { token, userID, error in
@@ -485,38 +476,10 @@ public class PMAPIService: APIService {
                         return completion(nil, nil, localerror)
                     }
                     
-                    let requestTimeout = self.doh.status == .off ? 60.0 : 30.0
-                    let request = try self.session.generate(with: .post, urlString: url, parameters: parameters, timeout: requestTimeout)
-                   
-                    if let header = headers {
-                        for (k, v) in header {
-                            request.setValue(header: k, "\(v)")
-                        }
-                    }
-                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
-                    
-                    if let userid = userID {
-                        request.setValue(header: "x-pm-uid", userid)
-                    }
-                    
-                    var appversion = "iOS_\(Bundle.main.majorVersion)"
-                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
-                        appversion = delegateAppVersion
-                    }
-                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
-                    request.setValue(header: "x-pm-appversion", appversion)
-                    
-                    var locale = "en_US"
-                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
-                        locale = lc
-                    }
-                    request.setValue(header: "x-pm-locale", locale)
-                    
-                    var ua = UserAgent.default.ua
-                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
-                        ua = delegateAgent
-                    }
-                    request.setValue(header: "User-Agent", ua)
+                    let request = try self.createRequest(
+                        url: url, method: .post, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
+                        headers: headers, userID: userID, accessToken: accessToken
+                    )
                     
                     try self.session.upload(with: request,
                                             keyPacket: keyPackets, dataPacket: dataPacket,
@@ -569,6 +532,7 @@ public class PMAPIService: APIService {
                        headers: [String: Any]?,
                        authenticated: Bool,
                        customAuthCredential: AuthCredential?,
+                       nonDefaultTimeout: TimeInterval?,
                        uploadProgress: ProgressCompletion?,
                        completion: @escaping CompletionBlock) {
         let url = self.doh.getHostUrl() + path
@@ -588,38 +552,10 @@ public class PMAPIService: APIService {
                         return completion(nil, nil, localerror)
                     }
                     
-                    let requestTimeout = self.doh.status == .off ? 60.0 : 30.0
-                    let request = try self.session.generate(with: .post, urlString: url, parameters: parameters, timeout: requestTimeout)
-                   
-                    if let header = headers {
-                        for (k, v) in header {
-                            request.setValue(header: k, "\(v)")
-                        }
-                    }
-                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
-                    
-                    if let userid = userID {
-                        request.setValue(header: "x-pm-uid", userid)
-                    }
-                    
-                    var appversion = "iOS_\(Bundle.main.majorVersion)"
-                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
-                        appversion = delegateAppVersion
-                    }
-                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
-                    request.setValue(header: "x-pm-appversion", appversion)
-                    
-                    var locale = "en_US"
-                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
-                        locale = lc
-                    }
-                    request.setValue(header: "x-pm-locale", locale)
-                    
-                    var ua = UserAgent.default.ua
-                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
-                        ua = delegateAgent
-                    }
-                    request.setValue(header: "User-Agent", ua)
+                    let request = try self.createRequest(
+                        url: url, method: .post, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
+                        headers: headers, userID: userID, accessToken: accessToken
+                    )
                     
                     try self.session.upload(with: request, files: files, completion: { task, res, error in
                         self.debugError(error)
@@ -663,15 +599,16 @@ public class PMAPIService: APIService {
         }
     }
     
-    public func uploadFromFile (byPath path: String,
-                                parameters: [String: String],
-                                keyPackets: Data,
-                                dataPacketSourceFileURL: URL,
-                                signature: Data?,
-                                headers: [String: Any]?,
-                                authenticated: Bool = true,
-                                customAuthCredential: AuthCredential? = nil,
-                                completion: @escaping CompletionBlock) {
+    public func uploadFromFile(byPath path: String,
+                               parameters: [String: String],
+                               keyPackets: Data,
+                               dataPacketSourceFileURL: URL,
+                               signature: Data?,
+                               headers: [String: Any]?,
+                               authenticated: Bool = true,
+                               customAuthCredential: AuthCredential? = nil,
+                               nonDefaultTimeout: TimeInterval?,
+                               completion: @escaping CompletionBlock) {
         
         let url = self.doh.getHostUrl() + path
         let authBlock: AuthTokenBlock = { token, userID, error in
@@ -690,38 +627,10 @@ public class PMAPIService: APIService {
                         return completion(nil, nil, localerror)
                     }
                     
-                    let requestTimeout = self.doh.status == .off ? 60.0 : 30.0
-                    let request = try self.session.generate(with: .post, urlString: url, parameters: parameters, timeout: requestTimeout)
-                    
-                    if let header = headers {
-                        for (k, v) in header {
-                            request.setValue(header: k, "\(v)")
-                        }
-                    }
-                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
-                    
-                    if let userid = userID {
-                        request.setValue(header: "x-pm-uid", userid)
-                    }
-                    
-                    var appversion = "iOS_\(Bundle.main.majorVersion)"
-                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
-                        appversion = delegateAppVersion
-                    }
-                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
-                    request.setValue(header: "x-pm-appversion", appversion)
-                    
-                    var locale = "en_US"
-                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
-                        locale = lc
-                    }
-                    request.setValue(header: "x-pm-locale", locale)
-                    
-                    var ua = UserAgent.default.ua
-                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
-                        ua = delegateAgent
-                    }
-                    request.setValue(header: "User-Agent", ua)
+                    let request = try self.createRequest(
+                        url: url, method: .post, parameters: parameters, nonDefaultTimeout: nonDefaultTimeout,
+                        headers: headers, userID: userID, accessToken: accessToken
+                    )
                     
                     try self.session.uploadFromFile(with: request,
                                                     keyPacket: keyPackets, dataPacketSourceFileURL: dataPacketSourceFileURL,
@@ -779,6 +688,7 @@ public class PMAPIService: APIService {
                          headers: [String: Any]?,
                          authenticated: Bool = true,
                          customAuthCredential: AuthCredential? = nil,
+                         nonDefaultTimeout: TimeInterval?,
                          downloadTask: ((URLSessionDownloadTask) -> Void)?,
                          completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         let authBlock: AuthTokenBlock = { token, userID, error in
@@ -797,37 +707,10 @@ public class PMAPIService: APIService {
                         return
                     }
                     
-                    let requestTimeout = self.doh.status == .off ? 60.0 : 30.0
-                    let request = try self.session.generate(with: .get, urlString: url, parameters: nil, timeout: requestTimeout)
-                    
-                    if let header = headers {
-                        for (k, v) in header {
-                            request.setValue(header: k, "\(v)")
-                        }
-                    }
-                    request.setValue(header: "Authorization", "Bearer \(accessToken)")
-                    if let userid = userID {
-                        request.setValue(header: "x-pm-uid", userid)
-                    }
-                    
-                    var appversion = "iOS_\(Bundle.main.majorVersion)"
-                    if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
-                        appversion = delegateAppVersion
-                    }
-                    request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
-                    request.setValue(header: "x-pm-appversion", appversion)
-                    
-                    var locale = "en_US"
-                    if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
-                        locale = lc
-                    }
-                    request.setValue(header: "x-pm-locale", locale)
-                    
-                    var ua = UserAgent.default.ua
-                    if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
-                        ua = delegateAgent
-                    }
-                    request.setValue(header: "User-Agent", ua)
+                    let request = try self.createRequest(
+                        url: url, method: .get, parameters: nil, nonDefaultTimeout: nonDefaultTimeout,
+                        headers: headers, userID: userID, accessToken: accessToken
+                    )
                     
                     try self.session.download(with: request, destinationDirectoryURL: destinationDirectoryURL) { response, url, error in
                         completion(response, url, error)
@@ -845,6 +728,50 @@ public class PMAPIService: APIService {
         }
     }
     
+    private func createRequest(url: String,
+                               method: HTTPMethod,
+                               parameters: Any?,
+                               nonDefaultTimeout: TimeInterval?,
+                               headers: [String: Any]?,
+                               userID: String?,
+                               accessToken: String) throws -> SessionRequest {
+        let defaultTimeout = self.doh.status == .off ? 60.0 : 30.0
+        let requestTimeout = nonDefaultTimeout ?? defaultTimeout
+        let request = try self.session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+       
+        if let header = headers {
+            for (k, v) in header {
+                request.setValue(header: k, "\(v)")
+            }
+        }
+        request.setValue(header: "Authorization", "Bearer \(accessToken)")
+        
+        if let userid = userID {
+            request.setValue(header: "x-pm-uid", userid)
+        }
+        
+        var appversion = "iOS_\(Bundle.main.majorVersion)"
+        if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
+            appversion = delegateAppVersion
+        }
+        request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
+        request.setValue(header: "x-pm-appversion", appversion)
+        
+        var locale = "en_US"
+        if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
+            locale = lc
+        }
+        request.setValue(header: "x-pm-locale", locale)
+        
+        var ua = UserAgent.default.ua
+        if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
+            ua = delegateAgent
+        }
+        request.setValue(header: "User-Agent", ua)
+        
+        return request
+    }
+    
     func debugError(_ error: NSError?) {
         #if DEBUG
         // nothing
@@ -856,20 +783,20 @@ public class PMAPIService: APIService {
         #endif
     }
     
-    private func humanVerificationHandler(
-        method: HTTPMethod,
-        path: String,
-        parameters: Any?,
-        headers: [String: Any]?,
-        authenticated: Bool = true,
-        authRetry: Bool = true,
-        authRetryRemains: Int = 3,
-        customAuthCredential: AuthCredential? = nil,
-        error: NSError?,
-        response: Any?,
-        task: URLSessionDataTask?,
-        responseDict: [String: Any],
-        completion: CompletionBlock?) {
+    private func humanVerificationHandler(method: HTTPMethod,
+                                          path: String,
+                                          parameters: Any?,
+                                          headers: [String: Any]?,
+                                          authenticated: Bool = true,
+                                          authRetry: Bool = true,
+                                          authRetryRemains: Int = 3,
+                                          customAuthCredential: AuthCredential? = nil,
+                                          nonDefaultTimeout: TimeInterval?,
+                                          error: NSError?,
+                                          response: Any?,
+                                          task: URLSessionDataTask?,
+                                          responseDict: [String: Any],
+                                          completion: CompletionBlock?) {
         
         // return completion if humanDelegate in not present
         if self.humanDelegate == nil {
@@ -890,6 +817,7 @@ public class PMAPIService: APIService {
                              authenticated: authenticated,
                              authRetryRemains: authRetryRemains - 1,
                              customAuthCredential: customAuthCredential,
+                             nonDefaultTimeout: nonDefaultTimeout,
                              completion: completion)
             }
         } else {
@@ -902,6 +830,7 @@ public class PMAPIService: APIService {
                                             authRetry: authRetry,
                                             authRetryRemains: authRetryRemains,
                                             customAuthCredential: customAuthCredential,
+                                            nonDefaultTimeout: nonDefaultTimeout,
                                             error: error,
                                             response: response,
                                             task: task,
@@ -910,20 +839,20 @@ public class PMAPIService: APIService {
         }
     }
     
-    private func humanVerificationUIHandler(
-        method: HTTPMethod,
-        path: String,
-        parameters: Any?,
-        headers: [String: Any]?,
-        authenticated: Bool = true,
-        authRetry: Bool = true,
-        authRetryRemains: Int = 3,
-        customAuthCredential: AuthCredential? = nil,
-        error: NSError?,
-        response: Any?,
-        task: URLSessionDataTask?,
-        responseDict: [String: Any],
-        completion: CompletionBlock?) {
+    private func humanVerificationUIHandler(method: HTTPMethod,
+                                            path: String,
+                                            parameters: Any?,
+                                            headers: [String: Any]?,
+                                            authenticated: Bool = true,
+                                            authRetry: Bool = true,
+                                            authRetryRemains: Int = 3,
+                                            customAuthCredential: AuthCredential? = nil,
+                                            nonDefaultTimeout: TimeInterval?,
+                                            error: NSError?,
+                                            response: Any?,
+                                            task: URLSessionDataTask?,
+                                            responseDict: [String: Any],
+                                            completion: CompletionBlock?) {
         
         // get human verification methods
         let (hvResponse, _) = Response.parseNetworkCallResults(
@@ -987,6 +916,7 @@ public class PMAPIService: APIService {
                                  authRetry: authRetry,
                                  authRetryRemains: authRetryRemains,
                                  customAuthCredential: customAuthCredential,
+                                 nonDefaultTimeout: nonDefaultTimeout,
                                  completion: hvCompletion)
                 }
             }
@@ -1011,7 +941,9 @@ public class PMAPIService: APIService {
         let errorMessage = responseDictionary["Error"] as? String ?? ""
         if let delegate = forceUpgradeDelegate, isForceUpgradeUIPresented == false {
             isForceUpgradeUIPresented = true
-            delegate.onForceUpgrade(message: errorMessage)
+            DispatchQueue.main.async {
+                delegate.onForceUpgrade(message: errorMessage)
+            }
         }
     }
 }

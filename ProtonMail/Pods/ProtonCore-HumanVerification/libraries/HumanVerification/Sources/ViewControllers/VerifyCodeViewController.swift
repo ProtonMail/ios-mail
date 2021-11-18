@@ -97,13 +97,13 @@ class VerifyCodeViewController: BaseUIViewController, AccessibleView {
     // MARK: - Private interface
 
     private func configureUI() {
-        backBarbuttonItem.tintColor = UIColorManager.IconNorm
-        view.backgroundColor = UIColorManager.BackgroundNorm
+        backBarbuttonItem.tintColor = ColorProvider.IconNorm
+        view.backgroundColor = ColorProvider.BackgroundNorm
         title = CoreString._hv_title
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: CoreString._hv_help_button, style: .done, target: self, action: #selector(helpButtonTapped))
-        navigationItem.rightBarButtonItem?.tintColor = UIColorManager.BrandNorm
+        navigationItem.rightBarButtonItem?.tintColor = ColorProvider.BrandNorm
         topTitleLabel.text = viewModel.getTitle()
-        topTitleLabel.textColor = UIColorManager.TextWeak
+        topTitleLabel.textColor = ColorProvider.TextWeak
         verifyCodeTextFieldView.title = CoreString._hv_verification_code
         verifyCodeTextFieldView.assistiveText = CoreString._hv_verification_code_hint
         verifyCodeTextFieldView.placeholder = "XXXXXX"

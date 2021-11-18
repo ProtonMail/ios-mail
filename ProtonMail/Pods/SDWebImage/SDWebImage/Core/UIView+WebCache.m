@@ -12,6 +12,7 @@
 #import "SDWebImageError.h"
 #import "SDInternalMacros.h"
 #import "SDWebImageTransitionInternal.h"
+#import "SDImageCache.h"
 
 const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
 
@@ -71,7 +72,28 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     [self sd_cancelImageLoadOperationWithKey:validOperationKey];
     self.sd_imageURL = url;
     
+    SDWebImageManager *manager = context[SDWebImageContextCustomManager];
+    if (!manager) {
+        manager = [SDWebImageManager sharedManager];
+    } else {
+        // remove this manager to avoid retain cycle (manger -> loader -> operation -> context -> manager)
+        SDWebImageMutableContext *mutableContext = [context mutableCopy];
+        mutableContext[SDWebImageContextCustomManager] = nil;
+        context = [mutableContext copy];
+    }
+    
+    BOOL shouldUseWeakCache = NO;
+    if ([manager.imageCache isKindOfClass:SDImageCache.class]) {
+        shouldUseWeakCache = ((SDImageCache *)manager.imageCache).config.shouldUseWeakMemoryCache;
+    }
     if (!(options & SDWebImageDelayPlaceholder)) {
+        if (shouldUseWeakCache) {
+            NSString *key = [manager cacheKeyForURL:url context:context];
+            // call memory cache to trigger weak cache sync logic, ignore the return value and go on normal query
+            // this unfortunately will cause twice memory cache query, but it's fast enough
+            // in the future the weak cache feature may be re-design or removed
+            [((SDImageCache *)manager.imageCache) imageFromMemoryCacheForKey:key];
+        }
         dispatch_main_async_safe(^{
             [self sd_setImage:placeholder imageData:nil basedOnClassOrViaCustomSetImageBlock:setImageBlock cacheType:SDImageCacheTypeNone imageURL:url];
         });
@@ -90,15 +112,6 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
         [self sd_startImageIndicator];
         id<SDWebImageIndicator> imageIndicator = self.sd_imageIndicator;
 #endif
-        SDWebImageManager *manager = context[SDWebImageContextCustomManager];
-        if (!manager) {
-            manager = [SDWebImageManager sharedManager];
-        } else {
-            // remove this manager to avoid retain cycle (manger -> loader -> operation -> context -> manager)
-            SDWebImageMutableContext *mutableContext = [context mutableCopy];
-            mutableContext[SDWebImageContextCustomManager] = nil;
-            context = [mutableContext copy];
-        }
         
         SDImageLoaderProgressBlock combinedProgressBlock = ^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
             if (imageProgress) {
@@ -283,7 +296,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             if (transition.prepares) {
                 transition.prepares(view, image, imageData, cacheType, imageURL);
             }
-        } completion:^(BOOL finished) {
+        } completion:^(BOOL tempFinished) {
             [UIView transitionWithView:view duration:transition.duration options:transition.animationOptions animations:^{
                 if (!view.sd_latestOperationKey || ![originalOperationKey isEqualToString:view.sd_latestOperationKey]) {
                     return;
