@@ -164,26 +164,24 @@ extension Data {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let _ = key.signature { //have both means new schema. key is
+                if let token = key.token, let signature = key.signature {
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-//                        PMLog.D(signature)
+                       if try Crypto().verifyDetached(signature: signature,
+                                                   plainText: plaitToken,
+                                                   binKeys: userKeys,
+                                                   verifyTime: CryptoGetUnixTime()) == true {
                         return try Crypto().decryptAttachment(keyPacket: keyPackage,
                                                               dataPacket: self,
                                                               privateKey: key.privateKey,
                                                               passphrase: plaitToken)
+                       } else {
+                           throw Crypto.CryptoError.verificationFailed
+                       }
                     }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                              dataPacket: self,
-                                                              privateKey: key.privateKey,
-                                                              passphrase: plaitToken)
-                    }
-                } else {//normal key old schema
+                } else {
                     return try Crypto().decryptAttachment(keyPacket: keyPackage,
                                                           dataPacket: self,
-                                                          privateKey: userKeys,
+                                                          privateKey: key.privateKey,
                                                           passphrase: passphrase)
                 }
             } catch let error {

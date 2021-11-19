@@ -1,0 +1,13 @@
+-----BEGIN PGP SIGNATURE-----
+Version: GopenPGP 2.2.4
+Comment: https://gopenpgp.org
+
+wsBzBAABCgAnBQJhjXFKCZCAKX3GtdQ46xahBPl36kkwntpvjtqwDIApfca11Djr
+AAAx1wgApFVrlnTl6leaqnyjVknwMKkn5AwYtafrU28noj1eBfeEXzCyoNJZH8Gv
+cL62FAYAWhA9SZyv/1ygfWaIL8255mQX+sdmNdLGm2YB26QEMBoryZgxq8R/uF2/
+nZQLDLGh8JA19Hf42lVXXlnwsIhwMzmsk8tqYKXbcTTtjRiXYSBNycQLIzfwsPN+
+UkfWe60qulBpgtpOl2/19cCRiVWwPY234vQp3o7WZqp7e4I1WlDL/aT5LA+xhIpy
+wEm8F4P87qHCFriJsraVUp8tSKhBi+YX46jCtmjlrJ4Yu6utBje3jPMF+kpfhZdj
+cGyM7pvI9JbkCYFKq+v0TbFWRz7uQA==
+=19n8
+-----END PGP SIGNATURE-----
