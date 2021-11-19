@@ -37,6 +37,8 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         self.createTestSearchIndexDB()
         let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
         print("Test database created: \(doesTestIndexExist)")
+        let numberOfEntries = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+        print("Entries in db: \(numberOfEntries)")
 
         //build the cache for user 'test'
         self.buildTestCache()
@@ -59,11 +61,11 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
 
         let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
-        let testMessage2: ESMessage = ESMessage(id: self.testMessageID, order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
+        let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
-        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage2, cleanedBody: "hello2", userID: self.testUserID)
+        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessageSecond, cleanedBody: "hello2", userID: self.testUserID)
         EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage, encryptedContent, false)
-        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage2, encryptedContent2, false)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessageSecond, encryptedContent2, false)
     }
     
     func deleteTestSearchIndexDB() throws {
@@ -137,7 +139,9 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
     }
 
     func testIsPartial() throws {
-        //TODO
+        let sut = EncryptedSearchCacheService.shared.isPartial
+        let result: Bool = sut(self.testUserID)
+        XCTAssertFalse(result)  // cache for just the two testmessages should be build completely
     }
 
     func testGetNumberOfCachedMessages() throws {
@@ -149,19 +153,19 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
     func testGetLastIDCached() throws {
         let sut = EncryptedSearchCacheService.shared.getLastIDCached
         let result: String? = sut(self.testUserID)
-        XCTAssertEqual(result!, "uniqueID2")
+        XCTAssertEqual(result!, self.testMessageID) //this should be the oldest message in the index
     }
 
     func testGetLastTimeCached() throws {
         let sut = EncryptedSearchCacheService.shared.getLastTimeCached
         let result: Int64? = sut(self.testUserID)
-        XCTAssertEqual(result!, 1637141557)
+        XCTAssertEqual(result!, 1637058775) //this should be the oldest message in the index
     }
 
     func testGetSizeOfCache() throws {
         let sut = EncryptedSearchCacheService.shared.getSizeOfCache
         let result: Int64? = sut(self.testUserID)
-        XCTAssertEqual(result!, 1)   //TODO check size of 2 messages
+        XCTAssertEqual(result!, 107)   //size of the two test messages defined in setup
     }
 
     func testContainsMessage() throws {
