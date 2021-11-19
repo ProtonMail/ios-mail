@@ -53,6 +53,7 @@ class Crypto {
 
     enum CryptoError: Error {
         case failedGeneratingKeypair(Error?)
+        case verificationFailed
     }
 
     private enum Algo : String {
@@ -786,6 +787,27 @@ class Crypto {
             return false
         }
     }
+
+    public func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
+        var error: NSError?
+
+        guard let publicKeyRing = buildPublicKeyRing(keys: binKeys) else {
+            return false
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
+        if let err = error {
+            throw err
+        }
+        
+        do {
+            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            return true
+        } catch {
+            return false
+        }
+    }
     
     public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
         var error: NSError?
@@ -913,6 +935,36 @@ class Crypto {
             do {
                 if let keyToAdd = CryptoNewKey(key, &error) {
                     try keyRing.add(keyToAdd)
+                }
+            } catch {
+                continue
+            }
+        }
+        return keyRing
+    }
+
+    func buildPublicKeyRing(keys: [Data]) -> CryptoKeyRing? {
+        var error: NSError?
+        let newKeyRing = CryptoNewKeyRing(nil, &error)
+        guard let keyRing = newKeyRing else {
+            return nil
+        }
+        for key in keys {
+            do {
+                if let keyToAdd = CryptoNewKey(key, &error) {
+                    if keyToAdd.isPrivate() {
+                        if let publicKeyData = try? keyToAdd.getPublicKey() {
+                            var error: NSError?
+                            let publicKey = CryptoNewKey(publicKeyData, &error)
+                            if let error = error {
+                                throw error
+                            } else {
+                                try keyRing.add(publicKey)
+                            }
+                        }
+                    } else {
+                        try keyRing.add(keyToAdd)
+                    }
                 }
             } catch {
                 continue
