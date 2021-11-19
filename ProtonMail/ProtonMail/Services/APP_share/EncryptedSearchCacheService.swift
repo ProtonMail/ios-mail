@@ -43,12 +43,8 @@ extension EncryptedSearchCacheService {
     func buildCacheForUser(userId: String, dbParams: EncryptedsearchDBParams, cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
         //If cache is not build or we have a new user
         if currentUserID != userId || !(self.cache?.isBuilt())! {
-            print("Build cache for user \(userId)")
             self.cache?.deleteAll()
-            print("Cache deleted!")
-            print("Number of message in cache: \(String(describing: self.cache?.getLength()))")
             do {
-                print("batch size: \(self.batchSize)")
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
             } catch {
                 print("Error when building the cache: ", error)
@@ -147,7 +143,7 @@ extension EncryptedSearchCacheService {
         } else {
             print("Error no cache for user \(userID) found!")
         }
-        return nil
+        return ""
     }
 
     func getLastTimeCached(userID: String) -> Int64? {
@@ -160,7 +156,7 @@ extension EncryptedSearchCacheService {
         } else {
             print("Error no cache for user \(userID) found!")
         }
-        return nil
+        return -1
     }
 
     func getSizeOfCache(userID: String) -> Int64? {
@@ -173,7 +169,7 @@ extension EncryptedSearchCacheService {
         } else {
             print("Error no cache for user \(userID) found!")
         }
-        return nil
+        return -1
     }
 
     func containsMessage(userID: String, messageID: String) -> Bool {
