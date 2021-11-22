@@ -72,4 +72,16 @@ extension XCTestCase {
             return true
         }
     }
+    
+    @discardableResult
+    func addUIMonitor(identifier: String) -> NSObjectProtocol {
+        return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { (alert) -> Bool in
+            let alertButton = alert.buttons[identifier]
+                if alertButton.exists {
+                    alertButton.tap()
+                    return true
+                }
+            return true
+        }
+    }
 }

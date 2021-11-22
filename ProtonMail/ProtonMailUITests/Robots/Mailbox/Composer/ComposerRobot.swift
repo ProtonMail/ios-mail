@@ -65,9 +65,14 @@ class ComposerRobot: CoreElements {
     
     var verify = Verify()
     
-    func tapCancel() -> DraftConfirmationRobot {
+    func tapCancel() -> InboxRobot {
         button(id.cancelNavBarButtonIdentifier).tap()
-        return DraftConfirmationRobot()
+        return InboxRobot()
+    }
+    
+    func tapCancelFromDrafts() -> DraftsRobot {
+        button(id.cancelNavBarButtonIdentifier).tap()
+        return DraftsRobot()
     }
     
     func sendMessage(_ to: String, _ subjectText: String) -> InboxRobot {
@@ -201,8 +206,7 @@ class ComposerRobot: CoreElements {
     }
 
     func recipients(_ email: String) -> ComposerRobot {
-        textField(id.toTextFieldIdentifier).tap().typeText(email)
-        staticText(id.getContactCellIdentifier(email)).byIndex(0).tapIfExists()
+        textField(id.toTextFieldIdentifier).tap().typeText(email).hitReturnIfAvailable()
         Element.other.tapIfExists(id.popoverDismissRegionOtherIdentifier)
         return self
     }
@@ -214,7 +218,7 @@ class ComposerRobot: CoreElements {
     }
     
     func editRecipients(_ email: String) -> ComposerRobot {
-        textField(id.toTextFieldIdentifier).tap().typeText(email)
+        textField(id.toTextFieldIdentifier).tap().typeText(email).hitReturnIfAvailable()
         Element.other.tapIfExists(id.popoverDismissRegionOtherIdentifier)
         return self
     }
@@ -226,7 +230,7 @@ class ComposerRobot: CoreElements {
     }
     
     func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
-        textField(id.subjectTextFieldIdentifier).tap().clearText().typeText(subjectText)
+        textField(id.subjectTextFieldIdentifier).tap().retapIfNoKeyboardFocus().clearText().typeText(subjectText)
         return ComposerRobot()
     }
     
@@ -264,13 +268,13 @@ class ComposerRobot: CoreElements {
     }
     
     func typeAndSelectBCC(_ email: String) -> ComposerRobot {
-        textField(id.bccTextFieldIdentifier).tap().typeText(email)
+        textField(id.bccTextFieldIdentifier).tap().tap().typeText(email)
         cell(id.getContactCellIdentifier(email)).tap()
         return self
     }
     
     func subject(_ subjectText: String) -> ComposerRobot {
-        textField(id.subjectTextFieldIdentifier).tap().typeText(subjectText)
+        textField(id.subjectTextFieldIdentifier).tap().retapIfNoKeyboardFocus().typeText(subjectText)
         return self
     }
     
@@ -290,6 +294,8 @@ class ComposerRobot: CoreElements {
     
     func backgroundApp() -> ComposerRobot {
         XCUIDevice.shared.press(.home)
+        //It's always much more stable with a small gap between background and foreground
+        sleep(3)
         return ComposerRobot()
     }
     
