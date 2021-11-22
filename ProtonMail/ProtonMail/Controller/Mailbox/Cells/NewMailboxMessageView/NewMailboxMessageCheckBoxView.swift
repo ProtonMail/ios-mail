@@ -50,7 +50,7 @@ class NewMailboxMessageCheckBoxView: UIView {
     }
 
     private func setUpSelf() {
-        layer.cornerRadius = 6
+        layer.cornerRadius = 8
         layer.borderWidth = 1
         layer.borderColor = ColorProvider.InteractionNorm.cgColor
         isUserInteractionEnabled = false

@@ -80,7 +80,7 @@ private enum SubviewsFactory {
             for: .normal
         )
         button.backgroundColor = ColorProvider.InteractionWeak
-        button.setCornerRadius(radius: 3)
+        button.setCornerRadius(radius: 8)
         return button
     }
 

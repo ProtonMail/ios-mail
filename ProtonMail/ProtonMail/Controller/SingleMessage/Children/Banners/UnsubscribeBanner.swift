@@ -83,7 +83,7 @@ private enum SubviewsFactory {
         let button = UIButton(frame: .zero)
         button.setAttributedTitle(LocalString._unsubscribe.apply(style: FontManager.body3RegularNorm), for: .normal)
         button.setBackgroundImage(.color(ColorProvider.InteractionWeak), for: .normal)
-        button.setCornerRadius(radius: 3)
+        button.setCornerRadius(radius: 8)
         return button
     }
 

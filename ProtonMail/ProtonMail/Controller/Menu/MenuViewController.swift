@@ -103,7 +103,7 @@ extension MenuViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
-        self.primaryUserview.setCornerRadius(radius: 6)
+        self.primaryUserview.setCornerRadius(radius: 12)
 
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
@@ -113,7 +113,7 @@ extension MenuViewController {
             self.accountSwitcherTopConstraint.constant = 0
         }
 
-        self.shortNameView.setCornerRadius(radius: 2)
+        self.shortNameView.setCornerRadius(radius: 8)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
         self.avatarLabel.accessibilityElementsHidden =  true
         self.addGesture()

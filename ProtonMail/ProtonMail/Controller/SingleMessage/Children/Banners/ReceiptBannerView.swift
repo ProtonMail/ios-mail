@@ -113,7 +113,7 @@ private enum SubviewsFactory {
         button.setAttributedTitle(LocalString._send_receipt.apply(style: FontManager.DefaultSmall), for: .normal)
         let color = UIColor(hexString: "#FFFFFF", alpha: 0.5)
         button.setBackgroundImage(.color(color), for: .normal)
-        button.setCornerRadius(radius: 3)
+        button.setCornerRadius(radius: 8)
         return button
     }
 
@@ -125,7 +125,7 @@ private enum SubviewsFactory {
             .alignment(.center)
         label.attributedText = LocalString._receipt_sent.apply(style: style)
         label.backgroundColor = UIColor(hexString: "#FFFFFF", alpha: 0.5)
-        label.setCornerRadius(radius: 3)
+        label.setCornerRadius(radius: 8)
         return label
     }
 }

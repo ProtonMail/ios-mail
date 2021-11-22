@@ -36,9 +36,9 @@ class SwipeActionRightToLeftTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.contentView.backgroundColor = ColorProvider.BackgroundSecondary
-        swipeActionColorView.setCornerRadius(radius: 6)
+        swipeActionColorView.setCornerRadius(radius: 8)
         messageCellView.backgroundColor = ColorProvider.BackgroundNorm
-        messageCellView.setCornerRadius(radius: 6)
+        messageCellView.setCornerRadius(radius: 8)
     }
 
     override func prepareForReuse() {

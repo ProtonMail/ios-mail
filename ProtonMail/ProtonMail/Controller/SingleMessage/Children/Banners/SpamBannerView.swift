@@ -34,7 +34,7 @@ class SpamBannerView: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.NotificationError
-        roundCorner(4)
+        roundCorner(8)
         addSubviews()
         setUpLayout()
     }
@@ -115,7 +115,7 @@ private enum SubviewsFactory {
     static var button: UIButton {
         let button = UIButton()
         button.setBackgroundImage(.color(.init(red: 1, green: 1, blue: 1, alpha: 0.35)), for: .normal)
-        button.roundCorner(4)
+        button.roundCorner(8)
         return button
     }
 
