@@ -10,6 +10,8 @@ import XCTest
 import pmtest
 
 fileprivate struct id {
+    static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
+    static let mailboxMessageCellIdentifier = "NewMailboxMessageCell.mailboxMessageCell"
     static func messageCellIdentifier(_ subject: String) -> String { return subject.replacingOccurrences(of: " ", with: "_") }
 }
 
@@ -26,7 +28,7 @@ class DraftsRobot: MailboxRobotInterface {
     }
 
     func clickDraftBySubject(_ subject: String) -> ComposerRobot {
-        super.clickMessageBySubject(id.messageCellIdentifier(subject))
+        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).forceTap()
         return ComposerRobot()
     }
     

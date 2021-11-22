@@ -62,9 +62,12 @@ class MailboxRobotInterface: CoreElements {
 
     @discardableResult
     func compose() -> ComposerRobot {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let allowBtn = springboard.buttons["OK"]
         button(id.composeButtonLabelIdentifier).tap()
-        if (XCTestCase.enableContacts == false && button(id.allowContacsAccessOkButtonLabel).wait().exists()) {
-            button(id.allowContacsAccessOkButtonLabel).tap()
+        //it only check once for the whole test run
+        if (XCTestCase.enableContacts == false && allowBtn.waitForExistence(timeout: 3)) {
+            allowBtn.tap()
         }
         XCTestCase.enableContacts = true
         return ComposerRobot()

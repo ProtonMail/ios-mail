@@ -213,11 +213,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
     }
 
-    @objc internal func dismiss() {
+    @objc func dismiss() {
+        #if APP_EXTENSION
         if self.presentingViewController != nil {
             let presentingVC = self.presentingViewController
             self.handleHintBanner(presentingVC: presentingVC)
         }
+        #else
+        self.dismiss(animated: true, completion: nil)
+        #endif
     }
     
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
@@ -351,13 +355,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         stopAutoSave()
-        guard let viewCounts = self.navigationController?.viewControllers.count else {
-            return
-        }
-        if viewCounts == 1 {
-            // view dismiss
-            self.handleDismissDraft()
-        }
     }
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
@@ -488,12 +485,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     func cancelAction(_ sender: UIBarButtonItem) {
-        #if APP_EXTENSION
         self.handleDismissDraft()
-        #else
-        self.dismiss(animated: true, completion: nil)
-        #endif
-        
     }
     
     private func handleDismissDraft() {

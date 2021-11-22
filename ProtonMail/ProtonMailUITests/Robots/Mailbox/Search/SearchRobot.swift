@@ -10,7 +10,10 @@ import XCTest
 import pmtest
 
 fileprivate struct id {
-    static let searchTextFieldIdentifier = "SearchViewController.searchTextField"
+    static let searchTextFieldIdentifier = "SearchViewController.textField"
+    static let mailboxMessageCellIdentifier = "NewMailboxMessageCell.mailboxMessageCell"
+    static let messageSenderLabelIdentifier = "mailboxMessageCell.senderLabel"
+    static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
     static let searchKeyboardButtonText = LocalString._general_search_placeholder
     static let cancelButttonIdentifier = LocalString._general_cancel_button
     static func draftCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)".replacingOccurrences(of: " ", with: "_") }
@@ -30,12 +33,12 @@ class SearchRobot: CoreElements {
     }
     
     func clickSearchedMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).tap()
+        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).tap()
         return MessageRobot()
     }
     
     func clickSearchedDraftBySubject(_ subject: String) -> ComposerRobot {
-        cell(id.draftCellIdentifier(subject)).tap()
+        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).tap()
         return ComposerRobot()
     }
 
@@ -63,20 +66,19 @@ class SearchRobot: CoreElements {
         
         @discardableResult
         func messageExists(_ subject: String) -> SearchRobot {
-            cell(id.messageCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
+            staticText(id.messageTitleLabelIdentifier).containsLabel(subject).wait().checkExists()
             return SearchRobot()
         }
         
         @discardableResult
         func draftMessageExists(_ subject: String) -> SearchRobot {
-            cell(id.draftCellIdentifier(subject.replacingOccurrences(of: " ", with: "_"))).wait().checkExists()
+            staticText(id.messageTitleLabelIdentifier).containsLabel(subject).wait().checkExists()
             return SearchRobot()
         }
         
         @discardableResult
         func addressExists(_ sender: String, _ position: Int) -> SearchRobot {
-            let name: String = Element.cell.getAddressByIndex(position).replacingOccurrences(of: "\n", with: "")
-            XCTAssertEqual(name,sender)
+            staticText(id.messageSenderLabelIdentifier).byIndex(position).checkContainsLabel(sender)
             return SearchRobot()
         }
     }

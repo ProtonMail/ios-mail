@@ -321,6 +321,15 @@ open class UiElement {
         Wait().forElement(uiElement()).typeText(text)
         return self
     }
+    
+    @discardableResult
+    public func hitReturnIfAvailable() -> UiElement {
+        let returnKey = app.keyboards.buttons["Return"]
+        if(returnKey.exists) {
+            returnKey.tap()
+        }
+        return self
+    }
 
     @discardableResult
     public func swipeUpUntilVisible(maxAttempts: Int = 5) -> UiElement {
@@ -488,6 +497,14 @@ open class UiElement {
     @discardableResult
     public func waitUntilGone(time: TimeInterval = 10.0) -> UiElement {
         Wait(time: time).forElementToDisappear(uiElement())
+        return self
+    }
+    
+    @discardableResult
+    public func retapIfNoKeyboardFocus(time: TimeInterval = 2.0) -> UiElement {
+        if(Wait().forElementHasKeyboardFocus(uiElement(), time) == false) {
+            uiElement().tap()
+        }
         return self
     }
 

@@ -64,6 +64,13 @@ open class Wait {
     open func forElementToDisappear(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         return waitForCondition(element, Predicate.doesNotExist, file, line)
     }
+    
+    @discardableResult
+    open func forElementHasKeyboardFocus(_ element: XCUIElement, _ timeout: TimeInterval) -> Bool {
+        let expectation = XCTNSPredicateExpectation(predicate: Predicate.hasKeyboardFocus, object: element)
+        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+        return (result == .completed)
+    }
 
     /**
      Waits for the condition and fails the test when condition is not met.
