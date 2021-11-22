@@ -46,7 +46,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         }
 
         self.updateTitle()
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
@@ -212,7 +212,7 @@ extension SettingsEncryptedSearchViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        header?.contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
 
         if let headerCell = header {
             let eSection = self.viewModel.sections[section]
@@ -231,7 +231,7 @@ extension SettingsEncryptedSearchViewController {
                 if let subrange = full.range(of: learnMore){
                     let nsRange = NSRange(subrange, in: full)
                     attributedString.addAttribute(.link, value: Link.encryptedSearchInfo, range: nsRange)
-                    textView.linkTextAttributes = [.foregroundColor: UIColorManager.InteractionNorm]
+                    textView.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm]
                 }
                 textView.attributedText = attributedString
                 textView.translatesAutoresizingMaskIntoConstraints = false
