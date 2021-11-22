@@ -75,6 +75,8 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
         SideMenuController.preferences.animation.shadowColor = .black
         SideMenuController.preferences.animation.shadowAlpha = 0.52
+        SideMenuController.preferences.animation.revealDuration = 0.25
+        SideMenuController.preferences.animation.hideDuration = 0.25
         self.menuWidth = menuWidth
         
         self.services = services

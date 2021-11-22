@@ -124,4 +124,13 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
         nil
     }
 
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let gesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+        let point = gesture.location(in: self)
+        guard point.x > 55 else {
+            // Ignore gesture for showing the menu
+            return false
+        }
+        return super.gestureRecognizerShouldBegin(gestureRecognizer)
+    }
 }

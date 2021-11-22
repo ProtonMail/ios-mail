@@ -141,6 +141,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
 
+    private var screenEdgeGestureRecognizer: UIScreenEdgePanGestureRecognizer?
+
     private var isSwipingCell = false
     private var notificationsAreScheduled = false
     var shouldShowFeedbackActionSheet = false
@@ -271,6 +273,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         SwipyCellConfig.shared.triggerPoints.removeValue(forKey: 0.75)
 
         refetchAllIfNeeded()
+
+        setupScreenEdgeGesture()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -340,6 +344,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.showFeedbackActionSheet()
             }
         }
+    }
+
+    private func setupScreenEdgeGesture() {
+        let screenEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(self.openMenu))
+        screenEdgeGesture.edges = .left
+        view.addGestureRecognizer(screenEdgeGesture)
+        self.screenEdgeGestureRecognizer = screenEdgeGesture
     }
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
