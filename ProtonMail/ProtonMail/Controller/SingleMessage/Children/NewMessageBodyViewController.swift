@@ -147,7 +147,10 @@ class NewMessageBodyViewController: UIViewController {
                 return
             }
 
-            webView.translatesAutoresizingMaskIntoConstraints = false
+			// This fixes the white screen issue in dark mode.
+	        webView.isOpaque = false
+            webView.backgroundColor = .white
+			webView.translatesAutoresizingMaskIntoConstraints = false
             webView.navigationDelegate = self
             webView.uiDelegate = self
             if viewMode == .singleMessage {

@@ -15,15 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Common
-import ProtonCore_DataModel
+@testable import ProtonMail
 
-extension UserInfo {
-    var isInAppFeedbackEnabled: Bool {
-        false
-    }
-
-    static var isDarkModeEnable: Bool {
-        false
-    }
+class DarkModeStatusStub: DarkModeCacheProtocol {
+    var darkModeStatus: DarkModeStatus = .followSystem
 }

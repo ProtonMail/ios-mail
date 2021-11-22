@@ -227,6 +227,10 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.view.bringSubviewToFront(subject)
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
+
+        ccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
+        bccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
+        toContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         
         // accessibility
         self.view.isAccessibilityElement = false

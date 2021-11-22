@@ -36,7 +36,6 @@ import Foundation
 /// Why that is not perfect:
 /// - WKContentRuleList and WKURLSchemeHandler are not supported until iOS 11
 ///
-@available(iOS 11.0, *)
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
     

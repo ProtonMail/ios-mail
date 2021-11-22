@@ -153,6 +153,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         case 0:
             self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
         case 1:
+            cell.contentView.backgroundColor = .white
             self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
         case 2:
             guard let component = self.attachmentView else { return }

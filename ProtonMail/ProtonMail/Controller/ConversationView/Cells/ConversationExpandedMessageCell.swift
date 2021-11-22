@@ -9,7 +9,7 @@ class ConversationExpandedMessageCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        contentView.backgroundColor = UIColorManager.BackgroundSecondary
+        contentView.backgroundColor = ColorProvider.BackgroundSecondary
         addSubviews()
         setUpLayout()
     }

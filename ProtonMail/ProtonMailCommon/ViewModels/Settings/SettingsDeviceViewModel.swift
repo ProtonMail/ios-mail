@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_DataModel
 
 public enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
@@ -43,14 +44,17 @@ public enum SettingDeviceSection: Int, CustomStringConvertible {
 }
 
 public enum DeviceSectionItem: Int, CustomStringConvertible {
-    case appPIN = 0
-    case swipeAction = 1
-    case combinContacts = 2
-    case alternativeRouting = 3
-    case browser = 4
+    case darkMode = 0
+    case appPIN
+    case swipeAction
+    case combinContacts
+    case alternativeRouting
+    case browser
 
     public var description: String {
         switch self {
+        case .darkMode:
+            return LocalString._dark_mode
         case .appPIN:
             return LocalString._app_pin
         case .combinContacts:
@@ -156,6 +160,9 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
         self.users = users
         self.dohSetting = dohSetting
         self.biometricStatus = biometricStatus
+        if #available(iOS 13, *), UserInfo.isDarkModeEnable {
+            appSettigns.insert(.darkMode, at: 0)
+        }
     }
 
     func appVersion() -> String {

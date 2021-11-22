@@ -92,10 +92,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         if #available(iOS 13.0, *) {
             self.isModalInPresentation = true
         }
-        self.tableView.backgroundColor = .white
-        // fix ios 10 have a seperator at bottom
-        self.tableView.separatorColor = .clear
+        self.tableView.backgroundColor = .clear
         self.tableView.dropDelegate = self
+
+        view.backgroundColor = ColorProvider.BackgroundNorm
         
         NotificationCenter.default.addKeyboardObserver(self)
         

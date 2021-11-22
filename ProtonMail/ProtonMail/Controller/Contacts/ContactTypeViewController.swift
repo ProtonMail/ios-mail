@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
+import ProtonCore_UIFoundations
 
 protocol ContactTypeViewControllerDelegate : AnyObject {
     func done(sectionType: ContactEditSectionType)
@@ -173,18 +172,18 @@ extension ContactTypeViewController: UITableViewDataSource {
         let row = indexPath.row
         if section == 0 {
             let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
+            outCell.backgroundColor = ColorProvider.BackgroundNorm
+            outCell.textLabel?.textColor = ColorProvider.TextNorm
             outCell.selectionStyle = .default
             let l = viewModel.getDefinedTypes()
             outCell.textLabel?.text = l[indexPath.row].title
             return outCell
         } else {
-//            if row == 0 {
-//                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-//                addCell.configCell(v: LocalString._contacts_add_custom_label)
-//                return addCell
-//            } else if row == 1 {
             if row == 0 {
                 let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
+                outCell.backgroundColor = ColorProvider.BackgroundNorm
+                outCell.textLabel?.textColor = ColorProvider.TextNorm
+                outCell.selectionStyle = .default
                 outCell.selectionStyle = .default
                 let text = viewModel.getCustomType()
                 outCell.textLabel?.text = text.title

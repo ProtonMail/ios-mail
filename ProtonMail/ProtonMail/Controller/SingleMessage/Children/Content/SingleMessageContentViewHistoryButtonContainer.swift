@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 final class SingleMessageContentViewHistoryButtonContainer: UIView {
@@ -22,11 +23,21 @@ final class SingleMessageContentViewHistoryButtonContainer: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setUpButtonStyle()
         setUpLayout()
     }
 
     required init?(coder: NSCoder) {
         nil
+    }
+
+    private func setUpButtonStyle() {
+        showHideHistoryButton.tintColor = ColorProvider.IconWeak
+        showHideHistoryButton.backgroundColor = ColorProvider.BackgroundNorm
+        showHideHistoryButton.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        showHideHistoryButton.layer.borderWidth = 1.0
+        showHideHistoryButton.layer.cornerRadius = 4.0
+        showHideHistoryButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
 
     private func setUpLayout() {

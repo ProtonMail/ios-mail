@@ -85,4 +85,8 @@ extension Notification.Name {
     static var fetchPrimaryUserSettings: Notification.Name {
         return .init("fetchPrimaryUserSettings")
     }
+
+    static var shouldUpdateUserInterfaceStyle: Notification.Name {
+        return .init("shouldUpdateUserInterfaceStyle")
+    }
 }

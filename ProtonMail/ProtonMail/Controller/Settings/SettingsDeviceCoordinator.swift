@@ -33,17 +33,7 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         case combineContact = "settings_combine_contact"
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
-        
-//        case displayName     = "setting_displayname"
-//        case signature       = "setting_signature"
-//        case mobileSignature = "setting_mobile_signature"
-//        case debugQueue      = "setting_debug_queue_segue"
-//        case pinCode         = "setting_setup_pingcode"
-//        case lableManager    = "toManagerLabelsSegue"
-//        case loginPwd        = "setting_login_pwd"
-//        case mailboxPwd      = "setting_mailbox_pwd"
-//        case singlePwd       = "setting_single_password_segue"
-//        case snooze          = "setting_notifications_snooze_segue"
+        case darkMode = "settings_dark_mode"
     }
     
     let viewModel : SettingsDeviceViewModel
@@ -103,6 +93,8 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
             self.viewController?.navigationController?.pushViewController(controller, animated: true)
         case .swipeAction:
             openGesture()
+        case .darkMode:
+            openDarkMode()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
@@ -153,6 +145,12 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         coordinator?.start()
         let navigation = UINavigationController(rootViewController: viewController)
         self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
+    }
+
+    private func openDarkMode() {
+        let viewModel = SettingsDarkModeViewModel(darkModeCache: userCachedStatus)
+        let viewController = SettingsDarkModeViewController(viewModel: viewModel)
+        self.viewController?.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

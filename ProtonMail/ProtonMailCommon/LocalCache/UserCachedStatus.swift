@@ -91,6 +91,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
+
+        static let darkModeFlag = "dark_mode_flag"
     }
     
     var primaryUserSessionId: String? {
@@ -680,6 +682,26 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
         if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
            let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
+        }
+    }
+}
+
+extension UserCachedStatus: DarkModeCacheProtocol {
+    var darkModeStatus: DarkModeStatus {
+        get {
+            if getShared()?.object(forKey: Key.darkModeFlag) == nil {
+                return .followSystem
+            }
+            let raw = getShared().integer(forKey: Key.darkModeFlag)
+            if let status = DarkModeStatus(rawValue: raw) {
+                return status
+            } else {
+                getShared().removeObject(forKey: Key.darkModeFlag)
+                return .followSystem
+            }
+        }
+        set {
+            setValue(newValue.rawValue, forKey: Key.darkModeFlag)
         }
     }
 }

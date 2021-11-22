@@ -41,6 +41,8 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationStoredSizeHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/BannerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsDarkModeViewModelTests.swift
+  - ${PWD}/ProtonMailTests/Stubs/DarkModeStatusStub.swift
 
 excluded:
   - ${PWD}/Pods

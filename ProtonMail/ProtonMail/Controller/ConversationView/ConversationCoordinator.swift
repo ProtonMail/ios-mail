@@ -192,7 +192,7 @@ extension SingleMessageNavigationAction {
 
     var composeAction: ComposeMessageAction? {
         switch self {
-        case .reply(_):
+        case .reply:
             return .reply
         case .replyAll:
             return .replyAll
