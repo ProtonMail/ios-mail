@@ -75,7 +75,8 @@ class ReportBugsViewController: ProtonMailViewController {
             textView.attributedText = cachedBugReport.cachedBug.apply(style: FontManager.Default)
         }
         self.title = LocalString._menu_bugs_title
-        
+
+        self.textView.backgroundColor = ColorProvider.BackgroundNorm
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
         setUpSideMenuMethods()

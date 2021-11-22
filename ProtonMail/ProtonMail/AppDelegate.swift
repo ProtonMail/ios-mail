@@ -37,7 +37,7 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
 }
 

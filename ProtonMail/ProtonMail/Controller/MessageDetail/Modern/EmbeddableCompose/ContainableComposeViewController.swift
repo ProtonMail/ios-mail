@@ -23,7 +23,7 @@
 
 import UIKit
 import PromiseKit
-
+import ProtonCore_UIFoundations
 
 /// The class hierarchy is following: ContainableComposeViewController > ComposeViewController > HorizontallyScrollableWebViewContainer > UIViewController
 ///
@@ -36,6 +36,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = ColorProvider.BackgroundNorm
         self.webView.scrollView.clipsToBounds = false
         self.webView.isAccessibilityElement = true
         self.webView.accessibilityIdentifier = "ComposerBody"

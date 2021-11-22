@@ -43,6 +43,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
             NotificationCenter.default.post(name: .switchView, object: nil)
@@ -55,6 +56,7 @@ class SkeletonViewController: ProtonMailTableViewController {
             self.view.window?.windowScene?.title = LocalString._locations_inbox_title
         }
         self.title = LocalString._locations_inbox_title
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,6 +79,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         let cellIdentifier = MailBoxSkeletonLoadingCell.Constant.identifier
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.showAnimatedGradientSkeleton()
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         return cell
     }
 

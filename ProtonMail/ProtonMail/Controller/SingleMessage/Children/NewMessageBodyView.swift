@@ -31,6 +31,7 @@ class NewMessageBodyView: UIView {
 
     init() {
         super.init(frame: .zero)
+        backgroundColor = .white
     }
 
     required init?(coder: NSCoder) {

@@ -52,6 +52,9 @@ extension SingleMessageContentViewController: Printable {
 
     func printPageRenderer() -> UIPrintPageRenderer {
         let newHeader = EmailHeaderView(frame: .init(x: 0, y: 0, width: 300, height: 300))
+        if #available(iOS 13, *) {
+            newHeader.overrideUserInterfaceStyle = .light
+        }
         newHeader.inject(recepientDelegate: self)
         newHeader.makeConstraints()
         newHeader.isShowingDetail = false

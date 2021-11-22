@@ -42,10 +42,10 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .none
         self.contentView.backgroundColor = .clear
-        self.containerView.backgroundColor = ColorProvider.BackgroundNorm
         self.containerView.roundCorner(8)
         self.containerView.layer.borderWidth = 1
         self.containerView.layer.borderColor = ColorProvider.IconDisabled.cgColor
+        self.activityIndicator.color = ColorProvider.IconWeak
     }
 
     func config(objectID: String,

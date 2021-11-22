@@ -89,6 +89,9 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
         self.edgesForExtendedLayout = UIRectEdge()
         self.extendedLayoutIncludesOpaqueBars = false
         self.navigationController?.navigationBar.isTranslucent = false
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
+
+        navigationBarView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.setupSearchBar()
         self.setupTableview()
@@ -237,11 +240,12 @@ extension SearchViewController {
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
-                                              itemColor: ColorProvider.TextInverted,
+                                              itemColor: ColorProvider.FloatyText,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
+                                              itemColor: ColorProvider.FloatyText,
                                               backgroundColor: .clear,
                                               handler: actionHandler)
                 actionItems.append(barItem)

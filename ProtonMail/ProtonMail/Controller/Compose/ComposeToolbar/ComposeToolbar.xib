@@ -49,7 +49,7 @@
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a4z-ls-iMB">
                             <rect key="frame" x="104" y="0.0" width="187" height="48"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cjw-7e-Whk">
                             <rect key="frame" x="297" y="0.0" width="24" height="48"/>

@@ -56,7 +56,7 @@ final class InAppFeedbackActionSheetView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColorManager.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
         closeButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         addSubview(container)
         container.addSubview(header)
@@ -147,13 +147,13 @@ final class InAppFeedbackActionSheetView: UIView {
 
         static var separator: UIView {
             let view = UIView()
-            view.backgroundColor = UIColorManager.SeparatorNorm
+            view.backgroundColor = ColorProvider.SeparatorNorm
             return view
         }
 
         static var closeButton: UIButton {
             let button = UIButton()
-            button.setImage(Asset.actionSheetClose.image.sd_tintedImage(with: UIColorManager.IconNorm), for: .normal)
+            button.setImage(Asset.actionSheetClose.image.sd_tintedImage(with: ColorProvider.IconNorm), for: .normal)
             return button
         }
     }
@@ -248,9 +248,9 @@ final class RateView: UIView {
             let button = UIButton()
             button.roundCorner(56 / 2)
             button.layer.borderWidth = 1
-            button.layer.borderColor = UIColorManager.SeparatorNorm.cgColor
-            button.setBackgroundImage(UIImage.color(UIColorManager.InteractionNorm), for: .highlighted)
-            button.setBackgroundImage(UIImage.color(UIColorManager.InteractionNorm), for: .selected)
+            button.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .highlighted)
+            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .selected)
             return button
         }
     }
@@ -325,16 +325,16 @@ final class FeedbackCommentView: UIView, UITextViewDelegate {
         static var commentTextView: UITextView {
             let textView = UITextView()
             textView.layer.borderWidth = 1
-            textView.layer.borderColor = UIColorManager.InteractionNorm.cgColor
+            textView.layer.borderColor = ColorProvider.InteractionNorm.cgColor
             textView.roundCorner(8)
-            textView.backgroundColor = UIColorManager.BackgroundSecondary
+            textView.backgroundColor = ColorProvider.BackgroundSecondary
             textView.typingAttributes = .Default
             return textView
         }
 
         static var submitButton: UIButton {
             let button = UIButton()
-            button.setBackgroundImage(UIImage.color(UIColorManager.InteractionNorm), for: .normal)
+            button.setBackgroundImage(UIImage.color(ColorProvider.InteractionNorm), for: .normal)
             button.setAttributedTitle(LocalString._send_feedback.apply(style: .DefaultInverted), for: .normal)
             button.roundCorner(8)
             return button

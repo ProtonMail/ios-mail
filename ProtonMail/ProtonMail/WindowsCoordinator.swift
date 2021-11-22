@@ -24,6 +24,7 @@
 import Foundation
 import ProtonCore_Keymaker
 import ProtonCore_Networking
+import ProtonCore_DataModel
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
 fileprivate class PlaceholderVC: UIViewController {
@@ -65,9 +66,23 @@ class WindowsCoordinator: CoordinatorNew {
     private var lockWindow: UIWindow?
     
     private var services: ServiceFactory
+    private var darkModeCache: DarkModeCacheProtocol
     
     var currentWindow: UIWindow? {
         didSet {
+            if #available(iOS 13, *), UserInfo.isDarkModeEnable {
+                switch darkModeCache.darkModeStatus {
+   
+                case .followSystem:
+                    self.currentWindow?.overrideUserInterfaceStyle = .unspecified
+                case .forceOn:
+                    self.currentWindow?.overrideUserInterfaceStyle = .dark
+                case .forceOff:
+                    self.currentWindow?.overrideUserInterfaceStyle = .light
+                }
+            } else if #available(iOS 13, *) {
+                self.currentWindow?.overrideUserInterfaceStyle = .light
+            }
             self.currentWindow?.makeKeyAndVisible()
         }
     }
@@ -90,7 +105,7 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    init(services: ServiceFactory) {
+    init(services: ServiceFactory, darkModeCache: DarkModeCacheProtocol) {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
@@ -113,6 +128,12 @@ class WindowsCoordinator: CoordinatorNew {
             }
             
             if #available(iOS 13.0, *) {
+                NotificationCenter.default.addObserver(
+                    self,
+                    selector: #selector(updateUserInterfaceStyle),
+                    name: .shouldUpdateUserInterfaceStyle,
+                    object: nil
+                )
                 // this is done by UISceneDelegate
             } else {
                 NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground),
@@ -124,6 +145,7 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
         self.services = services
+        self.darkModeCache = darkModeCache
     }
     
     /// restore some cache after login/authorized
@@ -460,6 +482,23 @@ class WindowsCoordinator: CoordinatorNew {
                 coordinator.handleSwitchView(deepLink: deepLink)
                 stop = true
             }
+        }
+    }
+
+	@objc
+    private func updateUserInterfaceStyle() {
+        guard #available(iOS 13, *) else { return }
+        guard UserInfo.isDarkModeEnable else {
+            currentWindow?.overrideUserInterfaceStyle = .light
+            return
+        }
+        switch darkModeCache.darkModeStatus {
+        case .followSystem:
+            currentWindow?.overrideUserInterfaceStyle = .unspecified
+        case .forceOff:
+            currentWindow?.overrideUserInterfaceStyle = .light
+        case .forceOn:
+            currentWindow?.overrideUserInterfaceStyle = .dark
         }
     }
 }

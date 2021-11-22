@@ -204,6 +204,9 @@ included:
   - ${PWD}ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackPromptScheduler.swift
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/ContactsUtils.swift
+  - ${PWD}/ProtonMail/Controller/Settings/SettingsDarkModeViewController.swift
+  - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/DarkModeCacheProtocol.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/Settings/SettingsDarkModeViewModel.swift
 
 excluded:
   - ${PWD}/Pods

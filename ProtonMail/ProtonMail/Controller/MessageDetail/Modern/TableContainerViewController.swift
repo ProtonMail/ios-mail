@@ -22,6 +22,7 @@
     
 
 import UIKit
+import ProtonCore_UIFoundations
 
 protocol ScrollableContainer: AnyObject {
     func propagate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
@@ -115,6 +116,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let id = ComposerCell.reuseID(for: indexPath)
         let cell = self.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.coordinator.embedChild(indexPath: indexPath, onto: cell)
         cell.clipsToBounds = true
         return cell

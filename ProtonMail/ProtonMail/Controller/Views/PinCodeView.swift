@@ -69,7 +69,7 @@ class PinCodeView: PMView {
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 15),
-            .foregroundColor: UIColorManager.TextHint
+            .foregroundColor: ColorProvider.TextHint
         ]
         pinDisplayView.attributedPlaceholder = LocalString
             ._enter_pin_to_unlock_inbox.apply(style: attributes)

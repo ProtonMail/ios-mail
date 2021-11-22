@@ -1893,7 +1893,7 @@ class LocalizedString {
     lazy var _push_notification = NSLocalizedString("Notifications", comment: "cell title in device settings")
     lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
     lazy var _empty_cache = NSLocalizedString("Clear local cache", comment: "cell title in device setting")
-    
+    lazy var _dark_mode = NSLocalizedString("Dark mode", comment: "cell title in app setting")
     
     // Account Manager
     lazy var _logged_out = NSLocalizedString("(logged out)", comment: "Comment for disconnected account in Account Manager")
@@ -2195,4 +2195,9 @@ class LocalizedString {
     lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
     lazy var _provide_feedback = NSLocalizedString("Provide feedback", comment: "Title of menu action to trigger feedback view")
     lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
+
+    lazy var _settings_dark_mode_section_title = NSLocalizedString("Appearence", comment: "The title of section inside the dark mode setting page")
+    lazy var _settings_dark_mode_title_follow_system = NSLocalizedString("Follow device setting", comment: "The title of follow system option in dark mode setting")
+    lazy var _settings_dark_mode_title_force_on = NSLocalizedString("Always on", comment: "The title of always on option in dark mode setting")
+    lazy var _settings_dark_mode_title_force_off = NSLocalizedString("Always off", comment: "The title of always off option in dark mode setting")
 }

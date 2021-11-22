@@ -1613,11 +1613,12 @@ extension MailboxViewController {
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
-                                              itemColor: ColorProvider.TextInverted,
+                                              itemColor: ColorProvider.FloatyText,
                                               handler: actionHandler)
                 actionItems.append(barItem)
             } else {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
+                                              itemColor: ColorProvider.FloatyText,
                                               backgroundColor: .clear,
                                               handler: actionHandler)
                 actionItems.append(barItem)
@@ -2397,7 +2398,7 @@ extension MailboxViewController {
 
     private func configureUnreadFilterButton() {
         self.unreadFilterButton.setTitleColor(ColorProvider.BrandNorm, for: .normal)
-        self.unreadFilterButton.setTitleColor(ColorProvider.BackgroundNorm, for: .selected)
+        self.unreadFilterButton.setTitleColor(ColorProvider.TextInverted, for: .selected)
         self.unreadFilterButton.setImage(Asset.mailLabelCrossIcon.image, for: .selected)
         self.unreadFilterButton.semanticContentAttribute = .forceRightToLeft
         self.unreadFilterButton.titleLabel?.isSkeletonable = true
@@ -2407,6 +2408,7 @@ extension MailboxViewController {
         self.unreadFilterButton.layer.masksToBounds = true
         self.unreadFilterButton.backgroundColor = ColorProvider.BackgroundSecondary
         self.unreadFilterButton.isSelected = viewModel.isCurrentUserSelectedUnreadFilterInInbox
+        self.unreadFilterButton.imageView?.tintColor = ColorProvider.IconInverted
         self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
         self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
     }

@@ -33,7 +33,9 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
 
     var actionSheetItem: PMActionSheetItem {
-        PMActionSheetPlainItem(title: LocalString._import_from, icon: UIImage(named: "ic-export")) { (_) -> (Void) in
+        PMActionSheetPlainItem(title: LocalString._import_from,
+                               icon: UIImage(named: "ic-export"),
+                               iconColor: ColorProvider.IconNorm) { (_) -> (Void) in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeVideo as String,

@@ -199,6 +199,13 @@ extension SettingsDeviceViewController {
             if let settingsGeneralCell = cell as? SettingsGeneralCell {
                 settingsGeneralCell.configure(left: item.description)
                 switch item {
+                case .darkMode:
+                    var status = false
+                    if #available(iOS 13, *) {
+                        status = traitCollection.userInterfaceStyle == .dark
+                    }
+                    let title = status ? LocalString._settings_On_title : LocalString._settings_Off_title
+                    settingsGeneralCell.configure(right: title)
                 case .appPIN:
                     let status = self.viewModel.lockOn ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(left: viewModel.appPINTitle)
@@ -312,6 +319,8 @@ extension SettingsDeviceViewController {
         case .app:
             let item = self.viewModel.appSettigns[row]
             switch item {
+            case .darkMode:
+                self.coordinator?.go(to: .darkMode)
             case .appPIN:
                 self.coordinator?.go(to: .autoLock)
                 break

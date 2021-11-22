@@ -1,5 +1,5 @@
-import ProtonCore_UIFoundations
 import CoreData
+import ProtonCore_UIFoundations
 
 class ConversationViewModel {
 

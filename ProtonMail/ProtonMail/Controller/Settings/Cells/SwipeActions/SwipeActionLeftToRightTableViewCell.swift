@@ -29,6 +29,11 @@ class SwipeActionLeftToRightTableViewCell: UITableViewCell {
     @IBOutlet private weak var swipeActionColorView: UIView!
     @IBOutlet private weak var swipeActionTitleLabel: UILabel!
 
+    @IBOutlet private weak var squareView: UIView!
+    @IBOutlet private weak var topPlaceholderView: UIView!
+    @IBOutlet private weak var middlePlaceholderView: UIView!
+    @IBOutlet private weak var lastPlaceholderView: UIView!
+
     static var CellID: String {
         return "\(self)"
     }
@@ -39,6 +44,11 @@ class SwipeActionLeftToRightTableViewCell: UITableViewCell {
         swipeActionColorView.setCornerRadius(radius: 8)
         messageCellView.backgroundColor = ColorProvider.BackgroundNorm
         messageCellView.setCornerRadius(radius: 8)
+
+        squareView.backgroundColor = ColorProvider.BackgroundSecondary
+        topPlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
+        middlePlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
+        lastPlaceholderView.backgroundColor = ColorProvider.BackgroundSecondary
     }
 
     override func prepareForReuse() {
