@@ -221,7 +221,7 @@
 "Also Archive" = "Și arhivare";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "De asemenea, arhiva?";
+"Also archive?" = "Și arhivare?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Folosit și pentru resetarea parolelor uitate.";
@@ -392,7 +392,7 @@
 "Bcc" = "CA";
 
 /* message Bcc: feild */
-"Bcc:" = "Ca:";
+"Bcc:" = "CA:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data nașterii";
@@ -1247,7 +1247,7 @@
 "Hours" = "Ore";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența dumneavoastră cu noul ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența avută cu noul ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1805,7 +1805,7 @@
 "On E, MMM d, yyyy at %@" = "E, d MMM yyyy la %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției numai dacă sunteți sigur că toate abonamentele dumneavoastră sunt la zi. Pentru asistență suplimentară, vă rugăm să contactați serviciul de asistență pentru clienți. \n\n Sunteți sigur că doriți să ignorați activarea?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției numai dacă aveți siguranța că toate abonamentele vă sunt la zi. Pentru asistență suplimentară, vă rugăm să contactați serviciul de asistență pentru clienți. \n\nSigur doriți să ignorați activarea?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
@@ -2068,7 +2068,7 @@
 "ProtonVPN included" = "ProtonVPN inclus";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Furnizați feedback";
+"Provide feedback" = "Furnizați informații";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferență Proxy/Paravan de protecție";
@@ -2231,7 +2231,7 @@
 "Send anyway" = "Trimitere așa";
 
 /* Title of button to send feedback */
-"Send feedback" = "Trimitere feedback";
+"Send feedback" = "Trimitere informații";
 
 /* when subject not empty */
 "Send message without subject?" = "Trimiteți mesajul fără subiect?";
@@ -2499,7 +2499,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Atingeți «Trimite așa» pentru trimitere fără expirare acestor destinatari.";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Povestiți-ne despre experiența dumneavoastră. (Opțional)";
+"Tell us about your experience. (Optional)" = "Povestiți-ne despre experiența avută. (opțional)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
@@ -2511,7 +2511,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Vă mulțumim pentru feedback-ul dumneavoastră!";
+"Thank you for your feedback!" = "Vă mulțumim pentru informațiile oferite!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Parolele nu se potrivesc.";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Afișare antete";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Afișare HTML";
 
 /* Title */
@@ -3078,7 +3078,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți ProtonVPN (sau orice alt VPN) sau Tor pentru a accesa Proton.";
 
 /* Title of user feedback view */
-"Your feedback" = "Feedback-ul dumneavoastră";
+"Your feedback" = "Experiența personală";
 
 /* The section title of folder manager table */
 "Your folders" = "Foldere";

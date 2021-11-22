@@ -221,7 +221,7 @@
 "Also Archive" = "Ayrıca Arşivle";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "Ayrıca arşivle?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Unutulan bir parolayı sıfırlamak için kullanılır.";
@@ -368,7 +368,7 @@
 "Auto-load embedded images" = "Gömülü resimleri otomatik yükle";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Kötü";
 
 /* top left back button */
 "Back" = "Geri";
@@ -1247,7 +1247,7 @@
 "Hours" = "saat";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Yeni ProtonMail ile deneyiminizi nasıl değerlendirirsiniz?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1805,7 +1805,7 @@
 "On E, MMM d, yyyy at %@" = "E, MMM d, yyyy 'tarihinde' %@ 'vaktinde'";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Yalnız tüm aboneliklerinizin güncel olduğuna eminseniz satın alma etkinleştirmesini göz ardı edin. Daha fazla destek için, müşteri desteğiyle iletişime geçin. \n\nEtkinleştirmeyi göz ardı etmek istediğinizden emin misiniz?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Sadece bir tane ücretsiz hesap eklenebilir";
@@ -2068,7 +2068,7 @@
 "ProtonVPN included" = "ProtonVPN dahil";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "Geri bildirim yapın";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Vekil Sunucu/Güvenlik duvarı engeli";
@@ -2231,7 +2231,7 @@
 "Send anyway" = "Yine de gönder";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "Geri bildirimi gönderin";
 
 /* when subject not empty */
 "Send message without subject?" = "Konu olmadan ileti gönderilsin mi?";
@@ -2499,7 +2499,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Bu alıcılara süresi dolmadan göndermek için yine de gönder öğesine dokunun";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "Deneyimlerinizi bize söyleyin. (İsteğe bağlı)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Virüsten koruma yazılımınızı geçici olarak devre dışı bırakın veya kaldırın.";
@@ -2511,7 +2511,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata raporu gönderdiğiniz için teşekkür ederiz. Raporunuzu hata izleme sistemimize ekledik.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "Geri bildiriminiz için teşekkürler!";
 
 /* Error message */
 "The 2 passwords are not matching" = "İki parola birbiriyle eşleşmiyor";
@@ -2691,7 +2691,7 @@
 "To" = "Kime";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "ProtonMail'in istismar edilmesini önlemek için, insan olduğunuzu doğrulamamız gerekmektedir.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu şifrenizi sıfırlamak için lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Başlıkları görüntüle";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "HTML olarak görüntüle";
 
 /* Title */
@@ -2977,7 +2977,7 @@
 "When you send an email, this is the name that appears in the sender field." = "Bir e-posta gönderdiğinizde, gönderen alanında görünen ad budur.";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Harika";
 
 /* default vcard types */
 "Work" = "İş";
@@ -3078,7 +3078,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ülkeniz Proton'a erişimi engelliyor olabilir. Proton'a erişmek için ProtonVPN (veya başka bir VPN) veya Tor'u kullanmayı deneyin.";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Geri bildiriminiz";
 
 /* The section title of folder manager table */
 "Your folders" = "Klasörleriniz";
@@ -3094,7 +3094,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifreli e-posta hesabınız kuruldu ve şifrelenmiş iletiler göndermeye ve almaya hazır.";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "Yeni güvenli e-posta hesabınız hazır.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Planınız şu anda tarihine kadar etkin";

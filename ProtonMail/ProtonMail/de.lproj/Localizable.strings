@@ -1814,7 +1814,7 @@
 "Open" = "Öffnen";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Kontowechsler öffnen";
+"Open account switcher" = "Kontenwechsler öffnen";
 
 /* (No Comment) */
 "OpenDraft" = "Entwurf öffnen";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Kopfzeilen anzeigen";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Als HTML anzeigen";
 
 /* Title */

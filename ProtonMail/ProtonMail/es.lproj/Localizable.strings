@@ -368,7 +368,7 @@
 "Auto-load embedded images" = "Cargar imágenes incrustadas automáticamente";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Terrible";
 
 /* top left back button */
 "Back" = "Atrás";
@@ -1247,7 +1247,7 @@
 "Hours" = "horas";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "¿Cómo describirías tu experiencia con el nuevo ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -2068,7 +2068,7 @@
 "ProtonVPN included" = "ProtonVPN incluido";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "Dar comentarios";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
@@ -2231,7 +2231,7 @@
 "Send anyway" = "Enviar de todos modos";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "Enviar comentarios";
 
 /* when subject not empty */
 "Send message without subject?" = "¿Enviar mensaje sin asunto?";
@@ -2499,7 +2499,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Pulsa enviar de todos modos para enviar sin caducidad a estos destinatarios";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "Cuéntanos acerca de tu experiencia. (Opcional)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Deshabilita temporalmente o elimina tu software de antivirus.";
@@ -2511,7 +2511,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos agregado tu informe a nuestro sistema de seguimiento de errores.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "¡Gracias por tus comentarios!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Las dos contraseñas no coinciden";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Ver encabezados";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Ver HTML";
 
 /* Title */
@@ -2977,7 +2977,7 @@
 "When you send an email, this is the name that appears in the sender field." = "Cuando envías un correo, este es el nombre que aparecerá en el campo del remitente.";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Maravilloso";
 
 /* default vcard types */
 "Work" = "Trabajo";
@@ -3078,7 +3078,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando ProtonVPN (u otra VPN) o Tor para acceder a Proton.";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Tus comentarios";
 
 /* The section title of folder manager table */
 "Your folders" = "Tus carpetas";

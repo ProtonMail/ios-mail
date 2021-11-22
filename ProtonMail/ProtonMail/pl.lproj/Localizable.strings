@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Pokaż nagłówki";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Widok HTML";
 
 /* Title */
@@ -2968,7 +2968,7 @@
 "week" = "tydzień";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Witaj w ProtonMailu";
+"Welcome to ProtonMail!" = "Witaj w ProtonMaili";
 
 /* Description */
 "What people see in the \"From\" field." = "To, co odbiorca widzi w polu \"Od\".";
