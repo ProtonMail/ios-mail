@@ -288,16 +288,16 @@ extension SettingsEncryptedSearchViewController {
             break
         }
     }
-    
+
     func showAlertContentSearchEnabled(for index: IndexPath, cell: SwitchTableViewCell) {
         //create the alert
-        let alert = UIAlertController(title: "Enable content search", message: "Messages will download via WiFi. This could take some time and your device may heat up slightly.\n You can pause the action at any time.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: LocalString._encrypted_search_alert_title, message: LocalString._encrypted_search_alert_text, preferredStyle: UIAlertController.Style.alert)
         //add the buttons
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_cancel_button, style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
             self.viewModel.isEncryptedSearch = false
             self.tableView.reloadData() //refresh the view after
         })
-        alert.addAction(UIAlertAction(title: "Enable", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
             //change UI
             self.hideSections = false
 
