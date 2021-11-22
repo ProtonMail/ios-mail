@@ -153,20 +153,6 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        #if DEBUG
-        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-        PMAPIService.noTrustKit = true
-        
-        if CommandLine.arguments.contains("-disableAnimations") {
-            UIView.setAnimationsEnabled(false)
-        }
-        
-        #else
-        TrustKitWrapper.start(delegate: self)
-        #endif
-        
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
@@ -193,8 +179,9 @@ extension AppDelegate: UIApplicationDelegate {
         if CommandLine.arguments.contains("-disableAnimations") {
             UIView.setAnimationsEnabled(false)
         }
-        #endif
+        #else
         TrustKitWrapper.start(delegate: self)
+        #endif
 
         Analytics.shared.setup()
         

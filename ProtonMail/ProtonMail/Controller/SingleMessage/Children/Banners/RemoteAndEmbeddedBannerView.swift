@@ -124,7 +124,7 @@ private enum SubviewsFactory {
     private static func button(title: String) -> UIButton {
         let button = UIButton(frame: .zero)
         button.backgroundColor = ColorProvider.InteractionWeak
-        button.setCornerRadius(radius: 3)
+        button.setCornerRadius(radius: 8)
         let attributes = FontManager.body3RegularNorm
         button.setAttributedTitle(title.apply(style: attributes), for: .normal)
         button.setAttributedTitle(

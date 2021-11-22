@@ -98,6 +98,7 @@ private enum SubviewsFactory {
         button.setTitle(" \(LocalString._general_try_again) ", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.roundCorner(8)
         return button
     }
 }

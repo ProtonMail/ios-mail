@@ -37,7 +37,7 @@ class SettingsAccountCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        self.shortNameView.layer.cornerRadius = 2.0
+        self.shortNameView.layer.cornerRadius = 8.0
         self.shortNameView.layer.masksToBounds = true
         self.shortNameLabel.adjustsFontSizeToFitWidth = true
 

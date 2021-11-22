@@ -93,7 +93,7 @@ private enum SubviewsFactory {
     static var container: UIView {
         let view = UIView()
         view.backgroundColor = ColorProvider.InteractionWeak
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 8
         view.isUserInteractionEnabled = false
         return view
     }

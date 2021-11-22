@@ -76,7 +76,7 @@ private enum SubviewsFactory {
     static var loadContentButton: UIButton {
         let button = UIButton(frame: .zero)
         button.backgroundColor = ColorProvider.InteractionWeak
-        button.setCornerRadius(radius: 3)
+        button.setCornerRadius(radius: 8)
         button.setAttributedTitle(
             LocalString._banner_load_embedded_image.apply(style: FontManager.body3RegularNorm),
             for: .normal
