@@ -2089,6 +2089,11 @@ class LocalizedString {
     lazy var _encrypted_search_info_search_paused_link = NSLocalizedString("resume manually", comment: "Link for the banner when indexing is paused")
     lazy var _encrypted_search_info_search_refresh = NSLocalizedString("New messages downloading. %1$@", comment: "Text for the banner when indexing is refreshed")
     
+    lazy var _encrypted_search_alert_title = NSLocalizedString("Enable content search", comment: "Title for the alert to enable encrypted search")
+    lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
+    lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
+    lazy var _encrypted_search_alert_enable_button = NSLocalizedString("Enable", comment: "Button to enable encrypted search")
+    
     // MARK: - Title of MessageSwipeActions
     lazy var _swipe_action_none = NSLocalizedString("Swipe to set up swipable actions", comment: "")
     lazy var _swipe_action_unread = NSLocalizedString("Unread", comment: "")
