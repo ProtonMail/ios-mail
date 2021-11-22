@@ -28,6 +28,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var coordinator: SettingsDeviceCoordinator?
     
     internal var hideSections: Bool = true
+    internal var banner: BannerView!
     
     struct Key {
         static let cellHeight: CGFloat = 48.0
@@ -62,6 +63,11 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         
         //Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
+        
+        //add banner
+        if self.hideSections == false {
+            self.showInfoBanner()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -120,7 +126,7 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             return Key.cellHeight
         case .downloadedMessages:
-            return 120.0
+            return 156.0
         }
     }
     
@@ -300,8 +306,8 @@ extension SettingsEncryptedSearchViewController {
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
             //change UI
             self.hideSections = false
-
             self.tableView.reloadData() //refresh the view to show changes in UI
+            self.showInfoBanner()
 
             //build search index
             EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
@@ -337,5 +343,22 @@ extension SettingsEncryptedSearchViewController {
                 }
             }
         }
+    }
+    
+    private func showInfoBanner(){
+        if (self.banner != nil) {
+            self.banner.remove(animated: false)
+        }
+        self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
+        self.view.addSubview(self.banner)
+        self.banner.drop(on: self.view, from: .top)
+        
+        NSLayoutConstraint.activate([
+            self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16)
+            //self.banner.bottomAnchor.constraint(equalTo: self.)
+            //textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
+            //textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+            //textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+        ])
     }
 }

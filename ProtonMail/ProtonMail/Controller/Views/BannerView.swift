@@ -23,6 +23,7 @@
 
 import Foundation
 import UIKit
+import ProtonCore_UIFoundations
 
 class BannerView : PMView {
     
@@ -64,12 +65,14 @@ class BannerView : PMView {
         case red // TODO: rename according to semantic, not appearance
         case purple
         case gray
+        case black
         
         var backgroundColor: UIColor {
             switch self {
             case .red: return .red
             case .purple: return UIColor(RRGGBB: UInt(0x9199CB))
             case .gray: return .lightGray
+            case .black: return UIColor(RRGGBB: UInt(0x25272C))
             }
         }
         
@@ -78,7 +81,21 @@ class BannerView : PMView {
         }
         
         var backgroundAlpha: CGFloat {
-            return 0.75
+            switch self {
+            case .red, .purple, .gray:
+                return 0.75
+            case .black:
+                return 1
+            }
+        }
+        
+        var fontSize: UIFont {
+            switch self {
+            case .red, .purple, .gray:
+                return UIFont.systemFont(ofSize: 17)
+            case .black:
+                return UIFont.systemFont(ofSize: 14)
+            }
         }
     }
     
@@ -98,18 +115,21 @@ class BannerView : PMView {
          offset: CGFloat,
          dismissDuration: TimeInterval = 4,
          link: String? = "",
+         icon: Bool? = false,
          complete: tapAttributedTextActionBlock? = nil)
     {
         self.offset = offset
         self.dismissDuration = dismissDuration
         
-        super.init(frame: CGRect.zero)
+        //super.init(frame: CGRect.zero)
+        super.init(frame: CGRect(x: 0, y: 0, width: 343, height: 72))
         
         self.roundCorners()
         
         self.messageTextview.delegate = self
         self.messageTextview.textContainer.lineFragmentPadding = 0
         self.messageTextview.textContainerInset = .zero
+        self.messageTextview.font = appearance.fontSize
         if link == "" {
             self.messageTextview.text = message
             self.messageTextview.textColor = appearance.textColor
@@ -128,6 +148,11 @@ class BannerView : PMView {
             
             self.link = link
             self.callback = complete
+        }
+        
+        //add icon
+        if icon! {
+            self.addIcon()
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -154,7 +179,7 @@ class BannerView : PMView {
         self.messageTextview.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
         
-        self.sizeToFit()
+        //self.sizeToFit()
         self.layoutIfNeeded()
     }
     
@@ -360,5 +385,18 @@ extension BannerView {
 
         //print("formated string: \(formattedString)")
         return formattedString
+    }
+
+    private func addIcon() {
+        let image = UIImage(named: "ic-exclamation-circle")
+        let imageView = UIImageView(image: image!)
+        imageView.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
+        self.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25.5),
+            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 25.5),
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 17.5),
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 304.5)
+        ])
     }
 }
