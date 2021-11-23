@@ -27,11 +27,17 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
     
+    internal var interruption: Bool = false
     internal var hideSections: Bool = true
     internal var banner: BannerView!
     
     struct Key {
         static let cellHeight: CGFloat = 48.0
+        static let cellHeightDownloadProgress = 156.0
+        static let cellHeightDownloadProgressNoWifi = 140.0
+        static let cellHeightDownloadProgressLowBattery = 188.0
+        static let cellHeightDownloadProgressFinished = 108.0
+        static let cellHeightDownloadProgressIndexUpdate = 102.0
         static let footerHeight : CGFloat = 48.0
         static let headerCell: String = "header_cell"
     }
@@ -126,7 +132,18 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             return Key.cellHeight
         case .downloadedMessages:
-            return 156.0
+            //static let cellHeightDownloadProgressLowBattery = 188.0
+            if EncryptedSearchService.shared.state == .complete {
+                return Key.cellHeightDownloadProgressFinished
+            } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
+                return Key.cellHeightDownloadProgressNoWifi
+            } else if EncryptedSearchService.shared.state == .refresh {
+                return Key.cellHeightDownloadProgressIndexUpdate
+            } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                return Key.cellHeightDownloadProgressLowBattery
+            } else {
+                return Key.cellHeightDownloadProgress
+            }
         }
     }
     
@@ -199,7 +216,30 @@ extension SettingsEncryptedSearchViewController {
                 //index building in progress
                 let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
                 if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!) {
+                    var estimatedTimeText: String = LocalString._encrypted_search_default_text_estimated_time_label
+                    if let estimatedTime = self.viewModel.estimatedTimeRemaining.value {
+                        estimatedTimeText = String(estimatedTime) + " minutes remaining..."
+                    }
+                    if self.interruption {
+                        estimatedTimeText = self.viewModel.interruptStatus.value ?? LocalString._encrypted_search_default_text_estimated_time_label
+                        if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
+                            progressBarButtonCell.pauseButton.isHidden = true
+                            progressBarButtonCell.statusLabel.isHidden = false
+                            progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError    //red
+                            progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError    //red
+                        }
+                        if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                            progressBarButtonCell.statusLabel.isHidden = false
+                            //TODO update constraints of button
+                        }
+                        self.interruption = false
+                    } else {
+                        progressBarButtonCell.statusLabel.isHidden = true
+                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextNorm //black
+                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextNorm    //black
+                    }
+                    let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
+                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!) {
                         self.viewModel.pauseIndexing.toggle()
                         if self.viewModel.pauseIndexing {
                             progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: UIControl.State.normal)
@@ -335,6 +375,22 @@ extension SettingsEncryptedSearchViewController {
     func setupProgressUpdateObserver() {
         self.viewModel.currentProgress.bind { (_) in
             if EncryptedSearchService.shared.indexBuildingInProgress {
+                DispatchQueue.main.async {
+                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
+                }
+            }
+        }
+    }
+    
+    func setupIndexingInterruptionObservers() {
+        self.viewModel.interruptStatus.bind {
+            (_) in
+            if EncryptedSearchService.shared.indexBuildingInProgress {
+                self.interruption = true
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
