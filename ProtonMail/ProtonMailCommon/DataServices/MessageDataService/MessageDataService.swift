@@ -1086,6 +1086,10 @@ class MessageDataService : Service, HasLocalStorage {
         static let doneWithError         = SendStatus(rawValue: 1 << 16)
         static let exceptionCatched      = SendStatus(rawValue: 1 << 17)
     }
+
+    enum SendingError: Error {
+        case emptyEncodedBody
+    }
     
     func send(byID messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1150,7 +1154,7 @@ class MessageDataService : Service, HasLocalStorage {
             let attachments = self.attachmentsForMessage(message)
             
             //create builder
-            let sendBuilder = SendBuilder()
+            let sendBuilder = MessageSendingRequestBuilder(expirationOffset: message.expirationOffset)
             
             //build contacts if user setup key pinning
             var contacts : [PreContact] = [PreContact]()
@@ -1163,7 +1167,7 @@ class MessageDataService : Service, HasLocalStorage {
                 // fech email keys from api
                 contacts.append(contentsOf: cs)
                 return when(resolved: requests.getPromises(api: userManager.apiService))
-            }.then { results -> Promise<SendBuilder> in
+            }.then { results -> Promise<MessageSendingRequestBuilder> in
                 //Debug info
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
@@ -1184,7 +1188,7 @@ class MessageDataService : Service, HasLocalStorage {
                     throw RuntimeError.cant_decrypt.error
                 }
                 sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
-                sendBuilder.set(pwd: message.password, hit: message.passwordHint)
+                sendBuilder.set(password: message.password, hint: message.passwordHint)
                 //Debug info
                 status.insert(SendStatus.processKeyResponse)
                 
@@ -1197,16 +1201,16 @@ class MessageDataService : Service, HasLocalStorage {
                             if value.recipientType == 1 {
                                 //if type is internal check is key match with contact key
                                 //compare the key if doesn't match
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, mime: false, sign: true, pgpencrypt: false, plainText: contact.plainText))
+                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: contact.firstPgpKey, recipintType: value.recipientType, isEO: isEO, mime: false, sign: true, pgpencrypt: false, plainText: contact.plainText))
                             } else {
                                 //sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.pgpKey, recipintType: value.recipientType, eo: isEO, mime: true))
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, mime: isEO ? true : contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: isEO ? false : contact.plainText))
+                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.firstPgpKey, recipintType: value.recipientType, isEO: isEO, mime: isEO ? true : contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: isEO ? false : contact.plainText))
                             }
                         } else {
                             if userInfo.sign == 1 {
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: true, sign: true, pgpencrypt: false, plainText: false))
+                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, isEO: isEO, mime: true, sign: true, pgpencrypt: false, plainText: false))
                             } else {
-                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
+                                sendBuilder.add(address: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, isEO: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
                             }
                         }
                     case .rejected(let error):
@@ -1224,7 +1228,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                     passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
-                    sendBuilder.set(clear: clearbody)
+                    sendBuilder.set(clearBody: clearbody)
                 }
                 //Debug info
                 status.insert(SendStatus.setAtts)
@@ -1240,10 +1244,10 @@ class MessageDataService : Service, HasLocalStorage {
                             guard let key = sessionPack.key else {
                                 continue
                             }
-                            sendBuilder.add(att: PreAttachment(id: att.attachmentID,
-                                                               session: key,
-                                                               algo: sessionPack.algo,
-                                                               att: att))
+                            sendBuilder.add(attachment: PreAttachment(id: att.attachmentID,
+                                                                      session: key,
+                                                                      algo: sessionPack.algo,
+                                                                      att: att))
                         }
                     }
                 }
@@ -1251,7 +1255,7 @@ class MessageDataService : Service, HasLocalStorage {
                 status.insert(SendStatus.goNext)
                 
                 return .value(sendBuilder)
-            }.then{ (sendbuilder) -> Promise<SendBuilder> in
+            }.then{ (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkMime)
                 
@@ -1270,7 +1274,7 @@ class MessageDataService : Service, HasLocalStorage {
                                              msgService: self,
                                              userInfo: userInfo
                 )
-            }.then{ (sendbuilder) -> Promise<SendBuilder> in
+            }.then{ (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
                 
@@ -1296,7 +1300,10 @@ class MessageDataService : Service, HasLocalStorage {
                 status.insert(SendStatus.encodeBody)
                 
                 //build api request
-                let encodedBody = sendBuilder.bodyDataPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                guard let encodedBody = sendBuilder.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                    throw SendingError.emptyEncodedBody
+                }
+
                 var msgs = [AddressPackageBase]()
                 for res in results {
                     switch res {

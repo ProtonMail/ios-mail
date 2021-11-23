@@ -43,6 +43,8 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsDarkModeViewModelTests.swift
   - ${PWD}/ProtonMailTests/Stubs/DarkModeStatusStub.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Controller/Composer/ComposeViewControllerHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
 
 excluded:
   - ${PWD}/Pods
