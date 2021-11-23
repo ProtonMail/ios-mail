@@ -32,9 +32,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.inbox.rawValue,
                                               includeStarring: true,
                                               isStarred: false,
-                                              isBodyDecryptable: true)
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
         XCTAssertEqual(sut.title, testTitle)
-        let expectedOptions: [MessageViewActionSheetAction] = [.markUnread,
+        let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .forward,
+                                                               .markUnread,
                                                                .labelAs,
                                                                .star,
                                                                .trash,
@@ -51,8 +54,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.inbox.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: true)
-        let expectedOptions2: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .trash,
@@ -70,8 +76,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.inbox.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: false)
-        let expectedOptions3: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .trash,
@@ -88,8 +97,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.inbox.rawValue,
                                               includeStarring: false,
                                               isStarred: true,
-                                              isBodyDecryptable: false)
-        let expectedOptions4: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .trash,
                                                                 .archive,
@@ -107,9 +119,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.trash.rawValue,
                                               includeStarring: true,
                                               isStarred: false,
-                                              isBodyDecryptable: true)
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
         XCTAssertEqual(sut.title, testTitle)
-        let expectedOptions: [MessageViewActionSheetAction] = [.markUnread,
+        let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .forward,
+                                                               .markUnread,
                                                                .labelAs,
                                                                .star,
                                                                .archive,
@@ -126,8 +141,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.trash.rawValue,
                                               includeStarring: false,
                                               isStarred: false,
-                                              isBodyDecryptable: true)
-        let expectedOptions2: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .archive,
                                                                 .inbox,
@@ -144,8 +162,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.trash.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: true)
-        let expectedOptions3: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .archive,
@@ -163,8 +184,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.trash.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: false)
-        let expectedOptions4: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .archive,
@@ -183,9 +207,12 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.spam.rawValue,
                                               includeStarring: true,
                                               isStarred: false,
-                                              isBodyDecryptable: true)
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
         XCTAssertEqual(sut.title, testTitle)
-        let expectedOptions: [MessageViewActionSheetAction] = [.markUnread,
+        let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .forward,
+                                                               .markUnread,
                                                                .labelAs,
                                                                .star,
                                                                .trash,
@@ -202,8 +229,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.spam.rawValue,
                                               includeStarring: false,
                                               isStarred: false,
-                                              isBodyDecryptable: true)
-        let expectedOptions2: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .trash,
                                                                 .spamMoveToInbox,
@@ -220,8 +250,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.spam.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: true)
-        let expectedOptions3: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .trash,
@@ -239,8 +272,11 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               labelID: Message.Location.spam.rawValue,
                                               includeStarring: true,
                                               isStarred: true,
-                                              isBodyDecryptable: false)
-        let expectedOptions4: [MessageViewActionSheetAction] = [.markUnread,
+                                              isBodyDecryptable: false,
+                                              hasMoreThanOneRecipient: false)
+        let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
+                                                                .forward,
+                                                                .markUnread,
                                                                 .labelAs,
                                                                 .unstar,
                                                                 .trash,

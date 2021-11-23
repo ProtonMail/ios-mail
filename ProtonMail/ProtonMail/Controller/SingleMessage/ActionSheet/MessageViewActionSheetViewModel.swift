@@ -28,8 +28,15 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
          labelID: String,
          includeStarring: Bool,
          isStarred: Bool,
-         isBodyDecryptable: Bool) {
+         isBodyDecryptable: Bool,
+         hasMoreThanOneRecipient: Bool) {
         self.title = title
+        
+        items.append(.reply)
+        if hasMoreThanOneRecipient {
+            items.append(.replyAll)
+        }
+        items.append(.forward)
 
         items.append(contentsOf: [
             .markUnread,
