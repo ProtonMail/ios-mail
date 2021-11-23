@@ -93,6 +93,8 @@ class SettingsEncryptedSearchViewModel {
     }
     
     var pauseIndexing: Bool
+    var interruptStatus = Bindable<String>()
+    var interruptAdvice = Bindable<String>()
     var currentProgress = Bindable<Int>()
     var estimatedTimeRemaining = Bindable<Int>()
     

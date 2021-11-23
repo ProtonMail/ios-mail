@@ -2094,6 +2094,15 @@ class LocalizedString {
     lazy var _encrypted_search_resume_button = NSLocalizedString("Resume", comment: "Text for resume button")
     lazy var _encrypted_search_download_paused = NSLocalizedString("Download paused", comment: "Text for status label when pause button is pressed")
     
+    lazy var _encrypted_search_download_paused_no_connectivity = NSLocalizedString("Download paused: No connectivity", comment: "Text for estimate time label when no internet connection is available")
+    lazy var _encrypted_search_download_paused_no_connectivity_status = NSLocalizedString("Please connect to the internet to continue.", comment: "Text for status label when no internet connection is available")
+    lazy var _encrypted_search_download_paused_no_wifi = NSLocalizedString("Download paused: No WiFi detected", comment: "Text for estimate time label when no wifi is available")
+    lazy var _encrypted_search_download_paused_no_wifi_status = NSLocalizedString("Connect to Wifi or enable \"Download via mobile data\".", comment: "Text for status label when no wifi is available")
+    lazy var _encrypted_search_download_paused_low_battery = NSLocalizedString("Download paused: Low battery", comment: "Text for estimate time label when low battery")
+    lazy var _encrypted_search_download_paused_low_battery_status = NSLocalizedString("Charge your device or resume manually.", comment: "Text for status label when low battery")
+    lazy var _encrypted_search_download_paused_low_storage = NSLocalizedString("Download paused: Storage full", comment: "Text for estimate time label when storage is full")
+    lazy var _encrypted_search_download_paused_low_storage_status = NSLocalizedString("Free up at least 100 MB of storage to continue.", comment: "Text for status label when storage is full")
+    
     lazy var _encrypted_search_alert_title = NSLocalizedString("Enable content search", comment: "Title for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
