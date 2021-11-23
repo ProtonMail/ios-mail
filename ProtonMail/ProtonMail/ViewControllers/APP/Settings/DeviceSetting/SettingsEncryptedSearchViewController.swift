@@ -183,7 +183,7 @@ extension SettingsEncryptedSearchViewController {
             }
             return cell
         case .downloadedMessages:
-            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+            /*if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
                 //index building completely finished
                 let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
@@ -195,23 +195,24 @@ extension SettingsEncryptedSearchViewController {
                     threeLineCell.accessoryType = .checkmark
                 }
                 return cell
-            } else {
+            } else {*/
                 //index building in progress
                 let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
                 if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages, "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!, "Pause", "Resume") {
+                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, "Downloading messages...", self.viewModel.estimatedTimeRemaining.value!, self.viewModel.currentProgress.value!) {
                         self.viewModel.pauseIndexing.toggle()
                         if self.viewModel.pauseIndexing {
-                            progressBarButtonCell.pauseButton.setTitle("Pause", for: UIControl.State.normal)
+                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: UIControl.State.normal)
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
+                            progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
                         } else {
-                            progressBarButtonCell.pauseButton.setTitle("Resume", for: UIControl.State.normal)
+                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: UIControl.State.normal)
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
                         }
                     }
                 }
                 return cell
-            }
+            //}
         }
     }
     
@@ -288,7 +289,7 @@ extension SettingsEncryptedSearchViewController {
                 let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
                 let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
                 vc.set(viewModel: vm)
-                vc.set(coordinator: self.coordinator!)
+                //vc.set(coordinator: self.coordinator!)
                 show(vc, sender: self)
             }
             break
