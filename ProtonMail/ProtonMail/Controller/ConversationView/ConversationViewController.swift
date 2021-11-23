@@ -240,7 +240,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                                         labelID: location.labelID,
                                                         includeStarring: true,
                                                         isStarred: message.starred,
-                                                        isBodyDecryptable: isBodyDecrpytable)
+                                                        isBodyDecryptable: isBodyDecrpytable,
+                                                        hasMoreThanOneRecipient: message.isHavingMoreThanOneContact)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
