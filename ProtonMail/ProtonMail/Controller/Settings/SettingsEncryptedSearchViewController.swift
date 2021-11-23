@@ -408,14 +408,14 @@ extension SettingsEncryptedSearchViewController {
         }
         self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
         self.view.addSubview(self.banner)
-        self.banner.drop(on: self.view, from: .top)
-        
+
+        self.banner.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16)
-            //self.banner.bottomAnchor.constraint(equalTo: self.)
-            //textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
-            //textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-            //textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+            self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16),
+            self.banner.widthAnchor.constraint(equalToConstant: 343),
+            self.banner.heightAnchor.constraint(equalToConstant: 72)
         ])
+
+        self.banner.drop(on: self.view, from: .top)
     }
 }
