@@ -238,7 +238,7 @@ class NewMessageBodyViewModel {
 
     private func decryptBody(from message: Message) -> String? {
         let expiration = message.expirationTime
-        let expired = (expiration ?? .distantFuture).compare(Date.unixDate) == .orderedAscending
+        let expired = (expiration ?? .distantFuture).compare(Date()) == .orderedAscending
         guard !expired else {
             return LocalString._message_expired
         }

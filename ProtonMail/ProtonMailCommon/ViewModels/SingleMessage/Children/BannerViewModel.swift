@@ -102,7 +102,7 @@ class BannerViewModel {
     }
 
     func getExpirationOffset() -> Int {
-        return Int(self.expirationTime.timeIntervalSince(Date.unixDate))
+        return Int(self.expirationTime.timeIntervalSince(Date()))
     }
 
     func messageHasChanged(message: Message) {
