@@ -102,13 +102,13 @@ import UIKit
         self.layoutIfNeeded()
     }
     
-    func configCell(_ titleLine: String, _ status: String, _ estimatedTime: Int, _ currentProgress: Int, complete: buttonActionBlock?) {
+    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, complete: buttonActionBlock?) {
         var leftAttributes = FontManager.Default.alignment(.left)
         leftAttributes[.foregroundColor] = ColorProvider.TextNorm
         titleLabel.attributedText = NSMutableAttributedString(string: titleLine, attributes: leftAttributes)
         
-        statusLabel.text = status
-        estimatedTimeLabel.text = String(estimatedTime) + " minutes remaining..."
+        statusLabel.text = advice
+        estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.setProgress(Float(currentProgress)/100.0, animated: true)
         

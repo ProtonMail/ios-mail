@@ -574,9 +574,9 @@ public class EncryptedSearchService {
         
         self.internetStatusProvider = InternetConnectionStatusProvider()
         self.internetStatusProvider?.getConnectionStatuses(currentStatus: { status in
-            if status.isConnected {
-                print("Internet connection is active!")
-            }
+            //if status.isConnected {
+            //    print("Internet connection is active!")
+            //}
         })
         
         //enable temperature monitoring
@@ -641,9 +641,11 @@ public class EncryptedSearchService {
     internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
     
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
+    internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
+    internal var pauseIndexingDueToLowStorage: Bool = false
     internal var numPauses: Int = 0
     internal var numInterruptions: Int = 0
     
@@ -847,10 +849,11 @@ extension EncryptedSearchService {
         if isPause {
             self.numInterruptions += 1
             self.viewModel?.pauseIndexing = true
+            self.updateUIWithIndexingStatus()
         } else {
             print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), background: \(self.pauseIndexingDueToBackgroundTaskRunningOutOfTime)")
             //check if any of the flags is set to true
-            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
+            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime || self.pauseIndexingDueToLowStorage {
                 self.viewModel?.pauseIndexing = true
                 completionHandler()
                 return
@@ -2408,6 +2411,24 @@ extension EncryptedSearchService {
         }
     }
     
+    func updateUIWithIndexingStatus() {
+        if self.pauseIndexingDueToNetworkConnectivityIssues {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_connectivity_status
+        }
+        //TODO wifi
+        //LocalString._encrypted_search_download_paused_no_wifi
+        //LocalString._encrypted_search_download_paused_no_wifi_status
+        if self.pauseIndexingDueToLowBattery {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_battery
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_battery_status
+        }
+        if self.pauseIndexingDueToLowStorage {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
+        }
+    }
+    
     /*func updateMemoryConsumption() {
         let totalMemory: Double = self.getTotalAvailableMemory()
         let freeMemory: Double = self.getCurrentlyAvailableAppMemory()
@@ -2478,6 +2499,15 @@ extension EncryptedSearchService {
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
         @unknown default:
             print("Unknown temperature state. Do something?")
+        }
+    }
+    
+    private func checkIfEnoughStorage() {
+        let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
+        print("Current storage space: \(remainingStorageSpace)")
+        if remainingStorageSpace < 100 {
+            self.pauseIndexingDueToLowStorage = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         }
     }
     
@@ -2703,6 +2733,9 @@ extension EncryptedSearchService {
                 //self.updateMemoryConsumption()
             }
         }
+        
+        //check if there is still enought storage left
+        self.checkIfEnoughStorage()
     }
     
     func sendNotification(text: String){
