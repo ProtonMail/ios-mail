@@ -180,8 +180,9 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #else
-        TrustKitWrapper.start(delegate: self)
+
         #endif
+        TrustKitWrapper.start(delegate: self)
 
         Analytics.shared.setup()
         

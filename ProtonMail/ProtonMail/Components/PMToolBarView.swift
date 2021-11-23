@@ -41,6 +41,7 @@ class PMToolBarView: UIView {
         addSubviews()
         setUpLayout()
         setUpViews()
+        accessibilityElements = [unreadButton, trashButton, moveToButton, labelAsButton, moreButton]
     }
 
     override func layoutSubviews() {

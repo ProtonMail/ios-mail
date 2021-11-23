@@ -26,6 +26,7 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
         willRevealMenu?()
         self.handleStatusBar(add: true)
         setNeedsStatusBarAppearanceUpdate()
+        sideMenuController.menuViewController.view.accessibilityElementsHidden = false
         sideMenuController.contentViewController.view.accessibilityElementsHidden = true
         sideMenuController.contentViewController.view.isUserInteractionEnabled = false
     }
@@ -35,6 +36,7 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
         willHideMenu?()
         self.handleStatusBar(add: false)
         setNeedsStatusBarAppearanceUpdate()
+        sideMenuController.menuViewController.view.accessibilityElementsHidden = true
         sideMenuController.contentViewController.view.accessibilityElementsHidden = false
         sideMenuController.contentViewController.view.isUserInteractionEnabled = true
     }

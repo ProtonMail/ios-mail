@@ -29,6 +29,7 @@ class SingleMessageView: UIView {
         backgroundColor = ColorProvider.BackgroundNorm
         addSubviews()
         setUpLayout()
+        accessibilityElements = [scrollView, toolBar]
     }
 
     let scrollView = SubviewsFactory.scrollView

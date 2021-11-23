@@ -16,6 +16,7 @@ class SingleMessageContentView: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
+        accessibilityElements = [messageHeaderContainer, attachmentContainer, bannerContainer, messageBodyContainer, footerButtons]
     }
 
     private func addSubviews() {

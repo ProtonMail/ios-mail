@@ -78,9 +78,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var unreadFilterButton: UIButton!
     @IBOutlet weak var unreadFilterButtonWidth: NSLayoutConstraint!
     
-    // MARK: TopMessage
-    private weak var topMessageView: BannerView?
-    
     // MARK: MailActionBar
     private var mailActionBar: PMActionBar?
     
@@ -159,6 +156,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
+    private var customUnreadFilterElement: UIAccessibilityElement?
+
     func inactiveViewModel() {
         guard self.viewModel != nil else {
             return
@@ -212,7 +211,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         let _ = UINavigationController(rootViewController: vc)
         return vc
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -275,11 +274,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         refetchAllIfNeeded()
 
         setupScreenEdgeGesture()
+        setupAccessibility()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.hideTopMessage()
         if !notificationsAreScheduled {
             notificationsAreScheduled = true
             scheduleNotifications()
@@ -303,7 +302,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         notificationsAreScheduled = false
-        self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -431,6 +429,25 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.noResultFooterLabel.attributedText = NSAttributedString(string: LocalString._mailbox_footer_no_result, attributes: attridutes)
         
         self.noResultImage.isHidden = true
+    }
+
+    private func setupAccessibility() {
+        // The unread button in the inbox is causing the navigation issue of VoiceOver. Resolve this issue by adding a custom accessibility element.
+        unreadFilterButton.isAccessibilityElement = false
+        let newElement = UIAccessibilityElement(accessibilityContainer: unreadFilterButton as Any)
+        newElement.accessibilityLabel = LocalString._unread_action
+        let unreadAction = UIAccessibilityCustomAction(
+            name: LocalString._indox_accessibility_switch_unread,
+            target: self,
+            selector: #selector(self.unreadMessageFilterButtonTapped))
+
+        newElement.accessibilityCustomActions = [unreadAction]
+        newElement.accessibilityFrame = unreadFilterButton.frame
+        customUnreadFilterElement = newElement
+        view.accessibilityElements = [updateTimeLabel as Any,
+                                      newElement,
+                                      bannerContainer as Any,
+                                      tableView as Any]
     }
     
     // MARK: - Public methods
@@ -1127,7 +1144,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     internal func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
-        self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
@@ -1453,8 +1469,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func updateUnreadButton() {
         let unread = viewModel.lastUpdateTime()?.unread ?? 0
         let isInUnreadFilter = unreadFilterButton.isSelected
+        let shouldShowUnreadFilter = unread != 0
         unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
         unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
+        customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
         let number = unread > 9999 ? " +9999" : "\(unread)"
 
         if isInUnreadFilter {
@@ -1470,6 +1488,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             unreadFilterButton.setAttributedTitle("\(number) \(LocalString._unread_action) ".apply(style: normalAttributes),
                                                   for: .normal)
         }
+        customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
 
         let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
@@ -1996,10 +2015,7 @@ extension MailboxViewController {
         let message = count == 1 ? LocalString._messages_you_have_new_email : String(format: LocalString._messages_you_have_new_emails_with, count)
         message.alertToastBottom()
     }
-    
-    private func hideTopMessage() {
-        self.topMessageView?.remove(animated: true)
-    }
+
 }
 
 // MARK: - Handle Network status changed

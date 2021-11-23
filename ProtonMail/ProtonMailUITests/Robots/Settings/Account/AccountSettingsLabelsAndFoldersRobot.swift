@@ -47,7 +47,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
-        staticText(id.selectLabelFolderButtonText(folderName)).byIndex(1).tap()
+        staticText(id.selectLabelFolderButtonText(folderName)).tap()
         return AddFolderLabelRobot()
     }
     
@@ -57,7 +57,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
-        staticText(id.selectLabelFolderButtonText(name)).byIndex(1).tap()
+        staticText(id.selectLabelFolderButtonText(name)).tap()
         return AddFolderLabelRobot()
     }
     
