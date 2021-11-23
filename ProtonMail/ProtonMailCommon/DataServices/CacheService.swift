@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import Crypto
 import CoreData
 import Groot
 import ProtonCore_DataModel
@@ -307,11 +308,12 @@ class CacheService: Service {
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
         context.perform {
+            let date = Date.unixDate
             let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
                                           Message.Attributes.expirationTime,
                                           Message.Attributes.expirationTime,
-                                          NSDate())
+                                          date as CVarArg)
 
             if let messages = try? self.context.fetch(fetch) as? [Message] {
                 messages.forEach { (msg) in
