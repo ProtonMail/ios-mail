@@ -2032,9 +2032,11 @@ class LocalizedString {
     lazy var _settings_footer_of_download_via_mobile_data = NSLocalizedString("If you lose your WiFi connection, download will continue over mobile data", comment: "The footer of the slider for download via mobile data in settings")
     lazy var _settings_title_of_download_via_mobile_data = NSLocalizedString("Download via mobile data", comment: "The title of the slider for download via mobile data in settings")
     lazy var _settings_title_of_downloaded_messages = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in settings")
+    lazy var _settings_title_of_downloaded_messages_progress = NSLocalizedString("Download progress", comment: "The title of downloaded messages in settings")
     lazy var _settings_title_of_message_history = NSLocalizedString("Message history", comment: "The title of message history in settings for encrypted search")
     lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
     lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
+    lazy var _encrypted_search_default_text_estimated_time_label = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
@@ -2092,6 +2094,9 @@ class LocalizedString {
     lazy var _encrypted_search_info_search_paused = NSLocalizedString("Message downloading paused. Find out how to %1$@", comment: "Text for the banner when indexing is paused")
     lazy var _encrypted_search_info_search_paused_link = NSLocalizedString("resume manually", comment: "Link for the banner when indexing is paused")
     lazy var _encrypted_search_info_search_refresh = NSLocalizedString("New messages downloading. %1$@", comment: "Text for the banner when indexing is refreshed")
+    lazy var _encrypted_search_pause_button = NSLocalizedString("Pause", comment: "Text for pause button")
+    lazy var _encrypted_search_resume_button = NSLocalizedString("Resume", comment: "Text for resume button")
+    lazy var _encrypted_search_download_paused = NSLocalizedString("Download paused", comment: "Text for status label when pause button is pressed")
     
     lazy var _encrypted_search_alert_title = NSLocalizedString("Enable content search", comment: "Title for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
