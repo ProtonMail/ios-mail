@@ -201,7 +201,7 @@ included:
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackActionSheetView.swift
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackTransitioner.swift
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackViewModel.swift
-  - ${PWD}ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
   - ${PWD}/ProtonMail/Components/InAppFeeback/InAppFeedbackPromptScheduler.swift
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/ContactsUtils.swift
   - ${PWD}/ProtonMail/Controller/Settings/SettingsDarkModeViewController.swift
@@ -217,6 +217,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/PGPAddressBuilder.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/PackageBuilder.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService+Types.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/UserInfo+OrganizationRole.swift
 
 excluded:
   - ${PWD}/Pods

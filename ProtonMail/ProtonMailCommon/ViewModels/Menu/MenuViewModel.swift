@@ -25,6 +25,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import ProtonCore_AccountSwitcher
+import ProtonCore_DataModel
 
 final class MenuViewModel: NSObject {
     private let usersManager: UsersManager
@@ -77,20 +78,12 @@ final class MenuViewModel: NSObject {
             self.feedbackItems = []
         }
         self.sections = sections
-        self.inboxItems = [MenuLabel(location: .inbox),
-                           MenuLabel(location: .draft),
-                           MenuLabel(location: .sent),
-                           MenuLabel(location: .starred),
-                           MenuLabel(location: .archive),
-                           MenuLabel(location: .spam),
-                           MenuLabel(location: .trash),
-                           MenuLabel(location: .allmail)]
-        self.moreItems = [MenuLabel(location: .subscription),
-                          MenuLabel(location: .settings),
-                          MenuLabel(location: .contacts),
-                          MenuLabel(location: .bugs),
-                          MenuLabel(location: .lockapp),
-                          MenuLabel(location: .signout)]
+        self.inboxItems = Self.inboxItems()
+        let defaultInfo = MoreItemsInfo(userIsMember: nil,
+                                        subscriptionAvailable: subscriptionAvailable,
+                                        isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
+                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+        self.moreItems = Self.moreItems(for: defaultInfo)
     }
     
     deinit {
@@ -426,20 +419,11 @@ extension MenuViewModel {
     }
     
     private func updateMoreItems(shouldReload: Bool = true) {
-        var newMore = [MenuLabel(location: .subscription),
-                       MenuLabel(location: .settings),
-                       MenuLabel(location: .contacts),
-                       MenuLabel(location: .bugs),
-                       MenuLabel(location: .lockapp),
-                       MenuLabel(location: .signout)]
-        if !self.subscriptionAvailable {
-            newMore = newMore.filter { $0.location != .subscription }
-        }
-        
-        if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
-            newMore = newMore.filter { $0.location != .lockapp }
-        }
-        
+        let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userinfo.isMember ?? false,
+                                          subscriptionAvailable: self.subscriptionAvailable,
+                                          isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
+                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
+        let newMore = Self.moreItems(for: moreItemsInfo)
         if newMore.count != self.moreItems.count {
             self.moreItems = newMore
             if shouldReload {
@@ -571,5 +555,48 @@ extension MenuViewModel {
     private func updateUnread() -> Promise<Void> {
         return self.getUnreadNumbers()
             .then { self.aggregateUnreadNumbers() }
+    }
+}
+
+// MARK: MenuLabel options builder
+extension MenuViewModel {
+    struct MoreItemsInfo {
+        var userIsMember: Bool?
+        var subscriptionAvailable: Bool
+        var isPinCodeEnabled: Bool
+        var isTouchIDEnabled: Bool
+    }
+
+    static func inboxItems() -> [MenuLabel] {
+        [MenuLabel(location: .inbox),
+         MenuLabel(location: .draft),
+         MenuLabel(location: .sent),
+         MenuLabel(location: .starred),
+         MenuLabel(location: .archive),
+         MenuLabel(location: .spam),
+         MenuLabel(location: .trash),
+         MenuLabel(location: .allmail)]
+    }
+
+    static func moreItems(for info: MoreItemsInfo) -> [MenuLabel] {
+        var newMore = [MenuLabel(location: .settings),
+                       MenuLabel(location: .contacts),
+                       MenuLabel(location: .bugs),
+                       MenuLabel(location: .lockapp),
+                       MenuLabel(location: .signout)]
+
+        if info.userIsMember == false {
+            newMore.insert(MenuLabel(location: .subscription), at: 0)
+        }
+
+        if info.subscriptionAvailable == false {
+            newMore = newMore.filter { $0.location != .subscription }
+        }
+        
+        if !info.isPinCodeEnabled, !info.isTouchIDEnabled {
+            newMore = newMore.filter { $0.location != .lockapp }
+        }
+
+        return newMore
     }
 }
