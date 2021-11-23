@@ -215,8 +215,9 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
             self.signingOut = true
-            _ = self.viewModel.signOut()
-            self.signingOut = false
+            _ = self.viewModel.signOut().done { [weak self] _ in
+                self?.signingOut = false
+            }
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
