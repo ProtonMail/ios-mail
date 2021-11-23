@@ -406,6 +406,7 @@
 		257835C85722866BA06AEF2412E55123 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
 		25A40D8BF5D3C503B1B63243BBC2F037 /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BEC9646489E910500FA4B7A64C85D /* ContactDataService.swift */; };
 		25BCC8E393BB1B0F61AAFB1D6B141ACE /* LabelManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FBBAF1F42FB0132D0116B4FEA3EFD2 /* LabelManagerViewController.swift */; };
+		261A26FC36694919AE9B24399C40848F /* Date+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E78A83BDEB778319CEB813234F03DEC /* Date+ExtensionTests.swift */; };
 		265431155B0080FD854945BA60E4D4B4 /* LinkOpenerCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC526600186BFADBF928D87FB626F1AC /* LinkOpenerCacheProtocol.swift */; };
 		2688AF39DAC93913336234E7BD6EDEE2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
 		26905CC75B97C508F2AB1B64E7DFC7FF /* ConversationFeatureFlagRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F154C505F5C2A39FBD6C9F66E25FDD /* ConversationFeatureFlagRequestTests.swift */; };
@@ -2262,6 +2263,7 @@
 		D16D95D7A6A4D03761B972DB3A60341A /* FolderboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7AE1B303AE44D28D7D9F65983E721 /* FolderboxViewModelImpl.swift */; };
 		D1AD3C97890D96729070B7DD78696DF5 /* SettingsTwoLinesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A49C2558042E8D2688293D25F35564 /* SettingsTwoLinesCell.xib */; };
 		D1B46EAB7C1ED4DE3207292205A5B771 /* InAppFeedbackTransitioner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F248726603A666E9F5F7A28B78134 /* InAppFeedbackTransitioner.swift */; };
+		D1BC15F6E07097E0B81B8D1F70B193C1 /* Date+CountExpirationTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B541E809CE42F937D77F1549362BDA /* Date+CountExpirationTime.swift */; };
 		D1DE1C8F121B201850D00945B4B87C17 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353F65994664847D220F289184C2A5B /* Colors.swift */; };
 		D1E9B49A9DF9F8C5340E8DB3A42C21DF /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		D2082A5A80FDF97632D58D4E432AB6F9 /* MarkLegitimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309E24B13B1278F5F4BD5A34B9C0B48 /* MarkLegitimate.swift */; };
@@ -2616,6 +2618,7 @@
 		F182E9955D2DBBEE875735AFA791603C /* UnsubscribeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594F3645C3F60C5BEA7845F04E11B8AB /* UnsubscribeService.swift */; };
 		F18B2D0A0840CA196F21CEA2AC80FC24 /* ConversationCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9259E3817B32FF1A2D50C41C5B5DA869 /* ConversationCount.swift */; };
 		F19E1AAE7156602B3360B9A9B184B703 /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
+		F1DB3170C4A0577C6212B9840AFB1005 /* Date+CountExpirationTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B541E809CE42F937D77F1549362BDA /* Date+CountExpirationTime.swift */; };
 		F1F3F93C1C1433C9DF97B2FA0BEAC3A6 /* SharePinUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */; };
 		F24A84308391C059980C1B931BBEFD41 /* ConversationCountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969FADCDD67C863788C1F4FFB80C4124 /* ConversationCountAPI.swift */; };
 		F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDB859D696ED07B574FA18C09EFF40F /* TwoFACodeViewController.swift */; };
@@ -3377,6 +3380,7 @@
 		5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSaver.swift; sourceTree = "<group>"; };
 		5DF6C44607338A7DF2D618279E0B7E59 /* Date+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Fixture.swift"; sourceTree = "<group>"; };
 		5E6A2170F2D777B955E8FEA9C324BEA2 /* SettingsDarkModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDarkModeViewModel.swift; sourceTree = "<group>"; };
+		5E78A83BDEB778319CEB813234F03DEC /* Date+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ExtensionTests.swift"; sourceTree = "<group>"; };
 		5E9DA9BCE201ED725C74E1B0A417A597 /* case1bis_forgedPlainData */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = case1bis_forgedPlainData; sourceTree = "<group>"; };
 		5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModel.swift; sourceTree = "<group>"; };
 		5ED38F3AA08F1433223C4769A991F274 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -6008,6 +6012,7 @@
 		9B77069927AACE5CA4A08B9A308AD30D /* General */ = {
 			isa = PBXGroup;
 			children = (
+				5E78A83BDEB778319CEB813234F03DEC /* Date+ExtensionTests.swift */,
 				832F025E0B4D13E73C779C02401A228D /* String+ExtensionTests.swift */,
 			);
 			path = General;
@@ -8692,6 +8697,7 @@
 				06E538711B164D43DEAD54D773838C6C /* DarkModeStatusStub.swift in Sources */,
 				38EB4C78D406CFDB56CC74A13EDE6061 /* Data+MimeTests.swift in Sources */,
 				E51486F5F3F683D97E7F6F6F932AD9F6 /* DataAttachmentDecryptionTests.swift in Sources */,
+				261A26FC36694919AE9B24399C40848F /* Date+ExtensionTests.swift in Sources */,
 				5D81CD689E2ECE5EB406D292007C3AC8 /* Date+Fixture.swift in Sources */,
 				121E8ADC507718526DCB4B15315B0B5B /* DateFormatter+ContactBirthdayFormatterTests.swift in Sources */,
 				C8D9D4E495D8D4C1811258A659D668C4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift in Sources */,
@@ -10537,6 +10543,7 @@
 				6B98C8A97FBE9BC84B3700AB5ED6BD5E /* Data+Extension.swift in Sources */,
 				DC0E80BBC5CC9E72BF916605EE52735C /* Data+Mime.swift in Sources */,
 				7055E2AD5DBAB9602510E786CFC0B7C3 /* DataService+Error.swift in Sources */,
+				F1DB3170C4A0577C6212B9840AFB1005 /* Date+CountExpirationTime.swift in Sources */,
 				D436CB80B266144B0099F7E712B59739 /* Date+Extension.swift in Sources */,
 				C749663EC9609907B2771CA798A6E5E3 /* DeepLink.swift in Sources */,
 				B8A095E41338491F41A2E436C8EBC5ED /* Dictionary+Extension.swift in Sources */,
@@ -10897,6 +10904,7 @@
 				924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */,
 				1A23FEF39C822E826B9161B3839EE30F /* Data+Mime.swift in Sources */,
 				BA5BDD546C86F839CB64787CCD570D2E /* DataService+Error.swift in Sources */,
+				D1BC15F6E07097E0B81B8D1F70B193C1 /* Date+CountExpirationTime.swift in Sources */,
 				ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */,
 				F600A2B88892D45FF160821C8CEAA83A /* DeepLink.swift in Sources */,
 				C5F7E2AA2A613504310750E6F3030A7A /* Dictionary+Extension.swift in Sources */,

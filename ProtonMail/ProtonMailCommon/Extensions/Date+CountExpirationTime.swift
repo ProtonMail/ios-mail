@@ -20,16 +20,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Crypto
 import Foundation
 
 extension Date {
 
+    static var unixDate: Date {
+        let time = TimeInterval(CryptoGetUnixTime())
+        return Date(timeIntervalSince1970: time)
+    }
+
     var countExpirationTime: String {
         let distance: TimeInterval
+        let unixTime = Date.unixDate
         if #available(iOS 13.0, *) {
-            distance = Date().distance(to: self) + 60
+            distance = unixTime.distance(to: self) + 60
         } else {
-            distance = timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate + 60
+            distance = timeIntervalSinceReferenceDate - unixTime.timeIntervalSinceReferenceDate + 60
         }
 
         if distance > 86_400 {
