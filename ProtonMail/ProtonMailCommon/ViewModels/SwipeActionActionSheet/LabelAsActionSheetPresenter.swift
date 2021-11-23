@@ -108,7 +108,6 @@ class LabelAsActionSheetPresenter {
         //TODO: observe item here
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)
 
-
         let foldersGroup = PMActionSheetItemGroup(items: labelActions, style: .multiSelection)
         var itemGroups: [PMActionSheetItemGroup] = [archiveGroup, foldersGroup]
         if hasNewLabelButton {
@@ -118,5 +117,10 @@ class LabelAsActionSheetPresenter {
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         actionSheet.eventsListener = listener
         labelSelectionActionSheet = actionSheet
+        delay(0.3) {
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: actionSheet)
+            }
+        }
     }
 }

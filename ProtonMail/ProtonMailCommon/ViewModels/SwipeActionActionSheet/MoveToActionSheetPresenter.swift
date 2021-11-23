@@ -65,7 +65,6 @@ class MoveToActionSheetPresenter {
                 }
             })
 
-
             cancel(currentMarkTypes != viewModel.initialLabelSelectionStatus)
         }
 
@@ -114,7 +113,6 @@ class MoveToActionSheetPresenter {
         }
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)
 
-
         let foldersGroup = PMActionSheetItemGroup(items: folderActions, style: .singleSelection)
         var itemGroups: [PMActionSheetItemGroup] = [foldersGroup]
         if hasNewFolderButton {
@@ -124,5 +122,10 @@ class MoveToActionSheetPresenter {
         actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
         folderSelectionActionSheet = actionSheet
+        delay(0.3) {
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: actionSheet)
+            }
+        }
     }
 }

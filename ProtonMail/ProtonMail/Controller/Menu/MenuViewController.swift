@@ -262,7 +262,9 @@ extension MenuViewController: MenuUIProtocol {
     func update(displayName: String) {
         self.displayName.text = displayName
         self.primaryUserview.accessibilityLabel = displayName
-        UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
+        }
     }
     
     func update(avatar: String) {
@@ -466,6 +468,22 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             plusIcon.widthAnchor.constraint(equalToConstant: 20),
             plusIcon.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
+
+        if section == .folders {
+            plusView.accessibilityLabel = LocalString._labels_add_folder_action
+        } else if section == .labels {
+            plusView.accessibilityLabel = LocalString._labels_add_label_action
+        }
+
+        plusView.isAccessibilityElement = true
+        plusView.accessibilityTraits = .button
+
+        if let labelView = vi.subviews.filter({ $0 is UILabel }).first {
+            vi.accessibilityElements = [labelView, plusView]
+        } else {
+            vi.accessibilityElements = [plusView]
+        }
+
         return vi
     }
     
@@ -514,7 +532,9 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func switcherWillDisappear() {
-        UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
+        }
     }
 }
 

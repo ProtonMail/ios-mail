@@ -45,6 +45,9 @@ class ConversationExpandedMessageView: UIView {
     }
 
     private func setUpActions() {
+        topArrowControl.isAccessibilityElement = true
+        topArrowControl.accessibilityLabel = LocalString.collalse_message_title_in_converation_view
+        topArrowControl.accessibilityTraits = .button
         topArrowControl.addTarget(self, action: #selector(topArrowTap), for: .touchUpInside)
     }
 

@@ -2186,6 +2186,10 @@ class LocalizedString {
     lazy var _attachment_upload_failed_title = NSLocalizedString("Attachment failure", comment: "Alert title when attachment upload failed")
     lazy var _attachment_upload_failed_body = NSLocalizedString("The following files couldn't be attached:", comment: "Alert message when attachment upload failed")
 
+    lazy var _menu_expand_folder = NSLocalizedString("Expand folder", comment: "The title of voice over action of expanding the folder")
+    lazy var _menu_collapse_folder = NSLocalizedString("Collapse folder", comment: "The title of voice over action of collapsing the folder")
+
+    lazy var _indox_accessibility_switch_unread = NSLocalizedString("Switch unread filter", comment: "The title of voice over action that switches the unread filter status in the inbox")
     // MARK: - In App Feedback
     lazy var _your_feedback = NSLocalizedString("Your feedback", comment: "Title of user feedback view")
     lazy var _feedback_prompt = NSLocalizedString("How would you describe your experience with the new ProtonMail?", comment: "Prompt of user feedback view")
@@ -2195,6 +2199,7 @@ class LocalizedString {
     lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
     lazy var _provide_feedback = NSLocalizedString("Provide feedback", comment: "Title of menu action to trigger feedback view")
     lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
+    lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 
     lazy var _settings_dark_mode_section_title = NSLocalizedString("Appearence", comment: "The title of section inside the dark mode setting page")
     lazy var _settings_dark_mode_title_follow_system = NSLocalizedString("Follow device setting", comment: "The title of follow system option in dark mode setting")

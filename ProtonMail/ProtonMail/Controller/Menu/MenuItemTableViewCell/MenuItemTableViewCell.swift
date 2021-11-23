@@ -53,6 +53,11 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickArrow))
         self.arrowBGView.addGestureRecognizer(tap)
+
+        arrowBGView.isAccessibilityElement = true
+        arrowBGView.accessibilityLabel = arrow.isHighlighted ? LocalString._menu_collapse_folder : LocalString._menu_expand_folder
+        arrowBGView.accessibilityTraits = .button
+        accessibilityElements = [name as Any, arrowBGView as Any]
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
@@ -62,6 +67,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         
         self.name.textColor = textColor
         self.icon.tintColor = iconColor
+        arrowBGView.accessibilityLabel = arrow.isHighlighted ? LocalString._menu_collapse_folder : LocalString._menu_expand_folder
     }
     
     /// - Parameters:
@@ -155,7 +161,9 @@ extension MenuItemTableViewCell {
     }
     
     private func setupArrow(label: MenuLabel, showArrow: Bool) {
-        
+        defer {
+            self.arrowBGView.isAccessibilityElement = !arrow.isHidden
+        }
         guard showArrow else {
             self.arrowBGWdith.constant = 12
             self.arrow.isHidden = true

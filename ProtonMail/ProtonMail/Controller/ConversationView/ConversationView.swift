@@ -11,6 +11,7 @@ class ConversationView: UIView {
         backgroundColor = ColorProvider.BackgroundSecondary
         addSubviews()
         setUpLayout()
+        accessibilityElements = [tableView, toolBar]
     }
 
     private func addSubviews() {

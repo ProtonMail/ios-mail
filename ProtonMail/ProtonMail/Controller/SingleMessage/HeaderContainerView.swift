@@ -26,6 +26,7 @@ class HeaderContainerView: UIView {
 
     init() {
         super.init(frame: .zero)
+        setUp()
         addSubviews()
         setUpLayout()
     }
@@ -33,6 +34,14 @@ class HeaderContainerView: UIView {
     let moreControl = UIControl(frame: .zero)
     let contentContainer = UIView(frame: .zero)
     let moreImageView = SubviewsFactory.moreImageView
+
+    private func setUp() {
+        moreControl.isAccessibilityElement = true
+        moreControl.accessibilityTraits = .button
+        moreControl.accessibilityLabel = LocalString._general_more
+
+        accessibilityElements = [moreControl, contentContainer]
+    }
 
     private func addSubviews() {
         addSubview(contentContainer)

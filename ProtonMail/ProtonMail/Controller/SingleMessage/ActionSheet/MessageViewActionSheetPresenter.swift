@@ -29,29 +29,34 @@ class MessageViewActionSheetPresenter {
         listener: PMActionSheetEventsListener?,
         viewModel: ActionSheetViewModel,
         action: @escaping (MessageViewActionSheetAction) -> Void) {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
-            action(.dismiss)
-        }
+            let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { _ in
+                action(.dismiss)
+            }
 
-        let headerView = PMActionSheetHeaderView(
-            title: viewModel.title,
-            subtitle: nil,
-            leftItem: cancelItem,
-            rightItem: nil
-        )
+            let headerView = PMActionSheetHeaderView(
+                title: viewModel.title,
+                subtitle: nil,
+                leftItem: cancelItem,
+                rightItem: nil
+            )
 
-        let actions = viewModel.items.map { item in
-            PMActionSheetPlainItem(title: item.title,
-                                   icon: item.icon.withRenderingMode(.alwaysTemplate),
-                                   textColor: ColorProvider.TextNorm,
-                                   iconColor: ColorProvider.IconNorm) { (_) in
-                action(item)
+            let actions = viewModel.items.map { item in
+                PMActionSheetPlainItem(title: item.title,
+                                       icon: item.icon.withRenderingMode(.alwaysTemplate),
+                                       textColor: ColorProvider.TextNorm,
+                                       iconColor: ColorProvider.IconNorm) { (_) in
+                    action(item)
+                }
+            }
+
+            let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
+            let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
+            actionSheet.eventsListener = listener
+            actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
+            delay(0.3) {
+                if UIAccessibility.isVoiceOverRunning {
+                    UIAccessibility.post(notification: .screenChanged, argument: actionSheet)
+                }
             }
         }
-
-        let actionsGroup = PMActionSheetItemGroup(items: actions, style: .clickable)
-        let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
-        actionSheet.eventsListener = listener
-        actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
-    }
 }

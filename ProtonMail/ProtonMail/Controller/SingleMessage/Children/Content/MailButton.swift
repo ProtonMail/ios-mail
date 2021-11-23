@@ -27,6 +27,7 @@ class MailButton: UIControl {
     var title: String? {
         didSet {
             titleLabel.text = title
+            accessibilityLabel = titleLabel.text
         }
     }
 
@@ -85,7 +86,9 @@ class MailButton: UIControl {
     }
 
     private func setUpAction() {
-        self.addTarget(self, action: #selector(tapAction), for: .touchUpInside)
+        accessibilityTraits = .button
+        isAccessibilityElement = true
+        addTarget(self, action: #selector(tapAction), for: .touchUpInside)
     }
 
     @objc
