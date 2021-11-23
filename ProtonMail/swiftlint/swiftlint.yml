@@ -207,6 +207,16 @@ included:
   - ${PWD}/ProtonMail/Controller/Settings/SettingsDarkModeViewController.swift
   - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/DarkModeCacheProtocol.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Settings/SettingsDarkModeViewModel.swift
+  - ${PWD}/ProtonMail/Controller/Compose/ComposeViewControllerHelper.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/AddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/ClearAddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/ClearMimeAddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/EOAddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/MessageSendingRequestBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/MimeAddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/PGPAddressBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/PackageBuilder.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService+Types.swift
 
 excluded:
   - ${PWD}/Pods

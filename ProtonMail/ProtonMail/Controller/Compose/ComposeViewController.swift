@@ -421,14 +421,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         return true
     }
 
-    internal func sendMessage () {
+    private func sendMessage() {
         if self.headerView.expirationTimeInterval > 0 {
-            if self.headerView.hasPGPPinned ||
-                (self.headerView.hasNonePMEmails && self.encryptionPassword.count <= 0 ) {
+
+            if viewModel.shouldShowExpirationWarning(havingPGPPinned: headerView.hasPGPPinned,
+                                                  isPasswordSet: !encryptionPassword.isEmpty,
+                                                  havingNonPMEmail: headerView.hasNonePMEmails) {
                 self.coordinator?.go(to: .expirationWarning)
                 return
             }
-            
         }
         delay(0.3) {
             self.sendMessageStepTwo()

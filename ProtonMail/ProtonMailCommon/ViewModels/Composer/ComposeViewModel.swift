@@ -232,6 +232,15 @@ class ComposeViewModel: NSObject {
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         fatalError("This method must be overridden")
     }
+
+    func shouldShowExpirationWarning(havingPGPPinned: Bool,
+                                     isPasswordSet: Bool,
+                                     havingNonPMEmail: Bool) -> Bool {
+        let helper = ComposeViewControllerHelper()
+        return helper.shouldShowExpirationWarning(havingPGPPinned: havingPGPPinned,
+                                                  isPasswordSet: isPasswordSet,
+                                                  havingNonPMEmail: havingNonPMEmail)
+    }
 }
 
 
