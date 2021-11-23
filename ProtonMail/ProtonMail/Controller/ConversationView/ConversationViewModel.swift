@@ -257,17 +257,13 @@ class ConversationViewModel {
             refreshView?()
         case let .insert(row):
             tableView.insertRows(at: [.init(row: row, section: 1)], with: .automatic)
-        case let .update(message, fromRow, toRow):
+        case let .update(message, _, _):
             let messageId = message.messageID
             guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }),
                   let viewModel = messagesDataSource[index].messageViewModel else {
-                return
-            }
+                      return
+                  }
             viewModel.messageHasChanged(message: message)
-
-            if fromRow != toRow {
-                tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
-            }
 
             if viewModel.state.isExpanded {
                 viewModel.state.expandedViewModel?.message = message
