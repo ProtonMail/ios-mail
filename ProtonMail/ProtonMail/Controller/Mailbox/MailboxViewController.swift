@@ -51,6 +51,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         viewModel.allEmails()
     }()
 
+    lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
+        viewModel.groupContacts
+    }()
+
     var listEditing: Bool = false
     
     // MARK: - View Outlets

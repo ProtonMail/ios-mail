@@ -57,9 +57,9 @@ class NonExpandedHeaderViewModel {
     }
 
     var recipient: NSAttributedString {
-        let allRecipeints = message.recipients(userContacts: userContacts)
-            .asCommaSeparatedList(trailingSpace: true)
-        let recipients = allRecipeints.isEmpty ? LocalString._undisclosed_recipients : allRecipeints
+        let name = message.allEmailAddresses(replacingEmails,
+                                             groupContacts: groupContacts)
+        let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
         let toText = "\(LocalString._general_to_label): ".apply(style: .toAttributes)
         return toText + recipients.apply(style: .recipientAttibutes)
     }
@@ -77,6 +77,15 @@ class NonExpandedHeaderViewModel {
             reloadView?()
         }
     }
+
+    lazy var replacingEmails: [Email] = { [unowned self] in
+        return self.user.contactService.allEmails()
+            .filter { $0.userID == self.user.userInfo.userId }
+    }()
+
+    lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
+        self.user.contactGroupService.getAllContactGroupVOs()
+    }()
 
     private let labelId: String
     private let contactService: ContactDataService

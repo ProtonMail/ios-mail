@@ -430,3 +430,212 @@ let testDraftMessageMetaData = """
                 "LabelIDs": ["1", "5", "8"]
             }
 """
+
+let testSentMessageWithGroupToAndCC = """
+{
+  "ID": "wOudvz8rC6CDzuZ",
+  "Order": 103822924506,
+  "ConversationID": "W8F_XgflBkb-",
+  "Subject": "Test cc",
+  "Unread": 0,
+  "SenderAddress": "testSender@protonmail.com",
+  "SenderName": "test sender",
+  "Sender": {
+    "Address": "testSender@protonmail.com",
+    "Name": "test sender"
+  },
+  "Flags": 8198,
+  "Type": 2,
+  "IsEncrypted": 5,
+  "IsReplied": 0,
+  "IsRepliedAll": 0,
+  "IsForwarded": 0,
+  "ToList": [
+    {
+      "Name": "test0",
+      "Address": "aaa@gmail.com",
+      "Group": "groupA"
+    },
+    {
+      "Name": "test1",
+      "Address": "test1@protonmail.com",
+      "Group": "groupA"
+    },
+    {
+      "Name": "test2",
+      "Address": "test2@gmail.com",
+      "Group": "groupA"
+    },
+    {
+      "Name": "test3",
+      "Address": "test3@gmail.com",
+      "Group": "groupA"
+    },
+    {
+      "Name": "test4",
+      "Address": "test4@protonmail.com",
+      "Group": "groupA"
+    }
+  ],
+  "CCList": [
+    {
+      "Name": "test5",
+      "Address": "bbb@gmail.com",
+      "Group": ""
+    }
+  ],
+  "BCCList": [
+    
+  ],
+  "Time": 1637048593,
+  "Size": 2373,
+  "NumAttachments": 1,
+  "ExpirationTime": 0,
+  "AddressID": "B8Ne3BCYiq",
+  "ExternalID": "_3xsb_c05b-OvEG8JwJCt2K-hs0Zvbl4yxKxx",
+  "LabelIDs": [
+    "2",
+    "5",
+    "7"
+  ]
+}
+"""
+
+let testSentMessageWithToAndCC = """
+{
+  "ID": "wOudvz8rC6CDzuZ",
+  "Order": 103822924506,
+  "ConversationID": "W8F_XgflBkb-",
+  "Subject": "Test cc",
+  "Unread": 0,
+  "SenderAddress": "testSender@protonmail.com",
+  "SenderName": "test sender",
+  "Sender": {
+    "Address": "testSender@protonmail.com",
+    "Name": "test sender"
+  },
+  "Flags": 8198,
+  "Type": 2,
+  "IsEncrypted": 5,
+  "IsReplied": 0,
+  "IsRepliedAll": 0,
+  "IsForwarded": 0,
+  "ToList": [
+    {
+      "Name": "test0",
+      "Address": "aaa@gmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test1",
+      "Address": "test1@protonmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test2",
+      "Address": "test2@gmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test3",
+      "Address": "test3@gmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test4",
+      "Address": "test4@protonmail.com",
+      "Group": ""
+    }
+  ],
+  "CCList": [
+    {
+      "Name": "test5",
+      "Address": "bbb@gmail.com",
+      "Group": ""
+    }
+  ],
+  "BCCList": [
+    
+  ],
+  "Time": 1637048593,
+  "Size": 2373,
+  "NumAttachments": 1,
+  "ExpirationTime": 0,
+  "AddressID": "B8Ne3BCYiq",
+  "ExternalID": "_3xsb_c05b-OvEG8JwJCt2K-hs0Zvbl4yxKxx",
+  "LabelIDs": [
+    "2",
+    "5",
+    "7"
+  ]
+}
+"""
+
+let testSentMessageWithToCCAndBCC = """
+{
+  "ID": "wOudvz8rC6CDzuZ",
+  "Order": 103822924506,
+  "ConversationID": "W8F_XgflBkb-",
+  "Subject": "Test cc",
+  "Unread": 0,
+  "SenderAddress": "testSender@protonmail.com",
+  "SenderName": "test sender",
+  "Sender": {
+    "Address": "testSender@protonmail.com",
+    "Name": "test sender"
+  },
+  "Flags": 8198,
+  "Type": 2,
+  "IsEncrypted": 5,
+  "IsReplied": 0,
+  "IsRepliedAll": 0,
+  "IsForwarded": 0,
+  "ToList": [
+    {
+      "Name": "test0",
+      "Address": "aaa@gmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test1",
+      "Address": "test1@protonmail.com",
+      "Group": ""
+    },
+    {
+      "Name": "test2",
+      "Address": "test2@gmail.com",
+      "Group": ""
+    }
+  ],
+  "CCList": [
+    {
+      "Name": "test5",
+      "Address": "bbb@gmail.com",
+      "Group": ""
+    }
+  ],
+  "BCCList": [
+        {
+          "Name": "test3",
+          "Address": "test3@gmail.com",
+          "Group": ""
+        },
+        {
+          "Name": "test4",
+          "Address": "test4@protonmail.com",
+          "Group": ""
+        }
+  ],
+  "Time": 1637048593,
+  "Size": 2373,
+  "NumAttachments": 1,
+  "ExpirationTime": 0,
+  "AddressID": "B8Ne3BCYiq",
+  "ExternalID": "_3xsb_c05b-OvEG8JwJCt2K-hs0Zvbl4yxKxx",
+  "LabelIDs": [
+    "2",
+    "5",
+    "7"
+  ]
+}
+"""
