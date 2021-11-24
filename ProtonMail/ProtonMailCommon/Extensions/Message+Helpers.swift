@@ -120,13 +120,13 @@ extension Message {
 
     }
 
-    func initial(replacingEmails: [Email]) -> String {
-        let senderName = self.senderName(replacingEmails: replacingEmails)
+    func initial(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
+        let senderName = self.senderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
         return senderName.isEmpty ? "?" : senderName.initials()
     }
 
-    func sender(replacingEmails: [Email]) -> String {
-        let senderName = self.senderName(replacingEmails: replacingEmails)
+    func sender(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
+        let senderName = self.senderName(replacingEmails: replacingEmails, groupContacts: groupContacts)
         return senderName.isEmpty ? "(\(String(format: LocalString._mailbox_no_recipient)))" : senderName
     }
 
@@ -139,9 +139,9 @@ extension Message {
             .contains(labelId)
     }
 
-    func senderName(replacingEmails: [Email]) -> String {
+    func senderName(replacingEmails: [Email], groupContacts: [ContactGroupVO]) -> String {
         if isSent || draft {
-            return allEmailAddresses(replacingEmails)
+            return allEmailAddresses(replacingEmails, groupContacts: groupContacts)
         } else {
             return displaySender(replacingEmails)
         }
@@ -170,19 +170,44 @@ extension Message {
         return contact.name.isEmpty ? email.name: contact.name
     }
 
-    func allEmailAddresses(_ replacingEmails: [Email]) -> String {
-        let lists: [String] = self.allEmails.map { address in
-            if let name = replacingEmails.first(where: { $0.email == address })?.name,
-               !name.isEmpty {
-                return name
-            } else {
-                return address
-            }
+    //Although the time complexity of high order function is O(N)
+    // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
+    // Do async approach when there is a performance issue
+    func allEmailAddresses(_ replacingEmails: [Email],
+                           groupContacts: [ContactGroupVO]) -> String {
+        var recipientLists = self.recipients
+        let groups = recipientLists.filter { !(($0["Group"] as? String) ?? "").isEmpty }
+        var groupList: [String] = []
+        if !groups.isEmpty {
+            groupList = self.getGroupNameLists(groupDict: groups,
+                                               groupContacts: groupContacts)
         }
-        if lists.isEmpty {
-            return ""
+        recipientLists = recipientLists.filter { (($0["Group"] as? String) ?? "").isEmpty }
+
+        let lists: [String] = recipientLists.map { jsonDict in
+            let address = (jsonDict["Address"] as? String) ?? ""
+            let name = (jsonDict["Name"] as? String) ?? ""
+            let email = replacingEmails.first(where: { $0.email == address })
+            let emailName = email?.name ?? ""
+            let displayName = emailName.isEmpty ? name: emailName
+            return displayName.isEmpty ? address: displayName
         }
-        return lists.asCommaSeparatedList(trailingSpace: true)
+        let result = groupList + lists
+        return result.isEmpty ? "": result.asCommaSeparatedList(trailingSpace: true)
     }
 
+    private func getGroupNameLists(groupDict: [[String: Any]], groupContacts: [ContactGroupVO]) -> [String] {
+        var groupDict = groupDict
+        var nameList: [String] = []
+        while !groupDict.isEmpty {
+            let groupName = (groupDict[0]["Group"] as? String) ?? ""
+            let group = groupDict.filter { ($0["Group"] as? String) == groupName }
+            let groupLabel = groupContacts.first(where: { $0.contactTitle == groupName })
+            let count = groupLabel?.contactCount ?? 0
+            let name = "\(groupName) (\(group.count)/\(count))"
+            nameList.append(name)
+            groupDict = groupDict.filter { ($0["Group"] as? String) != groupName }
+        }
+        return nameList
+    }
 }

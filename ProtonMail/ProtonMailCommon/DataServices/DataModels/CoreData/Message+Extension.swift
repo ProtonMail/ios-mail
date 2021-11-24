@@ -55,6 +55,13 @@ extension Message {
         // 2.0.0
         static let conversationID = "conversationID"
     }
+
+    var recipients: [[String: Any]] {
+        let to: [[String: Any]] = self.toList.parseJson() ?? []
+        let cc: [[String: Any]] = self.ccList.parseJson() ?? []
+        let bcc: [[String: Any]] = self.bccList.parseJson() ?? []
+        return to + cc + bcc
+    }
     
     // MARK: - variables
     var allEmails: [String] {

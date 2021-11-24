@@ -66,6 +66,9 @@ final class SearchViewModel: NSObject {
             }
         }
     }
+    private var groupContacts: [ContactGroupVO] {
+        self.user.contactGroupService.getAllContactGroupVOs()
+    }
     private(set) var selectedIDs: Set<String> = []
     private var fetchController: NSFetchedResultsController<NSFetchRequestResult>?
     private var messageService: MessageDataService { self.user.messageService }
@@ -185,8 +188,10 @@ extension SearchViewModel: SearchVMProtocol {
     
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel {
         let replacingEmails = self.user.contactService.allEmails()
-        let initial = message.initial(replacingEmails: replacingEmails)
-        let sender = message.sender(replacingEmails: replacingEmails)
+        let initial = message.initial(replacingEmails: replacingEmails,
+                                      groupContacts: groupContacts)
+        let sender = message.sender(replacingEmails: replacingEmails,
+                                    groupContacts: groupContacts)
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(
             of: .folder,

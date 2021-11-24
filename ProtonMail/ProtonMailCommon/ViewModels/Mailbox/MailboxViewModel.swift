@@ -165,6 +165,10 @@ class MailboxViewModel: StorageLimit {
         return user.labelService.getAllLabels(of: .folder, context: coreDataService.mainContext)
     }
 
+    var groupContacts: [ContactGroupVO] {
+        self.user.contactGroupService.getAllContactGroupVOs()
+    }
+
     func allEmails() -> [Email] {
         return self.contactService.allEmails()
             .filter { $0.userID == self.user.userInfo.userId }
