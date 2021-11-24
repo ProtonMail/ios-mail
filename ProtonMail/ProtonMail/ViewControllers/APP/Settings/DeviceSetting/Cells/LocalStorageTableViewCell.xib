@@ -42,6 +42,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="gray" title="Button"/>
+                        <connections>
+                            <action selector="buttonPressed:" destination="CCV-NK-Afa" eventType="touchUpInside" id="fgn-2M-XzA"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
