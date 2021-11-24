@@ -2043,6 +2043,14 @@ class LocalizedString {
     lazy var _settings_title_of_attachments = NSLocalizedString("Attachments", comment: "The title of attachments in local storage settings")
     lazy var _settings_title_of_downloaded_messages_local_storage = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in local storage settings")
     lazy var _settings_foot_of_downloaded_messages_local_storage = NSLocalizedString("Information about how much storage space this ProtonMail account is using on your device.", comment: "The foot of downloaded messages in local storage settings")
+    
+    lazy var _settings_local_storage_cached_data_button = NSLocalizedString("Clear", comment: "The title of the button in local storage cached data")
+    lazy var _settings_local_storage_cached_data_text = NSLocalizedString("Allows you to open previously read messages while offline.", comment: "The text explaining what chached data is used for.")
+    lazy var _settings_local_storage_attachments_button = NSLocalizedString("Clear", comment: "The title of the button in local storage attachments")
+    lazy var _settings_local_storage_attachments_text = NSLocalizedString("Allows you to open previously opened attachments while offline.", comment: "The text explaining what attachments in local storage is used for.")
+    lazy var _settings_local_storage_downloaded_messages_text = NSLocalizedString("Allows you to search within your messages. %1$@", comment: "The text explaining what downloaded messages in local storage is used for.")
+    lazy var _settings_local_storage_downloaded_messages_text_link = NSLocalizedString("See details", comment: "The link in local storage downloaded messages.")
+    lazy var _settings_local_storage_downloaded_messages_text_disabled = NSLocalizedString("Disabled", comment: "The text for downloaded messages in local storage when encrypted search is disabled.")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter current PIN code", comment: "The title of textfield of PIN code setup1")
