@@ -239,7 +239,7 @@
 "Antivirus interference" = "Παρέμβαση του Antivirus";
 
 /* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Τυχόν αλλαγές που δεν έχουν αποθηκευτεί θα χαθούν.";
+"Any unsaved changes will be lost." = "Τυχόν μη αποθηκευμένες αλλαγές θα χαθούν.";
 
 /* when server not reachable */
 "API Server not reachable…" = "Ο Διακομιστής API δεν είναι προσβάσιμος…";
@@ -374,7 +374,7 @@
 "Back" = "Πίσω";
 
 /* Error */
-"Bad auth cache" = "Κακή προσωρινή μνήμη ταυτότητας";
+"Bad auth cache" = "Κακή προσωρινή μνήμη ταυτοποίησης";
 
 /* title */
 "Bad parameter" = "Κακή παράμετρος";
@@ -480,7 +480,7 @@
 "Can't open the file" = "Δεν είναι δυνατό να ανοίξει το αρχείο";
 
 /* The error message title that will be shown when the contact group being created or edited can't be saved */
-"Can't save contact group" = "Δεν είναι δυνατή η αποθήκευση της ομάδας επαφών";
+"Can't save contact group" = "Αδυναμία αποθήκευσης ομάδας επαφών";
 
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Δεν είναι δυνατή η ενημέρωση ομάδας επαφών μέσω του API";
@@ -536,7 +536,7 @@
 "Change PIN" = "Αλλαγή PIN";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Αλλάξτε κωδικό PIN";
+"Change PIN code" = "Αλλαγή κωδικού PIN";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Αλλαγή ενέργειας δεξιάς ολίσθησης";
@@ -1060,7 +1060,7 @@
 "Enter your PIN" = "Εισαγάγετε το PIN σας";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Εισάγετε το PIN σας για ξεκλείδωμα των εισερχομένων σας.";
+"Enter your PIN to unlock your inbox." = "Εισάγετε το PIN σας για ξεκλείδωμα της θυρίδας σας.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Εισάγετε την υπογραφή σας εδώ";
@@ -1099,11 +1099,11 @@
 "Failed to determine type of file" = "Αποτυχία προσδιορισμού του τύπου αρχείου";
 
 /* Description */
-"Failed to initialize the app's saved data" = "Δεν ήταν δυνατή η εκκίνηση των αποθηκευμένων δεδομένων εφαρμογής";
+"Failed to initialize the app's saved data" = "Αποτυχία αρχικοποίησης αποθηκευμένων δεδομένων της εφαρμογής";
 
 /* *
  *  Core Data Service & local error */
-"Failed to initialize the application's saved data" = "Δεν ήταν δυνατή η εκκίνηση των αποθηκευμένων δεδομένων εφαρμογής";
+"Failed to initialize the application's saved data" = "Αποτυχία αρχικοποίησης αποθηκευμένων δεδομένων της εφαρμογής";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Αποτυχία φόρτωσης περιεχομένου!\nΠαρακαλούμε δοκιμάστε ξανά.";
@@ -1130,7 +1130,7 @@
 "Folders" = "Φάκελοι";
 
 /* Service Plan description */
-"For individuals looking to benefit from secure communication at no cost" = "Για αυτούς που θέλουν να επωφεληθούν την ασφαλή επικοινωνία χωρίς κόστος";
+"For individuals looking to benefit from secure communication at no cost" = "Για όσους ψάχνουν τα οφέλη της διασφαλισμένης επικοινωνίας χωρίς κόστος";
 
 /* Service Plan description */
 "For individuals that need more capacity, customization and advanced features" = "Για αυτούς που χρειάζονται περισσότερη χωρητικότητα, δυνατότητες προσαρμογής και προηγμένες λειτουργίες";
@@ -1330,7 +1330,7 @@
 "Input Notification Email …" = "Εισαγωγή E-mail ειδοποίησης…";
 
 /* Cert pinning failed alert title */
-"Insecure connection" = "Αδιασφάλιστη σύνδεση";
+"Insecure connection" = "Μη διασφαλισμένη σύνδεση";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Η άμεση δημιουργία λογαριασμού ProtonMail έχει προσωρινά απενεργοποιηθεί. Μεταβείτε στη διεύθυνση https://protonmail.com/invite για να ζητήσετε μια πρόσκληση.";
@@ -1734,7 +1734,7 @@
 "normal attachments" = "κανονικά συνημμένα";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Δεν είναι spam (μετακίνηση στα εισερχόμενα)";
+"Not a spam (move to inbox)" = "Μη ενοχλητικό (μετακίνηση στα εισερχόμενα)";
 
 /* alert description */
 "Not all recipients support message expiration" = "Δεν υποστηρίζουν όλοι οι παραλήπτες τα μηνύματα με λειτουργία χρονικού ορίου";
@@ -1951,7 +1951,7 @@
 "Please remove all attachments before changing sender!" = "Παρακαλώ καταργήστε όλα τα συνημμένα πριν αλλάξτε τον αποστολέα";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Παρακαλώ επιλέξτε τουλάχιστον ένα email";
+"Please select at least one email" = "Παρακαλούμε επιλέξτε τουλάχιστον ένα μήνυμα";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Παρακαλώ επιλέξτε τουλάχιστον ένα E-mail για την ομάδα επαφών";
@@ -2769,7 +2769,7 @@
 "Two Factor Code" = "Κωδικός Δύο Παραγόντων (2FA)";
 
 /* Internal type casting error */
-"Type casting error" = "Τύπος σφάλματος χύτευσης";
+"Type casting error" = "Σφάλμα μετατροπής τύπου";
 
 /* Description */
 "Unable to connect to the server" = "Αδυναμία σύνδεσης στον διακομιστή";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Προβολή Headers";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Προβολή HTML";
 
 /* Title */
@@ -3094,7 +3094,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ο νέος σας κρυπτογραφημένος λογαριασμός email έχει ρυθμιστεί και είναι έτοιμος να στέλνει και να λαμβάνει κρυπτογραφημένα μηνύματα.";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Ο νέος σας ασφαλής λογαριασμός E-mail\n είναι έτοιμος.";
+"Your new secure email\n account is ready." = "Ο νέος σας λογαριασμός διασφαλισμένης\n αλληλογραφίας είναι έτοιμος.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Το πακέτο/πλάνο σας είναι ενεργό μέχρι";

@@ -221,7 +221,7 @@
 "Also Archive" = "Ook archiveren";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "Ook archiveren?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Ook gebruikt om een vergeten wachtwoord opnieuw in te stellen.";
@@ -368,7 +368,7 @@
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Vreselijk";
 
 /* top left back button */
 "Back" = "Vorige";
@@ -878,7 +878,7 @@
 "DRAFTS" = "Concepten";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "Gemakkelijk up-to-date";
 
 /* Action */
 "Edit" = "Bewerken";
@@ -1118,7 +1118,7 @@
 "Fetch user info failed" = "Ophalen van gebruikersgegevens is mislukt";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Bestand, label en kleurcode berichten om uw perfecte, aangepaste inbox te creëren.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Map";
@@ -1247,7 +1247,7 @@
 "Hours" = "Uren";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Hoe zou u uw ervaring met de nieuwe ProtonMail omschrijven?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1658,7 +1658,7 @@
 "Name" = "Naam";
 
 /* Onboarding title */
-"Neat and tidy" = "Neat and tidy";
+"Neat and tidy" = "Netjes en opgeruimd";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Meld u gratis aan";
@@ -1805,7 +1805,7 @@
 "On E, MMM d, yyyy at %@" = "Op EE, MMM d, jjjjj om %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Negeer alleen de aankoopactivatie als u zeker weet dat al uw abonnementen up-to-date zijn. Voor verdere hulp, neem contact op met klantenondersteuning. \n\n Weet u zeker dat u de activering wilt negeren?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
@@ -2068,7 +2068,7 @@
 "ProtonVPN included" = "ProtonVPN inbegrepen";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "Geef feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interferentie";
@@ -2231,7 +2231,7 @@
 "Send anyway" = "Toch verzenden";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "Feedback versturen";
 
 /* when subject not empty */
 "Send message without subject?" = "Bericht versturen zonder onderwerp?";
@@ -2499,7 +2499,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Door alsnog op verzenden te tikken kiest u er voor om het bericht naar deze ontvangers te verzenden zonder het gebruik van een verlooptijd";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "Vertel ons over uw ervaring. (Optioneel)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
@@ -2511,7 +2511,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Bedankt voor het indienen van een foutmelding. We hebben uw verslag toegevoegd aan ons bug tracking-systeem.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "Bedankt voor uw feedback!";
 
 /* Error message */
 "The 2 passwords are not matching" = "De 2 wachtwoorden komen niet overeen";
@@ -2691,7 +2691,7 @@
 "To" = "Aan";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Om misbruik van ProtonMail te voorkomen,\n moeten wij verifiëren dat u een mens bent.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Headers bekijken";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Bekijk HTML";
 
 /* Title */
@@ -2977,7 +2977,7 @@
 "When you send an email, this is the name that appears in the sender field." = "Wanneer u een e-mail verstuurt is dit de naam die als 'afzender' verschijnt.";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Prachtig";
 
 /* default vcard types */
 "Work" = "Werk";
@@ -3078,7 +3078,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer ProtonVPN (of een andere VPN) of Tor te gebruiken voor toegang tot Proton.";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Uw feedback";
 
 /* The section title of folder manager table */
 "Your folders" = "Uw mappen";
@@ -3094,7 +3094,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "Uw nieuwe beveiligde e-mail\naccount is gebruiksklaar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Uw plan is momenteel actief tot";

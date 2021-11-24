@@ -1933,7 +1933,7 @@
 "Please input a valid cell phone number." = "Silakan masukkan nomon ponsel yang valid.";
 
 /* error message */
-"Please input a valid email address." = "Silakan masukkan alamat surel yang valid.";
+"Please input a valid email address." = "Silakan masukkan alamat email yang valid.";
 
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Jangan tutup ProtonMail sebelum prosesnya tuntas.";
@@ -1945,16 +1945,16 @@
 "Please pick a user name first!" = "Mohon pilih nama pengguna terlebih dahulu!";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Mohon masukkan nama grup";
+"Please provide a group name" = "Mohon tentukan nama grup";
 
 /* when switch sender but email has attachments */
 "Please remove all attachments before changing sender!" = "Mohon hapus semua lampiran sebelum mengubah pengirim";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Silahkan pilih setidaknya satu email";
+"Please select at least one email" = "Silakan pilih setidaknya satu email";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Mohon pilih minimal satu surel untuk dimasukkan ke grup kontak";
+"Please select at least one email for the contact group" = "Mohon pilih minimal satu email untuk dimasukkan ke dalam grup kontak";
 
 /* human check select option title */
 "Please select one of the following options:" = "Pilih salah satu dari pilihan berikut:";
@@ -2669,13 +2669,13 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Pesan ini mungkin phishing. Mohon periksa pengirim dan isi pesan untuk memastikan keasliannya.";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Pesan ini akan kadaluwarsa dalam %1$dH %2$dJ %3$dM";
+"This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
 
 /* The secondary title of no result message */
-"Time to relax" = "Saatnya santai";
+"Time to relax" = "Waktunya bersantai";
 
 /* contacts talbe cell Title title */
 "Title" = "Gelar";
@@ -2772,7 +2772,7 @@
 "Type casting error" = "Kesalahan jenis casting/penyebaran";
 
 /* Description */
-"Unable to connect to the server" = "Tidak dapat tersambung ke server";
+"Unable to connect to the server" = "Tidak dapat terhubung ke server";
 
 /* (No Comment) */
 "Unable to construct a valid URL with the following path: %@" = "Tidak dapat membuat URL yang valid dengan jalur berikut: %@";
@@ -2793,7 +2793,7 @@
 "Unable to get contacts" = "Tidak dapat memperoleh kontak";
 
 /* Description */
-"Unable to parse authentication info!" = "Tidak dapat mengurai info autentikasi!";
+"Unable to parse authentication info!" = "Tidak dapat mengurai info otentikasi!";
 
 /* Description */
 "Unable to parse authentication token!" = "Tidak dapat mengurai token autentikasi!";
@@ -2812,7 +2812,7 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Tidak dapat mengirim surel.";
+"Unable to send the email" = "Email tidak dapat dikirim.";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Penerima Dirahasiakan";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Lihat Header";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Lihat sebagai HTML";
 
 /* Title */
@@ -3028,22 +3028,22 @@
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Anda mengaktifkan waktu kedaluwarsa pesan, tapi tidak semua penerima mendukung ini. Silakan aktifkan sandi atau nonaktifkan pengiriman PGP untuk menggunakan fitur kedaluwarsa untuk semua penerima.";
 
 /* Message */
-"You have %d new emails!" = "Anda memiliki %d surel baru!";
+"You have %d new emails!" = "Anda memiliki %d email baru!";
 
 /* Title */
-"You have a new email!" = "Anda memiliki surel baru!";
+"You have a new email!" = "Anda memiliki email baru!";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat email yang Anda ketikkan tidak valid. Mohon periksa kembali alamat-alamat email tujuan Anda.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak valid. Mohon periksa kembali alamat-alamat email tujuan Anda.";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang Anda ketikkan tidak dikenal. Mohon periksa kembali alamat-alamat email tujuan Anda.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "Setidaknya satu alamat email yang hendak Anda tuju tidak dikenal. Mohon periksa kembali alamat-alamat email tujuan Anda.";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Perubahan belum disimpan. Anda ingin menyimpannya?";
+"You have unsaved changes. Do you want to save it?" = "Anda memiliki perubahan-perubahan yang belum disimpan. Apakah Anda ingin menyimpannya?";
 
 /* (No Comment) */
-"You have used %d%% of your storage space (%@)." = "Anda telah menggunakan %d%% ruang penyimpanan Anda (%@).";
+"You have used %d%% of your storage space (%@)." = "Anda telah menggunakan %d%% dari total kuota penyimpanan yang Anda miliki (%@).";
 
 /* Content of space warning */
 "You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah menggunakan %1$d%% dari total kuota penyimpanan yang Anda miliki (%2$@). Harap tingkatkan jenis akun Anda agar Anda tetap dapat mengirim dan menerima email.";
@@ -3056,14 +3056,14 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Anda telah mempergunakan seluruh kuota penyimpanan yang Anda miliki (%@). Harap tingkatkan jenis akun Anda agar Anda tetap dapat mengirim dan menerima email.";
 
 /* "Alert" */
-"You need at least one recipient to send" = "Anda memerlukan setidaknya satu penerima untuk mengirim";
+"You need at least one recipient to send" = "Anda harus memasukkan setidaknya satu nama penerima untuk dapat mengirim pesan";
 
 /* Alert to confirm signout
    Alert when signout primary account from account manager */
-"You will be switched to %@" = "Anda akan beralih ke %@";
+"You will be switched to %@" = "Anda akan dialihkan ke %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan secara permanen. Apakah anda yakin?";
+"You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan ini secara permanen. Apakah Anda yakin?";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Perubahan Anda akan dibatalkan";
@@ -3103,11 +3103,11 @@
 "Your plan will automatically renew on" = "Paket Anda akan diperbarui secara otomatis pada";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda kedaluwarsa karena Anda sudah lama tidak aktif atau karena sesi telah dicabut. Silakan masuk lagi.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda telah kedaluwarsa karena Anda sudah tidak aktif dalam waktu yang lama atau karena izin sesi Anda telah dicabut. Silakan masuk lagi.";
 
 /* Description */
 "Your signature has been updated." = "Tanda tangan Anda telah diperbarui.";
 
 /* contact placeholder */
-"ZIP" = "Kode pos";
+"ZIP" = "Kode Pos";
 

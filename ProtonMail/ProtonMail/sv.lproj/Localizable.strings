@@ -221,7 +221,7 @@
 "Also Archive" = "Arkivera";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "Arkivera också?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Används också för att återställa ett glömt lösenord.";
@@ -368,7 +368,7 @@
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Förfärlig";
 
 /* top left back button */
 "Back" = "Tillbaka";
@@ -1247,7 +1247,7 @@
 "Hours" = "Timmar";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Hur skulle du beskriva din upplevelse med nya ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1805,7 +1805,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorera endast aktiveringen av köp om du är säker på att alla dina prenumerationer är uppdaterade. För ytterligare hjälp, vänligen kontakta kundtjänst. \n\n Är du säker på att du vill ignorera aktivering?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Endast ett gratiskonto kan läggas till";
@@ -2068,7 +2068,7 @@
 "ProtonVPN included" = "ProtonVPN inkluderad";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "Ge feedback";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
@@ -2231,7 +2231,7 @@
 "Send anyway" = "Skicka ändå";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "Skicka feedback";
 
 /* when subject not empty */
 "Send message without subject?" = "Skicka meddelande utan ämne?";
@@ -2499,7 +2499,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Tap send anyway to send without expiration to these recipients";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "Berätta för oss om dina upplevelser. (Valfritt)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
@@ -2511,7 +2511,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Thank you for submitting a bug report.  We have added your report to our bug tracking system.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "Tack för dina synpunkter!";
 
 /* Error message */
 "The 2 passwords are not matching" = "De två lösenorden matchar inte";
@@ -2691,7 +2691,7 @@
 "To" = "Till";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "För att förhindra missbruk av ProtonMail,\n måste vi verifiera att du är en människa.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
@@ -2928,7 +2928,7 @@
 /* message details-> more action-> view headers */
 "View Headers" = "Visa rubriker";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Visa HTML";
 
 /* Title */
@@ -2977,7 +2977,7 @@
 "When you send an email, this is the name that appears in the sender field." = "When you send an email, this is the name that appears in the sender field.";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Underbart";
 
 /* default vcard types */
 "Work" = "Arbete";
@@ -3078,7 +3078,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Din feedback";
 
 /* The section title of folder manager table */
 "Your folders" = "Dina mappar";
@@ -3094,7 +3094,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ditt nya krypterade e-postkonto har konfigurerats och är redo att skicka och ta emot krypterade meddelanden.";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "Ditt nya säkra e-post\n konto är klart.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Din plan är aktiv fram till";
