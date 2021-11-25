@@ -153,14 +153,14 @@ class BannerView: PMView {
         if icon! {
             self.addIcon()
             
-            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            /*self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
                 self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
                 self.messageTextview.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 48),
                 self.messageTextview.widthAnchor.constraint(equalToConstant: 279),
                 self.messageTextview.heightAnchor.constraint(equalToConstant: 40)
-            ])
+            ])*/
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -397,16 +397,15 @@ extension BannerView {
     private func addIcon() {
         let image = UIImage(named: "ic-exclamation-circle")
         let imageView = UIImageView(image: image!)
-        //imageView.frame = CGRect(x: self.frame.origin.x + 17.5, y: self.frame.origin.y + 25.5, width: 21, height: 21)
         imageView.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
         self.addSubview(imageView)
         
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        /*imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25.5),
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 25.5),
             imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 17.5),
             imageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -304.5)
-        ])
+        ])*/
     }
 }

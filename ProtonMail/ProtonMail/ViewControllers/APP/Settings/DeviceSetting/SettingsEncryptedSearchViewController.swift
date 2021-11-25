@@ -69,7 +69,10 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
-        
+
+        //Determine current encrypted search state
+        EncryptedSearchService.shared.determineEncryptedSearchState()
+
         //Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
         
@@ -222,7 +225,7 @@ extension SettingsEncryptedSearchViewController {
                     self.viewModel.downloadViaMobileData = !status
                     
                     //if indexing is in progress, turn it off if on mobile data
-                    if EncryptedSearchService.shared.indexBuildingInProgress && !self.viewModel.downloadViaMobileData {
+                    if EncryptedSearchService.shared.state == .downloading && !self.viewModel.downloadViaMobileData {
                         EncryptedSearchService.shared.pauseIndexingDueToNetworkSwitch()
                     }
                 }
@@ -325,7 +328,7 @@ extension SettingsEncryptedSearchViewController {
                     textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
                     textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
                     textView.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-                    textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+                    textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16) //TODO there is something wrong here and the size of the table
                 ])
                 break
             case .downloadViaMobileData, .downloadedMessages:
@@ -359,8 +362,7 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             break //Do nothing
         case .downloadedMessages:
-            if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
-                //indexbuilding is completely finished
+            if EncryptedSearchService.shared.state == .complete {
                 let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
                 let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
                 vc.set(viewModel: vm)
@@ -395,7 +397,7 @@ extension SettingsEncryptedSearchViewController {
 
     func setupEstimatedTimeUpdateObserver() {
         self.viewModel.estimatedTimeRemaining.bind { (_) in
-            if EncryptedSearchService.shared.indexBuildingInProgress {
+            if EncryptedSearchService.shared.state == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
@@ -409,7 +411,7 @@ extension SettingsEncryptedSearchViewController {
 
     func setupProgressUpdateObserver() {
         self.viewModel.currentProgress.bind { (_) in
-            if EncryptedSearchService.shared.indexBuildingInProgress {
+            if EncryptedSearchService.shared.state == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
@@ -424,7 +426,7 @@ extension SettingsEncryptedSearchViewController {
     func setupIndexingInterruptionObservers() {
         self.viewModel.interruptStatus.bind {
             (_) in
-            if EncryptedSearchService.shared.indexBuildingInProgress {
+            if EncryptedSearchService.shared.state == .downloading {
                 self.interruption = true
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
@@ -444,12 +446,12 @@ extension SettingsEncryptedSearchViewController {
         self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
         self.view.addSubview(self.banner)
 
-        self.banner.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16),
-            self.banner.widthAnchor.constraint(equalToConstant: 343),
-            self.banner.heightAnchor.constraint(equalToConstant: 72)
-        ])
+        //self.banner.translatesAutoresizingMaskIntoConstraints = false
+        //NSLayoutConstraint.activate([
+        //    self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16),
+        //    self.banner.widthAnchor.constraint(equalToConstant: 343),
+        //    self.banner.heightAnchor.constraint(equalToConstant: 72)
+        //])
 
         self.banner.drop(on: self.view, from: .top)
     }

@@ -675,25 +675,29 @@ public class EncryptedSearchService {
 }
 
 extension EncryptedSearchService {
-    internal func determineEncryptedSearchState(){
+    func determineEncryptedSearchState(){
         //check if encrypted search is switched on in settings
         if !userCachedStatus.isEncryptedSearchOn {
             self.state = .disabled
+            print("ENCRYPTEDSEARCH-STATE: disabled")
         } else {
             //TODO low storage?
             //self.state = .lowstorage
             if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {   //TODO paused by user?
                 self.state = .paused
+                print("ENCRYPTEDSEARCH-STATE: paused")
                 return
             }
             if self.indexBuildingInProgress {
                 self.state = .downloading
+                print("ENCRYPTEDSEARCH-STATE: downloading")
             } else {
                 //check if search index exists and the number of messages in the search index
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String? = usersManager.firstUser?.userInfo.userId
                 if userID == nil {
                     self.state = .undetermined
+                    print("ENCRYPTEDSEARCH-STATE: undetermined")
                     return
                 }
                 if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
@@ -701,13 +705,16 @@ extension EncryptedSearchService {
                         let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID!)
                         if self.totalMessages == numberOfEntriesInSearchIndex {
                             self.state = .complete
+                            print("ENCRYPTEDSEARCH-STATE: complete")
                         } else {
                             self.state = .partial
+                            print("ENCRYPTEDSEARCH-STATE: partial")
                         }
                     }
                 } else {
                     print("Error search index does not exist for user!")
                     self.state = .undetermined
+                    print("ENCRYPTEDSEARCH-STATE: undetermined")
                 }
             }
             //TODO refresh?
@@ -718,15 +725,20 @@ extension EncryptedSearchService {
 
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
+        //determine actual state
+        self.determineEncryptedSearchState()
+
         let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
         if !networkStatus.isConnected {
             print("Error when building the search index - no internet connection.")
             self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
             return
         }
         if !viewModel.downloadViaMobileData && !(networkStatus == NetworkStatus.ReachableViaWiFi) {
             print("Indexing with mobile data not enabled")
-            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseIndexingDueToWiFiNotDetected = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
             return
         }
         
@@ -742,32 +754,30 @@ extension EncryptedSearchService {
         //add a notification when app is put in background
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
-        
-        self.state = .downloading
+
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
         let uid: String? = self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
         if let userID = uid {
             //check if search index db exists - and if not create it
             EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
-            
+
             //set up timer to estimate time for index building every 2 seconds
-            //self.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add start time
             self.indexingStartTime = CFAbsoluteTimeGetCurrent()
             self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
 
             self.getTotalMessages() {
                 print("Total messages: ", self.totalMessages)
-
-                //if search index already build, and there are no new messages we can return here
-                //if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.user.userInfo.userId) {
-                //    print("Search index already exists for user!")
+                
                     //check if search index needs updating
                     if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
                         print("Search index already contains all available messages.")
                         self.viewModel?.isEncryptedSearch = true
                         self.viewModel?.currentProgress.value = 100
-                        self.viewModel?.estimatedTimeRemaining.value = 0
+
+                        print("ENCRYPTEDSEARCH-STATE: complete")
+                        self.state = .complete
+
                         self.indexBuildingInProgress = false
                         self.indexBuildingTimer?.invalidate()
                         
@@ -781,24 +791,17 @@ extension EncryptedSearchService {
                         #if !APP_EXTENSION
                             if #available(iOS 13, *) {
                                 //index building finished - we no longer need a background task
-                                //self.cancelIndexBuildingInBackground()
+                                self.cancelIndexBuildingInBackground()
                             }
                         #endif
                         return
                     }
-                //}
                     
                 //build search index completely new
                 DispatchQueue.global(qos: .userInitiated).async {
-                    //If its an build from scratch, start indexing with time = 0
-                    //self.downloadAndProcessPage(Message.Location.allmail.rawValue, 0) { [weak self] in
-                    //self.downloadPage() { [weak self] in
                     self.downloadAndProcessPage(userID: userID){ [weak self] in
                         print("Finished building search index!")
-                        //self?.timingsBuildIndex.add(CFAbsoluteTimeGetCurrent())  //add stop time
-                        //self?.printTiming("Building the Index", for: self!.timingsBuildIndex)
-                        //self?.updateMemoryConsumption()
-                        
+
                         self?.viewModel?.isEncryptedSearch = true
                         self?.viewModel?.currentProgress.value = 100
                         self?.viewModel?.estimatedTimeRemaining.value = 0
@@ -821,12 +824,11 @@ extension EncryptedSearchService {
                         //TODO just sent when indexing is actually completely finished
                         self?.sendIndexingMetrics(indexTime: self!.indexingStartTime - CFAbsoluteTimeGetCurrent(), userID: userID)
                         
-                        //print("Size of search index (before compression): \(EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: (self?.user.userInfo.userId)!).asString)")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
                             EncryptedSearchIndexService.shared.compressSearchIndex(for: userID)
-                            //print("Size of search index (after compression): \(EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: (self?.user.userInfo.userId)!).asString)")
                         }
                         
+                        print("ENCRYPTEDSEARCH-STATE: complete")
                         self?.state = .complete
 
                         return
@@ -849,7 +851,6 @@ extension EncryptedSearchService {
         if isPause {
             self.numInterruptions += 1
             self.viewModel?.pauseIndexing = true
-            self.updateUIWithIndexingStatus()
         } else {
             print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), background: \(self.pauseIndexingDueToBackgroundTaskRunningOutOfTime)")
             //check if any of the flags is set to true
@@ -872,13 +873,15 @@ extension EncryptedSearchService {
                 self.messageIndexingQueue.cancelAllOperations()
                 self.indexBuildingInProgress = false
                 self.state = .paused
+                print("ENCRYPTEDSEARCH-STATE: paused")
+                self.updateUIWithIndexingStatus()
             } else {    //resume indexing
                 print("Resume indexing...")
                 self.indexBuildingInProgress = true
-                //self.indexingStartTime = CFAbsoluteTimeGetCurrent()
+                self.state = .downloading
+                print("ENCRYPTEDSEARCH-STATE: downloading")
                 self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
-                //self.downloadAndProcessPage(Message.Location.allmail.rawValue, self.lastMessageTimeIndexed) {
-                //self.downloadPage(){
+
                 self.downloadAndProcessPage(userID: userID){
                     self.viewModel?.isEncryptedSearch = true
                     self.viewModel?.currentProgress.value = 100
@@ -922,19 +925,20 @@ extension EncryptedSearchService {
             let messageAction: MessageAction = MessageAction(action: action, message: message, indexPath: indexPath, newIndexPath: newIndexPath)
             self.eventsWhileIndexing!.append(messageAction)
         } else {
-            //print("action type: \(action.rawValue)")
             switch action {
                 case .delete:
-                    print("Delete from core data")
+                    //print("Delete from core data")
                     self.updateMessageMetadataInSearchIndex(message, action, indexPath, newIndexPath)
                 case .insert:
                     self.insertSingleMessageToSearchIndex(message)
                 case .move:
-                    print("Move message")
+                    //print("Move message")
                     //TODO how do I trigger this?
+                    break
                 case .update:
-                    print("Update message")
+                    //print("Update message")
                     //TODO how do I trigger this?
+                    break
                 default:
                     return
             }

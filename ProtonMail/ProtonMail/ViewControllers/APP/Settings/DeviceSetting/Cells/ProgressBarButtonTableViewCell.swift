@@ -29,33 +29,34 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        let parentView: UIView = self.contentView
+        
         self.pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: UIControl.State.normal)
         self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.pauseButton.setTitleColor(ColorProvider.TextNorm, for: .normal)
         self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
-        self.pauseButton.backgroundColor = UIColor(hex: 0xEAE7E4, alpha: 1) //TODO replace with ColorProvider
+        self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
-            self.pauseButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 108),
-            self.pauseButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.pauseButton.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 108),
+            //self.pauseButton.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
             self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
             self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
         ])
         
         self.progressView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.progressView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 60),
-            self.progressView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -88),
+            self.progressView.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 60),
+            self.progressView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -88),
             self.progressView.widthAnchor.constraint(equalToConstant: 343),
             self.progressView.heightAnchor.constraint(equalToConstant: 8)
         ])
         
         self.estimatedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.estimatedTimeLabel.text = LocalString._encrypted_search_default_text_estimated_time_label
-        
         NSLayoutConstraint.activate([
-            self.estimatedTimeLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 76),
-            self.estimatedTimeLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -64),
+            self.estimatedTimeLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 76),
+            //self.estimatedTimeLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -64),
             self.estimatedTimeLabel.widthAnchor.constraint(equalToConstant: 343),
             self.estimatedTimeLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
@@ -63,8 +64,8 @@ import UIKit
         self.currentProgressLabel.translatesAutoresizingMaskIntoConstraints = false
         self.currentProgressLabel.textAlignment = .right
         NSLayoutConstraint.activate([
-            self.currentProgressLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 76),
-            self.currentProgressLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -64),
+            self.currentProgressLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 76),
+            //self.currentProgressLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -64),
             self.currentProgressLabel.widthAnchor.constraint(equalToConstant: 343),
             self.currentProgressLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
@@ -74,19 +75,21 @@ import UIKit
         self.statusLabel.textAlignment = .left
         self.statusLabel.isHidden = true
         NSLayoutConstraint.activate([
-            self.statusLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 108),
-            self.statusLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.statusLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 108),
+            //self.statusLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
             self.statusLabel.widthAnchor.constraint(equalToConstant: 343),
             self.statusLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
         
-        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.textColor = ColorProvider.TextNorm
+        self.titleLabel.font = UIFont.systemFont(ofSize: 17)
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
-            self.titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -120),
+            self.titleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 12),
+            self.titleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -120),
             self.titleLabel.widthAnchor.constraint(equalToConstant: 289.7),
-            self.titleLabel.heightAnchor.constraint(equalToConstant: 24)
+            self.titleLabel.heightAnchor.constraint(equalToConstant: 24),
+            self.titleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
         ])
     }
     
@@ -103,15 +106,12 @@ import UIKit
     }
     
     func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, complete: buttonActionBlock?) {
-        var leftAttributes = FontManager.Default.alignment(.left)
-        leftAttributes[.foregroundColor] = ColorProvider.TextNorm
-        titleLabel.attributedText = NSMutableAttributedString(string: titleLine, attributes: leftAttributes)
-        
+        titleLabel.text = titleLine
         statusLabel.text = advice
         estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.setProgress(Float(currentProgress)/100.0, animated: true)
-        
+
         //implementation of pause button
         callback = complete
         
