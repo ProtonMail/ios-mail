@@ -185,6 +185,36 @@ final class MessageEvent {
     }
 }
 
+extension MessageEvent {
+    var isDraft: Bool {
+        let draftID = LabelLocation.draft.labelID
+        let hiddenDraftID = LabelLocation.hiddenDraft.labelID
+
+        if let location = self.message?["Location"] as? Int,
+           location == Int(draftID) || location == Int(hiddenDraftID) {
+            return true
+        }
+
+        if let labelIDs = self.message?["LabelIDs"] as? NSArray,
+           labelIDs.contains(draftID) || labelIDs.contains(hiddenDraftID) {
+            return true
+        }
+
+        return false
+    }
+
+    var parsedTime: Date? {
+        guard let value = self.message?["Time"] else { return nil }
+        var time: TimeInterval = 0
+        if let stringValue = value as? NSString {
+            time = stringValue.doubleValue as TimeInterval
+        } else if let numberValue = value as? NSNumber {
+            time = numberValue.doubleValue as TimeInterval
+        }
+        return time == 0 ? nil: time.asDate()
+    }
+}
+
 struct ConversationEvent {
     var action: Int
     var ID: String

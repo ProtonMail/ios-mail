@@ -492,4 +492,7 @@ extension Message {
         (toList.toContacts() + ccList.toContacts()).count > 1
     }
 
+    var hasMetaData: Bool {
+        messageStatus == 1
+    }
 }
