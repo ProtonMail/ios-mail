@@ -33,16 +33,16 @@ class SettingsEncryptedSearchDownloadedMessagesViewModel {
                 return LocalString._settings_title_of_storage_usage
             }
         }
-        /*var foot: String {
+        var foot: String {
             switch self {
             case .messageHistory:
-                return "TODO"
+                return ""
             case .storageLimit:
-                return "TODO"
+                return ""
             case .storageUsage:
-                return "TODO"
+                return LocalString._encrypted_search_downloaded_messages_explanation
             }
-        }*/
+        }
     }
     
     private var encryptedSearchDownloadedMessagesCache: EncryptedSearchDownloadedMessagesCacheProtocol
