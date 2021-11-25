@@ -23,47 +23,44 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
     internal var coordinator: SettingsDeviceCoordinator?
     
     struct Key  {
-        static let cellHeight: CGFloat = 48.0
+        static let cellHeightMessageHistory: CGFloat = 108.0
+        static let cellHeightStorageLimit: CGFloat = 116.0
+        static let cellHeightStorageUsage: CGFloat = 96.0
         static let footerHeight: CGFloat = 48.0
+        static let headerHeightFirstCell: CGFloat = 32.0
+        static let headerHeight: CGFloat = 8.0
         static let headerCell: String = "header_cell"
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.updateTitle()
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-        label.center = CGPoint(x: 160, y: 285)
-        label.textAlignment = .center
-        label.text = LocalString._encrypted_search_downloaded_messages_explanation
-        self.view.addSubview(label)
-        
-        self.view.backgroundColor = UIColorManager.BackgroundSecondary
+
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(ThreeLinesTableViewCell.self)
         self.tableView.register(ButtonTableViewCell.self)
         self.tableView.register(SliderTableViewCell.self)
-        
+
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = Key.cellHeight
+        self.tableView.estimatedRowHeight = Key.cellHeightMessageHistory
         self.tableView.rowHeight = UITableView.automaticDimension
-        
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func set(viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel) {
         self.viewModel = viewModel
     }
-    
+
     private func updateTitle() {
         self.title = LocalString._encrypted_search_downloaded_messages
     }
@@ -73,11 +70,50 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return Key.headerHeightFirstCell
+        }
+        return Key.headerHeight
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = ColorProvider.BackgroundSecondary
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        if section == 0 {
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeightFirstCell)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeight)
+            ])
+        }
+
+        return headerView
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = indexPath.section
+
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .messageHistory:
+            return Key.cellHeightMessageHistory
+        case .storageLimit:
+            return Key.cellHeightStorageLimit
+        case .storageUsage:
+            return Key.cellHeightStorageUsage
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
@@ -88,8 +124,17 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String = (usersManager.firstUser?.userInfo.userId)!
                 let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                threeLineCell.configCell(eSection.title, oldestIndexedMessage, "All your messages are downloaded")
-                threeLineCell.accessoryType = .checkmark
+                var downloadStatus: String = ""
+                var icon: String = "ic-check"
+                if EncryptedSearchService.shared.state == .partial {
+                    icon = "ic-exclamation-circle"
+                    downloadStatus = LocalString._settings_message_history_status_partial_downloaded
+                    threeLineCell.bottomLabel.textColor = ColorProvider.NotificationError
+                } else {
+                    icon = "ic-check"
+                    downloadStatus = LocalString._settings_message_history_status_all_downloaded
+                }
+                threeLineCell.configCell(eSection.title, oldestIndexedMessage, downloadStatus, icon)
             }
             return cell
         case .storageLimit:
@@ -132,25 +177,53 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             return cell
         }
     }
-    
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
+        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
+        header?.contentView.backgroundColor = ColorProvider.BackgroundSecondary
+
+        if let headerCell = header {
+            let eSection = self.viewModel.sections[section]
+            switch eSection {
+            case .messageHistory, .storageLimit:
+                break
+            case .storageUsage:
+                let textLabel = UILabel()
+                textLabel.numberOfLines = 0
+                textLabel.translatesAutoresizingMaskIntoConstraints = false
+                textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
+                headerCell.contentView.addSubview(textLabel)
+
+                NSLayoutConstraint.activate([
+                    textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
+                    textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),
+                    textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
+                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
+                ])
+                break
+            }
+        }
+        return header
+    }
+
     func showAlertDeleteDownloadedMessages() {
         //create the alert
-        let alert = UIAlertController(title: "Delete all downloaded messages?", message: "'Search message content' will be diabled.\nIt can be enabled again from settings.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: LocalString._encrypted_search_delete_messages_alert_title, message: LocalString._encrypted_search_delete_messages_alert_message, preferredStyle: UIAlertController.Style.alert)
         //add the buttons
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_cancel, style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
             self.tableView.reloadData()
         })
-        alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete, style: UIAlertAction.Style.destructive){ (action:UIAlertAction!) in
             //delete search index
             EncryptedSearchService.shared.deleteSearchIndex()
-            //self.coordinator?.go(to: .encryptedSearch)
             self.navigationController?.popViewController(animated: true)
         })
-        
+
         //show alert
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     /*private func calculateStorageSize() -> (value: Float, representation: String) {
         let freeDiskSpace: Float = Float(EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!)
         //print("free disk space: \(freeDiskSpace)")
