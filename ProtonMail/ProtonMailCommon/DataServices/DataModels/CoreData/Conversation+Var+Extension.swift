@@ -143,8 +143,11 @@ extension Conversation {
 
     func createTagFromExpirationDate() -> TagViewModel? {
         guard let expirationTime = expirationTime else { return nil }
+        let title = expirationTime
+            .countExpirationTime(processInfo: userCachedStatus as? SystemUpTimeProtocol)
+            .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagViewModel(
-            title: expirationTime.countExpirationTime.apply(style: FontManager.OverlineRegularInteractionStrong),
+            title: title,
             icon: Asset.mailHourglass.image,
             color: ColorProvider.InteractionWeak
         )

@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import Crypto
 import CoreData
 import Groot
 import ProtonCore_DataModel
@@ -307,11 +308,12 @@ class CacheService: Service {
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
         context.perform {
+            let date = Date.getReferenceDate(processInfo: userCachedStatus as? SystemUpTimeProtocol)
             let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
                                           Message.Attributes.expirationTime,
                                           Message.Attributes.expirationTime,
-                                          NSDate())
+                                          date as CVarArg)
 
             if let messages = try? self.context.fetch(fetch) as? [Message] {
                 messages.forEach { (msg) in
@@ -321,6 +323,7 @@ class CacheService: Service {
                             self.updateCounterSync(plus: false, with: label, context: self.context)
                         }
                     }
+                    self.updateConversation(by: msg)
                     self.context.delete(msg)
                 }
                 if let error = self.context.saveUpstreamIfNeeded() {
@@ -331,6 +334,32 @@ class CacheService: Service {
                 completion?()
             }
         }
+    }
+
+    private func updateConversation(by expiredMessage: Message) {
+        let conversationID = expiredMessage.conversationID
+        let context = self.context
+        guard !conversationID.isEmpty,
+              let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context) else {
+            return
+        }
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetch.predicate = NSPredicate(
+            format: "%K == %@ AND %K.length != 0",
+            Message.Attributes.conversationID,
+            conversation.conversationID,
+            Message.Attributes.messageID
+        )
+        guard let messages = try? self.context.fetch(fetch) as? [Message] else {
+            conversation.expirationTime = nil
+            return
+        }
+        let sorted = messages
+            .filter({ $0 != expiredMessage && ($0.expirationTime ?? .distantPast) > Date.getReferenceDate(processInfo: userCachedStatus as? SystemUpTimeProtocol) })
+            .sorted(by: { ($0.expirationTime ?? .distantPast) > ($1.expirationTime ?? .distantPast) })
+        conversation.expirationTime = sorted.first?.expirationTime
+        let numMessages = max(0, conversation.numMessages.intValue - 1)
+        conversation.numMessages = NSNumber(value: numMessages)
     }
 }
 

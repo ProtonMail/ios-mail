@@ -24,12 +24,59 @@ import Foundation
 
 extension Date {
 
-    var countExpirationTime: String {
+    static func getReferenceDate(processInfo: SystemUpTimeProtocol?,
+                                 reachability: Reachability? = sharedInternetReachability) -> Date {
+        #if APP_EXTENSION
+            return Date.getReferenceDate(reachability: nil,
+                                         processInfo: processInfo)
+        #else
+            return Date.getReferenceDate(reachability: sharedInternetReachability,
+                                         processInfo: processInfo)
+        #endif
+    }
+
+    static func getReferenceDate(reachability: Reachability?,
+                                 processInfo: SystemUpTimeProtocol?,
+                                 deviceDate: Date = Date()) -> Date {
+        guard let reachability = reachability,
+              let processInfo = processInfo else {
+            // App extension doesn't have reachability
+            return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
+        }
+
+        let status = reachability.currentReachabilityStatus()
+        let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
+        switch status {
+        case .ReachableViaWWAN, .ReachableViaWiFi:
+            return serverDate
+        default:
+            // .NotReachable and other unknown cases
+            return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
+        }
+    }
+
+    private static func getOfflineReferenceDate(processInfo: SystemUpTimeProtocol?, deviceDate: Date) -> Date {
+        guard let processInfo = processInfo else {
+            return deviceDate
+        }
+
+        let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
+        let diff = max(0, processInfo.systemUpTime - processInfo.localSystemUpTime)
+        if diff > 0 {
+            // The device doesn't reboot
+            return serverDate.addingTimeInterval(diff)
+        }
+        return serverDate >= deviceDate ? serverDate: deviceDate
+    }
+
+    func countExpirationTime(processInfo: SystemUpTimeProtocol?,
+                             reachability: Reachability? = sharedInternetReachability) -> String {
         let distance: TimeInterval
+        let unixTime = Date.getReferenceDate(processInfo: processInfo, reachability: reachability)
         if #available(iOS 13.0, *) {
-            distance = Date().distance(to: self) + 60
+            distance = unixTime.distance(to: self) + 60
         } else {
-            distance = timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate + 60
+            distance = timeIntervalSinceReferenceDate - unixTime.timeIntervalSinceReferenceDate + 60
         }
 
         if distance > 86_400 {
