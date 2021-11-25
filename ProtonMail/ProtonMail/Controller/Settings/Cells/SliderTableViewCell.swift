@@ -28,8 +28,40 @@ import UIKit
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        //TODO changes to UI
-        //slider.setValue(600, animated: false)
+        
+        self.topLabel.textColor = ColorProvider.TextNorm
+        self.topLabel.font = UIFont.systemFont(ofSize: 17)
+        self.topLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.topLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
+            self.topLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -80),
+            self.topLabel.widthAnchor.constraint(equalToConstant: 289.7),
+            self.topLabel.heightAnchor.constraint(equalToConstant: 24),
+            self.topLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.topLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -89.3)
+        ])
+        
+        self.bottomLabel.textColor = ColorProvider.TextWeak
+        self.bottomLabel.font = UIFont.systemFont(ofSize: 13)
+        self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.bottomLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 84),
+            self.bottomLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.bottomLabel.widthAnchor.constraint(equalToConstant: 343),
+            self.bottomLabel.heightAnchor.constraint(equalToConstant: 16),
+            self.bottomLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
+        ])
+        
+        self.slider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.slider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 44),
+            self.slider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -36),
+            self.slider.widthAnchor.constraint(equalToConstant: 375),
+            self.slider.heightAnchor.constraint(equalToConstant: 36),
+            self.slider.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+            self.slider.rightAnchor.constraint(equalTo: self.contentView.rightAnchor)
+        ])
     }
     
     @IBOutlet weak var topLabel: UILabel!
