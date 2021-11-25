@@ -215,8 +215,8 @@ extension SettingsEncryptedSearchViewController {
                     let userID: String = (usersManager.firstUser?.userInfo.userId)!
                     let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex)
-                    threeLineCell.accessoryType = .checkmark
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex, "ic-check")
+                    threeLineCell.accessoryType = .disclosureIndicator
                 }
                 return cell
             } else {
