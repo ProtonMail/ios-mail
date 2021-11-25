@@ -794,7 +794,7 @@ extension UsersManager: APIServiceDelegate {
     }
 
     func onUpdate(serverTime: Int64) {
-        Crypto.updateTime(serverTime)
+        Crypto.updateTime(serverTime, processInfo: userCachedStatus as? SystemUpTimeProtocol)
     }
 
     var appVersion: String {

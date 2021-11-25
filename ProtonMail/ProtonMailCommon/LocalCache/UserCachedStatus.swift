@@ -93,6 +93,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
         static let darkModeFlag = "dark_mode_flag"
+        static let localSystemUpTime = "localSystemUpTime"
+        static let localServerTime = "localServerTime"
     }
     
     var primaryUserSessionId: String? {
@@ -703,6 +705,36 @@ extension UserCachedStatus: DarkModeCacheProtocol {
         set {
             setValue(newValue.rawValue, forKey: Key.darkModeFlag)
         }
+    }
+}
+
+extension UserCachedStatus: SystemUpTimeProtocol {
+
+    var localServerTime: TimeInterval {
+        get {
+            return TimeInterval(self.getShared().double(forKey: Key.localServerTime))
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localServerTime)
+        }
+    }
+
+    var localSystemUpTime: TimeInterval {
+        get {
+            let time = self.getShared().double(forKey: Key.localSystemUpTime)
+            return time == 0 ? Date().timeIntervalSince1970: TimeInterval(time)
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localSystemUpTime)
+        }
+    }
+
+    var systemUpTime: TimeInterval {
+        ProcessInfo.processInfo.systemUptime
+    }
+
+    func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
+        self.localSystemUpTime = time
     }
 }
 #endif

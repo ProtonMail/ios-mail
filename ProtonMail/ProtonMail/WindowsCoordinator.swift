@@ -122,9 +122,10 @@ class WindowsCoordinator: CoordinatorNew {
                 }
             }
 
-            NotificationCenter.default.addObserver(forName: .switchView, object: nil, queue: .main) { notification in
+            NotificationCenter.default.addObserver(forName: .switchView, object: nil, queue: .main) { [weak self] notification in
+                self?.arePrimaryUserSettingsFetched = true
                 // trigger the menu to follow the deeplink or show inbox
-                self.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
+                self?.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
             }
             
             if #available(iOS 13.0, *) {

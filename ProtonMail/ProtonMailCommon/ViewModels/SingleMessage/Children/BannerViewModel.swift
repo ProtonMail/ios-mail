@@ -102,7 +102,7 @@ class BannerViewModel {
     }
 
     func getExpirationOffset() -> Int {
-        return Int(self.expirationTime.timeIntervalSince(Date()))
+        return Int(self.expirationTime.timeIntervalSince(Date.getReferenceDate(processInfo: userCachedStatus as? SystemUpTimeProtocol)))
     }
 
     func messageHasChanged(message: Message) {

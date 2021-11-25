@@ -218,6 +218,8 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageBuiders/PackageBuilder.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataService+Types.swift
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/UserInfo+OrganizationRole.swift
+  - ${PWD}ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
+  - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/SystemUpTimeProtocol.swift
 
 excluded:
   - ${PWD}/Pods
