@@ -42,7 +42,8 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
-        self.tableView.sectionHeaderHeight = Key.headerHeight
+        //self.tableView.sectionHeaderHeight = Key.headerHeight
+        //self.tableView.estimatedSectionHeaderHeight = Key.headerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
     }
@@ -75,27 +76,40 @@ extension SettingsLocalStorageViewController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
+            print("section: \(section), height: \(Key.headerHeightFirstCell)")
             return Key.headerHeightFirstCell
         }
+        print("section: \(section), height: \(Key.headerHeight)")
         return Key.headerHeight
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = ColorProvider.BackgroundSecondary
+        headerView.backgroundColor = ColorProvider.NotificationError
         headerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         if section == 0 {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeightFirstCell)
+            print("view section: \(section), height: \(Key.headerHeightFirstCell)")
             NSLayoutConstraint.activate([
                 headerView.heightAnchor.constraint(equalToConstant: Key.headerHeightFirstCell)
             ])
         } else {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeight)
+            print("view section: \(section), height: \(Key.headerHeight)")
             NSLayoutConstraint.activate([
                 headerView.heightAnchor.constraint(equalToConstant: Key.headerHeight)
             ])
         }
 
         return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 2 {
+            return Key.footerHeight
+        }
+        return CGFloat.leastNormalMagnitude
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

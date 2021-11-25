@@ -99,6 +99,13 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
 
         return headerView
     }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 2 {
+            return Key.footerHeight
+        }
+        return CGFloat.leastNormalMagnitude
+    }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
