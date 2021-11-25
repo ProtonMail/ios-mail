@@ -25,6 +25,8 @@ import UIKit
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        let parentView: UIView = self.contentView
 
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.button.titleLabel?.textColor = ColorProvider.TextNorm
@@ -32,46 +34,46 @@ import UIKit
         self.button.layer.cornerRadius = 8
         self.button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.button.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 96),
-            self.button.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.button.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 96),
+            self.button.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
             //self.button.widthAnchor.constraint(equalToConstant: 64),
             //self.button.heightAnchor.constraint(equalToConstant: 32), TODO
-            self.button.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 295),
-            self.button.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
+            self.button.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 295),
+            self.button.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16)
         ])
 
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.topLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 16),
-            self.topLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -104),
+            self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 16),
+            self.topLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -104),
             self.topLabel.widthAnchor.constraint(equalToConstant: 243),
             //self.topLabel.heightAnchor.constraint(equalToConstant: 24), TODO
-            self.topLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16)
+            self.topLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16)
         ])
         
         self.middleLabel.textColor = ColorProvider.TextWeak
         self.middleLabel.font = UIFont.systemFont(ofSize: 14)
         self.middleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.middleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 48),
-            self.middleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -56),
+            self.middleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 48),
+            self.middleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -56),
             //self.middleLabel.widthAnchor.constraint(equalToConstant: 343),
             //self.middleLabel.heightAnchor.constraint(equalToConstant: 40),
-            self.middleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
-            self.middleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
+            self.middleLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16),
+            self.middleLabel.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16)
         ])
         
         self.bottomLabel.textColor = ColorProvider.TextNorm
         self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.bottomLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 102),
-            self.bottomLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -22),
+            self.bottomLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 102),
+            self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
             self.bottomLabel.widthAnchor.constraint(equalToConstant: 263),
             //self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),    top/bottom
-            self.bottomLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16)
+            self.bottomLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16)
         ])
     }
     
