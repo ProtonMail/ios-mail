@@ -39,6 +39,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         static let cellHeightDownloadProgressFinished = 108.0
         static let cellHeightDownloadProgressIndexUpdate = 102.0
         static let footerHeight : CGFloat = 48.0
+        static let headerHeightFirstCell: CGFloat = 32.0
+        static let headerHeight: CGFloat = 8.0
         static let headerCell: String = "header_cell"
     }
     
@@ -149,10 +151,36 @@ extension SettingsEncryptedSearchViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return Key.headerHeightFirstCell
+        }
         if section > 0 && self.hideSections {
             return CGFloat.leastNormalMagnitude
         }
+        if section > 0 && !self.hideSections {
+            return Key.headerHeight
+        }
         return super.tableView(tableView, heightForHeaderInSection: section)
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = ColorProvider.BackgroundSecondary
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if section == 0 {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeightFirstCell)
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeightFirstCell)
+            ])
+        } else {
+            headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeight)
+            NSLayoutConstraint.activate([
+                headerView.heightAnchor.constraint(equalToConstant: Key.headerHeight)
+            ])
+        }
+
+        return headerView
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
