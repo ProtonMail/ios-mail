@@ -30,9 +30,49 @@ import UIKit
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var button: UIButton!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.topLabel.textColor = ColorProvider.TextNorm
+        self.topLabel.font = UIFont.systemFont(ofSize: 17)
+        self.topLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.topLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 16),
+            self.topLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -56),
+            self.topLabel.widthAnchor.constraint(equalToConstant: 243),
+            self.topLabel.heightAnchor.constraint(equalToConstant: 24),
+            self.topLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.topLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -116)
+        ])
+        
+        self.bottomLabel.textColor = ColorProvider.TextNorm
+        self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
+        self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.bottomLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 54),
+            self.bottomLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -22),
+            self.bottomLabel.widthAnchor.constraint(equalToConstant: 263),
+            self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.bottomLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -96)
+        ])
+        
+        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        self.button.translatesAutoresizingMaskIntoConstraints = false
+        self.button.backgroundColor = ColorProvider.InteractionWeak
+        self.button.layer.cornerRadius = 8
+        NSLayoutConstraint.activate([
+            self.button.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 48),
+            self.button.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
+            self.button.widthAnchor.constraint(equalToConstant: 64),
+            self.button.heightAnchor.constraint(equalToConstant: 32),
+            self.button.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 295),
+            self.button.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
+        ])
+    }
+    
     @IBAction func buttonPressed(_ sender: UIButton) {
-        //let status = sender.
-        //print("button pressed!")
         callback?()
     }
     
