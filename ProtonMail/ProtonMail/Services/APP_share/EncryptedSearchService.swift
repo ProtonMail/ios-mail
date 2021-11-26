@@ -622,6 +622,9 @@ extension EncryptedSearchService {
             }
         #endif
         
+        self.state = .downloading
+        print("ENCRYPTEDSEARCH-STATE: downloading")
+        
         //add a notification when app is put in background
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
@@ -648,6 +651,7 @@ extension EncryptedSearchService {
 
                         print("ENCRYPTEDSEARCH-STATE: complete")
                         self.state = .complete
+                        self.updateUIIndexingComplete()
 
                         self.indexBuildingInProgress = false
                         self.indexBuildingTimer?.invalidate()
@@ -703,6 +707,7 @@ extension EncryptedSearchService {
                         
                         print("ENCRYPTEDSEARCH-STATE: complete")
                         self?.state = .complete
+                        self?.updateUIIndexingComplete()
 
                         return
                     }
@@ -898,6 +903,10 @@ extension EncryptedSearchService {
                     self.cancelBGProcessingTask()
                     self.cancelBGAppRefreshTask()
                 }
+                
+                //update state
+                self.state = .disabled
+                print("ENCRYPTEDSEARCH-STATE: disabled")
                 
                 //update viewmodel
                 self.viewModel?.isEncryptedSearch = false
@@ -1818,6 +1827,11 @@ extension EncryptedSearchService {
             self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
             self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
         }
+    }
+    
+    //This triggers the viewcontroller to reload the tableview when indexing is complete
+    internal func updateUIIndexingComplete() {
+        self.viewModel?.isIndexingComplete.value = true
     }
     
     private func registerForBatteryLevelChangeNotifications() {
