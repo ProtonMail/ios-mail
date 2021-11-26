@@ -252,7 +252,7 @@ extension AppDelegate: UIApplicationDelegate {
         
         //register background processing task for building the encrypted search index
         if #available(iOS 13, *) {
-            EncryptedSearchService.shared.registerIndexBuildingInBackground()
+            EncryptedSearchService.shared.registerBGProcessingTask()
             EncryptedSearchService.shared.registerBGAppRefreshTask()
         }
         return true
@@ -376,8 +376,7 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         //If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
-        if EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
-            EncryptedSearchService.shared.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
+        if EncryptedSearchService.shared.state == .backgroundStopped {
             EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false)
         }
     }
