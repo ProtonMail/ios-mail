@@ -566,6 +566,7 @@ extension EncryptedSearchService {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String? = usersManager.firstUser?.userInfo.userId
                 if userID == nil {
+                    print("Error: userID unknown!")
                     self.state = .undetermined
                     print("ENCRYPTEDSEARCH-STATE: undetermined")
                     return
@@ -590,7 +591,6 @@ extension EncryptedSearchService {
             //TODO refresh?
             //self.state = .refresh
         }
-        
     }
 
     //function to build the search index needed for encrypted search
