@@ -227,20 +227,14 @@ extension SearchViewController {
             text = LocalString._encrypted_search_info_search_refresh
             link = LocalString._encrypted_search_info_search_downloading_link
             break
-        case .complete:
-            return
-        case .undetermined:
+        case .complete, .undetermined, .background, .backgroundStopped:
             return
         }
         
         DispatchQueue.main.async {
             self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link){
                 switch state {
-                case .complete:
-                    break
-                case .disabled:
-                    break
-                case .undetermined:
+                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
                     break
                 case .partial:
                     let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
@@ -248,8 +242,6 @@ extension SearchViewController {
                     vc.set(viewModel: vm)
                     //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
                     self.show(vc, sender: self)
-                    break
-                case .lowstorage:
                     break
                 case .downloading:
                     let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)

@@ -476,6 +476,8 @@ public class EncryptedSearchService {
         case refresh = 5
         case complete = 6
         case undetermined = 7
+        case background = 8     //indicates that the index is currently build in the background
+        case backgroundStopped = 9  // indicates that the index building has been paused while building in the background
     }
     
     var state: EncryptedSearchIndexState = .undetermined
@@ -517,11 +519,10 @@ public class EncryptedSearchService {
     }()
     
     internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
-    
+
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
-    internal var pauseIndexingDueToBackgroundTaskRunningOutOfTime: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
     internal var pauseIndexingDueToLowStorage: Bool = false
     internal var numPauses: Int = 0
@@ -547,10 +548,12 @@ extension EncryptedSearchService {
             self.state = .disabled
             print("ENCRYPTEDSEARCH-STATE: disabled")
         } else {
-            //TODO low storage?
-            //self.state = .lowstorage
-            if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {   //TODO paused by user?
-                //TODO check if complete!
+            if self.pauseIndexingDueToLowStorage {
+                self.state = .lowstorage
+                print("ENCRYPTEDSEARCH-STATE: lowstorage")
+                return
+            }
+            if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {   //TODO paused by user?
                 self.state = .paused
                 print("ENCRYPTEDSEARCH-STATE: paused")
                 return
@@ -608,13 +611,14 @@ extension EncryptedSearchService {
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
             return
         }
-        
+
         #if !APP_EXTENSION
             //enable background processing
-            self.registerBackgroundTask()
+            self.continueIndexingInBackground()   //pre ios-13 background task for 30 seconds
+
             if #available(iOS 13, *) {
                 self.scheduleNewAppRefreshTask()
-                self.scheduleIndexBuildingInBackground()
+                self.scheduleNewBGProcessingTask()
             }
         #endif
         
@@ -658,7 +662,8 @@ extension EncryptedSearchService {
                         #if !APP_EXTENSION
                             if #available(iOS 13, *) {
                                 //index building finished - we no longer need a background task
-                                self.cancelIndexBuildingInBackground()
+                                self.cancelBGProcessingTask()
+                                self.cancelBGAppRefreshTask()
                             }
                         #endif
                         return
@@ -684,7 +689,8 @@ extension EncryptedSearchService {
                         #if !APP_EXTENSION
                             if #available(iOS 13, *) {
                                 //index building finished - we no longer need a background task
-                                self?.cancelIndexBuildingInBackground()
+                                self?.cancelBGProcessingTask()
+                                self?.cancelBGAppRefreshTask()
                             }
                         #endif
                         
@@ -719,10 +725,14 @@ extension EncryptedSearchService {
             self.numInterruptions += 1
             self.viewModel?.pauseIndexing = true
         } else {
-            print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), background: \(self.pauseIndexingDueToBackgroundTaskRunningOutOfTime)")
+            print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), wifi: \(self.pauseIndexingDueToWiFiNotDetected), storage: \(self.pauseIndexingDueToLowStorage)")
             //check if any of the flags is set to true
-            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToBackgroundTaskRunningOutOfTime || self.pauseIndexingDueToLowStorage {
+            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
                 self.viewModel?.pauseIndexing = true
+
+                self.state = .paused
+                print("ENCRYPTEDSEARCH-STATE: paused")
+
                 completionHandler()
                 return
             }
@@ -885,7 +895,7 @@ extension EncryptedSearchService {
                 
                 //cancel background tasks
                 if #available(iOS 13.0, *) {
-                    self.cancelIndexBuildingInBackground()
+                    self.cancelBGProcessingTask()
                     self.cancelBGAppRefreshTask()
                 }
                 
@@ -1882,177 +1892,6 @@ extension EncryptedSearchService {
         }
     }
     
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    private func registerBackgroundTask() {
-        self.backgroundTask = UIApplication.shared.beginBackgroundTask(){ [weak self] in
-            self?.endBackgroundTask()
-        }
-    }
-    
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    private func endBackgroundTask() {
-        print("Background task ended!")
-        //pause indexing before finishing up
-        self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        UIApplication.shared.endBackgroundTask(self.backgroundTask)
-        self.backgroundTask = .invalid
-    }
-    
-    @available(iOS 13.0, *)
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    func registerIndexBuildingInBackground() {
-        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding", using: nil) { bgTask in
-            self.buildIndexInBackgroundTask(task: bgTask as! BGProcessingTask)
-        }
-        if !registeredSuccessful {
-            print("Error when registering background processing task!")
-        }
-    }
-    
-    @available(iOS 13.0, *)
-    private func cancelIndexBuildingInBackground() {
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
-    }
-    
-    @available(iOS 13.0, *)
-    private func scheduleIndexBuildingInBackground() {
-        let request = BGProcessingTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
-        request.requiresNetworkConnectivity = true  //we need network connectivity when building the index
-        //request.requiresExternalPower = true    //we don't neccesarily need it - however we get more execution time if we enable it
-        
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            print("Error when scheduling index building background task: \(error)")
-        }
-    }
-    
-    @available(iOS 13.0, *)
-    private func buildIndexInBackgroundTask(task: BGProcessingTask) {
-        var skipBackgroundTask: Bool = false
-        //Provide an expiration handler in case indexing is not finished in time
-        task.expirationHandler = {
-            //schedule a new background processing task if index building is not finished
-            self.scheduleIndexBuildingInBackground()
-            
-            //stop background execution task
-            let stopTime = CFAbsoluteTimeGetCurrent()
-            let elapsedTime = self.startBackgroundTask - stopTime
-            let text: String = "stop background task. time= " + String(elapsedTime)
-            self.sendNotification(text: text)
-            
-            if !skipBackgroundTask {
-                //pause indexing
-                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-                
-                //set task to be completed - so that the systems does not terminate the app
-                task.setTaskCompleted(success: true)
-            }
-        }
-        
-        //start background processing task
-        self.backgroundTaskCounter += 1
-        self.startBackgroundTask = CFAbsoluteTimeGetCurrent()
-        let text = "start background task: " + String(self.backgroundTaskCounter)
-        self.sendNotification(text: text)
-        print("BGTASK: \(self.backgroundTaskCounter)")
-        
-        //index is build in foreground - no need for a background task
-        if self.indexBuildingInProgress {
-            skipBackgroundTask = true
-            task.setTaskCompleted(success: true)
-        } else {
-            //resume indexing in background
-            if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
-                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
-            }
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
-                //if indexing is finshed during background task - set to complete
-                task.setTaskCompleted(success: true)
-            }
-        }
-    }
-    
-    @available(iOS 13.0, *)
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    func registerBGAppRefreshTask() {
-        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh", using: nil) { bgTask in
-            self.appRefreshTask(task: bgTask as! BGAppRefreshTask)
-        }
-        if !registeredSuccessful {
-            print("Error when registering background app refresh task!")
-        }
-    }
-    
-    @available(iOS 13.0, *)
-    func cancelBGAppRefreshTask() {
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
-    }
-    
-    @available(iOS 13.0, *)
-    private func appRefreshTask(task: BGAppRefreshTask) {
-        var skipBackgroundTask: Bool = false
-        //Provide an expiration handler in case indexing is not finished in time
-        task.expirationHandler = {
-            //schedule a new background app refresh task
-            self.scheduleNewAppRefreshTask()
-            
-            let currentDateTime = Date()
-            let formatter = DateFormatter()
-            formatter.timeStyle = .medium
-            formatter.dateStyle = .long
-            let text: String = "app refresh finished: " + formatter.string(from: currentDateTime)
-            self.sendNotification(text: text)
-            print("APP_REFRESH_finished: ", formatter.string(from: currentDateTime))
-            
-            if !skipBackgroundTask {
-                //pause indexing
-                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = true
-                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-                
-                //set task to be completed - so that the systems does not terminate the app
-                task.setTaskCompleted(success: true)
-            }
-        }
-        
-        let currentDateTime = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .long
-        let text: String = "app refresh started: " + formatter.string(from: currentDateTime)
-        self.sendNotification(text: text)
-        print("APP_REFRESH_started: ", formatter.string(from: currentDateTime))
-        
-        //index is build in foreground - no need for a background task
-        if self.indexBuildingInProgress {
-            skipBackgroundTask = true
-            task.setTaskCompleted(success: true)
-        } else {
-            //resume indexing in background
-            if self.pauseIndexingDueToBackgroundTaskRunningOutOfTime {
-                self.pauseIndexingDueToBackgroundTaskRunningOutOfTime = false
-                self.viewModel?.pauseIndexing = false
-            }
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
-                //if indexing is finshed during background task - set to complete
-                task.setTaskCompleted(success: true)
-            }
-        }
-    }
-
-    @available(iOS 13.0, *)
-    private func scheduleNewAppRefreshTask(){
-        let request = BGAppRefreshTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
-
-        do {
-            try BGTaskScheduler.shared.submit(request)
-        } catch {
-            print("Unable to sumit app refresh task: \(error.localizedDescription)")
-        }
-    }
-    
     func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
         var estimatedMinutes: Int = 0
         var currentProgress: Int = 0
@@ -2188,6 +2027,152 @@ extension EncryptedSearchService {
         if self.indexBuildingInProgress && self.slowDownIndexBuilding {
             self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
             self.slowDownIndexBuilding = false
+        }
+    }
+    
+    // MARK: - Background Tasks
+    //pre-ios 13 background tasks
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    private func continueIndexingInBackground() {
+        self.state = .background
+        print("ENCRYPTEDSEARCH-STATE: background")
+        self.backgroundTask = UIApplication.shared.beginBackgroundTask(){ [weak self] in
+            self?.endBackgroundTask()
+        }
+    }
+
+    //pre-ios 13 background tasks
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    private func endBackgroundTask() {
+        print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
+        self.state = .backgroundStopped
+        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        UIApplication.shared.endBackgroundTask(self.backgroundTask)
+        self.backgroundTask = .invalid
+    }
+    
+    // BG Processing Task functions
+    @available(iOS 13.0, *)
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func registerBGProcessingTask() {
+        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding", using: nil) { bgTask in
+            self.bgProcessingTask(task: bgTask as! BGProcessingTask)
+        }
+        if !registeredSuccessful {
+            print("Error when registering background processing task!")
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func cancelBGProcessingTask() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
+    }
+
+    @available(iOS 13.0, *)
+    private func scheduleNewBGProcessingTask() {
+        let request = BGProcessingTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
+        request.requiresNetworkConnectivity = true  //we need network connectivity when building the index
+        //request.requiresExternalPower = true    //we don't neccesarily need it - however we get more execution time if we enable it
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Error when scheduling index building background task: \(error)")
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func bgProcessingTask(task: BGProcessingTask) {
+        //Provide an expiration handler in case indexing is not finished in time
+        task.expirationHandler = {
+            //schedule a new background processing task if index building is not finished
+            self.scheduleNewBGProcessingTask()
+
+            self.state = .backgroundStopped
+            print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
+
+            //send notification - debugging - TODO remove
+            self.sendNotification(text: "BGPROCESSING-TASK stop indexing in BG")
+        }
+
+        //index is build in foreground - no need for a background task
+        if self.state == .downloading {
+            task.setTaskCompleted(success: true)
+        } else {
+            self.state = .background
+            print("ENCRYPTEDSEARCH-STATE: background")
+
+            //send a notification - debugging - TODO remove
+            self.sendNotification(text: "BGPROCESSING-TASK start indexing in BG")
+
+            //start indexing in background
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
+                //if indexing is finshed during background task - set to complete
+                self.state = .complete
+                print("ENCRYPTEDSEARCH-STATE: complete")
+                task.setTaskCompleted(success: true)
+            }
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func registerBGAppRefreshTask() {
+        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh", using: nil) { bgTask in
+            self.appRefreshTask(task: bgTask as! BGAppRefreshTask)
+        }
+        if !registeredSuccessful {
+            print("Error when registering background app refresh task!")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func cancelBGAppRefreshTask() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
+    }
+    
+    @available(iOS 13.0, *)
+    private func scheduleNewAppRefreshTask(){
+        let request = BGAppRefreshTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Unable to sumit app refresh task: \(error.localizedDescription)")
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    private func appRefreshTask(task: BGAppRefreshTask) {
+        //Provide an expiration handler in case indexing is not finished in time
+        task.expirationHandler = {
+            //schedule a new background app refresh task
+            self.scheduleNewAppRefreshTask()
+            
+            self.state = .backgroundStopped
+            print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
+            
+            //send notification - debugging - TODO remove
+            self.sendNotification(text: "BGAPPREFRESH-TASK stop indexing in BG")
+        }
+        
+        //index is build in foreground - no need for a background task
+        if self.state == .downloading {
+            task.setTaskCompleted(success: true)
+        } else {
+            self.state = .background
+            print("ENCRYPTEDSEARCH-STATE: background")
+
+            //send a notification - debugging - TODO remove
+            self.sendNotification(text: "BGAPPREFRESH-TASK start indexing in BG")
+
+            //start indexing in background
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
+                //if indexing is finshed during background task - set to complete
+                self.state = .complete
+                print("ENCRYPTEDSEARCH-STATE: complete")
+                task.setTaskCompleted(success: true)
+            }
         }
     }
 }
