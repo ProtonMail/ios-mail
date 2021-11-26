@@ -69,6 +69,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
+        setupIndexingFinishedObserver()
 
         //Determine current encrypted search state
         EncryptedSearchService.shared.determineEncryptedSearchState()
@@ -433,6 +434,18 @@ extension SettingsEncryptedSearchViewController {
 
                     UIView.performWithoutAnimation {
                         self.tableView.reloadRows(at: [path], with: .none)
+                    }
+                }
+            }
+        }
+    }
+    
+    func setupIndexingFinishedObserver() {
+        self.viewModel.isIndexingComplete.bind { (_) in
+            if EncryptedSearchService.shared.state == .complete {
+                DispatchQueue.main.async {
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadData()
                     }
                 }
             }
