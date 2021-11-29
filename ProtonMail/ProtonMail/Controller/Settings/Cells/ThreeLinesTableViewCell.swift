@@ -31,59 +31,60 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        let parentView: UIView = self.contentView
+        
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.topLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 16),
-            self.topLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -68),
-            self.topLabel.widthAnchor.constraint(equalToConstant: 243),
-            self.topLabel.heightAnchor.constraint(equalToConstant: 24),
-            self.topLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 44),
-            self.topLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -88)
+            self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 16),
+            self.topLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -68),
+            //self.topLabel.widthAnchor.constraint(equalToConstant: 243),
+            //self.topLabel.heightAnchor.constraint(equalToConstant: 24),
+            self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 44),
+            //self.topLabel.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -88)
         ])
         
         self.middleLabel.textColor = ColorProvider.TextWeak
         self.middleLabel.font = UIFont.systemFont(ofSize: 14)
         self.middleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.middleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 48),
-            self.middleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -40),
-            self.middleLabel.widthAnchor.constraint(equalToConstant: 303),
-            self.middleLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.middleLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
-            self.middleLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -56)
+            self.middleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 48),
+            self.middleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -40),
+            //self.middleLabel.widthAnchor.constraint(equalToConstant: 303),
+            //self.middleLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.middleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.middleLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -56)
         ])
         
         self.bottomLabel.textColor = ColorProvider.TextWeak
         self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.bottomLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 76),
-            self.bottomLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12),
+            self.bottomLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 76),
+            self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -12),
             self.bottomLabel.widthAnchor.constraint(equalToConstant: 303),
-            self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.bottomLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
-            self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -56)
+            //self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.bottomLabel.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -56)
         ])
         
         self.icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.icon.topAnchor.constraint(equalTo: self.topAnchor, constant: 23),
-            self.icon.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 74.3),
-            self.icon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 18.5),
-            self.icon.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -341.62),
+            self.icon.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 23),
+            self.icon.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: 74.3),
+            self.icon.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 18.5),
+            self.icon.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -341.62),
             self.icon.widthAnchor.constraint(equalToConstant: 20),
             self.icon.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
-    func configCell(_ topLine: String, _ middleLine: String, _ bottomLine: String, _ icon: UIImageView) {
-        
+    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: NSMutableAttributedString, _ icon: UIImageView) {
         topLabel.text = topLine
-        middleLabel.text = middleLine
-        bottomLabel.text = bottomLine
-        
+        middleLabel.attributedText = middleLine
+        bottomLabel.attributedText = bottomLine
+
         self.icon = icon
         
         self.layoutIfNeeded()
