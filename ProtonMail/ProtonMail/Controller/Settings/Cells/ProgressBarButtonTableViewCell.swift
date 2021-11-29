@@ -31,17 +31,18 @@ import UIKit
         
         let parentView: UIView = self.contentView
         
-        self.pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: UIControl.State.normal)
         self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.pauseButton.setTitleColor(ColorProvider.TextNorm, for: .normal)
-        self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
+        self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.pauseButton.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 108),
             //self.pauseButton.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
-            self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
-            self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
+            self.pauseButton.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.pauseButton.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -290)
+            //self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
+            //self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
         ])
         
         self.progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -105,12 +106,14 @@ import UIKit
         self.layoutIfNeeded()
     }
     
-    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, complete: buttonActionBlock?) {
+    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, complete: buttonActionBlock?) {
         titleLabel.text = titleLine
         statusLabel.text = advice
         estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.setProgress(Float(currentProgress)/100.0, animated: true)
+        
+        self.pauseButton.setTitle(buttonTitle, for: UIControl.State.normal)
 
         //implementation of pause button
         callback = complete
