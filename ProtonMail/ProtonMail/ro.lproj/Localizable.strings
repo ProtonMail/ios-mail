@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Rută alternativă";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Permanent oprit";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Permanent pornit";
+
 /* agree check box middle word */
 "and" = "și";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Restrângere folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Retrângere mesaj";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Contacte combinate";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Decupare";
+
+/* cell title in app setting */
+"Dark mode" = "Mod întunecat";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "La fiecare intrare în aplicație";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Extindere folder";
+
 /* alert title */
 "Expiration not supported" = "Expirare nesuportată";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Foldere";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Ca în setările dispozitivului";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Pentru persoane ce doresc comunicații sigure fără cheltuieli";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Comutare mod selectare";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Comutare la mesaje necitite";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "S-a comutat la contul „%@”";

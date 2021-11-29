@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Roteamento alternativo";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Sempre desligado";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Sempre ligado";
+
 /* agree check box middle word */
 "and" = "e";
 
@@ -323,7 +329,7 @@
 "Attachment" = "Anexo";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "Falha ao anexar";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Anexo importado";
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Fechando";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Collapse folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Collapse message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Contatos combinados";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Recortar";
+
+/* cell title in app setting */
+"Dark mode" = "Modo escuro";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Sempre que entrar no aplicativo";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
 /* alert title */
 "Expiration not supported" = "Expiração não suportada";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Pastas";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Seguir a configuração do sistema";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Para pessoas que desejam se beneficiar de comunicação segura sem custo";
@@ -1423,7 +1444,7 @@
 "Language" = "Idioma";
 
 /* Action */
-"Later" = "Later";
+"Later" = "Mais tarde";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -2270,10 +2291,10 @@
 "Sending will be available\nwhen attachments are uploaded" = "O envio estará disponível\nquando os anexos estiverem carregados";
 
 /* menu title */
-"Sent" = "Enviado";
+"Sent" = "Enviados";
 
 /* mail location title */
-"SENT" = "Enviado";
+"SENT" = "Enviados";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Enviado por ProtonMail com criptografia de acesso zero";
@@ -2425,10 +2446,10 @@
 "Storage" = "Armazenamento";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "Armazenamento cheio";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "Cota de armazenamento excedida";
 
 /* Title */
 "Storage Warning" = "Aviso de armazenamento";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Alternar modo de seleção";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Alterado para a conta \"%@\"";
@@ -2535,7 +2559,7 @@
 "The draft format incorrectly sending failed!" = "Formato de rascunho incorreto. Falha ao enviar!";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "Não foi possível anexar os seguintes arquivos:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "O nível mais alto de criptografia disponível.";
@@ -3046,14 +3070,14 @@
 "You have used %d%% of your storage space (%@)." = "Você usou %d%% do seu espaço de armazenamento (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Você usou %1$d%% do seu espaço de armazenamento (%2$@). Atualize o seu plano para continuar a enviar e receber e-mails.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Você usou todo o seu espaço de armazenamento (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Você usou todo o seu espaço de armazenamento (%@). Atualize o seu plano para continuar a enviar e receber e-mails.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Você precisa de pelo menos um destinatário para enviar";

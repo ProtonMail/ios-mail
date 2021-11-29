@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Ruta alternativa";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Always off";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Always on";
+
 /* agree check box middle word */
 "and" = "y";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Cerrando";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Collapse folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Collapse message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Contactos combinados";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Cortar";
+
+/* cell title in app setting */
+"Dark mode" = "Dark mode";
 
 /* message Date: text */
 "Date:" = "Fecha:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Cada vez al abrir la aplicación";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
 /* alert title */
 "Expiration not supported" = "Expiración no soportada";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Carpetas";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Follow device setting";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Para personas que buscan beneficiarse de una comunicación segura sin costo";
@@ -2068,7 +2089,7 @@
 "ProtonVPN included" = "ProtonVPN incluido";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Dar comentarios";
+"Provide feedback" = "Enviar comentarios";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
@@ -2480,6 +2501,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Cambiar modo de selección";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Se ha cambiado a la cuenta '%@'";
 
@@ -2499,7 +2523,7 @@
 "Tap send anyway to send without expiration to these recipients" = "Pulsa enviar de todos modos para enviar sin caducidad a estos destinatarios";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Cuéntanos acerca de tu experiencia. (Opcional)";
+"Tell us about your experience. (Optional)" = "Cuéntanos tu experiencia. (Opcional)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Deshabilita temporalmente o elimina tu software de antivirus.";

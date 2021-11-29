@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternativ routing";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Altid slået fra";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Altid slået til";
+
 /* agree check box middle word */
 "and" = "og";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Lukker";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Luk mappe sammen";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Luk besked sammen";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Kombinerede kontakter";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Klip";
+
+/* cell title in app setting */
+"Dark mode" = "Mørk tilstand";
 
 /* message Date: text */
 "Date:" = "Dato:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Ved enhver app-tilgang";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Udvid mappe";
+
 /* alert title */
 "Expiration not supported" = "Udløb ikke understøttet";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Mapper";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Følg enhedens indstilling";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "For enkeltpersoner, som ønsker at drage fordel af sikker kommunikation omkostningsfrit";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Skift valgmetode";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Skift ulæst filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Skiftede til konto '%@'";

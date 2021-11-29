@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternatieve routing";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Altijd uit";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Altijd aan";
+
 /* agree check box middle word */
 "and" = "en";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Sluiten";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Map samenvouwen";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Bericht samenvouwen";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Gecombineerde contacten";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Knippen";
+
+/* cell title in app setting */
+"Dark mode" = "Donkere modus";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Elke keer als u de app opent";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Map uitklappen";
+
 /* alert title */
 "Expiration not supported" = "Vervaldatum niet ondersteund";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Mappen";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Volg de instelling van het apparaat";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Voor personen die gebruik willen maken van veilige communicatie zonder kosten";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Schakelen tussen selectiemodus";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Schakel ongelezen filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Overgeschakeld naar account '%@'";

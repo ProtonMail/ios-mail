@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternativní směrování";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Vždy vypnuto";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Vždy zapnuto";
+
 /* agree check box middle word */
 "and" = "a";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zavírání";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Sbalit složku";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Sbalit zprávu";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Sloučené kontakty";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Odstřihnout";
+
+/* cell title in app setting */
+"Dark mode" = "Tmavý vzhled";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Při každém spuštění aplikace";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Rozbalit složku";
+
 /* alert title */
 "Expiration not supported" = "Doba trvání není podporována";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Složky";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Následující nastavení zařízení";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Pro jednotlivce, kteří hledají užitek z bezpečné komunikace bez nákladů";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Přepněte režim výběru";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Přepnout filtr nepřečtených zpráv";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Přepnuto na účet '%@'";
