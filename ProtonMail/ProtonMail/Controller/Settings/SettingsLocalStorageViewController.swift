@@ -17,6 +17,7 @@
 
 import ProtonCore_UIFoundations
 import CoreGraphics
+import UIKit
 
 class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel: SettingsLocalStorageViewModel!
@@ -130,8 +131,9 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button, for: UIControl.State.normal)
-                let cachedData: String = "10 mb"//TODO replace with actual data
-                localStorageCell.configCell(eSection.title, LocalString._settings_local_storage_cached_data_text, cachedData){
+                let cachedData: String = "" //This should be the size of the messages in core data
+                let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_cached_data_text)
+                localStorageCell.configCell(eSection.title, infoText, cachedData){
                     //TODO button action
                     print("Button pressed in cached data")
                 }
@@ -141,8 +143,10 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_attachments_button, for: UIControl.State.normal)
-                let attachments: String = "55.2 mb"//TODo replace with actual data
-                localStorageCell.configCell(eSection.title, LocalString._settings_local_storage_attachments_text, attachments){
+                let attachments: String = ""//This should be the size of the attachments of the emails
+                let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
+                let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_attachments_text, attributes: attr)
+                localStorageCell.configCell(eSection.title, infoText, attachments){
                     //TODO button action
                     print("Button pressed in attachments")
                 }
@@ -152,12 +156,29 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.isHidden = true
-                var downloadedMessages: String = "250 MB"   //TODO replace with actual data
+                var downloadedMessages: String = ""
                 if EncryptedSearchService.shared.state == .disabled {
                     downloadedMessages = LocalString._settings_local_storage_downloaded_messages_text_disabled
                     localStorageCell.bottomLabel.textColor = ColorProvider.NotificationError
+                } else {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let userID: String = usersManager.firstUser?.userInfo.userId ?? ""
+                    downloadedMessages = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                 }
-                localStorageCell.configCell(eSection.title, LocalString._settings_local_storage_downloaded_messages_text, downloadedMessages){}
+
+                let seeDetails = LocalString._settings_local_storage_downloaded_messages_text_link
+                let full = String.localizedStringWithFormat(LocalString._settings_local_storage_downloaded_messages_text, seeDetails)
+                let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
+
+                let infoText = NSMutableAttributedString(string: full, attributes: attr)
+                
+                if let subrange = full.range(of: seeDetails){
+                    let nsRange = NSRange(subrange, in: full)
+                    infoText.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.InteractionNorm, range: nsRange)
+                }
+
+                localStorageCell.configCell(eSection.title, infoText, downloadedMessages){}
+                localStorageCell.accessoryType = .disclosureIndicator
             }
             return cell
         }
@@ -190,5 +211,22 @@ extension SettingsLocalStorageViewController {
             }
         }
         return header
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .cachedData, .attachments:
+            break //Do nothing
+        case .downloadedMessages:
+            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let vc = SettingsEncryptedSearchViewController()
+            vc.set(viewModel: vm)
+            //vc.set(coordinator: self.coordinator!)
+            show(vc, sender: self)
+            break
+        }
     }
 }
