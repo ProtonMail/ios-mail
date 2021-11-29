@@ -25,15 +25,17 @@ fileprivate struct id {
     static let subscriptionStaticText = "MenuItemTableViewCell.\(LocalString._menu_service_plan_title)"
     static let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
     static let manageAccountsStaticTextLabel = CoreString._as_manage_accounts
+    static let primaryViewIdentifier = "AccountSwitcher.primaryView"
     static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
-    static let primaryUserNameTextIdentifier = "AccountSwitcher.primaryUsername"
-    static let primaryUserMailTextIdentifier = "AccountSwitcher.primaryUsermail"
+    static let primaryUserNameTextIdentifier = "AccountSwitcher.username"
+    static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
     static let iapErrorAlertTitle = LocalString._general_alert_title
     static let iapErrorAlertMessage = LocalString._iap_unavailable
     static let forceUpgrateAlertTitle = CoreString._fu_alert_title
     static let forceUpgrateAlertMessage = "Test error description"
     static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
     static let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
+    static let signInButtonLabel = CoreString._ls_sign_in_button
     static func userAccountCellIdentifier(_ name: String) -> String { return
         "AccountSwitcherCell.\(name)" }
     static func userAccountCellPredicate(_ name: String) -> NSPredicate { return
@@ -41,9 +43,6 @@ fileprivate struct id {
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
-    static func signInButtonIdentifier(_ name: String) -> String { return
-        "signInBtn.\(name)"
-    }
 }
 
 /**
@@ -157,8 +156,9 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                staticText(id.primaryUserMailTextIdentifier).wait().checkExists().checkContainsLabel(user.name)
-                staticText(id.primaryUserMailTextIdentifier).wait().checkExists().checkHasLabel(user.email)
+                otherElement(id.primaryViewIdentifier).wait().checkExists()
+                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserNameTextIdentifier)).checkExists().checkContainsLabel(user.name)
+                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserMailTextIdentifier)).checkExists().checkHasLabel(user.email)
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {
@@ -166,7 +166,7 @@ class MenuRobot: CoreElements {
             }
             
             func accountSignedOut(_ user: User) {
-                button(id.signInButtonIdentifier(user.name)).checkExists()
+                cell(id.userAccountCellIdentifier(user.name)).wait().checkExists().onChild(button(id.signInButtonLabel)).checkExists()
             }
         }
     }

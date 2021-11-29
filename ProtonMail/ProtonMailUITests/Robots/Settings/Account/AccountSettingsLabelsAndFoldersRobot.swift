@@ -19,7 +19,7 @@ fileprivate struct id {
     static let deleteCellIdentifier = "LabelEditViewController.deleteCell"
     static let confirmDeleteButtonText = LocalString._general_delete_action
     static func labelFolderCellIdentifier(_ name: String) -> String { return "LabelTableViewCell.\(name)" }
-    static func selectLabelFolderButtonText(_ name: String) -> String { return "\(name).name" }
+    static func selectLabelFolderCellIdentifiert(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
     static func editLabelFolderButtonIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
     static let colorCollectionViewCellIdentifier = "LabelPaletteCell.LabelColorCell"
 }
@@ -42,12 +42,11 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func deleteFolderLabel(_ name: String) -> AccountSettingsLabelsAndFoldersRobot {
-        return selectFolderLabel(name)
-            .delete().confirmDelete()
+        return selectFolderLabel(name).delete().confirmDelete()
     }
     
     func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
-        staticText(id.selectLabelFolderButtonText(folderName)).tap()
+        staticText(id.selectLabelFolderCellIdentifiert(folderName)).tap()
         return AddFolderLabelRobot()
     }
     
@@ -57,7 +56,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
-        staticText(id.selectLabelFolderButtonText(name)).tap()
+        cell(id.selectLabelFolderCellIdentifiert(name)).swipeUpUntilVisible().tap()
         return AddFolderLabelRobot()
     }
     

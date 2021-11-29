@@ -10,13 +10,6 @@ import ProtonCore_TestingToolkit
 
 class RecepientAddressesTests: BaseTestCase {
     
-    var subject = String()
-    
-    override func setUp() {
-        super.setUp()
-        subject = "Subject"
-    }
-    
     func testExistingRecepient() {
         let user = testData.onePassUser
         let recipient = testData.internalEmailTrustedKeys.email
@@ -24,18 +17,18 @@ class RecepientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
     func testNonExistingRecepient() {
         let user = testData.onePassUser
-        let recipient = "not_existing_\(user.email)"
+        let recipient = "not_\(user.pmMeEmail)"
         LoginRobot()
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.recipientNotFoundToastIsShown()
     }
     
@@ -46,7 +39,7 @@ class RecepientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.recipientNotFoundToastIsShown()
     }
     
@@ -57,7 +50,7 @@ class RecepientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -68,7 +61,7 @@ class RecepientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .typeAndSelectRecipients(recipientGroup)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -79,29 +72,29 @@ class RecepientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
     func testRecepientWithInvalidDomain() {
         let user = testData.onePassUser
-        let recipient = "i_like_underscore@but_*[>_not_allow_in_this_part.com"
+        let recipient = "under_score@_*[>.ch"
         LoginRobot()
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsShown()
     }
     
     func testRecepientWithInvalidEmailAddress() {
         let user = testData.onePassUser
-        let recipient = "Peléδοκιμή我買屋企.香港二ノ宮黒川.日本медведь@с-балалайкойसंपर्कडाटामेल.भारत.рф"
+        let recipient = "Peléδοκιμή企.香二ノ宮.日медведь@с-балалайकडा.भा.рф"
         LoginRobot()
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .subject(subject)
+            .tapSubject()
             .verify.invalidAddressToastIsShown()
     }
 }

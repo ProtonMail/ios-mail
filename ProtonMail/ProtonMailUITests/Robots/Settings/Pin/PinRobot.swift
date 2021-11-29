@@ -66,6 +66,7 @@ class PinRobot: CoreElements {
     
     func backgroundApp() -> PinRobot {
         XCUIDevice.shared.press(.home)
+        sleep(3)    //It's always more stable when there is a small gap between background and foreground
         return PinRobot()
     }
     
@@ -103,8 +104,8 @@ class PinRobot: CoreElements {
             staticText(id.setPinStaticTextLabel).wait().checkExists()
         }
         
-        func enterPin(pin: String) -> setPinRobot {
-            secureTextField(id.addPinTextFieldIdentifier).tap().typeText(pin)
+        func enterPin(_ pin: String) -> setPinRobot {
+            secureTextField(id.addPinTextFieldIdentifier).typeText(pin)
             return self
         }
         
@@ -113,10 +114,10 @@ class PinRobot: CoreElements {
             return RepeatPinRobot()
         }
         
-        func setPin(pin: String) -> PinRobot {
-            enterPin(pin: pin)
+        func setPin(_ pin: String) -> PinRobot {
+            enterPin(pin)
                 .continueSettingPin()
-                .confirmPin(pin: pin)
+                .confirmPin(pin)
         }
     }
     
@@ -126,7 +127,7 @@ class PinRobot: CoreElements {
             staticText(id.repeatPinStaticTextLabel).wait().checkExists()
         }
         
-        func enterPin(pin: String) -> RepeatPinRobot {
+        func enterPin(_ pin: String) -> RepeatPinRobot {
             secureTextField(id.confirmPinTextFieldIdentifier).tap().typeText(pin)
             return self
         }
@@ -136,8 +137,8 @@ class PinRobot: CoreElements {
             return PinRobot()
         }
         
-        func confirmPin(pin: String) -> PinRobot {
-            enterPin(pin: pin)
+        func confirmPin(_ pin: String) -> PinRobot {
+            enterPin(pin)
                 .continueConfirm()
         }
     }
