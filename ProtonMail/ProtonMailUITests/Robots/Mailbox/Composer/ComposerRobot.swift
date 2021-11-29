@@ -90,7 +90,6 @@ class ComposerRobot: CoreElements {
     
     func draftToBody(_ to: String, _ body: String) -> ComposerRobot {
         recipients(to)
-            .subject("")
             .body(body)
         return self
     }
@@ -270,6 +269,11 @@ class ComposerRobot: CoreElements {
     func typeAndSelectBCC(_ email: String) -> ComposerRobot {
         textField(id.bccTextFieldIdentifier).tap().tap().typeText(email)
         cell(id.getContactCellIdentifier(email)).tap()
+        return self
+    }
+    
+    func tapSubject() -> ComposerRobot {
+        textField(id.subjectTextFieldIdentifier).tap()
         return self
     }
     

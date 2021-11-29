@@ -12,8 +12,7 @@ import ProtonCore_TestingToolkit
 class PinTests: BaseTestCase {
     private let pinRobot: PinRobot = PinRobot()
     private let loginRobot = LoginRobot()
-    let correctPins = [0,1,2,3,4,5,6,7,8,9]
-    let incorrectPins = [1,2]
+    let correctPin = "0000"
     
     override func setUp() {
         super.setUp()
@@ -22,7 +21,8 @@ class PinTests: BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enablePin().setPin(pin: "\(correctPins)")
+            .enablePin()
+            .setPin(correctPin)
             .verify.isPinEnabled(true)
     }
     
@@ -39,7 +39,7 @@ class PinTests: BaseTestCase {
             .confirmWithEmptyPin()
             .verify.emptyPinErrorMessageShows()
             .clickOK()
-            .inputCorrectPin(correctPins)
+            .inputCorrectPin()
             .verify.appUnlockSuccessfully()
     }
     
@@ -47,9 +47,9 @@ class PinTests: BaseTestCase {
         pinRobot
             .backgroundApp()
             .foregroundApp()
-            .inputIncorrectPin(incorrectPins)
+            .inputIncorrectPin()
             .verify.pinErrorMessageShows(1)
-            .inputIncorrectPin(incorrectPins)
+            .inputIncorrectPin()
             .verify.pinErrorMessageShows(2)
             .logout()
             .verify.loginScreenIsShown()

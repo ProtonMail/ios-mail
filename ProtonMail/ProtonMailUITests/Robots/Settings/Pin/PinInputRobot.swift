@@ -62,6 +62,16 @@ class PinInputRobot: CoreElements {
         staticText(identifier).tap()
     }
     
+    func tapPinSymbolFourTimes() -> PinInputRobot {
+        staticText("0").tap().tap().tap().tap()
+        return PinInputRobot()
+    }
+    
+    func tapPinSymbol(_ number: String) -> PinInputRobot {
+        staticText(number).tap()
+        return PinInputRobot()
+    }
+    
     @discardableResult
      func enterPin(_ pins: [Int]) -> PinInputRobot {
         for pin in pins {
@@ -70,22 +80,14 @@ class PinInputRobot: CoreElements {
         return PinInputRobot()
     }
     
-    func createPin(_ pins: [Int]) -> PinRobot {
-        enterPin(pins)
-            .create()
-            .enterPin(pins)
-            .confirm()
-        return PinRobot()
-    }
-    
-    func inputIncorrectPin(_ pins: [Int]) -> PinInputRobot {
-        enterPin(pins)
+    func inputIncorrectPin() -> PinInputRobot {
+        tapPinSymbol("0")
             .confirm()
         return PinInputRobot()
     }
     
-    func inputCorrectPin(_ pins: [Int]) -> PinRobot {
-        enterPin(pins)
+    func inputCorrectPin() -> PinRobot {
+        tapPinSymbolFourTimes()
             .confirm()
         return PinRobot()
     }
@@ -144,7 +146,7 @@ class PinInputRobot: CoreElements {
         
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
-            let errorMessage = String(format: "Incorrect PIN. %d attempt remaining", (10-count))
+            let errorMessage = String(format: "Incorrect PIN. %d attempts remaining", (10-count))
             staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
             return PinInputRobot()
         }

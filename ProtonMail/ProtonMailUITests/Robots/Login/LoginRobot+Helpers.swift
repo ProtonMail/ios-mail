@@ -13,14 +13,14 @@ extension LoginRobot {
 
     @discardableResult
     func loginUser(_ user: User) -> InboxRobot {
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: InboxRobot.self)
             .skipTutorialIfNeeded()
     }
 
     func loginUserWithTwoFA(_ user: User) -> InboxRobot {
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: TwoFaRobot.self)
             .fillTwoFACode(code: user.getTwoFaCode())
@@ -29,7 +29,7 @@ extension LoginRobot {
     }
 
     func loginTwoPasswordUser(_ user: User) -> InboxRobot {
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: MailboxPasswordRobot.self)
             .fillMailboxPassword(mailboxPassword: user.mailboxPassword)
@@ -38,7 +38,7 @@ extension LoginRobot {
     }
 
     func loginTwoPasswordUserWithInvalid2Pass(_ user: User) -> MailboxPasswordRobot {
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: MailboxPasswordRobot.self)
             .fillMailboxPassword(mailboxPassword: "wrong" + user.mailboxPassword)
@@ -46,7 +46,7 @@ extension LoginRobot {
     }
 
     func loginTwoPasswordUserWithTwoFA(_ user: User) -> InboxRobot {
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: TwoFaRobot.self)
             .fillTwoFACode(code: user.getTwoFaCode())
@@ -57,7 +57,7 @@ extension LoginRobot {
     }
 
     func loginWithInvalidUser(_ user: User) -> LoginRobot {
-        let incorrectEmail = "invalid" + user.email
+        let incorrectEmail = "invalid" + user.name
         return fillUsername(username: incorrectEmail)
             .insertPassword(password: user.password)
             .signIn(robot: LoginRobot.self)
@@ -65,13 +65,13 @@ extension LoginRobot {
 
     func loginWithInvalidPassword(_ user: User) -> LoginRobot {
         let invalidPassword = "invalid" + user.password
-        return fillUsername(username: user.email)
+        return fillUsername(username: user.name)
             .insertPassword(password: invalidPassword)
             .signIn(robot: LoginRobot.self)
     }
 
     func loginWithInvalidUserAndPassword(_ user: User) -> LoginRobot {
-        let email = "invalid" + user.email
+        let email = "invalid" + user.name
         let password = "invalid" + user.password
         return fillUsername(username: email)
             .insertPassword(password: password)
