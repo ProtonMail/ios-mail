@@ -331,16 +331,20 @@ extension SettingsEncryptedSearchViewController {
                         progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextNorm //black
                         progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextNorm    //black
                     }
+                    var buttonTitle: String = ""
+                    if EncryptedSearchService.shared.state == .paused {
+                        buttonTitle = LocalString._encrypted_search_resume_button
+                    } else {
+                        buttonTitle = LocalString._encrypted_search_pause_button
+                    }
                     let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
-                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!) {
-                        self.viewModel.pauseIndexing.toggle()
-                        if self.viewModel.pauseIndexing {
-                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_pause_button, for: UIControl.State.normal)
+                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle) {
+                        if EncryptedSearchService.shared.state == .paused {
+                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
+                        } else {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
                             progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
-                        } else {
-                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: UIControl.State.normal)
-                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
+                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: .normal)
                         }
                     }
                 }
