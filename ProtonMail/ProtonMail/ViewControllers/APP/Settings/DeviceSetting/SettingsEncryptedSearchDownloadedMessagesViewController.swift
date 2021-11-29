@@ -26,7 +26,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         static let cellHeightMessageHistory: CGFloat = 108.0
         static let cellHeightStorageLimit: CGFloat = 116.0
         static let cellHeightStorageUsage: CGFloat = 96.0
-        static let footerHeight: CGFloat = 48.0
+        static let footerHeight: CGFloat = 56.0
         static let headerHeightFirstCell: CGFloat = 32.0
         static let headerHeight: CGFloat = 8.0
         static let headerCell: String = "header_cell"
@@ -44,9 +44,11 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.tableView.register(SliderTableViewCell.self)
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
-        self.tableView.sectionFooterHeight = UITableView.automaticDimension
+        self.tableView.sectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeightMessageHistory
         self.tableView.rowHeight = UITableView.automaticDimension
+        
+        self.tableView.allowsSelection = false  //disable rows to be clickable
     }
 
     func getCoordinator() -> CoordinatorNew? {
@@ -132,16 +134,26 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                 let userID: String = (usersManager.firstUser?.userInfo.userId)!
                 let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                 var downloadStatus: String = ""
-                var icon: String = "ic-check"
+                var imageView: UIImageView!
                 if EncryptedSearchService.shared.state == .partial {
-                    icon = "ic-exclamation-circle"
+                    let image: UIImage = UIImage(named: "ic-exclamation-circle")!
+                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                    imageView = UIImageView(image: tintableImage)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                    imageView.tintColor = ColorProvider.NotificationError
+
                     downloadStatus = LocalString._settings_message_history_status_partial_downloaded
                     threeLineCell.bottomLabel.textColor = ColorProvider.NotificationError
                 } else {
-                    icon = "ic-check"
+                    let image: UIImage = UIImage(named: "contact_groups_check")!
+                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                    imageView = UIImageView(image: tintableImage)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                    imageView.tintColor = ColorProvider.NotificationSuccess
+                    
                     downloadStatus = LocalString._settings_message_history_status_all_downloaded
                 }
-                threeLineCell.configCell(eSection.title, oldestIndexedMessage, downloadStatus, icon)
+                threeLineCell.configCell(eSection.title, oldestIndexedMessage, downloadStatus, imageView)
             }
             return cell
         case .storageLimit:
