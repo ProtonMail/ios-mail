@@ -63,7 +63,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.register(ThreeLinesTableViewCell.self)
         self.tableView.register(SpinnerTableViewCell.self)
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
-        self.tableView.sectionFooterHeight = UITableView.automaticDimension
+        self.tableView.sectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
         
@@ -254,7 +254,33 @@ extension SettingsEncryptedSearchViewController {
                     let userID: String = (usersManager.firstUser?.userInfo.userId)!
                     let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex, "ic-check")
+                    
+                    let image: UIImage = UIImage(named: "contact_groups_check")!
+                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                    let imageView = UIImageView(image: tintableImage)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                    imageView.tintColor = ColorProvider.NotificationSuccess
+                    
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex, imageView)
+                    threeLineCell.accessoryType = .disclosureIndicator
+                }
+                return cell
+            } else if EncryptedSearchService.shared.state == .partial {
+                //TODO same as above with different image
+                let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
+                if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let userID: String = (usersManager.firstUser?.userInfo.userId)!
+                    let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                    let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                    
+                    let image: UIImage = UIImage(named: "contact_groups_check")!
+                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                    let imageView = UIImageView(image: tintableImage)
+                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                    imageView.tintColor = ColorProvider.NotificationSuccess
+                    
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex, imageView)
                     threeLineCell.accessoryType = .disclosureIndicator
                 }
                 return cell

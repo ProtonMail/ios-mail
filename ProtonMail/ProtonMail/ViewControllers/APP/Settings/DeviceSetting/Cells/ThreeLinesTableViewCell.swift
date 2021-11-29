@@ -78,13 +78,13 @@ import UIKit
         ])
     }
     
-    func configCell(_ topLine: String, _ middleLine: String, _ bottomLine: String, _ icon: String) {
+    func configCell(_ topLine: String, _ middleLine: String, _ bottomLine: String, _ icon: UIImageView) {
         
         topLabel.text = topLine
         middleLabel.text = middleLine
         bottomLabel.text = bottomLine
         
-        self.icon.image = UIImage(named: icon)
+        self.icon = icon
         
         self.layoutIfNeeded()
     }

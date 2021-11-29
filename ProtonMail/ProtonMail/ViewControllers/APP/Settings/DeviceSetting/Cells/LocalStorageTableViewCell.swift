@@ -29,17 +29,15 @@ import UIKit
         let parentView: UIView = self.contentView
 
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        self.button.titleLabel?.textColor = ColorProvider.TextNorm
-        self.button.backgroundColor = ColorProvider.InteractionWeak//UIColor(hex: 0xEAE7E4, alpha: 1) //TODO replace with ColorProvider
+        self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        self.button.backgroundColor = ColorProvider.InteractionWeak
         self.button.layer.cornerRadius = 8
         self.button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.button.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 96),
-            self.button.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
-            //self.button.widthAnchor.constraint(equalToConstant: 64),
-            //self.button.heightAnchor.constraint(equalToConstant: 32), TODO
-            self.button.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 295),
-            self.button.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16)
+            //self.button.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
+            self.button.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 295),
+            self.button.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
 
         self.topLabel.textColor = ColorProvider.TextNorm
@@ -47,10 +45,9 @@ import UIKit
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 16),
-            self.topLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -104),
-            self.topLabel.widthAnchor.constraint(equalToConstant: 243),
-            //self.topLabel.heightAnchor.constraint(equalToConstant: 24), TODO
-            self.topLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16)
+            //self.topLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -104),
+            //self.topLabel.widthAnchor.constraint(equalToConstant: 243),
+            self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
         ])
         
         self.middleLabel.textColor = ColorProvider.TextWeak
@@ -58,11 +55,9 @@ import UIKit
         self.middleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.middleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 48),
-            self.middleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -56),
-            //self.middleLabel.widthAnchor.constraint(equalToConstant: 343),
-            //self.middleLabel.heightAnchor.constraint(equalToConstant: 40),
-            self.middleLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16),
-            self.middleLabel.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -16)
+            //self.middleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -56),
+            self.middleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.middleLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
         
         self.bottomLabel.textColor = ColorProvider.TextNorm
@@ -70,10 +65,10 @@ import UIKit
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.bottomLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 102),
-            self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
+            //self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
             self.bottomLabel.widthAnchor.constraint(equalToConstant: 263),
             //self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),    top/bottom
-            self.bottomLabel.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 16)
+            self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
         ])
     }
     
@@ -89,9 +84,9 @@ import UIKit
         callback?()
     }
     
-    func configCell(_ topLine: String, _ middleLine: String, _ bottomLine: String, _ complete: buttonActionBlock?) {
+    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: String, _ complete: buttonActionBlock?) {
         topLabel.text = topLine
-        middleLabel.text = middleLine
+        middleLabel.attributedText = middleLine
         bottomLabel.text = bottomLine
         callback = complete
         
