@@ -1244,6 +1244,8 @@ class LocalizedString {
     lazy var _settings_encrypted_search_refresh_index = NSLocalizedString("Downloading new messages ...", comment: "The text to download new message when search index is refreshed.")
     lazy var _settings_message_history_status_partial_downloaded = NSLocalizedString("Not all messages were downloaded. To download them, free up storage on the device.", comment: "The status text of message history in downloaded messages.")
     lazy var _settings_message_history_status_all_downloaded = NSLocalizedString("All your messages are downloaded", comment: "The status text of message history in downloaded messages.")
+    lazy var _encrypted_search_downloaded_messages_oldest_message = NSLocalizedString("Oldest message: ", comment: "The text for determining the oldest message in the encrypted search index")
+    lazy var _encrypted_search_downloaded_messages_storage_used = NSLocalizedString("Storage used: ", comment: "The text for determining the size of the encrypted search index")
     
     lazy var _settings_title_of_local_storage = NSLocalizedString("Local storage", comment: "The title of local storage in settings")
     lazy var _settings_title_of_cached_data = NSLocalizedString("Cached data", comment: "The title of cached data in local storage settings")
