@@ -23,7 +23,8 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
     internal var coordinator: SettingsDeviceCoordinator?
     
     struct Key  {
-        static let cellHeightMessageHistory: CGFloat = 108.0
+        static let cellHeightMessageHistoryComplete: CGFloat = 108.0
+        static let cellHeightMessageHistoryPartial: CGFloat = 128.0
         static let cellHeightStorageLimit: CGFloat = 116.0
         static let cellHeightStorageUsage: CGFloat = 96.0
         static let footerHeight: CGFloat = 56.0
@@ -45,7 +46,7 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = Key.footerHeight
-        self.tableView.estimatedRowHeight = Key.cellHeightMessageHistory
+        self.tableView.estimatedRowHeight = Key.cellHeightMessageHistoryComplete
         self.tableView.rowHeight = UITableView.automaticDimension
         
         self.tableView.allowsSelection = false  //disable rows to be clickable
@@ -115,7 +116,11 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .messageHistory:
-            return Key.cellHeightMessageHistory
+            if EncryptedSearchService.shared.state == .partial {
+                return Key.cellHeightMessageHistoryPartial
+            } else {
+                return Key.cellHeightMessageHistoryComplete
+            }
         case .storageLimit:
             return Key.cellHeightStorageLimit
         case .storageUsage:
@@ -132,28 +137,47 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             if let threeLineCell = cell as? ThreeLinesTableViewCell {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                var downloadStatus: String = ""
-                var imageView: UIImageView!
+
                 if EncryptedSearchService.shared.state == .partial {
+                    // Create attributed string for oldest message in search index
+                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                    let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
+                    oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
+                    
+                    // Create icon
                     let image: UIImage = UIImage(named: "ic-exclamation-circle")!
                     let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    imageView = UIImageView(image: tintableImage)
+                    let imageView = UIImageView(image: tintableImage)
                     imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
                     imageView.tintColor = ColorProvider.NotificationError
 
-                    downloadStatus = LocalString._settings_message_history_status_partial_downloaded
-                    threeLineCell.bottomLabel.textColor = ColorProvider.NotificationError
+                    // Create attributed string for download status
+                    let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_partial_downloaded)
+                    let rangeDownloadStatus = NSRange(location: 0, length: LocalString._settings_message_history_status_partial_downloaded.count)
+                    downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeDownloadStatus)
+                    
+                    // Config cell
+                    threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, imageView)
                 } else {
+                    // Create attributed string for oldest message in search index
+                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                    
+                    // Create icon
                     let image: UIImage = UIImage(named: "contact_groups_check")!
                     let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    imageView = UIImageView(image: tintableImage)
+                    let imageView = UIImageView(image: tintableImage)
                     imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
                     imageView.tintColor = ColorProvider.NotificationSuccess
                     
-                    downloadStatus = LocalString._settings_message_history_status_all_downloaded
+                    let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_all_downloaded)
+                    
+                    // Config cell
+                    threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, imageView)
                 }
-                threeLineCell.configCell(eSection.title, oldestIndexedMessage, downloadStatus, imageView)
             }
             return cell
         case .storageLimit:
