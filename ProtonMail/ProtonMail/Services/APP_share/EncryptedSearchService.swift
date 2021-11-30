@@ -914,6 +914,7 @@ extension EncryptedSearchService {
         print("ENCRYPTEDSEARCH-STATE: disabled")
         
         // update user cached status
+        userCachedStatus.isEncryptedSearchOn = false
         userCachedStatus.indexComplete = false
 
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
