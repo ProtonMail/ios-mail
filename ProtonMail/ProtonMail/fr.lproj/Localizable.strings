@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Routage alternatif";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Toujours désactivé";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Toujours activé";
+
 /* agree check box middle word */
 "and" = "et";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Fermeture";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Réduire le dossier";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Réduire le message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Contacts combinés";
@@ -641,7 +653,7 @@
 "Contact the ProtonMail team" = "Contacter l'équipe ProtonMail";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactez-nous directement via notre formulaire d’assistance, par courriel (support@protonmail.com) ou via Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactez-nous directement via notre formulaire d’assistance, par e-mail (support@protonmail.com) ou via Twitter.";
 
 /* Action and title
    menu title */
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Couper";
+
+/* cell title in app setting */
+"Dark mode" = "Thème sombre";
 
 /* message Date: text */
 "Date:" = "Date :";
@@ -921,7 +936,7 @@
 "Editing label not allowed" = "Modification du label non autorisée";
 
 /* network troubleshot cell title */
-"email" = "courriel";
+"email" = "e-mail";
 
 /* default vcard types */
 "Email" = "Adresse électronique";
@@ -940,16 +955,16 @@
 "Email addresses" = "Adresses électroniques";
 
 /* Send an email to the current contact (button title text) */
-"Email contact" = "Envoyer un courriel";
+"Email contact" = "Envoyer un e-mail";
 
 /* place holder */
-"Email default signature" = "Signature de courriel par défaut";
+"Email default signature" = "Signature d'e-mail par défaut";
 
 /* title */
 "Email domain invalid" = "Nom de domaine d'adresse électronique invalide";
 
 /* human check option button */
-"Email Verification" = "Vérification par courriel";
+"Email Verification" = "Vérification par e-mail";
 
 /* "Cancel" */
 "Empty Folder" = "Vider le dossier";
@@ -961,7 +976,7 @@
 "Enable conversations" = "Activer les conversations";
 
 /* Title */
-"Enable email notices" = "Activer les notifications par courriel";
+"Enable email notices" = "Activer les notifications par e-mail";
 
 /* settings protection section title */
 "Enable Face ID" = "Activer Face ID";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "À chaque ouverture de l'application";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Agrandir le dossier";
+
 /* alert title */
 "Expiration not supported" = "Expiration non prise en charge";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Dossiers";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Suivre les paramètres de l'appareil";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Pour les particuliers qui souhaitent bénéficier d'une communication sécurisée sans frais";
@@ -1921,7 +1942,7 @@
 "Please check your cell phone for the verification code." = "Consultez votre téléphone portable pour le code de vérification.";
 
 /* error message */
-"Please check your email for the verification code." = "Consultez vos courriels pour le code de vérification.";
+"Please check your email for the verification code." = "Consultez vos e-mails pour le code de vérification.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Veuillez vous connecter et réessayer";
@@ -2008,7 +2029,7 @@
 "Please use your new password when signing in." = "Veuillez utiliser votre nouveau mot de passe lorsque vous vous connectez.";
 
 /* The */
-"Please wait until the email downloaded!" = "Veuillez attendre que le courriel soit téléchargé !";
+"Please wait until the email downloaded!" = "Veuillez attendre que l'e-mail soit téléchargé !";
 
 /* alert title */
 "Please, manage it in your phone." = "Veuillez le gérer sur votre téléphone.";
@@ -2044,7 +2065,7 @@
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail n'a pas recours à la publicité et ne viole pas votre vie privée. Votre soutien est indispensable pour continuer à faire tourner ProtonMail. Vous pouvez soutenir ProtonMail en souscrivant à une offre payante ou en faisant un don.";
 
 /* Title */
-"ProtonMail encrypted emails" = "Courriels chiffrés de ProtonMail";
+"ProtonMail encrypted emails" = "E-mails chiffrés de ProtonMail";
 
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail est actuellement hors ligne, visitez notre Twitter pour consulter l'état actuel : https://twitter.com/protonmail";
@@ -2059,7 +2080,7 @@
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus est requis pour personnaliser votre signature mobile";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary vous permettent d’ajouter et de modifier les coordonnées au-delà du nom et de l'adresse électronique. En utilisant ProtonMail, ces données seront aussi sécurisées que vos courriels chiffrés en bout en bout.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary vous permettent d’ajouter et de modifier les coordonnées au-delà du nom et de l'adresse électronique. En utilisant ProtonMail, ces données seront aussi sécurisées que vos e-mails chiffrés en bout en bout.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -2453,7 +2474,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "Informations d'abonnement temporairement indisponibles. Veuillez réessayer ultérieurement.";
 
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "Prend en charge jusqu'à %i domaines personnels (p. ex. : utilisateur@votredomaine.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Prend en charge jusqu'à %i domaines personnels (p. ex. : utilisateur@votredomaine.fr)";
 
 /* network troubleshot cell title */
 "support form" = "formulaire d’assistance";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Changer de mode de sélection";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Permuter l’indicateur de lecture";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Basculé vers le compte '%@'";
@@ -2642,10 +2666,10 @@
 "This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ce message a échoué aux exigences d'authentification de son nom de domaine. Il a peut-être été falsifié ou mal transféré !";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail a échoué aux exigences d'authentification de son domaine. Il a peut être été falsifié ou transmis de manière incorrecte !";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ce courriel semble provenir d'une adresse ProtonMail, mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Cet e-mail semble provenir d'une adresse ProtonMail, mais ne provient pas de notre système et a échoué aux exigences d'authentification. Il a peut-être été falsifié ou transmis de manière incorrecte !";
 
 /* The secondary title of no result message */
 "This folder is empty" = "Ce dossier est vide";
@@ -2812,7 +2836,7 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Impossible d'envoyer le courriel.";
+"Unable to send the email" = "Impossible d'envoyer l'e-mail.";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinataires non communiqués";
@@ -2974,7 +2998,7 @@
 "What people see in the \"From\" field." = "Ce que les gens voient dans le champ « De ».";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "Lorsque vous envoyez un courriel, c'est le nom qui apparaît dans le champ expéditeur.";
+"When you send an email, this is the name that appears in the sender field." = "Lorsque vous envoyez un e-mail, c'est le nom qui apparaît dans le champ expéditeur.";
 
 /* Example feedback */
 "Wonderful" = "Merveilleux";
@@ -3084,7 +3108,7 @@
 "Your folders" = "Vos dossiers";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des courriels sécurisés à vos contacts, invitez-les à rejoindre ProtonMail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Votre boîte de réception est maintenant protégée par le chiffrement de bout en bout. Pour envoyer automatiquement des e-mails sécurisés à vos contacts, invitez-les à rejoindre ProtonMail ! Vous pouvez aussi chiffrer vos messages manuellement s'ils n'utilisent pas ProtonMail.";
 
 /* The section title of label manager table */
 "Your labels" = "Vos labels";

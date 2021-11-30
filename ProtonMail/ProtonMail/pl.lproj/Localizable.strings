@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Alternatywne przekierowanie połączenia";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Zawsze wyłączony";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Zawsze włączony";
+
 /* agree check box middle word */
 "and" = "oraz";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Zamykanie";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Zwiń folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Zwiń wiadomość";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Połączone kontakty";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Wytnij";
+
+/* cell title in app setting */
+"Dark mode" = "Ciemny motyw";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Za każdym wejściem do aplikacji";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Rozwiń folder";
+
 /* alert title */
 "Expiration not supported" = "Wygaśnięcie nie jest obsługiwane";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Foldery";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Follow device setting";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Dla osób szukających bezpiecznej komunikacji bez ponoszenia kosztów";
@@ -2480,6 +2501,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Zmień tryb zaznaczania";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Przełączono na konto '%@'";
 
@@ -2968,7 +2992,7 @@
 "week" = "tydzień";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Witaj w ProtonMaili";
+"Welcome to ProtonMail!" = "Witaj w ProtonMailu";
 
 /* Description */
 "What people see in the \"From\" field." = "To, co odbiorca widzi w polu \"Od\".";

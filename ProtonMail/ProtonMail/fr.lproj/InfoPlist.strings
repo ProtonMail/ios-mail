@@ -5,10 +5,10 @@
 "CFBundleName" = "PushServiceDev";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia au courriel.";
+"NSAppleMusicUsageDescription" = "Nécessaire pour joindre des fichiers multimédia à l'e-mail.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Nécessaire pour joindre des photos au courriel.";
+"NSCameraUsageDescription" = "Nécessaire pour joindre des photos à l'e-mail.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Utilisé pour accéder aux adresses électroniques des contacts enregistrés sur l'appareil afin qu'elles puissent être utilisées lors de la rédaction d'un message ou lors du téléchargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas téléchargées sur nos serveurs sans une action explicite de votre part.";
@@ -20,5 +20,5 @@
 "NSPhotoLibraryAddUsageDescription" = "Requis pour l’enregistrement des pièces jointes images dans la photothèque.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos au courriel.";
+"NSPhotoLibraryUsageDescription" = "Nécessaire pour joindre des photos à l'e-mail.";
 

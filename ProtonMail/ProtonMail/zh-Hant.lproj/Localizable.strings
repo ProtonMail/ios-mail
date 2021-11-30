@@ -105,7 +105,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "本帳號因有未付款項而被停用，請登入 https://protonmail.com 進行付款。";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "由於不付款, 無法訪問此帳戶。\n\n請訪問 <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">我們的知識庫</a> 瞭解更多資訊。";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "由於帳單未付，無法訪問此帳戶。\n\n請訪問 <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">我們的知識庫</a> 瞭解更多資訊。";
 
 /* Account manager title */
 "Account" = "帳號";
@@ -228,6 +228,12 @@
 
 /* cell title in app settings */
 "Alternative routing" = "替代路由";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Always off";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Always on";
 
 /* agree check box middle word */
 "and" = "和";
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "關閉";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Collapse folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Collapse message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "合併聯絡人";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "剪下";
+
+/* cell title in app setting */
+"Dark mode" = "Dark mode";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "每次進入 App 時";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
 /* alert title */
 "Expiration not supported" = "不支援到期日";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "資料夾";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Follow device setting";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "適合想免費享受安全通訊的個人";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "切換選擇模式";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "切換至帳號「%@」";

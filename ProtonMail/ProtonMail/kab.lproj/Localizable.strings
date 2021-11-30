@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Aseglu amlellay";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Always off";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Always on";
+
 /* agree check box middle word */
 "and" = "akked";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Yettemdal";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Collapse folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Collapse message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Inermisen uddisen";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Gzem";
+
+/* cell title in app setting */
+"Dark mode" = "Dark mode";
 
 /* message Date: text */
 "Date:" = "Azemz:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Tal tulya n usnas";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
 /* alert title */
 "Expiration not supported" = "Tanzagt ur tettusefrak ara";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Ikaramen";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Follow device setting";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "I yimdanen yettnadin taɣwelt taɣelsant yerna baṭṭel";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Uɣal ɣer uskar n ufran";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Tnekzeḍ ɣer umiḍan '%@'";

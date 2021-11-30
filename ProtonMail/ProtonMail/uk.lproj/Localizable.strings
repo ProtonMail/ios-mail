@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Альтернативна маршрутизація";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Завжди вимкнено";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Завжди увімкнено";
+
 /* agree check box middle word */
 "and" = "і";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Закриття";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Згорнути теку";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Згорнути повідомлення";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Об'єднані контакти";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Вирізати";
+
+/* cell title in app setting */
+"Dark mode" = "Темний режим";
 
 /* message Date: text */
 "Date:" = "Дата:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Щоразу при запуску";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Розгорнути теку";
+
 /* alert title */
 "Expiration not supported" = "Термін дії не підтримується";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Теки";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Повторювати налаштування пристрою";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Для тих, хто бажає отримати переваги захищеного спілкування безплатно";
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Перемкнути режим вибору";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Змінити фільтр непрочитаних";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Змінено обліковий запис на %@";

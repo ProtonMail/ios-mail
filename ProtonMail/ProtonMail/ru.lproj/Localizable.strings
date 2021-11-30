@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Альтернативная маршрутизация";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Выключено всегда";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Включено всегда";
+
 /* agree check box middle word */
 "and" = "и";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Закрытие";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Collapse folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Collapse message";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Объединенные контакты";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Вырезать";
+
+/* cell title in app setting */
+"Dark mode" = "Темная тема";
 
 /* message Date: text */
 "Date:" = "Дата:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "При каждом входе в приложение";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
 /* alert title */
 "Expiration not supported" = "Истечение срока действия не поддерживается";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Папки";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Следуйте настройкам устройства";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Для людей, ищущих преимуществ бесплатной защищённой связи";
@@ -2206,7 +2227,7 @@
 "Save draft" = "Сохранить черновик";
 
 /* action sheet option */
-"Scheduled" = "Расписание";
+"Scheduled" = "Запланировано";
 
 /* *
  *  SearchViewController */
@@ -2479,6 +2500,9 @@
 
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Переключить режим выбора";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Переключено на учётную запись '%@'";

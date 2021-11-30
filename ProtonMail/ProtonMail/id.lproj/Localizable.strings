@@ -229,6 +229,12 @@
 /* cell title in app settings */
 "Alternative routing" = "Route alternatif";
 
+/* The title of always off option in dark mode setting */
+"Always off" = "Selalu nonaktif";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Selalu aktif";
+
 /* agree check box middle word */
 "and" = "dan";
 
@@ -586,6 +592,12 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Menutup";
 
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Ciutkan folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Ciutkan pesan";
+
 /* cell title in device settings
    The title of combined contact in settings */
 "Combined contacts" = "Kontak Gabungan";
@@ -718,6 +730,9 @@
 
 /* Title */
 "Cut" = "Potong";
+
+/* cell title in app setting */
+"Dark mode" = "Mode gelap";
 
 /* message Date: text */
 "Date:" = "Tanggal:";
@@ -1080,6 +1095,9 @@
 /* lock app option */
 "Every time enter app" = "Setiap kali masuk aplikasi";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Lebarkan folder";
+
 /* alert title */
 "Expiration not supported" = "Kadaluarsa tidak didukung";
 
@@ -1128,6 +1146,9 @@
 
 /* VoiceOver: email belongs to folders */
 "Folders" = "Folder";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Ikuti pengaturan perangkat";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Untuk individu yang ingin mendapatkan keuntungan dari komunikasi aman tanpa biaya";
@@ -2480,6 +2501,9 @@
 /* The string that will be read by VoiceOver if the user wants to switch selection mode. */
 "Switch selection mode" = "Tukar mode seleksi";
 
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Ubah filter belum dibaca";
+
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Beralih ke akun '%@'";
 
@@ -2802,7 +2826,7 @@
 "Unable to parse cached authentication token!" = "Tidak dapat mengurai token autentikasi yang tersimpan!";
 
 /* Description */
-"Unable to parse response" = "Tidak dapat menguraikan respon";
+"Unable to parse response" = "Tidak dapat mengurai respon";
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Tidak dapat mengurai objek respon:\n%@";
