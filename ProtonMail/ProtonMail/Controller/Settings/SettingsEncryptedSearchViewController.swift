@@ -71,14 +71,16 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupProgressUpdateObserver()
         setupIndexingFinishedObserver()
 
-        print("ES-VIEW didload")
-        //Determine current encrypted search state
-        EncryptedSearchService.shared.determineEncryptedSearchState()
         if EncryptedSearchService.shared.state == .undetermined {
-            print("Error cannot determine state of ES! set to disabled")
-            //TODO is that the correct way?
-            EncryptedSearchService.shared.state = .disabled
-            self.viewModel.isEncryptedSearch = false
+            // Determine current encrypted search state
+            EncryptedSearchService.shared.determineEncryptedSearchState()
+
+            // If we cannot determine the state - disable encrypted search
+            if EncryptedSearchService.shared.state == .undetermined {
+                print("Error cannot determine state of ES! set to disabled")
+                EncryptedSearchService.shared.state = .disabled
+                self.viewModel.isEncryptedSearch = false
+            }
         }
 
         //Speed up indexing when on this view
@@ -500,7 +502,7 @@ extension SettingsEncryptedSearchViewController {
     
     func setupIndexingFinishedObserver() {
         self.viewModel.isIndexingComplete.bind { (_) in
-            if EncryptedSearchService.shared.state == .complete {
+            if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
                 DispatchQueue.main.async {
                     UIView.performWithoutAnimation {
                         self.tableView.reloadData()
