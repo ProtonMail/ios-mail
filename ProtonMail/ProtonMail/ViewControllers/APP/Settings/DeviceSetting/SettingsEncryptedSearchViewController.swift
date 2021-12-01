@@ -267,6 +267,7 @@ extension SettingsEncryptedSearchViewController {
                     
                     // Create icon for the partial index
                     let image: UIImage = UIImage(named: "contact_groups_check")!
+                    //let image: UIImage = UIImage(named: "ic-check", in: LoginAndSignup.bundle, compatibleWith: nil)!
                     let tintableImage = image.withRenderingMode(.alwaysTemplate)
                     let imageView = UIImageView(image: tintableImage)
                     imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
@@ -275,7 +276,7 @@ extension SettingsEncryptedSearchViewController {
                     threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, imageView)
                     threeLineCell.accessoryType = .disclosureIndicator
                 }
-                return cell
+                return cell 
             } else if EncryptedSearchService.shared.state == .partial {
                 let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
