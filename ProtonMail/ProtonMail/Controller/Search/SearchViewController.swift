@@ -45,6 +45,10 @@ class SearchViewController: ProtonMailViewController {
     private lazy var replacingEmails : [Email] = { [unowned self] in
         return user.contactService.allEmails()
     }()
+
+    private lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
+        self.user.contactGroupService.getAllContactGroupVOs()
+    }()
     
     // TODO: need better UI solution for this progress bar
     private lazy var progressBar: UIProgressView = {
@@ -432,7 +436,7 @@ extension SearchViewController: UITableViewDataSource {
         }
         
         let message = self.searchResult[indexPath.row]
-        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails)
+        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails, groupContacts: self.groupContacts)
         return mailboxCell
     }
     

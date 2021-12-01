@@ -158,7 +158,7 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
     
     
     // MARK: - Cell configuration
-    func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String, replacingEmails: [Email]) {
+    func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String, replacingEmails: [Email], groupContacts: [ContactGroupVO]) {
         self.accessibilityActionBoxes = []
         self.title.text = message.subject
     
@@ -211,9 +211,9 @@ class MailboxMessageCell: MCSwipeTableViewCell, AccessibleCell {
         }
         
         if message.contains(label: Message.Location.sent) {
-            labelsView.configLabels( message.allEmailAddresses(replacingEmails), labels: labels)
+            labelsView.configLabels( message.allEmailAddresses(replacingEmails, groupContacts: groupContacts), labels: labels)
         } else if message.draft {
-            labelsView.configLabels( message.allEmailAddresses(replacingEmails), labels: labels)
+            labelsView.configLabels( message.allEmailAddresses(replacingEmails, groupContacts: groupContacts), labels: labels)
         } else {
             labelsView.configLabels( message.displaySender(replacingEmails), labels: labels)
         }
@@ -308,13 +308,41 @@ extension Message {
         return sender.name.isEmpty ? sender.email : sender.name
     }
     
-    func allEmailAddresses(_ replacingEmails: [Email]) -> String {
-        let lists: [String] = self.allEmails.map { address in
-            replacingEmails.first(where: { $0.email == address })?.name ?? address
+    func allEmailAddresses(_ replacingEmails: [Email],
+                           groupContacts: [ContactGroupVO]) -> String {
+        var recipientLists = self.recipients
+        let groups = recipientLists.filter { !(($0["Group"] as? String) ?? "").isEmpty }
+        var groupList: [String] = []
+        if !groups.isEmpty {
+            groupList = self.getGroupNameLists(groupDict: groups,
+                                               groupContacts: groupContacts)
         }
-        if lists.isEmpty {
-            return ""
+        recipientLists = recipientLists.filter { (($0["Group"] as? String) ?? "").isEmpty }
+        
+        let lists: [String] = recipientLists.map { jsonDict in
+            let address = (jsonDict["Address"] as? String) ?? ""
+            let name = (jsonDict["Name"] as? String) ?? ""
+            let email = replacingEmails.first(where: { $0.email == address })
+            let emailName = email?.name ?? ""
+            let displayName = emailName.isEmpty ? name: emailName
+            return displayName.isEmpty ? address: displayName
         }
-        return lists.joined(separator: ",")
+        let result = groupList + lists
+        return result.isEmpty ? "": result.joined(separator: ",")
+    }
+
+    private func getGroupNameLists(groupDict: [[String: Any]], groupContacts: [ContactGroupVO]) -> [String] {
+        var groupDict = groupDict
+        var nameList: [String] = []
+        while !groupDict.isEmpty {
+            let groupName = (groupDict[0]["Group"] as? String) ?? ""
+            let group = groupDict.filter { ($0["Group"] as? String) == groupName }
+            let groupLabel = groupContacts.first(where: { $0.contactTitle == groupName })
+            let count = groupLabel?.contactCount ?? 0
+            let name = "\(groupName) (\(group.count)/\(count))"
+            nameList.append(name)
+            groupDict = groupDict.filter { ($0["Group"] as? String) != groupName }
+        }
+        return nameList
     }
 }

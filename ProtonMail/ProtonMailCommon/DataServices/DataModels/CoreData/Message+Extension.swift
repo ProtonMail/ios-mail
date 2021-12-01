@@ -80,6 +80,13 @@ extension Message {
         
         return lists
     }
+
+    var recipients: [[String: Any]] {
+        let to: [[String: Any]] = self.toList.parseJson() ?? []
+        let cc: [[String: Any]] = self.ccList.parseJson() ?? []
+        let bcc: [[String: Any]] = self.bccList.parseJson() ?? []
+        return to + cc + bcc
+    }
     
     func getScore() -> Message.SpamScore {
         if let e = Message.SpamScore(rawValue: self.spamScore.intValue) {
