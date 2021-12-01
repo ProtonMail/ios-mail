@@ -94,6 +94,10 @@ class MailboxViewModel: StorageLimit {
             return ""
         }
     }
+
+    var groupContacts: [ContactGroupVO] {
+        self.user.contactGroupService.getAllContactGroupVOs()
+    }
     
     func allEmails() -> [Email] {
         return self.contactService.allEmails()

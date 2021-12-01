@@ -161,7 +161,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
@@ -557,7 +556,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard let message = self.viewModel.item(index: indexPath) else {
             return
         }
-        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle(), replacingEmails: replacingEmails)
+        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle(), replacingEmails: replacingEmails, groupContacts: self.viewModel.groupContacts)
         mailboxCell.setCellIsChecked(self.selectedIDs.contains(message.messageID))
         if (self.listEditing) {
             mailboxCell.showCheckboxOnLeftSide()
