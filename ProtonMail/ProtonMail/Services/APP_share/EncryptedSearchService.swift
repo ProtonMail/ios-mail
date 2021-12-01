@@ -1569,45 +1569,57 @@ extension EncryptedSearchService {
         
         let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
     }
+    
+    // MARK: - Index Building Functions
+    // Called to slow down indexing - so that a user can normally use the app
+    func slowDownIndexing(){
+        if self.state == .downloading || self.state == .background || self.state == .refresh {
+            if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
+                self.messageIndexingQueue.maxConcurrentOperationCount = 10
+                self.slowDownIndexBuilding = true
+            }
+        }
+    }
 
-    //Encrypted Search
+    // speed up indexing again when in foreground
+    func speedUpIndexing(){
+        if self.state == .downloading || self.state == .background || self.state == .refresh {
+            if self.indexBuildingInProgress && self.slowDownIndexBuilding {
+                self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+                self.slowDownIndexBuilding = false
+            }
+        }
+    }
+
+    // MARK: - Search Functions
     #if !APP_EXTENSION
     func search(_ query: String, page: Int, searchViewModel: SearchViewModel, completion: ((NSError?) -> Void)?) {
         print("encrypted search on client side!")
         print("Query: ", query)
         print("Page: ", page)
-        
+
         if query == "" {
             self.isFirstSearch = false
             completion!(nil) //There are no results for an empty search query
         }
-        
+
         //update necessary variables needed
         let uid: String? = self.updateCurrentUserIfNeeded()
         if let userID = uid {
-            var cleanedQuery: String = ""
-            cleanedQuery = query    //cleaning is now done in es go code
-            //normalize search query using NFKC
-            //cleanedQuery = query.precomposedStringWithCompatibilityMapping
-            //print("Query (normalized): ", cleanedQuery)
-            
-            //remove character distinctions such as case insensitivity, width insensitivity and diacritics
-            //use system locale
-            //cleanedQuery = query.folding(options: [.caseInsensitive, .widthInsensitive, .diacriticInsensitive], locale: nil)
-            //print("Query (character distinctions removed): ", cleanedQuery)
-            
-            //If there is a new search query, then trigger new search
             let startSearch: Double = CFAbsoluteTimeGetCurrent()
-            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(cleanedQuery)
+
+            // Initialize searcher, cipher
+            let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
             let cipher: EncryptedsearchAESGCMCipher = self.getCipher(userID: userID)
+
+            // Build the cache
             let cache: EncryptedsearchCache? = self.getCache(cipher: cipher, userID: userID)
+            print("Number of messages in cache: \(cache!.getLength())")
+
             self.searchState = EncryptedsearchSearchState()
-            
-            print("Test cache: \(cache!.getLength())")
-                
             let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel)
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
-                
+
             //Check if there are enough results from the cached search
             let searchResultPageSize: Int = 15
             var numberOfResultsFoundByIndexSearch: Int = 0
@@ -1615,16 +1627,39 @@ extension EncryptedSearchService {
                 numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID)
             }
             print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
+
+            // Do timings for entire search procedure
             let endSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Search finished. Time: \(endSearch-startSearch)")
-                
-            //send some search metrics
+
+            // Send some search metrics
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
         } else {
             print("Error when searching. User unknown!")
         }
     }
     #endif
+
+    func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
+        let contextSize: CLong = 100 // The max size of the content showed in the preview
+        let keywords: EncryptedsearchStringList? = self.createEncryptedSearchStringList(query)   //split query into individual keywords
+        return EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
+    }
+
+    func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
+        let result: EncryptedsearchStringList? = EncryptedsearchStringList()
+        let searchQueryArray: [String] = query.components(separatedBy: " ")
+        searchQueryArray.forEach { q in
+            result?.add(q)
+        }
+        return result!
+    }
+
+    func getCache(cipher: EncryptedsearchAESGCMCipher, userID: String) -> EncryptedsearchCache {
+        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
+        let cache: EncryptedsearchCache? = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: dbParams, cipher: cipher)
+        return cache!
+    }
 
     func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         if searchResults.length() == 0 {
@@ -1675,28 +1710,9 @@ extension EncryptedSearchService {
         }
     }
     
-    func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
-        let contextSize: CLong = 50 // The max size of the content showed in the preview
-        let keywords: EncryptedsearchStringList? = createEncryptedSearchStringList(query)   //split query into individual keywords
 
-        let searcher: EncryptedsearchSimpleSearcher = EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
-        return searcher
-    }
     
-    func getCache(cipher: EncryptedsearchAESGCMCipher, userID: String) -> EncryptedsearchCache {
-        let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
-        let cache: EncryptedsearchCache? = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: dbParams, cipher: cipher)
-        return cache!
-    }
-    
-    func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
-        let result: EncryptedsearchStringList? = EncryptedsearchStringList()
-        let searchQueryArray: [String] = query.components(separatedBy: " ")
-        searchQueryArray.forEach { q in
-            result?.add(q)
-        }
-        return result!
-    }
+
     
     func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
@@ -1785,296 +1801,6 @@ extension EncryptedSearchService {
     }
     #endif
     
-    //Code from here: https://stackoverflow.com/a/64738201
-    func getTotalAvailableMemory() -> Double {
-        var taskInfo = task_vm_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
-        let _ = withUnsafeMutablePointer(to: &taskInfo) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
-                }
-        }
-        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        return Double(totalMb)
-    }
-    
-    //Code from here: https://stackoverflow.com/a/64738201
-    func getCurrentlyAvailableAppMemory() -> Double {
-        var taskInfo = task_vm_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
-        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
-                }
-        }
-        let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
-        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        var availableMemory: Double = 0
-        if result != KERN_SUCCESS {
-            availableMemory = Double(totalMb)
-        } else {
-            availableMemory = Double(totalMb - usedMb)
-        }
-        return availableMemory
-    }
-    
-    func updateIndexBuildingProgress(processedMessages: Int){
-        //progress bar runs from 0 to 1 - normalize by totalMessages
-        let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
-        self.viewModel?.currentProgress.value = Int(updateStep)
-    }
-    
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    func updateUIWithProgressBarStatus(){
-        DispatchQueue.main.async {
-            switch UIApplication.shared.applicationState {
-            case .active:
-                self.updateIndexBuildingProgress(processedMessages: self.processedMessages)
-            case .background:
-                print("Background time remaining = \(self.timeFormatter.string(from: UIApplication.shared.backgroundTimeRemaining)!)")
-            case .inactive:
-                break
-            @unknown default:
-                print("Unknown state. What to do?")
-            }
-        }
-    }
-    
-    func updateUIWithIndexingStatus() {
-        if self.pauseIndexingDueToNetworkConnectivityIssues {
-            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
-            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_connectivity_status
-        }
-        if self.pauseIndexingDueToWiFiNotDetected {
-            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_wifi
-            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_wifi_status
-        }
-        if self.pauseIndexingDueToLowBattery {
-            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_battery
-            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_battery_status
-        }
-        if self.pauseIndexingDueToLowStorage {
-            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
-            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
-        }
-    }
-    
-    //This triggers the viewcontroller to reload the tableview when indexing is complete
-    internal func updateUIIndexingComplete() {
-        self.viewModel?.isIndexingComplete.value = true
-    }
-    
-    private func registerForBatteryLevelChangeNotifications() {
-        UIDevice.current.isBatteryMonitoringEnabled = true
-        NotificationCenter.default.addObserver(self, selector: #selector(responseToBatteryLevel(_:)), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
-    }
-    
-    private func registerForPowerStateChangeNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(responseToLowPowerMode(_:)), name: NSNotification.Name.NSProcessInfoPowerStateDidChange, object: nil)
-    }
-    
-    @objc private func responseToLowPowerMode(_ notification: Notification) {
-        if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
-            // Low power mode is enabled - pause indexing
-            print("Pause indexing due to low battery!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
-            // Low power mode is disabled - continue indexing
-            print("Resume indexing as battery is charged again!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
-        }
-    }
-    
-    @objc private func responseToBatteryLevel(_ notification: Notification) {
-        //if battery is low (Android < 15%), (iOS < 20%) we pause indexing
-        let batteryLevel: Float = UIDevice.current.batteryLevel
-        if batteryLevel < 0.2 && !self.pauseIndexingDueToLowBattery {   //if battery is < 20% and indexing is not already paused - then pause
-            print("Pause indexing due to low battery!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        } else if batteryLevel >= 0.2 && self.pauseIndexingDueToLowBattery {    // if battery >= 20% and indexing is paused - then resume
-            print("Resume indexing as battery is charged again!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
-        }
-    }
-    
-    private func registerForTermalStateChangeNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(responseToHeat(_:)), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
-    }
-    
-    @objc private func responseToHeat(_ notification: Notification){
-        let termalState = ProcessInfo.processInfo.thermalState
-        switch termalState {
-        case .nominal:
-            print("Thermal state nomial. No further action required")
-            if self.pauseIndexingDueToOverheating {
-                self.pauseIndexingDueToOverheating = false
-                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
-            }
-        case .fair:
-            print("Thermal state fair. No further action required")
-            if self.pauseIndexingDueToOverheating {
-                self.pauseIndexingDueToOverheating = false
-                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
-            }
-        case .serious:
-            print("Thermal state serious. Reduce CPU usage.")
-        case .critical:
-            print("Thermal state critical. Stop indexing!")
-            self.pauseIndexingDueToOverheating = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
-        @unknown default:
-            print("Unknown temperature state. Do something?")
-        }
-    }
-    
-    private func checkIfEnoughStorage() {
-        let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
-        print("Current storage space: \(remainingStorageSpace)")
-        if remainingStorageSpace < 100 {
-            self.pauseIndexingDueToLowStorage = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        }
-    }
-    
-    func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
-        var estimatedMinutes: Int = 0
-        var currentProgress: Int = 0
-        let currentTime: Double = CFAbsoluteTimeGetCurrent()
-        let minute: Double = 60_000.0
-
-        if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
-            let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
-            let timeDifference: Double = currentTime-self.indexingStartTime
-            let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
-            estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
-            currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
-            self.prevProcessedMessages = self.processedMessages
-        }
-        return (estimatedMinutes, currentProgress)
-    }
-    
-    @objc func updateRemainingIndexingTime() {
-        let elapsedTime = self.indexingStartTime - CFAbsoluteTimeGetCurrent()
-        if self.indexBuildingInProgress && self.processedMessages != self.prevProcessedMessages {
-            DispatchQueue.global().async {
-                let result = self.estimateIndexingTime()
-                
-                if self.isFirstIndexingTimeEstimate {
-                    let minute: Int = 60_000
-                    self.initialIndexingEstimate = result.estimatedMinutes * minute
-                    self.isFirstIndexingTimeEstimate = false
-                }
-                
-                //update viewModel
-                self.viewModel?.currentProgress.value = result.currentProgress
-                self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
-                print("Remaining indexing time: \(result.estimatedMinutes)")
-                print("Current progress: \(result.currentProgress)")
-                print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
-            }
-        }
-        
-        //check if there is still enought storage left
-        self.checkIfEnoughStorage()
-    }
-    
-    func sendNotification(text: String){
-        let content = UNMutableNotificationContent()
-        content.title = "Background Processing Task"
-        content.subtitle = text
-        content.sound = UNNotificationSound.default
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-    }
-    
-    @objc func appMovedToBackground(){
-        print("App moved to background")
-        if self.indexBuildingInProgress {
-            self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
-        }
-    }
-    
-    enum Metrics {
-        case index
-        case search
-    }
-    
-    private func sendIndexingMetrics(indexTime: Double, userID: String){
-        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
-        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        let indexingMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
-                                                 "indexSize"          : indexSize!,
-                                                 "indexTime"          : indexTime,
-                                                 "originalEstimate"   : self.initialIndexingEstimate,
-                                                 "numPauses"          : self.numPauses,
-                                                 "numInterruptions"   : self.numInterruptions,
-                                                 "isRefreshed"        : self.isRefreshed]
-        self.sendMetrics(metric: Metrics.index, data: indexingMetricsData){_,_,error in
-            if error != nil {
-                print("Error when sending indexing metrics: \(String(describing: error))")
-            }
-        }
-    }
-    
-    private func sendSearchMetrics(searchTime: Double, cache: EncryptedsearchCache?, userID: String){
-        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
-        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-        let cacheSize: Int64? = cache?.getSize() ?? 0
-        let isCacheLimited: Bool = cache?.isPartial() ?? false
-        let searchMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
-                                               "indexSize"          : indexSize!,
-                                               "cacheSize"          : cacheSize!,
-                                               "isFirstSearch"      : self.isFirstSearch,
-                                               "isCacheLimited"     : isCacheLimited,
-                                               "searchTime"         : searchTime]
-        self.sendMetrics(metric: Metrics.search, data: searchMetricsData){_,_,error in
-            if error != nil {
-                print("Error when sending search metrics: \(String(describing: error))")
-            }
-        }
-    }
-    
-    private func sendMetrics(metric: Metrics, data: [String: Any], completion: @escaping CompletionBlock){
-        var title: String = ""
-        switch metric {
-        case .index:
-            title = "index"
-        case .search:
-            title = "search"
-        }
-
-        if metric == .search {
-            let delay: Int = Int.random(in: 1...180) //add a random delay between 1 second and 3 minutes
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)){
-                //TODO disabled in the meantime to not spam production
-                //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
-            }
-        } else {
-            //TODO disabled in the meantime to not spam production
-            //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
-        }
-    }
-    
-    // Called to slow down indexing - so that a user can normally use the app
-    func slowDownIndexing(){
-        if self.state == .downloading || self.state == .background || self.state == .refresh {
-            if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
-                self.messageIndexingQueue.maxConcurrentOperationCount = 10
-                self.slowDownIndexBuilding = true
-            }
-        }
-    }
-    
-    // speed up indexing again when in foreground
-    func speedUpIndexing(){
-        if self.state == .downloading || self.state == .background || self.state == .refresh {
-            if self.indexBuildingInProgress && self.slowDownIndexBuilding {
-                self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-                self.slowDownIndexBuilding = false
-            }
-        }
-    }
     
     // MARK: - Background Tasks
     //pre-ios 13 background tasks
@@ -2244,5 +1970,280 @@ extension EncryptedSearchService {
                 task.setTaskCompleted(success: true)
             }
         }
+    }
+
+    // MARK: - Analytics/Metrics Functions
+    enum Metrics {
+        case index
+        case search
+    }
+    
+    private func sendIndexingMetrics(indexTime: Double, userID: String){
+        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let indexingMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
+                                                 "indexSize"          : indexSize!,
+                                                 "indexTime"          : indexTime,
+                                                 "originalEstimate"   : self.initialIndexingEstimate,
+                                                 "numPauses"          : self.numPauses,
+                                                 "numInterruptions"   : self.numInterruptions,
+                                                 "isRefreshed"        : self.isRefreshed]
+        self.sendMetrics(metric: Metrics.index, data: indexingMetricsData){_,_,error in
+            if error != nil {
+                print("Error when sending indexing metrics: \(String(describing: error))")
+            }
+        }
+    }
+    
+    private func sendSearchMetrics(searchTime: Double, cache: EncryptedsearchCache?, userID: String){
+        let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
+        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let cacheSize: Int64? = cache?.getSize() ?? 0
+        let isCacheLimited: Bool = cache?.isPartial() ?? false
+        let searchMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
+                                               "indexSize"          : indexSize!,
+                                               "cacheSize"          : cacheSize!,
+                                               "isFirstSearch"      : self.isFirstSearch,
+                                               "isCacheLimited"     : isCacheLimited,
+                                               "searchTime"         : searchTime]
+        self.sendMetrics(metric: Metrics.search, data: searchMetricsData){_,_,error in
+            if error != nil {
+                print("Error when sending search metrics: \(String(describing: error))")
+            }
+        }
+    }
+    
+    private func sendMetrics(metric: Metrics, data: [String: Any], completion: @escaping CompletionBlock){
+        var title: String = ""
+        switch metric {
+        case .index:
+            title = "index"
+        case .search:
+            title = "search"
+        }
+
+        if metric == .search {
+            let delay: Int = Int.random(in: 1...180) //add a random delay between 1 second and 3 minutes
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)){
+                //TODO disabled in the meantime to not spam production
+                //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+            }
+        } else {
+            //TODO disabled in the meantime to not spam production
+            //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+        }
+    }
+
+    // MARK: - Helper Functions
+    func sendNotification(text: String){
+        let content = UNMutableNotificationContent()
+        content.title = "Background Processing Task"
+        content.subtitle = text
+        content.sound = UNNotificationSound.default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    //TODO dead function?
+    @objc func appMovedToBackground(){
+        print("App moved to background")
+        if self.indexBuildingInProgress {
+            self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
+        }
+    }
+    
+    private func checkIfEnoughStorage() {
+        let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
+        print("Current storage space: \(remainingStorageSpace)")
+        if remainingStorageSpace < 100 {
+            self.pauseIndexingDueToLowStorage = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        }
+    }
+    
+    func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
+        var estimatedMinutes: Int = 0
+        var currentProgress: Int = 0
+        let currentTime: Double = CFAbsoluteTimeGetCurrent()
+        let minute: Double = 60_000.0
+
+        if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
+            let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
+            let timeDifference: Double = currentTime-self.indexingStartTime
+            let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
+            estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
+            currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
+            self.prevProcessedMessages = self.processedMessages
+        }
+        return (estimatedMinutes, currentProgress)
+    }
+    
+    @objc func updateRemainingIndexingTime() {
+        let elapsedTime = self.indexingStartTime - CFAbsoluteTimeGetCurrent()
+        if self.indexBuildingInProgress && self.processedMessages != self.prevProcessedMessages {
+            DispatchQueue.global().async {
+                let result = self.estimateIndexingTime()
+                
+                if self.isFirstIndexingTimeEstimate {
+                    let minute: Int = 60_000
+                    self.initialIndexingEstimate = result.estimatedMinutes * minute
+                    self.isFirstIndexingTimeEstimate = false
+                }
+                
+                //update viewModel
+                self.viewModel?.currentProgress.value = result.currentProgress
+                self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
+                print("Remaining indexing time: \(result.estimatedMinutes)")
+                print("Current progress: \(result.currentProgress)")
+                print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
+            }
+        }
+        
+        //check if there is still enought storage left
+        self.checkIfEnoughStorage()
+    }
+    
+    
+    private func registerForBatteryLevelChangeNotifications() {
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToBatteryLevel(_:)), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
+    }
+    
+    private func registerForPowerStateChangeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToLowPowerMode(_:)), name: NSNotification.Name.NSProcessInfoPowerStateDidChange, object: nil)
+    }
+    
+    @objc private func responseToLowPowerMode(_ notification: Notification) {
+        if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
+            // Low power mode is enabled - pause indexing
+            print("Pause indexing due to low battery!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
+            // Low power mode is disabled - continue indexing
+            print("Resume indexing as battery is charged again!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+        }
+    }
+    
+    @objc private func responseToBatteryLevel(_ notification: Notification) {
+        //if battery is low (Android < 15%), (iOS < 20%) we pause indexing
+        let batteryLevel: Float = UIDevice.current.batteryLevel
+        if batteryLevel < 0.2 && !self.pauseIndexingDueToLowBattery {   //if battery is < 20% and indexing is not already paused - then pause
+            print("Pause indexing due to low battery!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+        } else if batteryLevel >= 0.2 && self.pauseIndexingDueToLowBattery {    // if battery >= 20% and indexing is paused - then resume
+            print("Resume indexing as battery is charged again!")
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+        }
+    }
+    
+    private func registerForTermalStateChangeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToHeat(_:)), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
+    }
+    
+    @objc private func responseToHeat(_ notification: Notification){
+        let termalState = ProcessInfo.processInfo.thermalState
+        switch termalState {
+        case .nominal:
+            print("Thermal state nomial. No further action required")
+            if self.pauseIndexingDueToOverheating {
+                self.pauseIndexingDueToOverheating = false
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
+            }
+        case .fair:
+            print("Thermal state fair. No further action required")
+            if self.pauseIndexingDueToOverheating {
+                self.pauseIndexingDueToOverheating = false
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
+            }
+        case .serious:
+            print("Thermal state serious. Reduce CPU usage.")
+        case .critical:
+            print("Thermal state critical. Stop indexing!")
+            self.pauseIndexingDueToOverheating = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
+        @unknown default:
+            print("Unknown temperature state. Do something?")
+        }
+    }
+    
+    //Code from here: https://stackoverflow.com/a/64738201
+    func getTotalAvailableMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let _ = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        return Double(totalMb)
+    }
+    
+    //Code from here: https://stackoverflow.com/a/64738201
+    func getCurrentlyAvailableAppMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        var availableMemory: Double = 0
+        if result != KERN_SUCCESS {
+            availableMemory = Double(totalMb)
+        } else {
+            availableMemory = Double(totalMb - usedMb)
+        }
+        return availableMemory
+    }
+    
+    func updateIndexBuildingProgress(processedMessages: Int){
+        //progress bar runs from 0 to 1 - normalize by totalMessages
+        let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
+        self.viewModel?.currentProgress.value = Int(updateStep)
+    }
+    
+    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    func updateUIWithProgressBarStatus(){
+        DispatchQueue.main.async {
+            switch UIApplication.shared.applicationState {
+            case .active:
+                self.updateIndexBuildingProgress(processedMessages: self.processedMessages)
+            case .background:
+                print("Background time remaining = \(self.timeFormatter.string(from: UIApplication.shared.backgroundTimeRemaining)!)")
+            case .inactive:
+                break
+            @unknown default:
+                print("Unknown state. What to do?")
+            }
+        }
+    }
+    
+    func updateUIWithIndexingStatus() {
+        if self.pauseIndexingDueToNetworkConnectivityIssues {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_connectivity_status
+        }
+        if self.pauseIndexingDueToWiFiNotDetected {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_wifi
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_wifi_status
+        }
+        if self.pauseIndexingDueToLowBattery {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_battery
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_battery_status
+        }
+        if self.pauseIndexingDueToLowStorage {
+            self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
+            self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
+        }
+    }
+    
+    //This triggers the viewcontroller to reload the tableview when indexing is complete
+    internal func updateUIIndexingComplete() {
+        self.viewModel?.isIndexingComplete.value = true
     }
 }
