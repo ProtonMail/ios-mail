@@ -103,7 +103,7 @@ extension Message {
         guard let expirationTime = expirationTime,
               messageLocation != .draft else { return nil }
         let title = expirationTime
-            .countExpirationTime(processInfo: userCachedStatus as? SystemUpTimeProtocol)
+            .countExpirationTime(processInfo: userCachedStatus)
             .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagViewModel(
             title: title,
@@ -172,7 +172,7 @@ extension Message {
         return contact.name.isEmpty ? email.name: contact.name
     }
 
-    //Although the time complexity of high order function is O(N)
+    // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
     func allEmailAddresses(_ replacingEmails: [Email],

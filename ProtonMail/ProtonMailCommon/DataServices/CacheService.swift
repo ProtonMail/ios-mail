@@ -308,7 +308,12 @@ class CacheService: Service {
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
         context.perform {
-            let date = Date.getReferenceDate(processInfo: userCachedStatus as? SystemUpTimeProtocol)
+            #if !APP_EXTENSION
+            let processInfo = userCachedStatus
+            #else
+            let processInfo = userCachedStatus as? SystemUpTimeProtocol
+            #endif
+            let date = Date.getReferenceDate(processInfo: processInfo)
             let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
                                           Message.Attributes.expirationTime,
@@ -354,8 +359,13 @@ class CacheService: Service {
             conversation.expirationTime = nil
             return
         }
+        #if !APP_EXTENSION
+        let processInfo = userCachedStatus
+        #else
+        let processInfo = userCachedStatus as? SystemUpTimeProtocol
+        #endif
         let sorted = messages
-            .filter({ $0 != expiredMessage && ($0.expirationTime ?? .distantPast) > Date.getReferenceDate(processInfo: userCachedStatus as? SystemUpTimeProtocol) })
+            .filter({ $0 != expiredMessage && ($0.expirationTime ?? .distantPast) > Date.getReferenceDate(processInfo: processInfo) })
             .sorted(by: { ($0.expirationTime ?? .distantPast) > ($1.expirationTime ?? .distantPast) })
         conversation.expirationTime = sorted.first?.expirationTime
         let numMessages = max(0, conversation.numMessages.intValue - 1)
