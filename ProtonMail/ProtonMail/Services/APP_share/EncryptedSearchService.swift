@@ -837,8 +837,16 @@ extension EncryptedSearchService {
             switch action {
                 case .delete:
                     self.updateMessageMetadataInSearchIndex(message, action, indexPath, newIndexPath)
+                    //TODO update cache
                 case .insert:
-                    self.insertSingleMessageToSearchIndex(message)
+                    self.insertSingleMessageToSearchIndex(message)  // update search index db
+                    let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let uid: String? = users.firstUser?.userInfo.userId
+                    if let userID = uid {
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                        }
+                    }
                 case .move:
                     //TODO implement
                     break
@@ -905,6 +913,11 @@ extension EncryptedSearchService {
             } else {
                 print("No search index found for user: \(userID)")
             }
+            
+            if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // delete message from cache if cache is built
+                let _ = EncryptedSearchCacheService.shared.deleteCachedMessage(userID: userID, messageID: messageToDelete.messageID)
+            }
+            
         } else {
             print("Error when deleting message from search index. User unknown!")
         }
@@ -1007,7 +1020,7 @@ extension EncryptedSearchService {
         }
     }
     
-    private func convertMessageToESMessage(for message: Message) -> ESMessage {
+    func convertMessageToESMessage(for message: Message) -> ESMessage {
         let decoder = JSONDecoder()
         
         let jsonSenderData: Data = Data(message.sender!.utf8)
@@ -1328,7 +1341,7 @@ extension EncryptedSearchService {
         }
     }
     
-    private func decryptBodyIfNeeded(message: ESMessage) throws -> String? {
+    func decryptBodyIfNeeded(message: ESMessage) throws -> String? {
         var keys: [Key] = []
         if let addressID = message.AddressID, let _keys = self.userDataSource?.getAllAddressKey(address_id: addressID) {
             keys = _keys
