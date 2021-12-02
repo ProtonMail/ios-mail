@@ -42,9 +42,7 @@ class Analytics {
         // Disable Sentry for DEBUG runs
         #if DEBUG
         isEnabled = false
-        return
-        #endif
-        
+        #else
         do {
             Client.shared = try Client(dsn: self.sentryEndpoint)
             try Client.shared?.startCrashHandler()
@@ -60,6 +58,7 @@ class Analytics {
             print("Error while initializing Sentry: \(error)")
             isEnabled = false
         }
+        #endif
     }
     
     func debug(message: Analytics.Events, extra: [String: Any],

@@ -2391,7 +2391,7 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
         guard let cell = tappedCell,
               let indexPath = tableView.indexPath(for: cell),
               let expirationTime = viewModel.item(index: indexPath)?.expirationTime else { return nil }
-        return expirationTime.countExpirationTime(processInfo: userCachedStatus as? SystemUpTimeProtocol)
+        return expirationTime.countExpirationTime(processInfo: userCachedStatus)
     }
 
     func didSelectButtonStatusChange(id: String?) {

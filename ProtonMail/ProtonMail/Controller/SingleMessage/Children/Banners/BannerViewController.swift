@@ -103,44 +103,6 @@ class BannerViewController: UIViewController {
         viewModel.recalculateCellHeight?(false)
     }
 
-    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
-        let bannersBeforeUpdate = displayedBanners
-        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
-            return
-        } else if remoteContent && embeddedImage {
-            showRemoteAndEmbeddedContentBanner()
-        } else if remoteContent {
-            showRemoteContentBanner()
-        } else if embeddedImage {
-            showEmbeddedImageBanner()
-        }
-
-        guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        viewModel.recalculateCellHeight?(false)
-    }
-
-    func showErrorBanner(error: NSError) {
-        errorBanner.setErrorTitle(error.localizedDescription)
-        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
-    }
-
-    func showDecryptionBanner(target: UIViewController, action: Selector) {
-        guard !displayedBanners.contains(where: { $0.key == .decryptionError }) else {
-            return
-        }
-        addBannerView(type: .decryptionError,
-                      shouldAddContainer: true,
-                      bannerView: decryptionErrorBanner)
-        decryptionErrorBanner.setUpTryAgainAction(target: target, action: action)
-    }
-
-    func hideDecryptionBanner() {
-        guard displayedBanners.contains(where: { $0.key == .decryptionError }) else {
-            return
-        }
-        hideBanner(type: .decryptionError)
-    }
-
     private func handleSpamBanner() {
         let isSpamBannerPresenter = displayedBanners.contains(where: { $0.key == .spam })
         let isSpam = viewModel.message.spam != nil
@@ -340,6 +302,47 @@ class BannerViewController: UIViewController {
         }
         viewModel.sendReceipt()
         self.receiptBanner.hasSentReceipt()
+    }
+}
+
+// MARK: - Exposed Method
+extension BannerViewController {
+    func showContentBanner(remoteContent: Bool, embeddedImage: Bool) {
+        let bannersBeforeUpdate = displayedBanners
+        if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
+            return
+        } else if remoteContent && embeddedImage {
+            showRemoteAndEmbeddedContentBanner()
+        } else if remoteContent {
+            showRemoteContentBanner()
+        } else if embeddedImage {
+            showEmbeddedImageBanner()
+        }
+
+        guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
+        viewModel.recalculateCellHeight?(false)
+    }
+
+    func showErrorBanner(error: NSError) {
+        errorBanner.setErrorTitle(error.localizedDescription)
+        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
+    }
+
+    func showDecryptionBanner(target: UIViewController, action: Selector) {
+        guard !displayedBanners.contains(where: { $0.key == .decryptionError }) else {
+            return
+        }
+        addBannerView(type: .decryptionError,
+                      shouldAddContainer: true,
+                      bannerView: decryptionErrorBanner)
+        decryptionErrorBanner.setUpTryAgainAction(target: target, action: action)
+    }
+
+    func hideDecryptionBanner() {
+        guard displayedBanners.contains(where: { $0.key == .decryptionError }) else {
+            return
+        }
+        hideBanner(type: .decryptionError)
     }
 }
 

@@ -144,7 +144,7 @@ extension Conversation {
     func createTagFromExpirationDate() -> TagViewModel? {
         guard let expirationTime = expirationTime else { return nil }
         let title = expirationTime
-            .countExpirationTime(processInfo: userCachedStatus as? SystemUpTimeProtocol)
+            .countExpirationTime(processInfo: userCachedStatus)
             .apply(style: FontManager.OverlineRegularInteractionStrong)
         return TagViewModel(
             title: title,

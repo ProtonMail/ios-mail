@@ -1,6 +1,6 @@
+import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
-import MBProgressHUD
 
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
@@ -214,9 +214,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
     }
 
-    required init?(coder: NSCoder) {
-        nil
-    }
+    required init?(coder: NSCoder) { nil }
 
     private func presentActionSheet(for message: Message, isBodyDecrpytable: Bool) {
         let forbidden = [Message.Location.allmail.rawValue,
