@@ -71,7 +71,8 @@ extension EncryptedSearchCacheService {
     func updateCachedMessage(userID: String, message: Message) -> Bool {
         if userID == currentUserID {
             if let cache = self.cache {
-                //TODO check what changed? or update everything?
+                let msg: EncryptedsearchMessage? = self.messageToEncryptedsearchMessage(msg: message, userID: userID)
+                cache.update(msg)
             } else {
                 print("Error cache is nil!")
             }
@@ -187,5 +188,43 @@ extension EncryptedSearchCacheService {
 
     func getLastCacheUserID() -> String? {
         return self.currentUserID
+    }
+    
+    func messageToEncryptedsearchMessage(msg: Message, userID: String) -> EncryptedsearchMessage? {
+        let esMessage:ESMessage? = EncryptedSearchService.shared.convertMessageToESMessage(for: msg)
+        if let esMessage = esMessage {
+            var body: String? = ""
+            do {
+                body = try EncryptedSearchService.shared.decryptBodyIfNeeded(message: esMessage)
+            } catch {
+                print("Error when decrypting messages: \(error).")
+            }
+
+            let emailContent: String = EmailparserExtractData(body, true)
+            let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: esMessage, cleanedBody: emailContent, userID: userID)
+            
+            //1. create decryptedMessageContent
+            let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(esMessage.Sender.Name, email: esMessage.Sender.Address)
+            let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+            esMessage.ToList.forEach { s in
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+                toList.add(r)
+            }
+            let ccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+            esMessage.CCList.forEach { s in
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+                ccList.add(r)
+            }
+            let bccList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
+            esMessage.BCCList.forEach { s in
+                let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
+                bccList.add(r)
+            }
+
+            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject, sender, emailContent, toList, ccList, bccList)
+
+            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time!.timeIntervalSince1970), locationValue: Int64(Message.Location.allmail.rawValue)!, unreadValue: msg.unRead, isStarredValue: msg.starred, labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
+        }
+        return nil
     }
 }
