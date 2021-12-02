@@ -126,6 +126,19 @@ extension SearchViewModel: SearchVMProtocol {
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
         if userCachedStatus.isEncryptedSearchOn {
+            if fromStart {
+                EncryptedSearchService.shared.isSearching = true
+                // Clear previous search state whenever a new search is initiated
+                EncryptedSearchService.shared.clearSearchState()
+            } else {
+                if EncryptedSearchService.shared.isSearching == false {
+                    print("Search finished. No need to fetch further data!")
+                    DispatchQueue.main.async {
+                        self.uiDelegate?.activityIndicator(isAnimating: false)
+                    }
+                    return
+                }
+            }
             EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] error in
                 DispatchQueue.main.async {
                     self?.uiDelegate?.activityIndicator(isAnimating: false)
@@ -598,27 +611,30 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 }
 
 extension SearchViewModel {
-    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?){
+    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?, currentPage: Int){
         guard let messageBoxes = messageBoxes else {
-            if self.currentPage == 0 {
+            print("search error!")
+            if currentPage == 0 {
                 self.fetchLocalObjects()    //Why
             }
             return
         }
+
+        self.currentPage = currentPage
         
         if messageBoxes.isEmpty {
-            if self.currentPage == 0 {
+            if currentPage == 0 {
                 self.messages = []
             }
             return
         }
-        
+
         let context = self.coreDataService.mainContext
         context.perform { [weak self] in
             let messagesInContext = messageBoxes
                 .compactMap { context.object(with: $0.objectID) as? Message }
                 .filter { $0.managedObjectContext != nil }
-            if self!.currentPage > 0 {
+            if currentPage > 0 {
                 self?.messages.append(contentsOf: messagesInContext)
             } else {
                 self?.messages = messagesInContext
