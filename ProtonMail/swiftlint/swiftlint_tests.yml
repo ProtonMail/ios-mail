@@ -45,6 +45,7 @@ included:
   - ${PWD}/ProtonMailTests/Stubs/DarkModeStatusStub.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/Composer/ComposeViewControllerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataServices/UserFeedbackServiceTests.swift
 
 excluded:
   - ${PWD}/Pods
