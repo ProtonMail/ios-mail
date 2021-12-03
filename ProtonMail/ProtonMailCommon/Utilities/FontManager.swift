@@ -410,14 +410,10 @@ struct FontManager {
         let font = UIFont.systemFont(ofSize: 11.0)
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.07
-        // NOTE: it should be ColorProvider.InteractionStrong
-        // But core library has a typo will cause crash
-        // Remove the tempColor after updating to the correct core library
-        let tempColor = UIColor(named: "InteractionStrong") ?? UIColor.black
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: 0.07,
             .font: font,
-            .foregroundColor: tempColor,
+            .foregroundColor: ColorProvider.InteractionStrong,
             .paragraphStyle: paragraphStyle
         ]
         return attributes
