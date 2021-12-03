@@ -172,18 +172,6 @@ class ViewModelServiceImpl: ViewModelService {
                                                               refreshHandler: refreshHandler))
     }
     
-    // composer
-
-    func buildTerms(_ base : ViewModelProtocolBase) {
-        let model = TermsWebViewModelImpl()
-        base.setModel(vm: model)
-    }
-    
-    func buildPolicy(_ base : ViewModelProtocolBase) {
-        let model = PolicyWebViewModelImpl()
-        base.setModel(vm: model)
-    }
-    
     //TODO::fixme
     override func cleanLegacy() {
         //get current cache version

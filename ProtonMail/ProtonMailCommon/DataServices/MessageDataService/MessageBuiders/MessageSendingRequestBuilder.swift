@@ -28,10 +28,18 @@ import ProtonCore_SRP
 /// ````
 ///
 
-// swiftlint:disable type_body_length
 final class MessageSendingRequestBuilder {
+    enum BuilderError: Error {
+        case MIMEDataNotPrepared
+        case plainTextDataNotPrepared
+        case encryptedPlainTextMsgFailedToCreate
+        case packagesFailedToCreate
+        case sessionKeyFailedToCreate
+        case encryptedMIMEMsgFailedToCreate
+    }
+
     private(set) var bodyDataPacket: Data?
-    private(set) var bodySession: Data?
+    private(set) var bodySessionKey: Data?
     private(set) var bodySessionAlgo: String?
 
     private(set) var preAddresses = [PreAddress]()
@@ -39,17 +47,21 @@ final class MessageSendingRequestBuilder {
     private(set) var password: String?
     private(set) var hint: String?
 
-    var mimeSession: Data!
-    var mimeSessionAlgo: String!
-    var mimeDataPackage: String!
+    private(set) var mimeSessionKey: Data?
+    private(set) var mimeSessionAlgo: String?
+    private(set) var mimeDataPackage: String?
 
     private(set) var clearBody: String?
 
-    var plainTextSession: Data!
-    var plainTextSessionAlgo: String!
-    var plainTextDataPackage: String!
+    private(set) var plainTextSessionKey: Data?
+    private(set) var plainTextSessionAlgo: String?
+    private(set) var plainTextDataPackage: String?
 
-    var clearPlainTextBody: String!
+    private(set) var clearPlainTextBody: String?
+
+    // [AttachmentID: base64 attachment body]
+    private var attachmentBodys: [String: String] = [:]
+
     let expirationOffset: Int32
 
     init(expirationOffset: Int32?) {
@@ -58,7 +70,7 @@ final class MessageSendingRequestBuilder {
 
     func update(bodyData data: Data, bodySession: Data, algo: String) {
         self.bodyDataPacket = data
-        self.bodySession = bodySession
+        self.bodySessionKey = bodySession
         self.bodySessionAlgo = algo
     }
 
@@ -82,40 +94,46 @@ final class MessageSendingRequestBuilder {
     var clearBodyPackage: ClearBodyPackage? {
         if self.contains(type: .cinln) || self.contains(type: .cmime) {
             if let algorithm = bodySessionAlgo,
-               let encodedSession = self.encodedSession {
-                return ClearBodyPackage(key: encodedSession,
+               let encodedSessionKey = self.encodedSessionKey {
+                return ClearBodyPackage(key: encodedSessionKey,
                                         algo: algorithm)
-            } else {
-                return nil
             }
         }
         return nil
     }
 
     var clearMimeBodyPackage: ClearBodyPackage? {
-        if self.contains(type: .cmime) {
-            return ClearBodyPackage(key: self.mimeSession.encodeBase64(), algo: self.mimeSessionAlgo)
+        if self.contains(type: .cmime),
+           let base64MIMESessionKey = mimeSessionKey?.encodeBase64(),
+           let algorithm = mimeSessionAlgo {
+            return ClearBodyPackage(key: base64MIMESessionKey,
+                                    algo: algorithm)
         }
         return nil
     }
 
     var clearPlainBodyPackage: ClearBodyPackage? {
-        if self.hasPlainText, self.contains(type: .cinln) || self.contains(type: .cmime) {
-            return ClearBodyPackage(key: self.plainTextSession.encodeBase64(), algo: self.plainTextSessionAlgo)
+        if hasPlainText, contains(type: .cinln) || contains(type: .cmime) {
+            guard let base64SessionKey = plainTextSessionKey?.encodeBase64(),
+                  let algorithm = plainTextSessionAlgo else {
+                      return nil
+                  }
+            return ClearBodyPackage(key: base64SessionKey,
+                                    algo: algorithm)
         }
         return nil
     }
 
     var mimeBody: String {
-        if self.hasMime {
-            return self.mimeDataPackage
+        if hasMime, let dataPackage = mimeDataPackage {
+            return dataPackage
         }
         return ""
     }
 
     var plainBody: String {
-        if self.hasPlainText {
-            return self.plainTextDataPackage
+        if hasPlainText, let dataPackage = plainTextDataPackage {
+            return dataPackage
         }
         return ""
     }
@@ -172,6 +190,42 @@ final class MessageSendingRequestBuilder {
         return .cinln
     }
 
+    var hasMime: Bool {
+        return self.contains(type: .pgpmime) || self.contains(type: .cmime)
+    }
+
+    var hasPlainText: Bool {
+        for preAddress in self.preAddresses where preAddress.plainText {
+            return true
+        }
+        return false
+    }
+
+    func contains(type: SendType) -> Bool {
+        for pre in self.preAddresses {
+            let buildType = self.calculateSendType(recipientType: pre.recipintType,
+                                                   isEO: pre.isEO,
+                                                   hasPGPKey: pre.pgpKey != nil,
+                                                   hasPGPEncryption: pre.pgpencrypt,
+                                                   isMIME: pre.mime)
+            if buildType.contains(type) {
+                return true
+            }
+        }
+        return false
+    }
+
+    var encodedBody: String? {
+        return self.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    }
+
+    var encodedSessionKey: String? {
+        return self.bodySessionKey?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    }
+}
+
+// MARK: - Build Message Body
+extension MessageSendingRequestBuilder {
     func fetchAttachmentBody(att: Attachment,
                              messageDataService: MessageDataService,
                              passphrase: String,
@@ -203,92 +257,84 @@ final class MessageSendingRequestBuilder {
         }
     }
 
+    func fetchAttachmentBodyForMime(passphrase: String,
+                                    msgService: MessageDataService,
+                                    userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
+        var fetches = [Promise<String>]()
+        for att in preAttachments {
+            let promise = fetchAttachmentBody(att: att.att,
+                                              messageDataService: msgService,
+                                              passphrase: passphrase,
+                                              userInfo: userInfo)
+            fetches.append(promise)
+        }
+
+        return when(resolved: fetches).then { attachmentBodys -> Promise<MessageSendingRequestBuilder> in
+            for (index, result) in attachmentBodys.enumerated() {
+                switch result {
+                case .fulfilled(let body):
+                    let preAttachment = self.preAttachments[index].att
+                    self.attachmentBodys[preAttachment.attachmentID] = body
+                case .rejected(let error):
+                    PMLog.D(error.localizedDescription)
+                }
+            }
+            return .value(self)
+        }
+    }
+
     // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
                    passphrase: String,
                    userKeys: [Data],
                    keys: [Key],
-                   newSchema: Bool,
-                   msgService: MessageDataService,
-                   userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
+                   newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
         return Promise { seal in
-            /// decrypt attachments
             var messageBody = self.clearBody ?? ""
             messageBody = QuotedPrintable.encode(string: messageBody)
-            var signbody = ""
-            var boundaryMsg: String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" // default
-            do {
-                let random = try Crypto.random(byte: 20)
-                if !random.isEmpty {
-                    boundaryMsg = HMAC.hexStringFromData(random)
+
+            let boundaryMsg = generateMessageBoundaryString()
+            var signbody = buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody)
+
+            for preAttachment in self.preAttachments {
+                guard let attachmentBody = attachmentBodys[preAttachment.attachmentId] else {
+                    continue
                 }
-            } catch {
-                // ignore
+                let attachment = preAttachment.att
+                let attName = QuotedPrintable.encode(string: attachment.fileName)
+                let contentID = attachment.contentID() ?? ""
+
+                let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
+                                                         base64AttachmentContent: attachmentBody,
+                                                         attachmentName: attName,
+                                                         contentID: contentID,
+                                                         attachmentMIMEType: attachment.mimeType)
+                signbody.append(contentsOf: bodyToAdd)
             }
 
-            let typeMessage = "Content-Type: multipart/related; boundary=\"\(boundaryMsg)\""
-            signbody.append(contentsOf: typeMessage + "\r\n")
-            signbody.append(contentsOf: "\r\n")
-            signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-            signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
-            signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
-            signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
-            signbody.append(contentsOf: "\r\n")
-            signbody.append(contentsOf: messageBody + "\r\n")
-            signbody.append(contentsOf: "\r\n")
-            signbody.append(contentsOf: "\r\n")
-            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "--\(boundaryMsg)--")
 
-            var fetchs = [Promise<String>]()
-            for att in self.preAttachments {
-                let promise = self.fetchAttachmentBody(att: att.att,
-                                                       messageDataService: msgService,
-                                                       passphrase: passphrase,
-                                                       userInfo: userInfo)
-                fetchs.append(promise)
+            guard let encrypted = try signbody.encrypt(withKey: senderKey,
+                                                       userKeys: userKeys,
+                                                       mailbox_pwd: passphrase) else {
+                throw BuilderError.encryptedMIMEMsgFailedToCreate
             }
-            // 1. fetch attachment first
-            firstly {
-                when(resolved: fetchs)
-            }.done { bodys in
-                for (index, body) in bodys.enumerated() {
-                    switch body {
-                    case .fulfilled(let value):
-                        let att = self.preAttachments[index].att
-                        signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-                        let attName = QuotedPrintable.encode(string: att.fileName)
-                        signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
-                        signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-                        signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
-                        let contentID = att.contentID() ?? ""
-                        signbody.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
 
-                        signbody.append(contentsOf: "\r\n")
-                        signbody.append(contentsOf: value + "\r\n")
-                    case .rejected(let error):
-                        PMLog.D(error.localizedDescription)
-                    }
-                }
-                signbody.append(contentsOf: "--\(boundaryMsg)--")
-                let encrypted = try signbody.encrypt(withKey: senderKey,
-                                                     userKeys: userKeys,
-                                                     mailbox_pwd: passphrase)
-                let spilted = try encrypted?.split()
-                let session = newSchema ?
-                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(userKeys: userKeys,
-                                                                        passphrase: passphrase,
-                                                                        keys: keys) :
-                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(addrPrivKey: senderKey.privateKey,
-                                                                        passphrase: passphrase)
+            let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
-                self.mimeSession = session?.key
-                self.mimeSessionAlgo = session?.algo
-                self.mimeDataPackage = spilted?.dataPacket?.base64EncodedString()
-
-                seal.fulfill(self)
-            }.catch(policy: .allErrors) { error in
-                seal.reject(error)
+            guard let sessionKey = try self.getSessionKey(from: keyPacket,
+                                                          isNewSchema: newSchema,
+                                                          userKeys: userKeys,
+                                                          senderKey: senderKey,
+                                                          addressKeys: keys,
+                                                          passphrase: passphrase) else {
+                throw BuilderError.sessionKeyFailedToCreate
             }
+            self.mimeSessionKey = sessionKey.key
+            self.mimeSessionAlgo = sessionKey.algo
+            self.mimeDataPackage = dataPacket.base64EncodedString()
+
+            seal.fulfill(self)
         }
     }
 
@@ -299,24 +345,28 @@ final class MessageSendingRequestBuilder {
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
         return Promise { seal in
             async {
-                let messageBody = self.clearBody ?? ""
-                // Need to improve replace part
-                let plainText = messageBody.html2String.preg_replace("\n", replaceto: "\r\n")
-                PMLog.D(plainText)
-                let encrypted = try plainText.encrypt(withKey: senderKey,
-                                                      userKeys: userKeys,
-                                                      mailbox_pwd: passphrase)
-                let spilted = try encrypted?.split()
-                let session = newSchema ?
-                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(userKeys: userKeys,
-                                                                        passphrase: passphrase,
-                                                                        keys: keys) :
-                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(addrPrivKey: senderKey.privateKey,
-                                                                        passphrase: passphrase)
+                let plainText = self.generatePlainTextBody()
 
-                self.plainTextSession = session?.key
-                self.plainTextSessionAlgo = session?.algo
-                self.plainTextDataPackage = spilted?.dataPacket?.base64EncodedString()
+                guard let encrypted = try plainText.encrypt(withKey: senderKey,
+                                                            userKeys: userKeys,
+                                                            mailbox_pwd: passphrase) else {
+                    throw BuilderError.encryptedPlainTextMsgFailedToCreate
+                }
+
+                let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
+
+                guard let sessionKey = try self.getSessionKey(from: keyPacket,
+                                                              isNewSchema: newSchema,
+                                                              userKeys: userKeys,
+                                                              senderKey: senderKey,
+                                                              addressKeys: keys,
+                                                              passphrase: passphrase) else {
+                    throw BuilderError.sessionKeyFailedToCreate
+                }
+
+                self.plainTextSessionKey = sessionKey.key
+                self.plainTextSessionAlgo = sessionKey.algo
+                self.plainTextDataPackage = dataPacket.base64EncodedString()
 
                 self.clearPlainTextBody = plainText
 
@@ -325,20 +375,101 @@ final class MessageSendingRequestBuilder {
         }
     }
 
-    var builders: [PackageBuilder] {
+    func buildAttachmentBody(boundaryMsg: String,
+                             base64AttachmentContent: String,
+                             attachmentName: String,
+                             contentID: String,
+                             attachmentMIMEType: String) -> String {
+        var body = ""
+        body.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
+        body.append(contentsOf: "Content-Type: \(attachmentMIMEType); name=\"\(attachmentName)\"" + "\r\n")
+        body.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
+        body.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attachmentName)\"" + "\r\n")
+        body.append(contentsOf: "Content-ID: <\(contentID)>\r\n")
+
+        body.append(contentsOf: "\r\n")
+        body.append(contentsOf: base64AttachmentContent + "\r\n")
+        return body
+    }
+
+    func buildFirstPartOfBody(boundaryMsg: String, messageBody: String) -> String {
+        let typeMessage = "Content-Type: multipart/related; boundary=\"\(boundaryMsg)\""
+        var signbody = ""
+        signbody.append(contentsOf: typeMessage + "\r\n")
+        signbody.append(contentsOf: "\r\n")
+        signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
+        signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
+        signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
+        signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
+        signbody.append(contentsOf: "\r\n")
+        signbody.append(contentsOf: messageBody + "\r\n")
+        signbody.append(contentsOf: "\r\n")
+        signbody.append(contentsOf: "\r\n")
+        signbody.append(contentsOf: "\r\n")
+        return signbody
+    }
+
+    func preparePackages(encrypted: String) throws -> (Data, Data) {
+        guard let spilted = try encrypted.split(),
+              let keyPacket = spilted.keyPacket,
+              let dataPacket = spilted.dataPacket else {
+                  throw BuilderError.packagesFailedToCreate
+              }
+        return (keyPacket, dataPacket)
+    }
+
+    func getSessionKey(from keyPacket: Data,
+                       isNewSchema: Bool,
+                       userKeys: [Data],
+                       senderKey: Key,
+                       addressKeys: [Key],
+                       passphrase: String) throws -> SymmetricKey? {
+        if isNewSchema {
+            return try keyPacket.getSessionFromPubKeyPackage(userKeys: userKeys,
+                                                             passphrase: passphrase,
+                                                             keys: addressKeys)
+        } else {
+            return try keyPacket.getSessionFromPubKeyPackage(addrPrivKey: senderKey.privateKey,
+                                                             passphrase: passphrase)
+        }
+    }
+
+    func generatePlainTextBody() -> String {
+        let body = self.clearBody ?? ""
+        // TODO: need improve replace part
+        return body.html2String.preg_replace("\n", replaceto: "\r\n")
+    }
+
+    func generateMessageBoundaryString() -> String {
+        var boundaryMsg = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" // default
+        if let random = try? Crypto.random(byte: 20), !random.isEmpty {
+            boundaryMsg = HMAC.hexStringFromData(random)
+        }
+        return boundaryMsg
+    }
+}
+
+// MARK: - Create builders for each type of message
+extension MessageSendingRequestBuilder {
+    func generatePackageBuilder() throws -> [PackageBuilder] {
         var out = [PackageBuilder]()
         for pre in self.preAddresses {
             var session = Data()
             var algo: String = "aes256"
-            if let bodySession = self.bodySession {
+            if let bodySession = self.bodySessionKey {
                 session = bodySession
             }
             if let bodySessionAlgo = self.bodySessionAlgo {
                 algo = bodySessionAlgo
             }
             if pre.plainText {
-                session = self.plainTextSession
-                algo = self.plainTextSessionAlgo
+                if let sessionKey = plainTextSessionKey,
+                   let algorithm = plainTextSessionAlgo {
+                    session = sessionKey
+                    algo = algorithm
+                } else {
+                    throw BuilderError.plainTextDataNotPrepared
+                }
             }
             switch self.calculateSendType(recipientType: pre.recipintType,
                                           isEO: pre.isEO,
@@ -346,11 +477,11 @@ final class MessageSendingRequestBuilder {
                                           hasPGPEncryption: pre.pgpencrypt,
                                           isMIME: pre.mime) {
             case .intl:
-                out.append(AddressBuilder(type: .intl,
-                                          addr: pre,
-                                          session: session,
-                                          algo: algo,
-                                          atts: self.preAttachments))
+                out.append(InternalAddressBuilder(type: .intl,
+                                                  addr: pre,
+                                                  session: session,
+                                                  algo: algo,
+                                                  atts: self.preAttachments))
             case .eo where self.password != nil:
                 out.append(EOAddressBuilder(type: .eo,
                                             addr: pre,
@@ -368,10 +499,14 @@ final class MessageSendingRequestBuilder {
                                              algo: algo,
                                              atts: self.preAttachments))
             case .pgpmime: // pgp mime
-                out.append(MimeAddressBuilder(type: .pgpmime,
-                                              addr: pre,
-                                              session: self.mimeSession,
-                                              algo: self.mimeSessionAlgo))
+                guard let sessionData = mimeSessionKey,
+                      let algorithm = mimeSessionAlgo else {
+                          throw BuilderError.MIMEDataNotPrepared
+                      }
+                out.append(PGPMimeAddressBuilder(type: .pgpmime,
+                                                 addr: pre,
+                                                 session: sessionData,
+                                                 algo: algorithm))
             case .cmime: // clear text mime
                 out.append(ClearMimeAddressBuilder(type: .cmime, addr: pre))
             default:
@@ -381,44 +516,12 @@ final class MessageSendingRequestBuilder {
         return out
     }
 
-    var hasMime: Bool {
-        return self.contains(type: .pgpmime) || self.contains(type: .cmime)
-    }
-
-    var hasPlainText: Bool {
-        for preAddress in self.preAddresses where preAddress.plainText {
-            return true
+    func getBuilderPromises() throws -> [Promise<AddressPackageBase>] {
+        var result = [Promise<AddressPackageBase>]()
+        let builders = try generatePackageBuilder()
+        for builder in builders {
+            result.append(builder.build())
         }
-        return false
-    }
-
-    func contains(type: SendType) -> Bool {
-        for pre in self.preAddresses {
-            let buildType = self.calculateSendType(recipientType: pre.recipintType,
-                                                   isEO: pre.isEO,
-                                                   hasPGPKey: pre.pgpKey != nil,
-                                                   hasPGPEncryption: pre.pgpencrypt,
-                                                   isMIME: pre.mime)
-            if buildType.contains(type) {
-                return true
-            }
-        }
-        return false
-    }
-
-    var promises: [Promise<AddressPackageBase>] {
-        var out = [Promise<AddressPackageBase>]()
-        for buidler in self.builders {
-            out.append(buidler.build())
-        }
-        return out
-    }
-
-    var encodedBody: String? {
-        return self.bodyDataPacket?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-    }
-
-    var encodedSession: String? {
-        return self.bodySession?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        return result
     }
 }
