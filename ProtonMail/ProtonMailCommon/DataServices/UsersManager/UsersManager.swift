@@ -170,13 +170,25 @@ class UsersManager : Service, Migrate {
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+        self.add(newUser: newUser)
+    }
+
+    func add(newUser: UserManager) {
         newUser.delegate = self
+        let userID = newUser.userInfo.userId
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                           defaultEmail: newUser.defaultEmail,
-                          userID: user.userId))
+                          userID: userID))
         users.append(newUser)
 
         self.save()
+    }
+
+    func isAllowedNewUser(userInfo: UserInfo) -> Bool {
+        if numberOfFreeAccounts > 0 && !userInfo.isPaid {
+            return false
+        }
+        return true
     }
     
     func update(auth: AuthCredential, user: UserInfo) {
@@ -630,6 +642,10 @@ extension UsersManager {
             }
             KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
         }
+    }
+
+    var numberOfFreeAccounts: Int {
+        users.filter { !$0.isPaid }.count
     }
 }
 
