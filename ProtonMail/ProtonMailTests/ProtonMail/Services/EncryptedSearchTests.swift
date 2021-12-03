@@ -28,93 +28,332 @@ class EncryptedSearchTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    /*func testBuildSearchIndex() throws {
+    func testEncryptedSearchServiceSingleton() throws {
+        XCTAssertNotNil(EncryptedSearchService.shared)
+    }
+
+    func testDetermineEncryptedSearchState() throws {
+        /*let sut = EncryptedSearchIndexService.shared.getSearchIndexName
+        let testUserID: String = "123"
+        let result: String = sut(testUserID)
+
+        XCTAssertEqual(result, "encryptedSearchIndex_123.sqlite3")*/
         //TODO
-    }*/
-    
-    /*func testExtractKeyWordsFromBody() throws {
-        let body: String = "<div dir=\"ltr\">this is a testmessage<br></div>\n"
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, true)
-        
-        XCTAssertEqual(result, "this is a testmessage")
-    }*/
-    
-    /*func testExtractKeyWordsFromBodyRemoveBlockQuotesProtonMail(){
-        let body: String = """
-            <div>This a reply<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div><div><br></div><div class="protonmail_quote">
-            ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐<br>
-            On Wednesday, April 28th, 2021 at 6:33 PM, marin.test &lt;marin.test@protonmail.com&gt; wrote:<br>
-            <blockquote class="protonmail_quote" type="cite">
-                <div>Some random word: salon<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a target="_blank" href="https://protonmail.com/" rel="noreferrer nofollow noopener">ProtonMail</a> Secure Email.</div></div><div><br></div>
-            </blockquote><br>
-        </div>
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let bodyCleanedExpected: String = """
-            This a reply
-            
-            Sent with ProtonMail Secure Email.
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, true)
-        
-        XCTAssertEqual(result, bodyCleanedExpected)
-    }*/
-    
-    /*func testExtractKeyWordsFromBodyLeaveBlockQuotesProtonMail(){
-        let body: String = """
-            <div>This a reply<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div><div><br></div><div class="protonmail_quote">
-            ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐<br>
-            On Wednesday, April 28th, 2021 at 6:33 PM, marin.test &lt;marin.test@protonmail.com&gt; wrote:<br>
-            <blockquote class="protonmail_quote" type="cite">
-                <div>Some random word: salon<br></div><div><br></div><div class="protonmail_signature_block"><div class="protonmail_signature_block-user protonmail_signature_block-empty"></div><div class="protonmail_signature_block-proton">Sent with <a target="_blank" href="https://protonmail.com/" rel="noreferrer nofollow noopener">ProtonMail</a> Secure Email.</div></div><div><br></div>
-            </blockquote><br>
-        </div>
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let bodyCleanedExpected: String = """
-            This a reply
+    }
 
-            Sent with ProtonMail Secure Email.
-            ‐‐‐‐‐‐‐ Original Message ‐‐‐‐‐‐‐
-            On Wednesday, April 28th, 2021 at 6:33 PM, marin.test <marin.test@protonmail.com> wrote:
-            Some random word: salon
-            
-            Sent with ProtonMail Secure Email.
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, false)
-        
-        XCTAssertEqual(result, bodyCleanedExpected)
-    }*/
-    
-    /*func testExtractKeyWordsFromBodyRemoveBlockQuotesGMail(){
-        let body: String = """
-        <div dir="ltr">This is a reply<br></div><br><div class="gmail_quote"><div dir="ltr" class="gmail_attr">On Wed, Apr 28, 2021 at 6:38 PM marin.test &lt;<a href="mailto:marin.test@protonmail.com">marin.test@protonmail.com</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div>Some random word: peasant<br></div><div><br></div><div><div></div><div>Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div></blockquote></div>
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let bodyCleanedExpected: String = "This is a reply".preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, true)
-        
-        XCTAssertEqual(result, bodyCleanedExpected)
-    }*/
-    
-    /*func testExtractKeyWordsFromBodyLeaveBlockQuotesGMail(){
-        let body: String = """
-        <div dir="ltr">This is a reply<br></div><br><div class="gmail_quote"><div dir="ltr" class="gmail_attr">On Wed, Apr 28, 2021 at 6:38 PM marin.test &lt;<a href="mailto:marin.test@protonmail.com">marin.test@protonmail.com</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div>Some random word: peasant<br></div><div><br></div><div><div></div><div>Sent with <a href="https://protonmail.com/" target="_blank">ProtonMail</a> Secure Email.</div></div></blockquote></div>
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let bodyCleanedExpected: String = """
-            This is a reply
-            
-            On Wed, Apr 28, 2021 at 6:38 PM marin.test <marin.test@protonmail.com> wrote:
-            
-            Some random word: peasant
-            
-            Sent with ProtonMail Secure Email.
-        """.preg_replace("\\s+", replaceto: " ").trimmingCharacters(in: .whitespacesAndNewlines)
-        let sut = EncryptedSearchService.shared.extractKeywordsFromBody
-        let result = sut(body, false)
-        
-        XCTAssertEqual(result, bodyCleanedExpected)
-    }*/
+    func testBuildSearchIndex() throws {
+        //TODO
+    }
 
+    func testCheckIfIndexingIsComplete() throws {
+        //TODO
+    }
+
+    func testCleanUpAfterIndexing() throws {
+        //TODO
+    }
+
+    func testPauseAndResumeIndexingByUser() throws {
+        //TODO
+    }
+
+    func testPauseAndResumeIndexingDueToInterruption() throws {
+        //TODO
+    }
+
+    func testPauseAndResumeIndexing() throws {
+        //TODO
+    }
+
+    func testPauseIndexingDueToNetworkSwitch() throws {
+        //TODO
+    }
+
+    func testUpdateSearchIndex() throws {
+        //TODO
+    }
+
+    func testProcessEventsAfterIndexing() throws {
+        //TODO
+    }
+
+    func testInsertSingleMessageToSearchIndex() throws {
+        //TODO
+    }
+
+    func testDeleteMessageFromSearchIndex() throws {
+        //TODO
+    }
+
+    func testDeleteSearchIndex() throws {
+        //TODO
+    }
+
+    func testUpdateMessageMetadataInSearchIndex() throws {
+        //TODO
+    }
+
+    func testUpdateCurrentUserIfNeeded() throws {
+        //TODO
+    }
+
+    func testGetTotalMessages() throws {
+        //TODO
+    }
+
+    func testConvertMessageToESMessage() throws {
+        //TODO
+    }
+
+    func testJsonStringToESMessage() throws {
+        //TODO
+    }
+
+    func testParseMessageResponse() throws {
+        //TODO
+    }
+
+    func testParseMessageDetailResponse() throws {
+        //TODO
+    }
+
+    func testFetchSingleMessageFromServer() throws {
+        //TODO
+    }
+
+    func testFetchMessages() throws {
+        //TODO
+    }
+
+    func testFetchMessageDetailForMessage() throws {
+        //TODO
+    }
+
+    func testDownloadAndProcessPage() throws {
+        //TODO
+    }
+
+    func testDownloadPage() throws {
+        //TODO
+    }
+
+    func testProcessPageOneByOne() throws {
+        //TODO
+    }
+
+    func testGetMessageDetailsForSingleMessage() throws {
+        //TODO
+    }
+
+    func testParseMessageObjectFromResponse() throws {
+        //TODO
+    }
+
+    func testGetMessage() throws {
+        //TODO
+    }
+
+    func testDecryptBodyIfNeeded() throws {
+        //TODO
+    }
+
+    func testDecryptAndExtractDataSingleMessage() throws {
+        //TODO
+    }
+
+    func testCreateEncryptedContent() throws {
+        //TODO
+    }
+
+    func testGetCipher() throws {
+        //TODO
+    }
+
+    func testGenerateSearchIndexKey() throws {
+        //TODO
+    }
+
+    func testStoreSearchIndexKey() throws {
+        //TODO
+    }
+
+    func testRetrieveSearchIndexKey() throws {
+        //TODO
+    }
+
+    func testAddMessageKewordsToSearchIndex() throws {
+        //TODO
+    }
+
+    func testSlowDownIndexing() throws {
+        //TODO
+    }
+
+    func testSpeedUpIndexing() throws {
+        //TODO
+    }
+
+    func testSearch() throws {
+        //TODO
+    }
+
+    func testHasSearchedBefore() throws {
+        //TODO
+    }
+
+    func testClearSearchState() throws {
+        //TODO
+    }
+
+    func testGetSearcher() throws {
+        //TODO
+    }
+
+    func testCreateEncryptedSearchStringList() throws {
+        //TODO
+    }
+
+    func testGetCache() throws {
+        //TODO
+    }
+
+    func testExtractSearchResults() throws {
+        //TODO
+    }
+
+    func testDoIndexSearch() throws {
+        //TODO
+    }
+
+    func testGetIndex() throws {
+        //TODO
+    }
+
+    func testDoCachedSearch() throws {
+        //TODO
+    }
+
+    func testPublishIntermediateResults() throws {
+        //TODO
+    }
+
+    func testContinueIndexingInBackground() throws {
+        //TODO
+    }
+
+    func testEndBackgroundTask() throws {
+        //TODO
+    }
+
+    func testRegisterBGProcessingTask() throws {
+        //TODO
+    }
+
+    func testCancelBGProcessingTask() throws {
+        //TODO
+    }
+
+    func testScheduleNewBGProcessingTask() throws {
+        //TODO
+    }
+
+    func testBgProcessingTask() throws {
+        //TODO
+    }
+
+    func testRegisterBGAppRefreshTask() throws {
+        //TODO
+    }
+
+    func testCancelBGAppRefreshTask() throws {
+        //TODO
+    }
+
+    func testScheduleNewAppRefreshTask() throws {
+        //TODO
+    }
+
+    func testAppRefreshTask() throws {
+        //TODO
+    }
+
+    func testSendIndexingMetrics() throws {
+        //TODO
+    }
+
+    func testSendSearchMetrics() throws {
+        //TODO
+    }
+
+    func testSendMetrics() throws {
+        //TODO
+    }
+
+    func testSendNotification() throws {
+        //TODO
+    }
+
+    func testAppMovedToBackground() throws {
+        //TODO
+    }
+
+    func testCheckIfEnoughStorage() throws {
+        //TODO
+    }
+
+    func testEstimateIndexingTime() throws {
+        //TODO
+    }
+
+    func testUpdateRemainingIndexingTime() throws {
+        //TODO
+    }
+
+    func testRegisterForBatteryLevelChangeNotifications() throws {
+        //TODO
+    }
+
+    func testRegisterForPowerStateChangeNotifications() throws {
+        //TODO
+    }
+
+    func testResponseToLowPowerMode() throws {
+        //TODO
+    }
+
+    func testResponseToBatteryLevel() throws {
+        //TODO
+    }
+
+    func testRegisterForTermalStateChangeNotifications() throws {
+        //TODO
+    }
+
+    func testResponseToHeat() throws {
+        //TODO
+    }
+
+    func testGetTotalAvailableMemory() throws {
+        //TODO
+    }
+
+    func testGetCurrentlyAvailableAppMemory() throws {
+        //TODO
+    }
+
+    func testUpdateIndexBuildingProgress() throws {
+        //TODO
+    }
+
+    func testUpdateUIWithProgressBarStatus() throws {
+        //TODO
+    }
+
+    func testUpdateUIWithIndexingStatus() throws {
+        //TODO
+    }
+
+    func testUpdateUIIndexingComplete() throws {
+        //TODO
+    }
 }
