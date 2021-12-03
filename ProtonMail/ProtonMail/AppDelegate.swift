@@ -186,7 +186,6 @@ extension AppDelegate: UIApplicationDelegate {
         configureAppearance()
 
         ///TODO::fixme refactor
-        shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
         
         //start network notifier

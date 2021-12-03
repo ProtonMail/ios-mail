@@ -226,38 +226,6 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     static var authResponse: TwoFactorContext? = nil
-    func sign(in username: String, password: String, noKeyUser: Bool, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,
-              ask2fa: LoginAsk2FABlock?,
-              onError:@escaping LoginErrorBlock,
-              onSuccess: @escaping LoginSuccessBlock)
-    {
-        let completionWrapper: AuthCompleteBlockNew = { mpwd, status, credential, context, userinfo, error in
-            DispatchQueue.main.async {
-                if status == .ask2FA {
-                    UserDataService.authResponse = context
-                    ask2fa?()
-                } else {
-                    UserDataService.authResponse = nil
-                    if error == nil {
-                        self.passwordMode = mpwd != nil ? 1 : 2
-                        onSuccess(mpwd, credential, userinfo)
-                    } else {
-                        if faillogout {
-                            self.signOut(true)
-                        }
-                        onError(error!)
-                    }
-                }
-            }
-        }
-
-        if let authRes = UserDataService.authResponse {
-            apiService.confirm2FA(twoFACode ?? "", password: password, context: authRes, completion: completionWrapper)
-        } else {
-            apiService.authenticate(username: username, password: password, noKey: noKeyUser, completion: completionWrapper)
-        }
-    }
-
     
     func clean() {
         clearAll()

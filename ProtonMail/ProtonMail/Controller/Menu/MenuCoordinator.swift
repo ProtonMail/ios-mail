@@ -52,11 +52,6 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     private let lastUpdatedStore:LastUpdatedStoreProtocol
     private let usersManager: UsersManager
     var pendingActionAfterDismissal: (() -> Void)?
-    private var storefrontCoordinator: StorefrontCoordinator?
-
-    private var storeKitManager: StoreKitManagerImpl {
-        services.get(by: StoreKitManagerImpl.self)
-    }
 
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
@@ -140,12 +135,6 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             break
         }
         self.vm.highlight(label: labelInfo)
-    }
-    
-    func fetchSubscribeDataFailed() {
-        let label = MenuLabel(location: .inbox)
-        self.go(to: label)
-        self.vm.subscriptionUnavailable()
     }
 }
 

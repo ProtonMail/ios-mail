@@ -30,7 +30,6 @@ protocol TwoFACodeViewControllerDelegate {
 }
 
 class TwoFACodeViewController : UIViewController, AccessibleView {
-    //var viewModel : TwoFAViewModel!
     @IBOutlet weak var twoFACodeView: TwoFACodeView!
     var delegate : TwoFACodeViewControllerDelegate?
     

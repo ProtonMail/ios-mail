@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -429,7 +429,6 @@
                         <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="XQx-Pm-sNq"/>
                         <segue destination="6QM-tn-VTW" kind="presentation" identifier="toManagerLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="GgS-nT-ctf"/>
                         <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_single_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="PpL-SW-U8F"/>
-                        <segue destination="RSc-Bf-d2p" kind="show" identifier="setting_notifications_snooze_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="qhh-J3-IT5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1149,14 +1148,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qd3-7d-31h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2929" y="3618"/>
-        </scene>
-        <!--SettingsNotificationsSnooze-->
-        <scene sceneID="q3g-Tt-Kpp">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SettingsNotificationsSnooze" id="RSc-Bf-d2p" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hAs-GY-x6R" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="505" y="5064"/>
         </scene>
         <!--Setting Detail View Controller-->
         <scene sceneID="3ab-f8-cjQ">

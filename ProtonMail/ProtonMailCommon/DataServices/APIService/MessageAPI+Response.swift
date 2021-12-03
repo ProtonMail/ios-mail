@@ -32,14 +32,6 @@ final class MessageCountResponse : Response {
     }
 }
 
-final class MessageResponse : Response {
-    var message : [String : Any]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.message = response?["Message"] as? [String : Any]
-        return true
-    }
-}
-
 final class SearchMessageResponse : Response {
     var jsonDic : [String : Any]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {

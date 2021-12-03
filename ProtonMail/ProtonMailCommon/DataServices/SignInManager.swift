@@ -40,28 +40,6 @@ class SignInManager: Service {
         self.queueManager = queueManager
     }
     
-    internal func signUpSignIn(username: String,
-                         password: String,
-                         onError: @escaping (NSError)->Void,
-                         onSuccess: @escaping (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void)
-    {
-        self.auth = nil
-        self.userInfo = nil
-        // one time api and service
-        let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
-        service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
-        service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        let userService = UserDataService(check: false, api: service)
-        userService.sign(in: username,
-                         password: password,
-                         noKeyUser: true,
-                         twoFACode: nil,
-                         faillogout: false,
-                         ask2fa: nil,
-                         onError: onError,
-                         onSuccess: onSuccess)
-    }
-    
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {

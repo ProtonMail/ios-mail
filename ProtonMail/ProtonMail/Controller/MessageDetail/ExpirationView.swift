@@ -44,32 +44,3 @@ class ExpirationView: PMView {
         return (s / (24 * 3600),(s % (24 * 3600)) / 3600, s % 3600 / 60, s % 60)
     }
 }
-
-class ExpirationCell: UITableViewCell {
-    @IBOutlet weak var expirationView: ExpirationView!
-    private var timer : Timer!
-    private var expiration: Date = .distantFuture
-    var handleExpired: (() -> Void)?
-    
-    private func autoTimer() {
-        let offset = Int(self.expiration.timeIntervalSince(Date()))
-        if offset <= 0 {
-            handleExpired?()
-        }
-        self.expirationView.setExpirationTime(offset)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.expiration = .distantFuture
-        self.timer = nil
-    }
-    
-    internal func set(expiration: Date) {
-        self.expiration = expiration
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.autoTimer()
-        }
-        self.timer.fire()
-    }
-}
