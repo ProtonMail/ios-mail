@@ -19,7 +19,7 @@ import AwaitKit
 import PromiseKit
 
 /// Address Builder for building the packages
-class MimeAddressBuilder: PackageBuilder {
+class PGPMimeAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
     let algo: String

@@ -1256,6 +1256,14 @@ class MessageDataService : Service, HasLocalStorage {
                 
                 return .value(sendBuilder)
             }.then{ (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
+                if !sendBuilder.hasMime {
+                    return .value(sendBuilder)
+                }
+                return sendbuilder
+                    .fetchAttachmentBodyForMime(passphrase: passphrase,
+                                                msgService: self,
+                                                userInfo: userInfo)
+            }.then{ (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkMime)
                 
@@ -1270,10 +1278,7 @@ class MessageDataService : Service, HasLocalStorage {
                                              passphrase: passphrase,
                                              userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
-                                             newSchema: newSchema,
-                                             msgService: self,
-                                             userInfo: userInfo
-                )
+                                             newSchema: newSchema)
             }.then{ (sendbuilder) -> Promise<MessageSendingRequestBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1294,7 +1299,8 @@ class MessageDataService : Service, HasLocalStorage {
                 //Debug info
                 status.insert(SendStatus.initBuilders)
                 //build address packages
-                return when(resolved: sendbuilder.promises)
+                let promises = try sendBuilder.getBuilderPromises()
+                return when(resolved: promises)
             }.then { results -> Promise<SendResponse> in
                 //Debug info
                 status.insert(SendStatus.encodeBody)

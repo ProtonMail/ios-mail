@@ -19,7 +19,7 @@ import AwaitKit
 import PromiseKit
 
 /// Internal Address Builder for building the packages
-class AddressBuilder: PackageBuilder {
+class InternalAddressBuilder: PackageBuilder {
     /// message body session key
     let session: Data
     let algo: String
