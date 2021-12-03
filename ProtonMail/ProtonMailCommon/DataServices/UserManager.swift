@@ -251,8 +251,11 @@ class UserManager : Service, HasLocalStorage {
         self.messageService.signin()
     }
 
-    init(api: APIService) {
-        self.userinfo = UserInfo.getDefault()
+    /// A mock function only for unit test
+    init(api: APIService, role: UserInfo.OrganizationRole) {
+        let userinfo = UserInfo.getDefault()
+        userinfo.role = role.rawValue
+        self.userinfo = userinfo
         self.auth = AuthCredential.none
         self.apiService = api
         self.apiService.authDelegate = self

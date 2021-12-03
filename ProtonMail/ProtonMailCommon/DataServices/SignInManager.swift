@@ -93,6 +93,11 @@ class SignInManager: Service {
             existError()
             return
         }
+        
+        guard self.usersManager.isAllowedNewUser(userInfo: userInfo) else {
+            reachLimit()
+            return
+        }
 
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
