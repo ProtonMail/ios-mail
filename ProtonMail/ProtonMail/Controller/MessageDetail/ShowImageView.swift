@@ -47,7 +47,3 @@ class ShowImageView: PMView {
         showImageButton.setTitle(LocalString._load_remote_content, for: .normal)
     }
 }
-
-class ShowImageCell: UITableViewCell {
-    @IBOutlet weak var showImageView: ShowImageView!
-}

@@ -165,17 +165,6 @@ class ContactEmailsResponse: Response {
     }
 }
 
-class ContactEmailsResponseForContactGroup: Response {
-    var total : Int = -1
-    var emailList : [[String : Any]] = []
-    override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        if let res = response?["ContactEmails"] as? [[String : Any]] {
-            emailList = res
-        }
-        return true
-    }
-}
-
 // MARK : Get messages part
 final class ContactDetailRequest : Request {  //ContactDetailResponse
     let contactID : String

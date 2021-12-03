@@ -32,8 +32,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     internal weak var viewController: MailboxViewController?
     internal weak var navigation: UINavigationController?
     internal weak var sideMenu: SideMenuController?
-    // whole the ref until started
-    internal var navBeforeStart: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
@@ -108,7 +106,6 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         if let presented = self.viewController?.presentedViewController {
             presented.dismiss(animated: false, completion: nil)
         }
-        self.navBeforeStart = nil
     }
 
     func navigate(from source: UIViewController,

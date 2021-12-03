@@ -161,33 +161,6 @@ final class MessageCount : Request {
     }
 }
 
-// MARK : Get messages part --- Response
-final class FetchMessages : Request {
-    let labelID : String
-    let startTime : Int?
-    let endTime : Int
-    
-    init(labelID : String, endTime : Int = 0) {
-        self.labelID = labelID
-        self.endTime = endTime
-        self.startTime = 0
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = ["Sort" : "Time"]
-        out["LabelID"] = self.labelID
-        if self.endTime > 0 {
-            let newTime = self.endTime - 1
-            out["End"] = newTime
-        }
-        return out
-    }
-    
-    var path: String {
-        return MessageAPI.path
-    }
-}
-
 final class FetchMessagesByID : Request {
     let msgIDs : [String]
     init(msgIDs: [String]) {

@@ -28,35 +28,6 @@ import SideMenuSwift
 import ProtonCore_UIFoundations
 #endif
 
-///Notes:: can't use it because the generac class can't do extension with @objc functions. like tableviewdelegate
-class ViewController<T_vm, T_Coordinator : CoordinatorNew> : UIViewController, ViewModelProtocol, CoordinatedNew {
-    typealias viewModelType = T_vm
-    typealias coordinatorType = T_Coordinator
-    
-    internal var viewModel : T_vm!
-    internal var coordinator : T_Coordinator?
-    
-    func set(viewModel: T_vm) {
-        self.viewModel = viewModel
-    }
-    
-    func set(coordinator: T_Coordinator) {
-        self.coordinator = coordinator
-    }
-    
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        assert(self.viewModel != nil, "T1 can't be nil")
-        assert(self.coordinator != nil, "T2 can't be nil")
-    }
-}
-
-
 protocol ProtonMailViewControllerProtocol {
     func shouldShowSideMenu() -> Bool
     func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController, style : UIModalPresentationStyle)
@@ -175,19 +146,6 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
 }
 
 class ProtonMailTableViewController: UITableViewController, ProtonMailViewControllerProtocol, AccessibleView {
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
-        generateAccessibilityIdentifiers()
-    }
-}
-
-
-// FIXME: this is a temporary class. refactor it later
-class ProtonMailTabBarController: UITabBarController, ProtonMailViewControllerProtocol, AccessibleView {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     

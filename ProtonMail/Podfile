@@ -24,14 +24,15 @@ def pm_shared_pods
   pod 'ProtonCore-Authentication', proton_core_version
   pod 'ProtonCore-Keymaker', proton_core_version
   pod 'ProtonCore-Payments', proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
   pod 'ProtonCore-UIFoundations', proton_core_version
   pod 'ProtonCore-Common', proton_core_version
-  pod 'ProtonCore-OpenPGP', proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
+  pod 'ProtonCore-Authentication/UsingCrypto', proton_core_version
   pod 'Groot', '3.0.1'
   pod 'Masonry', '1.1.0'
   pod 'PromiseKit', '6.13.1'
@@ -55,9 +56,11 @@ def pm_pods
   pod 'ProtonCore-ForceUpgrade', proton_core_version
   pod 'ProtonCore-HumanVerification', proton_core_version
   pod 'ProtonCore-Login', proton_core_version
+  pod 'ProtonCore-Login/UsingCrypto', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
+  pod 'ProtonCore-OpenPGP', proton_core_version
 end
 
 def pm_share
@@ -96,6 +99,7 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification', proton_core_version
   pm_pods
 end
 

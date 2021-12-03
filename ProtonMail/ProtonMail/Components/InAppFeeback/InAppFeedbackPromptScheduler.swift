@@ -28,7 +28,6 @@ extension UserDefaults: InAppFeedbackStorageProtocol {
         case feedbackWasSubmittedKey = "IAFeedbackWasSubmitted"
         case feedbackWasShownKey = "IAFeedbackWasShown"
         case numOfForegroundEnteringRegisteredKey = "IAFeedbackForegroundEnteringRegistered"
-
     }
 
     var feedbackWasSubmitted: Bool {
@@ -65,19 +64,19 @@ protocol InAppFeedbackSubmissionUpdater {
 
 final class InAppFeedbackPromptScheduler {
     private var storage: InAppFeedbackStorageProtocol
-    
+
     private(set) var feedbackWasSubmitted: Bool {
         didSet {
             storage.feedbackWasSubmitted = feedbackWasSubmitted
         }
     }
-    
+
     private(set) var feedbackPromptWasShown: Bool {
         didSet {
             storage.feedbackPromptWasShown = feedbackPromptWasShown
         }
     }
-    
+
     private(set) var numberOfForegroundEnteringRegistered: Int {
         didSet {
             storage.numberOfForegroundEnteringRegistered = numberOfForegroundEnteringRegistered

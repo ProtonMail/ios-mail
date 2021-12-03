@@ -59,23 +59,7 @@ class TableCellLabelView: UIView, AccessibleCell {
         self.contentView.clipsToBounds = true
     }
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
-    func updateTextFont (_ font: UIFont){
-        self.textLabel.font = font
-    }
-    
-    func setText(_ label: String, color: UIColor) ->CGFloat {
-        self.textLabel.text = "  \(label)  "
-        generateCellAccessibilityIdentifiers(label)
-
-        let s = self.textLabel.sizeThatFits(CGSize.zero)
-                textLabel.textColor = color
-        textLabel.layer.borderColor = color.cgColor
-        
-        return s.width + self.kCoverImageViewWidth
-    }    
 }

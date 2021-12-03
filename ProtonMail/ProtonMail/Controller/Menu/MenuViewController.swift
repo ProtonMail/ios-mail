@@ -210,10 +210,6 @@ extension MenuViewController {
         self.primaryUserview.backgroundColor = color
         self.arrowBtn.isHighlighted = hightlight
     }
-    
-    private func showTempMsg(msg: String) {
-        msg.alertToast()
-    }
 
     @objc
     func appDidEnterBackground() {

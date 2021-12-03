@@ -58,7 +58,6 @@ class SettingsDarkModeViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: Key.cell, for: indexPath)
         cell.backgroundColor = ColorProvider.BackgroundNorm
         if let title = viewModel.getCellTitle(of: indexPath) {

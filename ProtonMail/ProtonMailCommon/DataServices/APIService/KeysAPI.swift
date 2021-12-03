@@ -153,36 +153,6 @@ final class KeysResponse : Response {
     }
 }
 
-///KeySaltResponse
-final class GetKeysSalts : Request {
-    init(authCredential: AuthCredential? = nil) {
-        self.auth = authCredential
-    }
-    var path: String {
-        return KeysAPI.path + "/salts"
-    }
-    
-    //custom auth credentical
-    var auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-}
-
-final class KeySaltResponse : Response {
-    var keySalt : String?
-    var keyID : String?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        if let keySalts = response["KeySalts"] as? [[String : Any]], let firstKeySalt = keySalts.first {
-            self.keySalt = firstKeySalt["KeySalt"] as? String
-            self.keyID = firstKeySalt["ID"] as? String
-        }
-        return true
-    }
-}
-
 /// message packages
 final class PasswordAuth : Package {
 

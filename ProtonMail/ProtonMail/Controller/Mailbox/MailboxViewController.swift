@@ -61,10 +61,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Private constants
-    private let kMailboxCellHeight: CGFloat           = 62.0 // change it to auto height
-    private let kMailboxRateReviewCellHeight: CGFloat = 125.0
     private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
-    private let kMoreOptionsViewHeight: CGFloat       = 123.0
     
     private let kUndoHidePosition: CGFloat = -100.0
     private let kUndoShowPosition: CGFloat = 44
@@ -92,14 +89,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var bannerShowConstrain: NSLayoutConstraint?
     private var isInternetBannerPresented = false
     private var isHidingBanner = false
-    
-    private var fetchingNewer : Bool = false
+
     private var fetchingOlder : Bool = false
-    private var indexPathForSelectedRow : IndexPath?
     
     private var undoMessage : UndoMessage?
-    
-    private var isShowUndo : Bool = false
+
     private var isCheckingHuman: Bool = false
     
     private var fetchingMessage : Bool = false
@@ -1001,13 +995,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.hideUndoView()
     }
     
-    private func checkEmptyMailbox () {
-        guard self.viewModel.sectionCount() > 0 else {
-            return
-        }
-        self.pullDown()
-    }
-    
     private func handleRequestError(_ error : NSError) {
         PMLog.D("error: \(error)")
         guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
@@ -1355,10 +1342,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         } else {
             self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         }
-    }
-    
-    private func BarItem(image: UIImage?, action: Selector? ) -> UIBarButtonItem {
-       return  UIBarButtonItem(image: image, style: UIBarButtonItem.Style.plain, target: self, action: action)
     }
     
     private func setupRightButtons(_ editingMode: Bool) {
@@ -2345,7 +2328,6 @@ extension MailboxViewController: UITableViewDelegate {
         if listEditing {
             handleEditingDataSelection(of: message.messageID, indexPath: indexPath)
         } else {
-            self.indexPathForSelectedRow = indexPath
             self.tapped(at: indexPath)
         }
     }

@@ -196,36 +196,3 @@ final class UpdateAddressRequest : Request { //Response
         return .put
     }
 }
-
-
-//Mark setup address when signup after create the user
-//Setup new non-subuser address [POST /addresses/setup]
-
-final class SetupAddressRequest : Request { //AddressesResponse
-    let domain: String
-    init(domain_name: String, auth: AuthCredential?) {
-        self.domain = domain_name
-        self.auth = auth
-    }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["Domain": self.domain]
-        return out
-    }
-    var method: HTTPMethod {
-        return .post
-    }
-    var path: String {
-        return AddressesAPI.path + "/setup"
-    }
-    
-    //custom auth credentical
-    let auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-}
-
-
