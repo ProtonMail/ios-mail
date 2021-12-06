@@ -230,10 +230,10 @@
 "Alternative routing" = "Ruta alternativa";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "Siempre apagado";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "Siempre encendido";
 
 /* agree check box middle word */
 "and" = "y";
@@ -267,6 +267,9 @@
 
 /* section title in settings */
 "App settings" = "Configuración de la aplicación";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Apariencia";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarifa de compra en la aplicación de Apple";
@@ -593,10 +596,10 @@
 "Closing" = "Cerrando";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "Contraer carpeta";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "Contraer mensaje";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -732,7 +735,7 @@
 "Cut" = "Cortar";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "Modo oscuro";
 
 /* message Date: text */
 "Date:" = "Fecha:";
@@ -1096,7 +1099,7 @@
 "Every time enter app" = "Cada vez al abrir la aplicación";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "Expandir carpeta";
 
 /* alert title */
 "Expiration not supported" = "Expiración no soportada";
@@ -1148,7 +1151,7 @@
 "Folders" = "Carpetas";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "Usar configuración del dispositivo";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Para personas que buscan beneficiarse de una comunicación segura sin costo";
@@ -2502,7 +2505,7 @@
 "Switch selection mode" = "Cambiar modo de selección";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "Cambiar a filtro no leído";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Se ha cambiado a la cuenta '%@'";

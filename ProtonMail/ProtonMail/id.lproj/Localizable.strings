@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "Pengaturan aplikasi";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Tampilan";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarif transaksi internal Apple";
 

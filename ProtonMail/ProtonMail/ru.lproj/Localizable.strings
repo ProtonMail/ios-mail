@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "Настройки приложения";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Appearance";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Наценка Apple за заказ через приложение";
 

@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "Параметри програми";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Зовнішній вигляд";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Плата Apple за покупки у програмі";
 
@@ -283,7 +286,7 @@
 /* mail location desc
    menu title
    The title of the archive action in action sheet */
-"Archive" = "Архівувати";
+"Archive" = "Архів";
 
 /* mail location title */
 "ARCHIVE" = "Архів";
@@ -368,10 +371,10 @@
 "Auto Show Images" = "Автоматично показувати зображення";
 
 /* settings general section title */
-"Auto show remote content" = "Автопоказ зовнішнього вмісту";
+"Auto show remote content" = "Показувати зовнішній вміст";
 
 /* settings general section title */
-"Auto-load embedded images" = "Автозавантаження вбудованих зображень";
+"Auto-load embedded images" = "Завантажувати вбудовані зображення";
 
 /* Example feedback */
 "Awful" = "Жахливо";
@@ -831,17 +834,17 @@
 "Discard draft" = "Відхилити чернетку";
 
 /* (No Comment) */
-"Display name" = "Показуване ім'я";
+"Display name" = "Ім'я";
 
 /* Title in settings */
-"Display Name" = "Показуване ім'я";
+"Display Name" = "Ім'я";
 
 /* *
  *  SettingsViewController & alert title */
-"Display Name Updated" = "Показуване ім'я оновлено";
+"Display Name Updated" = "Ім'я оновлено";
 
 /* Title in display name settings */
-"DisplayName" = "Показуване ім'я";
+"DisplayName" = "Ім'я";
 
 /* No comment provided by engineer. */
 "Do you really want to remove this file from attachments?" = "Ви дійсно хочете вилучити цей файл з вкладень?";
@@ -893,7 +896,7 @@
 "DRAFTS" = "Чернетки";
 
 /* Onboarding title */
-"Easily up-to-date" = "Легке оновлення";
+"Easily up-to-date" = "Зручне оновлення";
 
 /* Action */
 "Edit" = "Редагувати";
@@ -1045,7 +1048,7 @@
 "End-to-End Encryption" = "Наскрізне шифрування";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Використовуйте наскрізне шифрування навіть з контактами, які не користуються Proton: Запрошуйте їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Оцініть переваги наскрізного шифрування навіть з контактами, які не користуються Proton. Запросіть їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -1181,7 +1184,7 @@
 "From" = "Від";
 
 /* Title */
-"From your photo library" = "З вашої бібліотеки фотографій";
+"From your photo library" = "З бібліотеки фотографій";
 
 /* message From: field text */
 "From:" = "Від:";
@@ -1214,7 +1217,7 @@
 "Get more information" = "Отримати більше інформації";
 
 /* title of the next button */
-"Get Started" = "Початок роботи";
+"Get Started" = "Розпочнімо";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Перейти до чернеток";
@@ -1298,7 +1301,7 @@
 "Import File From…" = "Імпортувати файл з…";
 
 /* Title */
-"Import from…" = "Імпортувати з…";
+"Import from…" = "Імпортувати…";
 
 /* Downloading attachments from cloud */
 "Importing" = "Імпортування";
@@ -1333,7 +1336,7 @@
 "Incorrect PIN." = "Неправильний ПІН.";
 
 /* Option title */
-"Inherit color from parent folder" = "Успадкувати колір від теки вищого рівня";
+"Inherit color from parent folder" = "Успадкувати колір теки вищого рівня";
 
 /* A label message */
 "Inherited from parent folder" = "Успадковано від теки вищого рівня";
@@ -1342,10 +1345,10 @@
 "inline attachments" = "вбудовані вкладення";
 
 /* (No Comment) */
-"Input Display Name ..." = "Введіть показуване ім'я...";
+"Input Display Name ..." = "Введіть ім'я ...";
 
 /* place holder */
-"Input Display Name…" = "Введіть показуване ім'я…";
+"Input Display Name…" = "Введіть ім'я…";
 
 /* place holder */
 "Input Notification Email …" = "Введіть е-пошту для сповіщень…";
@@ -1571,7 +1574,7 @@
 "Message expired" = "Термін дії повідомлення завершився";
 
 /* Title */
-"Message has been deleted." = "Повідомлення було видалено.";
+"Message has been deleted." = "Повідомлення видалено.";
 
 /* Title */
 "Message has been moved." = "Повідомлення було переміщено.";
@@ -1670,7 +1673,7 @@
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Перемістити до…";
+"Move to…" = "Перемістити…";
 
 /* Title */
 "Multiple Addresses" = "Декілька адрес";
@@ -1679,7 +1682,7 @@
 "Name" = "Назва";
 
 /* Onboarding title */
-"Neat and tidy" = "Простий та лаконічний";
+"Neat and tidy" = "Простота й лаконічність";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Зареєструватися безплатно";
@@ -2153,7 +2156,7 @@
 "Remove All" = "Вилучити все";
 
 /* Settings row */
-"Remove image metadata" = "Вилучити метадані зображення";
+"Remove image metadata" = "Вилучати метадані зображення";
 
 /* action title */
 "Remove password" = "Вилучити пароль";
@@ -2200,7 +2203,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати і вдосконалити наші фільтри. Це означає, що ми матимемо змогу дивитися повний вміст цього повідомлення.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Підтвердження переходу за посиланнями";
+"Request link confirmation" = "Підтверджувати відкриття посилань";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "СКИНУТИ ПАРОЛЬ ПОШТОВОЇ СКРИНЬКИ";
@@ -2312,7 +2315,7 @@
 "Set" = "Встановити";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Встановити пароль для шифрування цього повідомлення для Користувачів поза ProtonMail.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Встановіть пароль, щоб зашифрувати це повідомлення за межами ProtonMail.";
 
 /* Title */
 "Set Password" = "Встановити пароль";
@@ -2377,7 +2380,7 @@
 "Signed out from %@ and signed in with %@" = "Ви вийшли з %1$@ і увійшли з %2$@";
 
 /* Onboarding title */
-"Simply private" = "Просто приватний";
+"Simply private" = "Проста приватність";
 
 /* skip button title in onboarding page */
 "Skip" = "Пропустити";
@@ -2550,7 +2553,7 @@
 "The current standard" = "Чинний стандарт";
 
 /* Description */
-"The display name is now %@." = "Показуване ім'я тепер %@.";
+"The display name is now %@." = "Ім'я тепер %@.";
 
 /* Description */
 "The draft cache is broken. Please try again." = "Кеш чернетки пошкоджено. Будь ласка, спробуйте знову.";
@@ -2914,7 +2917,7 @@
 "URL" = "URL-адреса";
 
 /* Option title */
-"Use folder colors" = "Використати кольори тек";
+"Use folder colors" = "Кольорові теки";
 
 /* error when user already exist */
 "User already exist!" = "Ім'я користувача вже зайняте";

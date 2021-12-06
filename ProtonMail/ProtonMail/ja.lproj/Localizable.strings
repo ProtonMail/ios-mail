@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "アプリの設定";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Appearance";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Appleのアプリ内購入料金";
 
@@ -712,7 +715,7 @@
 "Creating label not allowed" = "ラベルを作成できません。";
 
 /* Change language title */
-"Current Language is: " = "現在の言語： ";
+"Current Language is: " = "現在の言語: ";
 
 /* Placeholder */
 "Current password" = "現在のパスワード";
@@ -1184,7 +1187,7 @@
 "From your photo library" = "From your photo library";
 
 /* message From: field text */
-"From:" = "差出人：";
+"From:" = "差出人:";
 
 /* abbreviation of forward: */
 "Fw:" = "Fw:";
@@ -1767,7 +1770,7 @@
 "Not set" = "未設定";
 
 /* Signup user name notes */
-"Note: The Username is also your ProtonMail address." = "注意：ユーザー名はあなたのProtonMailアドレスとしても使用されます。";
+"Note: The Username is also your ProtonMail address." = "注意: ユーザー名はあなたの ProtonMail アドレスとしても使用されます。";
 
 /* setup password notes */
 "Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "注意：このパスワードはメールの暗号化と復号に使われます。私たちにも復元できないため、決して紛失しないでください。";
@@ -2389,10 +2392,10 @@
 "Snooze Notifications" = "通知を休止";
 
 /* title of action sheet when quick snooze is active (Snoozed for 30min) */
-"Snoozed for" = "次の時間休止：";
+"Snoozed for" = "次の時間休止:";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
-"Snoozed till" = "次の時刻まで休止：";
+"Snoozed till" = "次の時刻まで休止:";
 
 /* (No Comment) */
 "Space Warning" = "容量不足";
@@ -2464,7 +2467,7 @@
 "Subject" = "件名";
 
 /* subject: text when forward */
-"Subject:" = "件名：";
+"Subject:" = "件名:";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2474,7 +2477,7 @@
 "Subscription information temporarily unavailable. Please try again later." = "一時的にご契約情報がご利用いただけません。時間をおいてから、再度お試しください。";
 
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "%i 個の独自ドメインに対応 (例： user@yourdomain.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "%i 個の独自ドメインに対応 (例: user@yourdomain.com)";
 
 /* network troubleshot cell title */
 "support form" = "サポートフォーム";
@@ -2799,7 +2802,7 @@
 "Unable to connect to the server" = "サーバーに接続できません。";
 
 /* (No Comment) */
-"Unable to construct a valid URL with the following path: %@" = "次のパスでは有効なURLを構築できません：%@";
+"Unable to construct a valid URL with the following path: %@" = "次のパスでは有効な URL を構築できません: %@";
 
 /* Description */
 "Unable to create SRP Client!" = "SRLクライアントを作成できません。";
@@ -2962,7 +2965,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Warning: Before you pass the human check you can't send email!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "警告：回復用のメールアドレスを設定しないと、パスワードを忘れた場合のアカウントの復旧は不可能です。回復用のメールアドレスなしで続行しますか？";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "警告: 回復用のメールアドレスを設定しないと、パスワードを忘れた場合のアカウントの復旧は不可能です。回復用のメールアドレスなしで続行しますか？";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。 メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";
@@ -3010,7 +3013,7 @@
 "Wrong verification code" = "検証コードが間違っています";
 
 /* Title */
-"wrote:" = "が送信：";
+"wrote:" = "送信:";
 
 /* Yes action */
 "Yes" = "はい";
@@ -3022,7 +3025,7 @@
 "Yesterday" = "昨日";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "ブラウザで次のURLを開こうとしています：";
+"You are about to launch the web browser and navigate to" = "ブラウザで次の URL を開こうとしています:";
 
 /* Alert of removing all accounts */
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
@@ -3124,7 +3127,7 @@
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";
 
 /* Service plan description footer */
-"Your plan will automatically renew on" = "次の日付に自動的にプランが更新されます：";
+"Your plan will automatically renew on" = "次の日付に自動的にプランが更新されます:";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか取り消されているため、セッションが無効になりました。再度ログインしてください";
