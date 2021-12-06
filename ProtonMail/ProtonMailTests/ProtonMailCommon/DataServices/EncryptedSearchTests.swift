@@ -77,29 +77,40 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     func testDetermineEncryptedSearchState() throws {
-        /*let sut = EncryptedSearchIndexService.shared.getSearchIndexName
-        let testUserID: String = "123"
-        let result: String = sut(testUserID)
+        let sut = EncryptedSearchService.shared.determineEncryptedSearchState
+        sut()
 
-        XCTAssertEqual(result, "encryptedSearchIndex_123.sqlite3")*/
-        //TODO
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.undetermined)
     }
 
     func testBuildSearchIndex() throws {
         //TODO
-        
     }
 
-    func testCheckIfIndexingIsComplete() throws {
+    // Private Function
+    /* func testCheckIfIndexingIsComplete() throws {
         //TODO
-    }
+    } */
 
-    func testCleanUpAfterIndexing() throws {
+    // Private function
+    /* func testCleanUpAfterIndexing() throws {
         //TODO
-    }
+    } */
 
     func testPauseAndResumeIndexingByUser() throws {
-        //TODO
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingByUser
+
+        // Test pause
+        sut(true)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numPauses, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
+
+        // Test resume
+        sut(false)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.downloading)
+        XCTAssertEqual(EncryptedSearchService.shared.numPauses, 1)  // should not increase compared to before
+        XCTAssertTrue(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
     func testPauseAndResumeIndexingDueToInterruption() throws {
