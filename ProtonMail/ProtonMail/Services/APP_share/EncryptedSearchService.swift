@@ -366,7 +366,7 @@ extension EncryptedSearchService {
         self.pauseAndResumeIndexing(completionHandler: completionHandler)
     }
     
-    func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
+    private func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
         let uid: String? = self.updateCurrentUserIfNeeded()
         if let userID = uid {
             if self.state == .paused {  //pause indexing
@@ -557,7 +557,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
+    private func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
         guard let messageToUpdate = message else {
             return
         }
@@ -597,7 +597,7 @@ extension EncryptedSearchService {
     }
     
     // Checks the total number of messages on the backend
-    func getTotalMessages(completionHandler: @escaping () -> Void) -> Void {
+    private func getTotalMessages(completionHandler: @escaping () -> Void) -> Void {
         let request = FetchMessagesByLabel(labelID: Message.Location.allmail.rawValue, endTime: 0, isUnread: false)
         self.apiService?.GET(request){ [weak self] (_, responseDict, error) in
             if error != nil {
@@ -714,7 +714,7 @@ extension EncryptedSearchService {
         }
     }
     
-    public func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?) -> Void)?) -> Void {
+    private func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?) -> Void)?) -> Void {
         let request = FetchMessagesByID(msgIDs: [messageID])
         self.apiService?.GET(request) { [weak self] (task, responseDict, error) in
             if error != nil {
@@ -823,7 +823,7 @@ extension EncryptedSearchService {
         }
     }
 
-    func downloadAndProcessPage(userID: String, completionHandler: @escaping () -> Void) -> Void {
+    private func downloadAndProcessPage(userID: String, completionHandler: @escaping () -> Void) -> Void {
         let group = DispatchGroup()
         group.enter()
         self.downloadPage(userID: userID) {
@@ -848,7 +848,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func downloadPage(userID: String, completionHandler: @escaping () -> Void){
+    private func downloadPage(userID: String, completionHandler: @escaping () -> Void){
         //start a new thread to download page
         DispatchQueue.global(qos: .userInitiated).async {
             var op: Operation? = DownloadPageAsyncOperation(userID: userID)
@@ -892,7 +892,8 @@ extension EncryptedSearchService {
         }
     }
     
-    private func parseMessageObjectFromResponse(for response: [String : Any]) -> Message? {
+    // TODO remove?
+    /*private func parseMessageObjectFromResponse(for response: [String : Any]) -> Message? {
         var message: Message? = nil
         do {
             message = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: response, in: (self.messageService?.coreDataService.operationContext)!) as? Message
@@ -902,10 +903,10 @@ extension EncryptedSearchService {
             print("Error when parsing message object: \(error)")
         }
         return message
-    }
+    } */
 
     //TODO reset fetch controller managed object context?
-    func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
+    private func getMessage(_ messageID: String, completionHandler: @escaping (Message?) -> Void) -> Void {
         /*if self.messageService == nil {
             self.updateCurrentUserIfNeeded()    //get user, messageservice and apiservice
         }*/
@@ -1256,7 +1257,7 @@ extension EncryptedSearchService {
     }
     #endif
 
-    func hasSearchedBefore(userID: String) -> Bool {
+    private func hasSearchedBefore(userID: String) -> Bool {
         let cachedUserID: String? = EncryptedSearchCacheService.shared.getLastCacheUserID()
         if let cachedUserID = cachedUserID {
             if cachedUserID == userID {
@@ -1270,13 +1271,13 @@ extension EncryptedSearchService {
         self.searchState = nil
     }
 
-    func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
+    private func getSearcher(_ query: String) -> EncryptedsearchSimpleSearcher {
         let contextSize: CLong = 100 // The max size of the content showed in the preview
         let keywords: EncryptedsearchStringList? = self.createEncryptedSearchStringList(query)   //split query into individual keywords
         return EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
     }
 
-    func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
+    private func createEncryptedSearchStringList(_ query: String) -> EncryptedsearchStringList {
         let result: EncryptedsearchStringList? = EncryptedsearchStringList()
         let searchQueryArray: [String] = query.components(separatedBy: " ")
         searchQueryArray.forEach { q in
@@ -1285,13 +1286,13 @@ extension EncryptedSearchService {
         return result!
     }
 
-    func getCache(cipher: EncryptedsearchAESGCMCipher, userID: String) -> EncryptedsearchCache {
+    private func getCache(cipher: EncryptedsearchAESGCMCipher, userID: String) -> EncryptedsearchCache {
         let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
         let cache: EncryptedsearchCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: userID, dbParams: dbParams, cipher: cipher)
         return cache
     }
 
-    func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
+    private func extractSearchResults(_ searchResults: EncryptedsearchResultList, _ page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         if searchResults.length() == 0 {
             completionHandler([])
         } else {
@@ -1340,7 +1341,7 @@ extension EncryptedSearchService {
         }
     }
 
-    func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, page: Int) -> Int {
+    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, page: Int) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
@@ -1388,14 +1389,14 @@ extension EncryptedSearchService {
         return resultsFound
     }
     
-    func getIndex(userID: String) -> EncryptedsearchIndex {
+    private func getIndex(userID: String) -> EncryptedsearchIndex {
         let dbParams: EncryptedsearchDBParams = EncryptedSearchIndexService.shared.getDBParams(userID)
         let index: EncryptedsearchIndex = EncryptedsearchIndex(dbParams)!
         return index
     }
     
     #if !APP_EXTENSION
-    func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
+    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
         var found: Int = 0
         let searchResultPageSize: Int = 50
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
@@ -1542,7 +1543,7 @@ extension EncryptedSearchService {
     }
     
     @available(iOS 13.0, *)
-    func cancelBGAppRefreshTask() {
+    private func cancelBGAppRefreshTask() {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
     }
     
@@ -1664,7 +1665,7 @@ extension EncryptedSearchService {
     }
 
     // MARK: - Helper Functions
-    func sendNotification(text: String){
+    private func sendNotification(text: String){
         let content = UNMutableNotificationContent()
         content.title = "Background Processing Task"
         content.subtitle = text
@@ -1674,8 +1675,8 @@ extension EncryptedSearchService {
         UNUserNotificationCenter.current().add(request)
     }
     
-    //TODO dead function?
-    @objc func appMovedToBackground(){
+    // Notification when app moves to BG
+    @objc private func appMovedToBackground(){
         print("App moved to background")
         if self.indexBuildingInProgress {
             self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
@@ -1691,7 +1692,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
+    private func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
         var estimatedMinutes: Int = 0
         var currentProgress: Int = 0
         let currentTime: Double = CFAbsoluteTimeGetCurrent()
@@ -1708,7 +1709,7 @@ extension EncryptedSearchService {
         return (estimatedMinutes, currentProgress)
     }
     
-    @objc func updateRemainingIndexingTime() {
+    @objc private func updateRemainingIndexingTime() {
         let elapsedTime = self.indexingStartTime - CFAbsoluteTimeGetCurrent()
         if self.indexBuildingInProgress && self.processedMessages != self.prevProcessedMessages {
             DispatchQueue.global().async {
@@ -1811,7 +1812,7 @@ extension EncryptedSearchService {
     }
     
     //Code from here: https://stackoverflow.com/a/64738201
-    func getCurrentlyAvailableAppMemory() -> Double {
+    private func getCurrentlyAvailableAppMemory() -> Double {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
         let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
@@ -1830,13 +1831,14 @@ extension EncryptedSearchService {
         return availableMemory
     }
     
-    func updateIndexBuildingProgress(processedMessages: Int){
+    private func updateIndexBuildingProgress(processedMessages: Int){
         //progress bar runs from 0 to 1 - normalize by totalMessages
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
         self.viewModel?.currentProgress.value = Int(updateStep)
     }
     
-    @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
+    // TODO remove?
+    /*@available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     func updateUIWithProgressBarStatus(){
         DispatchQueue.main.async {
             switch UIApplication.shared.applicationState {
@@ -1850,9 +1852,9 @@ extension EncryptedSearchService {
                 print("Unknown state. What to do?")
             }
         }
-    }
+    }*/
     
-    func updateUIWithIndexingStatus() {
+    private func updateUIWithIndexingStatus() {
         if self.pauseIndexingDueToNetworkConnectivityIssues {
             self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_no_connectivity
             self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_no_connectivity_status
@@ -1872,7 +1874,7 @@ extension EncryptedSearchService {
     }
     
     //This triggers the viewcontroller to reload the tableview when indexing is complete
-    internal func updateUIIndexingComplete() {
+    private func updateUIIndexingComplete() {
         self.viewModel?.isIndexingComplete.value = true
     }
 }
