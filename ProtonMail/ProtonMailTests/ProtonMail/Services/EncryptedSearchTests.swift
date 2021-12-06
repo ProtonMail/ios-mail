@@ -16,16 +16,60 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import Crypto
+import SQLite
 @testable import ProtonMail
 
 class EncryptedSearchTests: XCTestCase {
+    var testUserID: String!
+    var testMessageID: String!
+    var testSearchIndexDBName: String!
+    var connectionToSearchIndexDB: Connection!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        self.testUserID = "test"
+        self.testMessageID = "uniqueID1"
+
+        // Create a test search index for user 'test'
+        self.createTestSearchIndexDB()
+        let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
+        print("Test database created: \(doesTestIndexExist)")
+        let numberOfEntries = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+        print("Entries in db: \(numberOfEntries)")
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+
+        // Delete test search index for user 'test'
+        try self.deleteTestSearchIndexDB()
+    }
+
+    func createTestSearchIndexDB(){
+        self.testSearchIndexDBName = "encryptedSearchIndex_test.sqlite3"
+        self.connectionToSearchIndexDB = EncryptedSearchIndexService.shared.connectToSearchIndex(for: self.testUserID)!
+        EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connectionToSearchIndexDB)
+
+        let testMessage: ESMessage = ESMessage(id: self.testMessageID, order: 1, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058775, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
+        let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
+        let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessageSecond, cleanedBody: "hello2", userID: self.testUserID)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage, encryptedContent, false)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessageSecond, encryptedContent2, false)
+    }
+
+    func deleteTestSearchIndexDB() throws {
+        // Create the path to the database for user 'test'.
+        let pathToTestDB: String = EncryptedSearchIndexService.shared.getSearchIndexPathToDB(self.testSearchIndexDBName)
+        let urlToDB: URL? = URL(string: pathToTestDB)
+
+        // Tear down search index db
+        sqlite3_close(self.connectionToSearchIndexDB.handle)
+        self.connectionToSearchIndexDB = nil
+
+        // Remove the database file.
+        try FileManager.default.removeItem(atPath: urlToDB!.path)
     }
 
     func testEncryptedSearchServiceSingleton() throws {
@@ -43,6 +87,7 @@ class EncryptedSearchTests: XCTestCase {
 
     func testBuildSearchIndex() throws {
         //TODO
+        
     }
 
     func testCheckIfIndexingIsComplete() throws {
@@ -61,9 +106,10 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testPauseAndResumeIndexing() throws {
+    // Private Function
+    /*func testPauseAndResumeIndexing() throws {
         //TODO
-    }
+    }*/
 
     func testPauseIndexingDueToNetworkSwitch() throws {
         //TODO
@@ -86,40 +132,52 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     func testDeleteSearchIndex() throws {
-        //TODO
+        let sut = EncryptedSearchService.shared.deleteSearchIndex
+        sut()
+
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.disabled)
+        XCTAssertFalse(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID))
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
-    func testUpdateMessageMetadataInSearchIndex() throws {
+    // Private Function
+    /* func testUpdateMessageMetadataInSearchIndex() throws {
         //TODO
-    }
+    } */
 
-    func testUpdateCurrentUserIfNeeded() throws {
+    // Private Function
+    /* func testUpdateCurrentUserIfNeeded() throws {
         //TODO
-    }
+    } */
 
-    func testGetTotalMessages() throws {
+    // Private Function
+    /* func testGetTotalMessages() throws {
         //TODO
-    }
+    } */
 
     func testConvertMessageToESMessage() throws {
         //TODO
     }
 
-    func testJsonStringToESMessage() throws {
+    // Private function
+    /* func testJsonStringToESMessage() throws {
         //TODO
-    }
+    } */
 
-    func testParseMessageResponse() throws {
+    // Private function
+    /* func testParseMessageResponse() throws {
         //TODO
-    }
+    } */
 
-    func testParseMessageDetailResponse() throws {
+    // Private function
+    /* func testParseMessageDetailResponse() throws {
         //TODO
-    }
+    } */
 
-    func testFetchSingleMessageFromServer() throws {
+    // Private function
+    /* func testFetchSingleMessageFromServer() throws {
         //TODO
-    }
+    } */
 
     func testFetchMessages() throws {
         //TODO
@@ -129,13 +187,15 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testDownloadAndProcessPage() throws {
+    // Private Function
+    /* func testDownloadAndProcessPage() throws {
         //TODO
-    }
+    } */
 
-    func testDownloadPage() throws {
+    // Private function
+    /* func testDownloadPage() throws {
         //TODO
-    }
+    } */
 
     func testProcessPageOneByOne() throws {
         //TODO
@@ -145,13 +205,15 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testParseMessageObjectFromResponse() throws {
+    // TODO remove?
+    //func testParseMessageObjectFromResponse() throws {
         //TODO
-    }
+    //}
 
-    func testGetMessage() throws {
+    // Private function
+    /* func testGetMessage() throws {
         //TODO
-    }
+    } */
 
     func testDecryptBodyIfNeeded() throws {
         //TODO
@@ -165,21 +227,41 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testGetCipher() throws {
-        //TODO
-    }
+    // Private function
+    /*func testGetCipher() throws {
+        let sut = EncryptedSearchService.shared.getCipher
 
-    func testGenerateSearchIndexKey() throws {
-        //TODO
-    }
+        let result: EncryptedsearchAESGCMCipher = sut(self.testUserID)
 
-    func testStoreSearchIndexKey() throws {
-        //TODO
-    }
+        let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
 
-    func testRetrieveSearchIndexKey() throws {
+        //XCTAssertEqual(result.)
         //TODO
-    }
+    }*/
+
+    // Private function
+    /*func testGenerateSearchIndexKey() throws {
+        let sut = EncryptedSearchService.shared.generateSearchIndexKey
+
+        let result: Data? = sut(self.testUserID)
+        
+        XCTAssertEqual(result!.count, 32)   // should be 32 byte
+        XCTAssertFalse(result!.isEmpty)     // should be false
+        
+        let decoded = Data(base64Encoded: result!)  // check if the result is base64
+        XCTAssertNil(decoded)   // should not be nil
+    }*/
+
+    // Private function
+    /* func testStoreSearchIndexKey() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testRetrieveSearchIndexKey() throws {
+        //TODO
+    } */
 
     func testAddMessageKewordsToSearchIndex() throws {
         //TODO
@@ -197,163 +279,222 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testHasSearchedBefore() throws {
+    // Private function
+    /* func testHasSearchedBefore() throws {
         //TODO
-    }
+    } */
 
     func testClearSearchState() throws {
         //TODO
     }
 
-    func testGetSearcher() throws {
-        //TODO
-    }
+    // Private function
+    /* func testGetSearcher() throws {
+        let sut = EncryptedSearchService.shared.getSearcher
+        let testQuery: String = "test query"
+        let result: EncryptedsearchSimpleSearcher = sut(testQuery)
 
-    func testCreateEncryptedSearchStringList() throws {
-        //TODO
-    }
+        let testStringList: EncryptedsearchStringList = EncryptedSearchService.shared.createEncryptedSearchStringList(testQuery)
+        let testSearcher = EncryptedsearchSimpleSearcher(testStringList, contextSize: 50)
+        //XCTAssertEqual(result, testSearcher)
+        //TODO how to test this?
+    } */
 
-    func testGetCache() throws {
-        //TODO
-    }
+    // Private function
+    /* func testCreateEncryptedSearchStringList() throws {
+        let sut = EncryptedSearchService.shared.createEncryptedSearchStringList
+        let testQuery: String = "test query"
+        let result: EncryptedsearchStringList = sut(testQuery)
 
-    func testExtractSearchResults() throws {
-        //TODO
-    }
+        XCTAssertEqual(result.length(), 2)
+        XCTAssertEqual(result.get(0, error: nil), "test")
+        XCTAssertEqual(result.get(1, error: nil), "query")
+    } */
 
-    func testDoIndexSearch() throws {
-        //TODO
-    }
+    // Private function
+    /* func testGetCache() throws {
+        let sut = EncryptedSearchService.shared.getCache
 
-    func testGetIndex() throws {
-        //TODO
-    }
+        let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
+        let cipher = EncryptedsearchAESGCMCipher(testKey!)
+        let result: EncryptedsearchCache = sut(cipher!, self.testUserID)
 
-    func testDoCachedSearch() throws {
-        //TODO
-    }
+        let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
+        let cache: EncryptedsearchCache = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
 
-    func testPublishIntermediateResults() throws {
-        //TODO
-    }
+        XCTAssertTrue(result.isBuilt())
+        XCTAssertEqual(result.getLength(), cache.getLength())
+    } */
 
-    func testContinueIndexingInBackground() throws {
+    // Private function
+    /* func testExtractSearchResults() throws {
         //TODO
-    }
+    } */
 
-    func testEndBackgroundTask() throws {
+    // Private function
+    /* func testDoIndexSearch() throws {
         //TODO
-    }
+    } */
+
+    // Private function
+    /* func testGetIndex() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testDoCachedSearch() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testPublishIntermediateResults() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testContinueIndexingInBackground() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testEndBackgroundTask() throws {
+        //TODO
+    } */
 
     func testRegisterBGProcessingTask() throws {
         //TODO
     }
 
-    func testCancelBGProcessingTask() throws {
+    // Private function
+    /* func testCancelBGProcessingTask() throws {
         //TODO
-    }
+    } */
 
-    func testScheduleNewBGProcessingTask() throws {
+    // Private function
+    /* func testScheduleNewBGProcessingTask() throws {
         //TODO
-    }
+    } */
 
-    func testBgProcessingTask() throws {
+    // Private function
+    /* func testBgProcessingTask() throws {
         //TODO
-    }
+    } */
 
     func testRegisterBGAppRefreshTask() throws {
         //TODO
     }
 
-    func testCancelBGAppRefreshTask() throws {
+    // Private function
+    /* func testCancelBGAppRefreshTask() throws {
         //TODO
-    }
+    } */
 
-    func testScheduleNewAppRefreshTask() throws {
+    // Private function
+    /* func testScheduleNewAppRefreshTask() throws {
         //TODO
-    }
+    } */
 
-    func testAppRefreshTask() throws {
+    // Private function
+    /* func testAppRefreshTask() throws {
         //TODO
-    }
+    } */
 
-    func testSendIndexingMetrics() throws {
+    // Private function
+    /* func testSendIndexingMetrics() throws {
         //TODO
-    }
+    } */
 
-    func testSendSearchMetrics() throws {
+    // Private function
+    /* func testSendSearchMetrics() throws {
         //TODO
-    }
+    } */
 
-    func testSendMetrics() throws {
+    // Private function
+    /* func testSendMetrics() throws {
         //TODO
-    }
+    } */
 
-    func testSendNotification() throws {
+    // Private function
+    /* func testSendNotification() throws {
         //TODO
-    }
+    } */
 
-    func testAppMovedToBackground() throws {
+    // Private function
+    /* func testAppMovedToBackground() throws {
         //TODO
-    }
+    } */
 
-    func testCheckIfEnoughStorage() throws {
+    // Private function
+    /* func testCheckIfEnoughStorage() throws {
         //TODO
-    }
+    } */
 
-    func testEstimateIndexingTime() throws {
+    // Private function
+    /* func testEstimateIndexingTime() throws {
         //TODO
-    }
+    } */
 
-    func testUpdateRemainingIndexingTime() throws {
+    // Private function
+    /* func testUpdateRemainingIndexingTime() throws {
         //TODO
-    }
+    } */
 
-    func testRegisterForBatteryLevelChangeNotifications() throws {
+    // Private function
+    /* func testRegisterForBatteryLevelChangeNotifications() throws {
         //TODO
-    }
+    } */
 
-    func testRegisterForPowerStateChangeNotifications() throws {
+    // Private function
+    /* func testRegisterForPowerStateChangeNotifications() throws {
         //TODO
-    }
+    } */
 
-    func testResponseToLowPowerMode() throws {
+    // Private function
+    /* func testResponseToLowPowerMode() throws {
         //TODO
-    }
+    } */
 
-    func testResponseToBatteryLevel() throws {
+    // Private function
+    /* func testResponseToBatteryLevel() throws {
         //TODO
-    }
+    } */
 
-    func testRegisterForTermalStateChangeNotifications() throws {
+    // Private function
+    /* func testRegisterForTermalStateChangeNotifications() throws {
         //TODO
-    }
+    } */
 
-    func testResponseToHeat() throws {
+    // Private function
+    /* func testResponseToHeat() throws {
         //TODO
-    }
+    } */
 
     func testGetTotalAvailableMemory() throws {
         //TODO
     }
 
-    func testGetCurrentlyAvailableAppMemory() throws {
+    // Private function
+    /* func testGetCurrentlyAvailableAppMemory() throws {
         //TODO
-    }
+    } */
 
-    func testUpdateIndexBuildingProgress() throws {
+    // Private function
+    /* func testUpdateIndexBuildingProgress() throws {
         //TODO
-    }
+    } */
 
-    func testUpdateUIWithProgressBarStatus() throws {
+    // TODO remove?
+    /*func testUpdateUIWithProgressBarStatus() throws {
         //TODO
-    }
+    }*/
 
-    func testUpdateUIWithIndexingStatus() throws {
+    // Private function
+    /* func testUpdateUIWithIndexingStatus() throws {
         //TODO
-    }
+    } */
 
-    func testUpdateUIIndexingComplete() throws {
+    // Private function
+    /* func testUpdateUIIndexingComplete() throws {
         //TODO
-    }
+    } */
 }
