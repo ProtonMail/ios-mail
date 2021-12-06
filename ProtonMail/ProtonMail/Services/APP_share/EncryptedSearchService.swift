@@ -275,7 +275,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func checkIfIndexingIsComplete(completionHandler: @escaping () -> Void) {
+    private func checkIfIndexingIsComplete(completionHandler: @escaping () -> Void) {
         self.getTotalMessages() {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             let userID: String = (usersManager.firstUser?.userInfo.userId)!
@@ -294,7 +294,7 @@ extension EncryptedSearchService {
     }
     
     //called when indexing is complete
-    func cleanUpAfterIndexing() {
+    private func cleanUpAfterIndexing() {
         if self.state == .complete {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             let userID: String = (usersManager.firstUser?.userInfo.userId)!
@@ -334,7 +334,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func pauseAndResumeIndexingByUser(isPause: Bool, completionHandler: @escaping () -> Void = {}){
+    func pauseAndResumeIndexingByUser(isPause: Bool) -> Void {
         if isPause {
             self.numPauses += 1
             self.state = .paused
@@ -343,7 +343,7 @@ extension EncryptedSearchService {
             self.state = .downloading
             print("ENCRYPTEDSEARCH-STATE: downloading")
         }
-        self.pauseAndResumeIndexing(completionHandler: completionHandler)
+        self.pauseAndResumeIndexing()
     }
     
     func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: @escaping () -> Void = {}){
@@ -366,7 +366,7 @@ extension EncryptedSearchService {
         self.pauseAndResumeIndexing(completionHandler: completionHandler)
     }
     
-    private func pauseAndResumeIndexing(completionHandler: @escaping () -> Void = {}) {
+    private func pauseAndResumeIndexing(completionHandler: (() -> Void)? = {}) {
         let uid: String? = self.updateCurrentUserIfNeeded()
         if let userID = uid {
             if self.state == .paused {  //pause indexing
@@ -382,17 +382,16 @@ extension EncryptedSearchService {
                 print("ENCRYPTEDSEARCH-STATE: downloading")
                 self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
 
-                self.downloadAndProcessPage(userID: userID){
-                    self.viewModel?.isEncryptedSearch = true
-                    self.viewModel?.currentProgress.value = 100
-                    self.viewModel?.estimatedTimeRemaining.value = 0
-                    self.indexBuildingInProgress = false
-                    completionHandler()
+                self.downloadAndProcessPage(userID: userID){ [weak self] in
+                    self?.checkIfIndexingIsComplete {
+                        self?.cleanUpAfterIndexing()
+                        completionHandler?()
+                    }
                 }
             }
         } else {
             print("Error in pauseAndResume Indexing. User unknown!")
-            completionHandler()
+            completionHandler?()
         }
     }
     
