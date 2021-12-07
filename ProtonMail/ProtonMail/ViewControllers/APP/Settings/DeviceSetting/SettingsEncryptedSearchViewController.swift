@@ -234,10 +234,26 @@ extension SettingsEncryptedSearchViewController {
                 switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
                     let status = self.viewModel.downloadViaMobileData
                     self.viewModel.downloadViaMobileData = !status
-                    
-                    //if indexing is in progress, turn it off if on mobile data
-                    if EncryptedSearchService.shared.state == .downloading && !self.viewModel.downloadViaMobileData {
-                        EncryptedSearchService.shared.pauseIndexingDueToNetworkSwitch()
+
+                    if #available(iOS 12, *) {
+                        // Disable interupt when mobile data is enabled
+                        if self.viewModel.downloadViaMobileData {
+                            //check if internet is availabel
+                            if EncryptedSearchService.shared.networkMonitor?.currentPath.status == .satisfied {
+                                self.interruption = false
+                                DispatchQueue.main.async {
+                                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                                    UIView.performWithoutAnimation {
+                                        self.tableView.reloadRows(at: [path], with: .none)
+                                    }
+                                }
+                            }
+                        }
+                        // Check network connection
+                        EncryptedSearchService.shared.checkIfNetworkAvailable()
+                    } else {
+                        // Fallback on earlier versions
                     }
                 }
             }
@@ -329,7 +345,6 @@ extension SettingsEncryptedSearchViewController {
                             progressBarButtonCell.statusLabel.isHidden = false
                             //TODO update constraints of button
                         }
-                        self.interruption = false
                     } else {
                         progressBarButtonCell.statusLabel.isHidden = true
                         progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextNorm //black
@@ -489,7 +504,7 @@ extension SettingsEncryptedSearchViewController {
     func setupIndexingInterruptionObservers() {
         self.viewModel.interruptStatus.bind {
             (_) in
-            if EncryptedSearchService.shared.state == .downloading {
+            //if EncryptedSearchService.shared.state == .downloading {
                 self.interruption = true
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
@@ -498,7 +513,7 @@ extension SettingsEncryptedSearchViewController {
                         self.tableView.reloadRows(at: [path], with: .none)
                     }
                 }
-            }
+            //}
         }
     }
     

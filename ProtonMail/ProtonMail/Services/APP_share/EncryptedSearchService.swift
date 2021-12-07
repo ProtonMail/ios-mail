@@ -235,6 +235,25 @@ extension EncryptedSearchService {
             self.indexingStartTime = CFAbsoluteTimeGetCurrent()
             self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
 
+            // Network checks
+            if #available(iOS 12, *) {
+                self.checkIfNetworkAvailable()
+                if self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {
+                    // Some simple clean up
+                    self.indexBuildingInProgress = false
+                    // Stop background extension task
+                    #if !APP_EXTENSION
+                        if self.backgroundTask != .invalid {
+                            //background processing not needed any longer - clean up
+                            self.endBackgroundTask()
+                        }
+                    #endif
+                    return
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+
             self.getTotalMessages() {
                 print("Total messages: ", self.totalMessages)
                 
@@ -357,6 +376,8 @@ extension EncryptedSearchService {
                 completionHandler?()
                 return
             }
+            self.state = .downloading
+            print("ENCRYPTEDSEARCH-STATE: downloading")
         }
         
         self.pauseAndResumeIndexing(completionHandler: completionHandler)
@@ -375,8 +396,6 @@ extension EncryptedSearchService {
             } else {    //resume indexing
                 print("Resume indexing...")
                 self.indexBuildingInProgress = true
-                self.state = .downloading
-                print("ENCRYPTEDSEARCH-STATE: downloading")
                 self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
 
                 self.downloadAndProcessPage(userID: userID){ [weak self] in
@@ -393,12 +412,12 @@ extension EncryptedSearchService {
     }
     
     // Actively pause indexing by user by switching off when on mobile data
-    func pauseIndexingDueToNetworkSwitch(){
-        /*if self.state == .downloading && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
+    /* func pauseIndexingDueToNetworkSwitch(){
+        if self.state == .downloading && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
             print("Pause indexing when using mobile data")
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        }*/
-    }
+        }
+    }*/
 
     struct MessageAction {
         var action: NSFetchedResultsChangeType? = nil
@@ -1764,9 +1783,13 @@ extension EncryptedSearchService {
                 print("ES-NETWORK cellular")
                 // If indexing with mobile data is enabled
                 if userCachedStatus.downloadViaMobileData {
+                    print("ES-NETWORK cellular - mobile data on user cached")
+                    print("state: \(self.state), pausedwifi: \(self.pauseIndexingDueToWiFiNotDetected), pausedinternet: \(self.pauseIndexingDueToNetworkConnectivityIssues)")
                     // If indexing was paused because it was on mobile data - and user changed setting continue indexing
                     if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
+                        print("ES-NETWORK resume indexing")
                         self.pauseIndexingDueToWiFiNotDetected = false
+                        print("state: \(self.state), pausedwifi: \(self.pauseIndexingDueToWiFiNotDetected), pausedinternet: \(self.pauseIndexingDueToNetworkConnectivityIssues)")
                         self.pauseAndResumeIndexingDueToInterruption(isPause: false)
                         self.updateUIWithIndexingStatus()
                     }
@@ -1777,6 +1800,8 @@ extension EncryptedSearchService {
                         self.updateUIWithIndexingStatus()
                     }
                 } else {
+                    print("ES-NETWORK cellular - mobile data off user cached")
+                    print("state: \(self.state), pausedwifi: \(self.pauseIndexingDueToWiFiNotDetected), pausedinternet: \(self.pauseIndexingDueToNetworkConnectivityIssues)")
                     if self.state == .downloading {
                         self.pauseIndexingDueToWiFiNotDetected = true
                         self.pauseAndResumeIndexingDueToInterruption(isPause: true)
@@ -1785,6 +1810,7 @@ extension EncryptedSearchService {
                 }
             } else {    // WiFi available
                 print("ES-NETWORK wifi")
+                print("state: \(self.state), pausedwifi: \(self.pauseIndexingDueToWiFiNotDetected), pausedinternet: \(self.pauseIndexingDueToNetworkConnectivityIssues)")
                 // If indexing was paused because it was on mobile data - continue on wifi again
                 if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
                     self.pauseIndexingDueToWiFiNotDetected = false
@@ -1800,9 +1826,19 @@ extension EncryptedSearchService {
             }
         } else {
             print("ES-NETWORK No Internet available")
+            print("state: \(self.state), pausedwifi: \(self.pauseIndexingDueToWiFiNotDetected), pausedinternet: \(self.pauseIndexingDueToNetworkConnectivityIssues)")
             self.pauseIndexingDueToNetworkConnectivityIssues = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
             return
+        }
+    }
+    
+    @available(iOS 12, *)
+    func checkIfNetworkAvailable() {
+        if let networkPath = self.networkMonitor?.currentPath {
+            self.responseToNetworkChanges(path: networkPath)
+        } else {
+            print("ES-NETWORK: Error when determining network status!")
         }
     }
 
