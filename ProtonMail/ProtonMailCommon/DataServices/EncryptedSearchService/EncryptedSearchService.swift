@@ -52,7 +52,11 @@ public class EncryptedSearchService {
         //self.registerForBatteryLevelChangeNotifications()
         self.registerForPowerStateChangeNotifications()
         // Enable network monitoring
-        self.registerForNetworkChangeNotifications()
+        if #available(iOS 12, *) {
+            self.registerForNetworkChangeNotifications()
+        } else {
+            // Use Reachability for iOS 11
+        }
 
         self.determineEncryptedSearchState()
     }
@@ -110,6 +114,8 @@ public class EncryptedSearchService {
     
     //internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
     //internal lazy var reachability: Reachability? = nil
+    @available(iOS 12, *)
+    internal lazy var networkMonitor: NWPathMonitor? = nil
 
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
@@ -289,6 +295,13 @@ extension EncryptedSearchService {
             self.viewModel?.estimatedTimeRemaining.value = 0
             self.indexBuildingInProgress = false
 
+            // Unregister network monitoring
+            if #available(iOS 12, *) {
+                self.unRegisterForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
             // Invalidate timer
             self.indexBuildingTimer?.invalidate()
 
@@ -354,6 +367,7 @@ extension EncryptedSearchService {
         if let userID = uid {
             if self.state == .paused {  //pause indexing
                 print("Pause indexing!")
+                self.downloadPageQueue.cancelAllOperations()
                 self.messageIndexingQueue.cancelAllOperations()
                 self.indexBuildingInProgress = false
 
@@ -1717,18 +1731,82 @@ extension EncryptedSearchService {
         NotificationCenter.default.addObserver(self, selector: #selector(responseToLowPowerMode(_:)), name: NSNotification.Name.NSProcessInfoPowerStateDidChange, object: nil)
     }
 
+    @available(iOS 12, *)
     private func registerForNetworkChangeNotifications() {
+        self.networkMonitor = NWPathMonitor()
+        self.networkMonitor?.pathUpdateHandler = { path in
+            self.responseToNetworkChanges(path: path)
+        }
+        let networkMonitoringQueue = DispatchQueue(label: "NetworkMonitor")
+        self.networkMonitor?.start(queue: networkMonitoringQueue)
+        print("ES-NETWORK: monitoring enabled")
+
         //self.reachability = try! Reachability()
-        let reachability = Reachability()!
+        /*let reachability = Reachability()!
         NotificationCenter.default.addObserver(self, selector: #selector(responseToNetworkChanges(_:)), name: NSNotification.Name.reachabilityChanged, object: self.reachability)
         do {
             try self.reachability?.startNotifier()
         } catch {
             print("Error when starting network monitoring notifier: \(error)")
+        }*/
+    }
+    
+    @available(iOS 12, *)
+    private func unRegisterForNetworkChangeNotifications() {
+        self.networkMonitor?.cancel()
+        self.networkMonitor = nil
+    }
+    
+    @available(iOS 12, *)
+    private func responseToNetworkChanges(path: NWPath) {
+        if path.status == .satisfied {
+            if path.isExpensive {   // either cellular or a WiFi hotspot
+                print("ES-NETWORK cellular")
+                // If indexing with mobile data is enabled
+                if userCachedStatus.downloadViaMobileData {
+                    // If indexing was paused because it was on mobile data - and user changed setting continue indexing
+                    if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
+                        self.pauseIndexingDueToWiFiNotDetected = false
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                        self.updateUIWithIndexingStatus()
+                    }
+                    // If indexing was paused because there was no internet connection
+                    if self.state == .paused && self.pauseIndexingDueToNetworkConnectivityIssues {
+                        self.pauseIndexingDueToNetworkConnectivityIssues = false
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                        self.updateUIWithIndexingStatus()
+                    }
+                } else {
+                    if self.state == .downloading {
+                        self.pauseIndexingDueToWiFiNotDetected = true
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+                        self.updateUIWithIndexingStatus()
+                    }
+                }
+            } else {    // WiFi available
+                print("ES-NETWORK wifi")
+                // If indexing was paused because it was on mobile data - continue on wifi again
+                if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
+                    self.pauseIndexingDueToWiFiNotDetected = false
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                    self.updateUIWithIndexingStatus()
+                }
+                // If indexing was paused because there was no internet connection - continue on wifi again
+                if self.state == .paused && self.pauseIndexingDueToNetworkConnectivityIssues {
+                    self.pauseIndexingDueToNetworkConnectivityIssues = false
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                    self.updateUIWithIndexingStatus()
+                }
+            }
+        } else {
+            print("ES-NETWORK No Internet available")
+            self.pauseIndexingDueToNetworkConnectivityIssues = true
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+            return
         }
     }
 
-    @objc private func responseToNetworkChanges(_ notification: Notification) {
+    /*@objc private func responseToNetworkChanges(_ notification: Notification) {
         if let rechability = notification.object as? Reachability {
             let networkStatus = rechability.connection
             switch networkStatus {
@@ -1781,7 +1859,7 @@ extension EncryptedSearchService {
                 break
             }
         }
-    }
+    }*/
     
     @objc private func responseToLowPowerMode(_ notification: Notification) {
         if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
