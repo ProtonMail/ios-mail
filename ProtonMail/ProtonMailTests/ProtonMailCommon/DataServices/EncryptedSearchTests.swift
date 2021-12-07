@@ -44,6 +44,10 @@ class EncryptedSearchTests: XCTestCase {
 
         // Delete test search index for user 'test'
         try self.deleteTestSearchIndexDB()
+
+        // Reset some values in EncryptedSearchService Singleton
+        EncryptedSearchService.shared.numInterruptions = 0
+        EncryptedSearchService.shared.numPauses = 0
     }
 
     func createTestSearchIndexDB(){
@@ -113,8 +117,59 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertTrue(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
-    func testPauseAndResumeIndexingDueToInterruption() throws {
-        //TODO
+    func testPauseIndexingDueToLowBattery() throws {
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
+
+        // Test interruption low battery
+        EncryptedSearchService.shared.pauseIndexingDueToLowBattery = true
+        sut(true, nil)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
+    }
+
+    func testPauseIndexingDueToOverheating() throws {
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
+
+        // Test interruption low battery
+        EncryptedSearchService.shared.pauseIndexingDueToOverheating = true
+        sut(true, nil)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
+    }
+
+    func testPauseIndexingDueToLowStorage() throws {
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
+
+        // Test interruption low battery
+        EncryptedSearchService.shared.pauseIndexingDueToLowStorage = true
+        sut(true, nil)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
+    }
+
+    func testPauseIndexingDueToWiFiNotDetected() throws {
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
+
+        // Test interruption low battery
+        EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = true
+        sut(true, nil)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
+    }
+
+    func testPauseIndexingDueToNetworkConnectivityIssues() throws {
+        let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
+
+        // Test interruption low battery
+        EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = true
+        sut(true, nil)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
+        XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
     // Private Function

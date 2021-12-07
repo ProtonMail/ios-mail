@@ -15,6 +15,7 @@ import CryptoKit
 import Network
 import Groot
 import BackgroundTasks
+//import Reachability
 
 import ProtonCore_Services
 import ProtonCore_DataModel
@@ -45,16 +46,14 @@ public class EncryptedSearchService {
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
         self.timeFormatter.unitsStyle = .abbreviated
         
-        self.internetStatusProvider = InternetConnectionStatusProvider()
-        self.internetStatusProvider?.getConnectionStatuses(currentStatus: { status in
-        })
-        
-        //enable temperature monitoring
+        // Enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
-        //enable battery level monitoring
+        // Enable battery level monitoring
         //self.registerForBatteryLevelChangeNotifications()
         self.registerForPowerStateChangeNotifications()
-        
+        // Enable network monitoring
+        self.registerForNetworkChangeNotifications()
+
         self.determineEncryptedSearchState()
     }
     
@@ -109,7 +108,8 @@ public class EncryptedSearchService {
         return queue
     }()
     
-    internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
+    //internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
+    //internal lazy var reachability: Reachability? = nil
 
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
@@ -200,23 +200,6 @@ extension EncryptedSearchService {
 
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
-        //determine actual state
-        self.determineEncryptedSearchState()
-
-        let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
-        if !networkStatus.isConnected {
-            print("Error when building the search index - no internet connection.")
-            self.pauseIndexingDueToNetworkConnectivityIssues = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-            return
-        }
-        if !viewModel.downloadViaMobileData && !(networkStatus == NetworkStatus.ReachableViaWiFi) {
-            print("Indexing with mobile data not enabled")
-            self.pauseIndexingDueToWiFiNotDetected = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-            return
-        }
-
         #if !APP_EXTENSION
             //enable background processing
             self.continueIndexingInBackground()   //pre ios-13 background task for 30 seconds
@@ -226,13 +209,14 @@ extension EncryptedSearchService {
                 self.scheduleNewBGProcessingTask()
             }
         #endif
-        
+
         self.state = .downloading
         print("ENCRYPTEDSEARCH-STATE: downloading")
         
         //add a notification when app is put in background
-        let notificationCenter = NotificationCenter.default
+        /*let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+         */
 
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
@@ -346,19 +330,18 @@ extension EncryptedSearchService {
         self.pauseAndResumeIndexing()
     }
     
-    func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: @escaping () -> Void = {}){
+    func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: (() -> Void)? = nil){
         if isPause {
             self.numInterruptions += 1
             self.state = .paused
             print("ENCRYPTEDSEARCH-STATE: paused")
         } else {
-            //print("Resume indexing. Flags: overheating: \(self.pauseIndexingDueToOverheating), lowbattery: \(self.pauseIndexingDueToLowBattery), network: \(self.pauseIndexingDueToNetworkConnectivityIssues), wifi: \(self.pauseIndexingDueToWiFiNotDetected), storage: \(self.pauseIndexingDueToLowStorage)")
             //check if any of the flags is set to true
             if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
                 self.state = .paused
                 print("ENCRYPTEDSEARCH-STATE: paused")
 
-                completionHandler()
+                completionHandler?()
                 return
             }
         }
@@ -395,23 +378,14 @@ extension EncryptedSearchService {
         }
     }
     
+    // Actively pause indexing by user by switching off when on mobile data
     func pauseIndexingDueToNetworkSwitch(){
-        let networkStatus: NetworkStatus = self.internetStatusProvider!.currentStatus
-        if !networkStatus.isConnected {
-            print("Error no internet connection.")
-            return
-        }
-
-        //if indexing is currently in progress
-        //and the slider is off
-        //and we are using mobile data
-        //then pause indexing
-        if self.indexBuildingInProgress && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
+        /*if self.state == .downloading && !self.viewModel!.downloadViaMobileData && (networkStatus != NetworkStatus.ReachableViaWiFi) {
             print("Pause indexing when using mobile data")
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
-        }
+        }*/
     }
-    
+
     struct MessageAction {
         var action: NSFetchedResultsChangeType? = nil
         var message: Message? = nil
@@ -1733,29 +1707,98 @@ extension EncryptedSearchService {
         self.checkIfEnoughStorage()
     }
     
-    
-    private func registerForBatteryLevelChangeNotifications() {
+    // Not used at the moment - use low power mode notification instead
+    /*private func registerForBatteryLevelChangeNotifications() {
         UIDevice.current.isBatteryMonitoringEnabled = true
         NotificationCenter.default.addObserver(self, selector: #selector(responseToBatteryLevel(_:)), name: UIDevice.batteryLevelDidChangeNotification, object: nil)
-    }
+    }*/
     
     private func registerForPowerStateChangeNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(responseToLowPowerMode(_:)), name: NSNotification.Name.NSProcessInfoPowerStateDidChange, object: nil)
+    }
+
+    private func registerForNetworkChangeNotifications() {
+        //self.reachability = try! Reachability()
+        let reachability = Reachability()!
+        NotificationCenter.default.addObserver(self, selector: #selector(responseToNetworkChanges(_:)), name: NSNotification.Name.reachabilityChanged, object: self.reachability)
+        do {
+            try self.reachability?.startNotifier()
+        } catch {
+            print("Error when starting network monitoring notifier: \(error)")
+        }
+    }
+
+    @objc private func responseToNetworkChanges(_ notification: Notification) {
+        if let rechability = notification.object as? Reachability {
+            let networkStatus = rechability.connection
+            switch networkStatus {
+            case .unavailable:
+                print("ES-NETWORK No Internet available")
+                self.pauseIndexingDueToNetworkConnectivityIssues = true
+                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+                break
+            case .wifi:
+                print("ES-NETWORK wifi")
+                // If indexing was paused because it was on mobile data - continue on wifi again
+                if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
+                    self.pauseIndexingDueToWiFiNotDetected = false
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                    self.updateUIWithIndexingStatus()
+                }
+                // If indexing was paused because there was no internet connection - continue on wifi again
+                if self.state == .paused && self.pauseIndexingDueToNetworkConnectivityIssues {
+                    self.pauseIndexingDueToNetworkConnectivityIssues = false
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                    self.updateUIWithIndexingStatus()
+                }
+                break
+            case .cellular:
+                print("ES-NETWORK cellular")
+                // If indexing with mobile data is enabled
+                if userCachedStatus.downloadViaMobileData {
+                    // If indexing was paused because it was on mobile data - and user changed setting continue indexing
+                    if self.state == .paused && self.pauseIndexingDueToWiFiNotDetected {
+                        self.pauseIndexingDueToWiFiNotDetected = false
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                        self.updateUIWithIndexingStatus()
+                    }
+                    // If indexing was paused because there was no internet connection - continue on wifi again
+                    if self.state == .paused && self.pauseIndexingDueToNetworkConnectivityIssues {
+                        self.pauseIndexingDueToNetworkConnectivityIssues = false
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                        self.updateUIWithIndexingStatus()
+                    }
+                } else {
+                    if self.state == .downloading {
+                        self.pauseIndexingDueToWiFiNotDetected = true
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+                        self.updateUIWithIndexingStatus()
+                    }
+                }
+                break
+            default:
+                print("ES-NETWORK default")
+                break
+            }
+        }
     }
     
     @objc private func responseToLowPowerMode(_ notification: Notification) {
         if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
             // Low power mode is enabled - pause indexing
+            self.pauseIndexingDueToLowBattery = true
             print("Pause indexing due to low battery!")
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
             // Low power mode is disabled - continue indexing
+            self.pauseIndexingDueToLowBattery = false
             print("Resume indexing as battery is charged again!")
             self.pauseAndResumeIndexingDueToInterruption(isPause: false)
         }
     }
     
-    @objc private func responseToBatteryLevel(_ notification: Notification) {
+    // Not used at the moment - use low power mode notification instead
+    /* @objc private func responseToBatteryLevel(_ notification: Notification) {
         //if battery is low (Android < 15%), (iOS < 20%) we pause indexing
         let batteryLevel: Float = UIDevice.current.batteryLevel
         if batteryLevel < 0.2 && !self.pauseIndexingDueToLowBattery {   //if battery is < 20% and indexing is not already paused - then pause
@@ -1765,7 +1808,7 @@ extension EncryptedSearchService {
             print("Resume indexing as battery is charged again!")
             self.pauseAndResumeIndexingDueToInterruption(isPause: false)
         }
-    }
+    } */
     
     private func registerForTermalStateChangeNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(responseToHeat(_:)), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
