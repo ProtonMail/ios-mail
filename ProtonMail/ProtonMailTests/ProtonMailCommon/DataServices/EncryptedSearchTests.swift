@@ -177,10 +177,6 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }*/
 
-    func testPauseIndexingDueToNetworkSwitch() throws {
-        //TODO
-    }
-
     func testUpdateSearchIndex() throws {
         //TODO
     }
