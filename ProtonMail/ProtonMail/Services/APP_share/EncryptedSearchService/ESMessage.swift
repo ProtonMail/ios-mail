@@ -250,7 +250,7 @@ public class ESMessage: Codable {
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         //TODO:: try to verify signature here Detached signature
                         // if failed return a warning
-                        PMLog.D(signature)
+                        //PMLog.D(signature)    disable printing temporarily
                         //TODO
                         return try self.Body!.decryptMessageWithSinglKey(key.privateKey, passphrase: plaitToken)
                     }
