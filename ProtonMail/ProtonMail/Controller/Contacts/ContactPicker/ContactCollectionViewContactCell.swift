@@ -73,7 +73,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         self.contactTitleLabel.textColor = ColorProvider.TextNorm
         
         let long = UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu(gesture:)))
-        long.minimumPressDuration = 1
+        long.minimumPressDuration = 0.5
         self.addGestureRecognizer(long)
         
         #if DEBUG_BORDERS
@@ -84,6 +84,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
     
     @objc func showMenu(gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         self.pickerFocused = true
         self.delegate?.showContactMenu(contact: self._model)
     }
