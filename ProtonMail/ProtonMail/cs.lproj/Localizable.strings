@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "Nastavení aplikace";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Vzhled";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple in-app pořizovací poplatek";
 
@@ -653,7 +656,7 @@
 "Contact the ProtonMail team" = "Kontaktuj tým ProtonMailu";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, email (support@protonmail.com), nebo Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, e-mail (support@protonmail.com), nebo Twitter.";
 
 /* Action and title
    menu title */
@@ -1063,7 +1066,7 @@
 "Enter your cell phone number" = "Zadejte číslo svého mobilního telefonu";
 
 /* top title */
-"Enter your existing email address." = "Zadejte svoji existující emailovou adresu.";
+"Enter your existing email address." = "Zadejte svoji existující e-mailovou adresu.";
 
 /* Account manager title */
 "Enter your mailbox password" = "Prosím, zadejte Vaše heslo do schránky";
@@ -1942,7 +1945,7 @@
 "Please check your cell phone for the verification code." = "Zkontrolujte prosím ověřovací kód na Vašem mobilním telefonu.";
 
 /* error message */
-"Please check your email for the verification code." = "Zkontrolujte prosím ověřovací kód ve Vašem emailu.";
+"Please check your email for the verification code." = "Zkontrolujte prosím ověřovací kód ve Vašem e-mailu.";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Připojte se a zkuste to znovu";
@@ -1954,7 +1957,7 @@
 "Please input a valid cell phone number." = "Zadejte prosím platné telefonní číslo Vašeho mobilu.";
 
 /* error message */
-"Please input a valid email address." = "Zadejte prosím platnou emailovou adresu.";
+"Please input a valid email address." = "Zadejte prosím platnou e-mailovou adresu.";
 
 /* Alert message */
 "Please keep ProtonMail open until the operation is done." = "Prosím ponechte ProtonMail otevřený, dokud nebude operace dokončena.";

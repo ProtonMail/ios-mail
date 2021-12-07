@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "Configuració de l'aplicació";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Aparença";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Tarifa de compra en l'aplicació d'Apple";
 
@@ -374,7 +377,7 @@
 "Auto-load embedded images" = "Càrrega automàtica d'imatges incrustades";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "Horrible";
 
 /* top left back button */
 "Back" = "Torna";
@@ -1268,7 +1271,7 @@
 "Hours" = "Hores";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Com descriuria la seva experiència amb el nou ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1826,7 +1829,7 @@
 "On E, MMM d, yyyy at %@" = "El E, d MMM, yyyy a les %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignoreu l'activació de la compra només si esteu segur que totes les seves subscripcions estan actualitzades. Per obtenir més ajuda, poseu-vos en contacte amb el servei d'atenció al client.\n\n Esteu segur que voleu ignorar l'activació?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Només es pot afegir un compte gratuït";
@@ -2089,7 +2092,7 @@
 "ProtonVPN included" = "ProtonVPN inclòs";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "Deixi la seva opinió";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Interferència d'un proxy/firewall";
@@ -2252,7 +2255,7 @@
 "Send anyway" = "Enviar de totes maneres";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "Enviar opinió";
 
 /* when subject not empty */
 "Send message without subject?" = "Enviar missatge sense assumpte?";

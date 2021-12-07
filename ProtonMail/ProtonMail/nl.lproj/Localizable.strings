@@ -268,6 +268,9 @@
 /* section title in settings */
 "App settings" = "App instellingen";
 
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Uiterlijk";
+
 /* Price breakdown */
 "Apple in-app purchase fee" = "Kosten Apple in-app aankoop";
 

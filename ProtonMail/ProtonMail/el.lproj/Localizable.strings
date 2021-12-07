@@ -230,10 +230,10 @@
 "Alternative routing" = "Εναλλακτική δρομολόγηση";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "Πάντα απενεργοποιημένο";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "Πάντα ενεργοποιημένο";
 
 /* agree check box middle word */
 "and" = "και";
@@ -267,6 +267,9 @@
 
 /* section title in settings */
 "App settings" = "Ρυθμίσεις εφαρμογής";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Εμφάνιση";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Αγορές εντός εφαρμογής της Apple";
@@ -732,7 +735,7 @@
 "Cut" = "Αποκοπή";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "Σκοτεινή λειτουργία";
 
 /* message Date: text */
 "Date:" = "Ημερομηνία:";
@@ -1148,7 +1151,7 @@
 "Folders" = "Φάκελοι";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "Ακολούθησε τις ρυθμίσεις συσκευής";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Για όσους ψάχνουν τα οφέλη της διασφαλισμένης επικοινωνίας χωρίς κόστος";
