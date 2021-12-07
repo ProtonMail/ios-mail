@@ -70,6 +70,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
         setupIndexingFinishedObserver()
+        setupIndexingInterruptionObservers()
 
         if EncryptedSearchService.shared.state == .undetermined {
             // Determine current encrypted search state
