@@ -182,6 +182,35 @@ final class MessageEvent {
     }
 }
 
+extension MessageEvent {
+    var isDraft: Bool {
+        if let location = self.message?["Location"] as? Int,
+           location == 1 || location == 8 {
+            return true
+        }
+
+        let draftID = Message.Location.draft.rawValue
+        let hiddenDraftID = Message.HidenLocation.draft.rawValue
+        if let labelIDs = self.message?["LabelIDs"] as? NSArray,
+           labelIDs.contains(draftID) || labelIDs.contains(hiddenDraftID) {
+            return true
+        }
+
+        return false
+    }
+
+    var parsedTime: Date? {
+        guard let value = self.message?["Time"] else { return nil }
+        var time: TimeInterval = 0
+        if let stringValue = value as? NSString {
+            time = stringValue.doubleValue as TimeInterval
+        } else if let numberValue = value as? NSNumber {
+            time = numberValue.doubleValue as TimeInterval
+        }
+        return time == 0 ? nil: time.asDate()
+    }
+}
+
 final class ContactEvent {
     enum UpdateType : Int {
         case delete = 0

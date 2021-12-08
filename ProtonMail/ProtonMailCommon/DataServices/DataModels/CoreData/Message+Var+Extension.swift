@@ -193,6 +193,10 @@ extension Message {
             return self.contains(label: Message.Location.draft) || self.contains(label: "1")
         }
     }
+
+    var hasMetaData: Bool {
+        messageStatus == 1
+    }
 }
 
 
