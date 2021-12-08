@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic-paper-clip.png",
+      "filename" : "Check].png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic-paper-clip@2x.png",
+      "filename" : "Check]@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic-paper-clip@3x.png",
+      "filename" : "Check]@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -111,6 +111,8 @@ final class ComposePasswordVC: UIViewController {
 // MARK: UI setup
 extension ComposePasswordVC {
     private func setup() {
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.setupNavigation()
         self.setupInfoView()
         self.setupPasswordView()
@@ -140,6 +142,7 @@ extension ComposePasswordVC {
         self.infoText.textContainerInset = .zero
         self.infoText.attributedText = attrStr
         self.infoText.linkTextAttributes = [.foregroundColor: ColorProvider.InteractionNorm ]
+        self.infoText.backgroundColor = ColorProvider.BackgroundNorm
     }
 
     private func setupPasswordView() {
@@ -147,11 +150,13 @@ extension ComposePasswordVC {
         self.passwordText.placeholder = LocalString._composer_eo_msg_pwd_hint
         self.passwordText.value = self.encryptionPassword
         self.passwordText.delegate = self
+        self.passwordText.backgroundColor = ColorProvider.BackgroundNorm
 
         self.confirmText.title = LocalString._composer_eo_repeat_pwd
         self.confirmText.placeholder = LocalString._composer_eo_repeat_pwd_placeholder
         self.confirmText.value = self.encryptionConfirmPassword
         self.confirmText.delegate = self
+        self.confirmText.backgroundColor = ColorProvider.BackgroundNorm
     }
 
     private func setupPasswordHintView() {
@@ -163,6 +168,7 @@ extension ComposePasswordVC {
         self.passwordHintPlaceholder.attributedText = LocalString._define_hint_optional.apply(style: .DefaultHint)
         self.passwordHintPlaceholder.isHidden = !self.encryptionPasswordHint.isEmpty
         self.passwordHintView.accessibilityIdentifier = "ComposePasswordVC.passwordHintView"
+        self.passwordHintView.roundCorner(8)
     }
 
     private func setupApplyButton() {

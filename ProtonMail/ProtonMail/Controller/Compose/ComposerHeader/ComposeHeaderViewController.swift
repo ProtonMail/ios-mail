@@ -220,9 +220,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.configureContactPicker()
         self.configureSubject()
 
-        self.fromGrayView.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
-        self.subjectGrayView.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
-        
+        self.fromGrayView.backgroundColor = ColorProvider.SeparatorNorm
+        self.subjectGrayView.backgroundColor = ColorProvider.SeparatorNorm
         self.view.bringSubviewToFront(showCcBccButton)
         self.view.bringSubviewToFront(subject)
         self.view.sendSubviewToBack(ccContactPicker)

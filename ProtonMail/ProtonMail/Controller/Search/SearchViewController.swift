@@ -147,6 +147,7 @@ extension SearchViewController {
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.backgroundColor = .clear
+        self.tableView.separatorColor = ColorProvider.SeparatorNorm
         let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)

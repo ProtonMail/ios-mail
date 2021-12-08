@@ -203,7 +203,7 @@ class ContactPicker: UIView, AccessibleView {
     
     private func setupGrayLine() {
         self.grayLine = UIView(frame: .zero)
-        self.grayLine.backgroundColor = UIColor(hexColorCode: "#EAE7E4")
+        self.grayLine.backgroundColor = ColorProvider.SeparatorNorm
         self.grayLine.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.grayLine)
         

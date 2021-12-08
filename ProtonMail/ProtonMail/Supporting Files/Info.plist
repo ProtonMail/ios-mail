@@ -173,8 +173,6 @@
 	</array>
 	<key>UISupportsDocumentBrowser</key>
 	<false/>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

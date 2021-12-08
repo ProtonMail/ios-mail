@@ -93,13 +93,16 @@ class NewMailboxMessageCellPresenter {
         view.messageCountLabel.layer.borderColor = viewModel.isRead ?
             ColorProvider.TextWeak.cgColor : ColorProvider.TextNorm.cgColor
 
-        if viewModel.displayOriginIcon {
-            viewModel.folderIcons.forEach { image in
-                addOriginalImage(image, isRead: viewModel.isRead, in: view)
-            }
-        } else {
+        guard viewModel.displayOriginIcon,
+              !viewModel.folderIcons.isEmpty else {
+            view.originalImagesStackView.isHidden = true
             view.removeOriginImages()
+            return
         }
+        viewModel.folderIcons.forEach { image in
+            addOriginalImage(image, isRead: viewModel.isRead, in: view)
+        }
+        view.originalImagesStackView.isHidden = false
     }
 
     private func addOriginalImage(_ image: UIImage, isRead: Bool, in view: NewMailboxMessageContentView) {

@@ -239,6 +239,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         SkeletonAppearance.default.renderSingleLineAsView = true
         
         self.tableView.separatorColor = ColorProvider.InteractionWeak
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         
@@ -2093,6 +2094,7 @@ extension MailboxViewController: UITableViewDataSource {
         
         if self.shouldAnimateSkeletonLoading {
             cell.showAnimatedGradientSkeleton()
+            cell.backgroundColor = ColorProvider.BackgroundNorm
         } else {
             self.configure(cell: cell, indexPath: indexPath)
         }
