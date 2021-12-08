@@ -90,6 +90,22 @@ final class MenuViewController: UIViewController, AccessibleView {
         super.viewWillDisappear(animated)
         self.sideMenuController?.contentViewController.view.isUserInteractionEnabled = true
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        let newWidth = size.width
+        let properWidth = MenuViewController.calcProperMenuWidth(referenceWidth: newWidth)
+        guard properWidth != self.viewModel.menuWidth else { return }
+        self.menuWidth.constant = properWidth
+        self.coordinator.update(menuWidth: properWidth)
+    }
+
+    static func calcProperMenuWidth(keyWindow: UIWindow? = UIApplication.shared.keyWindow, referenceWidth: CGFloat? = nil, expectedMenuWidth: CGFloat = 327) -> CGFloat {
+        let windowWidth = referenceWidth ?? keyWindow?.bounds.width ?? expectedMenuWidth
+        let menuWidth = min(expectedMenuWidth, windowWidth)
+        return menuWidth
+    }
 }
 
 // MARK: Private functions

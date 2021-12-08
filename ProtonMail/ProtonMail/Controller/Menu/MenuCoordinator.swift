@@ -43,7 +43,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
 
     typealias VC = MenuViewController
     weak var viewController: VC?
-    private let menuWidth: CGFloat
+    private var menuWidth: CGFloat
     private let vm: MenuVMProtocol
     let services: ServiceFactory
     private let vmService: ViewModelService
@@ -60,7 +60,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
          coreDataService: CoreDataService,
          lastUpdatedStore:LastUpdatedStoreProtocol,
          usersManager: UsersManager,
-         vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat = 327) {
+         vc: VC, vm: MenuVMProtocol, menuWidth: CGFloat) {
 
         //Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
@@ -88,6 +88,12 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     func start() {
         self.viewController?.set(vm: self.vm, coordinator: self)
         self.vm.set(menuWidth: self.menuWidth)
+    }
+
+    func update(menuWidth: CGFloat) {
+        SideMenuController.preferences.basic.menuWidth = menuWidth
+        self.menuWidth = menuWidth
+        self.vm.set(menuWidth: menuWidth)
     }
     
     func follow(_ deepLink: DeepLink) {
