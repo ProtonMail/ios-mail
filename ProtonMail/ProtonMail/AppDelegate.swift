@@ -63,6 +63,7 @@ extension SideMenuController {
             let queueManager = sharedServices.get(by: QueueManager.self)
             let viewModel = MenuViewModel(usersManager: usersManager, queueManager: queueManager, coreDataService: coreDataService)
             viewModel.set(delegate: menuVC)
+            let menuWidth = MenuViewController.calcProperMenuWidth()
             let coordinator = MenuCoordinator(services: sharedServices,
                                               vmService: sharedVMService,
                                               pushService: pushService,
@@ -70,7 +71,8 @@ extension SideMenuController {
                                               lastUpdatedStore: lateUpdatedStore,
                                               usersManager: usersManager,
                                               vc: menuVC,
-                                              vm: viewModel)
+                                              vm: viewModel,
+                                              menuWidth: menuWidth)
 
             coordinator.start()
         default:
