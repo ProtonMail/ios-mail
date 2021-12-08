@@ -20,6 +20,7 @@
 		014660B812ED7A6C427DB25310D7E2DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */; };
 		014B1FAC7C4819E15893D6B73A0D846F /* String+Alert+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8401423E8FE838D3E637E3CAB0244D4 /* String+Alert+Extension.swift */; };
 		01645F8C975E78A920F1704F52E49013 /* Coordinator+SWReveal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710B0C1D00CDB03768E66C511B306785 /* Coordinator+SWReveal.swift */; };
+		0184BD73290A8713DEE075DC945057C3 /* MessageDataServiceHepler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */; };
 		01A4B564ADBEDA3585ACC96D90BF2824 /* AccessibleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3013005B4B7D91E90B2977862424351 /* AccessibleCell.swift */; };
 		01B058C0E76AAF7AA72868128C1A6A40 /* MessageHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BB5E9F90020146F3CD76C0D3B77DD6 /* MessageHeaderViewController.swift */; };
 		01D251FA524D6C9913EF31A24A18669A /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51839FC05409900589885A21EB220CEA /* MailboxRateReviewCell.xib */; };
@@ -290,6 +291,7 @@
 		23ABA92C1AC1CD7E058B2AAED7D3291C /* ContactGroupSubSelectionHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 536855C9E4CA674AE64A25FDAE58EE04 /* ContactGroupSubSelectionHeaderCell.xib */; };
 		23AE3AA3B771539948D6EA41E87EC6B5 /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F131B12E9F6F23D7063B2C786358C896 /* APIService+UserExtension.swift */; };
 		23B01BCD127B81D43C6BC057634BC926 /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */; };
+		23B740C1B21ABD0EDABE22F9C809FAF1 /* MessageDataServiceHepler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */; };
 		23B84ECBD359121842497B983A9F5525 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
 		23D6491729BFCD897BA76A653C6F933B /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
 		23E0B58144CA677A5148535CD7A0B801 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */; };
@@ -734,6 +736,7 @@
 		590E9B9A94EB555DD510A5D18AD05B03 /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4139845931CFC3A02A3CF9D6035A16 /* ComposeAttachmentsAreUploadingTitleView.swift */; };
 		591F0C2EE4288EB4FC8785802EA3DD88 /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87101881BC1D8C883E73CFB82ED48E7 /* TableContainerViewCoordinator.swift */; };
 		594021A45B90052AD0A4F51C2F3D32B4 /* QuoteBreaker.js in Resources */ = {isa = PBXBuildFile; fileRef = 5034E56412A2BBE6E32A37B607A26184 /* QuoteBreaker.js */; };
+		596B8DB1D0D831918E7F4ACA143D842A /* MessageDataServiceHepler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */; };
 		596D801115C6A66EB7B8367156D655D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
 		59994D91FE05DD4D1283051DF8A6622D /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
 		59AA311CABAABBC95956E913F48EE84A /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
@@ -1295,6 +1298,7 @@
 		9DE95D640F116C6D8A534700359835F4 /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */; };
 		9DEDCD3E055C3178439C906BCFA82FB6 /* ContactGroupSubSelectionViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C59E968B84EFA98595260E397FD856 /* ContactGroupSubSelectionViewModelImpl.swift */; };
 		9E0168A849F55F77372A4C644140087C /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB1C20863F2073B64B8819A059F313F /* Onboarding.swift */; };
+		9E12735DA4065F3FC815DC69706C10AC /* MessageEventTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0589075EF5E73FAE325F9E60FA08B5F5 /* MessageEventTest.swift */; };
 		9E2DEFB3015CA9C572957E75873E8009 /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
 		9E516FAACFA7BCC1FD1878B6439B7517 /* ContactEditAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110CB0463EE5CED7B4217CA0B381712 /* ContactEditAddressCell.swift */; };
 		9E7EC95C3AB8A5BC540870FEFAFE9B21 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13E3D765166B667E1D94C71F3646178 /* LoadingView.xib */; };
@@ -1513,6 +1517,7 @@
 		B8964E5BF41339B3E6BF3D5FC7A05DC5 /* ContactTypeAddCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B33435E3875BAE2ABCD6AC4557BFCC /* ContactTypeAddCustomCell.swift */; };
 		B8A095E41338491F41A2E436C8EBC5ED /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */; };
 		B8CC2898D3A06DB3053DB9C0A65260CA /* CoordinatorSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932D364704D3F3037FE7D04D015C303 /* CoordinatorSegue.swift */; };
+		B8D70B02411D31D20D95A55E46AB48AE /* MessageDataServiceHepler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */; };
 		B97B9A09708F9946269C6EF44E748F2F /* AuthCredential+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD7FD10D95137C336E30D587C14514 /* AuthCredential+Locked.swift */; };
 		B99FE6759AA6D92564B92F1BCE03973F /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C51DC65328A7CEC55ECB5D02FF357E1 /* NSString+Extension.swift */; };
 		B9A961C3581A1C4C30D0D8F777F6B1D5 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
@@ -2263,6 +2268,7 @@
 		04FD71845357210A9E9B06A14940100F /* APIService+SettingsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "APIService+SettingsExtension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		051047DA144AB4799F2295ACD730D1C6 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
 		052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		0589075EF5E73FAE325F9E60FA08B5F5 /* MessageEventTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEventTest.swift; sourceTree = "<group>"; };
 		06450F6DC3D5C6C237760D37B37F1620 /* PushNotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		068C11480FD047DA3AA78D23A3E0E796 /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
@@ -2543,6 +2549,7 @@
 		4D4320F0C77F1BEF53B46B2B363DC563 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4E4C0C20AA4E9E6F3D808B07AFBBFE67 /* Test Second Encoding.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Test Second Encoding.bundle"; sourceTree = "<group>"; };
 		4EC9AF0A74A77653AD47949D28EACEC7 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
+		4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataServiceHepler.swift; sourceTree = "<group>"; };
 		4EEB9EC83D561964EDC8A8A9E7A3B1A9 /* Pods-Siri.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Siri.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Siri/Pods-Siri.distribution.xcconfig"; sourceTree = "<group>"; };
 		4F14B7B82BAF0732D32CDDC845A6E58B /* ContactTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewController.swift; sourceTree = "<group>"; };
 		4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewController.swift; sourceTree = "<group>"; };
@@ -3357,6 +3364,7 @@
 				BDF208C261F450A9BBE8F9F119EF8848 /* MessageDataService+Error.swift */,
 				25F2543A95CCB31AFB636BE8E06CD04F /* MessageDataService+FileManager.swift */,
 				93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */,
+				4EE6B118CA1272D57045293EA62A63B0 /* MessageDataServiceHepler.swift */,
 				08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */,
 				47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */,
 				C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */,
@@ -4417,6 +4425,7 @@
 			isa = PBXGroup;
 			children = (
 				D2038F203AD2770E390E55955DEDBEF2 /* DataModels */,
+				0589075EF5E73FAE325F9E60FA08B5F5 /* MessageEventTest.swift */,
 			);
 			path = DataServices;
 			sourceTree = "<group>";
@@ -6700,6 +6709,7 @@
 				2FD722352701885DAC4BB5617C3C1B38 /* InternetConnectionStatusProviderTests.swift in Sources */,
 				EF2E8A07749416D96D8A297A581A8D5E /* KeysAPITests.swift in Sources */,
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
+				9E12735DA4065F3FC815DC69706C10AC /* MessageEventTest.swift in Sources */,
 				D101EF0D5DEB2C8654CA0A1D13956021 /* MigrateTests.swift in Sources */,
 				380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */,
 				2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */,
@@ -7099,6 +7109,7 @@
 				6BFC39C8004B5C7D6180DC0BA4734F7B /* MessageDataService+Error.swift in Sources */,
 				C8BA5043DC630079025108E1B09E764F /* MessageDataService+FileManager.swift in Sources */,
 				9B570984A6796E747D7709ED0B9C4026 /* MessageDataService.swift in Sources */,
+				596B8DB1D0D831918E7F4ACA143D842A /* MessageDataServiceHepler.swift in Sources */,
 				9CB5ED17A65AB68617D7C176652C4426 /* MessageDetailBottomView.swift in Sources */,
 				F6974490D72F96EF15A3E1200056292C /* MessageHeaderViewController.swift in Sources */,
 				717532DD8108070E75855BC9E6B3C894 /* MessageHeaderViewCoordinator.swift in Sources */,
@@ -7677,6 +7688,7 @@
 				05841A4AA5433B28DCB6DFD3CA4C21B7 /* MessageDataService+Error.swift in Sources */,
 				3B002CC8F3864169108B5E3391ABE482 /* MessageDataService+FileManager.swift in Sources */,
 				75F656EC41ACEDA0CA1B09C8C96D3FC8 /* MessageDataService.swift in Sources */,
+				23B740C1B21ABD0EDABE22F9C809FAF1 /* MessageDataServiceHepler.swift in Sources */,
 				D8536279B904064BF51344B17FB72A8C /* MessageDetailBottomView.swift in Sources */,
 				01B058C0E76AAF7AA72868128C1A6A40 /* MessageHeaderViewController.swift in Sources */,
 				FB5588DEFC9774BAB7652FD213529774 /* MessageHeaderViewCoordinator.swift in Sources */,
@@ -8132,6 +8144,7 @@
 				9DB858224D75EC286D1E63656AFC3C2E /* MessageDataService+Error.swift in Sources */,
 				5D459BC4DE81317501C9577D40554778 /* MessageDataService+FileManager.swift in Sources */,
 				E701FD8D6CA00EF6B6EC41C933E47842 /* MessageDataService.swift in Sources */,
+				0184BD73290A8713DEE075DC945057C3 /* MessageDataServiceHepler.swift in Sources */,
 				F2D4F1D95C15551E13635847B63412A1 /* MessageQueue.swift in Sources */,
 				A0DB4D568FF94A1600F9B7BB159A143F /* Migrate.swift in Sources */,
 				DB86C5A30869359ABE14B4AC9980C7EC /* MimeTypes.swift in Sources */,
@@ -8428,6 +8441,7 @@
 				12AAFF92E168A189A438BFBCBB70330F /* MessageDataService+Error.swift in Sources */,
 				A938EF1FB8EF43E5A846EC92ED933640 /* MessageDataService+FileManager.swift in Sources */,
 				237C3728C3C1BCA21A87B1855804461E /* MessageDataService.swift in Sources */,
+				B8D70B02411D31D20D95A55E46AB48AE /* MessageDataServiceHepler.swift in Sources */,
 				B68EF49E2501E85E528158875D7C477E /* MessageQueue.swift in Sources */,
 				5C51567BC587E14B368F0FF5D7E09559 /* Migrate.swift in Sources */,
 				D4E6F863492709D4DBAA8EBD483308FE /* MimeTypes.swift in Sources */,

@@ -2691,50 +2691,8 @@ class MessageDataService : Service, HasLocalStorage {
                             }
                             msg.message?["messageStatus"] = 1
                         }
-                        
-                        if let lo = msg.message?["Location"] as? Int,
-                           lo == 1 || lo == 8, //if it is a draft
-                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
-                           existMes.messageStatus == 1,
-                           let BETime = msg.message?["Time"] as? TimeInterval,
-                           let localTime = existMes.time?.timeIntervalSince1970,
-                           BETime > localTime {
-                            existMes.time = BETime.asDate()
-                            if let subject = msg.message?["Subject"] as? String {
-                                existMes.title = subject
-                            }
-                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
-                                existMes.toList = toList.json()
-                            }
-                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
-                                existMes.bccList = bccList.json()
-                            }
-                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
-                                existMes.ccList = ccList.json()
-                            }
-                            continue
-                        }
-                        
-                        if let labelIDs = msg.message?["LabelIDs"] as? NSArray,
-                           labelIDs.contains("1") || labelIDs.contains("8"),
-                           let existMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context),
-                           existMes.messageStatus == 1,
-                           let BETime = msg.message?["Time"] as? TimeInterval,
-                           let localTime = existMes.time?.timeIntervalSince1970,
-                           BETime > localTime {
-                            existMes.time = BETime.asDate()
-                            if let subject = msg.message?["Subject"] as? String {
-                                existMes.title = subject
-                            }
-                            if let toList = msg.message?["ToList"] as? [[String: Any]] {
-                                existMes.toList = toList.json()
-                            }
-                            if let bccList = msg.message?["BCCList"] as? [[String: Any]] {
-                                existMes.bccList = bccList.json()
-                            }
-                            if let ccList = msg.message?["CCList"] as? [[String: Any]] {
-                                existMes.ccList = ccList.json()
-                            }
+                        if MessageDataServiceHelper.mergeDraftIfNeeded(event: msg,
+                                                                       context: context) {
                             continue
                         }
                         
