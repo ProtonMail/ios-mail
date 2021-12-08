@@ -111,7 +111,7 @@ final class MenuViewController: UIViewController, AccessibleView {
 // MARK: Private functions
 extension MenuViewController {
     private func viewInit() {
-        self.view.backgroundColor = UIColor(hexString: "#1C223D", alpha: 1)
+        self.view.backgroundColor = ColorProvider.SidebarBackground
         self.menuWidth.constant = self.viewModel.menuWidth
         self.tableView.backgroundColor = .clear
         self.tableView.register(MenuItemTableViewCell.self)
@@ -119,8 +119,8 @@ extension MenuViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
+        self.setPrimaryUserview(highlight: false)
         self.primaryUserview.setCornerRadius(radius: 12)
-
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
         if #available(iOS 13.0, *), (!UIDevice.hasNotch || UIDevice.current.userInterfaceIdiom == .pad) {
@@ -150,13 +150,13 @@ extension MenuViewController {
         let state = ges.state
         switch state {
         case .began:
-            self.setPrimaryUserview(hightlight: true)
+            self.setPrimaryUserview(highlight: true)
         case.changed:
             if !isInside {
-                self.setPrimaryUserview(hightlight: false)
+                self.setPrimaryUserview(highlight: false)
             }
         case .ended:
-            self.setPrimaryUserview(hightlight: false)
+            self.setPrimaryUserview(highlight: false)
             if isInside {
                 self.showAccountSwitcher()
             }
@@ -221,10 +221,15 @@ extension MenuViewController {
         }
     }
 
-    private func setPrimaryUserview(hightlight: Bool) {
-        let color = hightlight ? UIColor(RRGGBB: UInt(0x494D55)): UIColor(RRGGBB: UInt(0x3B3D41))
+    private func setPrimaryUserview(highlight: Bool) {
+        // This is a temporary workaround of color
+        // Should be deleted after upgrading to the correct core library
+        // 3.4.0, depends on the situation
+        let normalColor = UIColor(named: "sidebarInteractionWeakNorm")
+        let pressedColor = UIColor(named: "sidebarInteractionweakPressed")
+        let color = highlight ? pressedColor: normalColor
         self.primaryUserview.backgroundColor = color
-        self.arrowBtn.isHighlighted = hightlight
+        self.arrowBtn.isHighlighted = highlight
     }
 
     @objc

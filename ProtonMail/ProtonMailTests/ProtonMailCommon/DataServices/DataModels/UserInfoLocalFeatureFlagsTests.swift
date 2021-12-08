@@ -47,8 +47,4 @@ final class UserInfoLocalFeatureFlagsTests: XCTestCase {
         // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
         XCTAssertFalse(sut.isInAppFeedbackEnabled)
     }
-
-    func testDarkModeEnableShouldBeDisabled() {
-        XCTAssertFalse(UserInfo.isDarkModeEnable)
-    }
 }

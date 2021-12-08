@@ -33,8 +33,11 @@ final class ComposeToolbar: UIView {
 
     private weak var delegate: ComposeToolbarDelegate?
     private var contentView: UIView!
+    @IBOutlet private var stack: UIStackView!
     @IBOutlet private var lockButton: UIButton!
+    @IBOutlet private var lockButtonLockIcon: UIImageView!
     @IBOutlet private var hourButton: UIButton!
+    @IBOutlet private var hourButtonLockIcon: UIImageView!
     @IBOutlet private var attachmentButton: UIButton!
     @IBOutlet private var attachmentNumView: UIView!
     @IBOutlet private var numContainer: UIView!
@@ -51,15 +54,11 @@ final class ComposeToolbar: UIView {
     }
 
     func setLockStatus(isLock: Bool) {
-        // swiftlint:disable:next object_literal
-        let icon = isLock ? UIImage(named: "ic_Lock_check") : UIImage(named: "ic_lock_no_ckeck")
-        self.lockButton.setImage(icon, for: .normal)
+        self.lockButtonLockIcon.isHidden = !isLock
     }
 
     func setExpirationStatus(isSetting: Bool) {
-        // swiftlint:disable:next object_literal
-        let icon = isSetting ? UIImage(named: "ic_hourglass_check") : UIImage(named: "ic_hourglass_no_check")
-        self.hourButton.setImage(icon, for: .normal)
+        self.hourButtonLockIcon.isHidden = !isSetting
     }
 
     func setAttachment(number: Int) {
@@ -114,6 +113,7 @@ extension ComposeToolbar {
 
     private func setup() {
         addTopBorder()
+        self.stack.setCustomSpacing(2, after: self.attachmentNumView)
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.lockButton.tintColor = ColorProvider.IconNorm
         self.hourButton.tintColor = ColorProvider.IconNorm

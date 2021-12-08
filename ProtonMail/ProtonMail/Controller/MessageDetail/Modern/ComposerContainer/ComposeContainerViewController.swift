@@ -93,6 +93,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.isModalInPresentation = true
         }
         self.tableView.backgroundColor = .clear
+        self.tableView.separatorStyle = .none
         self.tableView.dropDelegate = self
 
         view.backgroundColor = ColorProvider.BackgroundNorm

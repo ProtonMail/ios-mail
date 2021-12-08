@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol ComposerAttachmentVCDelegate: AnyObject {
@@ -207,6 +208,7 @@ extension ComposerAttachmentVC {
         table.delegate = self
         table.dataSource = self
         table.separatorStyle = .none
+        table.backgroundColor = ColorProvider.BackgroundNorm
         self.tableView = table
     }
 

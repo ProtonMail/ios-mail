@@ -22,6 +22,7 @@
 
 import ProtonCore_UIFoundations
 import UIKit
+import Lottie
 
 class NewMailboxMessageContentView: UIView {
 
@@ -57,7 +58,6 @@ class NewMailboxMessageContentView: UIView {
 
     func removeOriginImages() {
         originalImagesStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
-        originalImagesStackView.addArrangedSubview(SubviewsFactory.selfHuggedView())
     }
 
     private func addSubviews() {
@@ -74,7 +74,6 @@ class NewMailboxMessageContentView: UIView {
 
         contentStackView.addArrangedSubview(secondLineStackView)
         secondLineStackView.addArrangedSubview(originalImagesStackView)
-        originalImagesStackView.addArrangedSubview(SubviewsFactory.selfHuggedView())
         secondLineStackView.addArrangedSubview(StackViewContainer(view: titleLabel, bottom: -2))
         secondLineStackView.addArrangedSubview(messageCountLabel)
         secondLineStackView.addArrangedSubview(UIView())
@@ -154,7 +153,9 @@ private enum SubviewsFactory {
     static var attachmentImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = Asset.mailAttachment.image
+        if let icon = Asset.mailAttachment.image as? UIImage {
+            imageView.image = icon.toTemplateUIImage()
+        }
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
@@ -182,13 +183,6 @@ private enum SubviewsFactory {
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
         return imageView
-    }
-
-    static func selfHuggedView() -> UIView {
-        let view = UIView()
-        view.setContentHuggingPriority(.required, for: .horizontal)
-        [view.widthAnchor.constraint(equalToConstant: 0)].activate()
-        return view
     }
 
     static var messageCountLabel: PaddingLabel {

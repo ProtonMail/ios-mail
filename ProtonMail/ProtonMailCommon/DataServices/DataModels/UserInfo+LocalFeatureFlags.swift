@@ -24,6 +24,13 @@ extension UserInfo {
     }
 
     static var isDarkModeEnable: Bool {
-        false
+        #if DEBUG_ENTERPRISE
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return false
+        }
+        return true
+        #else
+        return false
+        #endif
     }
 }

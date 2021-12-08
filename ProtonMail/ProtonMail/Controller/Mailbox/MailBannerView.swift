@@ -58,7 +58,7 @@ class MailBannerView: UIView {
     private func setUpSelf() {
         contentContainer.backgroundColor = ColorProvider.NotificationError
         contentContainer.layer.cornerRadius = 8
-        contentContainer.layer.apply(shadow: .banner)
+        contentContainer.apply(shadows: .shadowNorm)
     }
 
     required init?(coder: NSCoder) {
