@@ -32,7 +32,7 @@ class NonExpandedHeaderView: UIView {
     let lockImageView = SubviewsFactory.imageView
     let lockImageControl = UIControl(frame: .zero)
     let originImageView = SubviewsFactory.originImageView
-    let timeLabel = UILabel(frame: .zero)
+    let timeLabel = SubviewsFactory.timeLabel
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
     let tagsView = SingleRowTagsView()
@@ -77,7 +77,8 @@ class NonExpandedHeaderView: UIView {
         senderAddressStack.addArrangedSubview(senderAddressLabel)
         senderAddressStack.addArrangedSubview(UIView(frame: .zero))
         senderAddressStack.setCustomSpacing(4, after: lockContainer)
-        senderAddressStack.setCustomSpacing(32, after: senderAddressLabel)
+        // 32 reply button + 8 spacing + 32 more button
+        senderAddressStack.setCustomSpacing(72, after: senderAddressLabel)
 
         contentStackView.addArrangedSubview(StackViewContainer(view: recipientLabel, trailing: -70))
         contentStackView.addArrangedSubview(tagsView)
@@ -90,7 +91,7 @@ class NonExpandedHeaderView: UIView {
     private func setUpLayout() {
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             initialsContainer.trailingAnchor.constraint(equalTo: firstLineStackView.leadingAnchor, constant: -10),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
             initialsContainer.widthAnchor.constraint(equalToConstant: 28)
@@ -104,7 +105,7 @@ class NonExpandedHeaderView: UIView {
 
         [
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
 
@@ -169,5 +170,11 @@ private enum SubviewsFactory {
         button.setTitle(LocalString._show_details, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return button
+    }
+
+    static var timeLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.textAlignment = .right
+        return label
     }
 }

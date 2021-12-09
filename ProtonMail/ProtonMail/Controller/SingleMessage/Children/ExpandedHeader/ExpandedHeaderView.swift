@@ -58,7 +58,7 @@ class ExpandedHeaderView: UIView {
     private func setUpLayout() {
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
             initialsContainer.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
@@ -77,7 +77,7 @@ class ExpandedHeaderView: UIView {
 
         [
             timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
         ].activate()
 
         [
@@ -100,13 +100,13 @@ class ExpandedHeaderView: UIView {
         [
             senderEmailControl.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
             senderEmailControl.leadingAnchor.constraint(equalTo: lockContainer.trailingAnchor, constant: 4),
-            senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -48),
+            senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -88),
             senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -8)
         ].activate()
 
         [
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
     }
