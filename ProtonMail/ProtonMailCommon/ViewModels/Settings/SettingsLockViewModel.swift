@@ -27,6 +27,7 @@ enum SettingLockSection : Int {
     case enableProtection = 0
     case changePin = 1
     case timing = 2
+    case mainKey = 3
     
     var description: NSAttributedString {
         switch self {
@@ -38,6 +39,8 @@ enum SettingLockSection : Int {
             return desc
         case .timing:
             return "Timing".apply(style: .DefaultSmallWeek)
+        case .mainKey:
+            return "Enable MainKey protection".apply(style: .DefaultSmallWeek)
         default:
             return "".apply(style: .DefaultSmallWeek)
         }
@@ -69,6 +72,7 @@ protocol SettingsLockViewModel : AnyObject {
     var lockOn: Bool { get }
     var isTouchIDEnabled: Bool { get }
     var isPinCodeEnabled: Bool { get }
+    var isAppKeyEnabled: Bool { get }
     var auto_logout_time_options: [Int] { get }
     var biometricType: BiometricType { get }
     var appPINTitle: String { get }
@@ -81,6 +85,8 @@ protocol SettingsLockViewModel : AnyObject {
 }
 
 class SettingsLockViewModelImpl : SettingsLockViewModel {
+    // Local feature flag to disable the random pin protection toggle
+    private var enableRandomProtection = false
     var protectionItems: [ProtectionItem] = [.none, .pinCode]
     
     var sections: [SettingLockSection] = [.enableProtection, .changePin, .timing]
@@ -102,6 +108,10 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
 
     var isTouchIDEnabled: Bool {
         return self.userCacheStatus.isTouchIDEnabled
+    }
+    
+    var isAppKeyEnabled: Bool {
+        return self.userCacheStatus.isAppKeyEnabled
     }
 
     var appPINTitle: String {
@@ -154,6 +164,9 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
 
             if self.userCacheStatus.isPinCodeEnabled || self.userCacheStatus.isTouchIDEnabled {
                 sections.append(.timing)
+                if self.enableRandomProtection {
+                    sections.append(.mainKey)
+                }
             }
         } else {
             if self.userCacheStatus.isPinCodeEnabled {
@@ -171,6 +184,20 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             completion()
         }
     }
+    
+    func enableRandomPinProtection( completion: @escaping () -> Void) {
+        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+        keymaker.activate(BioProtection()) { _ in
+            completion()
+        }
+    }
+    
+    func disableRandomPinProtection() {
+        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+        keymaker.activate(BioProtection()) { _ in
+            
+        }
+    }
 
     func disableProtection() {
         if userCachedStatus.isPinCodeEnabled {
@@ -179,6 +206,10 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
         if userCachedStatus.isTouchIDEnabled {
             keymaker.deactivate(BioProtection())
         }
+        if let randomProtection = RandomPinProtection.randomPin {
+            keymaker.deactivate(randomProtection)
+        }
+        userCachedStatus.keymakerRandomkey = nil
     }
 
     func getBioProtectionTitle() -> String {

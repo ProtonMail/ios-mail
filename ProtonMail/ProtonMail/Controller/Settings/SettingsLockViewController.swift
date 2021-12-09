@@ -37,6 +37,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         static let cellHeight: CGFloat = 48.0
         static let changePinCodeCell: String = "ChangePinCode"
         static let enableProtectionCell: String = "EnableProtection"
+        static let switchCell: String = "switch_table_view_cell"
     }
     
     func set(viewModel: SettingsLockViewModel) {
@@ -111,6 +112,8 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             return 1
         case .timing:
             return 1
+        case .mainKey:
+            return 1
         }
     }
     
@@ -161,6 +164,27 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
             cell.configureCell(left: eSection.description.string, right: text, imageType: .arrow)
+            return cell
+        case .mainKey:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
+            
+            let appKeyEnabled = self.viewModel.isAppKeyEnabled
+            cell.configCell(eSection.description.string, bottomLine: "", status: appKeyEnabled) { _, newStatus, feedback in
+                if newStatus {
+                    if let randomProtection = RandomPinProtection.randomPin {
+                        keymaker.deactivate(randomProtection)
+                    }
+                    userCachedStatus.keymakerRandomkey = nil
+                } else {
+                    userCachedStatus.keymakerRandomkey = String.randomString(32)
+                    if let randomProtection = RandomPinProtection.randomPin {
+                        keymaker.activate(randomProtection) { _ in
+                            
+                        }
+                    }
+                }
+                feedback(true)
+            }
             return cell
         }
     }
@@ -235,6 +259,8 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             alertController.popoverPresentationController?.sourceView = cell ?? self.view
             alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
             present(alertController, animated: true, completion: nil)
+        case .mainKey:
+            break
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
