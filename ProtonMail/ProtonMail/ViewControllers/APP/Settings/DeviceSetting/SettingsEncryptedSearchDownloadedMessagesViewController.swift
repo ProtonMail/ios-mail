@@ -22,6 +22,15 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
     internal var viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
     
+    private lazy var fileByteCountFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = .useAll//[.useMB, .useGB]
+        formatter.countStyle = .file
+        formatter.includesUnit = true
+        formatter.isAdaptive = true
+        return formatter
+    }()
+    
     struct Key  {
         static let cellHeightMessageHistoryComplete: CGFloat = 108.0
         static let cellHeightMessageHistoryPartial: CGFloat = 128.0
@@ -183,22 +192,27 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .storageLimit:
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
             if let sliderCell = cell as? SliderTableViewCell {
-                //let factor: Float = 1 //update if MB or GB
-                //let representation: String = factor == 1 ? "MB" : "GB"
-                //let freeDiskSpaceInMB: Float = Float(EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!)/Float(1_000_000)
                 let sliderSteps: [Float] = [0,1,2,3,4,5]
-                
-                let bottomLinePrefix: String = "Current selection: "
-                let bottomLine: String = bottomLinePrefix + String(self.viewModel.storageLimit) //+ representation
-                sliderCell.configCell(eSection.title, bottomLine, currentSliderValue: self.viewModel.storageLimit, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
+                let sliderStepsDisplay: [Float] = [200_000_000, 400_000_000, 600_000_000, 800_000_000, 1_000_000_000, 1_200_000_000]
+
+                let storageLimit: String = self.fileByteCountFormatter.string(fromByteCount: self.viewModel.storageLimit)
+                let bottomLine: String = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + storageLimit
+
+                let index: Int = sliderStepsDisplay.firstIndex(of: Float(self.viewModel.storageLimit)) ?? 2
+                //print("index: \(index), limit: \(self.viewModel.storageLimit)")
+                let currentSliderValue: Float = sliderSteps[index]
+                sliderCell.slider.value = currentSliderValue //initialize here?
+                //print("current slider value: \(currentSliderValue)")
+                sliderCell.configCell(eSection.title, bottomLine, currentSliderValue: currentSliderValue, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
 
                     let newIndex: Int = Int((newSliderValue).rounded())
                     sliderCell.slider.setValue(Float(newIndex), animated: false)  //snap to increments
                     
                     let actualValue:Float = sliderSteps[newIndex]
-                    
-                    self.viewModel.storageLimit = actualValue
-                    sliderCell.bottomLabel.text = bottomLinePrefix + String(actualValue)// + representation
+                    let displayValue: Float = sliderStepsDisplay[newIndex]
+
+                    self.viewModel.storageLimit = Int64(displayValue)
+                    sliderCell.bottomLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: Int64(displayValue))
 
                     //update storageusage row with storage limit
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
@@ -214,9 +228,10 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String = (usersManager.firstUser?.userInfo.userId)!
                 let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
-                let storageLimit: Float = self.viewModel.storageLimit
-                let bottomLine = sizeOfIndex + " of " + String(storageLimit) + " GB"
-                buttonCell.configCell(eSection.title, bottomLine, "Clear"){
+                let storageLimit: String = self.fileByteCountFormatter.string(fromByteCount: self.viewModel.storageLimit)
+                let bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
+
+                buttonCell.configCell(eSection.title, bottomLine, LocalString._encrypted_search_downloaded_messages_storage_used_button_title){
                     self.showAlertDeleteDownloadedMessages()
                 }
             }
@@ -269,22 +284,4 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         //show alert
         self.present(alert, animated: true, completion: nil)
     }
-
-    /*private func calculateStorageSize() -> (value: Float, representation: String) {
-        let freeDiskSpace: Float = Float(EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!)
-        //print("free disk space: \(freeDiskSpace)")
-        if freeDiskSpace/Float(1_000_000_000) > 1 {
-            //gigabyte
-            return (freeDiskSpace/Float(1_000_000), "GB")
-        }else if freeDiskSpace/Float(1_000_000) > 1 {
-            //mega byte
-            return (freeDiskSpace/Float(1_000), "MB")
-        } else if freeDiskSpace/Float(1_000) > 1 {
-            //kilo byte
-            return (freeDiskSpace/Float(1), "KB")
-        } else {
-            //byte
-            return (Float(0), "B")
-        }
-    }*/
 }

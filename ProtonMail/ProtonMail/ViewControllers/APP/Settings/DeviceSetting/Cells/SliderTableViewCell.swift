@@ -74,6 +74,7 @@ import UIKit
         topLabel.text = topLine
         bottomLabel.text = bottomLine
 
+        print("value of slider: \(self.slider.value)")
         self.slider.setValue(currentSliderValue, animated: false)
         self.slider.minimumValue = sliderMinValue
         self.slider.maximumValue = sliderMaxValue

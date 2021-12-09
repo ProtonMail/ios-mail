@@ -18,5 +18,5 @@
 import Foundation
 
 protocol EncryptedSearchDownloadedMessagesCacheProtocol {
-    var storageLimit: Float { get set }
+    var storageLimit: Int64 { get set }
 }

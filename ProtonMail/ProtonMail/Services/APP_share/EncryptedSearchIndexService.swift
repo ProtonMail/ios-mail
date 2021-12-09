@@ -19,8 +19,10 @@ public class EncryptedSearchIndexService {
         databaseSchema = DatabaseEntries()
         searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
         fileByteCountFormatter = ByteCountFormatter()
-        fileByteCountFormatter?.allowedUnits = [.useMB]
+        fileByteCountFormatter?.allowedUnits = .useAll//[.useMB]
         fileByteCountFormatter?.countStyle = .file
+        fileByteCountFormatter?.includesUnit = true
+        fileByteCountFormatter?.isAdaptive = true
 
         // Create initial connection if not existing
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
