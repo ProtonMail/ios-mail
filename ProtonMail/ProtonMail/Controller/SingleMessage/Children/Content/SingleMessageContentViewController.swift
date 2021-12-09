@@ -17,7 +17,7 @@ class SingleMessageContentViewController: UIViewController {
     private var contentOffsetToPreserve: CGPoint = .zero
     private let parentScrollView: UIScrollView
     private let navigationAction: (SingleMessageNavigationAction) -> Void
-    private lazy var customView = SingleMessageContentView()
+    let customView: SingleMessageContentView
     private var isExpandingHeader = false
 
     private(set) var messageBodyViewController: NewMessageBodyViewController!
@@ -31,7 +31,9 @@ class SingleMessageContentViewController: UIViewController {
         self.viewModel = viewModel
         self.parentScrollView = parentScrollView
         self.navigationAction = navigationAction
-
+        let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
+        let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
+        self.customView =  SingleMessageContentView(replyState: replyState)
         if viewModel.message.numAttachments != 0 {
             attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
         }
@@ -75,7 +77,7 @@ class SingleMessageContentViewController: UIViewController {
         }
 
         addObservations()
-        setUpMoreAction()
+        setUpHeaderActions()
         embedChildren()
         setUpFooterButtons()
     }
@@ -142,6 +144,16 @@ class SingleMessageContentViewController: UIViewController {
     @objc
     private func moreButtonTapped() {
         navigationAction(.more(messageId: viewModel.message.messageID))
+    }
+
+    @objc
+    private func replyActionButtonTapped() {
+        switch customView.replyState {
+        case .reply:
+            replyButtonTapped()
+        case .replyAll:
+            replyAllButtonTapped()
+        }
     }
 
     private func showBanner() {
@@ -241,8 +253,11 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.isExpanded.toggle()
     }
 
-    private func setUpMoreAction() {
+    private func setUpHeaderActions() {
+        // Action
         customView.messageHeaderContainer.moreControl.addTarget(self, action: #selector(self.moreButtonTapped), for: .touchUpInside)
+        customView.messageHeaderContainer.replyControl.addTarget(self, action: #selector(self.replyActionButtonTapped), for: .touchUpInside)
+
     }
 
     private func embedChildren() {

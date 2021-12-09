@@ -21,32 +21,76 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import UIKit
 
 class HeaderContainerView: UIView {
+    enum ReplyState {
+        static func from(moreThanOneContact: Bool) -> Self {
+            moreThanOneContact ? .replyAll : .reply
+        }
 
-    init() {
+        case reply
+        case replyAll
+
+        var buttonAccessibilityLabel: String {
+            switch self {
+            case .reply:
+                return LocalString._general_reply_button
+            case .replyAll:
+                return LocalString._general_replyall_button
+            }
+        }
+
+        var imageView: UIImageView {
+            switch self {
+            case .reply:
+                return SubviewsFactory.replyImageView
+            case .replyAll:
+                return SubviewsFactory.replyAllImageView
+            }
+        }
+    }
+
+    init(replyState: ReplyState) {
+        self.replyState = replyState
+        self.replyImageView = replyState.imageView
         super.init(frame: .zero)
         setUp()
         addSubviews()
         setUpLayout()
     }
 
+    let replyState: ReplyState
+    let replyControl = UIControl(frame: .zero)
     let moreControl = UIControl(frame: .zero)
     let contentContainer = UIView(frame: .zero)
-    let moreImageView = SubviewsFactory.moreImageView
+    private let moreImageView = SubviewsFactory.moreImageView
+    private let replyImageView: UIImageView
 
     private func setUp() {
+        replyControl.isAccessibilityElement = true
+        replyControl.accessibilityTraits = .button
+        replyControl.accessibilityLabel = replyState.buttonAccessibilityLabel
+
         moreControl.isAccessibilityElement = true
         moreControl.accessibilityTraits = .button
         moreControl.accessibilityLabel = LocalString._general_more
 
-        accessibilityElements = [moreControl, contentContainer]
+        accessibilityElements = [replyControl, moreControl, contentContainer]
     }
 
     private func addSubviews() {
         addSubview(contentContainer)
+        addSubview(replyControl)
         addSubview(moreControl)
+        replyControl.addSubview(replyImageView)
         moreControl.addSubview(moreImageView)
+        replyControl.layer.borderWidth = 1
+        replyControl.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        replyControl.setCornerRadius(radius: 8)
+        moreControl.layer.borderWidth = 1
+        moreControl.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        moreControl.setCornerRadius(radius: 8)
     }
 
     private func setUpLayout() {
@@ -60,18 +104,33 @@ class HeaderContainerView: UIView {
         [contentContainer.widthAnchor.constraint(equalTo: widthAnchor)].activate()
 
         [
-            moreControl.topAnchor.constraint(equalTo: topAnchor),
-            moreControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            moreControl.widthAnchor.constraint(equalToConstant: 40),
-            moreControl.heightAnchor.constraint(equalToConstant: 90),
+            replyControl.topAnchor.constraint(equalTo: topAnchor, constant: 44),
+            replyControl.trailingAnchor.constraint(equalTo: moreControl.leadingAnchor, constant: -8),
+            replyControl.widthAnchor.constraint(equalToConstant: 32),
+            replyControl.heightAnchor.constraint(equalToConstant: 32),
+            replyControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+        ].activate()
+
+        [
+            moreControl.topAnchor.constraint(equalTo: topAnchor, constant: 44),
+            moreControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            moreControl.widthAnchor.constraint(equalToConstant: 32),
+            moreControl.heightAnchor.constraint(equalToConstant: 32),
             moreControl.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ].activate()
 
         [
-            moreImageView.topAnchor.constraint(equalTo: moreControl.topAnchor, constant: 48),
-            moreImageView.trailingAnchor.constraint(equalTo: moreControl.trailingAnchor, constant: -16),
-            moreImageView.heightAnchor.constraint(equalToConstant: 20),
-            moreImageView.widthAnchor.constraint(equalToConstant: 20)
+            replyImageView.centerXAnchor.constraint(equalTo: replyControl.centerXAnchor),
+            replyImageView.centerYAnchor.constraint(equalTo: replyControl.centerYAnchor),
+            replyImageView.heightAnchor.constraint(equalToConstant: 16),
+            replyImageView.widthAnchor.constraint(equalToConstant: 16)
+        ].activate()
+
+        [
+            moreImageView.centerXAnchor.constraint(equalTo: moreControl.centerXAnchor),
+            moreImageView.centerYAnchor.constraint(equalTo: moreControl.centerYAnchor),
+            moreImageView.heightAnchor.constraint(equalToConstant: 16),
+            moreImageView.widthAnchor.constraint(equalToConstant: 16)
         ].activate()
     }
 
@@ -85,6 +144,20 @@ private enum SubviewsFactory {
     static var moreImageView: UIImageView {
         let imageView = UIImageView()
         imageView.image = Asset.dotsButtonIcon.image
+        imageView.tintColor = ColorProvider.IconWeak
+        return imageView
+    }
+
+    static var replyImageView: UIImageView {
+        let imageView = UIImageView()
+        imageView.image = Asset.replyButtonIcon.image
+        imageView.tintColor = ColorProvider.IconWeak
+        return imageView
+    }
+
+    static var replyAllImageView: UIImageView {
+        let imageView = UIImageView()
+        imageView.image = Asset.replyAllButtonIcon.image
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }

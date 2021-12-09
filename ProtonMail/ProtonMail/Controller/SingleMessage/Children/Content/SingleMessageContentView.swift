@@ -3,16 +3,18 @@ import UIKit
 
 class SingleMessageContentView: UIView {
 
+    let replyState: HeaderContainerView.ReplyState
     let bannerContainer = UIView()
     let messageBodyContainer = UIView()
     let showHideHistoryButtonContainer = SingleMessageContentViewHistoryButtonContainer()
-    let messageHeaderContainer = HeaderContainerView()
+    lazy var messageHeaderContainer = HeaderContainerView(replyState: replyState)
     let attachmentContainer = UIView()
     let stackView = UIStackView.stackView(axis: .vertical)
     let separator = SubviewsFactory.smallSeparatorView
     let footerButtons = SingleMessageFooterButtons()
 
-    init() {
+    init(replyState: HeaderContainerView.ReplyState) {
+        self.replyState = replyState
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
