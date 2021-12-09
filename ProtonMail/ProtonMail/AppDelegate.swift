@@ -155,19 +155,6 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        #if DEBUG
-        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-        PMAPIService.noTrustKit = true
-
-        if CommandLine.arguments.contains("-disableAnimations") {
-            UIView.setAnimationsEnabled(false)
-        }
-        #else
-
-        #endif
-        TrustKitWrapper.start(delegate: self)
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
@@ -185,6 +172,15 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        #if DEBUG
+        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
+        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
+        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
+        #endif
         Analytics.shared.setup()
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
