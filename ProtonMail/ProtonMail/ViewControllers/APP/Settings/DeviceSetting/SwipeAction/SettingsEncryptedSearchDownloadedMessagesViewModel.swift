@@ -49,13 +49,9 @@ class SettingsEncryptedSearchDownloadedMessagesViewModel {
     
     init(encryptedSearchDownloadedMessagesCache: EncryptedSearchDownloadedMessagesCacheProtocol) {
         self.encryptedSearchDownloadedMessagesCache = encryptedSearchDownloadedMessagesCache
-        //self.storageLimit = 600.0 //set initial value for the storage limit
     }
-    
-    //var maxStorageSize: Float = 1
-    var minStorageSize: Float = 200.0
-    
-    var storageLimit: Float {
+
+    var storageLimit: Int64 {
         get {
             return encryptedSearchDownloadedMessagesCache.storageLimit
         }
