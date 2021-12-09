@@ -95,6 +95,22 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let darkModeFlag = "dark_mode_flag"
         static let localSystemUpTime = "localSystemUpTime"
         static let localServerTime = "localServerTime"
+        
+        // Random pin protection
+        static let randomPinForProtection = "randomPinForProtection"
+    }
+    
+    var keymakerRandomkey: String? {
+        get {
+            return KeychainWrapper.keychain.string(forKey: Key.randomPinForProtection)
+        }
+        set {
+            if let value = newValue {
+                KeychainWrapper.keychain.set(value, forKey: Key.randomPinForProtection)
+            } else {
+                KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
+            }
+        }
     }
     
     var primaryUserSessionId: String? {
@@ -226,7 +242,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     
     var mobileSignature : String {
         get {
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
                 case let locked = Locked<String>(encryptedValue: cypherData),
                 let customSignature = try? locked.unlock(with: mainKey) else
@@ -238,7 +254,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             return customSignature
         }
         set {
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
             {
                 return
@@ -249,7 +265,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
     
     func migrateLagcy() {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
             case let locked = Locked<String>(encryptedValue: cypherData),
             let customSignature = try? locked.lagcyUnlock(with: mainKey) else
@@ -345,14 +361,14 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
     
     func getMobileSignature(by uid: String) -> String {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature),
             let encryptedSignature = signatureData[uid] as? Data ,
             case let locked = Locked<String>(encryptedValue: encryptedSignature),
             let customSignature = try? locked.unlock(with: mainKey) else
         {
             //Get data from legacy
-            if let mainKey = keymaker.mainKey,
+            if let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
                 case let locked = Locked<String>(encryptedValue: cypherData),
                 let customSignature = try? locked.unlock(with: mainKey) {
@@ -370,7 +386,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
     
     func setMobileSignature(uid: String, signature: String) {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let locked = try? Locked<String>(clearValue: signature, with: mainKey) else
         {
             return
@@ -464,6 +480,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         
         ////
         getShared().removeObject(forKey: Key.dohWarningAsk)
+        
+        //
+        KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
                         
         getShared().synchronize()
     }
@@ -509,6 +528,10 @@ extension UserCachedStatus : CacheStatusInject {
     
     var isPinCodeEnabled : Bool {
         return keymaker.isProtectorActive(PinProtection.self)
+    }
+    
+    var isAppKeyEnabled: Bool {
+        return keymaker.isProtectorActive(RandomPinProtection.self) == false
     }
     
     var pinFailedCount : Int {

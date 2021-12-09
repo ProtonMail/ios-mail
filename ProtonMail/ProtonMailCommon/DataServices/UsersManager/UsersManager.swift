@@ -160,6 +160,7 @@ class UsersManager : Service, Migrate {
      - Parameter user: user information
      **/
     func add(auth: AuthCredential, user: UserInfo) {
+        self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         //let userID = user.userId
         //let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
@@ -309,7 +310,7 @@ class UsersManager : Service, Migrate {
     }
     
     private func oldUserInfo() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
         {
             return nil
@@ -320,7 +321,7 @@ class UsersManager : Service, Migrate {
     }
     
     private func oldAuthFetch() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore),
             case let locked = Locked<Data>(encryptedValue: encryptedData),
             let data = try? locked.unlock(with: mainKey),
@@ -333,7 +334,7 @@ class UsersManager : Service, Migrate {
     
     private func oldMailboxPassword() -> String? {
         guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
-            let key = keymaker.mainKey else
+            let key = keymaker.mainKey(by: RandomPinProtection.randomPin) else
         {
             return nil
         }
@@ -342,7 +343,7 @@ class UsersManager : Service, Migrate {
     }
     
     private func oldUserName() -> String? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
         {
             return nil
@@ -444,7 +445,7 @@ class UsersManager : Service, Migrate {
     }
     
     func save() {
-        guard let mainKey = keymaker.mainKey else {
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             return
         }
         
@@ -622,7 +623,7 @@ extension UsersManager {
     var disconnectedUsers: Array<DisconnectedUserHandle> {
         get {
             // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
                 case let locked = Locked<Data>(encryptedValue: encryptedData),
                 let data = try? locked.unlock(with: mainKey),
@@ -633,7 +634,7 @@ extension UsersManager {
             return loggedOutUserHandles
         }
         set {
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let data = try? JSONEncoder().encode(newValue),
                 let locked = try? Locked(clearValue: data, with: mainKey) else
             {
@@ -742,7 +743,7 @@ extension UsersManager {
     }
     
     func oldAuthFetchLagcy() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore),
             case let locked = Locked<Data>(encryptedValue: encryptedData),
             let data = try? locked.lagcyUnlock(with: mainKey),
@@ -754,7 +755,7 @@ extension UsersManager {
     }
     
     func oldUserInfoLagcy() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
         {
             return nil
@@ -765,7 +766,7 @@ extension UsersManager {
     
     func oldMailboxPasswordLagcy() -> String? {
         guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
-            let key = keymaker.mainKey else
+            let key = keymaker.mainKey(by: RandomPinProtection.randomPin) else
         {
             return nil
         }
@@ -774,7 +775,7 @@ extension UsersManager {
     }
     
     func oldUserNameLagcy() -> String? {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
         {
             return nil
@@ -787,7 +788,7 @@ extension UsersManager {
     
     func disconnedUsersLagcy() -> Array<DisconnectedUserHandle> {
         // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
             case let locked = Locked<Data>(encryptedValue: encryptedData),
             let data = try? locked.lagcyUnlock(with: mainKey),
@@ -797,7 +798,22 @@ extension UsersManager {
         }
         return loggedOutUserHandles
     }
-    
+
+    func cleanRandomKeyIfNeeded() {
+        // Random key status is in the key chain
+        // That means if the users delete the app
+        // The key chain could keep the old data
+        // If there is not user data, remove the random protection
+        guard let _ = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore) ?? KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore),
+              !self.users.isEmpty else {
+                  if let randomProtection = RandomPinProtection.randomPin {
+                keymaker.deactivate(randomProtection)
+            }
+            userCachedStatus.keymakerRandomkey = nil
+            RandomPinProtection.removeCyphertext(from: KeychainWrapper.keychain)
+            return
+        }
+    }
 }
 
 extension UsersManager: APIServiceDelegate {

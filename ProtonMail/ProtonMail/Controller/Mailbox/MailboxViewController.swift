@@ -27,7 +27,7 @@ import SkeletonView
 import SwipyCell
 import ProtonCore_Services
 import ProtonCore_UIFoundations
-import Alamofire
+//import Alamofire
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator

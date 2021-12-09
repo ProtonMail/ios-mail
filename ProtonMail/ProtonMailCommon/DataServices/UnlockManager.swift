@@ -35,6 +35,7 @@ enum SignInUIFlow : Int {
 protocol CacheStatusInject {
     var isPinCodeEnabled : Bool { get }
     var isTouchIDEnabled : Bool { get }
+    var isAppKeyEnabled: Bool { get }
     var pinFailedCount : Int { get set }
 }
 

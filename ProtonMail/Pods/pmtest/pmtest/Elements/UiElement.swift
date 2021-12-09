@@ -132,7 +132,7 @@ open class UiElement {
         self.index = index
         return self
     }
-    
+
     public func containing(_ elementType: XCUIElement.ElementType, _ identifier: String) -> UiElement {
         self.containType = elementType
         self.containIdentifier = identifier
@@ -264,7 +264,7 @@ open class UiElement {
         Wait().forElement(uiElement()).swipeUp()
         return self
     }
-    
+
     @discardableResult
     public func tapThenSwipeLeft( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
         Wait().forElement(uiElement())
@@ -432,7 +432,7 @@ open class UiElement {
         XCTAssertTrue(labelValue == label, "Expected Element text label to be: \"\(label)\", but found: \"\(labelValue)\"")
         return self
     }
-    
+
     @discardableResult
     public func checkContainsLabel(_ label: String) -> UiElement {
         guard let labelValue = uiElement().label as? String else {
@@ -564,16 +564,6 @@ open class UiElement {
         /// Filer out XCUIElementQuery based on isHittable state.
         if elementHittable == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
-        }
-        
-        /// Matching elements by the sub-elements it contains
-        if containType != nil && containIdentifier != nil {
-            uiElementQuery = uiElementQuery!.containing(containType!, identifier: containIdentifier!)
-        }
-        
-        if containLabel != nil {
-            let predicate = NSPredicate(format: "label CONTAINS[c] %@", containLabel!)
-            uiElementQuery = uiElementQuery!.matching(predicate)
         }
 
         /// Return element from XCUIElementQuery based on its index.

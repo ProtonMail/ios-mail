@@ -35,4 +35,6 @@ class CacheStatusStub: CacheStatusInject {
 
     var isPinCodeEnabledStub: Bool = false
     var isTouchIDEnabledStub: Bool = false
+    
+    var isAppKeyEnabled: Bool = true
 }

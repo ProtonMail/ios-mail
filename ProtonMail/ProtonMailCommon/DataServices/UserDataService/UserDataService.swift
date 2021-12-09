@@ -30,6 +30,7 @@ import ProtonCore_APIClient
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_Keymaker
 
 typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
@@ -273,7 +274,7 @@ class UserDataService : Service, HasLocalStorage {
                        addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
         let authCredential = currentAuth
         let userInfo = user
-        guard let _ = keymaker.mainKey else
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else
         {
             completion?(nil, nil, NSError.lockError())
             return
@@ -299,7 +300,7 @@ class UserDataService : Service, HasLocalStorage {
         
         let authCredential = currentAuth
         let userInfo = user
-        guard let _ = keymaker.mainKey else
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else
         {
             completion(nil, nil, NSError.lockError())
             return
@@ -325,7 +326,7 @@ class UserDataService : Service, HasLocalStorage {
                                      userInfo: UserInfo,
                                      remote status: Bool,
                                      completion: @escaping UserInfoBlock) {
-        guard keymaker.mainKey != nil else {
+        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -352,7 +353,7 @@ class UserDataService : Service, HasLocalStorage {
                                 _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
         let authCredential = currentAuth
         let userInfo = user
-        guard let _ = keymaker.mainKey else
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else
         {
             completion(nil, nil, NSError.lockError())
             return
@@ -480,7 +481,7 @@ class UserDataService : Service, HasLocalStorage {
                 _username = addr.email
             }
         }
-        guard keymaker.mainKey != nil else {
+        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -646,7 +647,7 @@ class UserDataService : Service, HasLocalStorage {
         let authCredential = currentAuth
         let userInfo = user
 
-        guard let _ = keymaker.mainKey else {
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -674,7 +675,7 @@ class UserDataService : Service, HasLocalStorage {
             }
         }
 
-        guard let _ = keymaker.mainKey else {
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -750,7 +751,7 @@ class UserDataService : Service, HasLocalStorage {
         let oldAuthCredential = currentAuth
         let userInfo = user
 
-        guard let _ = keymaker.mainKey else {
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -766,7 +767,7 @@ class UserDataService : Service, HasLocalStorage {
     func updateSignature(auth currentAuth: AuthCredential,
                          user: UserInfo,
                          _ signature: String, completion: @escaping CompletionBlock) {
-        guard let _ = keymaker.mainKey else {
+        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(nil, nil, NSError.lockError())
             return
         }
