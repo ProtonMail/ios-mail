@@ -151,16 +151,6 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    // Private Function
-    /* func testCheckIfIndexingIsComplete() throws {
-        //TODO
-    } */
-
-    // Private function
-    /* func testCleanUpAfterIndexing() throws {
-        //TODO
-    } */
-
     func testPauseAndResumeIndexingByUser() throws {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingByUser
 
@@ -232,11 +222,6 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
-    // Private Function
-    /*func testPauseAndResumeIndexing() throws {
-        //TODO
-    }*/
-
     func testUpdateSearchIndex() throws {
         //TODO
     }
@@ -257,7 +242,14 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     func testDeleteMessageFromSearchIndex() throws {
-        //TODO
+        let sut = EncryptedSearchService.shared.deleteMessageFromSearchIndex
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
+        sut(message)
+        // Wait for the message to be removed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 1)
+        }
     }
 
     func testDeleteSearchIndex() throws {
@@ -268,6 +260,120 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertFalse(EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID))
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
+
+    func testConvertMessageToESMessage() throws {
+        let sut = EncryptedSearchService.shared.convertMessageToESMessage
+        let message: Message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
+        let result: ESMessage = sut(message)
+
+        XCTAssertEqual(result.ID, message.messageID)
+        XCTAssertEqual(result.Order, Int(truncating: message.order))
+        
+        XCTAssertEqual(result.ConversationID, message.conversationID)
+        XCTAssertEqual(result.Subject, message.subject)
+        XCTAssertEqual(result.Unread, message.unRead ? 1:0)
+        XCTAssertEqual(result.`Type`, Int(truncating: message.messageType))
+        //XCTAssertEqual(result.SenderAddress, message.s)
+        //XCTAssertEqual(result.SenderName, message.order)
+        XCTAssertEqual(result.Time, message.time!.timeIntervalSince1970)
+        XCTAssertEqual(result.Size, Int(truncating: message.size))
+        XCTAssertEqual(result.IsEncrypted, message.isE2E ? 1:0)
+        XCTAssertEqual(result.ExpirationTime, message.expirationTime)
+        XCTAssertEqual(result.IsReplied, message.replied ? 1:0)
+        XCTAssertEqual(result.IsRepliedAll, message.repliedAll ? 1:0)
+        XCTAssertEqual(result.IsForwarded, message.forwarded ? 1:0)
+        XCTAssertEqual(result.SpamScore, Int(truncating: message.spam))
+        XCTAssertEqual(result.AddressID, message.addressID)
+        XCTAssertEqual(result.NumAttachments, Int(truncating: message.numAttachments))
+        XCTAssertEqual(result.Flags, Int(truncating: message.flags))
+        XCTAssertEqual(result.LabelIDs, message.labels)
+        //XCTAssertEqual(result.ExternalID, message.id)
+        XCTAssertEqual(result.Body, message.body)
+        XCTAssertEqual(result.Header, message.header)
+        XCTAssertEqual(result.MIMEType, message.mimeType)
+        XCTAssertEqual(result.UserID, message.userID)
+        XCTAssertEqual(result.Starred, message.starred)
+        XCTAssertEqual(result.isDetailsDownloaded, message.isDetailDownloaded)
+        /*XCTAssertEqual(result.Order, message.order)
+        XCTAssertEqual(result.Order, message.order)
+        XCTAssertEqual(result.Order, message.order)
+        XCTAssertEqual(result.Order, message.order)*/
+    }
+
+    func testFetchMessages() throws {
+        //TODO
+    }
+
+    func testFetchMessageDetailForMessage() throws {
+        //TODO
+    }
+
+    func testProcessPageOneByOne() throws {
+        //TODO
+    }
+
+    func testGetMessageDetailsForSingleMessage() throws {
+        //TODO
+    }
+
+    func testDecryptBodyIfNeeded() throws {
+        //TODO
+    }
+
+    func testDecryptAndExtractDataSingleMessage() throws {
+        //TODO
+    }
+
+    func testCreateEncryptedContent() throws {
+        //TODO
+    }
+
+    func testAddMessageKewordsToSearchIndex() throws {
+        //TODO
+    }
+
+    func testSlowDownIndexing() throws {
+        //TODO
+    }
+
+    func testSpeedUpIndexing() throws {
+        //TODO
+    }
+
+    func testSearch() throws {
+        //TODO
+    }
+
+    func testClearSearchState() throws {
+        //TODO
+    }
+    
+    func testRegisterBGProcessingTask() throws {
+        //TODO
+    }
+
+    func testRegisterBGAppRefreshTask() throws {
+        //TODO
+    }
+
+    func testGetTotalAvailableMemory() throws {
+        //TODO
+    }
+
+    // Private Function
+    /* func testCheckIfIndexingIsComplete() throws {
+        //TODO
+    } */
+
+    // Private function
+    /* func testCleanUpAfterIndexing() throws {
+        //TODO
+    } */
+
+    // Private Function
+    /*func testPauseAndResumeIndexing() throws {
+        //TODO
+    }*/
 
     // Private Function
     /* func testUpdateMessageMetadataInSearchIndex() throws {
@@ -283,10 +389,6 @@ class EncryptedSearchTests: XCTestCase {
     /* func testGetTotalMessages() throws {
         //TODO
     } */
-
-    func testConvertMessageToESMessage() throws {
-        //TODO
-    }
 
     // Private function
     /* func testJsonStringToESMessage() throws {
@@ -308,14 +410,6 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     } */
 
-    func testFetchMessages() throws {
-        //TODO
-    }
-
-    func testFetchMessageDetailForMessage() throws {
-        //TODO
-    }
-
     // Private Function
     /* func testDownloadAndProcessPage() throws {
         //TODO
@@ -326,14 +420,6 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     } */
 
-    func testProcessPageOneByOne() throws {
-        //TODO
-    }
-
-    func testGetMessageDetailsForSingleMessage() throws {
-        //TODO
-    }
-
     // TODO remove?
     //func testParseMessageObjectFromResponse() throws {
         //TODO
@@ -343,18 +429,6 @@ class EncryptedSearchTests: XCTestCase {
     /* func testGetMessage() throws {
         //TODO
     } */
-
-    func testDecryptBodyIfNeeded() throws {
-        //TODO
-    }
-
-    func testDecryptAndExtractDataSingleMessage() throws {
-        //TODO
-    }
-
-    func testCreateEncryptedContent() throws {
-        //TODO
-    }
 
     // Private function
     /*func testGetCipher() throws {
@@ -392,30 +466,10 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     } */
 
-    func testAddMessageKewordsToSearchIndex() throws {
-        //TODO
-    }
-
-    func testSlowDownIndexing() throws {
-        //TODO
-    }
-
-    func testSpeedUpIndexing() throws {
-        //TODO
-    }
-
-    func testSearch() throws {
-        //TODO
-    }
-
     // Private function
     /* func testHasSearchedBefore() throws {
         //TODO
     } */
-
-    func testClearSearchState() throws {
-        //TODO
-    }
 
     // Private function
     /* func testGetSearcher() throws {
@@ -490,10 +544,6 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     } */
 
-    func testRegisterBGProcessingTask() throws {
-        //TODO
-    }
-
     // Private function
     /* func testCancelBGProcessingTask() throws {
         //TODO
@@ -508,10 +558,6 @@ class EncryptedSearchTests: XCTestCase {
     /* func testBgProcessingTask() throws {
         //TODO
     } */
-
-    func testRegisterBGAppRefreshTask() throws {
-        //TODO
-    }
 
     // Private function
     /* func testCancelBGAppRefreshTask() throws {
@@ -597,10 +643,6 @@ class EncryptedSearchTests: XCTestCase {
     /* func testResponseToHeat() throws {
         //TODO
     } */
-
-    func testGetTotalAvailableMemory() throws {
-        //TODO
-    }
 
     // Private function
     /* func testGetCurrentlyAvailableAppMemory() throws {
