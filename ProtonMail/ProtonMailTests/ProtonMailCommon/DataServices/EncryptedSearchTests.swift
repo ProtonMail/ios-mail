@@ -37,7 +37,6 @@ class EncryptedSearchTests: XCTestCase {
 
     var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
-    let customLabelId = "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw=="
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -62,7 +61,7 @@ class EncryptedSearchTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
 
         // Delete test search index for user 'test'
-        //try self.deleteTestSearchIndexDB()
+        try self.deleteTestSearchIndexDB()
 
         // Reset some values in EncryptedSearchService Singleton
         EncryptedSearchService.shared.numInterruptions = 0
