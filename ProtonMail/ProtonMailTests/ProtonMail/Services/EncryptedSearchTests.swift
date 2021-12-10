@@ -301,11 +301,12 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     func testFetchMessages() throws {
-        //TODO
-    }
-
-    func testFetchMessageDetailForMessage() throws {
-        //TODO
+        let sut = EncryptedSearchService.shared.fetchMessages
+        sut(self.testUserID, Message.Location.allmail.rawValue, 0){
+            (errors, messages) in
+            XCTAssertNotNil(errors) // errors should be nil
+            // There are no message for test user? what to check?
+        }
     }
 
     func testProcessPageOneByOne() throws {
@@ -313,7 +314,13 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     func testGetMessageDetailsForSingleMessage() throws {
-        //TODO
+        let sut = EncryptedSearchService.shared.getMessageDetailsForSingleMessage
+        let testSender: ESSender = ESSender(Name: "sender", Address: "sender@sender.ch")
+        let testESMessage: ESMessage = ESMessage(id: self.testMessageID, order: 0, conversationID: "", subject: "subject", unread: 0, type: 0, senderAddress: "sender@sender.ch", senderName: "sender", sender: testSender, toList: [testSender], ccList: [testSender], bccList: [testSender], time: 0, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: Set(Message.Location.allmail.rawValue), externalID: "", body: nil, header: nil, mimeType: nil, userID: self.testUserID)
+        sut(testESMessage, self.testUserID){
+            (message) in
+            // hwo to check
+        }
     }
 
     func testDecryptBodyIfNeeded() throws {
@@ -359,6 +366,11 @@ class EncryptedSearchTests: XCTestCase {
     func testGetTotalAvailableMemory() throws {
         //TODO
     }
+    
+    // Private Function
+    /* func testFetchMessageDetailForMessage() throws {
+        //TODO
+    } */
 
     // Private Function
     /* func testCheckIfIndexingIsComplete() throws {
