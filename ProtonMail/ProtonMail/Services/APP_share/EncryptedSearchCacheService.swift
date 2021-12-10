@@ -73,6 +73,7 @@ extension EncryptedSearchCacheService {
             if let cache = self.cache {
                 let msg: EncryptedsearchMessage? = self.messageToEncryptedsearchMessage(msg: message, userID: userID)
                 cache.update(msg)
+                return true
             } else {
                 print("Error cache is nil!")
             }
@@ -189,8 +190,8 @@ extension EncryptedSearchCacheService {
     func getLastCacheUserID() -> String? {
         return self.currentUserID
     }
-    
-    func messageToEncryptedsearchMessage(msg: Message, userID: String) -> EncryptedsearchMessage? {
+
+    private func messageToEncryptedsearchMessage(msg: Message, userID: String) -> EncryptedsearchMessage? {
         let esMessage:ESMessage? = EncryptedSearchService.shared.convertMessageToESMessage(for: msg)
         if let esMessage = esMessage {
             var body: String? = ""
