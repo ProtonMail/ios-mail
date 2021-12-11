@@ -26,7 +26,7 @@ import Photos
 
 #if APP_EXTENSION
 
-class PMImagePickerController: UIImagePickerController {
+class PMImagePickerController: UIImagePickerController, AccessibleView {
     internal func setup(withDelegate delegate: UIImagePickerControllerDelegate&UINavigationControllerDelegate) {
         self.delegate = delegate
         self.sourceType = .photoLibrary

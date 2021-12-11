@@ -28,8 +28,7 @@
 import XCTest
 
 extension XCTestCase {
-    public static var tutorialSkipped: Bool = false
-    public static var enableContacts: Bool = false
+
     /**
      * Registers UI interruption monitor for a single XCUIElement and taps on it if triggered.
      *
@@ -41,14 +40,14 @@ extension XCTestCase {
      */
     @discardableResult
     func addUIMonitor(elementToTap: XCUIElement) -> NSObjectProtocol {
-        return addUIInterruptionMonitor(withDescription: "Handle UI interruprion") { (alert) -> Bool in
+        return addUIInterruptionMonitor(withDescription: "Handle UI interruprion") { _ -> Bool in
             if elementToTap.exists {
                 elementToTap.tap()
             }
             return true
         }
     }
-    
+
     /**
      * Registers UI interruption monitor for a multiple XCUIElements and taps on them if triggered.
      *
@@ -60,27 +59,15 @@ extension XCTestCase {
      * To unregister use: removeUIInterruptionMonitor(monitor)
      */
     @discardableResult
-    func addUIMonitor(elementsQuery: XCUIElementQuery, identifiers: [String]) -> NSObjectProtocol {
-        return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { (alert) -> Bool in
+    func addUIMonitor(elementQueryToTap: XCUIElementQuery, identifiers: [String]) -> NSObjectProtocol {
+        return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { _ -> Bool in
             for (identifier) in identifiers {
-                let element = elementsQuery[identifier].firstMatch
+                let element = elementQueryToTap[identifier].firstMatch
                 if element.exists {
                     element.tap()
                     break
                 }
             }
-            return true
-        }
-    }
-    
-    @discardableResult
-    func addUIMonitor(identifier: String) -> NSObjectProtocol {
-        return addUIInterruptionMonitor(withDescription: "Handle UI interruprions") { (alert) -> Bool in
-            let alertButton = alert.buttons[identifier]
-                if alertButton.exists {
-                    alertButton.tap()
-                    return true
-                }
             return true
         }
     }

@@ -91,7 +91,7 @@ class DraftsTests: BaseTestCase {
             .verify.messageWithSubjectAndRecipientExists(subject, to)
     }
 
-    func testChangeDraftSender() {
+    func disabledChangeDraftSender() {
         let onePassUserSecondEmail = "2\(testData.onePassUser.email)"
 
         loginRobot

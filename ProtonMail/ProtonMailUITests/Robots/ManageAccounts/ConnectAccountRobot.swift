@@ -14,8 +14,8 @@ fileprivate struct id {
     static let loginButtonIdentifier = "LoginViewController.signInButton"
     static let mailboxPasswordTextField = "MailboxPasswordViewController.mailboxPasswordTextField.textField"
     static let decryptButtonIdentifier = "MailboxPasswordViewController.unlockButton"
-    static let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
-    static let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
+    static let twoFaCodeIdentifier = "TwoFactorViewController.codeTextField.textField"
+    static let twoFaEnterButtonIdentifier = "TwoFactorViewController.authenticateButton"
     static let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
     static let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
     static let limitReachedText = LocalString._free_account_limit_reached_title
@@ -40,7 +40,7 @@ class ConnectAccountRobot: CoreElements {
     }
 
     func connectTwoPassAccount(_ user: User) -> InboxRobot {
-        return username(user.email)
+        return username(user.name)
             .password(user.password)
             .signInWithMailboxPasswordOrTwoFa()
             .mailboxPassword(user.mailboxPassword)

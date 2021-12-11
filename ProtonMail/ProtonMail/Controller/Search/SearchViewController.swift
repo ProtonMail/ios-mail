@@ -668,6 +668,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
         mailboxCell.id = message.messageID
         mailboxCell.cellDelegate = self
+        mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
     }
     

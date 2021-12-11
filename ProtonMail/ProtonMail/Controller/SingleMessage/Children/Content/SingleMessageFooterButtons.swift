@@ -1,7 +1,7 @@
 import UIKit
 import ProtonCore_UIFoundations
 
-class SingleMessageFooterButtons: UIView {
+class SingleMessageFooterButtons: UIView, AccessibleView {
 
     let stackView = SubviewsFactory.stackView
     let replyButton = SubviewsFactory.replyButton
@@ -12,6 +12,7 @@ class SingleMessageFooterButtons: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
+        self.generateAccessibilityIdentifiers()
     }
 
     private func addSubviews() {

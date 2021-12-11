@@ -22,6 +22,9 @@ fileprivate struct id {
 class InboxRobot : MailboxRobotInterface {
     
     var verify = Verify()
+    required init() {
+        super.init()
+    }
 
     @discardableResult
     override func menuDrawer() -> MenuRobot {
@@ -36,15 +39,6 @@ class InboxRobot : MailboxRobotInterface {
     @discardableResult
     override func refreshGentlyMailbox() -> InboxRobot {
         super.refreshGentlyMailbox()
-        return self
-    }
-    
-    public func skipTutorialIfNeeded() -> InboxRobot {
-        //check only once in the whole test run
-        if(XCTestCase.tutorialSkipped == false && button(id.buttonSkipTutorial).wait().exists()) {
-            button(id.buttonSkipTutorial).tap()
-        }
-        XCTestCase.tutorialSkipped = true
         return self
     }
     

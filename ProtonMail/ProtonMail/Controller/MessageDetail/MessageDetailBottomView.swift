@@ -45,6 +45,7 @@ class MessageDetailBottomView: PMView {
         self.replyButton.setTitle(LocalString._general_reply_button, for: .normal)
         self.replyAllButton.setTitle(LocalString._general_replyall_button, for: .normal)
         self.forwardButton.setTitle(LocalString._general_forward_button, for: .normal)
+        self.generateAccessibilityIdentifiers()
     }
     
     @IBAction func replyClicked(_ sender: AnyObject) {

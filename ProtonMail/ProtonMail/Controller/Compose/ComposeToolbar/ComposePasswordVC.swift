@@ -28,7 +28,7 @@ protocol ComposePasswordDelegate: AnyObject {
     func removedPassword()
 }
 
-final class ComposePasswordVC: UIViewController {
+final class ComposePasswordVC: UIViewController, AccessibleView {
 
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var infoIcon: UIImageView!
@@ -74,6 +74,7 @@ final class ComposePasswordVC: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addKeyboardObserver(self)
         self.setup()
+        generateAccessibilityIdentifiers()
     }
 
     @IBAction private func clickApplyButton(_ sender: Any) {

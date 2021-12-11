@@ -259,7 +259,6 @@
 		197941A2171B6C3EAE798D1F23B0690F /* LabelCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291EEC992FB64F74DD4BEFD2247EBE3F /* LabelCount.swift */; };
 		19BC0877EFBC7090B03600D4815D726A /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		19CE991C4761B1A2B1FDBFF97FF0F284 /* UIBarButtonItem+swizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DF1055A0686A23D574580CC9E30B4 /* UIBarButtonItem+swizzle.swift */; };
-		19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */; };
 		19EB3ED895E42EA201BE3FA191514DC3 /* UnsubscribeMailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28291BB0F938C53380657C7B936F6AEA /* UnsubscribeMailTo.swift */; };
 		19FAC1EBC43284D92F2687096B071AAE /* ExpirationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */; };
 		19FC8B102E847B6BC8F00F31BDE56554 /* TableCellRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1B928013A4DD34975C4B61ECE6874D /* TableCellRegister.swift */; };
@@ -3939,7 +3938,6 @@
 		DD918B422164E1645014CD70A71A27FB /* BioCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioCodeViewController.swift; sourceTree = "<group>"; };
 		DDCCFCB7143EB3F539421B37DB913D74 /* UsersManagerHelperTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersManagerHelperTest.swift; sourceTree = "<group>"; };
 		DDD33FB43FF1E3BBC252FE8EEE22868F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wait.swift; sourceTree = "<group>"; };
 		DE46E55F066210E5C8F002637D4FDA1D /* ConversationDataServiceProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationDataServiceProxy.swift; sourceTree = "<group>"; };
 		DE677B6AB0CC74F46204BFAA6D60C178 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModelImpl.swift; sourceTree = "<group>"; };
@@ -4082,6 +4080,7 @@
 		FA4D4D95E164B95ED0FA6CA1EB105F0F /* ComposeHeaderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeHeaderViewController.xib; sourceTree = "<group>"; };
 		FA5E9998E7EE18E2896590E4A25AF8E2 /* LanguageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageManager.m; sourceTree = "<group>"; };
 		FABD90FD7F268087D8A77E2982FF3E8D /* ContactImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactImportViewController.swift; sourceTree = "<group>"; };
+		FAEAA4DE2760DFA20095AC99 /* PinTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = PinTests.xctestplan; sourceTree = "<group>"; };
 		FB1C218B8C6CC2F3C0C0DF990417F3A0 /* Pods-SiriDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SiriDev.distribution.xcconfig"; path = "Target Support Files/Pods-SiriDev/Pods-SiriDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Message+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -6370,7 +6369,6 @@
 				465F22DF36B7379C871248ECFC3EFAF4 /* StringUtils.swift */,
 				FDA85A4767DFF60E04EC425132BEE5F6 /* TestData.swift */,
 				5ED38F3AA08F1433223C4769A991F274 /* User.swift */,
-				DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -6433,6 +6431,7 @@
 				949094E72422CC8D946443C0DA57603A /* LogoutTests.xctestplan */,
 				25D2B75B13E91EBD88C0DE1DE58C4768 /* MenuTests.xctestplan */,
 				3A24C8D0DA7457C763A7C81964127C69 /* MultiuserManagementTests.xctestplan */,
+				FAEAA4DE2760DFA20095AC99 /* PinTests.xctestplan */,
 				E185699F7608929C988FFE9B4E096393 /* RegressionTests.xctestplan */,
 				8941BAE628E0A9CD6B89296AAFB9F885 /* SearchTests.xctestplan */,
 				8249479B52CC370EE6021401D9714F6F /* SendNewMessageTests.xctestplan */,
@@ -11061,7 +11060,6 @@
 				FF0426815F525E50781BDAE08764A76B /* TrashRobot.swift in Sources */,
 				5164A63F0EE5222FE9341EA2A050B59C /* TrashTests.swift in Sources */,
 				E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */,
-				19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,7 @@ class DraftsRobot: MailboxRobotInterface {
     }
 
     func clickDraftBySubject(_ subject: String) -> ComposerRobot {
-        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).forceTap()
+        super.clickMessageBySubject(subject)
         return ComposerRobot()
     }
     

@@ -64,12 +64,15 @@ open class Wait {
     open func forElementToDisappear(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         return waitForCondition(element, Predicate.doesNotExist, file, line)
     }
+
+    @discardableResult
+    open func forHavingKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
+        return waitForCondition(element, Predicate.hasKeyboardFocus, file, line)
+    }
     
     @discardableResult
-    open func forElementHasKeyboardFocus(_ element: XCUIElement, _ timeout: TimeInterval) -> Bool {
-        let expectation = XCTNSPredicateExpectation(predicate: Predicate.hasKeyboardFocus, object: element)
-        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
-        return (result == .completed)
+    open func hasKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> Bool {
+        return waitSoftForCondition(element, Predicate.hasKeyboardFocus, file, line)
     }
 
     /**
@@ -86,7 +89,8 @@ open class Wait {
     }
 
     /**
-     Waits for the condition but don't fail the test.
+     Waits for the condition but don't fail the test to trigger an action on XCUIElement and initiate the UIInterruptionMonitor mechanism when action cannot be completed.
+     UIInterruptionMonitor is not triggered when waiting for the element.
      */
     @discardableResult
     private func waitSoftForCondition(_ element: XCUIElement, _ predicate: NSPredicate, _ file: StaticString = #file, _ line: UInt = #line) -> Bool {

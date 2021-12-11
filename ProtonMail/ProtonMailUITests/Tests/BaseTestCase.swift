@@ -10,9 +10,6 @@ import Foundation
 import XCTest
 import pmtest
 
-let bla = CoreElements()
-var wasTourClosed = false
-
 /**
  Parent class for all the test classes.
 */
@@ -57,7 +54,7 @@ class BaseTestCase: XCTestCase {
     func handleInterruption() {
         var flag = false
         addUIInterruptionMonitor(withDescription: "Handle system alerts") { (ui) -> Bool in
-            let buttonLabels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Don’t Allow", LocalString._general_ok_action, LocalString._hide]
+            let buttonLabels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Select Photos...", "Don’t Allow", "Keep Current Selection",LocalString._send_anyway, LocalString._general_ok_action, LocalString._hide]
             for (_, label) in buttonLabels.enumerated() {
                 let element = ui.buttons[label].firstMatch
                 if element.exists {

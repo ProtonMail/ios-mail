@@ -138,13 +138,6 @@ struct Element {
             element.tap()
             return element
         }
-        
-        class func tapIfExists(_ identifier: String) {
-            let element = app.otherElements[identifier].firstMatch
-            if (Wait().forElement(element, #file, #line, 2)) {
-                element.tap()
-            }
-        }
     }
     
     class pickerWheel {
@@ -337,20 +330,6 @@ struct Element {
         }
         
         @discardableResult
-        static func forHittableButton(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier].firstMatch
-            Wait().forElementToBeHittable(element, file, line)
-            return element
-        }
-        
-        @discardableResult
-        static func forCellWithIdentifierToDisappear(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier].firstMatch
-            Wait().forElementToDisappear(element, file, line)
-            return element
-        }
-        
-        @discardableResult
         static func forOtherFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
             let element = app.otherElements[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
@@ -395,18 +374,18 @@ struct Element {
 extension XCUIElement {
     
     @discardableResult
-        func findCellInTheList(maxAttempts: Int = 5) -> XCUIElement {
-            var eventCount = 0
-            let table = app.tables.element.firstMatch
-            while eventCount <= maxAttempts, !self.isElementHittable {
-                table.swipeDown()
-                eventCount += 1
-            }
-            if !self.isElementHittable {
-                return self.swipeUpUntilVisible(maxAttempts: maxAttempts * 2)
-            }
-            return self
+    func findCellInTheList(maxAttempts: Int = 5) -> XCUIElement {
+        var eventCount = 0
+        let table = app.tables.element.firstMatch
+        while eventCount <= maxAttempts, !self.isElementHittable {
+            table.swipeDown()
+            eventCount += 1
         }
+        if !self.isElementHittable {
+            return self.swipeUpUntilVisible(maxAttempts: maxAttempts * 2)
+        }
+        return self
+    }
     
     @discardableResult
     func swipeUpUntilVisible(maxAttempts: Int = 5) -> XCUIElement {

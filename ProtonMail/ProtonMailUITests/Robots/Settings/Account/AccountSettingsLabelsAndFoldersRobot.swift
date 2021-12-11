@@ -46,7 +46,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func editFolderLabel(_ folderName: String) -> AddFolderLabelRobot {
-        staticText(id.selectLabelFolderCellIdentifiert(folderName)).tap()
+        cell(id.selectLabelFolderCellIdentifiert(folderName)).tap()
         return AddFolderLabelRobot()
     }
     

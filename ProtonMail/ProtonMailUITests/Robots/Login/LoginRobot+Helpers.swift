@@ -16,7 +16,6 @@ extension LoginRobot {
         return fillUsername(username: user.name)
             .insertPassword(password: user.password)
             .signIn(robot: InboxRobot.self)
-            .skipTutorialIfNeeded()
     }
 
     func loginUserWithTwoFA(_ user: User) -> InboxRobot {
@@ -25,7 +24,6 @@ extension LoginRobot {
             .signIn(robot: TwoFaRobot.self)
             .fillTwoFACode(code: user.getTwoFaCode())
             .confirm2FA(robot: InboxRobot.self)
-            .skipTutorialIfNeeded()
     }
 
     func loginTwoPasswordUser(_ user: User) -> InboxRobot {
@@ -34,7 +32,6 @@ extension LoginRobot {
             .signIn(robot: MailboxPasswordRobot.self)
             .fillMailboxPassword(mailboxPassword: user.mailboxPassword)
             .unlock(robot: InboxRobot.self)
-            .skipTutorialIfNeeded()
     }
 
     func loginTwoPasswordUserWithInvalid2Pass(_ user: User) -> MailboxPasswordRobot {
@@ -53,7 +50,6 @@ extension LoginRobot {
             .confirm2FA(robot: MailboxPasswordRobot.self)
             .fillMailboxPassword(mailboxPassword: user.mailboxPassword)
             .unlock(robot: InboxRobot.self)
-            .skipTutorialIfNeeded()
     }
 
     func loginWithInvalidUser(_ user: User) -> LoginRobot {
