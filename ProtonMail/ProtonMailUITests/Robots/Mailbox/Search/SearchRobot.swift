@@ -11,13 +11,11 @@ import pmtest
 
 fileprivate struct id {
     static let searchTextFieldIdentifier = "SearchViewController.textField"
-    static let mailboxMessageCellIdentifier = "NewMailboxMessageCell.mailboxMessageCell"
-    static let messageSenderLabelIdentifier = "mailboxMessageCell.senderLabel"
-    static let messageTitleLabelIdentifier = "mailboxMessageCell.titleLabel"
     static let searchKeyboardButtonText = LocalString._general_search_placeholder
     static let cancelButttonIdentifier = LocalString._general_cancel_button
-    static func draftCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)".replacingOccurrences(of: " ", with: "_") }
-    static func messageCellIdentifier(_ subject: String) -> String { return "MailboxMessageCell.\(subject)" }
+    static func messageSenderLabelIdentifier(_ subject: String) -> String { return "\(subject).senderLabel" }
+    static func draftCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
+    static func messageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
 }
 
 /**
@@ -33,12 +31,12 @@ class SearchRobot: CoreElements {
     }
     
     func clickSearchedMessageBySubject(_ subject: String) -> MessageRobot {
-        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).tap()
+        cell(id.messageCellIdentifier(subject)).firstMatch().tap()
         return MessageRobot()
     }
     
     func clickSearchedDraftBySubject(_ subject: String) -> ComposerRobot {
-        staticText(id.messageTitleLabelIdentifier).containsLabel(subject).tap()
+        cell(id.draftCellIdentifier(subject)).firstMatch().tap()
         return ComposerRobot()
     }
 
@@ -66,19 +64,20 @@ class SearchRobot: CoreElements {
         
         @discardableResult
         func messageExists(_ subject: String) -> SearchRobot {
-            staticText(id.messageTitleLabelIdentifier).containsLabel(subject).wait().checkExists()
+            cell(id.messageCellIdentifier(subject)).firstMatch().checkExists()
             return SearchRobot()
         }
         
         @discardableResult
         func draftMessageExists(_ subject: String) -> SearchRobot {
-            staticText(id.messageTitleLabelIdentifier).containsLabel(subject).wait().checkExists()
+            cell(id.draftCellIdentifier(subject.replaceSpaces())).firstMatch().checkExists()
             return SearchRobot()
         }
         
         @discardableResult
-        func addressExists(_ sender: String, _ position: Int) -> SearchRobot {
-            staticText(id.messageSenderLabelIdentifier).byIndex(position).checkContainsLabel(sender)
+        func senderAddressExists(_ sender: String, _ title: String) -> SearchRobot {
+            cell(id.messageCellIdentifier(title)).firstMatch()
+                .onDescendant(staticText().hasLabel(sender)).wait().checkExists()
             return SearchRobot()
         }
     }

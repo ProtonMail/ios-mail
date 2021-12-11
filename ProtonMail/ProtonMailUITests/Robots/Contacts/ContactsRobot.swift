@@ -19,7 +19,7 @@ fileprivate struct id {
     static func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
     static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
     static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
-    static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
+    static let menuButtonIdentifier = "UINavigationItem.openMenu"
     static let addContactNavBarButtonText = LocalString._general_create_action
     static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
     static let contactsTableViewIdentifier = "ContactsViewController.tableView"
@@ -51,7 +51,7 @@ class ContactsRobot: CoreElements {
     }
 
     func menuDrawer() -> MenuRobot {
-        button(id.menuNavBarButtonIdentifier).tap()
+        button(id.menuButtonIdentifier).tap()
         return MenuRobot()
     }
     

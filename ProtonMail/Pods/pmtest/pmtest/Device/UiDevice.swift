@@ -28,7 +28,7 @@
 import XCTest
 
 /**
- *  Contains functions related to the device or system actions.
+ Contains functions related to the device or system actions.
  */
 open class UiDevice {
 

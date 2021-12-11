@@ -45,12 +45,13 @@ class SearchTests: BaseTestCase {
     
     func testSearchFromInboxByAddress() {
         let user = testData.onePassUser
-        let receiver = testData.externalEmailPGPEncrypted.email
+        let coreFusionSender = "Core Fusion"
+        let title = "163880735864890"
         LoginRobot()
             .loginUser(user)
             .searchBar()
-            .searchMessageText(receiver)
-            .verify.addressExists(receiver, 0)
+            .searchMessageText(coreFusionSender)
+            .verify.senderAddressExists(coreFusionSender, title)
     }
     
     func testSearchDraft() {

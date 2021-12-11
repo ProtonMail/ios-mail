@@ -18,21 +18,22 @@ fileprivate struct id {
 */
 class ImageGalleryRobot: CoreElements {
     
-    func pickImages(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
+    func pickImages(_ attachmentsAmount: Int) -> ComposerRobot {
         app.tap() /// Workaround to trigger handleInterruption() on Photos permission alert
         return pickImageAtPositions(attachmentsAmount)
             .confirmSelection(attachmentsAmount)
     }
     
     private func pickImageAtPositions(_ positions: Int) -> ImageGalleryRobot {
-        for i in 0...positions-1 {
+        /// Start from image 1 as image on position 0 is 9MB and it takes longer time to upload.
+        for i in 1...positions {
             otherElement(id.imageOtherIdentifier).byIndex(i).tap()
         }
         return self
     }
     
-    private func confirmSelection(_ attachmentsAmount: Int) -> MessageAttachmentsRobot {
+    private func confirmSelection(_ attachmentsAmount: Int) -> ComposerRobot {
         button(id.selectButtonIdentifier(attachmentsAmount)).tap()
-        return MessageAttachmentsRobot()
+        return ComposerRobot()
     }
 }

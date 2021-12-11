@@ -35,7 +35,7 @@ internal struct Predicate {
     static let hittable = NSPredicate(format: "hittable == true")
     static let doesNotExist = NSPredicate(format: "exists == false")
     static let exists = NSPredicate(format: "exists == true")
-    static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == 1")
+    static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == true")
 
     static func labelEquals(_ label: String) -> NSPredicate {
        return NSPredicate(format: "label == '\(label)'")

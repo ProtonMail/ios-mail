@@ -59,7 +59,7 @@ class MenuRobot: CoreElements {
     
     @discardableResult
     func sent() -> SentRobot {
-        cell(id.sentStaticText).tap()
+        cell(id.sentStaticText).swipeDownUntilVisible().tap()
         return SentRobot()
     }
     
@@ -72,33 +72,33 @@ class MenuRobot: CoreElements {
     @discardableResult
     func subscriptionAsHumanVerification() -> HumanVerificationRobot {
         // fake subscription item leads to human verification (by http mock)
-        cell(id.subscriptionStaticText).tap()
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return HumanVerificationRobot()
     }
     
     func subscriptionAsForceUpgrade() -> MenuRobot{
         // fake subscription item leads to force upgrade (by http mock)
-        cell(id.subscriptionStaticText).tap()
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return MenuRobot()
     }
     
     func drafts() -> DraftsRobot {
-        cell(id.draftsStaticText).tap()
+        cell(id.draftsStaticText).swipeDownUntilVisible().tap()
         return DraftsRobot()
     }
     
     func inbox() -> InboxRobot {
-        cell(id.inboxStaticText).tap()
+        cell(id.inboxStaticText).swipeDownUntilVisible().tap()
         return InboxRobot()
     }
     
     func spams() -> SpamRobot {
-        cell(id.spamStaticText).tap()
+        cell(id.spamStaticText).swipeDownUntilVisible().tap()
         return SpamRobot()
     }
     
     func trash() -> TrashRobot {
-        cell(id.trashStaticText).tap()
+        cell(id.trashStaticText).swipeDownUntilVisible().tap()
         return TrashRobot()
     }
     
@@ -108,7 +108,7 @@ class MenuRobot: CoreElements {
     }
     
     func folderOrLabel(_ name: String) -> LabelFolderRobot {
-        cell(id.folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_"))).tap()
+        cell(id.folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_"))).swipeUpUntilVisible().tap()
         return LabelFolderRobot()
     }
     
@@ -156,9 +156,14 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                otherElement(id.primaryViewIdentifier).wait().checkExists()
-                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserNameTextIdentifier)).checkExists().checkContainsLabel(user.name)
-                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserMailTextIdentifier)).checkExists().checkHasLabel(user.email)
+                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserNameTextIdentifier))
+                    .wait()
+                    .checkExists()
+                    .checkContainsLabel(user.name)
+                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserMailTextIdentifier))
+                    .wait()
+                    .checkExists()
+                    .checkHasLabel(user.email)
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {

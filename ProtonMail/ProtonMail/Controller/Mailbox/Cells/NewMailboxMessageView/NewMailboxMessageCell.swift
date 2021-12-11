@@ -36,15 +36,14 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
     var id: String?
     private var workItem: DispatchWorkItem?
 
+    let customView = NewMailboxMessageCellContentView()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setUpLayout()
         setUpAvatarTapHandling()
-        generateCellAccessibilityIdentifiers("mailboxMessageCell")
     }
-
-    let customView = NewMailboxMessageCellContentView()
 
     override func prepareForReuse() {
         super.prepareForReuse()

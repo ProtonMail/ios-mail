@@ -10,10 +10,11 @@ import XCTest
 import ProtonCore_TestingToolkit
 
 class PinTests: BaseTestCase {
+
+    private let correctPin = "0000"
     private let pinRobot: PinRobot = PinRobot()
     private let loginRobot = LoginRobot()
-    let correctPin = "0000"
-    
+
     override func setUp() {
         super.setUp()
         loginRobot

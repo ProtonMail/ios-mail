@@ -15,13 +15,18 @@ fileprivate struct id {
     static let defaultLabel = LocalString._general_default
     static let signatureLabel = LocalString._settings_signature_title
     static let mobileSignatureLabel = "Mobile signature"
+    
+    static let signatureRightStaticTextIdentifier = "Signature.rightText"
+    static let mobileSignatureRightStaticTextIdentifier = "Mobile_signature.rightText"
+    static let onStaticTextLabel = LocalString._settings_On_title
+    static let offStaticTextLabel = LocalString._settings_Off_title
+
     static let privacyLabel = LocalString._privacy
     static let labelsIdentifier = "SettingsGeneralCell.Labels"
     static let foldersIdentifier = "SettingsGeneralCell.Folders"
     static let swipingGesturesLabel = LocalString._swiping_gestures
     static let signatureStaticTextLabel = LocalString._settings_signature_title
-    static let signatureOnStaticTextLabel = LocalString._springboard_shortcuts_composer //<-- fix it
-    static let signatureOffStaticTextLabel = "Off"
+    static let signatureOnStaticTextLabel = LocalString._springboard_shortcuts_composer
     static let privacySignatureStaticTextLabel = LocalString._privacy
     static let backNavBarButtonIdentifier = LocalString._menu_settings_title
 }
@@ -107,23 +112,19 @@ class AccountSettingsRobot: CoreElements {
         func accountSettingsOpened() {}
         
         func signatureIsEnabled() {
-            cell().byIndex(5).onChild(staticText(id.signatureStaticTextLabel)).wait().checkExists()
-            cell().byIndex(5).onChild(staticText(id.signatureOnStaticTextLabel)).wait().checkExists()
+            staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
         }
         
         func signatureIsDisabled() {
-            cell().byIndex(5).onChild(staticText(id.signatureStaticTextLabel)).wait().checkExists()
-            cell().byIndex(5).onChild(staticText(id.signatureOffStaticTextLabel)).wait().checkExists()
+            staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
         }
         
         func mobileSignatureIsEnabled() {
-            cell().byIndex(6).onChild(staticText(id.mobileSignatureLabel)).wait().checkExists()
-            cell().byIndex(6).onChild(staticText(id.signatureOnStaticTextLabel)).wait().checkExists()
+            staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
         }
         
         func mobileSignatureIsDisabled() {
-            cell().byIndex(6).onChild(staticText(id.mobileSignatureLabel)).wait().checkExists()
-            cell().byIndex(6).onChild(staticText(id.signatureOffStaticTextLabel)).wait().checkExists()
+            staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
         }
         
         func displayNameShownWithText(_ name: String) {

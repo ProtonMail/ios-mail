@@ -69,7 +69,17 @@ final class ComposerAttachmentCellTableViewCell: UITableViewCell {
 
         let mimeType = MIMEType(rawValue: mime)
         self.iconView.image = isUploading ? nil: mimeType.icon
-        isUploading ? self.activityIndicator.startAnimating(): self.activityIndicator.stopAnimating()
+        if isUploading {
+            self.activityIndicator.startAnimating()
+            #if DEBUG
+            self.accessibilityIdentifier = "ComposerAttachmentCellTableViewCell.\(size)_uploading"
+            #endif
+        } else {
+            self.activityIndicator.stopAnimating()
+            #if DEBUG
+            self.accessibilityIdentifier = "ComposerAttachmentCellTableViewCell.\(size)"
+            #endif
+        }
     }
 
     @IBAction private func clickDeleteButton(_ sender: Any) {

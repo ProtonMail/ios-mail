@@ -10,7 +10,7 @@ import XCTest
 import pmtest
 
 fileprivate struct id {
-    static let addButtonIdentifier = "AttachmentsTableViewController.addButton"
+    static let fromYourPhotoLibraryText = LocalString._from_your_photo_library
     static let doneButtonIdentifier = "AttachmentsTableViewController.doneButton"
     static let photoLibraryButtonIdentifier = LocalString._photo_library
 }
@@ -25,9 +25,9 @@ class MessageAttachmentsRobot: CoreElements {
         return ImageGalleryRobot()
     }
     
-    func add() -> MessageAttachmentsRobot {
-        button(id.addButtonIdentifier).waitForHittable().tap()
-        return self
+    func add() -> ImageGalleryRobot {
+        cell(id.fromYourPhotoLibraryText).tap()
+        return ImageGalleryRobot()
     }
     
     func done() -> ComposerRobot {

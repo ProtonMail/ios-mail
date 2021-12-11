@@ -20,13 +20,14 @@ class TestData {
     var externalEmailPGPEncrypted = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
     var externalEmailPGPSigned = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
         
-    var messageSubject: String { return "Random Subject \(Date().millisecondsSince1970)" }
-    var newMessageSubject: String { return "New Random Subject \(Date().millisecondsSince1970)" }
-    var messageBody: String { return "Hello ProtonMail!Random body: \(Date().millisecondsSince1970)" }
+    var messageSubject: String { return "\(Date().millisecondsSince1970)" }
+    var newMessageSubject: String { return "New \(Date().millisecondsSince1970)" }
+    var messageBody: String { return "Body: \(Date().millisecondsSince1970)" }
     
     var alphaNumericString: String { return "_\(StringUtils().randomAlphanumericString())\(Date().millisecondsSince1970)" }
     var newEmailAddress: String { return "\(StringUtils().randomEmail())@pm.me" }
     
     let editedPassword = "P@ssw0rd!"
     let editedPasswordHint = "ProtonMail"
+    static var wasTourClosed = false
 }

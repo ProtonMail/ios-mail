@@ -643,6 +643,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                         target: self,
                                         selector: #selector(self.handleAccessibilityAction))
         inputCell?.accessibilityCustomActions = [accessibilityAction]
+        #if DEBUG
+        mailboxCell.accessibilityIdentifier = "MailboxViewController.NewMailboxMessageCell.\(mailboxCell.customView.messageContentView.titleLabel.text!)"
+        #endif
     }
 
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {

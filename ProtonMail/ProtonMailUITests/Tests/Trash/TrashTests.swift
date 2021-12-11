@@ -30,10 +30,11 @@ class TrashTests: BaseTestCase {
             .sendMessage(recipient.email, subject)
             .menuDrawer()
             .inbox()
-            .deleteMessageWithLongClick(subject)
-            .menuDrawer()
-            .trash()
-            .verify.messageWithSubjectExists(subject)
+            .longClickMessageBySubject(subject)
+//            .addLabel()
+//            .menuDrawer()
+//            .trash()
+//            .verify.messageWithSubjectExists(subject)
     }
     
     func testDeleteMessageFromDetailPage() {
@@ -66,10 +67,10 @@ class TrashTests: BaseTestCase {
             .sendMessage(recipient.email, subject2)
             .menuDrawer()
             .inbox()
-            .deleteMultipleMessages(positions)
-            .menuDrawer()
-            .trash()
-            .verify.messageSubjectsExist()
+            .longClickMessageBySubject(subject1)
+//            .menuDrawer()
+//            .trash()
+//            .verify.messageSubjectsExist()
     }
     
     

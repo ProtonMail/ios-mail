@@ -20,11 +20,9 @@ fileprivate struct id {
     static let backToSearchResultButtonIdentifier = LocalString._general_back_action
 
     /// Reply/Forward buttons
-    static let replyTextLabel = LocalString._general_reply_button
-    static let replyAllTextLabel = LocalString._general_replyall_button
-    static let replyButtonIdentifier = "MessageContainerViewController.replyButton"
-    static let replyAllButtonIdentifier = "MessageContainerViewController.replyAllButton"
-    static let forwardButtonIdentifier = "MessageContainerViewController.forwardButton"
+    static let replyButtonIdentifier = "SingleMessageFooterButtons.replyButton"
+    static let replyAllButtonIdentifier = "SingleMessageFooterButtons.replyAllButton"
+    static let forwardButtonIdentifier = "SingleMessageFooterButtons.forwardButton"
 }
 
 /*
@@ -97,12 +95,12 @@ class MessageRobot: CoreElements {
     }
 
     func reply() -> ComposerRobot {
-        staticText(id.replyTextLabel).tap()
+        button(id.replyButtonIdentifier).tap()
         return ComposerRobot()
     }
 
     func replyAll() -> ComposerRobot {
-        staticText(id.replyAllTextLabel).tap()
+        button(id.replyButtonIdentifier).tap()
         return ComposerRobot()
     }
 
