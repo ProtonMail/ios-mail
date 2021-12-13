@@ -272,9 +272,7 @@ extension EncryptedSearchService {
                 //build search index completely new
                 DispatchQueue.global(qos: .userInitiated).async {
                     self.downloadAndProcessPage(userID: userID){ [weak self] in
-                        self?.checkIfIndexingIsComplete {
-                            self?.cleanUpAfterIndexing()
-                        }
+                        self?.checkIfIndexingIsComplete(){}
                         return
                     }
                 }
@@ -338,7 +336,12 @@ extension EncryptedSearchService {
             #endif
 
             // Send indexing metrics to backend
-            self.sendIndexingMetrics(indexTime: self.indexingStartTime - CFAbsoluteTimeGetCurrent(), userID: userID)
+            var indexingTime: Double = CFAbsoluteTimeGetCurrent() - self.indexingStartTime
+            if indexingTime.isLess(than: 0.0) {
+                print("Error indexing time negative!")
+                indexingTime = 0.0
+            }
+            self.sendIndexingMetrics(indexTime: indexingTime, userID: userID)
 
             // Compress sqlite database
             DispatchQueue.main.asyncAfter(deadline: .now() + 3){
@@ -400,7 +403,6 @@ extension EncryptedSearchService {
 
                 self.downloadAndProcessPage(userID: userID){ [weak self] in
                     self?.checkIfIndexingIsComplete {
-                        self?.cleanUpAfterIndexing()
                         completionHandler?()
                     }
                 }
