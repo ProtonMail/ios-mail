@@ -33,46 +33,7 @@ import ProtonCore_Networking
 struct MessageAPI {
     /// base message api path
     static let path :String = "/\(Constants.App.API_PREFIXED)/messages"
-    
-    //Get a list of message metadata [GET]
-    static let v_fetch_messages : Int = -1
-    
-    //Get grouped message count [GET]
-    static let v_message_count : Int = -1
-    
-    static let v_create_draft : Int = -1
-    
-    static let v_update_draft : Int = -1
-    
-    // inlcude read/unread
-    static let V_MessageActionRequest : Int = -1
-    
-    //Send a message [POST]
-    static let v_send_message : Int = -1
-    
-    //Label/move an array of messages [PUT]
-    static let v_label_move_msgs : Int = -1
-    
-    //Unlabel an array of messages [PUT]
-    static let v_unlabel_msgs : Int = -1
-    
-    //Delete all messages with a label/folder [DELETE]
-    static let v_empty_label_folder : Int = -1
-    
-    //Delete an array of messages [PUT]
-    static let v_delete_msgs : Int = -1
-    
-    //Undelete Messages [/messages/undelete]
-    static let v_undelete_msgs : Int = -1
-    
-    //Label/Move Messages [/messages/label] [PUT]
-    static let v_apply_label_to_messages : Int = -1
-    
-    //Unlabel Messages [/messages/unlabel] [PUT]
-    static let v_remove_label_from_message : Int = -1
 }
-
-
  
 // MARK : apply label to message  -- Response
 final class ApplyLabelToMessages : Request {

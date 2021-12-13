@@ -50,11 +50,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private var phoneContacts: [ContactPickerModelProtocol] = []
     private var attachments: [Any]?
     
-    private var actualEncryptionStep              = EncryptionStep.DefinePassword
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String    = ""
-    private var hasAccessToAddressBook: Bool      = false
     private var dismissBySending = false
     
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
@@ -523,7 +521,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     // MARK: - Private methods
-    private func setupAutoSave(firstTime : Bool = false) {
+    private func setupAutoSave() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { [weak self] _ in
             self?.autoSaveTimer()
         }
@@ -908,7 +906,7 @@ extension ComposeViewController : ComposeViewDataSource {
 }
 
 // MARK: Attachment
-extension ComposeViewController: ComposerAttachmentHandlerProtocol {
+extension ComposeViewController {
     func attachments(pickup attachment: Attachment) -> Promise<Void> {
         return Promise { seal in
             self.collectDraftData().done {

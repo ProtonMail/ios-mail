@@ -30,22 +30,6 @@ struct LabelAPI {
     static let path :String = "/labels"
     
     static let versionPrefix: String = "/v4"
-    
-    /// Get user's labels [GET]
-    static let v_get_user_labels : Int = 3
-    
-    /// Create new label [POST]
-    static let v_create_label : Int = 3
-    
-    /// Update existing label [PUT]
-    static let v_update_label : Int = 3
-    
-    /// Delete a label [DELETE]
-    static let v_delete_label : Int = 3
-    
-    //doesn't impl yet
-    /// Change label priority [PUT]
-    static let v_order_labels : Int = 3
 }
 
 final class GetV4LabelsRequest: Request {

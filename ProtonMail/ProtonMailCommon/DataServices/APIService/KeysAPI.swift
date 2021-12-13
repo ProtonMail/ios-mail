@@ -110,47 +110,6 @@ final class KeysResponse : Response {
         }
         return nil
     }
-    
-    //TODO:: change to filter later.
-    func getCompromisedKeys() -> Data?  {
-        var pubKeys : Data? = nil
-        for k in keys {
-            if k.flags == 0 {
-                if pubKeys == nil {
-                    pubKeys = Data()
-                }
-                if let p = k.publicKey {
-                    var error : NSError?
-                    if let data = ArmorUnarmor(p, &error) {
-                        if error == nil && data.count > 0 {
-                            pubKeys?.append(data)
-                        }
-                    }
-                }
-            }
-        }
-        return pubKeys
-    }
-    
-    func getVerifyKeys() -> Data? {
-        var pubKeys : Data? = nil
-        for k in keys {
-            if k.flags == 1 || k.flags == 3 {
-                if pubKeys == nil {
-                    pubKeys = Data()
-                }
-                if let p = k.publicKey {
-                    var error : NSError?
-                    if let data = ArmorUnarmor(p, &error) {
-                        if error == nil && data.count > 0 {
-                            pubKeys?.append(data)
-                        }
-                    }
-                }
-            }
-        }
-        return pubKeys
-    }
 }
 
 /// message packages

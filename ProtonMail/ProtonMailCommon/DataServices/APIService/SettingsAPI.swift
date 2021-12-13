@@ -41,41 +41,7 @@ struct SettingsAPI {
     static let settingsPath: String = "/settings"
     
     static let versionPrefix: String = "/mail/v4"
-    
-    /// Get general settings [GET]
-    static let v_get_general_settings : Int = 3
-    
-    /// Turn on/off email notifications [PUT]
-    static let v_update_notify : Int = 3
-    
-    /// Update email [PUT]
-    static let v_update_email : Int = 3
-    
-    /// Update swipe left flag [PUT]
-    static let v_update_swipe_left_right : Int = -1
-    
-    /// Update swipe right flag [PUT]
-    static let v_update_swipe_right_left : Int = -1
-    
-    /// Update newsletter subscription [PUT]
-    static let v_update_sub_news : Int = -1
-    
-    /// Update display name [PUT]
-    static let v_update_display_name : Int = -1
-    
-    /// Update images bits [PUT]
-    static let v_update_shwo_images : Int = -1
-    
-    /// Update login password [PUT]
-    static let v_update_login_password : Int = 3
-    
-    /// Update login password [PUT]
-    static let v_update_link_confirmation : Int = -1
-    
-    /// Update email signature [PUT]
-    static let v_update_email_signature: Int = -1
 }
-
 
 //"News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
 struct News : OptionSet {

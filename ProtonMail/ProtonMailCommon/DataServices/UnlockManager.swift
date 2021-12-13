@@ -65,7 +65,7 @@ class UnlockManager: Service {
     }
     
     internal func isUnlocked() -> Bool {
-        return self.validate(mainKey: keymaker.mainKey)
+        return self.validate(mainKey: keymaker.mainKey(by: RandomPinProtection.randomPin))
     }
     
     internal func getUnlockFlow() -> SignInUIFlow {

@@ -25,9 +25,9 @@ import Foundation
 
 //TODO:: move this to coordinator.
 //keep this unique
-let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl(coreDataService: sharedServices.get(by: CoreDataService.self))
+let sharedVMService: ViewModelServiceImpl = ViewModelServiceImpl(coreDataService: sharedServices.get(by: CoreDataService.self))
 //keep this unique
-class ViewModelServiceImpl: ViewModelService {
+class ViewModelServiceImpl {
     private let coreDataService: CoreDataService
     private var activeViewControllerNew : ViewModelProtocolBase?
     
@@ -39,11 +39,11 @@ class ViewModelServiceImpl: ViewModelService {
         self.coreDataService = coreDataService
     }
     
-    override func signOut() {
+    func signOut() {
         self.resetView()
     }
     
-    override func resetView() {
+    func resetView() {
         DispatchQueue.main.async {
             if let actived  = self.activeViewControllerNew {
                 actived.inactiveViewModel()
@@ -53,59 +53,59 @@ class ViewModelServiceImpl: ViewModelService {
     }
         
     // msg details
-    override func messageDetails(fromList vmp: ViewModelProtocolBase) {
+    func messageDetails(fromList vmp: ViewModelProtocolBase) {
         activeViewControllerNew = vmp
     }
     
-    override func messageDetails(fromPush vmp: ViewModelProtocolBase) {
+    func messageDetails(fromPush vmp: ViewModelProtocolBase) {
         activeViewControllerNew = vmp
     }
     
-    override func mailbox(fromMenu vmp : ViewModelProtocolBase) {
+    func mailbox(fromMenu vmp : ViewModelProtocolBase) {
         if let oldVC = activeViewControllerNew {
             oldVC.inactiveViewModel()
         }
         activeViewControllerNew = vmp
     }
     
-    override func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
+    func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
         if let oldVC = activeViewControllerNew {
             oldVC.inactiveViewModel()
         }
     }
     //contacts
-    override func contactsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
+    func contactsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactsViewModelImpl(user: user, coreDataService: self.coreDataService))
     }
     
-    override func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
+    func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
         activeViewControllerNew = vmp
         let viewModel = ContactDetailsViewModelImpl(contact: contact, user: user, coreDateService: self.coreDataService)
         vmp.setModel(vm: viewModel)
     }
     
-    override func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
+    func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactAddViewModelImpl(user: user, coreDataService: self.coreDataService))
     }
     
-    override func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contactVO: ContactVO!) {
+    func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contactVO: ContactVO!) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactAddViewModelImpl(contactVO: contactVO, user: user, coreDataService: self.coreDataService))
     }
     
-    override func contactEditViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
+    func contactEditViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactEditViewModelImpl(c: contact, user: user, coreDataService: self.coreDataService))
     }
     
-    override func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
+    func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactTypeViewModelImpl(t: type))
     }
     
-    override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocolBase,
+    func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocolBase,
                                                       user: UserManager,
                                                       groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
                                                       selectedGroupIDs: Set<String>,
@@ -118,12 +118,12 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     // contact groups
-    override func contactGroupsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
+    func contactGroupsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupsViewModelImpl(user: user, coreDataService: self.coreDataService))
     }
     
-    override func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
+    func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
                                               user: UserManager,
                                               groupID: String,
                                               name: String,
@@ -138,7 +138,7 @@ class ViewModelServiceImpl: ViewModelService {
                                                          labelsDataService: user.labelService))
     }
     
-    override func contactGroupEditViewModel(_ vmp : ViewModelProtocolBase,
+    func contactGroupEditViewModel(_ vmp : ViewModelProtocolBase,
                                             user: UserManager,
                                             state: ContactGroupEditViewControllerState,
                                             groupID: String? = nil,
@@ -154,7 +154,7 @@ class ViewModelServiceImpl: ViewModelService {
                                                        emailIDs: emailIDs))
     }
     
-    override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocolBase,
+    func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocolBase,
                                                    currentColor: String,
                                                    refreshHandler: @escaping (String) -> Void) {
         activeViewControllerNew = vmp
@@ -162,7 +162,7 @@ class ViewModelServiceImpl: ViewModelService {
                                                               refreshHandler: refreshHandler))
     }
     
-    override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
+    func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
                                                    user: UserManager,
                                                    selectedEmails: Set<Email>,
                                                    refreshHandler: @escaping (Set<Email>) -> Void) {
@@ -173,7 +173,7 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     //TODO::fixme
-    override func cleanLegacy() {
+    func cleanLegacy() {
         //get current cache version
         guard let currentVersion = UserDefaultsSaver<Int>(key: AppCache.Key.cacheVersion).get() else {
             return
