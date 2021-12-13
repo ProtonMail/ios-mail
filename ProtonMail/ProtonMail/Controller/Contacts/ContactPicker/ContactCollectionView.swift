@@ -99,7 +99,9 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         }
         
         self.prototypeCell = ContactCollectionViewContactCell()
-        
+
+        self.contentInsetAdjustmentBehavior = .never
+        self.contentInset = UIEdgeInsets(all: 0.0)
         self.allowsMultipleSelection = false
         self.allowsSelection = true
         self.backgroundColor = ColorProvider.BackgroundNorm
@@ -365,7 +367,8 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     func scrollToEntryAnimated(animated : Bool, onComplete complete : ContactPickerComplete?) {
         if animated {
             UIView.animate(withDuration: 0.25, animations: {
-                self.contentOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
+                let newYPoint = self.contentSize.height - self.bounds.size.height
+                self.contentOffset = CGPoint(x: 0, y: max(newYPoint, 0) )
             }) { (finished) in
                 complete?()
             }

@@ -4037,6 +4037,7 @@
 		F0299D313A7A1544B29AD839C2DA2F9E /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
 		F0466DB6812B789E32ADF3673EAC8268 /* ContactGroupSelectColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectColorViewModel.swift; sourceTree = "<group>"; };
+		F06CEFAABE8AA64CD06F18A78378E2AC /* PinTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = PinTests.xctestplan; sourceTree = "<group>"; };
 		F0EC0A740455BCEC8E3DF416F864D98C /* ConversationUpdateProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationUpdateProvider.swift; sourceTree = "<group>"; };
 		F12DE739E92713B7AF83361681F6FA82 /* AttachmentStreamingEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentStreamingEncryptor.swift; sourceTree = "<group>"; };
 		F16D99CBE67AC61BF48C40859A597851 /* ExpirationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationBannerView.swift; sourceTree = "<group>"; };
@@ -6433,6 +6434,7 @@
 				949094E72422CC8D946443C0DA57603A /* LogoutTests.xctestplan */,
 				25D2B75B13E91EBD88C0DE1DE58C4768 /* MenuTests.xctestplan */,
 				3A24C8D0DA7457C763A7C81964127C69 /* MultiuserManagementTests.xctestplan */,
+				F06CEFAABE8AA64CD06F18A78378E2AC /* PinTests.xctestplan */,
 				E185699F7608929C988FFE9B4E096393 /* RegressionTests.xctestplan */,
 				8941BAE628E0A9CD6B89296AAFB9F885 /* SearchTests.xctestplan */,
 				8249479B52CC370EE6021401D9714F6F /* SendNewMessageTests.xctestplan */,
