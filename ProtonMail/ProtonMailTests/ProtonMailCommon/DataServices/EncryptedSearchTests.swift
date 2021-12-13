@@ -61,7 +61,10 @@ class EncryptedSearchTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
 
         // Delete test search index for user 'test'
-        try self.deleteTestSearchIndexDB()
+        let doesTestIndexExist: Bool = EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: self.testUserID)
+        if doesTestIndexExist {
+            try self.deleteTestSearchIndexDB()  // delete test index if it exists
+        }
 
         // Reset some values in EncryptedSearchService Singleton
         EncryptedSearchService.shared.numInterruptions = 0
@@ -144,7 +147,7 @@ class EncryptedSearchTests: XCTestCase {
         let sut = EncryptedSearchService.shared.determineEncryptedSearchState
         sut()
 
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.undetermined)
+        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.disabled)
     }
 
     func testBuildSearchIndex() throws {
