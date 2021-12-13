@@ -1661,12 +1661,10 @@ extension EncryptedSearchService {
         if metric == .search {
             let delay: Int = Int.random(in: 1...180) //add a random delay between 1 second and 3 minutes
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)){
-                //TODO disabled in the meantime to not spam production
-                //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+                self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
             }
         } else {
-            //TODO disabled in the meantime to not spam production
-            //self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
+            self.apiService?.metrics(log: "encrypted_search", title: title, data: data, completion: completion)
         }
     }
 
