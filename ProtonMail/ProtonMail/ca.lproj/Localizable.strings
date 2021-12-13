@@ -596,7 +596,7 @@
 "Closing" = "Tancant";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "Replega la carpeta";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
 "Collapse message" = "Collapse message";
@@ -2538,7 +2538,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gràcies per enviar un informe d'error. Hem afegit el vostre informe al nostre sistema de seguiment d'errors.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "Gràcies per la vostra opinió!";
 
 /* Error message */
 "The 2 passwords are not matching" = "Les 2 contrasenyes no coincideixen";
@@ -2718,7 +2718,7 @@
 "To" = "Per a";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,\n necessitem verificar que sou humà.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau feu servir la versió de ProtonMail a protonmail.com";
@@ -3004,7 +3004,7 @@
 "When you send an email, this is the name that appears in the sender field." = "Quan envieu un correu electrònic, aquest és el nom que apareix al camp del remitent.";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "Maravellós";
 
 /* default vcard types */
 "Work" = "Feina";
@@ -3105,7 +3105,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar ProtonVPN (o altre VPN) o Tor per accedir a Proton.";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "Els teus comentaris";
 
 /* The section title of folder manager table */
 "Your folders" = "Les vostres carpetes";
@@ -3121,7 +3121,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "La seva nova compte de correu electrònic ja està configurada i llesta per enviar i rebre missatges xifrats.";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "El vostre nou compte de correu electrònic\nsegur està preparat.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "El vostre plà restarà actiu fins";

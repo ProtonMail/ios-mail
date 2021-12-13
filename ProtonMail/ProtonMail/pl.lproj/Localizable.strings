@@ -2377,7 +2377,7 @@
 "Signed in as %@" = "Jesteś zalogowany jako %@";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Zostałeś wylogowany z konta %1$@ i zalogowany do %2$@";
+"Signed out from %@ and signed in with %@" = "Wylogowano z konta %1$@ i zalogowano do %2$@";
 
 /* Onboarding title */
 "Simply private" = "Po prostu prywatna";
@@ -2505,7 +2505,7 @@
 "Switch selection mode" = "Zmień tryb zaznaczania";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "nieprzeczytane/przeczytane";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Przełączono na konto '%@'";
@@ -2965,7 +2965,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Ostrzeżenie: Nie możesz wysyłać wiadomości, zanim nie sprawdzimy, że jesteś człowiekiem!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu pomocniczego. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodano adresu pomocniczego. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nie mogliśmy wysłać wiadomości, prawdopodobnie ze względu na słabe połączenie internetowe. Wiadomość została zapisana w folderze Szkice i zostanie wysłana automatycznie przy następnym uruchomieniu aplikacji.";
@@ -3073,14 +3073,14 @@
 "You have used %d%% of your storage space (%@)." = "Używasz %d%% przestrzeni dyskowej (%@).";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystałeś %1$d%% przestrzeni dyskowej (%2$@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystano %1$d%% przestrzeni dyskowej (%2$@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* *
  *  StorageLimit */
-"You have used up all of your storage space (%@)." = "Użyłeś całej przestrzeni dyskowej (%@).";
+"You have used up all of your storage space (%@)." = "Wykorzystano całą przestrzeń dyskową (%@).";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystałeś całą przestrzeń dyskową (%@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Wykorzystano całą przestrzeń dyskową (%@). Ulepsz plan, aby wysyłać i odbierać wiadomości.";
 
 /* "Alert" */
 "You need at least one recipient to send" = "Wpisz co najmniej jednego odbiorcę, aby wysłać wiadomość";
@@ -3130,7 +3130,7 @@
 "Your plan will automatically renew on" = "Twój plan odnowi się automatycznie";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesja wygasła ponieważ byłeś nieaktywny lub została unieważniona. Zaloguj się ponownie.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesja wygasła z powodu braku aktywności lub jej unieważnienia. Zaloguj się ponownie.";
 
 /* Description */
 "Your signature has been updated." = "Podpis został zaktualizowany.";
