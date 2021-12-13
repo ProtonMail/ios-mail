@@ -58,13 +58,7 @@ class ShareAppCoordinator: CoordinatorNew {
 }
 
 extension ShareAppCoordinator: UsersManagerDelegate {
-    func migrating() {
-        
-    }
-    
-    func session() {
-        
-    }
+
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {

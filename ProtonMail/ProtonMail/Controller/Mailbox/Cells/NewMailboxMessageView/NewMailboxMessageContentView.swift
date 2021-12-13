@@ -22,7 +22,6 @@
 
 import ProtonCore_UIFoundations
 import UIKit
-import Lottie
 
 class NewMailboxMessageContentView: UIView {
 
@@ -153,9 +152,7 @@ private enum SubviewsFactory {
     static var attachmentImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        if let icon = Asset.mailAttachment.image as? UIImage {
-            imageView.image = icon.toTemplateUIImage()
-        }
+        imageView.image = Asset.mailAttachment.image.toTemplateUIImage()
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }

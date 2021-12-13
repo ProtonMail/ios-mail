@@ -257,16 +257,14 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     func signOut(_ animated: Bool) {
+#if APP_EXTENSION
+#else
         sharedVMService.signOut()
+#endif
+        
         NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
         delegate?.onLogout(animated: animated)
-    }
-    
-    func signOutAfterSignUp() {
-        sharedVMService.signOut()
-        NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
-        clearAll()
     }
     
     func updateAddress(auth currentAuth: AuthCredential,

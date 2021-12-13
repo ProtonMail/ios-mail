@@ -32,8 +32,6 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 protocol UsersManagerDelegate: AnyObject {
-    func migrating()
-    func session()
 }
 
 /// manager all the users and there services
@@ -355,7 +353,7 @@ class UsersManager : Service, Migrate {
     
     func tryRestore() {
         // try new version first
-        guard let mainKey = keymaker.mainKey else {
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsMainKeyNil": true])
             return
         }
@@ -654,7 +652,7 @@ extension UsersManager {
 
 extension UsersManager {
     func migrate_0_1() -> Bool {
-        guard let mainKey = keymaker.mainKey else {
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
             return false
         }
         

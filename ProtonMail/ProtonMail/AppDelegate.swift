@@ -26,6 +26,7 @@ import UserNotifications
 import Intents
 import SideMenuSwift
 import ProtonCore_Keymaker
+import ProtonCore_Networking
 import ProtonCore_Payments
 import ProtonCore_Services
 import ProtonCore_UIFoundations
@@ -65,7 +66,6 @@ extension SideMenuController {
             viewModel.set(delegate: menuVC)
             let menuWidth = MenuViewController.calcProperMenuWidth()
             let coordinator = MenuCoordinator(services: sharedServices,
-                                              vmService: sharedVMService,
                                               pushService: pushService,
                                               coreDataService: coreDataService,
                                               lastUpdatedStore: lateUpdatedStore,
@@ -476,15 +476,6 @@ extension AppDelegate: UIApplicationDelegate {
 
 extension AppDelegate : UsersManagerDelegate {
 
-    func migrating() {
-        
-    }
-    
-    func session() {
-        
-    }
-    
-    
 }
 
 extension AppDelegate : UnlockManagerDelegate {

@@ -28,13 +28,6 @@ import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
-//TODO:: change to enum
-struct EncryptionStep {
-    static public let DefinePassword = "DefinePassword"
-    static public let ConfirmPassword = "ConfirmPassword"
-    static public let DefineHintPassword = "DefineHintPassword"
-}
-
 enum ComposeMessageAction: Int, CustomStringConvertible {
     case reply = 0
     case replyAll = 1

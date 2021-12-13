@@ -18,18 +18,6 @@
 import Foundation
 
 extension UIImage {
-
-    class func image(with color: UIColor) -> UIImage? {
-        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
-        UIGraphicsBeginImageContext(rect.size)
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setFillColor(color.cgColor)
-            context.fill(rect)
-        }
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
     
     class func resizeWithRespectTo(box size: CGSize, scale: CGFloat, image: UIImage) -> UIImage? {
         return UIImage.resize(image: image, targetSize: CGSize.init(width: size.width * scale,
@@ -57,12 +45,6 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return newImage
-    }
-    
-    class func scale(image: UIImage, by scale: CGFloat) -> UIImage? {
-        let size = image.size
-        let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-        return UIImage.resize(image: image, targetSize: scaledSize)
     }
     
     /// Only supports contentMode as `.scaleAspectFit`
@@ -113,16 +95,6 @@ extension UIImage {
 extension UIImage {
     func toTemplateUIImage() -> UIImage {
         return self.withRenderingMode(.alwaysTemplate)
-    }
-
-    /// Only returns with templateImage when given tintColor
-    func toUIImageView( tintColor: UIColor? = nil ) -> UIImageView {
-        if let tintColor = tintColor {
-            let imageView = UIImageView(image: toTemplateUIImage())
-            imageView.tintColor = tintColor
-            return imageView
-        }
-        return UIImageView(image: self)
     }
 
     /// Create a BarButtonItem from IageAsset

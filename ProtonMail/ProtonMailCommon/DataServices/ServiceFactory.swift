@@ -39,8 +39,6 @@ let sharedServices: ServiceFactory = {
     helper.add(CoreDataService.self, for: CoreDataService.shared)
     helper.add(LastUpdatedStore.self, for: LastUpdatedStore(coreDataService: helper.get(by: CoreDataService.self)))
     #if !APP_EXTENSION
-    // view model factory
-    helper.add(ViewModelService.self, for: ViewModelServiceImpl(coreDataService: CoreDataService.shared))
     
     // push service
     helper.add(PushNotificationService.self, for: PushNotificationService())

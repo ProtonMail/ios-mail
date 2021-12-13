@@ -46,7 +46,6 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     private var menuWidth: CGFloat
     private let vm: MenuVMProtocol
     let services: ServiceFactory
-    private let vmService: ViewModelService
     private let pushService: PushNotificationService
     private let coreDataService: CoreDataService
     private let lastUpdatedStore:LastUpdatedStoreProtocol
@@ -55,7 +54,6 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
 
     // todo: that would be better if vc is protocol
     init(services: ServiceFactory,
-         vmService: ViewModelService,
          pushService: PushNotificationService,
          coreDataService: CoreDataService,
          lastUpdatedStore:LastUpdatedStoreProtocol,
@@ -76,7 +74,6 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         
         self.services = services
         self.coreDataService = coreDataService
-        self.vmService = vmService
         self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.usersManager = usersManager
@@ -252,7 +249,6 @@ extension MenuCoordinator {
 
         let vc = MailboxViewController.instance()
         vc.shouldShowFeedbackActionSheet = showFeedbackActionSheet
-        self.vmService.mailbox(fromMenu: vc)
         
         guard let user = self.usersManager.firstUser,
               let navigation = vc.navigationController else {

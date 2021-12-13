@@ -149,12 +149,6 @@ class WindowsCoordinator: CoordinatorNew {
         self.darkModeCache = darkModeCache
     }
     
-    /// restore some cache after login/authorized
-    func loginmigrate() {
-        //let cacheService : AppCacheService = serviceHolder.get()
-        //cacheService.restoreCacheAfterAuthorized()
-    }
-    
     func start() {
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder

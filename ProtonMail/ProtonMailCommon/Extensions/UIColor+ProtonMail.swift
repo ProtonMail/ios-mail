@@ -82,8 +82,6 @@ extension UIColor {
 
         static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4)) // TODO: used in mail printing
         static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1)) // TODO: used in mail printing
-
-        static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
     }
 }
 

@@ -599,10 +599,6 @@ class MailboxViewModel: StorageLimit {
         messageService.pushNotificationMessageID
     }
     
-    var notificationMessage: Message? {
-        messageService.messageFromPush()
-    }
-    
     final func resetNotificationMessage() -> Void {
         messageService.pushNotificationMessageID = nil
     }

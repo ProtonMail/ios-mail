@@ -39,34 +39,4 @@ extension UILabel {
         self.textColor = textColor
         self.sizeToFit()
     }
-    
-    func setIcons(imageNames: [String], useTintColor: Bool) {
-        let myString = NSMutableAttributedString.init()
-        
-        for imageName in imageNames {
-            let attachment = NSTextAttachment()
-            let image = UIImage(named: imageName)
-            
-            if useTintColor {
-                image?.withRenderingMode(.alwaysTemplate)
-            }
-            
-            attachment.image = image
-            
-            let attachmentString = NSAttributedString(attachment: attachment)
-            myString.append(attachmentString)
-        }
-        
-        self.attributedText = myString
-    }
-    
-    func addBottomBorder() {
-        let bottomBorder = CALayer()
-        bottomBorder.borderColor = UIColor.lightGray.cgColor
-        bottomBorder.borderWidth = 0.7
-        bottomBorder.frame = CGRect.init(x: 0, y: self.frame.height - 1,
-                                         width: self.frame.width, height: 1)
-        self.clipsToBounds = true
-        self.layer.addSublayer(bottomBorder)
-    }
 }
