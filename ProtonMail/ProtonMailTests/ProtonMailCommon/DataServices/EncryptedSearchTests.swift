@@ -36,6 +36,7 @@ class EncryptedSearchTests: XCTestCase {
     var connectionToSearchIndexDB: Connection!
 
     var coreDataService: CoreDataService!
+    var user: UserManager!
     var testContext: NSManagedObjectContext!
 
     override func setUpWithError() throws {
@@ -79,8 +80,8 @@ class EncryptedSearchTests: XCTestCase {
         let testUserInfo = UserInfo(displayName: "test display name", maxSpace: 42, notificationEmail: "test notification name",signature: "test signature", usedSpace: 123, userAddresses: [], autoSC: 321, language: "DE", maxUpload: 234, notify: 2345, showImage: 645, swipeL: 3452, swipeR: 4132, role: 1234, delinquent: 4123, keys: [], userId: "test", sign: 1234, attachPublicKey: 5467, linkConfirmation: "test link confirmation", credit: 098, currency: "BOL", pwdMode: 667, twoFA: 776, enableFolderColor: 77, inheritParentFolderColor: 88, subscribed: 12, groupingMode: 1, weekStart: 0)
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",expiration: .distantFuture, userName: "test user name", userID: "test", privateKey: "test private key", passwordKeySalt: "test password key salt")
         let apiService = PMAPIService(doh: users.doh, sessionUID: "test session id")
-        let user: UserManager = UserManager(api: apiService, userinfo: testUserInfo, auth: testAuth, parent: users)
-        users.users.append(user)
+        self.user = UserManager(api: apiService, userinfo: testUserInfo, auth: testAuth, parent: users)
+        users.users.append(self.user)
         return users.firstUser?.userInfo.userId
     }
 
@@ -150,9 +151,10 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.disabled)
     }
 
-    func testBuildSearchIndex() throws {
+    // Test with some UI tests
+    //func testBuildSearchIndex() throws {
         //TODO
-    }
+    //}
 
     func testPauseAndResumeIndexingByUser() throws {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingByUser
@@ -303,28 +305,30 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertEqual(result.Order, message.order)*/
     }
 
-    func testFetchMessages() throws {
-        /*let sut = EncryptedSearchService.shared.fetchMessages
+    // Test with some UI tests?
+    /*func testFetchMessages() throws {
+        let sut = EncryptedSearchService.shared.fetchMessages
         sut(self.testUserID, Message.Location.allmail.rawValue, 0){
             (errors, messages) in
             XCTAssertNotNil(errors) // errors should be nil
             // There are no message for test user? what to check?
-        }*/
-    }
+        }
+    }*/
 
-    func testProcessPageOneByOne() throws {
+    // Test with some UI tests?
+    /* func testProcessPageOneByOne() throws {
         //TODO
-    }
+    } */
 
-    func testGetMessageDetailsForSingleMessage() throws {
-        /*let sut = EncryptedSearchService.shared.getMessageDetailsForSingleMessage
+    /* func testGetMessageDetailsForSingleMessage() throws {
+        let sut = EncryptedSearchService.shared.getMessageDetailsForSingleMessage
         let testSender: ESSender = ESSender(Name: "sender", Address: "sender@sender.ch")
         let testESMessage: ESMessage = ESMessage(id: self.testMessageID, order: 0, conversationID: "", subject: "subject", unread: 0, type: 0, senderAddress: "sender@sender.ch", senderName: "sender", sender: testSender, toList: [testSender], ccList: [testSender], bccList: [testSender], time: 0, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: Set(arrayLiteral: Message.Location.allmail.rawValue), externalID: "", body: nil, header: nil, mimeType: nil, userID: self.testUserID)
         sut(testESMessage, self.testUserID){
             (message) in
             // hwo to check
-        }*/
-    }
+        }
+    } */
 
     func testDecryptBodyIfNeeded() throws {
         //TODO
@@ -334,7 +338,7 @@ class EncryptedSearchTests: XCTestCase {
         //TODO
     }
 
-    func testCreateEncryptedContent() throws {
+    /* func testCreateEncryptedContent() throws {
         let sut = EncryptedSearchService.shared.createEncryptedContent
         let testMessage: ESMessage = ESMessage(id: "uniqueID3", order: 3, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058776, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
         let result: EncryptedsearchEncryptedMessageContent? = sut(testMessage, "hello", testUserID)
@@ -342,7 +346,7 @@ class EncryptedSearchTests: XCTestCase {
         // TODO getcipher creates a new key each time
         //XCTAssertEqual(result!.iv?.base64EncodedString(), "xxhosAXX20sumrAz")
         //XCTAssertEqual(result!.ciphertext?.base64EncodedString(), "jTW7KjWSlKrY068Wc3slqtxh8J9+u1HrbLQYXrqpUJUqovjWgIxfWy0OkjaeI0w562bZU1h8HveNe2LDUhRDSK/ClxEk8A+qailLETeq+mptugbnIgRUe5RGP/5N7knAPoTAN+l/xB4OiT4C+CFKGizaxg2fzHsb3J/DnNSJohFi4cInC5msUXAOj68=")
-    }
+    } */
 
     func testAddMessageKewordsToSearchIndex() throws {
         let sut = EncryptedSearchService.shared.addMessageKewordsToSearchIndex
@@ -371,9 +375,16 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
     }
 
-    func testSearch() throws {
-        //let sut = EncryptedSearchService.shared.speedUpIndexing
-    }
+    // Test with some UI tests
+    /* func testSearch() throws {
+        let sut = EncryptedSearchService.shared.search
+        let query: String = "hello2"
+        let page: Int = 0
+        let searchViewModel: SearchViewModel = SearchViewModel(user: self.user, coreDataService: self.coreDataService, uiDelegate: nil)
+        sut(query, page, searchViewModel){_ in
+            XCTAssertEqual(searchViewModel.messages.count, 1)
+        }
+    } */
 
     func testClearSearchState() throws {
         let sut = EncryptedSearchService.shared.clearSearchState
