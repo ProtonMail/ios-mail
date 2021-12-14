@@ -227,9 +227,33 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
 
-    func testUpdateSearchIndex() throws {
-        //TODO
+    func testUpdateSearchIndexInsert() throws {
+        let sut = EncryptedSearchService.shared.updateSearchIndex
+        
+        let action: NSFetchedResultsChangeType = .insert
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
+        sut(action, message, nil, nil)
+
+        // Wait for the message to be inserted
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 3)
+        }
     }
+
+    /* func testUpdateSearchIndexDelete() throws {
+        let sut = EncryptedSearchService.shared.updateSearchIndex
+        
+        let action: NSFetchedResultsChangeType = .delete
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
+        sut(action, message, nil, nil)
+
+        // Wait for the message to be inserted
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 3)
+        }
+    } */
 
     func testProcessEventsAfterIndexing() throws {
         //TODO
