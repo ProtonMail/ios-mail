@@ -232,7 +232,7 @@ class EncryptedSearchTests: XCTestCase {
         
         let action: NSFetchedResultsChangeType = .insert
         let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
-        sut(action, message, nil, nil)
+        sut(action, message)
 
         // Wait for the message to be inserted
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -241,19 +241,19 @@ class EncryptedSearchTests: XCTestCase {
         }
     }
 
-    /* func testUpdateSearchIndexDelete() throws {
+    func testUpdateSearchIndexDelete() throws {
         let sut = EncryptedSearchService.shared.updateSearchIndex
         
         let action: NSFetchedResultsChangeType = .delete
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
-        sut(action, message, nil, nil)
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.trash.rawValue))
+        sut(action, message)
 
         // Wait for the message to be inserted
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
-            XCTAssertEqual(numberOfMessagesInSearchIndex, 3)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 2)
         }
-    } */
+    }
 
     func testProcessEventsAfterIndexingNoEvents() throws {
         let sut = EncryptedSearchService.shared.processEventsAfterIndexing
@@ -270,7 +270,11 @@ class EncryptedSearchTests: XCTestCase {
         // Add an insert event while indexing
         EncryptedSearchService.shared.indexBuildingInProgress = true
         let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
-        EncryptedSearchService.shared.updateSearchIndex(NSFetchedResultsChangeType.insert, message, nil, nil)
+        EncryptedSearchService.shared.updateSearchIndex(NSFetchedResultsChangeType.insert, message)
+        let message2 = try XCTUnwrap(makeTestMessageIn(Message.Location.trash.rawValue))
+        EncryptedSearchService.shared.updateSearchIndex(NSFetchedResultsChangeType.insert, message2)
+        let message3 = try XCTUnwrap(makeTestMessageIn(Message.Location.sent.rawValue))
+        EncryptedSearchService.shared.updateSearchIndex(NSFetchedResultsChangeType.insert, message3)
 
         // Test process events - with above insert
         EncryptedSearchService.shared.indexBuildingInProgress = false
@@ -278,7 +282,7 @@ class EncryptedSearchTests: XCTestCase {
         // Wait for the message to be inserted
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
-            XCTAssertEqual(numberOfMessagesInSearchIndex, 3)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 5)
         }
     }
 

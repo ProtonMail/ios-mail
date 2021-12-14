@@ -2278,7 +2278,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
         // If encrypted search is turned on update the search index
         if userCachedStatus.isEncryptedSearchOn {
-            EncryptedSearchService.shared.updateSearchIndex(type, anObject as? Message, indexPath, newIndexPath)
+            EncryptedSearchService.shared.updateSearchIndex(type, anObject as? Message)
         }
     }
 }
