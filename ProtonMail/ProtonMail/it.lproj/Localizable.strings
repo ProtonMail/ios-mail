@@ -1817,7 +1817,7 @@
 "OK" = "OK";
 
 /* The title of On setting options */
-"On" = "Arrivato";
+"On" = "Attivato";
 
 /* On {date}, e.g.: On Aug 14 */
 "On %@" = "Il %@";
