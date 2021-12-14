@@ -2107,7 +2107,7 @@
 "The user is already logged in" = "O utilizador já iniciou sessão";
 
 /* (No Comment) */
-"The UserName have been taken." = "O utilizador já está em uso.";
+"The username has been taken." = "O utilizador já está em uso.";
 
 /* title */
 "The verification email invalid" = "Email de verificação inválido";

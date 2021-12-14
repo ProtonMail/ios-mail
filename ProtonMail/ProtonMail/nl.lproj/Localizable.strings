@@ -2107,7 +2107,7 @@
 "The user is already logged in" = "De gebruiker is al ingelogd";
 
 /* (No Comment) */
-"The UserName have been taken." = "De gebruikersnaam is reeds in gebruik.";
+"The username has been taken." = "De gebruikersnaam is reeds in gebruik.";
 
 /* title */
 "The verification email invalid" = "Ongeldig verificatie e-mailadres";

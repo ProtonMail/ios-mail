@@ -2107,7 +2107,7 @@
 "The user is already logged in" = "Användaren är redan inloggad";
 
 /* (No Comment) */
-"The UserName have been taken." = "Användarnamnet är upptaget.";
+"The username has been taken." = "Användarnamnet är upptaget.";
 
 /* title */
 "The verification email invalid" = "Ogiltig typ av verifieringskod";

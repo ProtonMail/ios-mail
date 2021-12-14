@@ -2107,7 +2107,7 @@
 "The user is already logged in" = "Uživatel je už přihlášený";
 
 /* (No Comment) */
-"The UserName have been taken." = "Uživatelské jméno už bylo použito.";
+"The username has been taken." = "Uživatelské jméno už bylo použito.";
 
 /* title */
 "The verification email invalid" = "Neplatný ověřovací e-mail";

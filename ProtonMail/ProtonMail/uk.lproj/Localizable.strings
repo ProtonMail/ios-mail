@@ -2107,7 +2107,7 @@
 "The user is already logged in" = "Користувач вже увійшов";
 
 /* (No Comment) */
-"The UserName have been taken." = "The username have been taken.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Недійсна е-пошта для підтвердження";
