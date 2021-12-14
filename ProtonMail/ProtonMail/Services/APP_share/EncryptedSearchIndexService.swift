@@ -223,6 +223,51 @@ extension EncryptedSearchIndexService {
         return true
     }
 
+    func resizeSearchIndex(userID: String, expectedSize: Int64) -> Void {
+        // check if search index exists for user
+        if self.checkIfSearchIndexExists(for: userID) == false {
+            return
+        }
+
+        // check if size is already smaller
+        if self.getSizeOfSearchIndex(for: userID).asInt64! < expectedSize {
+            return
+        }
+
+        let handleToDB: Connection? = self.connectToSearchIndex(for: userID)
+        // in a loop delete messages until it fits the expected size
+        while self.getSizeOfSearchIndex(for: userID).asInt64! > expectedSize {
+            // remove last message in the search index
+            let deletedRow: Int = self.removeLastEntryInSearchIndex(handleToDB: handleToDB)
+            print("successfully deleted row: \(deletedRow), size of index: \(self.getSizeOfSearchIndex(for: userID).asInt64!)")
+            if deletedRow == -1 {
+                break
+            }
+        }
+    }
+
+    private func removeLastEntryInSearchIndex(handleToDB: Connection?) -> Int {
+        var rowID:Int? = -1
+        do {
+            // Check if there are still entries in the db
+            let numberOfEntries: Int? = try handleToDB?.scalar(self.searchableMessages.count)
+            if numberOfEntries == 0 {
+                return rowID!
+            }
+
+            let time: Expression<CLong> = self.databaseSchema.time
+            let query = self.searchableMessages.select(time).order(time.asc).limit(1)
+            // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
+            rowID = try handleToDB?.run(query.delete())
+
+            // Run vacuum command to actually delete data
+            try handleToDB?.run("VACUUM")
+        } catch {
+            print("deleting the oldest message from search index failed: \(error)")
+        }
+        return rowID!
+    }
+
     func getSizeOfSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
