@@ -140,6 +140,16 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         XCTAssertEqual(fileExists, false)
     }
 
+    func testResizeSearchIndex() throws {
+        let sut = EncryptedSearchIndexService.shared.resizeSearchIndex
+        sut(self.testUserID, 8000)
+        
+        let numberOfEntries: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+        XCTAssertEqual(numberOfEntries, 1)
+        let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.testUserID).asInt64
+        XCTAssertEqual(sizeOfIndex, 5)
+    }
+
     func testAddNewEntryToSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
         let messageID: String = "testMessage"
