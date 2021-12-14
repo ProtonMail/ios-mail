@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "ユーザーが既にログインしています";
 
 /* (No Comment) */
-"The UserName have been taken." = "このユーザー名は既に使用されています。";
+"The username has been taken." = "このユーザー名は既に使用されています。";
 
 /* title */
 "The verification email invalid" = "検証用メールアドレスが無効です";

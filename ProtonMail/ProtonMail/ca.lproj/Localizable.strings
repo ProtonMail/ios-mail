@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Es usuari ja està identificat";
 
 /* (No Comment) */
-"The UserName have been taken." = "El nom d'usuari ja està agafat.";
+"The username has been taken." = "El nom d'usuari ja està agafat.";
 
 /* title */
 "The verification email invalid" = "Correu electrònic de verificació no vàlid";

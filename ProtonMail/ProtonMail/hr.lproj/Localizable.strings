@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Korisnik je već prijavljen";
 
 /* (No Comment) */
-"The UserName have been taken." = "Korisničko ime je zauzeto.";
+"The username has been taken." = "Korisničko ime je zauzeto.";
 
 /* title */
 "The verification email invalid" = "Nevažeća adresa e-pošte za potvrdu";

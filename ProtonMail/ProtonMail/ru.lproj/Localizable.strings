@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Этот пользователь уже вошёл";
 
 /* (No Comment) */
-"The UserName have been taken." = "Имя пользователя занято.";
+"The username has been taken." = "Имя пользователя занято.";
 
 /* title */
 "The verification email invalid" = "Неправильный адрес эл. почты для проверки";

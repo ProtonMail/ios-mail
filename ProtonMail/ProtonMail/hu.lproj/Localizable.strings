@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "A felhasználó már belépett";
 
 /* (No Comment) */
-"The UserName have been taken." = "A felhasználónév foglalt.";
+"The username has been taken." = "A felhasználónév foglalt.";
 
 /* title */
 "The verification email invalid" = "Érvénytelen ellenőrző e-mail";

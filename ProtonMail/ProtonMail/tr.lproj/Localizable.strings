@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Kullanıcı zaten oturum açtı";
 
 /* (No Comment) */
-"The UserName have been taken." = "Bu kullanıcı adı alındı.";
+"The username has been taken." = "Bu kullanıcı adı alındı.";
 
 /* title */
 "The verification email invalid" = "Geçersiz doğrulama e-postası";
