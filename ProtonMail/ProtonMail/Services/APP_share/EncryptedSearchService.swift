@@ -434,36 +434,42 @@ extension EncryptedSearchService {
     struct MessageAction {
         var action: NSFetchedResultsChangeType? = nil
         var message: Message? = nil
-        var indexPath: IndexPath? = nil
-        var newIndexPath: IndexPath? = nil
     }
     
-    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
+    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
         if self.indexBuildingInProgress {
-            let messageAction: MessageAction = MessageAction(action: action, message: message, indexPath: indexPath, newIndexPath: newIndexPath)
+            let messageAction: MessageAction = MessageAction(action: action, message: message)
             self.eventsWhileIndexing!.append(messageAction)
         } else {
-            switch action {
-                case .delete:
-                    self.updateMessageMetadataInSearchIndex(message, action, indexPath, newIndexPath)
-                    //TODO update cache
-                case .insert:
-                    self.insertSingleMessageToSearchIndex(message)  // update search index db
-                    let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                    let uid: String? = users.firstUser?.userInfo.userId
-                    if let userID = uid {
+            let users: UsersManager = sharedServices.get(by: UsersManager.self)
+            let uid: String? = users.firstUser?.userInfo.userId
+            if let userID = uid {
+                switch action {
+                    case .delete:
+                        self.updateMessageMetadataInSearchIndex(message, action)
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
                             let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
                         }
-                    }
-                case .move:
-                    //TODO implement
-                    break
-                case .update:
-                    //TODO implement
-                    break
-                default:
-                    return
+                    case .insert:
+                        self.insertSingleMessageToSearchIndex(message)  // update search index db
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                        }
+                    case .move:
+                        self.updateMessageMetadataInSearchIndex(message, action)
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                        }
+                    case .update:
+                        self.updateMessageMetadataInSearchIndex(message, action)
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                        }
+                    default:
+                        return
+                }
+            } else {
+                print("Error when updating search index: User unknown!")
             }
         }
     }
@@ -477,9 +483,16 @@ extension EncryptedSearchService {
             print("ENCRYPTEDSEARCH-STATE: refresh")
 
             let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
-            self.updateSearchIndex(messageAction.action!, messageAction.message, messageAction.indexPath, messageAction.newIndexPath)
+            self.updateSearchIndex(messageAction.action!, messageAction.message)
             self.processEventsAfterIndexing() {
-                print("Events remaining to process: \(self.eventsWhileIndexing!.count)")
+                print("All events processed that have been accumulated during indexing...")
+
+                // Set state to complete when finished
+                self.state = .complete
+                print("ENCRYPTEDSEARCH-STATE: complete")
+
+                // Update UI
+                self.updateUIIndexingComplete()
             }
         }
     }
@@ -579,7 +592,7 @@ extension EncryptedSearchService {
         }
     }
     
-    private func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType, _ indexPath: IndexPath?, _ newIndexPath: IndexPath?) {
+    private func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType) {
         guard let messageToUpdate = message else {
             return
         }
@@ -587,19 +600,8 @@ extension EncryptedSearchService {
         let uid: String? = users.firstUser?.userInfo.userId
         if let userID = uid {
             if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID){
-                switch action {
-                case .delete:
-                    print("DELETE: message location: \(messageToUpdate.getLabelIDs())")
-                    break
-                case .move:
-                    //TODO implement
-                    break
-                case .update:
-                    //TODO implement
-                    break
-                default:
-                    break
-                }
+                self.deleteMessageFromSearchIndex(messageToUpdate)
+                self.insertSingleMessageToSearchIndex(messageToUpdate)
             } else {
                 print("No search index found for user: \(userID)")
             }
