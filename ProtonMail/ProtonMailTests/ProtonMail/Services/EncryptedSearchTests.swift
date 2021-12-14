@@ -255,8 +255,31 @@ class EncryptedSearchTests: XCTestCase {
         }
     } */
 
-    func testProcessEventsAfterIndexing() throws {
-        //TODO
+    func testProcessEventsAfterIndexingNoEvents() throws {
+        let sut = EncryptedSearchService.shared.processEventsAfterIndexing
+        
+        // No events while indexing
+        sut(){}
+        let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+        XCTAssertEqual(numberOfMessagesInSearchIndex, 2)
+    }
+
+    func testProcessEventsAfterIndexingInsertEvent() throws {
+        let sut = EncryptedSearchService.shared.processEventsAfterIndexing
+
+        // Add an insert event while indexing
+        EncryptedSearchService.shared.indexBuildingInProgress = true
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.allmail.rawValue))
+        EncryptedSearchService.shared.updateSearchIndex(NSFetchedResultsChangeType.insert, message, nil, nil)
+
+        // Test process events - with above insert
+        EncryptedSearchService.shared.indexBuildingInProgress = false
+        sut(){}
+        // Wait for the message to be inserted
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
+            XCTAssertEqual(numberOfMessagesInSearchIndex, 3)
+        }
     }
 
     func testInsertSingleMessageToSearchIndex() throws {

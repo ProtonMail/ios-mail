@@ -350,6 +350,16 @@ extension EncryptedSearchService {
 
             // Update UI
             self.updateUIIndexingComplete()
+
+            // Process events that have been accumulated during indexing
+            self.processEventsAfterIndexing() {
+                // Set state to complete when finished
+                self.state = .complete
+                print("ENCRYPTEDSEARCH-STATE: complete")
+
+                // Update UI
+                self.updateUIIndexingComplete()
+            }
         }
     }
     
@@ -462,10 +472,14 @@ extension EncryptedSearchService {
         if self.eventsWhileIndexing!.isEmpty {
             completionHandler()
         } else {
+            // Set state to refresh
+            self.state = .refresh
+            print("ENCRYPTEDSEARCH-STATE: refresh")
+
             let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
             self.updateSearchIndex(messageAction.action!, messageAction.message, messageAction.indexPath, messageAction.newIndexPath)
-            self.processEventsAfterIndexing {
-                print("Events remainding to process: \(self.eventsWhileIndexing!.count)")
+            self.processEventsAfterIndexing() {
+                print("Events remaining to process: \(self.eventsWhileIndexing!.count)")
             }
         }
     }
