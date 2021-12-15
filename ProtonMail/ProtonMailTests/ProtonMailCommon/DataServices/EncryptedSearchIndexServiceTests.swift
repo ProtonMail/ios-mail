@@ -40,8 +40,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         // Create the table
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
         // Add one entry in the table
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8), encryptedContent: Data("content".utf8), encryptedContentFile: "linktofile")
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedData(), encryptedContent: Data("content".utf8).base64EncodedData(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedData().count)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedData(), encryptedContent: Data("content".utf8).base64EncodedData(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedData().count)
     }
 
     override func tearDownWithError() throws {
@@ -142,8 +142,10 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
 
     func testResizeSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.resizeSearchIndex
-        sut(self.testUserID, 8000)
-        
+        let result: Bool = sut(self.testUserID, 8000)
+
+        XCTAssertEqual(result, true)
+
         let numberOfEntries: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
         XCTAssertEqual(numberOfEntries, 1)
         let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: self.testUserID).asInt64
@@ -161,11 +163,12 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let order: Int = 1
         let hasBody: Bool = true
         let decryptionFailed: Bool = false
-        let encryptionIV: Data = Data("iv".utf8)
-        let encryptedContent: Data = Data("content".utf8)
+        let encryptionIV: Data = Data("iv".utf8).base64EncodedData()
+        let encryptedContent: Data = Data("content".utf8).base64EncodedData()
         let encryptedContentFile: String = "test"
+        let encryptedContentSize: Int = encryptedContent.count
 
-        let result: Int64? = sut(self.testUserID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile)
+        let result: Int64? = sut(self.testUserID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile, encryptedContentSize)
 
         XCTAssertEqual(result, 3)   // There are already 2 entries in the db, therefore this should be entry number 3.
     }

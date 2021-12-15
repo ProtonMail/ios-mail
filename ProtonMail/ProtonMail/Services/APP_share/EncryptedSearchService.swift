@@ -204,6 +204,26 @@ extension EncryptedSearchService {
         }
     }
 
+    func resizeSearchIndex(expectedSize: Int64) -> Void {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String? = usersManager.firstUser?.userInfo.userId
+            if let userID = userID {
+                self.state = .partial
+                print("ENCRYPTEDSEARCH-STATE: partial")
+
+                let success: Bool = EncryptedSearchIndexService.shared.resizeSearchIndex(userID: userID, expectedSize: expectedSize)
+                if success == false {
+                    self.state = .complete
+                    print("ENCRYPTEDSEARCH-STATE: complete")
+                }
+            } else {
+                print("Error when resizing the search index: User not found!")
+            }
+        }
+    }
+
+    // MARK: - Index Building Functions
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
         #if !APP_EXTENSION
@@ -1185,24 +1205,24 @@ extension EncryptedSearchService {
         key = self.generateSearchIndexKey(userID)
         return key
     }
-    
+
     func addMessageKewordsToSearchIndex(_ userID: String, _ message: ESMessage, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
         var hasBody: Bool = true
         if decryptionFailed {
             hasBody = false //TODO are there any other case where there is no body?
         }
-        
+
         let location: Int = Int(Message.Location.allmail.rawValue)!
         let time: Int = Int(message.Time)
         let order: Int = message.Order
-        
+
         let iv: Data = (encryptedContent?.iv)!.base64EncodedData()
         let ciphertext:Data = (encryptedContent?.ciphertext)!.base64EncodedData()
-        
-        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "")
+        let encryptedContentSize: Int = ciphertext.count
+
+        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: hasBody, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
     }
-    
-    // MARK: - Index Building Functions
+
     // Called to slow down indexing - so that a user can normally use the app
     func slowDownIndexing(){
         if self.state == .downloading || self.state == .background || self.state == .refresh {
