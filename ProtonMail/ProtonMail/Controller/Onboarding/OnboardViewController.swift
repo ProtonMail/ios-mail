@@ -26,6 +26,13 @@ class OnboardViewController: UIViewController, UIScrollViewDelegate {
     private let pageWidth: CGFloat = UIScreen.main.bounds.size.width
     private(set) lazy var customView = OnboardView()
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13, *) {
+            return .darkContent
+        }
+        return .lightContent
+    }
+
     private let onboardingList: [Onboarding] = [.page1, .page2, .page3]
 
     override func loadView() {

@@ -83,7 +83,5 @@
 	<string>Required for attaching photos to the email.</string>
 	<key>UISupportsDocumentBrowser</key>
 	<false/>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 </dict>
 </plist>
