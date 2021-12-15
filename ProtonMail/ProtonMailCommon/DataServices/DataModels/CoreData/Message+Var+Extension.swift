@@ -208,4 +208,9 @@ extension Message {
         }
         return true
     }
+
+    var isNewsLetter: Bool {
+        let helper = NewsLetterCheckHelper()
+        return helper.calculateIsNewsLetter(messageHeaderString: self.header ?? "")
+    }
 }

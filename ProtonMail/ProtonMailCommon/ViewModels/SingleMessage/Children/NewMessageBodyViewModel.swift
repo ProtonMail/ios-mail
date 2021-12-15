@@ -192,6 +192,8 @@ class NewMessageBodyViewModel {
             return true
         }
         if let decryptedBody = decryptBody(from: message) {
+            let isNewsLetter = message.isNewsLetter
+
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody)
 
@@ -202,21 +204,24 @@ class NewMessageBodyViewModel {
                     guard let self = self else { return }
                     self.contents = WebContents(
                         body: self.bodyParts?.body(for: self.displayMode) ?? "",
-                        remoteContentMode: remoteContentMode
+                        remoteContentMode: remoteContentMode,
+                        isNewsLetter: isNewsLetter
                     )
                 }
                 return false
             } else {
                 self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                             remoteContentMode:
-                                                remoteContentMode)
+                                                remoteContentMode,
+                                            isNewsLetter: isNewsLetter
+                )
             }
         } else if !message.body.isEmpty {
             // If the detail hasn't download, don't show encrypted body to user
             bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? message.bodyToHtml(): .empty)
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
-                                        remoteContentMode:
-                                            remoteContentMode)
+                                        remoteContentMode: remoteContentMode,
+                                        isNewsLetter: false)
         }
         return true
     }
