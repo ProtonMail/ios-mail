@@ -212,14 +212,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     @objc func dismiss() {
-        #if APP_EXTENSION
         if self.presentingViewController != nil {
             let presentingVC = self.presentingViewController
             self.handleHintBanner(presentingVC: presentingVC)
         }
-        #else
         self.dismiss(animated: true, completion: nil)
-        #endif
     }
     
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
@@ -472,11 +469,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.viewModel.sendMessage()
 
         self.dismissBySending = true
-        #if APP_EXTENSION
         self.dismiss()
-        #else
-        self.dismiss(animated: true, completion: nil)
-        #endif
     }
     
     func cancel() {
