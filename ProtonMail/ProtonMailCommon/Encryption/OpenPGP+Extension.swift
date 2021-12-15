@@ -158,31 +158,34 @@ extension PMNOpenPgp {
     }
 }
 
+protocol AttachmentDecryptor {
+    func decryptAttachment(keyPacket: Data,
+                           dataPacket: Data,
+                           privateKey: String,
+                           passphrase: String) throws -> Data?
+}
+
+extension Crypto: AttachmentDecryptor {}
 
 extension Data {
-    func decryptAttachment(keyPackage: Data, userKeys: [Data], passphrase: String, keys: [Key]) throws -> Data? {
+    func decryptAttachment(keyPackage: Data,
+                           userKeys: [Data],
+                           passphrase: String,
+                           keys: [Key],
+                           attachmentDecryptor: AttachmentDecryptor = Crypto()) throws -> Data? {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature {
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                       if try Crypto().verifyDetached(signature: signature,
-                                                   plainText: plaitToken,
-                                                   binKeys: userKeys,
-                                                   verifyTime: CryptoGetUnixTime()) == true {
-                        return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                              dataPacket: self,
-                                                              privateKey: key.privateKey,
-                                                              passphrase: plaitToken)
-                       } else {
-                           throw Crypto.CryptoError.verificationFailed
-                       }
-                    }
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                if let decryptedAttachment =  try attachmentDecryptor.decryptAttachment(keyPacket: keyPackage,
+                                                                                        dataPacket: self,
+                                                                                        privateKey: key.privateKey,
+                                                                                        passphrase: addressKeyPassphrase) {
+                    return decryptedAttachment
                 } else {
-                    return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                          dataPacket: self,
-                                                          privateKey: key.privateKey,
-                                                          passphrase: passphrase)
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {
@@ -230,18 +233,15 @@ extension Data {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let _ = key.signature { //have both means new schema. key is
-                    if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-//                        PMLog.D(signature)
-                        return try Crypto().getSession(keyPacket: self, privateKey: key.privateKey, passphrase: plainToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try Crypto().getSession(keyPacket: self, privateKey: key.privateKey, passphrase: plainToken)
-                    }
-                } else {//normal key old schema
-                    return try Crypto().getSession(keyPacket: self, privateKeys: userKeys, passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                if let sessionKey = try Crypto().getSession(keyPacket: self,
+                                                            privateKey: key.privateKey,
+                                                            passphrase: addressKeyPassphrase) {
+                    return sessionKey
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {

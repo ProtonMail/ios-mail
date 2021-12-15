@@ -241,7 +241,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
                 return XCTFail("can't be null")
             }
             // decrypt
-            let decrypted = try crypto.decrypt(encrytped: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            let decrypted = try crypto.decrypt(encrypted: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
             //match
             XCTAssertEqual(testAttachmentCleartext, decrypted)
         } catch let error {
@@ -345,7 +345,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
         let unwrappedEncrypted = try XCTUnwrap(encrypted)
         XCTAssertNotEqual(message, unwrappedEncrypted)
 
-        let decrypted = try Crypto().decrypt(encrytped: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
+        let decrypted = try Crypto().decrypt(encrypted: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
         XCTAssertEqual(message, decrypted)
     }
 }
