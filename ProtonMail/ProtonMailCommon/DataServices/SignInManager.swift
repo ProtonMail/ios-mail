@@ -69,6 +69,7 @@ class SignInManager: Service {
         let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
         service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
         service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+        service.serviceDelegate = self
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
@@ -91,6 +92,7 @@ class SignInManager: Service {
         let service = PMAPIService(doh: usersManager.doh, sessionUID: "")
         service.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: service)
         service.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+        service.serviceDelegate = self
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
@@ -168,4 +170,24 @@ class SignInManager: Service {
             self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
+}
+
+extension SignInManager: APIServiceDelegate {
+    func isReachable() -> Bool {
+        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+    }
+
+    func onUpdate(serverTime: Int64) {
+        Crypto.updateTime(serverTime)
+    }
+
+    var appVersion: String {
+        return "iOS_\(Bundle.main.majorVersion)"
+    }
+
+    var userAgent: String? {
+        UserAgent.default.ua
+    }
+
+    func onDohTroubleshot() { }
 }
