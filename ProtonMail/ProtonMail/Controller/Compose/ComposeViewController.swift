@@ -101,6 +101,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         
         self.prepareWebView()
         self.htmlEditor.delegate = self
+        self.webView.isOpaque = false
         self.htmlEditor.setup(webView: self.webView)
 
         self.viewModel.showError = { [weak self] errorMsg in
