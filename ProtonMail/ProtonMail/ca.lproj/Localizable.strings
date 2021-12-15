@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requeriments d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requeriments d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";

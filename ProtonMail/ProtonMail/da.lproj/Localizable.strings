@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail fejlede Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";

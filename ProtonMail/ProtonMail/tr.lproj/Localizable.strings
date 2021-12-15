@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "Bu konuşma çöp kutusuna atılmış iletiler içerir";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, alan adının kimlik doğrulama gereksinimlerinde başarısız oldu. Yanıltılmış ya da yanlış yönlendirilmiş olabilir!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, alan adının kimlik doğrulama gereksinimlerinde başarısız oldu. Yanıltılmış ya da yanlış yönlendirilmiş olabilir!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının kimlik doğrulama şartlarından başarısız oldu. Sahte ya da yanlış yönlendirilmiş olabilir!";

@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям аутентификации домена. Это быть поддельным или пересланным неправильно!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям аутентификации домена. Это быть поддельным или пересланным неправильно!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям подтверждения подлинности своего домена. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
