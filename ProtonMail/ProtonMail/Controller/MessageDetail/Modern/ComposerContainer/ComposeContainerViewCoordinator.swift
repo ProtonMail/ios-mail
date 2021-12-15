@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     typealias VC = ComposeContainerViewController
@@ -153,7 +153,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         case 0:
             self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
         case 1:
-            cell.contentView.backgroundColor = .white
+            cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
             self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
         case 2:
             guard let component = self.attachmentView else { return }

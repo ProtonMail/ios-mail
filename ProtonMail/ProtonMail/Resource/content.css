@@ -1,7 +1,3 @@
-/*
-    HtmlEditor.css
-    Proton Technologies AG
-*/
 
 :root {
   color-scheme: light dark;
@@ -38,29 +34,29 @@ html {
 }
 
 button,html,input,select,textarea {
-    font-family: "San Francisco",sans-serif;
+    font-family: -apple-system,sans-serif;
 }
 
 body {
-    font-family: "San Francisco",Helvetica,Arial,sans-serif;
+    font-family: -apple-system,Helvetica,Arial,sans-serif;
     font-weight: 400;
     margin: 0;
     width: 100%;
-    height: 100%;
     box-sizing: border-box;
-    padding: 0rem;
-    word-break: break-word;
+    padding: 1rem;
     color: var(--text-color);
     background: var(--bg-color);
+    /* outside of tables we force wrap long text */
+    word-break: break-word;
 }
 
-/*div,*/
-/*span {*/
-/*    font-size: 1em !important;*/
-/*}*/
+table * {
+    /* inside of tables we use detault wrapping for best formatting (such as Amazon reciept emails) */
+    word-break: initial;
+}
 
-div {
-    outline: none
+table a, table p {
+    word-break: break-word;
 }
 
 blockquote {
@@ -69,7 +65,7 @@ blockquote {
     border: 1px solid #ccc !important;
     border-width: 0 0 0 1px !important;
     -webkit-margin-before: 1rem !important;
-    -webkit-margin-after: 20px !important;
+    -webkit-margin-after: 2rem !important;
     -webkit-margin-start: 0 !important;
     -webkit-margin-end: 0 !important;
 }
@@ -154,12 +150,12 @@ pre {
 }
 
 * {
-    caret-color: auto !important;
+    caret-color: red !important;
     
     /* debug only */
-/*    margin: 0 !important;*/
-/*    position: static !important;*/
-/*    float: none !important;*/
+        /* margin: 0 !important;
+        position: static !important;
+        float: none !important; */
     /* end debug */
 }
 
@@ -168,7 +164,6 @@ q {
 }
 
 q:after,q:before {
-    content: "";
     content: none;
 }
 
@@ -211,8 +206,13 @@ img {
     border: 0;
     -ms-interpolation-mode: bicubic;
     max-width: 100%;
-    height: auto; /* will prevent embed image improper sizing */
+    /* will prevent embed image improper sizing */
+    /*    height: auto; remove it if test ok*/
 }
+
+/*img.proton-embedded {*/
+/*    height: auto;*/
+/*}*/
 
 td {
     max-width: 100%;
@@ -221,6 +221,7 @@ td {
 table {
     /* Some html newsletters set up inline style for tables to take 100% of height and then add footer contents like Unsubscribe button and credits. This practice breaks MessageBodyViewController layout: webView does not include footer into contentSize because consider it to be scrollable. No matter what, webView will place footer below the bottomline of the view in order to make users scroll for it. Since we do not want webViews to be scrollable (in order to support conversation mode), we have to override this styling practice and let table take as much space as its content really needs and place the footer just below. */
     height: auto !important;
+    min-height: auto !important;
 }
 
 svg:not(:root) {
@@ -248,11 +249,6 @@ legend {
     font-size: 1.8em;
 }
 
-body > #editor {
-    /*  temp solve the click range too small when no signature  */
-    min-height: 60px;
-}
-
-#editor > #protonmail_mobile_signature_block {
-    min-height: 40px;
+*[style*="min-height"] {
+    min-height: initial !important;
 }

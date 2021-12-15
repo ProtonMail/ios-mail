@@ -31,7 +31,6 @@ body {
     width: 100%;
     box-sizing: border-box;
     padding: 1rem;
-    color: #505061;
     /* outside of tables we force wrap long text */
     word-break: break-word;
 }

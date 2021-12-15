@@ -19,39 +19,40 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
-class WebContents: NSObject {
-    internal let body: String
-    internal let remoteContentMode: RemoteContentPolicy
-    
+class WebContents {
+    let body: String
+    let remoteContentMode: RemoteContentPolicy
+    let isNewsLetter: Bool
+
     var bodyForJS: String {
         return self.body.escaped
     }
 
-    init(body: String, remoteContentMode: RemoteContentPolicy) {
+    init(body: String, remoteContentMode: RemoteContentPolicy, isNewsLetter: Bool) {
         self.body = body
         self.remoteContentMode = remoteContentMode
+        self.isNewsLetter = isNewsLetter
     }
-    
+
     var contentSecurityPolicy: String {
         return self.remoteContentMode.cspRaw
     }
-    
+
     enum RemoteContentPolicy: Int {
         case allowed, disallowed, lockdown
-        
+
         var cspRaw: String {
             switch self {
             case .lockdown:
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
-                
+
             case .disallowed: // this cuts off all remote content
                 return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
-                
+
             case .allowed: // this cuts off only scripts and connections
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
             }
@@ -62,9 +63,12 @@ class WebContents: NSObject {
         case disallowed
         case allowed
     }
-    
-    internal static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "editor", ofType: "css")!, encoding: .utf8).replacingOccurrences(of: "\n", with: "")
-    internal static var domPurifyConstructor: WKUserScript = {
+
+    static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content", ofType: "css")!,
+                                         encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    static var cssLightModeOnly: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content_light", ofType: "css")!,
+                                                      encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    static var domPurifyConstructor: WKUserScript = {
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()

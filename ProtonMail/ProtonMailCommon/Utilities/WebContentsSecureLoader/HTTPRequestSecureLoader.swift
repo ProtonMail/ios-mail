@@ -22,6 +22,7 @@
     
 
 import Foundation
+import ProtonCore_UIFoundations
 
 /// Loads web content into WKWebView by means of load(_:) and inner URLRequest method. In order to prevent resources prefetching, loading happens in a number of stages:
 /// 1. webView gets a WKContentRuleList restricting any loads other than current url and a custom scheme handler
@@ -62,6 +63,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         self.webView?.loadHTMLString("", baseURL: URL(string: "about:blank")!)
         
         self.webView = webView
+
+        self.webView?.backgroundColor = contents.isNewsLetter ? .white : ColorProvider.BackgroundNorm
         
         let urlString = (UUID().uuidString + ".proton").lowercased()
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
@@ -101,6 +104,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
+        let css = contents.isNewsLetter ? WebContents.cssLightModeOnly : WebContents.css
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         var clean0 = DOMPurify.sanitize(dirty);
@@ -110,7 +114,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.appendChild(document.createTextNode('\(WebContents.css)'));
+        style.appendChild(document.createTextNode('\(css)'));
         document.getElementsByTagName('head')[0].appendChild(style);
         
         var metaWidth = document.createElement('meta');

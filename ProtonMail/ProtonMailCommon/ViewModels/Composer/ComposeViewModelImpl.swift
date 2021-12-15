@@ -726,7 +726,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         case .reply, .replyAll:
             
             var body = ""
@@ -755,7 +755,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
@@ -794,28 +794,28 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            return .init(body: body, remoteContentMode: globalRemoteContentMode)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
                 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
             } else if signatureHtml.trim().isEmpty {
                 //add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         }
         
     }

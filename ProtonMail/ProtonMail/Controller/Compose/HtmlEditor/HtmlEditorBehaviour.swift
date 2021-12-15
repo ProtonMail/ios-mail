@@ -51,7 +51,7 @@ class HtmlEditorBehaviour: NSObject {
     
     //
     private var isEditorLoaded: Bool = false
-    private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown)
+    private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown, isNewsLetter: false)
     @objc private(set) dynamic var contentHeight : CGFloat = 0
     
     //
