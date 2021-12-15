@@ -415,7 +415,11 @@ extension Message {
         var errorMessages: [String] = []
         for key in keys {
             do {
-                return try body.decryptMessageWithSinglKey(key.private_key, passphrase: passphrase)
+                if let decryptedBody = try body.decryptMessageWithSinglKey(key.private_key, passphrase: passphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
+                }
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -431,28 +435,13 @@ extension Message {
     func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError : Error?
         var errorMessages: [String] = []
-        var newScheme: Int = 0
-        var oldSchemaWithToken: Int = 0
-        var oldSchema: Int = 0
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                    newScheme += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here Detached signature
-                        // if failed return a warning
-                        PMLog.D(signature)
-                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    oldSchemaWithToken += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
-                    }
-                } else {//normal key old schema
-                    oldSchema += 1
-                    return try body.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys, passphrase: passphrase, key: key)
+                if let decryptedBody = try body.decryptMessageWithSinglKey(key.private_key, passphrase: addressKeyPassphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {

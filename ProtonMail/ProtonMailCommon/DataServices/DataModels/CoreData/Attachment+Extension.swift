@@ -148,21 +148,8 @@ extension Attachment {
     
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
-            var pwd : String = passphrase
-            if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                    PMLog.D(signature)
-                    pwd = plainToken
-                    
-                }
-            } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                    //TODO:: try to verify signature here embeded signature
-                    pwd = plainToken
-                }
-            }
-            
-            guard let out = try fileData?.signAttachment(byPrivKey: key.private_key, passphrase: pwd) else {
+            let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys, passphrase: passphrase, key: key)            
+            guard let out = try fileData?.signAttachment(byPrivKey: key.private_key, passphrase: addressKeyPassphrase) else {
                 return nil
             }
             var error : NSError?

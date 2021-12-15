@@ -23,6 +23,7 @@
 
 import Foundation
 import Crypto
+import PMCommon
 
 typealias KeyRing             = CryptoKeyRing
 typealias SplitMessage        = CryptoPGPSplitMessage
@@ -53,6 +54,9 @@ class Crypto {
 
     enum CryptoError: Error {
         case failedGeneratingKeypair(Error?)
+        case verificationFailed
+        case decryptionFromTokenFailed
+        case unexpectedNil
     }
 
     private enum Algo : String {
@@ -78,7 +82,7 @@ class Crypto {
     // MARK: - Message
     
     // no verify
-    public func decrypt(encrytped message: String, privateKey: String, passphrase: String) throws -> String {
+    public func decrypt(encrypted message: String, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -106,7 +110,7 @@ class Crypto {
         return plainMessageString
     }
     
-    public func decrypt(encrytped message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
+    public func decrypt(encrypted message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
         for binKey in binKeys {
             do {
                 var error: NSError?
@@ -141,7 +145,7 @@ class Crypto {
         return ""
     }
     
-    public func decrypt(encrytped binMessage: Data, privateKey: String, passphrase: String) throws -> String {
+    public func decrypt(encrypted binMessage: Data, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -166,7 +170,7 @@ class Crypto {
         return plainMessageString
     }
     
-    public func decrypt(encrytped message: String,
+    public func decrypt(encrypted message: String,
                         publicKey verifierBinKey: Data,
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
@@ -213,7 +217,7 @@ class Crypto {
     }
     
     
-    public func decrypt(encrytped message: String,
+    public func decrypt(encrypted message: String,
                         publicKey verifierBinKey: Data,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
@@ -251,7 +255,7 @@ class Crypto {
         return plainMessage
     }
     
-    public func decryptVerify(encrytped message: String,
+    public func decryptVerify(encrypted message: String,
                         publicKey verifierBinKeys: [Data],
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -286,7 +290,7 @@ class Crypto {
         return verified
     }
     
-    public func decryptVerify(encrytped message: String,
+    public func decryptVerify(encrypted message: String,
                         publicKey verifierBinKeys: [Data],
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -306,7 +310,7 @@ class Crypto {
     }
     
     
-    public func decryptVerify(encrytped message: String,
+    public func decryptVerify(encrypted message: String,
                         publicKey: String,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -350,7 +354,7 @@ class Crypto {
         return verified
     }
     
-    public func decryptVerify(encrytped message: String,
+    public func decryptVerify(encrypted message: String,
                         publicKey: String,
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -813,6 +817,27 @@ class Crypto {
             return false
         }
     }
+
+    public func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
+        var error: NSError?
+
+        guard let publicKeyRing = buildPublicKeyRing(keys: binKeys) else {
+            return false
+        }
+        
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
+        if let err = error {
+            throw err
+        }
+        
+        do {
+            try publicKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            return true
+        } catch {
+            return false
+        }
+    }
     
 //    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
 //                                                                                    plainText: c.data,
@@ -921,6 +946,38 @@ class Crypto {
         }
         return keyRing
     }
+
+    func buildPublicKeyRing(keys: [Data]) -> CryptoKeyRing? {
+        var error: NSError?
+        let newKeyRing = CryptoNewKeyRing(nil, &error)
+        guard let keyRing = newKeyRing else {
+            return nil
+        }
+        for key in keys {
+            do {
+                guard let keyToAdd = CryptoNewKey(key, &error) else {
+                    continue
+                }
+                guard keyToAdd.isPrivate() else {
+                    try keyRing.add(keyToAdd)
+                    continue
+                }
+                guard let publicKeyData = try? keyToAdd.getPublicKey() else {
+                    continue
+                }
+                var error: NSError?
+                let publicKey = CryptoNewKey(publicKeyData, &error)
+                if let error = error {
+                    throw error
+                } else {
+                    try keyRing.add(publicKey)
+                }
+            } catch {
+                continue
+            }
+        }
+        return keyRing
+    }
     
     func buildPrivateKeyRing(keys: [Data], passphrase: String) -> CryptoKeyRing? {
         var error: NSError?
@@ -967,6 +1024,27 @@ class Crypto {
         }
         
         return (passphrase, publicKey, privateKey)
+    }
+
+    // Extracts the right passphrase for migrated/non-migrated keys and verifies the signature
+    static func getAddressKeyPassphrase(userKeys: [Data], passphrase: String, key: PMCommon.Key) throws -> String {
+        guard let token = key.token, let signature = key.signature else {
+            return passphrase
+        }
+        
+        guard let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) else {
+            throw Crypto.CryptoError.decryptionFromTokenFailed
+        }
+
+        let verification = try Crypto().verifyDetached(signature: signature,
+                                                       plainText: plainToken,
+                                                       binKeys: userKeys,
+                                                       verifyTime: 0) // Temporary, to support devices with wrong local time
+        if verification == true {
+            return plainToken
+        } else {
+            throw Crypto.CryptoError.verificationFailed
+        }
     }
 }
 
