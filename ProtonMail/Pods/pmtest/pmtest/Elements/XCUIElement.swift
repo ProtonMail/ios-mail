@@ -36,16 +36,28 @@ private let app = XCUIApplication()
 extension XCUIElement {
 
     /**
-     * Deletes text value from the text field.
+     * Deletes text value from the text field, textView or secureTextField.
      */
     @discardableResult
     func clearText() -> XCUIElement {
+        
+        if self.elementType != ElementType.textField && self.elementType != ElementType.textView && self.elementType != ElementType.secureTextField {
+            XCTFail("clearText() text method was applied to an element that is not a textField, textView or secureTextField.")
+        }
+
         guard let stringValue = self.value as? String else {
-            XCTFail("clearText() text method was applied to an element that is not a textField.")
             return self
         }
-        let delete: String = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
+
+        let delete = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
         self.typeText(delete)
+        return self
+    }
+    
+    @discardableResult
+    func selectAllAndDeleteText() -> XCUIElement {
+        self.tap(withNumberOfTaps:3, numberOfTouches:1)
+        self.typeText(XCUIKeyboardKey.delete.rawValue)
         return self
     }
 

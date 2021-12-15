@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class RecepientAddressesTests: BaseTestCase {
+class RecipientAddressesTests: BaseTestCase {
     
     func testExistingRecepient() {
         let user = testData.onePassUser
