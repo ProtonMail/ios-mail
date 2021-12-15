@@ -239,7 +239,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         SkeletonAppearance.default.renderSingleLineAsView = true
         
         self.tableView.separatorColor = ColorProvider.InteractionWeak
-        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         
