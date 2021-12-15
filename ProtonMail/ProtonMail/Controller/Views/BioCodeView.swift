@@ -41,9 +41,8 @@ class BioCodeView: PMView {
 
     override func setup() {
         super.setup()
-
+        self.backgroundColor = .clear
         touchID.alpha = 0.0
-
         touchID.isEnabled = false
         touchID.layer.cornerRadius = 25
 

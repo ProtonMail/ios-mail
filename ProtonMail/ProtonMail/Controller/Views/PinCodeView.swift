@@ -23,6 +23,7 @@
 import AudioToolbox
 import Foundation
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol PinCodeViewDelegate: AnyObject {
     func cancel()
@@ -64,6 +65,11 @@ class PinCodeView: PMView {
         backButton.tintColor = ColorProvider.TextNorm
         backButton.contentMode = .center
         backButton.imageView?.contentMode = .scaleAspectFit
+
+        // swiftlint:disable:next object_literal
+        let image = UIImage(named: "pin_code_del")?.toTemplateUIImage()
+        deletePinButton.setImage(image, for: .normal)
+        deletePinButton.tintColor = ColorProvider.IconNorm
 
         lockImageView.tintColor = ColorProvider.TextNorm
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -65,7 +65,7 @@
                     </constraints>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" name="launch_background_color"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="soQ-Yi-mWs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="2rs-SY-iG8"/>
                 <constraint firstItem="DvF-Ol-SEW" firstAttribute="top" secondItem="mBm-Nk-uKk" secondAttribute="bottom" constant="16" id="9ZL-sC-ShL"/>
@@ -90,9 +90,6 @@
         <image name="footer" width="106" height="16"/>
         <image name="splash-icon-mail" width="96" height="96"/>
         <image name="touch_id_icon" width="50" height="50"/>
-        <namedColor name="launch_background_color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="launch_title_color">
             <color red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
