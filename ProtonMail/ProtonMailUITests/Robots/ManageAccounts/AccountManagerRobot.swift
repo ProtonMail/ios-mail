@@ -20,10 +20,10 @@ fileprivate struct id {
     static let removeAccountButtonLabel = "Remove account"
     static let confirmRemoveButtonLabel = LocalString._general_remove_button
     static let closeManageAccountsButtonLabel = "Dismiss account switcher"
-    static func userAccountMoreBtnIdentifier(_ name: String) -> String {
-        return "\(name).moreBtn"
+    static func userAccountMoreBtnIdentifier(_ mail: String) -> String {
+        return "\(mail).moreBtn"
     }
-    static func loggedOutUserAccountCellIdentifier(_ name: String) -> String { return "AccountmanagerUserCell.\(name)" }
+    static func loggedOutUserAccountCellIdentifier(_ mail: String) -> String { return "AccountmanagerUserCell.\(mail)" }
 }
 
 /**
@@ -39,19 +39,19 @@ class AccountManagerRobot: CoreElements {
     }
 
     func logoutPrimaryAccount(_ user: User) -> InboxRobot {
-        return tapMore(user.name)
+        return tapMore(user.email)
             .signOut()
             .confirmSignOutPrimary()
     }
     
-    func logoutSecindaryAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.name)
+    func logoutSecondaryAccount(_ user: User) -> AccountManagerRobot {
+        return tapMore(user.email)
             .signOut()
             .confirmSignOut()
     }
     
     func deleteAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.name)
+        return tapMore(user.email)
             .removeAccount()
             .confirmRemove()
     }
@@ -76,8 +76,8 @@ class AccountManagerRobot: CoreElements {
         return AccountManagerRobot()
     }
     
-    private func tapMore(_ name: String) -> AccountManagerRobot {
-        button(id.userAccountMoreBtnIdentifier(name)).tap()
+    private func tapMore(_ email: String) -> AccountManagerRobot {
+        button(id.userAccountMoreBtnIdentifier(email)).tap()
         return AccountManagerRobot()
     }
     

@@ -261,6 +261,16 @@ open class UiElement {
         uiElement()!.clearText()
         return self
     }
+    
+    public func selectAllAndDeleteText() -> UiElement {
+        uiElement()!.selectAllAndDeleteText()
+        return self
+    }
+    
+    public func clearTextWith() -> UiElement {
+        uiElement()!.clearText()
+        return self
+    }
 
     @discardableResult
     public func doubleTap() -> UiElement {
