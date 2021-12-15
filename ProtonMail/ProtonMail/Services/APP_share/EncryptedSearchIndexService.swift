@@ -9,6 +9,7 @@
 import Foundation
 import SQLite
 import Crypto
+import Reachability
 
 public class EncryptedSearchIndexService {
     // instance of Singleton
@@ -76,6 +77,7 @@ extension EncryptedSearchIndexService {
         static let Column_Searchable_Message_Encrypted_Content = "EncryptedContent"
         static let Column_Searchable_Message_Encrypted_Content_File = "EncryptedContentFile"
         static let Column_Searchable_Message_Encryption_IV = "EncryptionIV"
+        static let Column_Searchable_Message_Encrypted_Content_Size = "Size"
     }
 
     struct DatabaseEntries {
@@ -91,10 +93,11 @@ extension EncryptedSearchIndexService {
         var encryptionIV: Expression<Data?> = Expression(value: nil)
         var encryptedContent:Expression<Data?> = Expression(value: nil)
         var encryptedContentFile: Expression<String?> = Expression(value: nil)
+        var encryptedContentSize: Expression<Int> = Expression(value: 0)
     }
 
     func createSearchIndexTable(using handleToSQliteDB: Connection) -> Void {
-        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File))
+        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<Data?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File), encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size))
 
         do {
             try handleToSQliteDB.run(self.searchableMessages.create(ifNotExists: true) {
@@ -111,18 +114,19 @@ extension EncryptedSearchIndexService {
                 t.column(self.databaseSchema.encryptionIV, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContent, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
+                t.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
             })
         } catch {
             print("Create Table. Unexpected error: \(error).")
         }
     }
 
-    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: Set<String>, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String) -> Int64? {
+    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: Set<String>, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:Data, encryptedContent:Data, encryptedContentFile:String, encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
         let allLabels:String = labelIDs.joined(separator: ";")
 
         do {
-            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile)
+            let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- allLabels, self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile, self.databaseSchema.encryptedContentSize <- encryptedContentSize)
             let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
             rowID = try handleToSQliteDB?.run(insert!)
         } catch {
@@ -223,27 +227,42 @@ extension EncryptedSearchIndexService {
         return true
     }
 
-    func resizeSearchIndex(userID: String, expectedSize: Int64) -> Void {
+    func resizeSearchIndex(userID: String, expectedSize: Int64) -> Bool {
         // check if search index exists for user
         if self.checkIfSearchIndexExists(for: userID) == false {
-            return
+            return false
         }
 
         // check if size is already smaller
-        if self.getSizeOfSearchIndex(for: userID).asInt64! < expectedSize {
-            return
+        let sizeOfSearchIndex = self.getSizeOfSearchIndex(for: userID).asInt64!
+        if sizeOfSearchIndex < expectedSize {
+            return false
         }
+        print("size of search index: \(sizeOfSearchIndex)")
 
         let handleToDB: Connection? = self.connectToSearchIndex(for: userID)
+        var sizeOfDeletedMessages: Int64 = 0
         // in a loop delete messages until it fits the expected size
-        while self.getSizeOfSearchIndex(for: userID).asInt64! > expectedSize {
+        var stopResizing: Bool = false
+        while true {
+            // Get the size of the encrypted content for the oldest message
+            let messageSize: Int = self.estimateSizeOfRowToDelete(handleToDB: handleToDB)
+            print("message size: \(messageSize)")
+            sizeOfDeletedMessages += Int64(messageSize)
+
+            if sizeOfSearchIndex - sizeOfDeletedMessages < expectedSize {
+                stopResizing = true
+            }
+
             // remove last message in the search index
             let deletedRow: Int = self.removeLastEntryInSearchIndex(handleToDB: handleToDB)
             print("successfully deleted row: \(deletedRow), size of index: \(self.getSizeOfSearchIndex(for: userID).asInt64!)")
-            if deletedRow == -1 {
+            if deletedRow == -1 || stopResizing {
                 break
             }
         }
+        // TODO set last indexed message time/id
+        return true
     }
 
     private func removeLastEntryInSearchIndex(handleToDB: Connection?) -> Int {
@@ -260,12 +279,31 @@ extension EncryptedSearchIndexService {
             // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
             rowID = try handleToDB?.run(query.delete())
 
-            // Run vacuum command to actually delete data
             try handleToDB?.run("VACUUM")
+            // Flush the db cache to make the size measure more precise
+            // Blocks all write statements until delete is done
+            // Details here: https://sqlite.org/pragma.html#pragma_wal_checkpoint
+            try handleToDB?.run("pragma wal_checkpoint(full)")
         } catch {
             print("deleting the oldest message from search index failed: \(error)")
         }
         return rowID!
+    }
+
+    private func estimateSizeOfRowToDelete(handleToDB: Connection?) -> Int {
+        var sizeOfRow: Int = -1
+        do {
+            let time: Expression<CLong> = self.databaseSchema.time
+            let size: Expression<Int> = self.databaseSchema.encryptedContentSize
+            let query = self.searchableMessages.select(size).order(time.asc).limit(1)
+            // SELECT "Size" FROM "SearchableMessages" ORDER BY "Time" ASC LIMIT 1
+            for result in try handleToDB!.prepare(query) {
+                sizeOfRow = result[size]
+            }
+        } catch {
+            print("deleting the oldest message from search index failed: \(error)")
+        }
+        return sizeOfRow
     }
 
     func getSizeOfSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {

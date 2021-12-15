@@ -212,6 +212,10 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     let displayValue: Float = sliderStepsDisplay[newIndex]
 
                     self.viewModel.storageLimit = Int64(displayValue)
+                    
+                    // Resize search index
+                    EncryptedSearchService.shared.resizeSearchIndex(expectedSize: self.viewModel.storageLimit)
+                    
                     sliderCell.bottomLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: Int64(displayValue))
 
                     //update storageusage row with storage limit
