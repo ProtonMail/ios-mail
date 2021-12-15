@@ -105,27 +105,18 @@ extension Attachment {
 
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
-            var pwd : String = passphrase
-            if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                    PMLog.D(signature)
-                    pwd = plainToken
-                    
-                }
-            } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                    //TODO:: try to verify signature here embeded signature
-                    pwd = plainToken
-                }
-            }
-            
+            let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                          passphrase: passphrase,
+                                                                          key: key)
             var signature: String?
             if let fileData = fileData,
-               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: pwd) {
+               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase) {
                 signature = out
             } else if let localURL = localURL,
                       let fileData = NSMutableData(contentsOf: localURL),
-                      let out = try Crypto().signDetached(plainData: fileData, privateKey: key.privateKey, passphrase: pwd) {
+                      let out = try Crypto().signDetached(plainData: fileData,
+                                                          privateKey: key.privateKey,
+                                                          passphrase: addressKeyPassphrase) {
                 signature = out
             }
             guard let signature = signature else {

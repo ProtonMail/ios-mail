@@ -40,7 +40,7 @@ extension CryptoTests {
         }
         let crypto = Crypto()
         do {
-            let decrypted = try crypto.decryptVerify(encrytped: messageSigned,
+            let decrypted = try crypto.decryptVerify(encrypted: messageSigned,
                                                   publicKey: mimePublicKey,
                                                   privateKey: keyringPrivateKey,
                                                   passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -60,7 +60,7 @@ extension CryptoTests {
                                                     return
             }
             
-            let decrypted1 = try crypto.decryptVerify(encrytped: pgpMessage,
+            let decrypted1 = try crypto.decryptVerify(encrypted: pgpMessage,
                                                    publicKey: keyringPublicKey,
                                                    privateKey: keyringPrivateKey,
                                                    passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -72,7 +72,7 @@ extension CryptoTests {
             
             
             do {
-                _ = try crypto.decryptVerify(encrytped: pgpMessage,
+                _ = try crypto.decryptVerify(encrypted: pgpMessage,
                                           publicKey: keyringPublicKey,
                                           privateKey: keyringPublicKey,
                                           passphrase: self.testMailboxPassword, verifyTime: 0)
@@ -159,7 +159,7 @@ extension CryptoTests {
         
         var decrypted: String?
         do {
-            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            decrypted = try crypto.decrypt(encrypted: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
         } catch {
             XCTFail("Should not throw error")
             return
@@ -193,7 +193,7 @@ extension CryptoTests {
         XCTAssertNil(error)
         
         do {
-            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: [binaryPrivateKey], passphrase: self.testMailboxPassword)
+            decrypted = try crypto.decrypt(encrypted: encrypted!, privateKey: [binaryPrivateKey], passphrase: self.testMailboxPassword)
         } catch {
             XCTFail("Should not throw error")
             return
@@ -226,7 +226,7 @@ extension CryptoTests {
         
         var decrypted: ExplicitVerifyMessage?
         do {//with binary public key
-            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
+            decrypted = try crypto.decryptVerify(encrypted: messageSigned, publicKey: publicKeyArray, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
         } catch {
             XCTFail("Should not throw error")
         }
@@ -242,7 +242,7 @@ extension CryptoTests {
         
         var decrypted2: ExplicitVerifyMessage?
         do {//with string public key
-            decrypted2 = try crypto.decryptVerify(encrytped: messageSigned, publicKey: mimePublicKey, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
+            decrypted2 = try crypto.decryptVerify(encrypted: messageSigned, publicKey: mimePublicKey, privateKey: privateKeyArray, passphrase: self.testMailboxPassword, verifyTime: 0)
         } catch {
             XCTFail("Should not throw error")
         }
@@ -272,7 +272,7 @@ extension CryptoTests {
         
         var decrypted: ExplicitVerifyMessage?
         do {//with binary public key
-            decrypted = try crypto.decryptVerify(encrytped: messageSigned, publicKey: publicKeyArray, privateKey: keyringPrivateKey, passphrase: self.testMailboxPassword, verifyTime: 0)
+            decrypted = try crypto.decryptVerify(encrypted: messageSigned, publicKey: publicKeyArray, privateKey: keyringPrivateKey, passphrase: self.testMailboxPassword, verifyTime: 0)
         } catch {
             XCTFail("Should not throw error")
         }
@@ -314,8 +314,8 @@ extension CryptoTests {
         var decrypt: String?
         var decrypt2: String?
         do {
-            decrypt = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
-            decrypt2 = try crypto.decrypt(encrytped: encrypted2!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            decrypt = try crypto.decrypt(encrypted: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            decrypt2 = try crypto.decrypt(encrypted: encrypted2!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
         } catch {
             XCTFail("Should not throw error")
             return
@@ -348,7 +348,7 @@ extension CryptoTests {
         var decrypted: String?
         
         do {
-            decrypted = try crypto.decrypt(encrytped: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            decrypted = try crypto.decrypt(encrypted: encrypted!, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
         } catch {
             XCTFail("Should not throw error")
             return

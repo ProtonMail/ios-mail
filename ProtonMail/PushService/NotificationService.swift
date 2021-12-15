@@ -71,7 +71,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         do {
-            let plaintext = try Crypto().decrypt(encrytped: encrypted,
+            let plaintext = try Crypto().decrypt(encrypted: encrypted,
                                                  privateKey: encryptionKit.privateKey,
                                                  passphrase: encryptionKit.passphrase)
             
