@@ -97,7 +97,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.configureNavigationBar()
-        
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.bioCodeView.delegate = self
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)

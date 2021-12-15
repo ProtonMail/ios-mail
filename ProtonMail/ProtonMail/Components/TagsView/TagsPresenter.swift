@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class TagsPresenter {
@@ -36,6 +37,7 @@ class TagsPresenter {
         view.tagLabel.attributedText = viewModel.title
         view.tagLabel.lineBreakMode = .byTruncatingTail
         view.imageView.image = viewModel.icon
+        view.imageView.tintColor = ColorProvider.IconNorm
         view.backgroundColor = viewModel.color
 
         return view
