@@ -151,10 +151,10 @@ extension SettingsEncryptedSearchViewController {
         case .downloadedMessages:
             if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
                 return Key.cellHeightDownloadProgressFinished
-            } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
-                return Key.cellHeightDownloadProgressNoWifi
             } else if EncryptedSearchService.shared.state == .refresh {
                 return Key.cellHeightDownloadProgressIndexUpdate
+            } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                return Key.cellHeightDownloadProgressNoWifi
             } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
                 return Key.cellHeightDownloadProgressLowBattery
             } else {
@@ -325,40 +325,62 @@ extension SettingsEncryptedSearchViewController {
                 //index building in progress
                 let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
                 if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
-                    var estimatedTimeText: String = LocalString._encrypted_search_default_text_estimated_time_label
-                    if let estimatedTime = self.viewModel.estimatedTimeRemaining.value {
-                        estimatedTimeText = String(estimatedTime) + " minutes remaining..."
+                    // Set text for estimate time label
+                    var estimatedTimeText: String = ""
+                    if EncryptedSearchService.shared.state == .paused {
+                        estimatedTimeText = LocalString._encrypted_search_download_paused
+                    } else if EncryptedSearchService.shared.state == .downloading {
+                        let estimatedTime: Int = self.viewModel.estimatedTimeRemaining.value ?? 0
+                        estimatedTimeText = String(estimatedTime) + LocalString._encrypted_search_estimated_time_label_suffix
+                    } else {
+                        estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
                     }
+
+                    // Handle UI changes when an interruption occurs
                     if self.interruption {
                         estimatedTimeText = self.viewModel.interruptStatus.value ?? LocalString._encrypted_search_default_text_estimated_time_label
+                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
+                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
                         if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
                             progressBarButtonCell.pauseButton.isHidden = true
                             progressBarButtonCell.statusLabel.isHidden = false
-                            progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError    //red
-                            progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError    //red
                         }
                         if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
                             progressBarButtonCell.statusLabel.isHidden = false
-                            //TODO update constraints of button
+
+                            // TODO updating constraints doesn't seem to work
+                            NSLayoutConstraint.activate([
+                                progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.estimatedTimeLabel.bottomAnchor, constant: 48)
+                            ])
+                            progressBarButtonCell.layoutIfNeeded()
+                            //let buttonTopConstraint = progressBarButtonCell.constraints.filter({$0.firstItem == progressBarButtonCell.pauseButton}).first!
+                            //NSLayoutConstraint.deactivate([])
+                            
+                            /*NSLayoutConstraint.activate([
+                                progressBarButtonCell.pauseButton.topAnchor.constraint(equalTo: progressBarButtonCell.statusLabel.bottomAnchor, constant: 16),
+                            ])*/
                         }
                     } else {
                         progressBarButtonCell.statusLabel.isHidden = true
-                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextNorm //black
-                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextNorm    //black
                     }
+
+                    // Set title of button
                     var buttonTitle: String = ""
                     if EncryptedSearchService.shared.state == .paused {
                         buttonTitle = LocalString._encrypted_search_resume_button
                     } else {
                         buttonTitle = LocalString._encrypted_search_pause_button
                     }
+
+                    // Set advice text
                     let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
+
                     progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle) {
                         if EncryptedSearchService.shared.state == .paused {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
                         } else {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
-                            progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
+                            //progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
                             progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: .normal)
                         }
                     }

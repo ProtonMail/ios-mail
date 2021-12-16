@@ -25,72 +25,74 @@ import UIKit
     
     typealias buttonActionBlock = () -> Void
     var callback: buttonActionBlock?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         let parentView: UIView = self.contentView
-        
+
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.titleLabel.textColor = ColorProvider.TextNorm
+        self.titleLabel.font = UIFont.systemFont(ofSize: 17)
+        NSLayoutConstraint.activate([
+            self.titleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 12),
+            self.titleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.titleLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
+        ])
+
+        self.progressView.translatesAutoresizingMaskIntoConstraints = false
+        //self.progressView.progressViewStyle = .bar
+        NSLayoutConstraint.activate([
+            self.progressView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 24),
+            self.progressView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.progressView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16),
+            //self.progressView.widthAnchor.constraint(equalToConstant: 343),
+            //self.progressView.heightAnchor.constraint(equalToConstant: 8)
+        ])
+
+        self.estimatedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.estimatedTimeLabel.textColor = ColorProvider.TextWeak
+        self.estimatedTimeLabel.font = UIFont.systemFont(ofSize: 13)
+        NSLayoutConstraint.activate([
+            self.estimatedTimeLabel.topAnchor.constraint(equalTo: self.progressView.bottomAnchor, constant: 8),
+            self.estimatedTimeLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.estimatedTimeLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
+        ])
+
+        self.currentProgressLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.currentProgressLabel.textAlignment = .right
+        self.currentProgressLabel.textColor = ColorProvider.TextWeak
+        self.currentProgressLabel.font = UIFont.systemFont(ofSize: 13)
+        NSLayoutConstraint.activate([
+            self.currentProgressLabel.topAnchor.constraint(equalTo: self.progressView.bottomAnchor, constant: 8),
+            self.currentProgressLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.currentProgressLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
+        ])
+
+        self.pauseButton.titleLabel?.adjustsFontSizeToFitWidth = false
         self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         self.pauseButton.setTitleColor(ColorProvider.TextNorm, for: .normal)
         self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
         self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.pauseButton.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 108),
-            //self.pauseButton.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
+            self.pauseButton.topAnchor.constraint(equalTo: self.estimatedTimeLabel.bottomAnchor, constant: 16),
             self.pauseButton.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
-            self.pauseButton.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -290)
-            //self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
-            //self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
-        ])
-        
-        self.progressView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.progressView.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 60),
-            self.progressView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -88),
-            self.progressView.widthAnchor.constraint(equalToConstant: 343),
-            self.progressView.heightAnchor.constraint(equalToConstant: 8)
-        ])
-        
-        self.estimatedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.estimatedTimeLabel.text = LocalString._encrypted_search_default_text_estimated_time_label
-        NSLayoutConstraint.activate([
-            self.estimatedTimeLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 76),
-            //self.estimatedTimeLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -64),
-            self.estimatedTimeLabel.widthAnchor.constraint(equalToConstant: 343),
-            self.estimatedTimeLabel.heightAnchor.constraint(equalToConstant: 16)
-        ])
-
-        self.currentProgressLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.currentProgressLabel.textAlignment = .right
-        NSLayoutConstraint.activate([
-            self.currentProgressLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 76),
-            //self.currentProgressLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -64),
-            self.currentProgressLabel.widthAnchor.constraint(equalToConstant: 343),
-            self.currentProgressLabel.heightAnchor.constraint(equalToConstant: 16)
+            self.pauseButton.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -290),
+            self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
+            self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
         ])
 
         //status label is hidden by default
         self.statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.statusLabel.textAlignment = .left
-        self.statusLabel.isHidden = true
+        //self.statusLabel.textAlignment = .left
+        //self.statusLabel.isHidden = true
+        self.statusLabel.textColor = ColorProvider.TextWeak
+        self.statusLabel.font = UIFont.systemFont(ofSize: 13)
         NSLayoutConstraint.activate([
-            self.statusLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 108),
-            //self.statusLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
-            self.statusLabel.widthAnchor.constraint(equalToConstant: 343),
-            self.statusLabel.heightAnchor.constraint(equalToConstant: 16)
-        ])
-        
-        self.titleLabel.textColor = ColorProvider.TextNorm
-        self.titleLabel.font = UIFont.systemFont(ofSize: 17)
-        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 12),
-            self.titleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -120),
-            self.titleLabel.widthAnchor.constraint(equalToConstant: 289.7),
-            self.titleLabel.heightAnchor.constraint(equalToConstant: 24),
-            self.titleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
+            self.statusLabel.topAnchor.constraint(equalTo: self.estimatedTimeLabel.bottomAnchor, constant: 16),
+            self.statusLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.statusLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
     }
     
