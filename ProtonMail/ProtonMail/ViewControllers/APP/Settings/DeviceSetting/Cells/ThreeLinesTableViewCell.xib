@@ -37,7 +37,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-check" id="xpR-Dx-yZ0">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_check" id="xpR-Dx-yZ0">
                         <rect key="frame" x="20" y="7" width="39" height="34"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -53,6 +53,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ic-check" width="16" height="16"/>
+        <image name="contact_groups_check" width="40" height="40"/>
     </resources>
 </document>
