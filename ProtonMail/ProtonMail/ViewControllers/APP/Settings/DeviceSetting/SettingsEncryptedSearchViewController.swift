@@ -149,8 +149,7 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             return Key.cellHeight
         case .downloadedMessages:
-            //static let cellHeightDownloadProgressLowBattery = 188.0
-            if EncryptedSearchService.shared.state == .complete {
+            if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
                 return Key.cellHeightDownloadProgressFinished
             } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
                 return Key.cellHeightDownloadProgressNoWifi
