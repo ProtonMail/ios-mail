@@ -40,7 +40,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         static let cellHeightDownloadProgressIndexUpdate = 102.0
         static let footerHeight : CGFloat = 48.0
         static let headerHeightFirstCell: CGFloat = 32.0
-        static let headerHeight: CGFloat = 8.0
+        static let headerHeight: CGFloat = 24.0
         static let headerCell: String = "header_cell"
     }
     
@@ -281,6 +281,8 @@ extension SettingsEncryptedSearchViewController {
                     let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                     let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
                     let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
+                    let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
+                    sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
 
                     // Create icon for the partial index
                     let image: UIImage = UIImage(named: "contact_groups_check")!
@@ -398,10 +400,10 @@ extension SettingsEncryptedSearchViewController {
                 headerCell.contentView.addSubview(textView)
                 
                 NSLayoutConstraint.activate([
-                    textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
-                    textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
+                    //textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 0),
+                    //textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
                     textView.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-                    textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16) //TODO there is something wrong here and the size of the table
+                    textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
                 break
             case .downloadViaMobileData, .downloadedMessages:
