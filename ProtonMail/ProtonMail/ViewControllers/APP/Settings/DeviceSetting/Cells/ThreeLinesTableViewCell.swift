@@ -26,7 +26,7 @@ import UIKit
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var middleLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
-    @IBOutlet weak var icon: UIImageView!
+    @IBOutlet var icon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -71,22 +71,22 @@ import UIKit
         
         self.icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.icon.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 23),
-            self.icon.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: 74.3),
+            self.icon.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 19),
+            //self.icon.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: 74.3),
             self.icon.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: 18.5),
-            self.icon.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -341.62),
-            self.icon.widthAnchor.constraint(equalToConstant: 20),
-            self.icon.heightAnchor.constraint(equalToConstant: 20)
+            //self.icon.rightAnchor.constraint(equalTo: parentView.rightAnchor, constant: -341.62),*/
+            self.icon.widthAnchor.constraint(equalToConstant: 18),
+            self.icon.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
     
-    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: NSMutableAttributedString, _ icon: UIImageView) {
+    func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: NSMutableAttributedString, _ icon: UIImage) {
         topLabel.text = topLine
         middleLabel.attributedText = middleLine
         bottomLabel.attributedText = bottomLine
 
-        self.icon = icon
-        
+        self.icon.setImage(icon)
+
         self.layoutIfNeeded()
     }
 }

@@ -271,26 +271,23 @@ extension SettingsEncryptedSearchViewController {
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                    
+
                     // Create attributed string for oldest message in search index
                     let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                     let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
-                    
+
                     // Create attributed string for the size of the search index
                     let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                     let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
                     let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
-                    
+
                     // Create icon for the partial index
                     let image: UIImage = UIImage(named: "contact_groups_check")!
-                    //let image: UIImage = UIImage(named: "ic-check", in: LoginAndSignup.bundle, compatibleWith: nil)!
                     let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    let imageView = UIImageView(image: tintableImage)
-                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-                    imageView.tintColor = ColorProvider.NotificationSuccess
-                    
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, imageView)
+                    threeLineCell.icon.tintColor = ColorProvider.NotificationSuccess
+
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
                     threeLineCell.accessoryType = .disclosureIndicator
                 }
                 return cell 
@@ -299,29 +296,27 @@ extension SettingsEncryptedSearchViewController {
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                    
+
                     // Create attributed string for oldest message in search index
                     let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                     let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                     let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
                     let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
                     oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
-                    
+
                     // Create attributed string for the size of the search index
                     let sizeOfIndexString: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                     let sizeOfIndexFullString: String = LocalString._encrypted_search_downloaded_messages_storage_used + sizeOfIndexString
                     let sizeOfIndexAttributedString = NSMutableAttributedString(string: sizeOfIndexFullString)
                     let rangeSizeOfIndex = NSRange(location: LocalString._encrypted_search_downloaded_messages_storage_used.count, length: sizeOfIndexString.count)
                     sizeOfIndexAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.TextNorm, range: rangeSizeOfIndex)
-                    
+
                     // Create icon for the partial index
                     let image: UIImage = UIImage(named: "ic-exclamation-circle")!
                     let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    let imageView = UIImageView(image: tintableImage)
-                    imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-                    imageView.tintColor = ColorProvider.NotificationError
-                    
-                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, imageView)
+                    threeLineCell.icon.tintColor = ColorProvider.NotificationError
+
+                    threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
                     threeLineCell.accessoryType = .disclosureIndicator
                 }
                 return cell
