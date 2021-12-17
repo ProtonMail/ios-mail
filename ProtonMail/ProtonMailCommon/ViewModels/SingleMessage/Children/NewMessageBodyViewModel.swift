@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import WebKit
+
 protocol NewMessageBodyViewModelDelegate: AnyObject {
     func reloadWebView(forceRecreate: Bool)
     func showReloadError()

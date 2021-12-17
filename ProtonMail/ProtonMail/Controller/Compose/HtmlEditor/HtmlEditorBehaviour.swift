@@ -23,6 +23,7 @@
 
 import UIKit
 import PromiseKit
+import WebKit
 
 /// workaround for accessoryView
 fileprivate final class InputAccessoryHackHelper: NSObject {

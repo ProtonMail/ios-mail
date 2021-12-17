@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-
+import UIKit
 
 protocol ContactCellShare: AnyObject
 {

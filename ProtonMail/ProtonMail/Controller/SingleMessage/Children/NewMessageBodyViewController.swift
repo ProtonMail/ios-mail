@@ -24,6 +24,7 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 import TrustKit
 import UIKit
+import WebKit
 
 protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)

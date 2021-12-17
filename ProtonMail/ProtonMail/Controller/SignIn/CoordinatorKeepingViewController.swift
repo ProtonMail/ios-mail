@@ -6,7 +6,7 @@
 //  Copyright © 2021 ProtonMail. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class CoordinatorKeepingViewController<Coordinator: DefaultCoordinator>: UIViewController {
 

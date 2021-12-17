@@ -1,3 +1,6 @@
+
+import UIKit
+
 class ConversationCollapsedMessageViewModel {
 
     private var message: Message {

@@ -24,6 +24,7 @@
 import UIKit
 import PromiseKit
 import ProtonCore_UIFoundations
+import WebKit
 
 /// The class hierarchy is following: ContainableComposeViewController > ComposeViewController > HorizontallyScrollableWebViewContainer > UIViewController
 ///

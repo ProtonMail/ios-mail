@@ -20,6 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import UIKit
+
 enum Onboarding: Int, CustomStringConvertible {
     case page1 = 0
     case page2 = 1
