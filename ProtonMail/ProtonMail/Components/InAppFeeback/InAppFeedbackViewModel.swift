@@ -62,37 +62,62 @@ enum Rating {
     }
 }
 
+extension Rating {
+    var intValue: Int {
+        let mapping: [Rating: Int] = [.unhappy: 1, .dissatisfied: 2, .neutral: 3, .satisfied: 4, .happy: 5]
+        if let value = mapping[self] {
+            return value
+        }
+        assert(false)
+        // Caught undefined value
+        return 0
+    }
+}
+
 enum InAppFeedbackViewMode {
     case ratingOnly
     case full
 }
 
+enum InAppFeedbackViewModelError: Error {
+    case validation(String)
+    case canceled
+}
+
 protocol InAppFeedbackViewModelProtocol {
     var selectedRating: Rating? { get }
-    var viewMode: InAppFeedbackViewMode { get }
     var userComment: String? { get }
+    var viewMode: InAppFeedbackViewMode { get }
     var updateViewCallback: (() -> Void)? { get set }
     var ratingScale: [Rating] { get }
-
     func select(rating: Rating)
     func updateFeedbackComment(comment: String)
     func submitFeedback()
+    func cancelFeedback()
+    func makeFeedback() -> Swift.Result<UserFeedback, InAppFeedbackViewModelError>
 }
 
 final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {
+    typealias SubmissionHandler = (Swift.Result<UserFeedback, InAppFeedbackViewModelError>) -> Void
+
+    static let defaultFeedbackType = "v4_feedback"
+
+    private(set) var submissionHandler: SubmissionHandler
 
     private(set) var selectedRating: Rating?
+
     private(set) var viewMode: InAppFeedbackViewMode = .ratingOnly {
         didSet {
             updateViewCallback?()
         }
     }
-    private(set) var userComment: String?
-    var updateViewCallback: (() -> Void)?
-    private let updater: InAppFeedbackSubmissionUpdater
 
-    init(updater: InAppFeedbackSubmissionUpdater) {
-        self.updater = updater
+    private(set) var userComment: String?
+
+    var updateViewCallback: (() -> Void)?
+
+    init(submissionHandler: @escaping SubmissionHandler) {
+        self.submissionHandler = submissionHandler
     }
 
     var ratingScale: [Rating] {
@@ -109,6 +134,28 @@ final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {
     }
 
     func submitFeedback() {
-        updater.setFeedbackWasSubmitted()
+        submissionHandler(makeFeedback())
+    }
+
+    func cancelFeedback() {
+        submissionHandler(.failure(.canceled))
+    }
+
+    func makeFeedback() -> Swift.Result<UserFeedback, InAppFeedbackViewModelError> {
+        return Self.makeUserFeedback(type: Self.defaultFeedbackType, rating: selectedRating, comment: userComment)
+    }
+
+    /// Used by `makeFeedback` function and is exposed for testing.
+    static func makeUserFeedback(type: String,
+                                 rating: Rating?,
+                                 comment: String?) -> Swift.Result<UserFeedback, InAppFeedbackViewModelError> {
+        guard let rating = rating else {
+            return .failure(.validation("Undefined rating"))
+        }
+        guard !type.isEmpty else {
+            return .failure(.validation("Undefined feedback type"))
+        }
+        let userFeedback = UserFeedback(type: type, score: rating.intValue, text: comment ?? "")
+        return .success(userFeedback)
     }
 }

@@ -18,7 +18,11 @@
 import Foundation
 @testable import ProtonMail
 
-final class InAppFeedbackStorageMock: InAppFeedbackStorageProtocol {    
+final class InAppFeedbackStorageMock: InAppFeedbackStorageProtocol {
+    func reset() {
+        // void
+    }
+    
     var _feedbackWasSubmitted: Bool = false
     var onFeedbackWasSubmittedSet: (() -> Void) = {}
     var feedbackWasSubmitted: Bool {

@@ -1148,8 +1148,15 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
     }
 }
 
-extension String {
+// MARK: - In-App feedback model related
 
+extension MailboxViewModel {
+    var isInAppFeedbackFeatureEnabled: Bool {
+        return self.user.userinfo.isInAppFeedbackEnabled
+    }
+}
+
+extension String {
     static func actionSheetTitle(selectedCount: Int, viewMode: ViewMode) -> String {
         switch viewMode {
         case .singleMessage:
@@ -1158,5 +1165,4 @@ extension String {
             return .localizedStringWithFormat(LocalString._general_conversation, selectedCount)
         }
     }
-
 }

@@ -22,23 +22,22 @@ final class InAppFeedbackViewController: UIViewController {
     private var viewModel: InAppFeedbackViewModelProtocol
     private(set) var actionSheetView: InAppFeedbackActionSheetView!
     private var bottomActionSheetConstraint: NSLayoutConstraint!
-    private let onSubmit: (() -> Void)
 
-    init(viewModel: InAppFeedbackViewModelProtocol, onSubmit: @escaping (() -> Void)) {
+    init(viewModel: InAppFeedbackViewModelProtocol) {
         self.viewModel = viewModel
-        self.onSubmit = onSubmit
         super.init(nibName: nil, bundle: nil)
         let onDismissActionSheet = { [weak self] in
+            self?.viewModel.cancelFeedback()
             self?.dismiss(animated: true, completion: nil)
         }
         let onSubmitActionSheet = { [weak self] (comment: String?) in
             if let comment = comment {
                 self?.viewModel.updateFeedbackComment(comment: comment)
             }
+
             self?.viewModel.submitFeedback()
-            self?.dismiss(animated: true) { [weak self] in
-                self?.onSubmit()
-            }
+
+            self?.dismiss(animated: true, completion: nil)
         }
         self.actionSheetView = InAppFeedbackActionSheetView(ratings: viewModel.ratingScale,
                                                             onRatingSelection: viewModel.select(rating:),
@@ -103,6 +102,7 @@ final class InAppFeedbackViewController: UIViewController {
     private func backgroundTapped(gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: self.actionSheetView)
         guard point.y < 0 else { return }
+        viewModel.cancelFeedback()
         dismiss(animated: true)
     }
 }
