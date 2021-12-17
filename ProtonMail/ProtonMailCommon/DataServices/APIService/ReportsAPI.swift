@@ -85,6 +85,8 @@ final class BugReportRequest : Request {
         case description = "Description"
         case userName = "Username"
         case email = "Email"
+        case lastReceivedPush = "LastReceivedPush"
+        case reachabilityStatus = "ReachabilityStatus"
     }
     
     let os : String
@@ -95,19 +97,29 @@ final class BugReportRequest : Request {
     let userName : String
     let email : String
     
-    
-    init(os : String!, osVersion : String!, clientVersion : String!, title : String!, desc : String!, userName : String!, email : String!) {
+    init(os: String,
+         osVersion: String,
+         clientVersion: String,
+         title: String,
+         desc: String,
+         userName: String,
+         email: String,
+         lastReceivedPush: String,
+         reachabilityStatus: String) {
         self.os = os
         self.osVersion = osVersion
         self.clientVersion = clientVersion
         self.title = title
-        self.desc = desc
         self.userName = userName
         self.email = email
+        var description = desc
+        description.append(contentsOf: "\nLP Timestamp:\(lastReceivedPush)")
+        description.append(contentsOf: "\nReachability:\(reachabilityStatus)")
+        self.desc = description
     }
     
     var parameters: [String : Any]? {
-        let out : [String : Any] = [
+        [
             ParameterKeys.os.rawValue: self.os,
             ParameterKeys.osVersion.rawValue : self.osVersion,
             ParameterKeys.client.rawValue: "iOS_Native",
@@ -117,7 +129,6 @@ final class BugReportRequest : Request {
             ParameterKeys.userName.rawValue: self.userName,
             ParameterKeys.email.rawValue: self.email
         ]
-        return out
     }
     
     static var defaultMethod: HTTPMethod { .post }
