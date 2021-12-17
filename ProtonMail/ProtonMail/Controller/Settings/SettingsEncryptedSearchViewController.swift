@@ -26,11 +26,11 @@ import UIKit
 class SettingsEncryptedSearchViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew, UITextViewDelegate {
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
-    
+
     internal var interruption: Bool = false
     internal var hideSections: Bool = true
     internal var banner: BannerView!
-    
+
     struct Key {
         static let cellHeight: CGFloat = 48.0
         static let cellHeightDownloadProgress = 156.0
@@ -43,7 +43,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         static let headerHeight: CGFloat = 24.0
         static let headerCell: String = "header_cell"
     }
-    
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -56,6 +56,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         self.updateTitle()
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
@@ -66,7 +67,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.sectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
-        
+
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
         setupIndexingFinishedObserver()
@@ -86,20 +87,20 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         //Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
-        
+
         //add banner
         if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh || EncryptedSearchService.shared.state == .lowstorage {
             self.showInfoBanner()
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         //slow down indexing when moving somewhere else in the app
         EncryptedSearchService.shared.slowDownIndexing()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if self.viewModel.isEncryptedSearch {
@@ -109,19 +110,19 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         }
         self.tableView.reloadData()
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func set(viewModel: SettingsEncryptedSearchViewModel) {
         self.viewModel = viewModel
     }
-    
+
     private func updateTitle(){
         self.title = LocalString._encrypted_search
     }
@@ -138,10 +139,10 @@ extension SettingsEncryptedSearchViewController {
         }
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .encryptedSearch:
@@ -162,7 +163,7 @@ extension SettingsEncryptedSearchViewController {
             }
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return Key.headerHeightFirstCell
@@ -175,12 +176,12 @@ extension SettingsEncryptedSearchViewController {
         }
         return super.tableView(tableView, heightForHeaderInSection: section)
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = ColorProvider.BackgroundSecondary
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         if section == 0 {
             headerView.frame = CGRect(x: 0, y: 0, width: 375.0, height: Key.headerHeightFirstCell)
             NSLayoutConstraint.activate([
@@ -195,17 +196,17 @@ extension SettingsEncryptedSearchViewController {
 
         return headerView
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section > 0 && self.hideSections {
             return CGFloat.leastNormalMagnitude
         }
         return Key.footerHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .encryptedSearch:
@@ -215,7 +216,7 @@ extension SettingsEncryptedSearchViewController {
                     _, _, _ in
                     let status = self.viewModel.isEncryptedSearch
                     self.viewModel.isEncryptedSearch = !status
-                    
+
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
                         //show alert
@@ -380,7 +381,7 @@ extension SettingsEncryptedSearchViewController {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
                         } else {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
-                            //progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
+                            progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
                             progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: .normal)
                         }
                     }
@@ -389,7 +390,7 @@ extension SettingsEncryptedSearchViewController {
             }
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
@@ -403,12 +404,12 @@ extension SettingsEncryptedSearchViewController {
                 textView.isScrollEnabled = false
                 textView.isEditable = false
                 textView.backgroundColor = .clear
-                
+
                 let learnMore = LocalString._settings_footer_of_encrypted_search_learn
                 let full = String.localizedStringWithFormat(eSection.foot, learnMore)
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
                 let attributedString = NSMutableAttributedString(string: full, attributes: attr)
-                
+
                 if let subrange = full.range(of: learnMore){
                     let nsRange = NSRange(subrange, in: full)
                     attributedString.addAttribute(.link, value: Link.encryptedSearchInfo, range: nsRange)
@@ -417,12 +418,10 @@ extension SettingsEncryptedSearchViewController {
                 textView.attributedText = attributedString
                 textView.translatesAutoresizingMaskIntoConstraints = false
                 textView.delegate = self
-                
+
                 headerCell.contentView.addSubview(textView)
-                
+
                 NSLayoutConstraint.activate([
-                    //textView.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 0),
-                    //textView.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: 8),
                     textView.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
                     textView.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
@@ -431,7 +430,7 @@ extension SettingsEncryptedSearchViewController {
                 let textLabel = UILabel()
                 textLabel.numberOfLines = 0
                 textLabel.translatesAutoresizingMaskIntoConstraints = false
-                
+
                 textLabel.attributedText = NSAttributedString(string: eSection.foot, attributes: FontManager.CaptionWeak)
 
                 headerCell.contentView.addSubview(textLabel)
@@ -447,16 +446,14 @@ extension SettingsEncryptedSearchViewController {
         }
         return header
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
-        case .encryptedSearch:
-            break //Do nothing
-        case .downloadViaMobileData:
-            break //Do nothing
+        case .encryptedSearch, .downloadViaMobileData:
+            break
         case .downloadedMessages:
             if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
                 let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
@@ -470,24 +467,24 @@ extension SettingsEncryptedSearchViewController {
     }
 
     func showAlertContentSearchEnabled(for index: IndexPath, cell: SwitchTableViewCell) {
-        //create the alert
+        // Create the alert
         let alert = UIAlertController(title: LocalString._encrypted_search_alert_title, message: LocalString._encrypted_search_alert_text, preferredStyle: UIAlertController.Style.alert)
-        //add the buttons
+        // Add the buttons
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_cancel_button, style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
             self.viewModel.isEncryptedSearch = false
-            self.tableView.reloadData() //refresh the view after
+            self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-            //change UI
+            // Update UI
             self.hideSections = false
-            self.tableView.reloadData() //refresh the view to show changes in UI
+            self.tableView.reloadData() // Refresh the view to show changes in UI
             self.showInfoBanner()
 
-            //build search index
+            // Start building the search index
             EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
         })
-        
-        //show alert
+
+        // Show alert
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -518,23 +515,21 @@ extension SettingsEncryptedSearchViewController {
             }
         }
     }
-    
+
     func setupIndexingInterruptionObservers() {
         self.viewModel.interruptStatus.bind {
             (_) in
-            //if EncryptedSearchService.shared.state == .downloading {
-                self.interruption = true
-                DispatchQueue.main.async {
-                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+            self.interruption = true
+            DispatchQueue.main.async {
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
-                    UIView.performWithoutAnimation {
-                        self.tableView.reloadRows(at: [path], with: .none)
-                    }
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
                 }
-            //}
+            }
         }
     }
-    
+
     func setupIndexingFinishedObserver() {
         self.viewModel.isIndexingComplete.bind { (_) in
             if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
@@ -546,21 +541,13 @@ extension SettingsEncryptedSearchViewController {
             }
         }
     }
-    
+
     private func showInfoBanner(){
-        //if (self.banner != nil) {
-        //    self.banner.remove(animated: false)
-        //}
-        self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 468, dismissDuration: Double.infinity, icon: true)
-        self.view.addSubview(self.banner)
+        if (self.banner == nil) {
+            self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
+            self.view.addSubview(self.banner)
 
-        self.banner.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.banner.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
-            self.banner.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16),
-            self.banner.heightAnchor.constraint(equalToConstant: 72)
-        ])
-
-        self.banner.drop(on: self.view, from: .top)
+            self.banner.drop(on: self.view, from: .top)
+        }
     }
 }
