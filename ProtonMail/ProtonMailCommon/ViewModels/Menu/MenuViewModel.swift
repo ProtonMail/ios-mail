@@ -26,6 +26,7 @@ import CoreData
 import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
+import UIKit
 
 final class MenuViewModel: NSObject {
     private let usersManager: UsersManager

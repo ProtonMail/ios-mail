@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
-// this is the UI
+import UIKit
 
 //can we move this to  view controller -- notes from feng.
 class TableContainerViewCoordinator: NSObject, CoordinatorNew {

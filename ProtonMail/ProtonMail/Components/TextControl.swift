@@ -1,3 +1,5 @@
+import UIKit
+
 class TextControl: UIControl {
 
     var tap: (() -> Void)?

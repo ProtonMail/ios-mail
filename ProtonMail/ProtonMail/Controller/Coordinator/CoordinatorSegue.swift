@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 /// when viewController override the 'prepare' function. don't forget to call super. it triggers the setSender.
 /// in order to use this. need to set segue class in the storyboard

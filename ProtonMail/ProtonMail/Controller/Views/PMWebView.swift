@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
+import WebKit
 
 class  PMWebView: WKWebView, AccessibleView {
     

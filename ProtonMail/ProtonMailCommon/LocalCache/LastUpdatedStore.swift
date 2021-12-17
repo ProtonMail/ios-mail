@@ -25,6 +25,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import ProtonCore_DataModel
+import UIKit
 
 protocol LastUpdatedStoreProtocol {
     var contactsCached: Int { get set }

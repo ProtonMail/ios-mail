@@ -22,6 +22,7 @@
     
 
 import Foundation
+import UIKit
 
 enum LinkOpener: String, CaseIterable {
     case safari, inAppSafari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion

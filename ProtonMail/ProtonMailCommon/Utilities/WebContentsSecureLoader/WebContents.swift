@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import WebKit
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
 class WebContents {

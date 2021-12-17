@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UIStoryboard {
     /// The raw value must match the restorationIdentifier for the initialViewController

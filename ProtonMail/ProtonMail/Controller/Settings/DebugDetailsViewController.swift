@@ -21,7 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
+
 class DebugDetailViewController: UIViewController {
     
     @IBOutlet weak var debugDetail: UITextView!

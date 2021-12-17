@@ -24,6 +24,7 @@
 import UIKit
 import TrustKit
 import ProtonCore_Services
+import WebKit
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
     internal var webView: PMWebView!

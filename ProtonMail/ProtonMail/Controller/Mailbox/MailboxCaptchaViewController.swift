@@ -24,6 +24,7 @@
 import Foundation
 import MBProgressHUD
 import ProtonCore_Services
+import WebKit
 
 protocol MailboxCaptchaVCDelegate : AnyObject {
     func cancel()

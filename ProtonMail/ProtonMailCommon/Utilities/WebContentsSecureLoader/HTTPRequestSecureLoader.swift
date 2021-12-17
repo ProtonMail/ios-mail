@@ -23,6 +23,7 @@
 
 import Foundation
 import ProtonCore_UIFoundations
+import WebKit
 
 /// Loads web content into WKWebView by means of load(_:) and inner URLRequest method. In order to prevent resources prefetching, loading happens in a number of stages:
 /// 1. webView gets a WKContentRuleList restricting any loads other than current url and a custom scheme handler

@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import UIKit
 
 class SettingsGesturesCoordinator: DefaultCoordinator {
     typealias VC = SettingsGesturesViewController

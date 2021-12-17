@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
 
 class ContainableComposeViewModel: ComposeViewModelImpl {
     @objc internal dynamic var contentHeight: CGFloat = 0.1

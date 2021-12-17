@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
 
 class SharePinUnlockCoordinator : ModalCoordinator {
     typealias VC = SharePinUnlockViewController

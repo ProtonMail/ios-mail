@@ -21,7 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
+
 extension UICollectionViewCell {
     static func defaultNib() -> UINib {
         let name = String(describing: self)
