@@ -83,19 +83,29 @@ final class BugReportRequest : Request {
     let userName : String
     let email : String
     
-    
-    init(os : String!, osVersion : String!, clientVersion : String!, title : String!, desc : String!, userName : String!, email : String!) {
+    init(os: String,
+         osVersion: String,
+         clientVersion: String,
+         title: String,
+         desc: String,
+         userName: String,
+         email: String,
+         lastReceivedPush: String,
+         reachabilityStatus: String) {
         self.os = os
         self.osVersion = osVersion
         self.clientVersion = clientVersion
         self.title = title
-        self.desc = desc
         self.userName = userName
         self.email = email
+        var description = desc
+        description.append(contentsOf: "\nLP Timestamp:\(lastReceivedPush)")
+        description.append(contentsOf: "\nReachability\(reachabilityStatus)")
+        self.desc = description
     }
     
     var parameters: [String : Any]? {
-        let out : [String : Any] = [
+        [
             "OS": self.os,
             "OSVersion" : self.osVersion,
             "Client": "iOS_Native",
@@ -105,7 +115,6 @@ final class BugReportRequest : Request {
             "Username": self.userName,
             "Email": self.email
         ]
-        return out
     }
     
     var method: HTTPMethod {

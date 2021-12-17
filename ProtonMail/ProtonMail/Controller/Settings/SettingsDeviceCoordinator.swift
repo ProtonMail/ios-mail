@@ -31,17 +31,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
         case accountSetting = "settings_account_settings"
         case autoLock       = "settings_auto_lock"
         case combineContact = "settings_combine_contact"
-        
-//        case displayName     = "setting_displayname"
-//        case signature       = "setting_signature"
-//        case mobileSignature = "setting_mobile_signature"
-//        case debugQueue      = "setting_debug_queue_segue"
-//        case pinCode         = "setting_setup_pingcode"
-//        case lableManager    = "toManagerLabelsSegue"
-//        case loginPwd        = "setting_login_pwd"
-//        case mailboxPwd      = "setting_mailbox_pwd"
-//        case singlePwd       = "setting_single_password_segue"
-//        case snooze          = "setting_notifications_snooze_segue"
+        case appVersionDebug = "app_version_debug"
     }
     
     let viewModel : SettingsDeviceViewModel
@@ -93,7 +83,13 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     }
     
     func go(to dest: Destination, sender: Any? = nil) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        if case .appVersionDebug = dest {
+            let vm = AppVersionDebugViewModel()
+            let vc = AppVersionDebugViewController(viewModel: vm)
+            (navigation as? UINavigationController)?.pushViewController(vc, animated: true)
+        } else {
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -126,6 +122,8 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
                 vc.set(coordinator: self)
                 return true
             }
+            return false
+        case .appVersionDebug:
             return false
         }
     }

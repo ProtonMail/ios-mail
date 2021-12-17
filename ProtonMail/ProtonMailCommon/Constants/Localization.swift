@@ -1843,6 +1843,9 @@ class LocalizedString {
     lazy var _push_notification = NSLocalizedString("Push Notifications", comment: "cell title in device settings")
     lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
     lazy var _empty_cache = NSLocalizedString("Empty Cache", comment: "cell title in device setting")
+    lazy var _last_push_received = NSLocalizedString("Last push notification received", comment: "Label before the last push notification received date and time")
+    lazy var _register_again_for_push = NSLocalizedString("Re-register for push notifications", comment: "Title of button to register again for push notifications")
+    lazy var _push_registration_confirmation = NSLocalizedString("Successfully registered for push notifications", comment: "Text of toast confirming registration for push")
     
     
     // Account Manager

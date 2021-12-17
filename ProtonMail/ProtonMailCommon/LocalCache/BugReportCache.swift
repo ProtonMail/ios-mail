@@ -30,7 +30,7 @@ final class BugReportCache : SharedCacheBase {
         static let lastBugReport = "BugReportCache_LastBugReport"
     }
     
-    var cachedBug: String! {
+    var cachedBug: String {
         get {
             return getShared().string(forKey: Key.lastBugReport) ?? ""
         }
