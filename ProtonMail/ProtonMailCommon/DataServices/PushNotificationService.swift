@@ -50,7 +50,8 @@ public class PushNotificationService: NSObject, Service {
     private let deviceTokenSaver: Saver<String>
     
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
-    
+    var shouldForceReportAll: Bool = false
+
     init(service: MessageDataService? = nil,
          subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -132,7 +133,13 @@ public class PushNotificationService: NSObject, Service {
         self.currentSubscriptions.outdate(settingsToUnreport)
         
         let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter { $0.state == .reported && !settingsToUnreport.contains($0.settings) }
-        var settingsToReport = Set(settingsWeNeedToHave).subtracting(Set(subscriptionsToKeep.map { $0.settings}))
+        var settingsToReport: Set<PushNotificationService.SubscriptionSettings>
+        if shouldForceReportAll {
+            shouldForceReportAll = false
+            settingsToReport = Set(settingsWeNeedToHave)
+        } else {
+            settingsToReport = Set(settingsWeNeedToHave).subtracting(Set(subscriptionsToKeep.map { $0.settings}))
+        }
         settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
             var newSettings = settings
             do {

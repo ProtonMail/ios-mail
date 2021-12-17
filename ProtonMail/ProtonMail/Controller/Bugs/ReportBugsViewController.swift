@@ -24,6 +24,7 @@
 import Foundation
 import MBProgressHUD
 import PMPayments
+import Reachability
 
 class ReportBugsViewController: ProtonMailViewController {
     var user: UserManager!
@@ -127,10 +128,12 @@ class ReportBugsViewController: ProtonMailViewController {
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
         let username = self.user.defaultEmail.split(separator: "@")[0]
+        let reachabilityStatus: String = (try? Reachability().connection.description) ?? Reachability.Connection.unavailable.description
         self.user.reportService.reportBug(text,
                                           username: String(username),
                                           email: self.user.defaultEmail,
-                                          completion: { error in
+                                          lastReceivedPush: SharedUserDefaults().lastReceivedPushTimestamp,
+                                          reachabilityStatus: reachabilityStatus) { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
@@ -145,7 +148,7 @@ class ReportBugsViewController: ProtonMailViewController {
                 self.reset()
                 NotificationCenter.default.post(name: .switchView, object: nil)
             }
-        })
+        }
     }
     
     private func checkDoh(_ error : NSError) -> Bool {

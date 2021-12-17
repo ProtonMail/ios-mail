@@ -389,7 +389,9 @@ extension SettingsDeviceViewController {
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
-        case .info, .network:
+        case .info:
+            self.coordinator?.go(to: .appVersionDebug, sender: nil)
+        case .network:
             break
         }
         tableView.deselectRow(at: indexPath, animated: true)

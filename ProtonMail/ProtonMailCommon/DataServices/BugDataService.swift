@@ -37,19 +37,26 @@ public class BugDataService: Service {
         }
     }
     
-    public func reportBug(_ bug: String, username : String, email: String, completion: ((NSError?) -> Void)?) {
+    public func reportBug(_ bug: String,
+                              username : String,
+                              email: String,
+                              lastReceivedPush: String,
+                              reachabilityStatus: String,
+                              completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;
         let model = "iOS - \(UIDevice.current.model)"
         let mainBundle = Bundle.main
         let username = username
         let useremail = email
         let route = BugReportRequest(os: model,
-                                      osVersion: "\(systemVersion)",
-                                      clientVersion: mainBundle.appVersion,
-                                      title: "ProtonMail App bug report",
-                                      desc: bug,
-                                      userName: username,
-                                      email: useremail)
+                                     osVersion: "\(systemVersion)",
+                                     clientVersion: mainBundle.appVersion,
+                                     title: "ProtonMail App bug report",
+                                     desc: bug,
+                                     userName: username,
+                                     email: useremail,
+                                     lastReceivedPush: lastReceivedPush,
+                                     reachabilityStatus: reachabilityStatus)
         self.apiService.exec(route: route) { (res) in
             completion?(res.error)
         }
