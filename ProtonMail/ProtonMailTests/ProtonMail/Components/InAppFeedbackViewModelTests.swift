@@ -18,22 +18,14 @@
 import XCTest
 @testable import ProtonMail
 
-final class IAFUpdaterMock: InAppFeedbackSubmissionUpdater {
-    private(set) var feedbackWasSubmitted = false
-
-    func setFeedbackWasSubmitted() {
-        feedbackWasSubmitted = true
-    }
-}
-
 final class InAppFeedbackViewModelTests: XCTestCase {
-    private var updaterMock: IAFUpdaterMock!
-    private var sut: InAppFeedbackViewModelProtocol!
+    private var sut: InAppFeedbackViewModel!
 
     override func setUp() {
         super.setUp()
-        updaterMock = IAFUpdaterMock()
-        sut = InAppFeedbackViewModel(updater: updaterMock)
+        sut = InAppFeedbackViewModel(submissionHandler: { _ in
+            // empty
+        })
     }
 
     override func tearDown() {
@@ -91,10 +83,61 @@ final class InAppFeedbackViewModelTests: XCTestCase {
         sut.select(rating: .happy)
         XCTAssert(callCounter > 0)
     }
-
-    func testCallingSubmitFeedbackShouldCallUpdater() {
-        XCTAssertFalse(updaterMock.feedbackWasSubmitted)
-        sut.submitFeedback()
-        XCTAssertTrue(updaterMock.feedbackWasSubmitted)
+    
+    func testThatRatingIsParsedCorrectly() {
+        XCTAssertEqual(Rating.happy.intValue, 5)
+        XCTAssertEqual(Rating.satisfied.intValue, 4)
+        XCTAssertEqual(Rating.neutral.intValue, 3)
+        XCTAssertEqual(Rating.dissatisfied.intValue, 2)
+        XCTAssertEqual(Rating.unhappy.intValue, 1)
+    }
+    
+    func testThatSubmitCallTriggersSubmissionHandler() {
+        let expectation = expectation(description: "Submission handler should be called")
+        let viewModel = InAppFeedbackViewModel { _ in
+            expectation.fulfill()
+        }
+        viewModel.submitFeedback()
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testThatCancelCallTriggersSubmissionHandler() {
+        let expectation = expectation(description: "Submission handler should be called")
+        let viewModel = InAppFeedbackViewModel { _ in
+            expectation.fulfill()
+        }
+        viewModel.cancelFeedback()
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testThatFeedbackIsTransformedCorrectly() {
+        let expectedComment = "Happy"
+        let expectedRating: Rating = .happy
+        let result = InAppFeedbackViewModel.makeUserFeedback(type: "Feedback", rating: expectedRating, comment: expectedComment)
+        switch result {
+        case.failure(_):
+            XCTFail("Unexpected behavior")
+        case .success(let feedback):
+            XCTAssertEqual(feedback.score, expectedRating.intValue)
+            XCTAssertTrue(feedback.text == expectedComment)
+        }
+    }
+    
+    func testThatMakeFeedbackIsValidating() {
+        let feedback0 = InAppFeedbackViewModel.makeUserFeedback(type: "Feedback", rating: nil, comment: "")
+        let feedback1 = InAppFeedbackViewModel.makeUserFeedback(type: "", rating: Rating.happy, comment: "")
+        [feedback0, feedback1].forEach { feedback in
+            switch feedback {
+            case .failure(let error):
+                switch error {
+                case .validation(let message):
+                    XCTAssertFalse(message.isEmpty)
+                default:
+                    XCTFail("Validation error expected")
+                }
+            case .success(_):
+                XCTFail("Unexpected behavior")
+            }
+        }
     }
 }

@@ -222,6 +222,7 @@ included:
   - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/SystemUpTimeProtocol.swift
   - ${PWD}/ProtonMailCommon/DataService/APIService/CoreAPI.swift
   - ${PWD}/ProtonMailCommon/Helpers/NewsLetterCheckHelper.swift
+  - ${PWD}/ProtonMailCommon/DataService/APIService/FeedbackAPI.swift
 
 excluded:
   - ${PWD}/Pods

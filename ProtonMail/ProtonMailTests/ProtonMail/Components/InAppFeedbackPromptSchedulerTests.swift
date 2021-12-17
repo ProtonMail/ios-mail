@@ -19,265 +19,205 @@ import XCTest
 @testable import ProtonMail
 
 final class InAppFeedbackPromptSchedulerTests: XCTestCase {
-    private var userDefaults: UserDefaults!
-    private var sut: InAppFeedbackPromptScheduler!
+    var storage: UserDefaults!
+    var sut: InAppFeedbackPromptScheduler!
+    let suiteId = String.randomString(32)
     
     override func setUp() {
         super.setUp()
-        userDefaults = UserDefaults.init(suiteName: #fileID)
+        
+        storage = UserDefaults.init(suiteName: suiteId)
     }
+    
     override func tearDown() {
         super.tearDown()
-        userDefaults.removePersistentDomain(forName: #fileID)
-        userDefaults = nil
+        storage.removePersistentDomain(forName: suiteId)
+        storage = nil
         sut = nil
     }
     
     func testShouldNotPromptWhenAFeedbackWasAlreadySubmitted() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
-            XCTFail("Should not have prompted")
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
             return false
+        }, showPromptHandler: { _ in
+            XCTFail("Should not have prompted")
         })
-        sut.setFeedbackWasSubmitted()
+        storage.feedbackWasSubmitted = true
         // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-        let expectation = self.expectation(description: "Should not prompt expectation")
-        delay(1.5) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 2.0)
+        sut.markAsInForeground()
+        sut.markAsInForeground()
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
     }
     
     func testShouldNotPromptWhenEnteringForegroundOnlyOnce() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
-            XCTFail("Should not have prompted")
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
             return false
+        }, showPromptHandler: { _ in
+            XCTFail("Should not have prompted")
         })
         // Simulate entering foreground just once
-        sut.didEnterForeground()
-        let expectation = self.expectation(description: "Should not prompt expectation")
-        delay(1.5) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 2.0)
+        sut.markAsInForeground()
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
     }
     
     func testShouldPromptWhenEnteringForegroundMoreThanOnce() {
         let expectation = self.expectation(description: "Should prompt expectation")
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptDelayTime: 0.01,
+                                           promptAllowedHandler: {
             expectation.fulfill()
             return false
-        })
+        }, showPromptHandler: nil)
         // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
+        sut.markAsInForeground()
+        sut.markAsInForeground()
         wait(for: [expectation], timeout: 2.0)
     }
     
     func testShouldNotPromptAfterHavingPromptAlready() {
         let promptExpectation = self.expectation(description: "Should prompt expectation")
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
-            promptExpectation.fulfill()
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptDelayTime: 0.01,
+                                           promptAllowedHandler: {
             return true
-        })
-        // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-        
-        // Simulate re-entering foreground another time
-        let shouldNotPromptExpectation = self.expectation(description: "Should not prompt expectation")
-        delay(2.0) {
-            self.sut = InAppFeedbackPromptScheduler(storage: self.userDefaults,
-                                                    onPrompt: {
-                XCTFail("Should not have prompted")
-                return false
-            })
-            self.sut.didEnterForeground()
-        }
-        delay(4.0) {
-            shouldNotPromptExpectation.fulfill()
-        }
-        wait(for: [promptExpectation, shouldNotPromptExpectation], timeout: 5.0)
-    }
-    
-    func testShouldNotPromptAgainWhenClosureReturnsTrue() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
-            true
-        })
-        // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-        
-        // Simulate re-entering foreground another time
-        let shouldNotPromptExpectation = self.expectation(description: "Should not prompt expectation")
-        delay(2.0) {
-            self.sut = InAppFeedbackPromptScheduler(storage: self.userDefaults,
-                                                    onPrompt: {
-                XCTFail("Should not have prompted")
-                return false
-            })
-            self.sut.didEnterForeground()
-        }
-        delay(4.0) {
-            shouldNotPromptExpectation.fulfill()
-        }
-        wait(for: [shouldNotPromptExpectation], timeout: 5.0)
-    }
-    
-    func testShouldPromptAgainWhenClosureReturnsFalse() {
-        let promptExpectation = self.expectation(description: "Should prompt expectation")
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
+        }, showPromptHandler: { _ in
             promptExpectation.fulfill()
+        })
+        // Simulate entering foreground enough times
+        sut.markAsInForeground()
+        sut.markAsInForeground()
+        
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
+        
+        waitForExpectations(timeout: 2.0, handler: nil)
+    }
+    
+    func testThatCancelingScheduledPromptWorks() {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptDelayTime: 0.1,
+                                           promptAllowedHandler: {
+            return true
+        }, showPromptHandler: { _ in
+            XCTFail("This should not get called")
+        })
+        // Simulate entering foreground enough times
+        sut.markAsInForeground()
+        sut.markAsInForeground()
+        // Lets cancel the scheduling right away
+        sut.cancelScheduledPrompt()
+        XCTAssertNil(sut.timer)
+        delay(0.15) {
+            // Artifical waiting to make sure the fail is not triggered
+        }
+    }
+    
+    func testThatExternalValidationIsDoneAfterPromptDelayTime() {
+        let expectation = expectation(description: "promptAllowedHandler should get called")
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptDelayTime: 0.05,
+                                           promptAllowedHandler: {
+            // This external validation will be called after delay time and should prevent the showPromptHandler call
+            expectation.fulfill()
             return false
+        }, showPromptHandler: { _ in
+            XCTFail("This should not get called")
         })
         // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
+        sut.markAsInForeground()
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
+        sut.markAsInForeground()
+        // Timer was scheduled and this should fail:
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    
+    func testThatPreconditionsAreChecked() {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
+            XCTFail("This should not get called")
+            return false
+        }, showPromptHandler: { _ in
+            XCTFail("This should not get called")
+        })
+        storage.numberOfForegroundEnteringRegistered = 2
+        XCTAssertTrue(sut.areShowingPromptPreconditionsMet)
+        storage.numberOfForegroundEnteringRegistered = 0
         
-        // Simulate re-entering foreground another time
-        let shouldPromptAgainExpectation = self.expectation(description: "Should not prompt expectation")
-        delay(2.0) {
-            self.sut = InAppFeedbackPromptScheduler(storage: self.userDefaults,
-                                                    onPrompt: {
-                shouldPromptAgainExpectation.fulfill()
-                return false
-            })
-            self.sut.didEnterForeground()
-        }
-        wait(for: [promptExpectation, shouldPromptAgainExpectation], timeout: 5.0)
+        storage.feedbackWasSubmitted = true
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
+        
+        storage.feedbackWasSubmitted = false
+        storage.feedbackPromptWasShown = true
+        XCTAssertFalse(sut.areShowingPromptPreconditionsMet)
     }
-
-    func testFeedbackWasSubmittedIsSetToTrueWhenSubmittedFeedback() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: nil)
-        sut.setFeedbackWasSubmitted()
-        XCTAssertTrue(sut.feedbackWasSubmitted)
-    }
-
-    func testFeedbackPromptWasShownIsSetToTrueWhenPromptWasShownAndReturnedTrue() {
-        let delayExpectation = self.expectation(description: "Delay expectation")
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: { true })
-        // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-
-        delay(1.5) {
-            self.sut = InAppFeedbackPromptScheduler(storage: self.userDefaults,
-                                               onPrompt: nil)
-            XCTAssertTrue(self.sut.feedbackPromptWasShown)
-            delayExpectation.fulfill()
-        }
-        wait(for: [delayExpectation], timeout: 5.0)
-    }
-
-    func testNumberOfForegroundEnteringRegisteredIsIncrementedWhenCallingDidEnterForeground() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: nil)
-        sut.setFeedbackWasSubmitted()
-        XCTAssertEqual(sut.numberOfForegroundEnteringRegistered, 0)
-        sut.didEnterForeground()
-        XCTAssertEqual(sut.numberOfForegroundEnteringRegistered, 1)
-        sut.didEnterForeground()
-        XCTAssertEqual(sut.numberOfForegroundEnteringRegistered, 2)
-    }
-
-    func testShouldShowFeedbackPromptReturnsFalseWhenFeedbackSubmitted() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: nil)
-        sut.setFeedbackWasSubmitted()
-        XCTAssertFalse(sut.shouldShowFeedbackPrompt)
-    }
-
-    func testShouldShowFeedbackPromptReturnsFalseWhenFeedbackPromptWasShown() {
-        let promptExpectation = self.expectation(description: "Should prompt expectation")
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: {
-            promptExpectation.fulfill()
-            return true
+    
+    func testThatMarkAsInForegroundIncreasesStorageCounter() {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
+            XCTFail("This should not get called")
+            return false
+        }, showPromptHandler: { _ in
+            XCTFail("This should not get called")
         })
-        // Simulate entering foreground enough times
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-
-        delay(1.5) { [sut] in
-            XCTAssertFalse(sut!.shouldShowFeedbackPrompt)
+        
+        XCTAssertEqual(storage.numberOfForegroundEnteringRegistered, 0)
+        sut.markAsInForeground()
+        XCTAssertEqual(storage.numberOfForegroundEnteringRegistered, 1)
+    }
+    
+    func testThatSchedulerModifiesStorageOnSubmit() {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
+            return false
+        }, showPromptHandler: { _ in
+            XCTFail("Should not have prompted")
+        })
+        XCTAssertFalse(storage.feedbackPromptWasShown)
+        XCTAssertFalse(storage.feedbackWasSubmitted)
+        sut.markAsFeedbackSubmitted()
+        XCTAssertTrue(storage.feedbackPromptWasShown)
+        XCTAssertTrue(storage.feedbackWasSubmitted)
+    }
+    
+    func testThatNumberOfForegroundCallsIsIncreasingAsExpected() {
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptAllowedHandler: {
+            return false
+        }, showPromptHandler: { _ in
+            XCTFail("Should not have prompted")
+        })
+        XCTAssertEqual(storage.numberOfForegroundEnteringRegistered, 0)
+        sut.markAsInForeground()
+        XCTAssertEqual(storage.numberOfForegroundEnteringRegistered, 1)
+    }
+    
+    func testThatCompletedHandlerIsHandled() {
+        let expectationPromptAllowed = expectation(description: "Prompt check should be called")
+        let expectationPromptHandler = expectation(description: "Prompt handler should be called")
+        let expectationPostChecks = expectation(description: "Post checks should be called")
+        let expectedFeedbackPromptWasShown = true
+        let expectedFeedbackWasSubmitted = true
+        let postCheckHandler = { [weak self] in
+            expectationPostChecks.fulfill()
+            
+            XCTAssertEqual(self!.storage.feedbackPromptWasShown, expectedFeedbackPromptWasShown)
+            XCTAssertEqual(self!.storage.feedbackWasSubmitted, expectedFeedbackWasSubmitted)
         }
-        wait(for: [promptExpectation], timeout: 5.0)
-    }
-
-    func testShouldShowFeedbackPromptReturnsFalseWhenNumberOfForegroundEnteringIsLowerOrEqualToNumberOfTimesToIgnore() {
-        sut = InAppFeedbackPromptScheduler(storage: userDefaults,
-                                           onPrompt: nil)
-        // Simulate entering foreground not enough times
-        sut.didEnterForeground()
-
-        XCTAssertFalse(sut.shouldShowFeedbackPrompt)
-    }
-
-    func testShouldRestoreFeedbackWasSubmittedValueOnInit() {
-        let storageMock = InAppFeedbackStorageMock()
-        storageMock.feedbackWasSubmitted = Bool.random()
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: nil)
-        XCTAssertEqual(storageMock.feedbackWasSubmitted, sut.feedbackWasSubmitted)
-    }
-
-    func testShouldSaveFeedbackWasSubmittedWhenSet() {
-        let storageMock = InAppFeedbackStorageMock()
-        let expectation = self.expectation(description: "FeedbackWasSubmitted Set")
-        storageMock.onFeedbackWasSubmittedSet = {
-            expectation.fulfill()
-        }
-        // Set value
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: nil)
-        sut.setFeedbackWasSubmitted()
-        wait(for: [expectation], timeout: 0.1)
-    }
-
-    func testShouldRestoreFeedbackWasShownValueOnInit() {
-        let storageMock = InAppFeedbackStorageMock()
-        storageMock.feedbackPromptWasShown = Bool.random()
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: nil)
-        XCTAssertEqual(storageMock.feedbackPromptWasShown, sut.feedbackPromptWasShown)
-    }
-
-    func testShouldSaveFeedbackWasShownWhenSet() {
-        let storageMock = InAppFeedbackStorageMock()
-        let expectation = self.expectation(description: "FeedbackWasShown Set")
-        storageMock.onFeedbackPromptWasShownSet = {
-            expectation.fulfill()
-        }
-        // Set value
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: { true })
-        sut.didEnterForeground()
-        sut.didEnterForeground()
-        wait(for: [expectation], timeout: 1.5)
-    }
-
-    func testShouldRestoreNumberOfForegroundEnteringRegisteredValueOnInit() {
-        let storageMock = InAppFeedbackStorageMock()
-        storageMock.numberOfForegroundEnteringRegistered = Int.random(in: 0..<100)
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: nil)
-        XCTAssertEqual(storageMock.numberOfForegroundEnteringRegistered, sut.numberOfForegroundEnteringRegistered)
-
-    }
-
-    func testShouldSaveNumberOfForegroundEnteringRegisteredWhenSet() {
-        let storageMock = InAppFeedbackStorageMock()
-        let expectation = self.expectation(description: "NumberOfForegroundEnteringRegistered Set")
-        storageMock.onNumberOfForegroundEnteringRegisteredSet = {
-            expectation.fulfill()
-        }
-        // Set value
-        sut = InAppFeedbackPromptScheduler(storage: storageMock, onPrompt: nil)
-        sut.didEnterForeground()
-        wait(for: [expectation], timeout: 0.1)
+        sut = InAppFeedbackPromptScheduler(storage: storage,
+                                           promptDelayTime: 0.001,
+                                           promptAllowedHandler: {
+            expectationPromptAllowed.fulfill()
+            return true
+        }, showPromptHandler: { completedHandler in
+            expectationPromptHandler.fulfill()
+            completedHandler?(expectedFeedbackWasSubmitted)
+            postCheckHandler()
+        })
+        sut.markAsInForeground()
+        sut.markAsInForeground()
+        waitForExpectations(timeout: 2.0, handler: nil)
     }
 }

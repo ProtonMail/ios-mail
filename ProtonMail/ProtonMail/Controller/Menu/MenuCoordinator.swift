@@ -248,7 +248,8 @@ extension MenuCoordinator {
         }
 
         let vc = MailboxViewController.instance()
-        vc.shouldShowFeedbackActionSheet = showFeedbackActionSheet
+        vc.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
+        sharedVMService.mailbox(fromMenu: vc)
         
         guard let user = self.usersManager.firstUser,
               let navigation = vc.navigationController else {

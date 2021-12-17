@@ -27,12 +27,14 @@ import SkeletonView
 import SwipyCell
 import ProtonCore_Services
 import ProtonCore_UIFoundations
-//import Alamofire
+import Alamofire
+
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
     private(set) var viewModel: MailboxViewModel!
+    
     private var coordinator: MailboxCoordinator?
     
     func getCoordinator() -> CoordinatorNew? {
@@ -139,20 +141,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var screenEdgeGestureRecognizer: UIScreenEdgePanGestureRecognizer?
 
     private var isSwipingCell = false
+    
     private var notificationsAreScheduled = false
-    var shouldShowFeedbackActionSheet = false
-    private lazy var inAppFeedbackScheduler = InAppFeedbackPromptScheduler { [weak self] in
-        guard let self = self else { return false }
-        guard self.viewModel.user.userinfo.isInAppFeedbackEnabled else {
-            return false
-        }
-        if self.navigationController?.topViewController == self {
-            self.showFeedbackActionSheet()
-            return true
-        } else {
-            return false
-        }
-    }
+    
+    /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
+    var scheduleUserFeedbackCallOnAppear = false
+        
+    private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
 
@@ -177,7 +172,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         refetchAllIfNeeded()
         startAutoFetch()
-        inAppFeedbackScheduler.didEnterForeground()
+        
+        inAppFeedbackScheduler?.markAsInForeground()
     }
 
     @objc func doEnterBackground() {
@@ -273,6 +269,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         setupScreenEdgeGesture()
         setupAccessibility()
+        
+        inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -334,12 +332,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         FileManager.default.cleanCachedAttsLegacy()
 
         checkHuman()
-        if shouldShowFeedbackActionSheet {
-            shouldShowFeedbackActionSheet = false
-            delay(0.2) {
-                self.showFeedbackActionSheet()
+        
+        if scheduleUserFeedbackCallOnAppear {
+            scheduleUserFeedbackCallOnAppear = false
+            self.showFeedbackActionSheet { [weak self] completed in
+                guard let self = self else { return }
+                self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
             }
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        inAppFeedbackScheduler?.cancelScheduledPrompt()
     }
 
     private func setupScreenEdgeGesture() {
@@ -2462,17 +2467,61 @@ extension MailboxViewController: SwipyCellDelegate {
     }
 }
 
+// MARK: InApp feedback related
+
 extension MailboxViewController {
-    private func showFeedbackActionSheet() {
-        guard self.viewModel.user.userinfo.isInAppFeedbackEnabled else {
+    private var inAppFeedbackStorage: InAppFeedbackStorageProtocol {
+        UserDefaults.standard
+    }
+    
+    private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
+        let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
+            guard let self = self else { return false }
+            guard self.viewModel.isInAppFeedbackFeatureEnabled else {
+                return false
+            }
+            return self.navigationController?.topViewController == self
+        }
+        let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
+            guard let self = self else { return }
+            
+            self.showFeedbackActionSheet { completed in
+                completionHandler?(completed)
+            }
+        }
+        let scheduler = InAppFeedbackPromptScheduler(
+            storage: inAppFeedbackStorage,
+            promptDelayTime: InAppFeedbackPromptScheduler.defaultPromptDelayTime,
+            promptAllowedHandler: allowedHandler,
+            showPromptHandler: showHandler)
+        return scheduler
+    }
+    
+    typealias UserFeedbackCompletedHandler = (/* Completed or not */ Bool) -> Void
+    
+    private func showFeedbackActionSheet(completedHandler: UserFeedbackCompletedHandler? = nil) {
+        guard self.viewModel.isInAppFeedbackFeatureEnabled else {
             return
         }
-        let iafVM = InAppFeedbackViewModel(updater: inAppFeedbackScheduler)
-        let feedbackVC = InAppFeedbackViewController(viewModel: iafVM) { [weak self] in
-            guard let self = self else { return }
-            let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.info)
-            banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+        let delayTime = 0.1
+        let viewModel = InAppFeedbackViewModel { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            switch result {
+            case .success(let userFeedback):
+                completedHandler?(true)
+                // TODO: Connect the new service here. Till then this is just temporary
+                let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.success)
+                banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+            default:
+                completedHandler?(false)
+                return
+            }
         }
-        self.present(feedbackVC, animated: true, completion: nil)
+        let viewController = InAppFeedbackViewController(viewModel: viewModel)
+        delay(delayTime) {
+            self.present(viewController, animated: true, completion: nil)
+        }
     }
 }

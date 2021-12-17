@@ -15,26 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Common
-import ProtonCore_DataModel
+import Foundation
 
-extension UserInfo {
-    var isInAppFeedbackEnabled: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return false
-        }
-        // The `-disableAnimations` flag is set for UI tests runs
-        if CommandLine.arguments.contains("-disableAnimations") {
-            return false
-        }
-#if DEBUG
-        return true
-#else
-        return false
-#endif
-    }
-
-    static var isDarkModeEnable: Bool {
-        return true
+extension ProcessInfo {
+    static var isRunningUnitTests: Bool {
+        return processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }

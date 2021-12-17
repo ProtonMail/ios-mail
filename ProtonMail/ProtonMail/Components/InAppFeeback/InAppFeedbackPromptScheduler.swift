@@ -21,6 +21,7 @@ protocol InAppFeedbackStorageProtocol {
     var feedbackWasSubmitted: Bool { get set }
     var feedbackPromptWasShown: Bool { get set }
     var numberOfForegroundEnteringRegistered: Int { get set }
+    func reset()
 }
 
 extension UserDefaults: InAppFeedbackStorageProtocol {
@@ -56,69 +57,117 @@ extension UserDefaults: InAppFeedbackStorageProtocol {
             set(newValue, forKey: DefaultKeys.numOfForegroundEnteringRegisteredKey.rawValue)
         }
     }
-}
 
-protocol InAppFeedbackSubmissionUpdater {
-    func setFeedbackWasSubmitted()
+    func reset() {
+        feedbackPromptWasShown = false
+        numberOfForegroundEnteringRegistered = 0
+        feedbackWasSubmitted = false
+    }
 }
 
 final class InAppFeedbackPromptScheduler {
+    /// Used as a feedback channel for the scheduler to notify whether
+    /// the feedback was submitted or not after the prompt was shown
+    /// to the user
+    typealias CompletedHandler = (Bool) -> Void
+
+    typealias PromptAllowedHandler = () -> Bool
+
+    typealias ShowPromptHandler = (CompletedHandler?) -> Void
+
     private var storage: InAppFeedbackStorageProtocol
 
-    private(set) var feedbackWasSubmitted: Bool {
-        didSet {
-            storage.feedbackWasSubmitted = feedbackWasSubmitted
+    static let numberOfTimesToIgnore = 0
+
+    /// The time that has to pass in seconds before the user sees the prompt
+    static let defaultPromptDelayTime: TimeInterval = 1.0
+
+    private let promptDelayTime: TimeInterval
+
+    /// Check if the context outside of `InAppFeedbackPromptScheduler`s control are ready to show the in-app
+    /// feedback prompt. The handler will return `true` if this is the case.
+    private var promptAllowedHandler: PromptAllowedHandler?
+
+    private var showPromptHandler: ShowPromptHandler?
+
+    private(set) var timer: Timer?
+
+    private var isTimerScheduled: Bool {
+        if let timer = timer, timer.isValid {
+            // We scheduled already a call
+            return true
         }
+        return false
     }
 
-    private(set) var feedbackPromptWasShown: Bool {
-        didSet {
-            storage.feedbackPromptWasShown = feedbackPromptWasShown
-        }
-    }
-
-    private(set) var numberOfForegroundEnteringRegistered: Int {
-        didSet {
-            storage.numberOfForegroundEnteringRegistered = numberOfForegroundEnteringRegistered
-        }
-    }
-
-    static let numberOfTimesToIgnore = 1
-    static let pausePrePrompt = 1.0
-    private var onPrompt: (() -> Bool)?
-
-    init(storage: InAppFeedbackStorageProtocol = UserDefaults.standard, onPrompt: (() -> Bool)?) {
-        self.storage = storage
-        self.onPrompt = onPrompt
-        feedbackWasSubmitted = self.storage.feedbackWasSubmitted
-        feedbackPromptWasShown = self.storage.feedbackPromptWasShown
-        numberOfForegroundEnteringRegistered = self.storage.numberOfForegroundEnteringRegistered
-    }
-
-    var shouldShowFeedbackPrompt: Bool {
-        if feedbackWasSubmitted || feedbackPromptWasShown {
+    /// Checks the internal preconditions for displaying the prompt
+    var areShowingPromptPreconditionsMet: Bool {
+        if storage.feedbackWasSubmitted || storage.feedbackPromptWasShown {
             return false
         }
-        if numberOfForegroundEnteringRegistered <= Self.numberOfTimesToIgnore {
+        if isTimerScheduled {
+            return false
+        }
+        if storage.numberOfForegroundEnteringRegistered <= Self.numberOfTimesToIgnore {
             return false
         }
         return true
     }
 
-    func didEnterForeground() {
-        numberOfForegroundEnteringRegistered += 1
-        if shouldShowFeedbackPrompt {
-            delay(1.0) {
-                if self.onPrompt?() == true {
-                    self.feedbackPromptWasShown = true
-                }
-            }
+    init(storage: InAppFeedbackStorageProtocol = UserDefaults.standard,
+         promptDelayTime: TimeInterval = InAppFeedbackPromptScheduler.defaultPromptDelayTime,
+         promptAllowedHandler: PromptAllowedHandler?,
+         showPromptHandler: ShowPromptHandler?) {
+        self.storage = storage
+        self.promptDelayTime = promptDelayTime
+        self.promptAllowedHandler = promptAllowedHandler
+        self.showPromptHandler = showPromptHandler
+    }
+
+    /// Records being in foreground and reacts accordingly
+    func markAsInForeground() {
+        storage.numberOfForegroundEnteringRegistered += 1
+        self.checkIfPromptShouldSchedule()
+    }
+
+    func cancelScheduledPrompt() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    /// Notifies the scheduler that the feedback was submitted. Used internally
+    /// and can be used by an external party to notify the scheduler about a
+    /// submit outside of its control.
+    func markAsFeedbackSubmitted() {
+        storage.feedbackPromptWasShown = true
+        storage.feedbackWasSubmitted = true
+    }
+
+    // MARK: - Private methods
+
+    /// Checks only for internal conditions only and schedules a prompt if is needed
+    private func checkIfPromptShouldSchedule() {
+        if areShowingPromptPreconditionsMet {
+            schedulePromptTimer()
         }
     }
-}
 
-extension InAppFeedbackPromptScheduler: InAppFeedbackSubmissionUpdater {
-    func setFeedbackWasSubmitted() {
-        feedbackWasSubmitted = true
+    private func schedulePromptTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: promptDelayTime, repeats: false, block: { [weak self] _ in
+            if let isPromptAllowed = self?.promptAllowedHandler, isPromptAllowed() {
+                self?.showPrompt()
+            }
+        })
+    }
+
+    private func showPrompt() {
+        guard let showPrompt = showPromptHandler else {
+            return
+        }
+        storage.feedbackPromptWasShown = true
+        showPrompt({ [weak self] completed in
+            self?.storage.feedbackWasSubmitted = completed
+        })
     }
 }
