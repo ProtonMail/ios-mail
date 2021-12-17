@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Pengguna sudah masuk";
 
 /* (No Comment) */
-"The UserName have been taken." = "Nama pengguna telah diambil.";
+"The username has been taken." = "Nama pengguna telah diambil.";
 
 /* title */
 "The verification email invalid" = "Surel verifikasi tidak valid";

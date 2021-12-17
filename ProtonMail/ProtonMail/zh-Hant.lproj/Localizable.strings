@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "該使用者已登入。";
 
 /* (No Comment) */
-"The UserName have been taken." = "名稱已使用";
+"The username has been taken." = "名稱已使用";
 
 /* title */
 "The verification email invalid" = "驗證電子郵件無效";

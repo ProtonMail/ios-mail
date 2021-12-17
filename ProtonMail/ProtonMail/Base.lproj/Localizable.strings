@@ -316,7 +316,7 @@
 "Unable to parse authentication token!" = "Unable to parse authentication token!";
 
 "Invalid UserName" = "Invalid username"; //title
-"The UserName have been taken." = "The username have been taken.";
+"The username has been taken." = "The username has been taken.";
 "Change Password" = "Change password"; //title
 "The Password is wrong." = "The password is wrong.";
 "The new password not match" = "Passwords do not match";

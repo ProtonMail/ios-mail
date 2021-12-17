@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Ο χρήστης έχει συνδεθεί ήδη";
 
 /* (No Comment) */
-"The UserName have been taken." = "Το όνομα χρήστη έχει ήδη δεσμευτεί.";
+"The username has been taken." = "Το όνομα χρήστη έχει ήδη δεσμευτεί.";
 
 /* title */
 "The verification email invalid" = "Μη έγκυρο email επαλήθευσης";

@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Utilizator deja conectat";
 
 /* (No Comment) */
-"The UserName have been taken." = "Numele de utilizator este deja luat.";
+"The username has been taken." = "Numele de utilizator este deja luat.";
 
 /* title */
 "The verification email invalid" = "E-mail de verificare nevalid";

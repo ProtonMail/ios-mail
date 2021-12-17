@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Der Benutzer ist bereits angemeldet";
 
 /* (No Comment) */
-"The UserName have been taken." = "Dieser Benutzername ist bereits vergeben.";
+"The username has been taken." = "Dieser Benutzername ist bereits vergeben.";
 
 /* title */
 "The verification email invalid" = "Ungültige Wiederherstellungs-E-Mail";

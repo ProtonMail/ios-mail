@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Användaren är redan inloggad";
 
 /* (No Comment) */
-"The UserName have been taken." = "Användarnamnet har tagits.";
+"The username has been taken." = "Användarnamnet har tagits.";
 
 /* title */
 "The verification email invalid" = "Invalid verification email";

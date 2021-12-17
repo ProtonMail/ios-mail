@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "L'utente ha già effettuato l'accesso";
 
 /* (No Comment) */
-"The UserName have been taken." = "Il nome utente è già stato preso.";
+"The username has been taken." = "Il nome utente è già stato preso.";
 
 /* title */
 "The verification email invalid" = "Indirizzo email di verifica non valido";
