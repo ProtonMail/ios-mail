@@ -363,6 +363,9 @@ extension SettingsEncryptedSearchViewController {
                         }
                     } else {
                         progressBarButtonCell.statusLabel.isHidden = true
+                        progressBarButtonCell.pauseButton.isHidden = false
+                        progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.TextWeak
+                        progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.TextWeak
                     }
 
                     // Set title of button
