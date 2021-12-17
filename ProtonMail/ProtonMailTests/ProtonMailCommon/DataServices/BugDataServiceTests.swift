@@ -34,8 +34,14 @@ final class BugDataServiceTests: XCTestCase {
         let bug = "This is a bug message"
         let userName = "Robot"
         let email = "abc@pm.me"
+        let lastReceivedPush = String(Date().timeIntervalSince1970)
+        let reachability = "WiFi"
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportBug(bug, username: userName, email: email) { [weak self] error in
+        self.service.reportBug(bug,
+                               username: userName,
+                               email: email,
+                               lastReceivedPush: lastReceivedPush,
+                               reachabilityStatus: reachability) { [weak self] error in
             guard let self = self else {
                 XCTAssert(false, "Self is nil")
                 return
@@ -54,7 +60,8 @@ final class BugDataServiceTests: XCTestCase {
                 XCTAssert(false, "The invoked parameter is empty")
                 return
             }
-            XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.description.rawValue] as! String, bug)
+            let expectedDescription = bug.appending("\nLP Timestamp:\(lastReceivedPush)").appending("\nReachability:\(reachability)")
+            XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.description.rawValue] as! String, expectedDescription)
             XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.userName.rawValue] as! String, userName)
             XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.email.rawValue] as! String, email)
             completionExpectations.fulfill()
@@ -70,10 +77,16 @@ final class BugDataServiceTests: XCTestCase {
         let bug = "This is a bug message"
         let userName = "Robot"
         let email = "abc@pm.me"
+        let lastReceivedPush = String(Date().timeIntervalSince1970)
+        let reachability = "WiFi"
         let stubbedError = NSError(domain: "error.com", code: 1, userInfo: [:])
 
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportBug(bug, username: userName, email: email) { error in
+        self.service.reportBug(bug,
+                               username: userName,
+                               email: email,
+                               lastReceivedPush: lastReceivedPush,
+                               reachabilityStatus: reachability) { error in
             XCTAssertNotNil(error)
             completionExpectations.fulfill()
         }
