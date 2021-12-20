@@ -56,7 +56,11 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     }
     
     func selectFolderLabel(_ name: String) -> AddFolderLabelRobot {
-        cell(id.selectLabelFolderCellIdentifiert(name)).firstMatch().wait().swipeUpUntilVisible().tap()
+        cell(id.selectLabelFolderCellIdentifiert(name))
+            .firstMatch()
+            .swipeUpUntilVisible()
+            .waitForHittable()
+            .tap()
         return AddFolderLabelRobot()
     }
     
@@ -91,12 +95,12 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
         }
         
         func doneCreatingLabel() -> AccountSettingsLabelsAndFoldersRobot {
-            button(id.keyboardDoneIdentifier).tap()
+            button(id.keyboardDoneIdentifier).tap().waitUntilGone()
             return AccountSettingsLabelsAndFoldersRobot()
         }
         
         func delete() -> AddFolderLabelRobot {
-            cell(id.deleteCellIdentifier).tap()
+            cell(id.deleteCellIdentifier).waitForHittable().tap()
             return self
         }
         

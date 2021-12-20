@@ -19,8 +19,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
-            .menuDrawer()
-            .inbox()
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
             .selectFolder(folderName)
@@ -39,8 +38,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
-            .menuDrawer()
-            .inbox()
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(labelName)
             .selectLabel(labelName)
@@ -70,6 +68,7 @@ class LabelsFoldersTests: BaseTestCase {
             .manageAccounts()
             .addAccount()
             .connectTwoPassAccount(secondUser)
+            .refreshMailbox()
             .clickMessageBySubject(subject)
             .addMessageToFolder(folderName)
             .menuDrawer()
@@ -93,6 +92,7 @@ class LabelsFoldersTests: BaseTestCase {
             .manageAccounts()
             .addAccount()
             .connectTwoPassAccount(secondUser)
+            .refreshMailbox()
             .clickMessageBySubject(subject)
             .assignLabelToMessage(labelName)
             .navigateBackToInbox()
@@ -108,6 +108,7 @@ class LabelsFoldersTests: BaseTestCase {
         
         loginRobot
             .loginUser(user)
+            .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
             .tapDoneSelectingFolderButton()

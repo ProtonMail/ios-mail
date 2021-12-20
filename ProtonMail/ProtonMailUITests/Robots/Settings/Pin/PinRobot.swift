@@ -114,6 +114,7 @@ class PinRobot: CoreElements {
             return RepeatPinRobot()
         }
         
+        @discardableResult
         func setPin(_ pin: String) -> PinRobot {
             enterPin(pin)
                 .continueSettingPin()

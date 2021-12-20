@@ -39,13 +39,13 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().tap()
+        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().forceTap()
         return MessageRobot()
     }
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        cell().byIndex(index).tap()
+        cell().byIndex(index).onChild(staticText().byIndex(0)).forceTap()
         return MessageRobot()
     }
     
@@ -73,7 +73,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-        cell().byIndex(position).tap()
+        cell().byIndex(position).forceTap()
         return self
     }
     

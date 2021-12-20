@@ -16,7 +16,6 @@ fileprivate struct id {
     static let decryptButtonIdentifier = "MailboxPasswordViewController.unlockButton"
     static let twoFaCodeIdentifier = "TwoFactorViewController.codeTextField.textField"
     static let twoFaEnterButtonIdentifier = "TwoFactorViewController.authenticateButton"
-    static let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
     static let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
     static let limitReachedText = LocalString._free_account_limit_reached_title
 }
@@ -26,13 +25,13 @@ class ConnectAccountRobot: CoreElements {
     var verify = Verify()
     
     func connectOnePassAccount(_ user: User) -> InboxRobot {
-        return username(user.email)
+        return username(user.name)
             .password(user.password)
             .signIn()
     }
 
     func connectOnePassAccountWithTwoFa(_ user: User) -> InboxRobot {
-        return username(user.email)
+        return username(user.name)
             .password(user.password)
             .signInWithMailboxPasswordOrTwoFa()
             .twoFaCode(user.getTwoFaCode())
@@ -48,7 +47,7 @@ class ConnectAccountRobot: CoreElements {
     }
 
     func connectTwoPassAccountWithTwoFa(_ user: User) -> InboxRobot {
-        return username(user.email)
+        return username(user.name)
             .password(user.password)
             .signInWithMailboxPasswordOrTwoFa()
             .twoFaCode(user.getTwoFaCode())
@@ -58,19 +57,19 @@ class ConnectAccountRobot: CoreElements {
     }
 
     func connectSecondFreeOnePassAccountWithTwoFa(_ user: User) -> ConnectAccountRobot {
-        return username(user.email)
+        return username(user.name)
             .password(user.password)
             .signInWithMailboxPasswordOrTwoFa()
             .twoFaCode(user.getTwoFaCode())
             .confirmTwoFaWithReachedLimit()
     }
 
-    func cancelLoginOnTwoFaPrompt(_ user: User) -> InboxRobot {
-        return username(user.email)
+    func cancelLoginOnTwoFaPrompt(_ user: User) -> AccountManagerRobot {
+        return username(user.name)
             .password(user.password)
             .signInWithMailboxPasswordOrTwoFa()
             .cancelTwoFaPrompt()
-            .cancelAccountAdding()
+            .closeSignInScreen()
     }
 
     private func signIn() -> InboxRobot {
@@ -92,29 +91,29 @@ class ConnectAccountRobot: CoreElements {
         button(id.twoFaEnterButtonIdentifier).tap()
         return self
     }
-    
+
     private func confirmTwoFaWithReachedLimit() -> ConnectAccountRobot {
         button(id.twoFaEnterButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
     private func cancelTwoFaPrompt() -> ConnectAccountRobot {
-        button(id.twoFaCancelButtonIdentifier).tap()
+        button(id.cancelButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
-    private func cancelAccountAdding() -> InboxRobot {
+    private func closeSignInScreen() -> AccountManagerRobot {
         button(id.cancelButtonIdentifier).tap()
-        return InboxRobot()
+        return AccountManagerRobot()
     }
 
     private func username(_ username: String) -> ConnectAccountRobot {
-        textField(id.usernameTextFieldIdentifier).tap().typeText(username)
+        textField(id.usernameTextFieldIdentifier).firstMatch().tap().typeText(username)
         return self
     }
 
     private func password(_ password: String) -> ConnectAccountRobot {
-        secureTextField(id.passwordSecureTextFieldIdentifier).tap().typeText(password)
+        secureTextField(id.passwordSecureTextFieldIdentifier).firstMatch().tap().typeText(password)
         return self
     }
 
@@ -142,6 +141,7 @@ class ConnectAccountRobot: CoreElements {
      */
     class Verify: CoreElements {
 
+        /// Free users limit alert is shown.
         func limitReachedDialogDisplayed() {
             staticText().wait().checkExists()
         }

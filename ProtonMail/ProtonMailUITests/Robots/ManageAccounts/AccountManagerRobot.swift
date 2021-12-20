@@ -12,6 +12,7 @@ import ProtonCore_TestingToolkit
 fileprivate struct id {
     static let addAccountButtonIdentifier = "UINavigationItem.rightBarButtonItem"
     static let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
+    static let closeManageAccountsButtonIdentifier = "UINavigationItem.leftBarButtonItem"
     static let swipeUserCellLogoutButtonIdentifier = "Log out"
     static let swipeUserCellDeleteButtonIdentifier = "Delete"
     static let removeAllLabel = "Remove All"
@@ -62,37 +63,37 @@ class AccountManagerRobot: CoreElements {
     }
     
     func closeManageAccounts() -> InboxRobot {
-        button(id.closeManageAccountsButtonLabel).tap()
+        button(id.closeManageAccountsButtonIdentifier).tap()
         return InboxRobot()
     }
     
     private func removeAll() -> RemoveAllAlertRobot {
-        button(id.removeAllLabel).tap()
+        button(id.removeAllLabel).firstMatch().tap()
         return RemoveAllAlertRobot()
     }
     
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
-        cell(id.loggedOutUserAccountCellIdentifier(email)).swipeLeft()
+        cell(id.loggedOutUserAccountCellIdentifier(email)).firstMatch().swipeLeft()
         return AccountManagerRobot()
     }
     
     private func tapMore(_ email: String) -> AccountManagerRobot {
-        button(id.userAccountMoreBtnIdentifier(email)).tap()
+        button(id.userAccountMoreBtnIdentifier(email)).firstMatch().tap()
         return AccountManagerRobot()
     }
     
     private func signOut() -> AccountManagerRobot {
-        button(id.signOutButtonLabel).tap()
+        button(id.signOutButtonLabel).firstMatch().tap()
         return AccountManagerRobot()
     }
     
     private func confirmSignOutPrimary() -> InboxRobot {
-        button(id.confirmSignOutButtonLabel).tap()
+        button(id.confirmSignOutButtonLabel).firstMatch().tap()
         return InboxRobot()
     }
     
     private func confirmSignOut() -> AccountManagerRobot {
-        button(id.confirmSignOutButtonLabel).tap()
+        button(id.confirmSignOutButtonLabel).firstMatch().tap()
         return AccountManagerRobot()
     }
     
@@ -102,7 +103,7 @@ class AccountManagerRobot: CoreElements {
     }
     
     private func confirmRemove() -> AccountManagerRobot {
-        button(id.confirmRemoveButtonLabel).tap()
+        button(id.confirmRemoveButtonLabel).firstMatch().tap()
         return AccountManagerRobot()
     }
     
@@ -127,7 +128,7 @@ class AccountManagerRobot: CoreElements {
         }
         
         func accountRemoved(_ user: User) {
-            cell(id.loggedOutUserAccountCellIdentifier(user.name)).waitUntilGone()
+            cell(id.loggedOutUserAccountCellIdentifier(user.name)).waitUntilGone(time: 15)
         }
     }
 }

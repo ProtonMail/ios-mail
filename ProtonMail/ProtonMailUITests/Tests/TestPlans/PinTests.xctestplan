@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "D6877D05-7AD0-4981-93D6-41FF6876CFC7",
+      "id" : "50845380-A215-4D73-A2F2-030B9086C592",
       "name" : "Configuration 1",
       "options" : {
 
@@ -14,26 +14,10 @@
   "testTargets" : [
     {
       "parallelizable" : true,
-      "skippedTests" : [
-        "AccountSettingsTests",
-        "BaseTestCase",
-        "ContactsTests",
-        "DraftsTests",
-        "ForceUpgradeTests",
-        "HumanVerificationTests",
-        "LabelsFoldersTests",
-        "LoginTests",
-        "LogoutTests",
-        "MenuTests",
-        "MultiuserManagementTests",
-        "RecepientAddressesTests",
-        "ReplyToMessageTests",
-        "ReportTests",
-        "SearchTests",
-        "SendNewMessageTests",
-        "SettingsTests",
-        "SpamTests",
-        "TrashTests"
+      "selectedTests" : [
+        "PinTests\/testEnterCorrectPinCanUnlock()",
+        "PinTests\/testEnterIncorrectPinCantUnlock()",
+        "PinTests\/testTurnOnAndOffPin()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
