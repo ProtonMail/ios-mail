@@ -43,6 +43,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet var noResultLabel: UILabel!
     private let searchBar = SearchBarView()
     private var searchInfoBanner: BannerView? = nil
+    private var searchInfoActivityIndicator: UIActivityIndicatorView? = nil
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
     // TODO: need better UI solution for this progress bar
@@ -101,9 +102,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
 
-        if userCachedStatus.isEncryptedSearchOn {
-            self.showSearchInfoBanner()    // display only when ES is on
-        } else {
+        if userCachedStatus.isEncryptedSearchOn == false {
             self.showAlertToEnableContentSearch()   // show spotlight to turn ES on
             
             /*let image = UIImage(named: "contact_groups_check")!
@@ -157,6 +156,7 @@ extension SearchViewController {
         searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
         searchBar.textField.delegate = self
         searchBar.textField.becomeFirstResponder()
+        //searchBar.textField.addTarget(self, action: #selector(), for: .editingChanged)
         navigationBarView.addSubview(searchBar)
         [
             searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
@@ -214,54 +214,23 @@ extension SearchViewController {
     internal func showSearchInfoBanner() {
         var text: String = ""
         var link: String = ""
-        
         let state = EncryptedSearchService.shared.state
         switch state {
-        case .disabled:
-            text = LocalString._encrypted_search_info_search_off
-            break
-        case .partial:
-            text = LocalString._encrypted_search_info_search_partial_first
-            let users: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String = (users.firstUser?.userInfo.userId)!
-            text += EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-            text += LocalString._encrypted_search_info_search_partial_second
-            link = LocalString._encrypted_search_info_search_partial_link
-            break
-        case .lowstorage:
-            text = LocalString._encrypted_search_info_search_partial_first
-            let users: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String = (users.firstUser?.userInfo.userId)!
-            text += EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-            text += LocalString._encrypted_search_info_search_lowstorage
-            break
         case .downloading:
             text = LocalString._encrypted_search_info_search_downloading
             link = LocalString._encrypted_search_info_search_downloading_link
             break
-        case .paused:
-            text = LocalString._encrypted_search_info_search_paused
-            link = LocalString._encrypted_search_info_search_paused_link
-            break
-        case .refresh:
-            text = LocalString._encrypted_search_info_search_refresh
-            link = LocalString._encrypted_search_info_search_downloading_link
-            break
-        case .complete, .undetermined, .background, .backgroundStopped:
+        case .complete, .undetermined, .background, .backgroundStopped, .partial, .refresh, .paused, .lowstorage, .disabled:
             return
         }
-        
+
         DispatchQueue.main.async {
-            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link){
+            let dismissActionCallback: BannerView.dismissActionBlock? = {
+                self.searchInfoActivityIndicator?.stopAnimating()
+            }
+            let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                 switch state {
-                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
-                    break
-                case .partial:
-                    let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
-                    let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
-                    vc.set(viewModel: vm)
-                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
-                    self.show(vc, sender: self)
+                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial, .paused, .refresh:
                     break
                 case .downloading:
                     let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
@@ -270,24 +239,26 @@ extension SearchViewController {
                     //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
                     self.show(vc, sender: self)
                     break
-                case .paused:
-                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                    let vc = SettingsEncryptedSearchViewController()
-                    vc.set(viewModel: vm)
-                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
-                    self.show(vc, sender: self)
-                    break
-                case .refresh:
-                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                    let vc = SettingsEncryptedSearchViewController()
-                    vc.set(viewModel: vm)
-                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
-                    self.show(vc, sender: self)
-                    break
                 }
             }
+            self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
             self.view.addSubview(self.searchInfoBanner!)
             self.searchInfoBanner!.drop(on: self.view, from: .top)
+
+            // Show spinner
+            if #available(iOS 13.0, *) {
+                self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .medium)
+            } else {
+                self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .white)
+            }
+            self.searchInfoActivityIndicator?.startAnimating()
+            self.searchInfoActivityIndicator?.hidesWhenStopped = true
+            self.searchInfoActivityIndicator?.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(self.searchInfoActivityIndicator!)
+            NSLayoutConstraint.activate([
+                self.searchInfoActivityIndicator!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                self.searchInfoActivityIndicator!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            ])
         }
     }
     
@@ -859,19 +830,23 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
 // MARK: - UITextFieldDelegate
 
 extension SearchViewController: UITextFieldDelegate {
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         query = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         searchBar.clearButton.isHidden = query.isEmpty == true
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         self.query = self.query.trim()
         textField.text = self.query
         guard self.query.count > 0 else {
             return true
+        }
+        // If Encrypted search is on, display a notification if the index is still being built
+        if userCachedStatus.isEncryptedSearchOn {
+            self.showSearchInfoBanner()    // display only when ES is on
         }
         self.viewModel.fetchRemoteData(query: self.query, fromStart: true)
         self.cancelEditingMode()
