@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "此郵件包含已移至垃圾桶的郵件";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過其網域的驗證要求。這可能是詐騙郵件或是轉發不當導致！";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過其網域的驗證要求。這可能是詐騙郵件或是轉發不當導致！";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過網域驗證。這可能是詐騙郵件或是轉發不當導致！";

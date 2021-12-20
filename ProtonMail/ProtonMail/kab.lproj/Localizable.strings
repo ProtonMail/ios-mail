@@ -2666,7 +2666,7 @@
 "This conversation contains trashed messages" = "Adiwenni-a yegber iznan yellan deg yiḍumman";
 
 /* No comment provided by engineer. */
-"This email has failed it’s domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yecceḍ deg usekyed n usesteb n taɣult-is. Ahat beddlen-t neɣ win-t s tuccḍa aniɣer nniḍen!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yecceḍ deg usekyed n usesteb n taɣult-is. Ahat beddlen-t neɣ win-t s tuccḍa aniɣer nniḍen!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yecceḍ deg usekyed n usesteb n taɣult-is. Ahat beddlen-t neɣ wwin-t s tuccḍa aniɣer nniḍen!";
