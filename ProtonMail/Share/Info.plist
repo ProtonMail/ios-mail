@@ -76,7 +76,7 @@
 		<string>ShareExtensionEntry</string>
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Allows you quick and secure to unlock your application.</string>
+	<string>Lets you quickly and securely unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
