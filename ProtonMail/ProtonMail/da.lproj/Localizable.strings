@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Brugeren er allerede logget ind";
 
 /* (No Comment) */
-"The username has been taken." = "Brugernavnet findes allerede.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Ugyldig bekræftelses e-mail";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail fejlede Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";

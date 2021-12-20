@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "O usuário já está logado";
 
 /* (No Comment) */
-"The username has been taken." = "Nome de usuário já está sendo utilizado.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "E-mail de verificação inválido";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Esta conversa contém mensagens descartadas";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail falhou em seus requisitos de autenticação de domínio. Pode ser falsificado ou encaminhado indevidamente!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este e-mail falhou nos requisitos de autenticação do domínio. Ele pode ser falsificado ou foi encaminhado incorretamente!";

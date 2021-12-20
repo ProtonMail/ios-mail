@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Uživatel je již přihlášen";
 
 /* (No Comment) */
-"The username has been taken." = "Uživatelské jméno už bylo použito.";
+"The username has been taken." = "Uživatelské jméno bylo již použito.";
 
 /* title */
 "The verification email invalid" = "Neplatný ověřovací e-mail";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Tato konverzace obsahuje smazané zprávy";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Tato zpráva nesplňuje požadavky na ověření domény. Může být falešná, nebo špatně přeposlaná!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Tato zpráva nesplňuje požadavky na ověření domény. Může být falešná, nebo špatně přeposlaná!";

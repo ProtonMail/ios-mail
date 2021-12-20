@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "De gebruiker is al ingelogd";
 
 /* (No Comment) */
-"The username has been taken." = "De gebruikersnaam is reeds in gebruik.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Ongeldig verificatie e-mailadres";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";

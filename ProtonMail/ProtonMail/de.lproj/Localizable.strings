@@ -2665,9 +2665,6 @@
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dieses Thema enthält gelöschte Nachrichten";
 
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Authentifizierungsanforderungen ihrer Domain nicht erfüllt. Sie kann gefälscht oder fehlerhaft weitergeleitet sein!";
-
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
 

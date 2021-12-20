@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Користувач вже увійшов";
 
 /* (No Comment) */
-"The username has been taken." = "Це ім'я користувача вже зайняте.";
+"The username has been taken." = "Це ім'я користувача вже використовується.";
 
 /* title */
 "The verification email invalid" = "Недійсна е-пошта для підтвердження";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ця розмова містить видалені повідомлення";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не пройшов вимоги перевірки свого домену. Він може бути підроблений або неправильно пересланий!";

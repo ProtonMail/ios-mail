@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Utilizator deja conectat";
 
 /* (No Comment) */
-"The username has been taken." = "Numele de utilizator este deja luat.";
+"The username has been taken." = "Numele de utilizator a fost luat.";
 
 /* title */
 "The verification email invalid" = "E-mail de verificare nevalid";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";

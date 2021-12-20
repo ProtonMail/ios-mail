@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Es usuari ja està identificat";
 
 /* (No Comment) */
-"The username has been taken." = "El nom d'usuari ja està agafat.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Correu electrònic de verificació no vàlid";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Aquesta conversa conté missatges de la paperera";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requeriments d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament!";

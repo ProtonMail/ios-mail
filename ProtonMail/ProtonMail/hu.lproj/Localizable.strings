@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "A felhasználó már belépett";
 
 /* (No Comment) */
-"The username has been taken." = "A felhasználónév foglalt.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Érvénytelen ellenőrző e-mail";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "This conversation contains trashed messages";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított!";

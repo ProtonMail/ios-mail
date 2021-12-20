@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Pengguna sudah masuk";
 
 /* (No Comment) */
-"The username has been taken." = "Nama pengguna telah diambil.";
+"The username has been taken." = "Nama pengguna ini telah digunakan.";
 
 /* title */
 "The verification email invalid" = "Surel verifikasi tidak valid";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini gagal memenuhi syarat autentikasi domainnya. Surel ini mungkin dipalsukan atau diteruskan dengan tidak benar!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini telah gagal memenuhi persyaratan autentikasi domainnya. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";

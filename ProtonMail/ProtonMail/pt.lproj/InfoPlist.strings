@@ -13,9 +13,6 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Usado para aceder a endereços de email de contactos no dispositivo, para os disponibilizar ao compor uma mensagem ou ao enviar manualmente os contactos do dispositivo para a sua conta. A informação do contacto não é enviada aos nossos servidores sem que tome uma acção explícita para tal.";
 
-/* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Permite desbloquear a aplicação de forma rápida e segura.";
-
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Necessário para gravar imagens anexadas na biblioteca de fotografias.";
 
