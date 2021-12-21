@@ -1,8 +1,9 @@
 import ProtonCore_UIFoundations
+import UIKit
 
 class ConversationViewHeaderView: UIView {
 
-    let titleLabel = SubviewsFactory.titleLabel
+    let titleTextView = SubviewsFactory.titleTextView
     let separator = SubviewsFactory.separator
     let topView = SubviewsFactory.topView
 
@@ -20,7 +21,7 @@ class ConversationViewHeaderView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(titleLabel)
+        addSubview(titleTextView)
         addSubview(separator)
         addSubview(topView)
     }
@@ -36,10 +37,10 @@ class ConversationViewHeaderView: UIView {
         ].activate()
 
         [
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            titleTextView.topAnchor.constraint(equalTo: topAnchor),
+            titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            titleTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ].activate()
 
         [
@@ -58,10 +59,12 @@ class ConversationViewHeaderView: UIView {
 
 private enum SubviewsFactory {
 
-    static var titleLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.numberOfLines = 0
-        return label
+    static var titleTextView: UITextView {
+        let view = UITextView(frame: .zero)
+        view.isEditable = false
+        view.isScrollEnabled = false
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        return view
     }
 
     static var separator: UIView {

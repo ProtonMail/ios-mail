@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import UIKit
 
 class SingleMessageView: UIView {
 
@@ -34,7 +35,7 @@ class SingleMessageView: UIView {
 
     let scrollView = SubviewsFactory.scrollView
     let stackView = UIStackView.stackView(axis: .vertical)
-    let titleLabel = SubviewsFactory.titleLabel
+    let titleTextView = SubviewsFactory.titleTextView
     let navigationSeparator = SubviewsFactory.smallSeparatorView
     let smallTitleHeaderSeparatorView = SubviewsFactory.smallSeparatorView
     let bigSeparatorView = SubviewsFactory.bigSeparatorView
@@ -47,7 +48,7 @@ class SingleMessageView: UIView {
 
         addSubview(navigationSeparator)
 
-        stackView.addArrangedSubview(StackViewContainer(view: titleLabel, leading: 24, trailing: -24, bottom: -8))
+        stackView.addArrangedSubview(StackViewContainer(view: titleTextView, leading: 24, trailing: -24, bottom: -8))
         stackView.addArrangedSubview(smallTitleHeaderSeparatorView)
         stackView.addArrangedSubview(bigSeparatorView)
         stackView.addArrangedSubview(contentContainer)
@@ -118,10 +119,11 @@ private enum SubviewsFactory {
         return view
     }
 
-    static var titleLabel: UILabel {
-        let label = UILabel(frame: .zero)
-        label.numberOfLines = 0
-        return label
+    static var titleTextView: UITextView {
+        let view = UITextView(frame: .zero)
+        view.isEditable = false
+        view.isScrollEnabled = false
+        return view
     }
 
     static var toolBar: PMToolBarView {

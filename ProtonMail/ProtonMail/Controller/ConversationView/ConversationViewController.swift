@@ -306,7 +306,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     ) -> UITableViewCell {
         let cell = tableView.dequeue(cellType: ConversationViewHeaderCell.self)
         let style = FontManager.MessageHeader.alignment(.center)
-        cell.customView.titleLabel.attributedText = subject.apply(style: style)
+        cell.customView.titleTextView.attributedText = subject.apply(style: style)
         return cell
     }
 }
@@ -408,7 +408,7 @@ private extension ConversationViewController {
             return
         }
 
-        let headerLabelConvertedFrame = cell.convert(cell.customView.titleLabel.frame, to: customView.tableView)
+        let headerLabelConvertedFrame = cell.convert(cell.customView.titleTextView.frame, to: customView.tableView)
         let shouldPresentDetailedNavigationTitle = tableview.contentOffset.y >= headerLabelConvertedFrame.maxY
         shouldPresentDetailedNavigationTitle ? presentDetailedNavigationTitle() : presentSimpleNavigationTitle()
 

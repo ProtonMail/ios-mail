@@ -101,7 +101,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let shouldShowSeparator = scrollView.contentOffset.y >= customView.smallTitleHeaderSeparatorView.frame.maxY
-        let shouldShowTitleInNavigationBar = scrollView.contentOffset.y >= customView.titleLabel.frame.maxY
+        let shouldShowTitleInNavigationBar = scrollView.contentOffset.y >= customView.titleTextView.frame.maxY
 
         customView.navigationSeparator.isHidden = !shouldShowSeparator
         shouldShowTitleInNavigationBar ? showTitleView() : hideTitleView()
@@ -112,7 +112,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     }
 
     private func setUpSelf() {
-        customView.titleLabel.attributedText = viewModel.messageTitle
+        customView.titleTextView.attributedText = viewModel.messageTitle
         navigationTitleLabel.label.attributedText = viewModel.message.title.apply(style: .DefaultSmallStrong)
         navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 
