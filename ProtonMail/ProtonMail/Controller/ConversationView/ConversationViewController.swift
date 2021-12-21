@@ -55,6 +55,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
 
+        viewModel.reloadRows = { [weak self] rows in
+            DispatchQueue.main.async {
+                self?.customView.tableView.reloadRows(at: rows, with: .automatic)
+                self?.checkNavigationTitle()
+            }
+        }
+
         viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
             guard messageID == self?.selectedMessageID else { return }
             self?.dismissActionSheet()
@@ -145,12 +152,16 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         switch itemType {
         case .trashedHint:
             let cell = tableView.dequeue(cellType: ConversationViewTrashedHintCell.self)
-            cell.setup(isTrashedHidden: self.viewModel.isTrashedMessageHidden, delegate: self.viewModel)
+            cell.setup(isTrashFolder: self.viewModel.isTrashFolder,
+                       useShowButton: self.viewModel.shouldTrashedHintBannerUseShowButton(),
+                       delegate: self.viewModel)
             return cell
         case .header(let subject):
             return headerCell(tableView, indexPath: indexPath, subject: subject)
         case .message(let viewModel):
-            if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
+            if viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly {
+                return tableView.dequeue(cellType: UITableViewCell.self)
+            } else if !viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly {
                 return tableView.dequeue(cellType: UITableViewCell.self)
             }
             return messageCell(tableView, indexPath: indexPath, viewModel: viewModel)
@@ -252,7 +263,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             return UITableView.automaticDimension
         }
 
-        if viewModel.isTrashed && self.viewModel.isTrashedMessageHidden {
+        if viewModel.isTrashed && self.viewModel.displayRule == .showNonTrashedOnly {
+            return 0
+        } else if !viewModel.isTrashed && self.viewModel.displayRule == .showTrashedOnly {
             return 0
         }
         let isMessageExpanded = viewModel.state.isExpanded

@@ -44,7 +44,8 @@ class NonExpandedHeaderViewModel {
     }
 
     var originImage: UIImage? {
-        if let image = message.getLocationImage(in: labelId) {
+        let id = message.messageLocation?.rawValue ?? labelId
+        if let image = message.getLocationImage(in: id) {
             return image
         }
         return message.isCustomFolder ? Asset.mailCustomFolder.image : nil

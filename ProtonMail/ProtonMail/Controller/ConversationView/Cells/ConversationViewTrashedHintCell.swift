@@ -43,9 +43,11 @@ class ConversationViewTrashedHintCell: UITableViewCell {
     }
     
     /// Is trashed message hidden
-    func setup(isTrashedHidden: Bool, delegate: ConversationViewTrashedHintDelegate?) {
+    func setup(isTrashFolder: Bool,
+               useShowButton: Bool,
+               delegate: ConversationViewTrashedHintDelegate?) {
         self.delegate = delegate
-        customView.setup(isTrashedHidden: isTrashedHidden)
+        customView.setup(isTrashFolder: isTrashFolder, useShowButton: useShowButton)
     }
 
     private func setUpSubviews() {

@@ -1,16 +1,23 @@
 import CoreData
 import ProtonCore_UIFoundations
 
+enum MessageDisplayRule {
+    case showNonTrashedOnly
+    case showTrashedOnly
+    case showAll
+}
+
 class ConversationViewModel {
 
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet { refreshView?() }
     }
-    private(set) var isTrashedMessageHidden = false
-
+    private(set) var shouldShowTrashedHintBanner = false
+    private(set) var displayRule = MessageDisplayRule.showNonTrashedOnly
     var refreshView: (() -> Void)?
     var dismissView: (() -> Void)?
+    var reloadRows: (([IndexPath]) -> Void)?
     var dismissDeletedMessageActionSheet: ((String) -> Void)?
 
     var showNewMessageArrivedFloaty: ((String) -> Void)?
@@ -48,6 +55,7 @@ class ConversationViewModel {
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var openFromNotification = false
     var shouldIgnoreUpdateOnce = false
+    var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
 
     /// Used to decide if there is any new messages coming
@@ -92,6 +100,7 @@ class ConversationViewModel {
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
+        self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
@@ -115,6 +124,9 @@ class ConversationViewModel {
         conversationMessagesProvider.observe { [weak self] update in
             self?.perform(update: update, on: tableView)
             self?.checkTrashedHintBanner()
+            if case .didUpdate = update {
+                self?.reloadRowsIfNeeded()
+            }
         } storedMessages: { [weak self] messages in
             self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
@@ -159,41 +171,77 @@ class ConversationViewModel {
         return try? self.writeToTemporaryUrl(body, filename: filename)
     }
 
+    func shouldTrashedHintBannerUseShowButton() -> Bool {
+        if self.isTrashFolder {
+            return self.displayRule == .showTrashedOnly ? true: false
+        } else {
+            return self.displayRule == .showNonTrashedOnly ? true: false
+        }
+    }
+
     /// Add trashed hint banner if the messages contain trashed message
     private func checkTrashedHintBanner() {
+        let hasMessages = !self.messagesDataSource.isEmpty
+        guard hasMessages else { return }
         let trashed = self.messagesDataSource
             .filter { $0.messageViewModel?.isTrashed ?? false }
         let hasTrashed = !trashed.isEmpty
         let isAllTrashed = trashed.count == self.messagesDataSource.count
+        if self.isTrashFolder {
+            self.checkTrashedHintBannerForTrashFolder(hasTrashed: hasTrashed,
+                                                      isAllTrashed: isAllTrashed)
+        } else {
+            self.checkTrashedHintBannerForNonTrashFolder(hasTrashed: hasTrashed,
+                                                         isAllTrashed: isAllTrashed)
+        }
+    }
 
-        let row = IndexPath(row: 1, section: 0)
-        let visible = self.tableView?.visibleCells.count ?? 0
+    private func checkTrashedHintBannerForTrashFolder(hasTrashed: Bool, isAllTrashed: Bool) {
         guard hasTrashed else {
-            if let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) {
-                self.headerSectionDataSource.remove(at: index)
-                if visible > 0 {
-                    self.tableView?.deleteRows(at: [row], with: .automatic)
-                }
-            }
+            self.removeTrashedHintBanner()
+            // In trash folder, without trashed message
+            // Should show non trashed messages
+            self.displayRule = .showNonTrashedOnly
+            self.removeTrashedHintBanner()
             return
         }
+        if self.displayRule == .showNonTrashedOnly {
+            self.displayRule = .showTrashedOnly
+        }
+        isAllTrashed ? self.removeTrashedHintBanner(): self.showTrashedHintBanner()
+    }
+
+    private func checkTrashedHintBannerForNonTrashFolder(hasTrashed: Bool, isAllTrashed: Bool) {
         if isAllTrashed {
-            if let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) {
-                self.headerSectionDataSource.remove(at: index)
-                if visible > 0 {
-                    self.tableView?.deleteRows(at: [row], with: .automatic)
-                }
-            }
-            if self.isTrashedMessageHidden {
-                self.isTrashedMessageHidden = false
-                let section = IndexSet(integer: 1)
-                self.tableView?.reloadSections(section, with: .automatic)
-            }
-        } else if !self.headerSectionDataSource.contains(.trashedHint) {
-            self.headerSectionDataSource.append(.trashedHint)
-            if visible > 0 {
-                self.tableView?.insertRows(at: [row], with: .automatic)
-            }
+            // In non trash folder, without trashed message
+            // Should show trashed messages
+            self.displayRule = .showTrashedOnly
+            self.removeTrashedHintBanner()
+            return
+        }
+        if self.displayRule == .showTrashedOnly {
+            self.displayRule = .showNonTrashedOnly
+        }
+        hasTrashed ? self.showTrashedHintBanner(): self.removeTrashedHintBanner()
+    }
+
+    private func removeTrashedHintBanner() {
+        guard let index = self.headerSectionDataSource.firstIndex(of: .trashedHint) else { return }
+        self.headerSectionDataSource.remove(at: index)
+        let visible = self.tableView?.visibleCells.count ?? 0
+        if visible > 0 {
+            let row = IndexPath(row: 1, section: 0)
+            self.tableView?.deleteRows(at: [row], with: .automatic)
+        }
+    }
+
+    private func showTrashedHintBanner() {
+        if self.headerSectionDataSource.contains(.trashedHint) { return }
+        self.headerSectionDataSource.append(.trashedHint)
+        let visible = self.tableView?.visibleCells.count ?? 0
+        if visible > 0 {
+            let row = IndexPath(row: 1, section: 0)
+            self.tableView?.insertRows(at: [row], with: .automatic)
         }
     }
 
@@ -265,11 +313,11 @@ class ConversationViewModel {
                   }
             viewModel.messageHasChanged(message: message)
 
-            if viewModel.state.isExpanded {
-                viewModel.state.expandedViewModel?.message = message
-            } else {
+            guard viewModel.state.isExpanded else {
                 viewModel.state.collapsedViewModel?.messageHasChanged(message: message)
+                return
             }
+            viewModel.state.expandedViewModel?.message = message
         case let .delete(row, messageID):
             tableView.deleteRows(at: [.init(row: row, section: 1)], with: .automatic)
             dismissDeletedMessageActionSheet?(messageID)
@@ -657,15 +705,61 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
 
 extension ConversationViewModel: ConversationViewTrashedHintDelegate {
     func clickTrashedMessageSettingButton() {
-        self.isTrashedMessageHidden = !self.isTrashedMessageHidden
-
-        var reloadRows: [IndexPath] = []
-        self.messagesDataSource.enumerated().forEach { index, item in
-            guard let viewModel = item.messageViewModel,
-                  viewModel.isTrashed else { return }
-            reloadRows.append(.init(row: index, section: 1))
+        switch self.displayRule {
+        case .showTrashedOnly:
+            self.displayRule = .showAll
+        case .showNonTrashedOnly:
+            self.displayRule = .showAll
+        case .showAll:
+            self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
         }
-        reloadRows.append(.init(row: 1, section: 0))
-        self.tableView?.reloadRows(at: reloadRows, with: .automatic)
+        let row = IndexPath(row: 1, section: 0)
+        self.reloadRowsIfNeeded(additional: row)
+    }
+
+    private func reloadRowsIfNeeded(additional: IndexPath? = nil) {
+        guard self.messagesDataSource.isEmpty == false else {
+            if let additional = additional {
+                self.reloadRows?([additional])
+            }
+            return
+        }
+        let messagePaths = Array([Int](0..<self.messagesDataSource.count)).map { IndexPath(row: $0, section: 1) }
+
+        var indexPaths: [IndexPath] = messagePaths.filter { [weak self] indexPath in
+            guard let self = self,
+                  indexPath.section == 1 else { return false }
+            let row = indexPath.row
+            guard let cell = self.tableView?.cellForRow(at: indexPath),
+                  let item = self.messagesDataSource[safe: row],
+                  let viewModel = item.messageViewModel else {
+                      return false
+                  }
+            let cellClass = String(describing: cell.classForCoder)
+            let defaultClass = String(describing: UITableViewCell.self)
+            switch self.displayRule {
+            case .showAll:
+                return cell.bounds.height == 0
+            case .showTrashedOnly:
+                if viewModel.isTrashed && cellClass == defaultClass {
+                    return true
+                } else if !viewModel.isTrashed && cellClass != defaultClass {
+                    return true
+                }
+                return false
+            case .showNonTrashedOnly:
+                if viewModel.isTrashed && cellClass != defaultClass {
+                    return true
+                } else if !viewModel.isTrashed && cellClass == defaultClass {
+                    return true
+                }
+                return false
+            }
+        }
+        if let additional = additional {
+            indexPaths.append(additional)
+        }
+        if indexPaths.isEmpty { return }
+        self.reloadRows?(indexPaths)
     }
 }
