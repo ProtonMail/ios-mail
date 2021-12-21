@@ -2118,6 +2118,7 @@ class LocalizedString {
     lazy var _banner_remote_and_embedded_title  = NSLocalizedString("This message contains remote content and embedded images", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
+    lazy var _banner_non_trashed_message_title = NSLocalizedString("This conversation contains non-trashed messages.", comment: "")
 
     lazy var _message_action_sheet_title_recipient = NSLocalizedString("Recipient details", comment: "")
     lazy var _message_action_sheet_title_sender = NSLocalizedString("Sender details", comment: "")

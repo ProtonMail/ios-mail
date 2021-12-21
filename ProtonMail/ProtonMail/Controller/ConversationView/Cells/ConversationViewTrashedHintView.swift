@@ -42,12 +42,17 @@ final class ConversationViewTrashedHintView: UIView {
         setUpLayout()
     }
     
-    func setup(isTrashedHidden: Bool) {
-        let title = isTrashedHidden ? LocalString._show: LocalString._hide
+    func setup(isTrashFolder: Bool, useShowButton: Bool) {
+        let title = useShowButton ? LocalString._show: LocalString._hide
         button.setAttributedTitle(
             title.apply(style: FontManager.body2RegularNorm),
             for: .normal
         )
+        if isTrashFolder {
+            hintText.attributedText = LocalString._banner_non_trashed_message_title.apply(style: FontManager.Caption)
+        } else {
+            hintText.attributedText = LocalString._banner_trashed_message_title.apply(style: FontManager.Caption)
+        }
         layoutIfNeeded()
     }
     
