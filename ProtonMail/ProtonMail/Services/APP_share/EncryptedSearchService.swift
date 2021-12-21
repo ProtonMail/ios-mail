@@ -1707,7 +1707,7 @@ extension EncryptedSearchService {
                                                "cacheSize"          : cacheSize!,
                                                "isFirstSearch"      : self.isFirstSearch,
                                                "isCacheLimited"     : isCacheLimited,
-                                               "searchTime"         : searchTime*100]   // Search time is expressed in milliseconds instead of seconds
+                                               "searchTime"         : Int(searchTime*100)]   // Search time is expressed in milliseconds instead of seconds
         self.sendMetrics(metric: Metrics.search, data: searchMetricsData){_,_,error in
             if error != nil {
                 print("Error when sending search metrics: \(String(describing: error))")
