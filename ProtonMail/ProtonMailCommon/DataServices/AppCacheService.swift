@@ -53,6 +53,15 @@ class AppCacheService: Service {
             // core data
             try? FileManager.default.removeItem(at: CoreDataStore.dbUrl)
             
+            let names = [PMPersistentQueue.Constant.name,
+                        PMPersistentQueue.Constant.miscName]
+            for name in names {
+                let path = FileManager.default
+                    .applicationSupportDirectoryURL
+                    .appendingPathComponent(name)
+                try? FileManager.default.removeItem(at: path)
+            }
+            
             // user defaults
             if let domain = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: domain)
