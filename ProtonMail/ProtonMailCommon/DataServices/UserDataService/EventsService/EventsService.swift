@@ -844,7 +844,8 @@ extension EventsService {
         }
         
         lastUpdatedStore.resetUnreadCounts()
-        self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
+        self.coreDataService.enqueue(context: self.coreDataService.operationContext) { [weak self] (context) in
+            guard let self = self else { return }
             for count in messageCounts {
                 if let labelID = count["LabelID"] as? String {
                     guard let unread = count["Unread"] as? Int else {

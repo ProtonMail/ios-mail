@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -673,14 +673,14 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_no_result_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7Gk-dS-cYZ">
                                 <rect key="frame" x="242" y="184" width="220" height="213.5"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are all caught up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAD-wQ-KH7">
-                                <rect key="frame" x="253.5" y="440.5" width="197" height="27"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are all caught up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAD-wQ-KH7">
+                                <rect key="frame" x="253.5" y="440.5" width="197" height="26.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to relax" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTF-Wh-y2B">
-                                <rect key="frame" x="303" y="475.5" width="98" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to relax" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTF-Wh-y2B">
+                                <rect key="frame" x="303" y="475" width="98" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -790,10 +790,12 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="7Gk-dS-cYZ" firstAttribute="bottom" secondItem="QAD-wQ-KH7" secondAttribute="top" constant="-43" id="5GN-cQ-cqZ"/>
+                            <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QAD-wQ-KH7" secondAttribute="trailing" constant="8" id="5Hi-Cs-6Ha"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="i3D-aW-3kN" secondAttribute="leading" id="6aH-UA-ezI"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="bottom" secondItem="3pf-Hd-Pee" secondAttribute="top" constant="44" id="737-09-loD"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="bottom" secondItem="ynN-R3-TTo" secondAttribute="bottom" constant="45" id="AH2-5u-NxT"/>
                             <constraint firstItem="QAD-wQ-KH7" firstAttribute="centerX" secondItem="7Gk-dS-cYZ" secondAttribute="centerX" id="HGB-r3-LwP"/>
+                            <constraint firstItem="GTF-Wh-y2B" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i3D-aW-3kN" secondAttribute="leading" constant="8" id="IZQ-wD-FAG"/>
                             <constraint firstItem="QAD-wQ-KH7" firstAttribute="bottom" secondItem="GTF-Wh-y2B" secondAttribute="top" constant="-8" id="SY4-Dc-Et8"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Sxx-a1-umD"/>
                             <constraint firstItem="ynN-R3-TTo" firstAttribute="centerX" secondItem="i3D-aW-3kN" secondAttribute="centerX" id="TXD-bl-4CL"/>
@@ -801,8 +803,10 @@
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" secondItem="dNp-eo-dJh" secondAttribute="trailing" id="YSG-mf-pVz"/>
                             <constraint firstItem="dNp-eo-dJh" firstAttribute="leading" secondItem="i3D-aW-3kN" secondAttribute="leading" id="fYB-lZ-aDn"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" secondItem="3pf-Hd-Pee" secondAttribute="trailing" id="hlN-eH-7uJ"/>
+                            <constraint firstItem="QAD-wQ-KH7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i3D-aW-3kN" secondAttribute="leading" constant="8" id="jMR-kO-q5G"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="dNp-eo-dJh" secondAttribute="bottom" id="oOx-kG-Reu"/>
                             <constraint firstAttribute="bottom" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="p9A-ps-8sY"/>
+                            <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GTF-Wh-y2B" secondAttribute="trailing" constant="8" id="qkV-Xf-gDd"/>
                             <constraint firstItem="7Gk-dS-cYZ" firstAttribute="centerX" secondItem="7Zx-Yy-VI3" secondAttribute="centerX" id="tdF-Wc-I9d"/>
                             <constraint firstItem="3pf-Hd-Pee" firstAttribute="leading" secondItem="i3D-aW-3kN" secondAttribute="leading" id="u1b-1s-CQu"/>
                             <constraint firstItem="7Gk-dS-cYZ" firstAttribute="top" secondItem="dNp-eo-dJh" secondAttribute="bottom" constant="130" id="wnx-Eb-1Hh"/>
@@ -1758,7 +1762,7 @@
         <image name="favorite_main" width="19.5" height="19"/>
         <image name="favorite_main_selected" width="19.5" height="19"/>
         <image name="label_edit-active" width="24" height="24"/>
-        <image name="mail_attachment" width="14" height="14"/>
+        <image name="mail_attachment" width="16" height="16"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_no_result_icon" width="220" height="213.5"/>
