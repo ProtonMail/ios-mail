@@ -24,7 +24,6 @@ class SearchTests: BaseTestCase {
     func testSearchFromInboxBySubject() {
         let user = testData.onePassUser
         let recipient = testData.onePassUser
-        let replySubject = String(format: "Re: %@", subject)
         LoginRobot()
             .loginUser(user)
             .compose()
@@ -33,14 +32,6 @@ class SearchTests: BaseTestCase {
             .searchBar()
             .searchMessageText(subject)
             .verify.messageExists(subject)
-            .clickSearchedMessageBySubject(subject)
-            .reply()
-            .sendReplyMessage()
-            .navigateBackToSearchResult()
-            .goBackToInbox()
-            .menuDrawer()
-            .sent()
-            .verify.messageExists(replySubject)
     }
     
     func testSearchFromInboxByAddress() {

@@ -95,17 +95,17 @@ class MessageRobot: CoreElements {
     }
 
     func reply() -> ComposerRobot {
-        button(id.replyButtonIdentifier).tap()
+        button(id.replyButtonIdentifier).waitForHittable().tap()
         return ComposerRobot()
     }
 
     func replyAll() -> ComposerRobot {
-        button(id.replyButtonIdentifier).tap()
+        button(id.replyButtonIdentifier).waitForHittable().tap()
         return ComposerRobot()
     }
 
     func forward() -> ComposerRobot {
-        button(id.forwardButtonIdentifier).tap()
+        button(id.forwardButtonIdentifier).waitForHittable().tap()
         return ComposerRobot()
     }
 

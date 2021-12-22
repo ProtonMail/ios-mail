@@ -97,7 +97,7 @@ class AccountManagerRobot: CoreElements {
     }
     
     private func removeAccount() -> AccountManagerRobot {
-        button(id.removeAccountButtonLabel).tap()
+        button(id.removeAccountButtonLabel).firstMatch().tap()
         return AccountManagerRobot()
     }
     
