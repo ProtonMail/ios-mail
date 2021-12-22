@@ -13,9 +13,6 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Slouží k přístupu k e-mailovým adresám kontaktů uložených v zařízení, aby je bylo možné použít při psaní zprávy nebo při ručním nahrávání kontaktů ze zařízení do účtu. Kontaktní informace se na naše servery nenahrávají bez výslovné akce.";
 
-/* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Umožňuje rychlé a bezpečné odemknutí aplikace.";
-
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Vyžadováno pro ukládání obrazových příloh do knihovny fotografií.";
 

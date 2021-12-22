@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Notandinn er þegar skráður inn";
 
 /* (No Comment) */
-"The username has been taken." = "Notandanafnið er þegar í notkun.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Ógildur sannvottunarpóstur";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Þetta samtal inniheldur skilaboð sem eru í ruslinu";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";

@@ -11,13 +11,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Zbývající pokusy</string>
+			<string>%d zbývající pokusy</string>
 			<key>many</key>
-			<string>%d Zbývající pokusy</string>
+			<string>%d zbývajících pokusů</string>
 			<key>one</key>
-			<string>%d Zbývající pokus</string>
+			<string>%d zbývající pokus</string>
 			<key>other</key>
-			<string>%d Zbývající pokusy</string>
+			<string>%d zbývajících pokusů</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -31,13 +31,13 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>%d Vyčkejte, dokud nedojde k bezpečnému vymazání dat!</string>
+			<string>Zbývají %d pokusy do bezpečného vymazání dat!</string>
 			<key>many</key>
-			<string>%d Vyčkejte, dokud nedojde k bezpečnému vymazání dat!</string>
+			<string>Zbývá %d pokusů do bezpečného vymazání dat!</string>
 			<key>one</key>
-			<string>%d Vyčkejte, dokud nedojde k bezpečnému vymazání dat!</string>
+			<string>Zbývá %d pokus do bezpečného vymazání dat!</string>
 			<key>other</key>
-			<string>%d Vyčkejte, dokud nedojde k bezpečnému vymazání dat!</string>
+			<string>Zbývá %d pokusů do bezpečného vymazání dat!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -141,7 +141,7 @@
 			<key>one</key>
 			<string>%u konverzace</string>
 			<key>other</key>
-			<string>%u konverzace</string>
+			<string>%u konverzací</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>

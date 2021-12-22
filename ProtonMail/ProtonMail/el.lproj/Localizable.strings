@@ -1657,10 +1657,10 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Μετακίνηση στα ανεπιθύμητα";
+"Move to spam" = "Μετακίνηση στα ενοχλητικά";
 
 /* move action */
-"Move to Spam" = "Μετακίνηση στα Ανεπιθύμητα";
+"Move to Spam" = "Μετακίνηση στα Ενοχλητικά";
 
 /* The title of the remove action in action sheet */
 "Move to trash" = "Μετακίνηση στον κάδο απορριμμάτων";
@@ -2119,7 +2119,7 @@
 "Reading device contacts data…" = "Γίνεται ανάγνωση δεδομένων των επαφών της συσκευής…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Έγινε αποστολή απόδειξης";
+"Receipt sent" = "Έγινε αποστολή αποδεικτικού";
 
 /* No comment provided by engineer. */
 "Recipient details" = "Στοιχεία παραλήπτη";
@@ -2264,7 +2264,7 @@
 "Send plain but stored encrypted" = "Αποστολή απλού αλλά κρυπτογραφημένη αποθήκευση";
 
 /* A button title to send read receipt */
-"Send receipt" = "Αποστολή απόδειξης";
+"Send receipt" = "Αποστολή αποδεικτικού";
 
 /* Title */
 "Send Verification Code" = "Αποστολή Κωδικού Επαλήθευσης";
@@ -2402,13 +2402,13 @@
 
 /* mail location desc
    menu title */
-"Spam" = "Ανεπιθύμητα";
+"Spam" = "Ενοχλητικά";
 
 /* mail location title */
-"SPAM" = "Ανεπιθύμητα";
+"SPAM" = "Ενοχλητικά";
 
 /* Description */
-"Spammed" = "Χαρακτηρίστηκε Ανεπιθύμητο";
+"Spammed" = "Κρίθηκε ενοχλητικό";
 
 /* Error */
 "SRP Client" = "SRP Client";
@@ -2430,7 +2430,7 @@
 "Star/unstar" = "Με/χωρίς αστέρι";
 
 /* "Spam" */
-"Starred" = "Με αστέρι";
+"Starred" = "Έλαβε αστέρι";
 
 /* "INBOX" */
 "STARRED" = "Με αστέρι";
@@ -2617,7 +2617,7 @@
 "The request timed out." = "Το χρονικό όριο της αίτησης εξαντλήθηκε.";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "Ο αποστολέας έχει ζητήσει ένα αποδεικτικό ανάγνωσης.";
+"The sender has requested a read receipt." = "Ο αποστολέας έχει ζητήσει αποδεικτικό ανάγνωσης.";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "Το όριο μεγέθους για τα συνημμένα είναι 25 MB.";
@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Ο χρήστης έχει συνδεθεί ήδη";
 
 /* (No Comment) */
-"The username has been taken." = "Το όνομα χρήστη έχει ήδη δεσμευτεί.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Μη έγκυρο email επαλήθευσης";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Αυτή η συνομιλία περιέχει διαγραμμένα μηνύματα";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";

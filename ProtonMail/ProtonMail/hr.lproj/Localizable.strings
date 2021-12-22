@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Korisnik je već prijavljen";
 
 /* (No Comment) */
-"The username has been taken." = "Korisničko ime je zauzeto.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Nevažeća adresa e-pošte za potvrdu";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ovaj razgovor sadrži poruke koje su u otpadu";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena!";

@@ -215,7 +215,7 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Allow alternative routing";
+"Allow alternative routing" = "Tillåt alternativ routing";
 
 /* archive when apply label */
 "Also Archive" = "Arkivera";
@@ -227,13 +227,13 @@
 "Also used to reset a forgotten password." = "Används också för att återställa ett glömt lösenord.";
 
 /* cell title in app settings */
-"Alternative routing" = "Alternative routing";
+"Alternative routing" = "Alternativ routing";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "Alltid av";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "Alltid på";
 
 /* agree check box middle word */
 "and" = "och";
@@ -269,7 +269,7 @@
 "App settings" = "App-inställningar";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Appearance";
+"Appearance" = "Utseende";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple in-app purchase fee";
@@ -735,7 +735,7 @@
 "Cut" = "Klipp ut";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "Mörkt läge";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -1099,7 +1099,7 @@
 "Every time enter app" = "Every time enter app";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "Expandera mapp";
 
 /* alert title */
 "Expiration not supported" = "Förfallotid stöds inte";
@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Användaren är redan inloggad";
 
 /* (No Comment) */
-"The username has been taken." = "Användarnamnet har tagits.";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "Invalid verification email";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "This conversation contains trashed messages";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!";

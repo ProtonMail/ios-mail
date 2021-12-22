@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "ユーザーが既にログインしています";
 
 /* (No Comment) */
-"The username has been taken." = "このユーザー名は既に使用されています。";
+"The username has been taken." = "The username has been taken.";
 
 /* title */
 "The verification email invalid" = "検証用メールアドレスが無効です";
@@ -2664,9 +2664,6 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "This conversation contains trashed messages";
-
-/* No comment provided by engineer. */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "このメールはドメイン認証の要求に失敗しました。なりすましや不適切に転送された可能性があります。";
