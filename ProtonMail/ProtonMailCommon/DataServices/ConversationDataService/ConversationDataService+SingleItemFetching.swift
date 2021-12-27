@@ -28,12 +28,16 @@ extension ConversationDataService {
         let request = ConversationDetailsRequest(conversationID: conversationID, messageID: messageID)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
-                completion?(.failure(err))
+                DispatchQueue.main.async {
+                    completion?(.failure(err))
+                }
             } else {
                 let response = ConversationDetailsResponse()
                 guard response.ParseResponse(responseDict) else {
                     let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                    completion?(.failure(err))
+                    DispatchQueue.main.async {
+                        completion?(.failure(err))
+                    }
                     return
                 }
                 
@@ -42,7 +46,9 @@ extension ConversationDataService {
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
                             let err = NSError.protonMailError(1000, localizedDescription: "Data not found")
-                            completion?(.failure(err))
+                            DispatchQueue.main.async {
+                                completion?(.failure(err))
+                            }
                             return
                         }
                         
