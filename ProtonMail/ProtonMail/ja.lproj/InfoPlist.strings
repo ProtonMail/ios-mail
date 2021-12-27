@@ -13,6 +13,9 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "メッセージを作成する際や、連絡先をアカウントに手動でアップロードする際に、端末に保存された連絡先のメールアドレスにアクセスします。 明示的な操作がない限り、当社のサーバーに連絡先情報はアップロードされません。";
 
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "フォトライブラリーに添付画像を保存するために必要です。";
 

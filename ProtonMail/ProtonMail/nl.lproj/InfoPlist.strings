@@ -13,6 +13,9 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Wordt gebruikt voor toegang tot e-mailadressen voor contactpersonen die op het apparaat zijn opgeslagen, zodat deze kunnen worden gebruikt bij het opstellen van een bericht of bij het handmatig uploaden van de contactpersonen van het apparaat naar uw account. Contactgegevens worden niet geüpload naar onze servers zonder een expliciete actie om dit te doen.";
 
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Vereist voor het opslaan van afbeeldingsbijlagen naar de fotobibliotheek.";
 

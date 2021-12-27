@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Bu kişi adres defterinize ait.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Bu konuşma çöp kutusuna atılmış iletiler içerir";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının kimlik doğrulama şartlarından başarısız oldu. Sahte ya da yanlış yönlendirilmiş olabilir!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, ProtonMail adresinden görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimizden başarısız oldu. Sahte ya da yanlış yönlendirilmiş olabilir!";

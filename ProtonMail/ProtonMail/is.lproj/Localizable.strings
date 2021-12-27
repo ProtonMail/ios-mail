@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Þessi tengiliður tilheyrir nafnaskránni þinni.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Þetta samtal inniheldur skilaboð sem ekki eru í ruslinu.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Þetta samtal inniheldur skilaboð sem eru í ruslinu";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá ProtonMail-vistfangi en kom í rauninni frá utan kerfisins og féll á auðkenningarprófunum okkar. Hann gæti verið áframsendur á rangan hátt eða falsaður!";

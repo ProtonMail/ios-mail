@@ -326,7 +326,7 @@
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。メッセージは下書きに移動されました。";
 
 /* No comment provided by engineer. */
-"attachment" = "attachment";
+"attachment" = "添付ファイル";
 
 /* No comment provided by engineer. */
 "Attachment" = "添付ファイル";
@@ -425,7 +425,7 @@
 "By using ProtonMail, you agree to our" = "By using ProtonMail, you agree to our";
 
 /* No comment provided by engineer. */
-"By using ProtonMail, you agree to our %@ and %@." = "By using ProtonMail, you agree to our %1$@ and %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "ProtonMailを利用することにより、%1$@および%2$@に同意したものとみなされます。";
 
 /* Call the contact (button title text) */
 "Call contact" = "連絡先に発信";
@@ -557,7 +557,7 @@
 "Change sign-in password" = "Change sign-in password";
 
 /* Title */
-"Change single password" = "Change single password";
+"Change single password" = "シングルパスワードを変更";
 
 /* Action */
 "Check Again" = "もう一度確認";
@@ -735,7 +735,7 @@
 "Cut" = "Cut";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "ダークモード";
 
 /* message Date: text */
 "Date:" = "日付:";
@@ -1084,7 +1084,7 @@
 "Enter your signature here" = "ここに署名を入力してください";
 
 /* Title of alert in share extension. */
-"Error" = "Error";
+"Error" = "エラー";
 
 /* settings debug section title */
 "Error Logs" = "エラーログ";
@@ -1460,7 +1460,7 @@
 "Learn more here" = "詳細はこちら";
 
 /* settings swipe actions section title */
-"Left to Right" = "Left to Right";
+"Left to Right" = "左から右";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "アカウントのご利用限度に達しました。";
@@ -1509,7 +1509,7 @@
 "Looking to secure your contact's details?" = "連絡先を保護する方法をお探しですか？";
 
 /* cell title in device settings */
-"Mailbox" = "Mailbox";
+"Mailbox" = "受信箱";
 
 /* (No Comment) */
 "Mailbox Password" = "メールボックスのパスワード";
@@ -1607,7 +1607,7 @@
 "Messages you send can be set to auto delete after a certain time period." = "一定期間後に自動的に削除されるように、送信メッセージに設定できます。";
 
 /* minute */
-"minute" = "minute";
+"minute" = "分";
 
 /* default vcard types */
 "Mobile" = "携帯電話";
@@ -1692,7 +1692,7 @@
 "Networking" = "ネットワーク";
 
 /* Contacts add new contact */
-"New contact" = "New contact";
+"New contact" = "新しい連絡先";
 
 /* The title of create folder page */
 "New folder" = "新しいフォルダー";
@@ -1758,7 +1758,7 @@
 "normal attachments" = "通常の添付ファイル";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Not a spam (move to inbox)";
+"Not a spam (move to inbox)" = "迷惑メールではありません (受信箱に移動)";
 
 /* alert description */
 "Not all recipients support message expiration" = "有効期限メッセージに対応していない宛先があります";
@@ -1936,7 +1936,7 @@
 "PIN code can't be empty." = "PIN コードは空欄にはできません。";
 
 /* No comment provided by engineer. */
-"Plans can be edited on the web version." = "Plans can be edited on the web version.";
+"Plans can be edited on the web version." = "Web版でプランを変更できます。";
 
 /* alert description */
 "Please add a password for the following recipients." = "次の宛先には、パスワードを追加して送信してください";
@@ -2113,7 +2113,7 @@
 "Re:" = "Re:";
 
 /* No comment provided by engineer. */
-"Read" = "Read";
+"Read" = "既読";
 
 /* Title */
 "Reading device contacts data…" = "Reading device contacts data…";
@@ -2144,7 +2144,7 @@
 "Recovery enabled" = "Recovery enabled";
 
 /* No comment provided by engineer. */
-"Reload" = "Reload";
+"Reload" = "再読み込み";
 
 /* Title */
 "Remind Me Later" = "後で通知する";
@@ -2159,7 +2159,7 @@
 "Remove image metadata" = "Remove image metadata";
 
 /* action title */
-"Remove password" = "Remove password";
+"Remove password" = "パスワードを削除";
 
 /* un star message */
 "Remove Star" = "星印をはずす";
@@ -2240,7 +2240,7 @@
 "Select An Option" = "オプションの選択";
 
 /* section title */
-"Select colour" = "Select colour";
+"Select colour" = "色を選択";
 
 /* (No Comment) */
 "Select your language" = "言語を選択してください。";
@@ -2285,7 +2285,7 @@
 "Sending Message" = "メッセージを送信しています";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message…" = "Sending message…";
+"Sending message…" = "メッセージを送信中…";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "アドレス%1$@からのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます";
@@ -2339,13 +2339,13 @@
 "Share it with your friends" = "友人と共有";
 
 /* Action */
-"Show" = "Show";
+"Show" = "表示";
 
 /* Title */
 "Show details" = "Show details";
 
 /* Title */
-"Sign in" = "Sign in";
+"Sign in" = "サインイン";
 
 /* Account manager title */
 "Sign in to your ProtonMail account" = "Sign in to your ProtonMail account";
@@ -2427,7 +2427,7 @@
 "Star" = "星印をつける";
 
 /* Title */
-"Star/unstar" = "Star/unstar";
+"Star/unstar" = "スター/スターを外す";
 
 /* "Spam" */
 "Starred" = "星印付き";
@@ -2452,7 +2452,7 @@
 "Storage full" = "Storage full";
 
 /* Storage warning */
-"Storage quota exceeded" = "Storage quota exceeded";
+"Storage quota exceeded" = "ストレージの容量制限を超過しました。";
 
 /* Title */
 "Storage Warning" = "ストレージ容量の警告";
@@ -2517,7 +2517,7 @@
 "Take a Photo" = "写真を撮影する";
 
 /* Title */
-"Take new photo" = "Take new photo";
+"Take new photo" = "新しい写真を撮影";
 
 /* No comment provided by engineer. */
 "Tap here to set" = "Tap here to set";
@@ -2608,7 +2608,7 @@
 "The passwords you entered do not match." = "入力されたパスワードが一致しません。";
 
 /* The error message of entering an invalid password */
-"The PIN codes must match!" = "The PIN codes must match!";
+"The PIN codes must match!" = "PIN コードが一致しません！";
 
 /* update password error */
 "The private key update failed." = "秘密鍵の更新に失敗しました。";
@@ -2663,16 +2663,22 @@
 "This contact belongs to your Address Book." = "このアドレスは既に連絡帳に登録されています。";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "This conversation contains trashed messages";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "このメールはドメイン認証の要求に失敗しました。なりすましや不適切に転送された可能性があります。";
 
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは、ProtonMail のアドレスからのように見えますが、認証要求に失敗した外部からのものです。なりすましによるものか、または不適切に転送された恐れがあります。";
 
 /* The secondary title of no result message */
-"This folder is empty" = "This folder is empty";
+"This folder is empty" = "このフォルダは空です";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "This message contains embedded images.";
@@ -2681,10 +2687,10 @@
 "This message contains remote content and embedded images" = "This message contains remote content and embedded images";
 
 /* No comment provided by engineer. */
-"This message contains remote content." = "This message contains remote content.";
+"This message contains remote content." = "このメッセージには外部コンテンツが含まれています。";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "このメッセージは以前のメッセージに対する自動応答です。";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "This message is from a mailing list.";
@@ -2866,13 +2872,13 @@
 "Unlock required" = "ロック解除が必要です";
 
 /* The unread title of unread action button in mailbox view */
-"unread" = "unread";
+"unread" = "未読";
 
 /* VoiceOver: email is not read yet */
 "Unread" = "未読に戻す";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Unstar";
+"Unstar" = "スターを外す";
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Unsubscribe";
@@ -3025,7 +3031,7 @@
 "You are about to launch the web browser and navigate to" = "ブラウザで次の URL を開こうとしています:";
 
 /* Alert of removing all accounts */
-"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?";
+"You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "全てのアカウントを削除すると、再度追加しない限りこの端末からアクセスできなくなります。\n\n本当に全てのアカウントを削除しますか？";
 
 /* The main title of no result message */
 "You are all caught up" = "You are all caught up";
@@ -3046,7 +3052,7 @@
 "You can't set %@ address as default because it is a paid feature." = "%@ をデフォルトのアドレスに設定するには、有料プランのご購読が必要です。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "FaceIDが無効になっています。FaceIDは重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開きFaceIDを再度有効にするか、ログインしてください。";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "メッセージの有効期限を有効にしましたが、すべての受信者がこれをサポートするわけではありません。すべての受信者に有効期限を使用するには、パスワードを追加するか、PGPを無効にしてください。";

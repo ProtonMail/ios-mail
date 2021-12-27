@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "此連絡人屬於您的通訊錄。";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "此電郵討論串裡含有未刪除的郵件。";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此郵件包含已移至垃圾桶的郵件";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過網域驗證。這可能是詐騙郵件或是轉發不當導致！";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "此電子郵件無法通過其網域的驗證要求。這可能是詐騙郵件或是轉發不當導致！";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此封信件並非透過 ProtonMail 的系統寄出，極為可能是詐騙信件，請再三留意！";

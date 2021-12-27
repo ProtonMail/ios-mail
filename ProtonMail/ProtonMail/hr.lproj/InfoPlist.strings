@@ -13,6 +13,9 @@
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Koristi se za pristup adresama e-pošte za kontakte koji su spremljeni na uređaju kako bi ih mogli koristiti pri pisanju poruka ili ručnom prijenosu kontakata uređaja na vaš račun. Podaci o kontaktima ne prenose se na naše poslužitelje bez izričite radnje da se to učini.";
 
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Potrebno za spremanje slikovnih privitaka u galeriju.";
 

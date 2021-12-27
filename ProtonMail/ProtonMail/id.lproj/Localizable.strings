@@ -416,7 +416,7 @@
 "Bug Report Received" = "Laporan bug diterima";
 
 /* Link to More Credits screen */
-"Buy More Credits" = "Beli Lebih Banyak Kredit";
+"Buy More Credits" = "Beli Saldo Tambahan";
 
 /* Alert for removing disconnected accounts */
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Dengan menghapus akun ini, Anda tidak lagi akan dapat lagi mengakses akun dari perangkat ini kecuali Anda menambahkannya kembali.\n\nApakah Anda ingin menghapus akun ini?";
@@ -1133,7 +1133,7 @@
 "Fax" = "Faks";
 
 /* menu title */
-"Feedback" = "Umpan balik";
+"Feedback" = "Kritik dan Saran";
 
 /* Error */
 "Fetch user info failed" = "Pengambilan info pengguna gagal";
@@ -1320,7 +1320,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Jika situs Proton di blokir, pengaturan ini memungkinkan aplikasi untuk mencoba perutean jaringan alternatif untuk mencapai Proton, yang mana dapat berguna untuk melewati/mem-bypass firewall atau masalah jaringan. Kami sarankan untuk tetap mengaktifkan pengaturan ini untuk keandalan yang lebih baik. %1$@";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Agar dapat menggunakan layanan kami, Anda harus menyetujui Ketentuan Layanan ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Untuk dapat menggunakan layanan kami, Anda harus terlebih dahulu menyetujui Ketentuan Layanan ProtonMail.";
 
 /* "Deleted" */
 "Inbox" = "Kotak masuk";
@@ -1626,7 +1626,7 @@
 "More" = "Lainnya";
 
 /* Screen header */
-"More Credits" = "Lebih Banyak Kredit";
+"More Credits" = "Saldo Tambahan";
 
 /* No comment provided by engineer. */
 "Move to" = "Pindahkan ke";
@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Kontak ini ada di buku alamat Anda.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Percakapan ini mengandung pesan-pesan yang tidak terbuang.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang dibuang";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini telah gagal memenuhi persyaratan autentikasi domainnya. Surel ini mungkin palsu atau tidak diteruskan dengan benar!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini tidak memenuhi syarat otentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Surel ini sepertinya berasal dari alamat ProtonMail tapi datang dari luar sistem kami dan gagal memenuhi persyaratan autentikasi kami. Surel mungkin palsu atau tidak diteruskan dengan benar!";

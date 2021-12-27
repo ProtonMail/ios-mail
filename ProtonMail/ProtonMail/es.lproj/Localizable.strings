@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "El usuario ya ha iniciado sesión";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "El nombre de usuario ya está en uso.";
 
 /* title */
 "The verification email invalid" = "Correo de verificación no válido";
@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Esta conversación contiene mensajes no borrados.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Esta conversación contiene mensajes de la papelera";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede estar falsificado o reenviado incorrectamente!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede estar falsificado o reenviado incorrectamente!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo parece venir de una dirección de ProtonMail, pero vino desde fuera de nuestro sistema y ha fallado los requisitos de autenticación. ¡Pudo haber sido falsificado o reenviado incorrectamente!";

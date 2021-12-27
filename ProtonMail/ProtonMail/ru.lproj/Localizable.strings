@@ -221,7 +221,7 @@
 "Also Archive" = "Перенести в архив";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "Также перенести в архив?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Также используется для сброса забытого пароля.";
@@ -269,7 +269,7 @@
 "App settings" = "Настройки приложения";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Appearance";
+"Appearance" = "Внешний вид";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Наценка Apple за заказ через приложение";
@@ -596,10 +596,10 @@
 "Closing" = "Закрытие";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "Свернуть папку";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "Свернуть сообщение";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -1099,7 +1099,7 @@
 "Every time enter app" = "При каждом входе в приложение";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "Развернуть папку";
 
 /* alert title */
 "Expiration not supported" = "Истечение срока действия не поддерживается";
@@ -1271,7 +1271,7 @@
 "Hours" = "часов";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "Как бы вы описали свой опыт работы с новым ProtonMail?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1829,7 +1829,7 @@
 "On E, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Игнорируйте активацию покупки только в том случае, если вы уверены, что все ваши подписки актуальны. За дополнительной помощью обращайтесь в службу поддержки клиентов.\n\n Вы уверены, что хотите игнорировать активацию?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
@@ -2032,7 +2032,7 @@
 "Please use your new password when signing in." = "Пожалуйста, при входе используйте ваш новый пароль.";
 
 /* The */
-"Please wait until the email downloaded!" = "Пожалуйста, дождитесь загрузки электронной почты!";
+"Please wait until the email downloaded!" = "Пожалуйста, дождитесь скачивания электронной почты!";
 
 /* alert title */
 "Please, manage it in your phone." = "Пожалуйста, управляйте этим с помощью вашего телефона.";
@@ -2505,7 +2505,7 @@
 "Switch selection mode" = "Переключить режим выбора";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "Переключить фильтр непрочитанного";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Переключено на учётную запись '%@'";
@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Этот контакт присутствует в вашей записной книжке.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Эта цепочка писем содержит сообщения, которые не были удалены.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "В этой цепочке писем есть удаленные сообщения";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не соответствует требованиям подтверждения подлинности своего домена. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Это письмо не прошло проверку подлинности домена. Это может быть подделка или неправильная пересылка!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Похоже, источником этого письма является адрес, относящийся к ProtonMail, но само письмо пришло извне нашей системы и не прошло проверку на соответствие нашим требованиям подтверждения подлинности. Оно может быть поддельным, либо было переслано ненадлежащим образом!";
@@ -2715,7 +2721,7 @@
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Чтобы предотвратить злоупотребление ProtonMail,\n нам необходимо убедиться, что вы человек.";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
