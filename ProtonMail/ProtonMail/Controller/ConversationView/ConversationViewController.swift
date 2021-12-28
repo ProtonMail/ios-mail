@@ -16,6 +16,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let storedSizeHelper = ConversationStoredSizeHelper()
+    private var autoScrollIndexPath: IndexPath?
+    private var autoScrollPosition: UITableView.ScrollPosition?
 
     init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
         self.coordinator = coordinator
@@ -108,9 +110,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         if let row = viewModel.messagesDataSource
             .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
             viewModel.setCellIsExpandedAtLaunch()
-            let indexPath = IndexPath(row: row, section: 1)
             delay(1) { [weak self] in
-                self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                self?.scrollTableView(to: IndexPath(row: row, section: 1), position: .top)
             }
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
@@ -184,6 +185,20 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         self.checkNavigationTitle()
     }
 
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if let indexPath = autoScrollIndexPath, let position = autoScrollPosition {
+            delay(0.1) {
+                self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+            }
+        }
+    }
+
+    func scrollTableView(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
+        autoScrollIndexPath = indexPath
+        autoScrollPosition = position
+        self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+    }
+
     func cellTapped(messageId: String) {
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
@@ -223,6 +238,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+        if #available(iOS 15.0, *) {
+            customView.tableView.isPrefetchingEnabled = false
+        }
     }
 
     required init?(coder: NSCoder) { nil }
@@ -874,7 +892,7 @@ extension ConversationViewController {
             self?.cellTapped(messageId: messageId)
             let indexPath = IndexPath(row: Int(index), section: 1)
             delay(1) { [weak self] in
-                self?.customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                self?.scrollTableView(to: indexPath, position: .top)
             }
         }
     }
@@ -885,7 +903,7 @@ extension ConversationViewController {
         }
         cellTapped(messageId: messageId)
         let indexPath = IndexPath(row: index, section: 1)
-        customView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        self.scrollTableView(to: indexPath, position: .top)
     }
 }
 

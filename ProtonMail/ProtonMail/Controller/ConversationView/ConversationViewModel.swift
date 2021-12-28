@@ -294,8 +294,8 @@ class ConversationViewModel {
             if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
-                    delay(1) { [weak tableView] in
-                        tableView?.scrollToRow(at: path, at: .top, animated: true)
+                    delay(1) { [weak self] in
+                        self?.conversationViewController?.scrollTableView(to: path, position: .top)
                     }
                     setCellIsExpandedAtLaunch()
                 }
