@@ -15,7 +15,7 @@ extension ConversationViewModel {
             let indexPath = IndexPath(row: index, section: 1)
             conversationViewController?.cellTapped(messageId: message.messageID)
             messageService.mark(messages: [message], labelID: messageLocation, unRead: true)
-            tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
+            self.conversationViewController?.scrollTableView(to: indexPath, position: .top)
         case .star:
             messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: true, shouldFetchEvent: true)
         case .unstar:
