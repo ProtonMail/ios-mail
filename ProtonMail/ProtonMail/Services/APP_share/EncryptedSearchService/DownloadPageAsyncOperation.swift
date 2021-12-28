@@ -81,12 +81,16 @@ open class DownloadPageAsyncOperation: Operation {
         EncryptedSearchService.shared.fetchMessages(userID: self.userID, byLabel: Message.Location.allmail.rawValue, time: EncryptedSearchService.shared.lastMessageTimeIndexed) { (error, messages) in
             if error == nil {
                 EncryptedSearchService.shared.processPageOneByOne(forBatch: messages, userID: self.userID, completionHandler: {
-                    EncryptedSearchService.shared.lastMessageTimeIndexed = Int((messages?.last?.Time)!)
-                    self.finish()   //set operation to be finished
+                    if let messageTime = messages?.last?.Time {
+                        EncryptedSearchService.shared.lastMessageTimeIndexed = Int(messageTime)
+                    } else {
+                        EncryptedSearchService.shared.noNewMessagesFound += 1
+                    }
+                    self.finish()   // Set operation to be finished
                 })
             } else {
                 print("Error while fetching messages: \(String(describing: error))")
-                self.finish()   //set operation to be finished
+                self.finish()   // Set operation to be finished
             }
         }
     }
