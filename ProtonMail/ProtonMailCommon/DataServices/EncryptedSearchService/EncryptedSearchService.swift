@@ -84,6 +84,7 @@ public class EncryptedSearchService {
     var totalMessages: Int = 0
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
+    var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
     internal var prevProcessedMessages: Int = 0 //used to calculate estimated time for indexing
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     #if !APP_EXTENSION
@@ -315,6 +316,15 @@ extension EncryptedSearchService {
                 
                 // cleanup
                 self.cleanUpAfterIndexing()
+            } else {
+                self.state = .partial
+                print("ENCRYPTEDSEARCH-STATE: partial")
+                
+                // update user cached status
+                userCachedStatus.indexComplete = true
+                
+                // cleanup
+                self.cleanUpAfterIndexing()
             }
             completionHandler()
         }
@@ -322,7 +332,7 @@ extension EncryptedSearchService {
     
     //called when indexing is complete
     private func cleanUpAfterIndexing() {
-        if self.state == .complete {
+        if self.state == .complete || self.state == .partial {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             let userID: String = (usersManager.firstUser?.userInfo.userId)!
 
@@ -880,6 +890,9 @@ extension EncryptedSearchService {
             if self.processedMessages >= self.totalMessages {
                 completionHandler()
             } else {
+                if self.noNewMessagesFound > 5 {
+                    completionHandler()
+                }
                 if self.indexBuildingInProgress {
                     //recursion?
                     self.downloadAndProcessPage(userID: userID){
@@ -907,17 +920,22 @@ extension EncryptedSearchService {
     }
     
     func processPageOneByOne(forBatch messages: [ESMessage]?, userID: String, completionHandler: @escaping () -> Void) -> Void {
-        //start a new thread to process the page
+        guard messages!.count > 0 else {
+            completionHandler()
+            return
+        }
+        
+        // Start a new thread to process the page
         DispatchQueue.global(qos: .userInitiated).async {
             for m in messages! {
                 autoreleasepool {
                     var op: Operation? = IndexSingleMessageAsyncOperation(m, userID)
                     self.messageIndexingQueue.addOperation(op!)
-                    op = nil    //clean up
+                    op = nil    // Clean up
                 }
             }
             self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
-            //clean up
+            // Clean up
             self.messageIndexingQueue.cancelAllOperations()
             completionHandler()
         }
