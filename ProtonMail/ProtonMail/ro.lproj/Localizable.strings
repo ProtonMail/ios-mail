@@ -2663,10 +2663,16 @@
 "This contact belongs to your Address Book." = "Acest contact aparține agendei dvs.";
 
 /* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Această conversație conține mesaje care nu au fost aruncate.";
+
+/* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă ProtonMail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
