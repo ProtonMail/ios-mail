@@ -93,13 +93,13 @@ public final class PMActionSheet: UIView {
 extension PMActionSheet: PMActionSheetProtocol {
     func reloadRows(at indexPaths: [IndexPath]) {
         self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: indexPaths, with: .automatic)
+        self.tableView.reloadRows(at: indexPaths, with: .none)
         self.tableView.endUpdates()
     }
 
     func reloadSection(_ section: Int) {
         self.tableView.beginUpdates()
-        self.tableView.reloadSections(.init(integer: section), with: .automatic)
+        self.tableView.reloadSections(.init(integer: section), with: .none)
         self.tableView.endUpdates()
     }
 }
@@ -267,6 +267,7 @@ extension PMActionSheet {
         table.dataSource = self
         table.separatorStyle = .none
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = ColorProvider.BackgroundNorm
         table.tableFooterView = UIView(frame: .zero)
         table.register(PMActionSheetPlainCell.nib(), forCellReuseIdentifier: self.viewModel.value.PLAIN_CELL_NAME)
         table.register(PMActionSheetToggleCell.self, forCellReuseIdentifier: self.viewModel.value.TOGGLE_CELL_NAME)

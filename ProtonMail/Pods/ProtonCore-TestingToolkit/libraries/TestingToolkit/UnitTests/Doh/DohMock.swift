@@ -34,7 +34,16 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
     @PropertyStub(\DohInterfaceMock.captchaHost, initialGet: .crash) public var captchaHostStub
     public var captchaHost: String { captchaHostStub() }
+    
+    @PropertyStub(\DohInterfaceMock.humanVerificationV3Host, initialGet: .crash) public var humanVerificationV3HostStub
+    public var humanVerificationV3Host: String { humanVerificationV3HostStub() }
+    
+    @PropertyStub(\DohInterfaceMock.accountHost, initialGet: .crash) public var accountHostStub
+    public var accountHost: String { accountHostStub() }
 
+    @FuncStub(DohInterfaceMock.clearCache) public var clearCacheStub
+    public func clearCache() { clearCacheStub() }
+    
     @FuncStub(DohInterfaceMock.clearAll) public var clearAllStub
     public func clearAll() { clearAllStub() }
 
@@ -58,6 +67,12 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
     @FuncStub(DohInterfaceMock.getCaptchaHostUrl, initialReturn: .crash) public var getCaptchaHostUrlStub
     public func getCaptchaHostUrl() -> String { getCaptchaHostUrlStub() }
+    
+    @FuncStub(DohInterfaceMock.getHumanVerificationV3Host, initialReturn: .crash) public var getHumanVerificationV3HostStub
+    public func getHumanVerificationV3Host() -> String { getHumanVerificationV3HostStub() }
+    
+    @FuncStub(DohInterfaceMock.getAccountHost, initialReturn: .crash) public var getAccountHostStub
+    public func getAccountHost() -> String { getAccountHostStub() }
 
     @FuncStub(DohInterfaceMock.getHostUrl, initialReturn: .crash) public var getHostUrlStub
     public func getHostUrl() -> String { getHostUrlStub() }
@@ -70,18 +85,36 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
     @PropertyStub(\DohInterfaceMock.status, initialGet: .crash) public var statusStub
     public var status: DoHStatus { statusStub() }
-
+    
+    @FuncStub(DohInterfaceMock.getCurrentlyUsedHostUrl, initialReturn: .crash) public var getCurrentlyUsedHostUrlStub
+    public func getCurrentlyUsedHostUrl() -> String { getCurrentlyUsedHostUrlStub() }
+    
+    @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
+    public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }
+    
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorStub
+    public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainIfNeededWithExecutorStub(host, error, callCompletionBlockOn, completion)
+    }
 }
 
 public final class DohMock: DoH, ServerConfig {
 
-    override public init() throws {}
+    public init() {}
 
     @PropertyStub(\DohInterfaceMock.defaultHost, initialGet: Dummy.url) public var defaultHostStub
     public var defaultHost: String { defaultHostStub() }
 
     @PropertyStub(\DohInterfaceMock.captchaHost, initialGet: .crash) public var captchaHostStub
     public var captchaHost: String { captchaHostStub() }
+    
+    @PropertyStub(\DohInterfaceMock.humanVerificationV3Host, initialGet: .crash) public var humanVerificationV3HostStub
+    public var humanVerificationV3Host: String { humanVerificationV3HostStub() }
+    
+    @PropertyStub(\DohInterfaceMock.accountHost, initialGet: .crash) public var accountHostStub
+    public var accountHost: String { accountHostStub() }
 
     @PropertyStub(\DohInterfaceMock.apiHost, initialGet: Dummy.domain) public var apiHostStub
     public var apiHost: String { apiHostStub() }

@@ -54,5 +54,16 @@ public extension UIViewController {
         navigationItem.setLeftBarButton(backButton, animated: true)
         navigationItem.assignNavItemIndentifiers()
     }
+    
+    func updateTitleAttributes() {
+        let textAttributes = [NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm]
+        if #available(iOS 13.0, *) {
+            let appearance = navigationController?.navigationBar.standardAppearance
+            appearance?.titleTextAttributes = textAttributes
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            navigationController?.navigationBar.titleTextAttributes = textAttributes
+        }
+    }
 
 }

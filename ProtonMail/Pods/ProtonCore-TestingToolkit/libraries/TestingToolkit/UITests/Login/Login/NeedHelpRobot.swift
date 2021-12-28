@@ -69,8 +69,8 @@ public final class NeedHelpRobot: CoreElements {
         _ = safari.staticTexts[customerSupportPageHeader].exists
     }
     
-    public func goBackToSampleApp() -> NeedHelpRobot {
-        XCUIApplication().activate()
+    public func goBackToSampleApp(app: XCUIApplication) -> NeedHelpRobot {
+        app.activate()
         return self
     }
     

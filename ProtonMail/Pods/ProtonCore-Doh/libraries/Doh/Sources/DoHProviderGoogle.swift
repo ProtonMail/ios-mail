@@ -25,7 +25,10 @@ import ProtonCore_Log
 // Txt record only
 public struct Google: DoHProviderInternal {
     
-    init() {
+    let networkingEngine: DoHNetworkingEngine
+
+    init(networkingEngine: DoHNetworkingEngine) {
+        self.networkingEngine = networkingEngine
     }
 
     let supported: [Int] = [DNSType.txt.rawValue]

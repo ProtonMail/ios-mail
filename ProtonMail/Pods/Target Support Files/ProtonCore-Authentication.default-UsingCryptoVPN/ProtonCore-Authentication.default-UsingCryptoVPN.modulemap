@@ -1,6 +1,0 @@
-framework module ProtonCore_Authentication {
-  umbrella header "ProtonCore-Authentication.default-UsingCryptoVPN-umbrella.h"
-
-  export *
-  module * { export * }
-}

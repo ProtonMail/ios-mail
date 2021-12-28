@@ -59,6 +59,7 @@ extension PMActionSheetGridCell {
         guard group.style == .grid else {
             throw PMActionSheetError.styleError
         }
+        self.backgroundColor = ColorProvider.BackgroundNorm
         self.delegate = delegate
         self.indexPath = indexPath
         let numberOfRow: CGFloat = CGFloat((group.items.count + 1) / 2)

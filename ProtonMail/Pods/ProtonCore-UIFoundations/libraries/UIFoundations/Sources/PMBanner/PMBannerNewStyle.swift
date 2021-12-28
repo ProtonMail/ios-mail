@@ -25,6 +25,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     case success
     case warning
     case error
+    case info
 
     /// Color of banner background
     public var bannerColor: UIColor {
@@ -35,6 +36,8 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
             return ColorProvider.NotificationWarning
         case .error:
             return ColorProvider.NotificationError
+        case .info:
+            return ColorProvider.NotificationNorm
         }
     }
 
@@ -45,21 +48,23 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
             return UIColor.white
         case .warning:
             return UIColor.black
+        case .info:
+            return ColorProvider.TextInverted
         }
     }
 
     /// Color of assist button background
     public var assistBgColor: UIColor {
         switch self {
-        case .success, .warning, .error:
+        case .success, .warning, .error, .info:
             return ColorProvider.TextInverted.withAlphaComponent(0.2)
         }
     }
 
-    /// Color of assist hightlighted button background
+    /// Color of assist highlighted button background
     public var assistHighBgColor: UIColor {
         switch self {
-        case .success, .warning, .error:
+        case .success, .warning, .error, .info:
             return ColorProvider.TextInverted.withAlphaComponent(0.4)
         }
     }
@@ -71,6 +76,8 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
             return UIColor.white
         case .warning:
             return UIColor.black
+        case .info:
+            return ColorProvider.TextInverted
         }
     }
 
@@ -79,13 +86,15 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
         switch self {
         case .success, .warning, .error:
             return UIColor.white
+        case .info:
+            return ColorProvider.IconInverted
         }
     }
 
     /// Color of banner icon background
     public var bannerIconBgColor: UIColor {
         switch self {
-        case .success, .warning, .error:
+        case .success, .warning, .error, .info:
             return UIColor.clear
         }
     }
@@ -95,14 +104,14 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
         return true
     }
 
-    /// Banner border raius
+    /// Banner border radius
     public var borderRadius: CGFloat {
         return 6
     }
 
     /// Banner paddings
     public var borderInsets: UIEdgeInsets {
-        return UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 12)
     }
 
     /// Message font

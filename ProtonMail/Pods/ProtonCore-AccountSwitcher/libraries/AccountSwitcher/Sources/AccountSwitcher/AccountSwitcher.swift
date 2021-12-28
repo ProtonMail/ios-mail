@@ -175,7 +175,7 @@ public final class AccountSwitcher: UIView, AccessibleView {
     }
 
     private func setManageView(hightlight: Bool) {
-        let color = hightlight ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
+        let color: UIColor = hightlight ? ColorProvider.BackgroundSecondary : ColorProvider.BackgroundNorm
         self.manageView.backgroundColor = color
         self.manageAccountLabel.backgroundColor = color
         self.manageAccountLabel.textColor = ColorProvider.TextNorm

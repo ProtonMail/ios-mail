@@ -58,7 +58,7 @@ class MailBannerView: UIView {
     private func setUpSelf() {
         contentContainer.backgroundColor = ColorProvider.NotificationError
         contentContainer.layer.cornerRadius = 8
-        contentContainer.apply(shadows: .shadowNorm)
+        contentContainer.layer.apply(shadow: .default)
     }
 
     required init?(coder: NSCoder) {
@@ -89,9 +89,9 @@ private enum SubviewsFactory {
 
 }
 
-private extension FigmaShadow {
+private extension TempFigmaShadow {
 
-    static var banner: FigmaShadow {
+    static var banner: TempFigmaShadow {
         .init(color: UIColor.black.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
     }
 

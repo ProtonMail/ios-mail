@@ -59,7 +59,6 @@ let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil
 
 protocol PaymentsApiProtocol {
     func statusRequest(api: APIService) -> StatusRequest
-    func methodsRequest(api: APIService) -> MethodsRequest
     func buySubscriptionRequest(
         api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction
     ) throws -> SubscriptionRequest
@@ -79,10 +78,6 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
 
     func statusRequest(api: APIService) -> StatusRequest {
         StatusRequest(api: api)
-    }
-
-    func methodsRequest(api: APIService) -> MethodsRequest {
-        MethodsRequest(api: api)
     }
 
     func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {

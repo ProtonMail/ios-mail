@@ -25,7 +25,8 @@ public final class APIServiceDelegateMock: APIServiceDelegate {
     
     public init() {}
 
-    @PropertyStub(\APIServiceDelegateMock.locale, initialGet: "en_US") public var localeStub
+    @PropertyStub(\APIServiceDelegateMock.locale,
+                   initialGet: Locale.autoupdatingCurrent.identifier) public var localeStub
     public var locale: String { localeStub() }
     
     @FuncStub(APIServiceDelegateMock.onUpdate) public var onUpdateStub

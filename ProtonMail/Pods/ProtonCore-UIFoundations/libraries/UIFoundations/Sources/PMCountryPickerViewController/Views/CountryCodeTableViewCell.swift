@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
-#if canImport(UIKit)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -43,7 +43,6 @@ class CountryCodeTableViewCell: UITableViewCell, AccessibleCell {
         countryLabel.text = countryCode.country_en
         codeLabel.text = "+ \(countryCode.phone_code)"
         generateCellAccessibilityIdentifiers(countryCode.country_en)
+        backgroundColor = ColorProvider.BackgroundNorm
     }
 }
-
-#endif

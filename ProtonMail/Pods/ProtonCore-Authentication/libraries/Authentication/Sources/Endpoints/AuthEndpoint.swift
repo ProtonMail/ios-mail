@@ -28,8 +28,12 @@ extension AuthService {
     struct AuthRouteResponse: Codable, CredentialConvertible {
         struct TwoFA: Codable {
             var enabled: State
-            enum State: Int, Codable {
-                case off, on, u2f, otp
+            struct State: OptionSet, Codable {
+                let rawValue: Int
+
+                static let off: State = []
+                static let totp = State(rawValue: 1 << 0)
+                static let webAuthn = State(rawValue: 1 << 2)
             }
         }
         

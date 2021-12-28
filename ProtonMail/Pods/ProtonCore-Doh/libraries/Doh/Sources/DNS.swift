@@ -22,7 +22,7 @@
 import Foundation
 
 /// dns record
-public struct DNS {
+public struct DNS: Equatable {
     
     /// the url
     public let url: String

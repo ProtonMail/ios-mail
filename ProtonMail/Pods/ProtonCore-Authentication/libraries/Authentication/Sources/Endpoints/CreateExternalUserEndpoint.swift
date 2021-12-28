@@ -27,18 +27,18 @@ public struct ExternalUserParameters {
     public let modulusID: String
     public let salt: String
     public let verifer: String
-    public let deviceToken: String
     public let challenge: [[String: Any]]
     public let verifyToken: String
+    public let productPrefix: String
     
-    public init(email: String, modulusID: String, salt: String, verifer: String, deviceToken: String, challenge: [[String: Any]] = [], verifyToken: String) {
+    public init(email: String, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], verifyToken: String, productPrefix: String) {
         self.email = email
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
-        self.deviceToken = deviceToken
         self.challenge = challenge
         self.verifyToken = verifyToken
+        self.productPrefix = productPrefix
     }
 }
 
@@ -53,10 +53,10 @@ extension AuthService {
                 "Salt": externalUserParameters.salt,
                 "Verifier": externalUserParameters.verifer
             ]
-            let payload: [String: Any] = [
-                "mail-ios-payload": externalUserParameters.deviceToken,
-                "mail-ios-challenge": externalUserParameters.challenge
-            ]
+            var payload: [String: Any] = [:]
+            for (index, data) in externalUserParameters.challenge.enumerated() {
+                payload["\(externalUserParameters.productPrefix)-ios-v4-challenge-\(index)"] = data
+            }
             let out: [String: Any] = [
                 "Email": externalUserParameters.email,
                 "Auth": auth,

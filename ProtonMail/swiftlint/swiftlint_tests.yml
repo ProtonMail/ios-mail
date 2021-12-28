@@ -6,7 +6,7 @@ opt_in_rules:
   - nimble_operator
   - single_test_class
   - quick_discouraged_focused_test
- 
+
 disabled_rules:
   - force_try
   - force_cast
@@ -29,7 +29,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMail/Components/SingleRowTagsViewTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsLockViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailActionSheet/MailListActionSheetItemViewModel_ActionsTests.swift
-  - ${PWD}/ProtonMailTests/Helpers/AssertEqualImage.swift  
+  - ${PWD}/ProtonMailTests/Helpers/AssertEqualImage.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsGestureViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsSwipeActionSelectViewModelTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Operators/Operators_NSAttributedStirngTests.swift
@@ -46,6 +46,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/Composer/ComposeViewControllerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataServices/UserFeedbackServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Contacts/ContactParserTest.swift
 
 excluded:
   - ${PWD}/Pods

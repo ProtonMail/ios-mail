@@ -23,9 +23,11 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class AuthManager: AuthDelegate {
+public final class AuthManager: AuthDelegate {
     private var authCredential: AuthCredential?
     private(set) var scopes: [String]?
+    
+    public init() {}
 
     func setCredential(auth: Credential) {
         authCredential = AuthCredential(auth)
@@ -41,13 +43,13 @@ final class AuthManager: AuthDelegate {
         authCredential?.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
     }
 
-    func getToken(bySessionUID uid: String) -> AuthCredential? {
+    public func getToken(bySessionUID uid: String) -> AuthCredential? {
         return authCredential
     }
 
-    func onLogout(sessionUID uid: String) { }
+    public func onLogout(sessionUID uid: String) { }
 
-    func onUpdate(auth: Credential) {
+    public func onUpdate(auth: Credential) {
         self.authCredential = AuthCredential(auth)
         if !auth.scope.isEmpty {
             // if there's no update in scopes, assume the same scope as previously
@@ -55,7 +57,7 @@ final class AuthManager: AuthDelegate {
         }
     }
 
-    func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
+    public func onRefresh(bySessionUID uid: String, complete: @escaping AuthRefreshComplete) {
         complete(nil, nil)
     }
 

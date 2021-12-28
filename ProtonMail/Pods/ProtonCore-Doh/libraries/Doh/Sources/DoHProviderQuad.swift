@@ -23,14 +23,16 @@ import Foundation
 import ProtonCore_Log
 
 struct Quad9: DoHProviderInternal {
+    
+    let networkingEngine: DoHNetworkingEngine
 
-    public init() {
-        // TODO:: remove public later
+    init(networkingEngine: DoHNetworkingEngine) {
+        self.networkingEngine = networkingEngine
     }
 
     let supported: [Int] = [DNSType.txt.rawValue]
 
-    public let url = "https://dns11.quad9.net:5053"
+    let url = "https://dns11.quad9.net:5053"
 
     func query(host: String) -> String {
         return self.url + "/dns-query?type=TXT&name=" + host

@@ -236,39 +236,13 @@ extension AccountManagerVC {
         closeBtn.tintColor = ColorProvider.TextNorm
         self.navigationItem.leftBarButtonItem = closeBtn
 
-        self.setupRightBarItem()
-        self.navigationItem.assignNavItemIndentifiers()
-    }
-
-    private func setupRightBarItem() {
-        let size: CGFloat = 40
-        let view = UIView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = ColorProvider.InteractionWeak
-        view.roundCorner(size / 2)
-
-        let icon = UIImageView(image: UIImage(named: "menu_plus", in: Bundle.switchBundle, compatibleWith: nil))
-        icon.tintColor = ColorProvider.TextNorm
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(icon)
-
-        NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: size / 2),
-            icon.heightAnchor.constraint(equalToConstant: size / 2),
-            icon.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            icon.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            view.widthAnchor.constraint(equalToConstant: size),
-            view.heightAnchor.constraint(equalToConstant: size)
-        ])
-
-        let addBtn = UIBarButtonItem(customView: view)
+        let addBtn = UIBarButtonItem(image: UIImage(named: "menu_plus", in: Bundle.switchBundle, compatibleWith: nil),
+                                     style: .plain, target: self, action: #selector(self.clickAddButton))
+        addBtn.tintColor = ColorProvider.TextNorm
+        addBtn.accessibilityLabel = CoreString._as_sign_in_button
         self.navigationItem.rightBarButtonItem = addBtn
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickAddButton))
-        view.addGestureRecognizer(tap)
-
-        view.isAccessibilityElement = true
-        view.accessibilityTraits = .button
+        
+        self.navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupTableview() {

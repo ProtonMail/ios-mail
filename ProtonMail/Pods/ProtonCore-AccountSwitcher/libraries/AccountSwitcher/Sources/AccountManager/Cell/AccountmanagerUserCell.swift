@@ -60,7 +60,6 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         if #available(iOS 14.0, *) {
             self.moreBtn.showsMenuAsPrimaryAction = true
         }
-        self.moreBtn.roundCorner(20)
         self.shortNameView.roundCorner(8)
         self.shortNameLabel.adjustsFontSizeToFitWidth = true
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
@@ -69,7 +68,6 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.shortNameView.backgroundColor = ColorProvider.BrandNorm
         self.shortNameLabel.textColor = ColorProvider.SidebarTextNorm
         self.separatorView.backgroundColor = ColorProvider.InteractionWeak
-        self.moreBtn.backgroundColor = ColorProvider.InteractionWeak
         self.moreBtn.tintColor = ColorProvider.TextNorm
     }
 
@@ -93,7 +91,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             // This will override IBAction
             self.configMoreButton(isSignin: isLogin)
         }
-        self.generateCellAccessibilityIdentifiers(mail)
+        self.generateCellAccessibilityIdentifiers(name)
     }
 
     @available(iOS 14.0, *)

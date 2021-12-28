@@ -33,6 +33,11 @@ protocol PaymentsUIViewControllerDelegate: AnyObject {
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
+    // MARK: - Constants
+    
+    private let sectionHeaderView = "PlanSectionHeaderView"
+    private let sectionHeaderHeight: CGFloat = 91.0
+    
     // MARK: - Outlets
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -43,14 +48,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
     @IBOutlet weak var tableFooterTextLabel: UILabel! {
         didSet {
-            tableFooterTextLabel.text = CoreString._pu_plan_footer_title
-            tableFooterTextLabel.textColor = ColorProvider.TextNorm
-        }
-    }
-    @IBOutlet weak var tableFooterTextDescription: UILabel! {
-        didSet {
-            tableFooterTextDescription.text = CoreString._pu_plan_footer_desc
-            tableFooterTextDescription.textColor = ColorProvider.TextWeak
+            tableFooterTextLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var tableView: UITableView! {
@@ -61,6 +59,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.allowsSelection = false
             tableView.separatorStyle = .none
             tableView.rowHeight = UITableView.automaticDimension
+            tableView.estimatedSectionHeaderHeight = sectionHeaderHeight
         }
     }
     
@@ -70,17 +69,28 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     var model: PaymentsUIViewModelViewModel?
     var mode: PaymentsUIMode = .signup
     var modalPresentation = false
+    var hideFooter = false
 
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13.0, *) {} else {
+            if ProtonColorPallete.brand == .vpn {
+                tableView.indicatorStyle = .white
+            }
+        }
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
         tableView.tableHeaderView?.backgroundColor = ColorProvider.BackgroundNorm
         tableView.tableFooterView?.backgroundColor = ColorProvider.BackgroundNorm
         tableView.tableHeaderView?.isHidden = true
         tableView.tableFooterView?.isHidden = true
+        let nib = UINib(nibName: sectionHeaderView, bundle: PaymentsUI.bundle)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: sectionHeaderView)
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
         navigationItem.title = ""
         if modalPresentation {
             setUpCloseButton(showCloseButton: true, action: #selector(PaymentsUIViewController.onCloseButtonTap(_:)))
@@ -93,11 +103,33 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         }
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(PaymentsUIViewController.asd),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    var banner: PMBanner?
+    
+    @objc private func asd() {
+        if model?.iapInProgress == true {
+            let banner = PMBanner(message: CoreString._pu_iap_in_progress_banner,
+                                  style: PMBannerNewStyle.error,
+                                  dismissDuration: .infinity)
+            showBanner(banner: banner, position: .top)
+            self.banner = banner
+        } else {
+            self.banner?.dismiss(animated: true)
+        }
+        
     }
 
     override public func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
         navigationBarAdjuster.setUp(for: tableView, parent: parent)
+        tableView.delegate = self
     }
     
     override public func viewWillDisappear(_ animated: Bool) {
@@ -149,7 +181,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         } else {
             tableView.tableHeaderView?.isHidden = false
         }
-        tableView.tableFooterView?.isHidden = false
+        tableView.tableFooterView?.isHidden = hideFooter
         
         let width = tableView.bounds.size.width
         let headerSize = headerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
@@ -164,11 +196,16 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.tableFooterView = footerView
         }
     }
-    
+
     private func reloadUI() {
-        guard isDataLoaded else { return }
-        if let isAnyPlanToPurchase = model?.isAnyPlanToPurchase {
-            self.tableFooterTextDescription.isHidden = !isAnyPlanToPurchase
+        guard isDataLoaded, let linkString = model?.linkString else { return }
+        switch model?.footerType {
+        case .withPlans:
+            tableFooterTextLabel.textWithLink(text: String(format: CoreString._pu_plan_footer_desc, linkString), link: linkString, handler: model?.openLink)
+        case .withoutPlans, .none:
+            tableFooterTextLabel.textWithLink(text: String(format: CoreString._pu_plan_footer_desc_purchased, linkString), link: linkString, handler: model?.openLink)
+        case .disabled:
+            hideFooter = true
         }
         activityIndicator.isHidden = true
         updateHeaderFooterViewHeight()
@@ -179,13 +216,16 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             if modalPresentation {
                 switch mode {
                 case .current:
-                    navigationItem.title = CoreString._pu_current_plan_title
+                    navigationItem.title = CoreString._pu_subscription_title
+                    updateTitleAttributes()
                 case .update:
-                    if model?.isAnyPlanToPurchase ?? false {
+                    switch model?.footerType {
+                    case .withPlans:
                         navigationItem.title = CoreString._pu_upgrade_plan_title
-                    } else {
+                    case .withoutPlans, .disabled, .none:
                         navigationItem.title = CoreString._pu_current_plan_title
                     }
+                    updateTitleAttributes()
                 default:
                     break
                 }
@@ -205,22 +245,40 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
 }
 
 extension PaymentsUIViewController: UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return model?.plans.count ?? 0
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return model?.plans[section].count ?? 0
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PlanCell.reuseIdentifier, for: indexPath)
-        if let cell = cell as? PlanCell, let plan = model?.plans[indexPath.row] {
+        if let cell = cell as? PlanCell, let plan = model?.plans[indexPath.section][indexPath.row] {
             cell.delegate = self
             cell.configurePlan(plan: plan, isSignup: mode == .signup)
         }
         return cell
     }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard mode == .current && section == 1 else { return nil }
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: sectionHeaderView)
+        if let header = view as? PlanSectionHeaderView {
+            header.titleLabel.text = CoreString._pu_upgrade_plan_title
+        }
+        return view
+    }
 }
 
 extension PaymentsUIViewController: UITableViewDelegate {
-
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard mode == .current && section == 1 else { return 0 }
+        return UITableView.automaticDimension
+    }
 }
 
 extension PaymentsUIViewController: PlanCellDelegate {

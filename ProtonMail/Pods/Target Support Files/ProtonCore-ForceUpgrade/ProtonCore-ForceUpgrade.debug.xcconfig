@@ -4,7 +4,7 @@ CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-ForceUpgrad
 FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-CoreTranslation" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Foundations" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Log" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-Networking" "${PODS_CONFIGURATION_BUILD_DIR}/ProtonCore-UIFoundations" "${PODS_CONFIGURATION_BUILD_DIR}/TrustKit"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LIBRARY_SEARCH_PATHS = $(inherited) "${DT_TOOLCHAIN_DIR}/usr/lib/swift/${PLATFORM_NAME}" /usr/lib/swift
-OTHER_LDFLAGS = $(inherited) -framework "ProtonCore_CoreTranslation" -framework "ProtonCore_Networking" -framework "ProtonCore_UIFoundations" -framework "UIKit"
+OTHER_LDFLAGS = $(inherited) -framework "ProtonCore_CoreTranslation" -framework "ProtonCore_Networking" -framework "ProtonCore_UIFoundations"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -suppress-warnings
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

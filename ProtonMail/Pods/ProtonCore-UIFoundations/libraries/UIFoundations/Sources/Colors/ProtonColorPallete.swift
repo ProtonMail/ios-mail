@@ -61,6 +61,9 @@ public struct ProtonColorPallete {
     public let NotificationError = ProtonColor(name: "NotificationError")
     public let NotificationWarning = ProtonColor(name: "NotificationWarning")
     public let NotificationSuccess = ProtonColor(name: "NotificationSuccess")
+    public var NotificationNorm: ProtonColor {
+        ProtonColor(name: "NotificationNorm", vpnFallbackRgb: notificationNormVpn)
+    }
 
     // MARK: Interaction norm
     public var InteractionNorm: ProtonColor {
@@ -83,35 +86,81 @@ public struct ProtonColorPallete {
     }
     
     // MARK: Shade
-    public let Shade100 = ProtonColor(name: "Shade100")
-    public let Shade80 = ProtonColor(name: "Shade80")
-    public let Shade60 = ProtonColor(name: "Shade60")
-    public let Shade50 = ProtonColor(name: "Shade50")
-    public let Shade40 = ProtonColor(name: "Shade40")
-    public let Shade20 = ProtonColor(name: "Shade20")
-    public let Shade10 = ProtonColor(name: "Shade10")
-    public let Shade0 = ProtonColor(name: "Shade0")
+    public var Shade100: ProtonColor {
+        ProtonColor(name: "Shade100", vpnFallbackRgb: shade100Vpn)
+    }
+    public var Shade80: ProtonColor {
+        ProtonColor(name: "Shade80", vpnFallbackRgb: shade80Vpn)
+    }
+    public var Shade60: ProtonColor {
+        ProtonColor(name: "Shade60", vpnFallbackRgb: shade60Vpn)
+    }
+    public var Shade50: ProtonColor {
+        ProtonColor(name: "Shade50", vpnFallbackRgb: shade50Vpn)
+    }
+    public var Shade40: ProtonColor {
+        ProtonColor(name: "Shade40", vpnFallbackRgb: shade40Vpn)
+    }
+    public var Shade20: ProtonColor {
+        ProtonColor(name: "Shade20", vpnFallbackRgb: shade20Vpn)
+    }
+    public var Shade10: ProtonColor {
+        ProtonColor(name: "Shade10", vpnFallbackRgb: shade10Vpn)
+    }
+    public var Shade0: ProtonColor {
+        ProtonColor(name: "Shade0", vpnFallbackRgb: shade0Vpn)
+    }
 
     // MARK: Text
-    public let TextNorm = ProtonColor(name: "TextNorm")
-    public let TextWeak = ProtonColor(name: "TextWeak")
-    public let TextHint = ProtonColor(name: "TextHint")
-    public let TextDisabled = ProtonColor(name: "TextDisabled")
-    public let TextInverted = ProtonColor(name: "TextInverted")
+    public var TextNorm: ProtonColor {
+        ProtonColor(name: "TextNorm", vpnFallbackRgb: textNormVpn)
+    }
+    public var TextWeak: ProtonColor {
+        ProtonColor(name: "TextWeak", vpnFallbackRgb: textWeakVpn)
+    }
+    public var TextHint: ProtonColor {
+        ProtonColor(name: "TextHint", vpnFallbackRgb: textHintVpn)
+    }
+    public var TextDisabled: ProtonColor {
+        ProtonColor(name: "TextDisabled", vpnFallbackRgb: textDisabledVpn)
+    }
+    public var TextInverted: ProtonColor {
+        ProtonColor(name: "TextInverted", vpnFallbackRgb: textInvertedVpn)
+    }
 
     // MARK: Icon
-    public let IconNorm = ProtonColor(name: "IconNorm")
-    public let IconWeak = ProtonColor(name: "IconWeak")
-    public let IconHint = ProtonColor(name: "IconHint")
-    public let IconDisabled = ProtonColor(name: "IconDisabled")
-    public let IconInverted = ProtonColor(name: "IconInverted")
+    public var IconNorm: ProtonColor {
+        ProtonColor(name: "IconNorm", vpnFallbackRgb: iconNormVpn)
+    }
+    public var IconWeak: ProtonColor {
+        ProtonColor(name: "IconWeak", vpnFallbackRgb: iconWeakVpn)
+    }
+    public var IconHint: ProtonColor {
+        ProtonColor(name: "IconHint", vpnFallbackRgb: iconHintVpn)
+    }
+    public var IconDisabled: ProtonColor {
+        ProtonColor(name: "IconDisabled", vpnFallbackRgb: iconDisabledVpn)
+    }
+    public var IconInverted: ProtonColor {
+        ProtonColor(name: "IconInverted", vpnFallbackRgb: iconInvertedVpn)
+    }
     
     // MARK: Interaction
-    public let InteractionWeak = ProtonColor(name: "InteractionWeak")
-    public let InteractionWeakPressed = ProtonColor(name: "InteractionWeakPressed")
-    public let InteractionWeakDisabled = ProtonColor(name: "InteractionWeakDisabled")
-    public let InteractionStrong = ProtonColor(name: "InteractionStrong")
-    public let InteractionStrongPressed = ProtonColor(name: "InteractionStrongPressed")
+    public var InteractionWeak: ProtonColor {
+        ProtonColor(name: "InteractionWeak", vpnFallbackRgb: interactionWeakVpn)
+    }
+    public var InteractionWeakPressed: ProtonColor {
+        ProtonColor(name: "InteractionWeakPressed", vpnFallbackRgb: interactionWeakPressedVpn)
+    }
+    public var InteractionWeakDisabled: ProtonColor {
+        ProtonColor(name: "InteractionWeakDisabled", vpnFallbackRgb: interactionWeakDisabledVpn)
+    }
+    public var InteractionStrong: ProtonColor {
+        ProtonColor(name: "InteractionStrong", vpnFallbackRgb: interactionStrongVpn)
+    }
+    public var InteractionStrongPressed: ProtonColor {
+        ProtonColor(name: "InteractionStrongPressed", vpnFallbackRgb: interactionStrongPressedVpn)
+    }
 
     // MARK: Floaty
     public let FloatyBackground = ProtonColor(name: "FloatyBackground")
@@ -119,22 +168,88 @@ public struct ProtonColorPallete {
     public let FloatyText = ProtonColor(name: "FloatyText")
     
     // MARK: Background
-    public let BackgroundNorm = ProtonColor(name: "BackgroundNorm")
-    public let BackgroundSecondary = ProtonColor(name: "BackgroundSecondary")
+    public var BackgroundNorm: ProtonColor {
+        ProtonColor(name: "BackgroundNorm", vpnFallbackRgb: backgroundNormVpn)
+    }
+    public var BackgroundSecondary: ProtonColor {
+        ProtonColor(name: "BackgroundSecondary", vpnFallbackRgb: backgroundSecondaryVpn)
+    }
 
     // MARK: Separator
-    public let SeparatorNorm = ProtonColor(name: "SeparatorNorm")
+    public var SeparatorNorm: ProtonColor {
+        ProtonColor(name: "SeparatorNorm", vpnFallbackRgb: separatorNormVpn)
+    }
 
     // MARK: Sidebar
-    public let SidebarBackground = ProtonColor(name: "SidebarBackground")
-    public let SidebarBackgroundAccount = ProtonColor(name: "SidebarBackgroundAccount")
-    public let SidebarPressed = ProtonColor(name: "SidebarPressed")
-    public let SidebarSeparator = ProtonColor(name: "SidebarSeparator")
+    public var SidebarBackground: ProtonColor {
+        ProtonColor(name: "SidebarBackground", vpnFallbackRgb: sidebarBackgroundVpn)
+    }
+    public var SidebarInteractionWeakNorm: ProtonColor {
+        ProtonColor(name: "SidebarInteractionWeakNorm", vpnFallbackRgb: sidebarInteractionWeakNormVpn)
+    }
+    public var SidebarInteractionWeakPressed: ProtonColor {
+        ProtonColor(name: "SidebarInteractionWeakPressed", vpnFallbackRgb: sidebarInteractionWeakPressedVpn)
+    }
+    public var SidebarSeparator: ProtonColor {
+        ProtonColor(name: "SidebarSeparator", vpnFallbackRgb: sidebarSeparatorVpn)
+    }
     public let SidebarTextNorm = ProtonColor(name: "SidebarTextNorm")
     public let SidebarTextWeak = ProtonColor(name: "SidebarTextWeak")
+    public let SidebarIconNorm = ProtonColor(name: "SidebarIconNorm")
+    public let SidebarIconWeak = ProtonColor(name: "SidebarIconWeak")
+    public let SidebarInteractionPressed = ProtonColor(name: "SidebarInteractionPressed")
 
     // MARK: Blenders
     public let BlenderNorm = ProtonColor(name: "BlenderNorm")
+}
+
+extension ProtonColorPallete {
+    private var woodsmoke: Int { 0x17181C }
+    private var charade: Int { 0x25272C }
+    private var tuna: Int { 0x303239 }
+    private var abbey: Int { 0x494D55 }
+    private var stormGray: Int { 0x727680 }
+    private var santasGray: Int { 0x9CA0AA }
+    private var portGore: Int { 0x1C223D }
+    private var pickledBluewood: Int { 0x29304D }
+    private var rhino: Int { 0x353E60 }
+    private var frenchGray: Int { 0xBABDC6 }
+    private var mischka: Int { 0xDADCE3 }
+    private var athensGray: Int { 0xEAECF1 }
+    private var whisper: Int { 0xF5F6FA }
+    private var white: Int { 0xFFFFFF }
+    
+    private var shade100Vpn: Int { white }
+    private var shade80Vpn: Int { santasGray }
+    private var shade60Vpn: Int { stormGray }
+    private var shade50Vpn: Int { abbey }
+    private var shade40Vpn: Int { abbey }
+    private var shade20Vpn: Int { tuna }
+    private var shade10Vpn: Int { charade }
+    private var shade0Vpn: Int { woodsmoke }
+    private var textNormVpn: Int { shade100Vpn }
+    private var textWeakVpn: Int { shade80Vpn }
+    private var textHintVpn: Int { shade60Vpn }
+    private var textDisabledVpn: Int { shade50Vpn }
+    private var textInvertedVpn: Int { shade0Vpn }
+    private var iconNormVpn: Int { shade100Vpn }
+    private var iconWeakVpn: Int { shade80Vpn }
+    private var iconHintVpn: Int { shade60Vpn }
+    private var iconDisabledVpn: Int { shade50Vpn }
+    private var iconInvertedVpn: Int { shade0Vpn }
+    private var interactionWeakVpn: Int { shade20Vpn }
+    private var interactionWeakPressedVpn: Int { shade40Vpn }
+    private var interactionWeakDisabledVpn: Int { shade10Vpn }
+    private var interactionStrongVpn: Int { shade100Vpn }
+    private var interactionStrongPressedVpn: Int { shade80Vpn }
+    private var backgroundNormVpn: Int { shade0Vpn }
+    private var backgroundSecondaryVpn: Int { shade10Vpn }
+    private var separatorNormVpn: Int { shade20Vpn }
+    private var notificationNormVpn: Int { shade100Vpn }
+    private var sidebarBackgroundVpn: Int { woodsmoke }
+    private var sidebarInteractionWeakNormVpn: Int { tuna }
+    private var sidebarInteractionWeakPressedVpn: Int { abbey }
+    private var sidebarSeparatorVpn: Int { tuna }
 }
 
 #if canImport(UIKit)
@@ -145,7 +260,7 @@ extension ProtonColorPallete {
     
     // MARK: Global
     static var White: UIColor {
-        UIColor(rgb: 0xffffff)
+        UIColor(rgb: ProtonColorPallete().white)
     }
 
     // MARK: Splash
@@ -154,10 +269,10 @@ extension ProtonColorPallete {
             switch brand {
             case .proton:
                 // LIGHT mode: White, DARK mode: Port Gore
-                return UIColor.dynamic(light: ProtonColorPallete.White, dark: UIColor(rgb: 0x1C223D))
+                return UIColor.dynamic(light: ProtonColorPallete.White, dark: UIColor(rgb: ProtonColorPallete().portGore))
             case .vpn:
                 // Woodsmoke
-                return UIColor(rgb: 0x17181C)
+                return UIColor(rgb: ProtonColorPallete().woodsmoke)
             }
         }
 
@@ -165,7 +280,7 @@ extension ProtonColorPallete {
             switch brand {
             case .proton:
                 // LIGHT mode: Woodsmoke, DARK mode: White
-                return UIColor.dynamic(light: UIColor(rgb: 0x17181C), dark: ProtonColorPallete.White)
+                return UIColor.dynamic(light: UIColor(rgb: ProtonColorPallete().woodsmoke), dark: ProtonColorPallete.White)
             case .vpn:
                 // LIGHT, DARK mode: White
                 return ProtonColorPallete.White
@@ -178,7 +293,7 @@ extension ProtonColorPallete {
                 return ColorProvider.TextHint
             case .vpn:
                 // Storm Gray
-                return UIColor(rgb: 0x727680)
+                return UIColor(rgb: ProtonColorPallete().stormGray)
             }
         }
     }

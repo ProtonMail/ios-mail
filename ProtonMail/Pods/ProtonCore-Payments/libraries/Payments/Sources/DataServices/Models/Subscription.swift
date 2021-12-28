@@ -27,8 +27,9 @@ public struct Subscription: Codable { // this doesn't represent backend response
     public let cycle: Int?
     public let planDetails: [Plan]?
     public internal(set) var organization: Organization?
-    public internal(set) var paymentMethods: [PaymentMethod]?
     public let couponCode: String?
+    public let amount: Int?
+    public let currency: String?
 
     /// Special coupons have to be set from app using this library
     public static var specialCoupons: [String] = [String]()
@@ -36,30 +37,32 @@ public struct Subscription: Codable { // this doesn't represent backend response
     public private(set) var isEmptyBecauseOfUnsufficientScopeToFetchTheDetails = false
 
     static var userHasNoPlanAKAFreePlan: Subscription {
-        Subscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
+        Subscription(start: nil, end: nil, planDetails: nil, amount: nil, currency: nil)
     }
 
     static var userHasUnsufficientScopeToFetchSubscription: Subscription {
-        var subscription = Subscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
+        var subscription = Subscription(start: nil, end: nil, planDetails: nil, amount: nil, currency: nil)
         subscription.isEmptyBecauseOfUnsufficientScopeToFetchTheDetails = true
         return subscription
     }
 
     public init(
-        start: Date?, end: Date?, planDetails: [Plan]?, paymentMethods: [PaymentMethod]?, couponCode: String? = nil, cycle: Int? = nil
-    ) {
+        start: Date?, end: Date?, planDetails: [Plan]?, couponCode: String? = nil, cycle: Int? = nil, amount: Int?, currency: String?) {
         self.start = start
         self.end = end
         self.planDetails = planDetails
-        self.paymentMethods = paymentMethods
         self.couponCode = couponCode
         self.cycle = cycle
+        self.amount = amount
+        self.currency = currency
     }
 }
 
 extension Subscription {
     
-    public var computedPresentationDetails: Plan {
+    public func computedPresentationDetails(shownPlanNames: ListOfShownPlanNames) -> Plan {
+        // remove all other plans not defined in the shownPlanNames
+        let planDetails = planDetails?.filter { elem in shownPlanNames.contains { elem.name == $0 } }
         guard let planDetails = planDetails else { return .empty }
         let subscriptionPlan = Plan.combineDetailsDroppingPricing(planDetails)
         guard let organization = organization else { return subscriptionPlan }
@@ -76,7 +79,8 @@ extension Subscription {
                     features: subscriptionPlan.features,
                     maxCalendars: subscriptionPlan.maxCalendars
                         .map { mc in organization.maxCalendars.map { max(mc, $0) } ?? mc } ?? organization.maxCalendars,
-                    state: subscriptionPlan.state)
+                    state: subscriptionPlan.state,
+                    cycle: subscriptionPlan.cycle)
     }
 
     public var hasExistingProtonSubscription: Bool {
@@ -89,13 +93,6 @@ extension Subscription {
             existingSubscription = true
         }
         return existingSubscription
-    }
-
-    public var hadOnlinePayments: Bool {
-        guard let allMethods = self.paymentMethods else {
-            return false
-        }
-        return allMethods.map { $0.type }.contains(.card)
     }
 
     public var endDate: Date? {

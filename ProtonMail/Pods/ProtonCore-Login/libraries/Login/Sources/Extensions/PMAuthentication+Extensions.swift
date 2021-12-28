@@ -22,7 +22,7 @@
 import Foundation
 import ProtonCore_DataModel
 
-extension User {
+public extension User {
 
     var isExternal: Bool { return name == nil }
 
@@ -30,7 +30,7 @@ extension User {
 
 }
 
-extension Address {
+public extension Address {
     var isInternal: Bool {
         return type == .protonDomain || type == .protonAlias || type == .premiumDomain
     }
@@ -44,7 +44,7 @@ extension Address {
     }
 }
 
-extension Array where Element: Address {
+public extension Array where Element: Address {
     var firstInternal: Address? {
         // Identify the first internal address, custom domain is also OK for private users
         first(where: { $0.isInternal }) ?? first(where: { $0.isCustomDomain })

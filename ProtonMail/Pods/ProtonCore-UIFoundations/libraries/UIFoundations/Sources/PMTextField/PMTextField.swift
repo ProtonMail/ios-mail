@@ -52,7 +52,11 @@ public class PMTextField: UIView {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private var mainView: UIView!
-    @IBOutlet private weak var textField: PMInternalTextField!
+    @IBOutlet private weak var textField: PMInternalTextField! {
+        didSet {
+            textField.internalDelegate = self
+        }
+    }
     @IBOutlet private weak var errorLabel: UILabel!
     @IBOutlet private weak var assistiveTextLabel: UILabel!
     @IBOutlet private weak var suffixLabel: UILabel!
@@ -85,7 +89,7 @@ public class PMTextField: UIView {
         didSet {
             textField.isSecureTextEntry = isPassword
             textField.textContentType = isPassword ? .password : .none
-            textField.clearButtonMode = .never
+            textField.clearMode = .never
         }
     }
 
@@ -188,7 +192,7 @@ public class PMTextField: UIView {
     @IBInspectable public var suffix: String? {
         didSet {
             guard let suffix = suffix, !suffix.isEmpty else {
-                textField.clearButtonMode = isPassword ? .never : .whileEditing
+                textField.clearMode = isPassword ? .never : .whileEditing
                 textField.suffixMarging = 0
                 suffixLabel.isHidden = true
                 return
@@ -196,7 +200,7 @@ public class PMTextField: UIView {
 
             suffixLabel.isHidden = false
             suffixLabel.text = suffix
-            textField.clearButtonMode = .never
+            textField.clearMode = .never
 
             setNeedsLayout()
             layoutIfNeeded()
@@ -311,14 +315,25 @@ public class PMTextField: UIView {
         textField.textColor = ColorProvider.TextNorm
         textField.backgroundColor = ColorProvider.InteractionWeakDisabled
         textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-
+        textField.tintColor = ColorProvider.BrandNorm
         titleLabel.textColor = ColorProvider.TextNorm
         errorLabel.textColor = ColorProvider.NotificationError
         assistiveTextLabel.textColor = ColorProvider.TextWeak
         suffixLabel.textColor = ColorProvider.TextWeak
     }
+    
+    private func updateClearMode() {
+        if let text = textField.text, !self.textField.isUmnaskButton, suffix == nil {
+            if text.isEmpty {
+                self.textField.clearMode = .never
+            } else {
+                self.textField.clearMode = .whileEditing
+            }
+        }
+    }
 
     @objc private func textFieldDidChange(textField: UITextField) {
+        updateClearMode()
         delegate?.didChangeValue(self, value: value)
     }
 
@@ -367,5 +382,13 @@ extension PMTextField: UITextFieldDelegate {
         }
 
         return string.isEmpty || Int(string) != nil
+    }
+}
+
+// MARK: - Text field internal delegate
+
+extension PMTextField: PMInternalTextFieldDelegate {
+    public func didClearEditing() {
+        updateClearMode()
     }
 }

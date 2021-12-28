@@ -22,8 +22,8 @@
 import Foundation
 import ProtonCore_Networking
 
-extension LoginError: CustomStringConvertible {
-    var description: String {
+extension LoginError {
+    public var description: String {
         switch self {
         case let .generic(message: message):
             return message
@@ -47,7 +47,7 @@ extension LoginError: CustomStringConvertible {
     }
 }
 
-extension AuthErrors {
+public extension AuthErrors {
 
     func asLoginError(in2FAContext: Bool = false) -> LoginError {
         switch self {

@@ -25,6 +25,7 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Login
+import ProtonCore_LoginUI
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
@@ -81,15 +82,17 @@ final class SignInCoordinatorTests: XCTestCase {
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make)
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
         out.start()
-        XCTAssertEqual(loginStubFactory.instance?.presentLoginFlowStub.lastArguments?.second, "test username")
+        XCTAssertEqual(loginStubFactory.instance?.presentLoginFlowStub.lastArguments?.a2, "test username")
     }
 
-    func testLoginDismissalCausesCoordinatorToReturnResultDissmissed() {
+    func testLoginDismissalCausesCoordinatorToReturnResultDismissed() {
         let loginStubFactory = PMLoginStubFactory()
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make)
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.dismissed) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs({ _, _, _, _, _, completion in
+            completion(.dismissed)
+        })
         out.start()
         guard case .dismissed = flowResult else { XCTFail(#function); return }
     }
@@ -109,7 +112,7 @@ final class SignInCoordinatorTests: XCTestCase {
         }, unlockIfRememberedCredentials: { _, _, _, _ in })
 
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in
             let user = User.dummy.updated(ID: nil, name: testUserInfo.displayName, usedSpace: Double(testUserInfo.usedSpace), currency: testUserInfo.currency, credit: testUserInfo.credit, maxSpace: Double(testUserInfo.maxSpace), maxUpload: Double(testUserInfo.maxUpload), role: testUserInfo.role, private: nil, subscribed: testUserInfo.subscribed, services: nil, delinquent: testUserInfo.delinquent, orgPrivateKey: nil, email: testUserInfo.notificationEmail, displayName: testUserInfo.displayName, keys: nil)
             completion(.loggedIn(.userData(UserData(credential: testAuth, user: user, salts: [], passphrases: [:], addresses: [], scopes: []))))
         }
@@ -133,7 +136,7 @@ final class SignInCoordinatorTests: XCTestCase {
             tryUnlock()
         }, unlockIfRememberedCredentials: { _, _, _, _ in wasUnlockCredentialsCalled = true })
         let out = SignInCoordinator.loginFlowForSecondAndAnotherAccount(username: "test username", environment: environment) { _ in }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in completion(.loggedIn(.dummy)) }
         out.start()
         XCTAssertTrue(wasUnlockCredentialsCalled)
     }
@@ -147,7 +150,7 @@ final class SignInCoordinatorTests: XCTestCase {
         })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in completion(.loggedIn(.dummy)) }
         out.start()
         guard case .errored(.finalizingSignInFailed(let error)) = flowResult, let errorAsTestError = error as? TestError
         else { XCTFail(#function); return }
@@ -161,7 +164,7 @@ final class SignInCoordinatorTests: XCTestCase {
         })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in completion(.loggedIn(.dummy)) }
         out.start()
         guard case .loggedInFreeAccountsLimitReached = flowResult else { XCTFail(#function); return }
     }
@@ -173,7 +176,7 @@ final class SignInCoordinatorTests: XCTestCase {
         }, unlockIfRememberedCredentials: { _, _, unlockFailed, _ in unlockFailed?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in completion(.loggedIn(.dummy)) }
         out.start()
         guard case .errored(.unlockFailed) = flowResult else { XCTFail(#function); return }
     }
@@ -185,7 +188,7 @@ final class SignInCoordinatorTests: XCTestCase {
         }, unlockIfRememberedCredentials: { _, _, _, unlocked in unlocked?() })
         var flowResult: SignInCoordinator.FlowResult?
         let out = SignInCoordinator.loginFlowForFirstAccount(startingPoint: .form, environment: environment) { flowResult = $0 }
-        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, completion in completion(.loggedIn(.dummy)) }
+        loginStubFactory.instance?.presentLoginFlowStub.bodyIs { _, _, _, _, _, completion in completion(.loggedIn(.dummy)) }
         out.start()
         guard case .succeeded = flowResult else { XCTFail(#function); return }
     }

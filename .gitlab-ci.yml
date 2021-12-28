@@ -2,8 +2,7 @@ stages:
   - i18n
   - test
   - test_flight
-  - enterprise_test
-  - enterprise_release
+  - enterprise
   - bot # comes from translations/generator job
 
 .before_script_mac: &before_script_mac
@@ -102,7 +101,7 @@ ui_tests:
     - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
+    # - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
     - iOS_ARM_TAIPEI
 
@@ -196,12 +195,15 @@ nightly-build-and-upload:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for release and upload
-build-release-enterprise-app-and-upload:
+enterprise-release:
   dependencies: []
-  stage: enterprise_release
-  when: manual
+  stage: enterprise
   variables:
     GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
   artifacts:
     name: "iOS mail app release enterprise build"
     paths:
@@ -220,12 +222,15 @@ build-release-enterprise-app-and-upload:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
-build-test-enterprise-app-and-upload:
+enterprise-test:
   dependencies: []
-  stage: enterprise_test
-  when: manual
+  stage: enterprise
   variables:
     GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
   artifacts:
     name: "iOS mail app test enterprise build"
     paths:

@@ -40,9 +40,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     
     @IBOutlet weak var mainView: UIView! {
         didSet {
-            mainView.layer.borderWidth = 1.0
-            mainView.layer.cornerRadius = 6.0
-            mainView.layer.borderColor = ColorProvider.Shade20.cgColor
+            mainView.layer.cornerRadius = 12.0
         }
     }
     @IBOutlet weak var planNameLabel: UILabel! {
@@ -50,20 +48,26 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             planNameLabel.textColor = ColorProvider.TextNorm
         }
     }
-    @IBOutlet weak var planPriceSeparator: UIView!
-    @IBOutlet weak var planPriceLabel: UILabel! {
+    @IBOutlet weak var planDescriptionSeparator: UIView!
+    @IBOutlet weak var planDescriptionLabel: UILabel! {
         didSet {
-            planPriceLabel.textColor = ColorProvider.TextNorm
+            planDescriptionLabel.textColor = ColorProvider.TextWeak
+            planDescriptionLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .regular)
+        }
+    }
+    @IBOutlet weak var priceLabel: UILabel! {
+        didSet {
+            priceLabel.textColor = ColorProvider.TextNorm
+        }
+    }
+    @IBOutlet weak var priceDescriptionLabel: UILabel! {
+        didSet {
+            priceDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var planDetailsStackView: UIStackView!
     @IBOutlet weak var spacerView: UIView!
-    @IBOutlet weak var selectPlanButton: ProtonButton! {
-        didSet {
-            selectPlanButton.setMode(mode: .solid)
-        }
-    }
-    
+    @IBOutlet weak var selectPlanButton: ProtonButton!
     @IBOutlet weak var timeSeparator1View: UIView!
     @IBOutlet weak var separatorLineView: UIView! {
         didSet {
@@ -71,9 +75,10 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
     }
     @IBOutlet weak var timeSeparator2View: UIView!
-    @IBOutlet weak var planTimeLabel: UILabel! {
+    @IBOutlet weak var planTimeLabel: UILabel!
+    @IBOutlet weak var descriptionConstraint: NSLayoutConstraint! {
         didSet {
-            planTimeLabel.textColor = ColorProvider.TextWeak
+            descriptionConstraint.constant = 0
         }
     }
     
@@ -85,24 +90,34 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         planNameLabel.text = plan.name
         
         switch plan.title {
-        case .price(let price):
-            if let price = price {
-                let attributedText = NSMutableAttributedString(string: price, attributes: [.font: UIFont.systemFont(ofSize: 22), .foregroundColor: ColorProvider.TextNorm])
-                attributedText.append(NSAttributedString(string: CoreString._pu_plan_details_price_time_period, attributes: [.font: UIFont.systemFont(ofSize: 17), .foregroundColor: ColorProvider.TextWeak]))
-                planPriceLabel.attributedText = attributedText
+        case .description(let description):
+            if let description = description {
+                planDescriptionLabel.text = description
             } else {
-                planPriceSeparator.isHidden = true
-                planPriceLabel.isHidden = true
+                planDescriptionSeparator.isHidden = true
+                planDescriptionLabel.isHidden = true
             }
         case .current:
-            planPriceLabel.textColor = ColorProvider.TextWeak
-            planPriceLabel.font = .systemFont(ofSize: 17.0)
-            planPriceLabel.text = CoreString._pu_current_plan_title
+            planDescriptionLabel.text = CoreString._pu_current_plan_title
+            planDescriptionSeparator.isHidden = true
 
         case .unavailable:
-            planNameLabel.text = ""
-            planPriceLabel.font = .systemFont(ofSize: 17.0)
-            planPriceLabel.text = CoreString._pu_plan_details_plan_details_unavailable_contact_administrator
+            priceLabel.text = ""
+            priceDescriptionLabel.text = ""
+            descriptionConstraint.constant = 0
+            planDescriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
+            planDescriptionLabel.text = CoreString._pu_plan_details_plan_details_unavailable_contact_administrator
+            planDescriptionLabel.textColor = ColorProvider.TextNorm
+        }
+
+        if let price = plan.price {
+            priceLabel.isHidden = false
+            priceDescriptionLabel.isHidden = false
+            priceLabel.text = price
+            priceDescriptionLabel.text = plan.cycle
+        } else {
+            priceLabel.isHidden = true
+            priceDescriptionLabel.isHidden = true
         }
         
         plan.details.forEach {
@@ -125,6 +140,32 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             selectPlanButton.setTitle(CoreString._pu_upgrade_plan_button, for: .normal)
         }
         self.generateCellAccessibilityIdentifiers(plan.name)
+        if plan.accountPlan.isFreePlan {
+            selectPlanButton.setMode(mode: .outlined)
+        } else {
+            if plan.isSelectable {
+                priceLabel.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+            } else {
+                priceLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
+            }
+            selectPlanButton.setMode(mode: .solid)
+        }
+        configureMainView(isSelectable: plan.isSelectable)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard let plan = plan else { return }
+        configureMainView(isSelectable: plan.isSelectable)
+    }
+    
+    private func configureMainView(isSelectable: Bool) {
+        if isSelectable {
+            mainView.layer.borderWidth = 0.0
+            mainView.backgroundColor = ColorProvider.BackgroundSecondary
+        } else {
+            mainView.layer.borderWidth = 1.0
+            mainView.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
+        }
     }
     
     private func enableTimeView(enabled: Bool) {

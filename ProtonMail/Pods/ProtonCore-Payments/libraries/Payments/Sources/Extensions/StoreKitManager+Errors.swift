@@ -34,6 +34,7 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
     case creditsApplied
     case wrongTokenStatus(PaymentToken.Status)
     case cancelled
+    case notAllowed
     case unknown
     case appIsLocked                            // (mail only)
     case pleaseSignIn                           // (mail only)
@@ -52,7 +53,7 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
         case .pleaseSignIn: return CoreString._error_please_sign_in_iap
         case .creditsApplied: return CoreString._error_credits_applied
         case .wrongTokenStatus: return CoreString._error_wrong_token_status
-        case .cancelled, .unknown: return nil
+        case .cancelled, .notAllowed, .unknown: return nil
         }
     }
 }

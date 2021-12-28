@@ -48,6 +48,7 @@ final class PMActionSheetToggleCell: UITableViewCell {
 // MARK: Public function
 extension PMActionSheetToggleCell {
     func config(item: PMActionSheetToggleItem, at indexPath: IndexPath, delegate: PMActionSheetToggleDelegate) {
+        self.backgroundColor = ColorProvider.BackgroundNorm
         self.imageView?.image = item.icon
         self.imageView?.tintColor = item.iconColor
         self.textLabel?.text = item.title

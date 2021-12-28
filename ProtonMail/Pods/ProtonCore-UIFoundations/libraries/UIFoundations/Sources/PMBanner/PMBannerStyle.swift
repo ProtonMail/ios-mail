@@ -52,7 +52,7 @@ extension PMBannerStyleProtocol {
         return false
     }
 
-    /// Banner border raius
+    /// Banner border radius
     public var borderRadius: CGFloat {
         return 8
     }
@@ -88,6 +88,7 @@ extension PMBannerStyleProtocol {
     }
 }
 
+@available(*, deprecated, message: "Please use PMBannerNewStyle")
 public enum PMBannerStyle: PMBannerStyleProtocol {
     case success
     case warning
@@ -104,7 +105,7 @@ public enum PMBannerStyle: PMBannerStyleProtocol {
         case .error:
             return ColorProvider.NotificationError
         case .info:
-            return ColorProvider.BackgroundSecondary
+            return ColorProvider.NotificationNorm
         }
     }
 

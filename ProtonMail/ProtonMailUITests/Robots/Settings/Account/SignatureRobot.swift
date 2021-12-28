@@ -49,7 +49,7 @@ class SignatureRobot: CoreElements {
     }
     
     func setSignatureText(_ signature: String) -> SignatureRobot {
-        textView().byIndex(0).wait().tap().selectAllAndDeleteText().typeText(signature)
+        textView().byIndex(0).wait().tap().clearText().typeText(signature)
         return self
     }
 }

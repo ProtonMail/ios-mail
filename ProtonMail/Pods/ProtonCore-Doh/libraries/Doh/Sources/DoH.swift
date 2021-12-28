@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import ProtonCore_Log
 
 struct RuntimeError: Error {
     let message: String
@@ -32,25 +33,24 @@ struct RuntimeError: Error {
 }
 
 struct DNSCache {
-    let primary: Bool
     let dns: DNS
-    let lastTimeout: Double
-    var retry: Int
+    let fetchTime: Double
 }
 
 public enum DoHStatus {
     case on
     case off
+    @available(*, deprecated, renamed: "on")
     case auto // mix don't know yet
 }
 
 /// server configuation
 public protocol ServerConfig {
 
-    /// api host, the Doh query host  -- if you don't want to use doh, set this value to empty or set enableDoh = faluse
+    /// api host, the Doh query host  -- if you don't want to use doh, set enableDoh = false
     var apiHost: String { get }
 
-    /// enable doh or not default is True. if set to false will ignore apiHost value only use default host  -- if you don't want to use doh, set this value to faluse or set  or apiHost to empty
+    /// enable doh or not default is True. if you don't want to use doh, set this value to false
     var enableDoh: Bool { get }
 
     /// default host -- protonmail server url
@@ -61,6 +61,10 @@ public protocol ServerConfig {
 
     /// captcha response host
     var captchaHost: String { get }
+    var humanVerificationV3Host: String { get }
+    
+    // account host
+    var accountHost: String { get }
 
     // default signup domain for this server url
     var signupDomain: String { get }
@@ -96,334 +100,231 @@ public extension ServerConfig {
 }
 
 public protocol DoHInterface {
+
+    @available(*, deprecated, message: "Please use getCurrentlyUsedHostUrl() in places you want to synchronously get the host url. Use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:) in places that you handle the errors that should result in switching to proxy domain")
     func getHostUrl() -> String
-    func getCaptchaHostUrl() -> String
+    func getCurrentlyUsedHostUrl() -> String
+    
+    @available(*, deprecated, message: "Please use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:)")
     func handleError(host: String, error: Error?) -> Bool
+    func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
+    )
+    
+    @available(*, deprecated, renamed: "clearCache")
     func clearAll()
+    func clearCache()
+    
+    func getCaptchaHostUrl() -> String
+    func getHumanVerificationV3Host() -> String
+    func getAccountHost() -> String
     func codeCheck(code: Int) -> Bool
+}
+
+public protocol DoHWorkExecutor {
+    func execute(work: @escaping () -> Void)
+}
+
+extension DispatchQueue: DoHWorkExecutor {
+    public func execute(work: @escaping () -> Void) {
+        self.async { work() }
+    }
 }
 
 open class DoH: DoHInterface {
 
     public var status: DoHStatus = .off
-    private var caches: [String: [DNSCache]] = [:]
+    private var proxyDomainsAreCurrentlyResolved = false
+    
+    private var caches: [DNSCache] = []
     private var providers: [DoHProviderPublic] = []
+    
+    private let domainResolvingExecutor: DoHWorkExecutor
+    private let networkingEngine: DoHNetworkingEngine
+    private let currentTimeProvider: () -> Date
+    
+    var config: DoH & ServerConfig {
+        guard let config = self as? DoH & ServerConfig else {
+            fatalError("DoH subclass must also conform to ServerConfig")
+        }
+        return config
+    }
 
     internal var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
-    internal var hostUrlMutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
-
-    public var debugBlock: [String: Bool] = [:]
-
-    public func getHostUrl() -> String {
-        pthread_mutex_lock(hostUrlMutex)
-        defer {
-            pthread_mutex_unlock(hostUrlMutex)
-        }
-        let config = self as! ServerConfig
-        let defaultUrl = config.defaultHost + config.defaultPath
-
-        guard config.enableDoh else {
-            return defaultUrl
-        }
-
-        guard !config.apiHost.isEmpty else {
-            return defaultUrl
-        }
-
-        switch status {
-        case .on, .auto:
-            if let found = self.cache(get: config.apiHost) {
-                let newurl = URL(string: config.defaultHost)!
-                let host = newurl.host
-                let hostUrl = newurl.absoluteString.replacingOccurrences(of: host!, with: found.dns.url)
-                return hostUrl + config.defaultPath
-            }
-            /// block call or call back call
-            fetchAll(host: config.apiHost, timeout: config.timeout) // this is sync call
-
-            if let found = self.cache(get: config.apiHost) {
-                let newurl = URL(string: config.defaultHost)!
-                let host = newurl.host
-                let hostUrl = newurl.absoluteString.replacingOccurrences(of: host!, with: found.dns.url)
-                return hostUrl + config.defaultPath
-            }
-        case .off:
-            break
-        }
-        return defaultUrl
-    }
-
-    public func getCaptchaHostUrl() -> String {
-        let config = self as! ServerConfig
-        return config.captchaHost
-    }
-
-    public func getSignUpString() -> String {
-        let config = self as! ServerConfig
-        return config.signupDomain
-    }
-
-    func fetchAll(host: String, timeout: TimeInterval) {
-        // doing google for now. will add others
-        if let dns = Google().fetch(sync: host, timeout: timeout) {
-            self.cache(set: host, dnsList: dns)
-        }
-
-        if let dns = Quad9().fetch(sync: host, timeout: timeout) {
-            self.cache(set: host, dnsList: dns)
-        }
-        var tmp = self.caches[host] ?? []
-        for index in tmp.indices {
-            tmp[index].retry = 0
-        }
-        self.caches[host] = tmp
-    }
-
-    public init() throws {
+    
+    // MARK: - Initialization and deinitialization
+    
+    public init(networkingEngine: DoHNetworkingEngine = URLSession.shared,
+                executor: DoHWorkExecutor = DispatchQueue(label: "ch.proton.core.ios.doh", qos: .userInitiated),
+                currentTimeProvider: @escaping () -> Date = Date.init) {
+        self.networkingEngine = networkingEngine
+        self.domainResolvingExecutor = executor
+        self.currentTimeProvider = currentTimeProvider
         pthread_mutex_init(mutex, nil)
-        pthread_mutex_init(hostUrlMutex, nil)
-        guard let config = self as? ServerConfig else {
-            throw RuntimeError("Class didn't extend DoHConfig")
-        }
-
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-
-        var tmp = self.caches[config.defaultHost] ?? []
-        let newurl = URL(string: config.defaultHost)!
-        let host = newurl.host!
-        let dns = DNS(url: host, ttl: 0)
-        let cache = DNSCache(primary: true, dns: dns, lastTimeout: 0, retry: 0)
-        tmp.append(cache)
-        self.caches[config.apiHost] = tmp
     }
     
     deinit {
         pthread_mutex_destroy(mutex)
         self.mutex.deinitialize(count: 1)
         self.mutex.deallocate()
-        pthread_mutex_destroy(hostUrlMutex)
-        self.hostUrlMutex.deinitialize(count: 1)
-        self.hostUrlMutex.deallocate()
+    }
+    
+    // MARK: - Accessing host url
+    
+    /// Returns the currently used host url. This means:
+    /// * if DoH is not enabled or its status is .off or the apiHost is not empty, it will return the constants from ServerConfig
+    /// * if DoH is enabled and its status is .on or .auto and the apiHost is not empty:
+    ///     * if there's a proxy domain available in cache, it will return the proxy domain url
+    ///     * otherwise it will return the constants from ServerConfig
+    /// By proxy domain being available I mean proxy domain being already fetched and cached,
+    /// and not removed from cache after connection failure or time limit.
+    /// - Returns: currently used host url string
+    public func getCurrentlyUsedHostUrl() -> String {
+        guard doHProxyDomainsMechanismIsActive() else {
+            return getDefaultHostWithDefaultPath()
+        }
+        guard let hostUrlToUse = fetchCurrentlyUsedHostUrlFromCacheUpdatingIfNeeded() else {
+            return getDefaultHostWithDefaultPath()
+        }
+        return hostUrl(config, hostUrlToUse)
+    }
+    
+    @available(*, deprecated, message: "Please use getCurrentlyUsedHostUrl() instead")
+    public func getHostUrl() -> String {
+        getCurrentlyUsedHostUrl()
+    }
+    
+    private func doHProxyDomainsMechanismIsActive() -> Bool {
+        status != .off && config.enableDoh && !config.apiHost.isEmpty
+    }
+    
+    private func getDefaultHostWithDefaultPath() -> String {
+        config.defaultHost + config.defaultPath
     }
 
-    func cache(get host: String) -> DNSCache? {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-
-        guard var found = self.caches[host] else {
-            return nil
-        }
-
-        found = found.filter { (cache) -> Bool in
-            return cache.primary == true || cache.retry < 1
-        }
-        self.caches[host] = found
-
-        guard let first = found.first else {
-            return nil
-        }
-
-        if first.lastTimeout > 0 && first.lastTimeout <= Date().timeIntervalSince1970 {
-            if first.primary == false {
-                found.removeFirst()
-            }
-            found.sort { (left, right) -> Bool in
-                if left.retry > right.retry {
-                    return true
-                }
-                return false
-            }
-            self.caches[host] = found
-            return found.first
-        }
-
-        if first.retry > 0 && found.count > 1 {
-            if first.primary == false && first.retry >= 10 {
-                found.removeFirst()
-            }
-            found.sort { (left, right) -> Bool in
-                if left.retry > right.retry {
-                    return false
-                }
-                return true
-            }
-
-            self.caches[host] = found
-            return found.first
-        }
-
-        if first.primary {
-            if first.retry > 0 && found.count == 1 {
-                return nil
-            }
-        }
-
-        return found.first
-    }
-
-    func cache(set host: String, dns: DNS) {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-
-        let timeout = Date().timeIntervalSince1970 + Double(dns.ttl) * 1000
-        let cache = DNSCache(primary: false, dns: dns, lastTimeout: timeout, retry: 0)
-        var tmp = self.caches[host] ?? []
-        tmp.append(cache)
-        self.caches[host] = tmp
-    }
-
-    func cache(set host: String, dnsList: [DNS]) {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-
-        for dns in dnsList {
-            let timeout = Date().timeIntervalSince1970 + Double(dns.ttl) * 1000
-            let cache = DNSCache(primary: false, dns: dns, lastTimeout: timeout, retry: 0)
-            var tmp = self.caches[host] ?? []
-            tmp.append(cache)
-            self.caches[host] = tmp
-        }
-    }
-
-    func cache(clear host: String) {
-
-    }
-
-    public func clearAll() {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-
-        let config = self as! ServerConfig
-        var tmp: [DNSCache] = []
+    private func hostUrl(_ config: ServerConfig, _ found: DNSCache) -> String {
         let newurl = URL(string: config.defaultHost)!
-        let host = newurl.host!
-        let dns = DNS(url: host, ttl: 0)
-        let cache = DNSCache(primary: true, dns: dns, lastTimeout: 0, retry: 0)
-        tmp.append(cache)
-        self.caches[config.apiHost] = tmp
+        let host = newurl.host
+        let hostUrl = newurl.absoluteString.replacingOccurrences(of: host!, with: found.dns.url)
+        return hostUrl + config.defaultPath
     }
 
-    var globalCounter = 0
-    var firstTime = 0
-    public func handleError(host: String, error: Error?) -> Bool {
+    public func getCaptchaHostUrl() -> String {
+        guard doHProxyDomainsMechanismIsActive() else { return config.captchaHost }
+        guard let defaultUrl = URL(string: config.defaultHost)?.host else { return config.captchaHost }
+        guard config.captchaHost.contains(defaultUrl) else { return config.captchaHost }
+        guard let currentUrl = fetchCurrentlyUsedHostUrlFromCacheUpdatingIfNeeded()?.dns.url else { return config.captchaHost }
+        return config.captchaHost.replacingOccurrences(of: defaultUrl, with: currentUrl)
+    }
+    
+    public func getHumanVerificationV3Host() -> String {
+        config.humanVerificationV3Host
+    }
+    
+    public func getAccountHost() -> String {
+        config.accountHost
+    }
 
-        guard status != .off else {
-            return false
-        }
+    public func getSignUpString() -> String { config.signupDomain }
+    
+    // MARK: - Caching
 
-        guard let config = self as? ServerConfig else {
-            return false
-        }
-
-        guard config.debugMode == false else {
-            return self.debugModeLogic(host: host)
-        }
-
-        guard let error = error as NSError? else {
-            return false
-        }
-        guard let newurl = URL(string: host) else {
-            return false
-        }
-        guard let host = newurl.host else {
-            return false
-        }
-
-        let code = error.code
-
-        guard self.codeCheck(code: code) else {
-            return false
-        }
-
+    public func clearCache() {
         pthread_mutex_lock(mutex)
         defer { pthread_mutex_unlock(mutex) }
-
-        guard var found = self.caches[config.apiHost] else {
-            return false
-        }
-
-        for index in 0 ..< found.count {
-            let item = found[index]
-            if item.dns.url == host {
-                found[index].retry += 1
-            }
-        }
-        self.caches[config.apiHost] = found
-
-        // loop and if all tried // should only loop found
-        for (_, value) in self.caches {
-            for val in value where val.retry < 1 {
-                return true
-            }
-        }
-
-        // temp workaround
-        if status != .off && found.count == 1 && firstTime == 0 {
-            firstTime += 1
-            return true
-        }
-
-        return false
+        
+        self.caches = []
     }
-
-    func debugModeLogic(host: String) -> Bool {
-        guard let config = self as? ServerConfig else {
-            return false
-        }
-
-        guard let newurl = URL(string: host) else {
-            return false
-        }
-        guard let host = newurl.host else {
-            return false
-        }
-
-        guard let foundCode = config.blockList[host] else {
-            return false
-        }
-
-        let code = foundCode
-
-        guard self.codeCheck(code: code) else {
-            return false
-        }
-
+    
+    @available(*, deprecated, message: "Please use clearCache() instead")
+    public func clearAll() {
+        clearCache()
+    }
+    
+    private func fetchCurrentlyUsedHostUrlFromCacheUpdatingIfNeeded() -> DNSCache? {
         pthread_mutex_lock(mutex)
         defer { pthread_mutex_unlock(mutex) }
-
-        globalCounter += 1
-        guard globalCounter % 2 == 0 else {
-            return false
-        }
-
-        guard var found = self.caches[config.apiHost] else {
-            return false
-        }
-
-        for index in 0 ..< found.count {
-            let item = found[index]
-            if item.dns.url == host {
-                found[index].retry += 1
-            }
-        }
-        self.caches[config.apiHost] = found
-
-        // loop and if all tried
-        for (_, value) in self.caches {
-            for val in value where val.retry < 1 {
-                return true
-            }
-        }
-
-        return false
+        caches = caches.filter { $0.fetchTime + 24 * 60 * 60 > currentTimeProvider().timeIntervalSince1970 }
+        return caches.first
+    }
+    
+    private func isThereAnyDomainWorthRetryInCache() -> Bool {
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
+        
+        return !caches.isEmpty
     }
 
+    private func populateCache(dnsList: [DNS]) {
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
+        
+        for dns in dnsList.shuffled() {
+            let dnsCache = DNSCache(dns: dns, fetchTime: currentTimeProvider().timeIntervalSince1970)
+            if let indexOfAlreadyExistingDNS = caches.firstIndex(where: { $0.dns == dns }) {
+                caches[indexOfAlreadyExistingDNS] = dnsCache
+            } else {
+                caches.append(dnsCache)
+            }
+        }
+    }
+    
+    private func removeFailedDomainFromCache(host: String) {
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
+        
+        // remove the dns cache that failed
+        caches = caches.filter { $0.dns.url != host }
+    }
+    
+    // MARK: - Handling error
+    
+    /// Checks if the error means it is worth retrying using the proxy domain.
+    /// - Parameters:
+    ///   - host: The host url of the request which possible error should be checked
+    ///   - error: The error (if any) returned from the request
+    ///   - callCompletionBlockOn: Executor used to call completion block on
+    ///   - completion: Completion block parameter (Bool) indicates whether the request should be retried.
+    public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?, callCompletionBlockOn possibleCompletionBlock: DoHWorkExecutor? = nil, completion: @escaping (Bool) -> Void
+    ) {
+        let callCompletionBlockOn = possibleCompletionBlock ?? DispatchQueue.main
+        guard errorShouldResultInTryingProxyDomain(host: host, error: error),
+              let failedURL = URL(string: host), let failedHost = failedURL.host,
+              let defaultURL = URL(string: config.defaultHost), let defaultHost = defaultURL.host else {
+            callCompletionBlockOn.execute { completion(false) }
+            return
+        }
+        
+        if failedHost == defaultHost {
+            handlePrimaryHostFailure(
+                callCompletionBlockOn: callCompletionBlockOn, completion: completion
+            )
+        } else {
+            handleProxyDomainFailure(
+                failedHost: failedHost, callCompletionBlockOn: callCompletionBlockOn, completion: completion
+            )
+        }
+    }
+    
+    private func errorShouldResultInTryingProxyDomain(host: String, error: Error?) -> Bool {
+        guard doHProxyDomainsMechanismIsActive() else { return false }
+
+        guard config.debugMode == false else { return debugModeLogic(host: host) }
+
+        guard let newurl = URL(string: host), newurl.host != nil else { return false }
+
+        guard let error = error, codeCheck(code: (error as NSError).code) else { return false }
+        
+        return true
+    }
+    
     public func codeCheck(code: Int) -> Bool {
         guard code == NSURLErrorTimedOut ||
                 code == NSURLErrorCannotConnectToHost ||
                 code == NSURLErrorCannotFindHost ||
                 code == NSURLErrorDNSLookupFailed ||
+                code == 3500 || // this is tls error
                 code == -1200 ||
                 code == 451 ||
                 code == 310 ||
@@ -433,6 +334,133 @@ open class DoH: DoHInterface {
         else {
             return false
         }
+        
+        return true
+    }
+    
+    private func handlePrimaryHostFailure(callCompletionBlockOn: DoHWorkExecutor,
+                                          completion: @escaping (Bool) -> Void) {
+        guard isThereAnyDomainWorthRetryInCache() == false else {
+            // the request to primary host failed, but proxy domain is available - should retry, proxy domain will be returned in getCurrentlyUsedHostUrl()
+            callCompletionBlockOn.execute { completion(true) }
+            return
+        }
+        
+        // the request to primary host failed and no proxy domains are available — should try resolving the domains
+        resolveProxyDomainHostUrl { [weak self] domainsWereResolved in
+            
+            guard let self = self else {
+                callCompletionBlockOn.execute { completion(false) }
+                return
+            }
+            
+            // domains are not resolved, should not retry
+            guard domainsWereResolved else {
+                callCompletionBlockOn.execute { completion(false) }
+                return
+            }
+            
+            // if there is no retry-worthy domain after resolving, don't bother retrying
+            guard self.isThereAnyDomainWorthRetryInCache() else {
+                callCompletionBlockOn.execute { completion(false) }
+                return
+            }
+            
+            // if domains are resolved, should retry
+            callCompletionBlockOn.execute { completion(true) }
+        }
+    }
+    
+    private func handleProxyDomainFailure(
+        failedHost: String, callCompletionBlockOn: DoHWorkExecutor, completion: @escaping (Bool) -> Void
+    ) {
+        removeFailedDomainFromCache(host: failedHost)
+        
+        if isThereAnyDomainWorthRetryInCache() {
+            // more domains are available — should retry
+             callCompletionBlockOn.execute { completion(true) }
+        } else {
+            // no more proxy domains are available — should not retry
+            callCompletionBlockOn.execute { completion(false) }
+        }
+    }
+    
+    @available(*, deprecated, message: "Please use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:)")
+    public func handleError(host: String, error: Error?) -> Bool {
+        let semaphore = DispatchSemaphore(value: 0)
+        var result: Bool = false
+        handleErrorResolvingProxyDomainIfNeeded(host: host, error: error) { shouldRetry in
+            result = shouldRetry
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return result
+    }
+    
+    // MARK: - Resolving proxy domains
+    
+    private func resolveProxyDomainHostUrl(completion: @escaping (Bool) -> Void) {
+        domainResolvingExecutor.execute { [weak self] in
+            guard let self = self else { completion(false); return }
+            
+            guard self.isThereAnyDomainWorthRetryInCache() == false else {
+                PMLog.debug("[DoH] Resolving proxy domain — succeeded before")
+                completion(true)
+                return
+            }
+            
+            PMLog.debug("[DoH] Resolving proxy domain — fetching")
+            // perform the proxy domain fetching. it should result in populating the cache
+            self.fetchHostFromDNSProvidersUsingSynchronousBlockingCall(timeout: self.config.timeout)
+            
+            // try getting the domain from cache again
+            guard self.isThereAnyDomainWorthRetryInCache() else {
+                PMLog.debug("[DoH] Resolving proxy domain — failed")
+                return completion(false)
+            }
+            
+            PMLog.debug("[DoH] Resolving proxy domain — succeeded")
+            completion(true)
+        }
+    }
+
+    private func fetchHostFromDNSProvidersUsingSynchronousBlockingCall(timeout: TimeInterval) {
+        let semaphore = DispatchSemaphore(value: 0)
+        [Google(networkingEngine: networkingEngine), Quad9(networkingEngine: networkingEngine)]
+            .map { (provider: DoHProviderInternal) in
+                provider.fetch(host: config.apiHost, timeout: timeout) { [weak self] dns in
+                    defer { semaphore.signal() }
+                    guard let self = self, let dns = dns else { return }
+                    self.populateCache(dnsList: dns)
+                }
+            }.forEach {
+                semaphore.wait()
+            }
+    }
+    
+    // MARK: - Debug logic
+
+    private var globalCounter = 0
+    func debugModeLogic(host: String) -> Bool {
+        guard let newurl = URL(string: host) else { return false }
+        
+        guard let host = newurl.host else { return false }
+
+        guard let foundCode = config.blockList[host] else { return false }
+
+        let code = foundCode
+
+        guard codeCheck(code: code) else { return false }
+
+        pthread_mutex_lock(mutex)
+        defer { pthread_mutex_unlock(mutex) }
+
+        globalCounter += 1
+        guard globalCounter % 2 == 0 else { return false }
+        
+        caches = caches.filter { $0.dns.url != host }
+        
+        guard isThereAnyDomainWorthRetryInCache() else { return false }
         
         return true
     }

@@ -22,6 +22,7 @@
 import Foundation
 
 public typealias ListOfIAPIdentifiers = Set<String>
+public typealias ListOfShownPlanNames = Set<String>
 
 @available(*, deprecated, renamed: "InAppPurchasePlan")
 public typealias AccountPlan = InAppPurchasePlan
