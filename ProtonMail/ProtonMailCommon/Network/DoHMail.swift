@@ -25,22 +25,28 @@ import Foundation
 import ProtonCore_Doh
 
 class DoHMail : DoH, ServerConfig {
-    var signupDomain = "protonmail.com"
-    
+    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
+
+    /// if set false app will ignore the Doh status settings
+    var enableDoh: Bool = Constants.App.DOH_ENABLE
+
     var defaultHost = Constants.App.apiHost()
     
     var defaultPath = Constants.App.API_PATH
     
     var captchaHost = Constants.App.captchaHost()
 
-    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
-    
-    /// if set false app will ignore the Doh status settings
-    var enableDoh: Bool = Constants.App.DOH_ENABLE
-    
-    static let `default` = try! DoHMail()
+    var humanVerificationV3Host = "https://verify.protonmail.com"
+
+    var accountHost = "https://account.protonmail.com"
+
+    var signupDomain = "protonmail.com"
 
     var debugMode: Bool = false
     
     var blockList: [String : Int] = [:]
+
+    var timeout: TimeInterval = 5
+
+    static let `default` = try! DoHMail()
 }

@@ -25,7 +25,7 @@ struct AvailableDomainResponse: Codable {
     var domains: [String]
 }
 
-enum AvailableDomainsType: String {
+public enum AvailableDomainsType: String {
     case login
     case signup
 }

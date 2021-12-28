@@ -168,11 +168,13 @@ extension PMChallenge {
             self.frame = []
         }
         
-        mutating func fetchValues() {
-            self.deviceName = UIDevice.current.name.rollingHash()
-            self.appLang = Locale.current.languageCode ?? "unknow"
-            self.regionCode = Locale.current.regionCode ?? "unknow"
-            let currentTimezone = TimeZone.current
+        mutating func fetchValues(
+            device: UIDevice = .current, locale: Locale = .autoupdatingCurrent, timeZone: TimeZone = .autoupdatingCurrent
+        ) {
+            self.deviceName = device.name.rollingHash()
+            self.appLang = locale.languageCode ?? "unknow"
+            self.regionCode = locale.regionCode ?? "unknow"
+            let currentTimezone = timeZone
             self.timezone = currentTimezone.identifier
             self.timezoneOffset = -1 * (currentTimezone.secondsFromGMT() / 60)
             self.keyboards = self.collectKeyboardData()
@@ -290,12 +292,7 @@ extension PMChallenge {
             
             let names = keyboards.map { info -> String in
                 let id: String = (info.value(forKey: "identifier") as? String) ?? ""
-                if id.contains("emoji") {
-                    let emoji = UserDefaults.recentlyEmoji().joined().rollingHash()
-                    return "\(id)-\(emoji)"
-                } else {
-                    return id
-                }
+                return id
             }
             return names
         }

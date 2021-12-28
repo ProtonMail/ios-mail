@@ -84,4 +84,13 @@ struct Constants {
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
                                            "iosmail_mail2021_12_usd_non_renewing",
                                            "iosmail_bundle2021_12_usd_non_renewing"]
+    static let shownPlanNames: Set<String> = ["plus",
+                                              "professional",
+                                              "visionary",
+                                              "mail2021",
+                                              "bundle2021",
+                                              "mailpro2021",
+                                              "family2021",
+                                              "visionary2021",
+                                              "bundlepro2021"]
 }

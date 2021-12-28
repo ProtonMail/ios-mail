@@ -202,7 +202,7 @@ class SettingDetailViewController: UIViewController {
     // MARK: private methods
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments)
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true,
                                          updateCredits: false) { _ in }

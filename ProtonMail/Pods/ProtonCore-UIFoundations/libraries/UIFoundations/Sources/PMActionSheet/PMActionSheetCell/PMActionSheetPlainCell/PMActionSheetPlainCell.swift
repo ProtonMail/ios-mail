@@ -43,7 +43,7 @@ final class PMActionSheetPlainCell: UITableViewCell {
     }
 
     func config(item: PMActionSheetPlainItem) {
-
+        self.backgroundColor = ColorProvider.BackgroundNorm
         let hasLeftIcon: Bool
         if let leftIcon = item.icon {
             self.leftIcon.image = leftIcon

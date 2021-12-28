@@ -185,7 +185,7 @@ extension PMBanner {
         self.timer = nil
     }
 
-    /// Subscribe keybard notification
+    /// Subscribe keyboard notification
     private func subscribeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
@@ -333,11 +333,11 @@ extension PMBanner {
             textView.trailingAnchor.constraint(equalTo: rightRef, constant: -style.borderInsets.right).prioritised(as: .defaultLow.lower),
             textView.heightAnchor.constraint(greaterThanOrEqualToConstant: ICON_SIZE)
         ])
-        updateTextViewContraints(textView)
+        updateTextViewConstraints(textView)
         textView.setContentCompressionResistancePriority(.defaultLow.lower.lower.lower, for: .horizontal)
     }
 
-    fileprivate func updateTextViewContraints(_ textView: UITextView) {
+    private func updateTextViewConstraints(_ textView: UITextView) {
         if traitCollection.horizontalSizeClass == .compact {
             textView.setContentHuggingPriority(.defaultLow.lower.lower.lower, for: .horizontal)
         } else {
@@ -350,7 +350,7 @@ extension PMBanner {
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass,
               let textView = textView
         else { return }
-        updateTextViewContraints(textView)
+        updateTextViewConstraints(textView)
     }
 
     /// Setup constraints of `PMBanner`

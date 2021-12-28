@@ -193,12 +193,17 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     deinit {
+        unsubscribeFromPaymentQueue()
         reachability?.stopNotifier()
     }
 
     public func subscribeToPaymentQueue() {
-        paymentQueue.remove(self)
+        unsubscribeFromPaymentQueue()
         paymentQueue.add(self)
+    }
+    
+    public func unsubscribeFromPaymentQueue() {
+        paymentQueue.remove(self)
     }
 
     public func updateAvailableProductsList(completion: @escaping (Error?) -> Void) {
@@ -215,7 +220,9 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func currentTransaction() -> SKPaymentTransaction? {
-        return paymentQueue.transactions.filter { $0.transactionState != .failed }.first
+        return paymentQueue.transactions.filter {
+            $0.transactionState != .failed && $0.transactionState != .purchasing && $0.transactionState != .deferred
+        }.first
     }
 
     public func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void) {
@@ -363,6 +370,12 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     public func hasUnfinishedPurchase() -> Bool {
         return !paymentQueue.transactions.filter { $0.transactionState != .failed }.isEmpty
     }
+    
+    public func hasIAPInProgress() -> Bool {
+        return paymentQueue.transactions.filter {
+            $0.transactionState == .purchasing || $0.transactionState == .deferred
+        }.isEmpty == false
+    }
 
     public func readReceipt() throws -> String {
         if isRunningTests {
@@ -480,6 +493,11 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             if error.code == SKError.paymentCancelled.rawValue {
                 getErrorCompletion(for: cacheKey) {
                     $0?(Errors.cancelled)
+                    self.refreshHandler?()
+                }
+            } else if error.code == SKError.paymentNotAllowed.rawValue {
+                getErrorCompletion(for: cacheKey) {
+                    $0?(Errors.notAllowed)
                     self.refreshHandler?()
                 }
             } else if error.code == SKError.unknown.rawValue {

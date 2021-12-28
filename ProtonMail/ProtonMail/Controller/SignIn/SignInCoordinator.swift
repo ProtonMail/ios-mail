@@ -22,6 +22,7 @@
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Login
+import ProtonCore_LoginUI
 import ProtonCore_Networking
 
 final class SignInCoordinator: DefaultCoordinator {

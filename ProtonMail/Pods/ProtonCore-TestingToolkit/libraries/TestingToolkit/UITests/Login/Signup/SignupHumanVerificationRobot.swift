@@ -27,18 +27,25 @@ import ProtonCore_CoreTranslation
 private let titleName = CoreString._hv_title
 private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
 private let closeButtonAccessibilityId = "closeButton"
+private let captchaSelectedControlLabel = CoreString._hv_captha_method_name
+private let smsSelectedControlLabel = CoreString._hv_sms_method_name
+private let emailSelectedControlLabel = CoreString._hv_email_method_name
+private let emailTextField = "EmailVerifyViewController.emailTextFieldView.textField"
+private let sendCodeButtonLabel = CoreString._hv_email_verification_button
+private let verifyCodeTextField = "VerifyCodeViewController.verifyCodeTextFieldView.textField"
+private let verifyCodeButtonLabel = CoreString._hv_verification_verify_button
 
 public final class SignupHumanVerificationRobot: CoreElements {
     public enum HVOrCompletionRobot {
         case humanVerification(SignupHumanVerificationRobot)
         case complete(CompleteRobot)
 
-        public func proceed<T: CoreElements>(to: T.Type) -> T {
+        public func proceed<T: CoreElements>(email: String, code: String, to: T.Type) -> T {
             switch self {
             case .humanVerification(let hvRobot):
                 return hvRobot
                     .verify.humanVerificationScreenIsShown()
-                    .humanVerificationCaptchaTap(to: CompleteRobot.self)
+                    .performEmailVerification(email: email, code: code, to: CompleteRobot.self)
                     .verify.completeScreenIsShown(robot: T.self)
             case .complete(let completeRobot):
                 return completeRobot
@@ -58,9 +65,45 @@ public final class SignupHumanVerificationRobot: CoreElements {
         
         public func isHumanVerificationRequired() -> HVOrCompletionRobot {
             let staticText = XCUIApplication().staticTexts[titleName]
-            Wait(time: 5.0).forElement(staticText)
+            Wait(time: 10.0).forElement(staticText)
             return staticText.exists ? .humanVerification(SignupHumanVerificationRobot()) : .complete(CompleteRobot())
         }
+    }
+    
+    public func switchToEmailHVMethod() -> SignupHumanVerificationRobot {
+        button(emailSelectedControlLabel).tap()
+        return self
+    }
+    
+    public func insertEmail(_ email: String) -> SignupHumanVerificationRobot {
+        textField(emailTextField).tap().typeText(email)
+        return self
+    }
+    
+    public func sendCodeButton() -> SignupHumanVerificationRobot {
+        button(sendCodeButtonLabel).tap()
+        return self
+    }
+    
+    public func fillInCode(_ code: String) -> SignupHumanVerificationRobot {
+        textField(verifyCodeTextField).tap().typeText(code)
+        return self
+    }
+    
+    public func verifyCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(verifyCodeButtonLabel).tap()
+        return Robot()
+    }
+    
+    public func performEmailVerification<Robot: CoreElements>(
+        email: String, code: String, to: Robot.Type
+    ) -> Robot {
+        self
+            .switchToEmailHVMethod()
+            .insertEmail(email)
+            .sendCodeButton()
+            .fillInCode(code)
+            .verifyCodeButton(to: Robot.self)
     }
 
     public func humanVerificationCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {

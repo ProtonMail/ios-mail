@@ -44,6 +44,7 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
     typealias FinishCallback = () -> Void
 
     func subscribeToPaymentQueue()
+    func unsubscribeFromPaymentQueue()
     func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void)
     func purchaseProduct(plan: InAppPurchasePlan,
                          amountDue: Int,
@@ -53,6 +54,7 @@ public protocol StoreKitManagerProtocol: NSObjectProtocol {
     func continueRegistrationPurchase(finishHandler: FinishCallback?)
     func updateAvailableProductsList(completion: @escaping (Error?) -> Void)
     func hasUnfinishedPurchase() -> Bool
+    func hasIAPInProgress() -> Bool
     func readReceipt() throws -> String
     func getNotifiedWhenTransactionsWaitingForTheSignupAppear(completion: @escaping ([InAppPurchasePlan]) -> Void) -> [InAppPurchasePlan]
     func stopBeingNotifiedWhenTransactionsWaitingForTheSignupAppear()

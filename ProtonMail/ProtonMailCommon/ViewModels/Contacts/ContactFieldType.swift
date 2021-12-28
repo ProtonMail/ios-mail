@@ -24,6 +24,8 @@
 import Foundation
 
 enum ContactFieldType {
+    private static let allCases: [ContactFieldType] = [.home, .work, .email, .other, .phone, .mobile, .fax, .address, .url, .internet, .empty]
+    
     //raw value is the type
     case home
     case work

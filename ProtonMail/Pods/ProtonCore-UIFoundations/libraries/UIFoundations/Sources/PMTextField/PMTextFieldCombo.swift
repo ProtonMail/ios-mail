@@ -53,7 +53,11 @@ public class PMTextFieldCombo: UIView {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private var mainView: UIView!
-    @IBOutlet private weak var textField: PMInternalTextField!
+    @IBOutlet private weak var textField: PMInternalTextField! {
+        didSet {
+            textField.internalDelegate = self
+        }
+    }
     @IBOutlet private weak var assistiveTextLabel: UILabel!
     @IBOutlet weak var pickerButton: UIButton!
     @IBOutlet private weak var pickerLabel: UILabel!
@@ -263,7 +267,18 @@ public class PMTextFieldCombo: UIView {
         pickerLabel.textColor = ColorProvider.TextNorm
     }
 
+    private func updateClearMode() {
+        if let text = textField.text, !self.textField.isUmnaskButton {
+            if text.isEmpty {
+                self.textField.clearMode = .never
+            } else {
+                self.textField.clearMode = .whileEditing
+            }
+        }
+    }
+    
     @objc private func textFieldDidChange(textField: UITextField) {
+        updateClearMode()
         delegate?.didChangeValue(self, value: value)
     }
 
@@ -308,5 +323,13 @@ extension PMTextFieldCombo: UITextFieldDelegate {
         }
 
         return Int(string) != nil
+    }
+}
+
+// MARK: - Text field internal delegate
+
+extension PMTextFieldCombo: PMInternalTextFieldDelegate {
+    public func didClearEditing() {
+        updateClearMode()
     }
 }

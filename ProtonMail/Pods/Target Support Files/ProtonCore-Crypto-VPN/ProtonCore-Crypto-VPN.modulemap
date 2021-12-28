@@ -1,6 +1,0 @@
-framework module ProtonCore_Crypto_VPN {
-  umbrella header "ProtonCore-Crypto-VPN-umbrella.h"
-
-  export *
-  module * { export * }
-}

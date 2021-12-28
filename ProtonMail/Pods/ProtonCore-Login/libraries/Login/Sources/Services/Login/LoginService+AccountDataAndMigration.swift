@@ -34,7 +34,7 @@ extension LoginService {
         switch self.minimumAccountType {
         case .username:
             
-            let authCredential = authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!
+            let authCredential = authManager.getToken(bySessionUID: sessionId)!
             var credential = Credential(authCredential)
             credential.scope = authManager.scopes ?? []
             completion(.success(.finished(LoginData.credential(credential))))
@@ -63,7 +63,7 @@ extension LoginService {
             // external account used but internal needed
             // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
             if user.isExternal && self.minimumAccountType == .internal {
-                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!, user: user, mailboxPassword: mailboxPassword))))
+                completion(.success(.chooseInternalUsernameAndCreateInternalAddress(CreateAddressData(email: self.username!, credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, mailboxPassword: mailboxPassword))))
                 return
             }
 
@@ -373,7 +373,7 @@ extension LoginService {
                                             privateKey: key.privateKey)
             }
 
-            completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: LoginAndSignup.sessionId)!, user: user, salts: salts, passphrases: passphrases, addresses: addresses, scopes: self.authManager.scopes ?? [])))))
+            completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, salts: salts, passphrases: passphrases, addresses: addresses, scopes: self.authManager.scopes ?? [])))))
 
         case let .failure(error):
             PMLog.debug("Making passphrases failed with \(error)")

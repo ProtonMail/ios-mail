@@ -23,6 +23,7 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_Login
+import ProtonCore_LoginUI
 import ProtonCore_Networking
 import ProtonCore_Services
 import UIKit
@@ -31,7 +32,7 @@ struct SignInCoordinatorEnvironment {
     typealias LoginCreationClosure = (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
-    let doh: DoH
+    let doh: DoH & ServerConfig
     let forceUpgradeDelegate: ForceUpgradeDelegate
     let apiServiceDelegate: APIServiceDelegate
     let mailboxPassword: (String, AuthCredential) -> String
@@ -73,13 +74,14 @@ extension SignInCoordinatorEnvironment {
             if UIApplication.isTestflightBeta {
                 payment = .notAvailable
             } else {
-                payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs,
+                payment = .available(parameters: .init(listOfIAPIdentifiers: Constants.mailPlanIDs, listOfShownPlanNames: Constants.shownPlanNames,
                                                        reportBugAlertHandler: { receipt in
                     let link = DeepLink(.toWebSupportForm, sender: nil)
                     NotificationCenter.default.post(name: .switchView, object: link)
                 }))
             }
             return LoginAndSignup(appName: appName,
+                                  clientApp: .mail,
                                   doh: doh,
                                   apiServiceDelegate: apiServiceDelegate,
                                   forceUpgradeDelegate: forceUpgradeDelegate,

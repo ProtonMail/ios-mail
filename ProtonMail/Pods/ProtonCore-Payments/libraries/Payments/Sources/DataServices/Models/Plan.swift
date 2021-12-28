@@ -34,7 +34,7 @@ public struct Plan: Codable, Equatable {
     public let maxDomains: Int
     public let maxSpace: Int64
     // services is ignored
-    // cycle is ignored
+    public let cycle: Int?
 
     // type field tells if the plan is an add-on or a primary one. 0 — add-on, 1 — primary
     public let type: Int
@@ -52,7 +52,7 @@ public struct Plan: Codable, Equatable {
 
     public static var empty: Plan {
         Plan(name: "", iD: nil, maxAddresses: 0, maxMembers: 0, pricing: nil, maxDomains: 0, maxSpace: 0,
-                           type: 0, title: "", maxVPN: 0, features: 0, maxCalendars: nil, state: nil)
+             type: 0, title: "", maxVPN: 0, features: 0, maxCalendars: nil, state: nil, cycle: 0)
     }
 
     public init(name: String,
@@ -67,7 +67,8 @@ public struct Plan: Codable, Equatable {
                 maxVPN: Int,
                 features: Int,
                 maxCalendars: Int?,
-                state: Int?) {
+                state: Int?,
+                cycle: Int?) {
         self.name = name
         self.iD = iD
         self.maxAddresses = maxAddresses
@@ -81,6 +82,7 @@ public struct Plan: Codable, Equatable {
         self.features = features
         self.maxCalendars = maxCalendars
         self.state = state
+        self.cycle = cycle
     }
 }
 
@@ -136,7 +138,8 @@ public extension Plan {
             maxVPN: combinedValue(planDetails, \.maxVPN),
             features: combinedValue(planDetails, \.features),
             maxCalendars: combinedValue(planDetails, \.maxCalendars),
-            state: combinedValue(planDetails, \.state)
+            state: combinedValue(planDetails, \.state),
+            cycle: combinedValue(planDetails, \.cycle)
         )
     }
 }

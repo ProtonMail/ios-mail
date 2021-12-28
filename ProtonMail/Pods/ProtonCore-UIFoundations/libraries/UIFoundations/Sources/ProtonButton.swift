@@ -99,6 +99,7 @@ public class ProtonButton: UIButton {
             titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
             contentEdgeInsets = UIEdgeInsets(top: 14, left: 16, bottom: 14, right: 16)
         }
+        layoutIfNeeded()
     }
 
     fileprivate func solidLayout() {
@@ -116,7 +117,7 @@ public class ProtonButton: UIButton {
         setTitleColor(ColorProvider.BrandNorm, for: .normal)
         setTitleColor(ColorProvider.BrandDarken20, for: .highlighted)
         setTitleColor(ColorProvider.BrandDarken20, for: .selected)
-        setBackgroundColor(ColorProvider.BackgroundNorm, forState: .normal)
+        setBackgroundColor(.clear, forState: .normal)
         setBackgroundColor(ColorProvider.BackgroundSecondary, forState: .highlighted)
         setBackgroundColor(ColorProvider.BackgroundSecondary, forState: .selected)
         setBackgroundColor(ColorProvider.BackgroundNorm, forState: .disabled)

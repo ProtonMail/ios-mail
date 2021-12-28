@@ -26,8 +26,8 @@ import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Networking
 
-extension LoginService: Login {
-    func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+extension LoginService {
+    public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.username = username
         self.mailboxPassword = password
 
@@ -57,7 +57,7 @@ extension LoginService: Login {
         }
     }
 
-    func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+    public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         PMLog.debug("Confirming 2FA code")
         guard let context = self.context else {
             completion(.failure(.invalidState))
@@ -95,11 +95,11 @@ extension LoginService: Login {
         }
     }
 
-    func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+    public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         getAccountDataPerformingAccountMigrationIfNeeded(user: nil, mailboxPassword: mailboxPassword, completion: completion)
     }
 
-    func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
         PMLog.debug("Logging out")
 
         manager.closeSession(Credential(credential)) { result in
@@ -113,7 +113,7 @@ extension LoginService: Login {
         }
     }
 
-    func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+    public func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         PMLog.debug("Checking if username is available")
 
         manager.checkAvailable(username) { result in
@@ -126,7 +126,7 @@ extension LoginService: Login {
         }
     }
 
-    func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
+    public func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
         PMLog.debug("Setting username")
 
         manager.setUsername(username: username) { result in
@@ -139,10 +139,10 @@ extension LoginService: Login {
         }
     }
 
-    func createAccountKeysIfNeeded(user: User,
-                                   addresses: [Address]?,
-                                   mailboxPassword: String?,
-                                   completion: @escaping (Result<User, LoginError>) -> Void) {
+    public func createAccountKeysIfNeeded(user: User,
+                                          addresses: [Address]?,
+                                          mailboxPassword: String?,
+                                          completion: @escaping (Result<User, LoginError>) -> Void) {
         PMLog.debug("Creating account keys if needed")
         let isAccountKeyCreationNeeded = user.keys.first(where: { $0.primary == 1 }) == nil
         guard isAccountKeyCreationNeeded else {
@@ -157,6 +157,7 @@ extension LoginService: Login {
         }
 
         // if no info about addresses was provided from the client, refresh it
+        startGeneratingKeys?()
         guard let addresses = addresses else {
             manager.getAddresses { [weak self] in
                 switch $0 {
@@ -198,9 +199,10 @@ extension LoginService: Login {
         }
     }
 
-    func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
+    public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
         PMLog.debug("Creating address")
 
+        startGeneratingAddress?()
         manager.createAddress(domain: signUpDomain) { result in
             switch result {
             case let .success(address):
@@ -228,7 +230,7 @@ extension LoginService: Login {
         }
     }
 
-    func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
+    public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
         PMLog.debug("Creating address keys")
 
         guard address.keys.isEmpty else {

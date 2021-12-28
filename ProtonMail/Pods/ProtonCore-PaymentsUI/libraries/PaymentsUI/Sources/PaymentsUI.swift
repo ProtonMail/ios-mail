@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import enum ProtonCore_DataModel.ClientApp
 import ProtonCore_Payments
 
 public enum PaymentsUIPresentationType {
@@ -46,7 +47,7 @@ public final class PaymentsUI {
     private let coordinator: PaymentsUICoordinator
     private let paymentsUIAlertManager: PaymentsUIAlertManager
     
-    public init(payments: Payments, alertManager: AlertManagerProtocol? = nil) {
+    public init(payments: Payments, clientApp: ClientApp, shownPlanNames: ListOfShownPlanNames, alertManager: AlertManagerProtocol? = nil) {
         if let alertManager = alertManager {
             self.paymentsUIAlertManager = AlwaysDelegatingPaymentsUIAlertManager(delegatedAlertManager: alertManager)
         } else {
@@ -57,6 +58,7 @@ public final class PaymentsUI {
         self.coordinator = PaymentsUICoordinator(planService: payments.planService,
                                                  storeKitManager: payments.storeKitManager,
                                                  purchaseManager: payments.purchaseManager,
+                                                 clientApp: clientApp, shownPlanNames: shownPlanNames,
                                                  alertManager: paymentsUIAlertManager)
     }
     

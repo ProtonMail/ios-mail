@@ -56,10 +56,10 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Slk-k5-s1Z">
-                        <rect key="frame" x="286" y="22" width="18" height="20"/>
+                        <rect key="frame" x="284" y="22" width="20" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwz-BR-drT">
-                                <rect key="frame" x="6" y="2" width="6" height="16"/>
+                                <rect key="frame" x="6" y="2" width="8" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" name="SidebarTextNorm"/>
                                 <nil key="highlightedColor"/>
@@ -71,6 +71,7 @@
                             <constraint firstAttribute="bottom" secondItem="dwz-BR-drT" secondAttribute="bottom" constant="2" id="ISs-LE-upD"/>
                             <constraint firstItem="dwz-BR-drT" firstAttribute="leading" secondItem="Slk-k5-s1Z" secondAttribute="leading" constant="6" id="L1D-h7-cX0"/>
                             <constraint firstAttribute="trailing" secondItem="dwz-BR-drT" secondAttribute="trailing" constant="6" id="MJ1-bF-A1t"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="gzU-hF-Nl1"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z35-Xh-8XH">

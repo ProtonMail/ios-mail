@@ -21,15 +21,13 @@
 
 import Foundation
 
-public enum Brand {
-    case proton
-    case vpn
-}
-
 public struct ProtonColor {
     let name: String
-    init(name: String) {
+    let vpnFallbackRgb: Int?
+
+    init(name: String, vpnFallbackRgb: Int? = nil) {
         self.name = name
+        self.vpnFallbackRgb = vpnFallbackRgb
     }
 }
 
@@ -52,7 +50,21 @@ extension ColorProviderBase {
 }
 
 extension ProtonColor {
-    var uiColor: UIColor { UIColor(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)! }
+    var uiColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return color(name: name)
+        } else {
+            if ProtonColorPallete.brand == .vpn, let vpnFallbackRgb = vpnFallbackRgb {
+                return UIColor(rgb: vpnFallbackRgb)
+            } else {
+                return color(name: name)
+            }
+        }
+    }
+    
+    private func color(name: String) -> UIColor {
+        UIColor(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)!
+    }
 }
 #endif
 
@@ -66,7 +78,21 @@ extension ColorProviderBase {
 }
 
 extension ProtonColor {
-    var nsColor: NSColor { NSColor(named: name, bundle: PMUIFoundations.bundle)! }
+    var nsColor: NSColor {
+        if #available(OSX 10.14, *) {
+            return color(name: name)
+        } else {
+            if ProtonColorPallete.brand == .vpn, let vpnFallbackRgb = vpnFallbackRgb {
+                return NSColor(rgb: vpnFallbackRgb)
+            } else {
+                return color(name: name)
+            }
+        }
+    }
+    
+    private func color(name: String) -> NSColor {
+        NSColor(named: name, bundle: PMUIFoundations.bundle)!
+    }
 }
 #endif
 

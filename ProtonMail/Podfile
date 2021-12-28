@@ -4,7 +4,7 @@ def proton_core_path
   "git@gitlab.protontech.ch:apple/shared/protoncore.git"
 end
 
-# proton url is set to env variable because the core module podspecs expect it. 
+# proton url is set to env variable because the core module podspecs expect it.
 # it's part of transition into open sourced core modules and it will not be necessary when they are on github
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
 source proton_core_path
@@ -14,25 +14,24 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.2.1'
+  '3.5.0'
 end
 
 def pm_shared_pods
   pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Crypto', proton_core_version
   pod 'ProtonCore-SRP', proton_core_version
-  pod 'ProtonCore-Authentication', proton_core_version
-  pod 'ProtonCore-Keymaker', proton_core_version
-  pod 'ProtonCore-Payments', proton_core_version
-  pod 'ProtonCore-Payments/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
   pod 'ProtonCore-UIFoundations', proton_core_version
-  pod 'ProtonCore-Common', proton_core_version
-  pod 'ProtonCore-Authentication-KeyGeneration', proton_core_version
-  pod 'ProtonCore-Authentication/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Common/Alamofire', proton_core_version
+  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', proton_core_version
   pod 'Groot', '3.0.1'
   pod 'Masonry', '1.1.0'
   pod 'PromiseKit', '6.13.1'
@@ -53,10 +52,10 @@ def pm_pods
   pod 'ProtonCore-CoreTranslation', proton_core_version
   pod 'ProtonCore-Log', proton_core_version
   pod 'ProtonCore-AccountSwitcher', proton_core_version
-  pod 'ProtonCore-ForceUpgrade', proton_core_version
-  pod 'ProtonCore-HumanVerification', proton_core_version
-  pod 'ProtonCore-Login', proton_core_version
-  pod 'ProtonCore-Login/UsingCrypto', proton_core_version
+  pod 'ProtonCore-ForceUpgrade/Alamofire', proton_core_version
+  pod 'ProtonCore-HumanVerification/Alamofire', proton_core_version
+  pod 'ProtonCore-Login/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-LoginUI/UsingCrypto+Alamofire', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
@@ -95,11 +94,12 @@ target 'ProtonMailTests' do
   pod 'PromiseKit', '6.13.1'
   pod 'ProtonCore-TestingToolkit/UnitTests/Core', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Services', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Services/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/Networking', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification/Alamofire', proton_core_version
   pm_pods
 end
 

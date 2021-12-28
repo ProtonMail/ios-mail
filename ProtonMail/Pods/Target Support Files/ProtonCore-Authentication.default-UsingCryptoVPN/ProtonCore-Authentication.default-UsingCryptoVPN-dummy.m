@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_ProtonCore_Authentication_default_UsingCryptoVPN : NSObject
-@end
-@implementation PodsDummy_ProtonCore_Authentication_default_UsingCryptoVPN
-@end

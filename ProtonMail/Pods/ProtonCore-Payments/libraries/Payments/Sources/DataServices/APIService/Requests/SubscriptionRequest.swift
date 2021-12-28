@@ -94,11 +94,13 @@ final class GetSubscriptionResponse: Response {
             let endRaw = response["PeriodEnd"] as? Int else { return false }
         let couponCode = response["CouponCode"] as? String
         let cycle = response["Cycle"] as? Int
+        let amount = response["Amount"] as? Int
+        let currency = response["Currency"] as? String
         let (plansParsed, plans) = decodeResponse(response["Plans"] as Any, to: [Plan].self)
         guard plansParsed else { return false }
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = Subscription(start: start, end: end, planDetails: plans, paymentMethods: nil, couponCode: couponCode, cycle: cycle)
+        self.subscription = Subscription(start: start, end: end, planDetails: plans, couponCode: couponCode, cycle: cycle, amount: amount, currency: currency)
         return true
     }
 }

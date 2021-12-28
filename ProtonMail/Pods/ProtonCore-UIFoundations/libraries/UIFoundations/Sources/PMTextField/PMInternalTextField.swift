@@ -22,10 +22,15 @@
 import Foundation
 import UIKit
 
+public protocol PMInternalTextFieldDelegate: AnyObject {
+    func didClearEditing()
+}
+
 final class PMInternalTextField: UITextField {
 
     // MARK: - Properties
-
+    weak var internalDelegate: PMInternalTextFieldDelegate?
+    
     var isError: Bool = false {
         didSet {
             setBorder()
@@ -51,8 +56,15 @@ final class PMInternalTextField: UITextField {
 
     private lazy var unmaskButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 48, height: 48)
+        button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         button.addTarget(self, action: #selector(self.togglePasswordVisibility), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var clearButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        button.addTarget(self, action: #selector(self.clearContent), for: .touchUpInside)
         return button
     }()
 
@@ -75,17 +87,31 @@ final class PMInternalTextField: UITextField {
         let borderColor: UIColor = ColorProvider.InteractionWeakDisabled
         layer.borderColor = borderColor.cgColor
     }
+    
+    var isUmnaskButton: Bool {
+        return unmaskButton.image(for: .normal) != nil
+    }
 
-    override var clearButtonMode: UITextField.ViewMode {
+    var clearMode: UITextField.ViewMode = .never {
         didSet {
-            setNeedsDisplay()
+            guard unmaskButton.image(for: .normal) == nil else { return }
+            rightViewMode = clearMode
+            switch clearMode {
+            case .never, .unlessEditing:
+                rightView = nil
+            case .whileEditing, .always:
+                clearButton.setImage(UIImage(named: "ClearIcon", in: PMUIFoundations.bundle, compatibleWith: nil), for: .normal)
+                rightView = clearButton
+            @unknown default:
+                break
+            }
         }
     }
 
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        var rightPadding: CGFloat = clearButtonMode == .whileEditing ? 16 : 0
+        var rightPadding: CGFloat = 0
         if rightView != nil {
-            rightPadding += 24
+            rightPadding += 30
         }
         return CGRect(x: bounds.origin.x + topBottomInset, y: bounds.origin.y + leftRightInset, width: bounds.size.width - 2 * leftRightInset - rightPadding - suffixMarging, height: bounds.size.height - 2 * topBottomInset)
     }
@@ -96,7 +122,7 @@ final class PMInternalTextField: UITextField {
 
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         var rect = super.rightViewRect(forBounds: bounds)
-        rect.origin.x -= 10
+        rect.origin.x -= 15
         return rect
     }
 
@@ -137,6 +163,11 @@ final class PMInternalTextField: UITextField {
             selectedTextRange = nil
             selectedTextRange = existingSelectedTextRange
         }
+    }
+    
+    @objc private func clearContent() {
+        text = ""
+        internalDelegate?.didClearEditing()
     }
 
     private func showMaskButton() {

@@ -41,6 +41,16 @@ extension ServicePlanDataServiceProtocol {
         }
         return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
     }
+    
+    var price: String? {
+        guard let amount = currentSubscription?.amount, let currency = currentSubscription?.currency else { return nil }
+        let value = Double(amount) / 100.0
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency
+        return formatter.string(from: NSNumber(value: value))
+    }
 
     // MARK: Private interface
 

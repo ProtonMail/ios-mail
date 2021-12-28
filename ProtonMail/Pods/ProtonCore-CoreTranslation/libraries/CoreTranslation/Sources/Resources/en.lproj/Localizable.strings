@@ -180,6 +180,13 @@
 "Change password" = "Change password";
 
 /*
+ *  Account Deletion
+ */
+
+"Delete account" = "Delete account";
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+
+/*
  *  Account Manager
  */
 "switch to" = "switch to";
@@ -192,6 +199,7 @@
 "Remove" = "Remove";
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
 "Dismiss account switcher" = "Dismiss account switcher";
+"Sign in to another account" = "Sign in to another account";
 
 /**
  * Signup
@@ -224,21 +232,17 @@
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
 "Set recovery method" = "Set recovery method";
 "Your account is being created" = "Your account is being created…";
-"It usually takes no more than a minute." = "It usually takes no more than a minute.";
-"Secure space creation..." = "Secure space creation...";
-"Secure space created" = "Secure space created";
-"Privacy keys generation..." = "Privacy keys generation...";
-"Privacy keys generated" = "Privacy keys generated";
-"Payment validation..." = "Payment validation...";
-"Payment validated" = "Payment validated";
+"This should take no more than a minute." = "This should take no more than a minute.";
+"Creating your account" = "Creating your account";
+"Generating your address" = "Generating your address";
+"Securing your account" = "Securing your account";
+"Verifying your payment" = "Verifying your payment";
 "Account verification" = "Account verification";
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
 "Verification code" = "Verification code";
 "Enter the 6-digit code." = "Enter the 6-digit code.";
 "Did not receive a code?" = "Did not receive a code?";
 "Terms and Conditions" = "Terms and Conditions";
-"Device token error" = "Device token error";
-"Device token unsupported" = "Device token unsupported";
 "Invalid token request" = "Invalid token request";
 "Invalid token error" = "Invalid token error";
 "Create user failed" = "Create user failed";
@@ -253,7 +257,7 @@
 "Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
 "Proton Free" = "Proton Free";
 "Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
-"Enjoy the world privacy." = "Enjoy the world privacy.";
+"Enjoy the world of privacy." = "Enjoy the world of privacy.";
 
 /**
  *  Payments UI
@@ -261,28 +265,37 @@
 
 "Select a plan" = "Select a plan";
 "Current plan" = "Current plan";
-"Upgrade plan" = "Upgrade plan";
-"Visit protonmail.com for more plans and pricing options." = "Visit protonmail.com for more plans and pricing options.";
-"Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly).";
-"Select plan" = "Select plan";
+"Subscription" = "Subscription";
+"Upgrade your plan" = "Upgrade your plan";
+"Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@." = "Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@.";
+"Manage your subscription at %@." = "Manage your subscription at %@.";
+"Select" = "Select";
 "Upgrade" = "Upgrade";
-" / year" = " / year";
+"for 1 month" = "for 1 month";
+"for 1 year" = "for 1 year";
+"for %i years" = "for %i years";
 "Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
 "Current plan will expire on %@" = "Current plan will expire on %@";
 "%i user" = "%i user";
 "%i users" = "%i users";
 "%@ storage" = "%@ storage";
 "%@ storage / user" = "%@ storage / user";
-"%i address" = "%i address";
-"%i addresses" = "%i addresses";
-"%i address / user" = "%i address / user";
-"%i addresses / user" = "%i addresses / user";
+"%i email address" = "%i email address";
+"%i email addresses" = "%i email addresses";
+"%i email address / user" = "%i email address / user";
+"%i email addresses / user" = "%i email addresses / user";
 "%i calendar" = "%i calendar";
+"%i folders / labels" = "%i folders / labels";
+"Medium speed" = "Medium speed";
+"Priority customer support" = "Priority customer support";
+"%i countries" = "%i countries";
+"Adblocker (NetShield)" = "Adblocker (NetShield)";
+"Streaming service support" = "Streaming service support";
 "%i calendars" = "%i calendars";
 "%i calendar / user" = "%i calendar / user";
 "%i calendars / user" = "%i calendars / user";
-"%i VPN connection" = "%i VPN connection";
-"%i VPN connections" = "%i VPN connections";
+"%i connection" = "%i connection";
+"%i connections" = "%i connections";
 "%i high-speed VPN connection" = "%i high-speed VPN connection";
 "%i high-speed VPN connections" = "%i high-speed VPN connections";
 "%i high-speed VPN connection / user" = "%i high-speed VPN connection / user";
@@ -295,10 +308,15 @@
 "High speed" = "High speed";
 "Highest speed" = "Highest speed";
 "Multi-user support" = "Multi-user support";
+"The basic for private and secure communications." = "The basic for private and secure communications.";
+"Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
+"ProtonMain for professionals and businesses" = "ProtonMain for professionals and businesses";
+"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
 "Complete payment?" = "Complete payment?";
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
 "Complete payment" = "Complete payment";
 "The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
 
 /**
  * Splash
@@ -311,3 +329,5 @@
  */
 
 "Network connection error" = "Network connection error";
+
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";

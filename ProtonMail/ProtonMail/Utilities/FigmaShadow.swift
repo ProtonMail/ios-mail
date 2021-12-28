@@ -23,7 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-public struct FigmaShadow {
+public struct TempFigmaShadow {
     let color: UIColor
     let x: CGFloat
     let y: CGFloat
@@ -41,7 +41,7 @@ public struct FigmaShadow {
 
 extension CALayer {
 
-    public func apply(shadow: FigmaShadow) {
+    public func apply(shadow: TempFigmaShadow) {
         shadowColor = shadow.color.cgColor
         shadowOpacity = 1
         shadowOffset = CGSize(width: shadow.x, height: shadow.y)
@@ -59,7 +59,7 @@ extension CALayer {
 
 }
 
-private extension FigmaShadow {
+private extension TempFigmaShadow {
 
     func path(bounds: CGRect) -> CGPath? {
         guard spread != 0 else { return nil }
@@ -71,7 +71,7 @@ private extension FigmaShadow {
 }
 
 public extension UIView {
-    func apply(shadows: [FigmaShadow]) {
+    func apply(shadows: [TempFigmaShadow]) {
         self.clipsToBounds = false
         for shadow in shadows {
             let layer = CALayer()
@@ -94,24 +94,24 @@ public extension UIView {
     }
 }
 
-public extension Collection where Element == FigmaShadow {
+public extension Collection where Element == TempFigmaShadow {
     static var shadowNorm: [Element] {
         let shadow10 = UIColor(named: "shadowNorm10") ?? UIColor.black.withAlphaComponent(0.1)
         let shadow5 = UIColor(named: "shadowGeneral5") ?? UIColor.black.withAlphaComponent(0.05)
         return [
-            FigmaShadow.init(color: shadow10, x: 0, y: 1, blur: 2, spread: 0),
-            FigmaShadow.init(color: shadow5, x: 0, y: 0, blur: 1, spread: 0)
+            TempFigmaShadow.init(color: shadow10, x: 0, y: 1, blur: 2, spread: 0),
+            TempFigmaShadow.init(color: shadow5, x: 0, y: 0, blur: 1, spread: 0)
         ]
     }
 }
 
-extension FigmaShadow {
+extension TempFigmaShadow {
 
-    static var `default`: FigmaShadow {
+    static var `default`: TempFigmaShadow {
         .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
     }
 
-    static func custom(y: CGFloat) -> FigmaShadow {
+    static func custom(y: CGFloat) -> TempFigmaShadow {
         .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: y, blur: 8, spread: 0)
     }
 

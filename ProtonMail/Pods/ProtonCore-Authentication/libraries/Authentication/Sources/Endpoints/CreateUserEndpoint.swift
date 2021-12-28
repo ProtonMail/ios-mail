@@ -29,18 +29,18 @@ public struct UserParameters {
     public let modulusID: String
     public let salt: String
     public let verifer: String
-    public let deviceToken: String
     public let challenge: [[String: Any]]
+    public let productPrefix: String
     
-    public init(userName: String, email: String?, phone: String?, modulusID: String, salt: String, verifer: String, deviceToken: String, challenge: [[String: Any]] = []) {
+    public init(userName: String, email: String?, phone: String?, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], productPrefix: String) {
         self.userName = userName
         self.email = email
         self.phone = phone
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
-        self.deviceToken = deviceToken
         self.challenge = challenge
+        self.productPrefix = productPrefix
     }
 }
 
@@ -55,10 +55,10 @@ extension AuthService {
                 "Salt": userParameters.salt,
                 "Verifier": userParameters.verifer
             ]
-            let payload: [String: Any] = [
-                "mail-ios-payload": userParameters.deviceToken,
-                "mail-ios-challenge": userParameters.challenge
-            ]
+            var payload: [String: Any] = [:]
+            for (index, data) in userParameters.challenge.enumerated() {
+                payload["\(userParameters.productPrefix)-ios-v4-challenge-\(index)"] = data
+            }
             var out: [String: Any] = [
                 "Username": userParameters.userName,
                 "Auth": auth,

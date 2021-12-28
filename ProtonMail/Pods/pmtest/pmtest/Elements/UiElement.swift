@@ -36,24 +36,20 @@ import XCTest
 // swiftlint:disable type_body_length
 open class UiElement {
 
-    init(_ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ query: XCUIElementQuery) {
         self.uiElementQuery = query
-        self.elementType = elementType
     }
 
-    init(_ identifier: String, _ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ identifier: String, _ query: XCUIElementQuery) {
         self.uiElementQuery = query
         self.identifier = identifier
-        self.elementType = elementType
     }
 
-    init(_ predicate: NSPredicate, _ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ predicate: NSPredicate, _ query: XCUIElementQuery) {
         self.uiElementQuery = query
         self.predicate = predicate
-        self.elementType = elementType
     }
 
-    private var elementType: XCUIElement.ElementType
     internal var uiElementQuery: XCUIElementQuery?
     internal var ancestorElement: XCUIElement?
     internal var parentElement: XCUIElement?
@@ -80,7 +76,7 @@ open class UiElement {
     private var shouldWaitForExistance = true
 
     internal func getType() -> XCUIElement.ElementType {
-        return elementType
+        return self.uiElement()!.elementType
     }
 
     internal func setType(_ elementQuery: XCUIElementQuery) -> UiElement {
@@ -261,16 +257,6 @@ open class UiElement {
         uiElement()!.clearText()
         return self
     }
-    
-    public func selectAllAndDeleteText() -> UiElement {
-        uiElement()!.selectAllAndDeleteText()
-        return self
-    }
-    
-    public func clearTextWith() -> UiElement {
-        uiElement()!.clearText()
-        return self
-    }
 
     @discardableResult
     public func doubleTap() -> UiElement {
@@ -437,7 +423,6 @@ open class UiElement {
         return self
     }
 
-    @discardableResult
     public func onDescendant(_ descendantElement: UiElement) -> UiElement {
         self.descendantElement = descendantElement
         return self
@@ -570,7 +555,6 @@ open class UiElement {
 
     @discardableResult
     public func waitUntilGone(time: TimeInterval = 10.0) -> UiElement {
-        shouldWaitForExistance = false
         Wait(time: time).forElementToDisappear(uiElement()!)
         return self
     }
@@ -658,12 +642,16 @@ open class UiElement {
         
         if childElement != nil {
             /// Return child element based on UiElement instance provided.
-            //childElement?.parentElement = locatedElement
-            locatedElement = locatedElement?.child(childElement!)
+            childElement?.parentElement = locatedElement
         } else if descendantElement != nil {
             /// Return descendant element based on UiElement instance provided.
-            //descendantElement?.ancestorElement = locatedElement
-            locatedElement = locatedElement?.descendant(descendantElement!)
+            descendantElement?.ancestorElement = locatedElement
+        }
+        
+        if parentElement != nil {
+            locatedElement = parentElement!.child(self)
+        } else if ancestorElement != nil {
+            locatedElement = ancestorElement!.descendant(self)
         }
 
         if shouldWaitForExistance {

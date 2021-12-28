@@ -28,40 +28,48 @@ import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class LoginService {
+public final class LoginService: Login {
 
-    typealias AuthenticationManager = AuthenticatorInterface & AuthenticatorKeyGenerationInterface
+    public typealias AuthenticationManager = AuthenticatorInterface & AuthenticatorKeyGenerationInterface
+    
+    static let sessionId = "LoginModuleSessionId"
 
     // MARK: - Properties
 
     let apiService: APIService
+    let sessionId: String
     let manager: AuthenticationManager
     var context: TwoFactorContext?
     var mailboxPassword: String?
-    var minimumAccountType: AccountType
+    public private(set) var minimumAccountType: AccountType
     var username: String?
     let authManager: AuthManager
 
     var defaultSignUpDomain = "protonmail.com"
     var updatedSignUpDomain: String?
-    var signUpDomain: String {
+    public var signUpDomain: String {
         return updatedSignUpDomain ?? defaultSignUpDomain
     }
+    public var startGeneratingAddress: (() -> Void)?
+    public var startGeneratingKeys: (() -> Void)?
 
-    init(api: APIService, authManager: AuthManager, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil) {
+    public init(
+        api: APIService, authManager: AuthManager, sessionId: String, minimumAccountType: AccountType, authenticator: AuthenticationManager? = nil
+    ) {
         self.apiService = api
         self.minimumAccountType = minimumAccountType
         self.authManager = authManager
+        self.sessionId = sessionId
         manager = authenticator ?? Authenticator(api: api)
     }
 
     // MARK: - Configuration
 
-    func updateAccountType(accountType: AccountType) {
+    public func updateAccountType(accountType: AccountType) {
         minimumAccountType = accountType
     }
 
-    func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
+    public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
         updatedSignUpDomain = nil
         availableDomains(type: type) { res in
             switch res {

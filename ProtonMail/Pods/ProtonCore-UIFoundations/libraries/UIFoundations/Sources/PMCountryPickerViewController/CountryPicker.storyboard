@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,7 +32,6 @@
                                             </searchBar>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gbn-Lm-ELs" userLabel="Cancel Button">
                                                 <rect key="frame" x="8" y="8" width="24" height="51"/>
-                                                <color key="tintColor" name="IconNorm"/>
                                                 <state key="normal" image="ic-close"/>
                                                 <connections>
                                                     <action selector="cancelAction:" destination="jlT-c5-bVR" eventType="touchUpInside" id="0Co-i2-LI6"/>
@@ -139,6 +137,7 @@
                         <outlet property="cancelButton" destination="Gbn-Lm-ELs" id="5Wc-rW-Fb7"/>
                         <outlet property="contentView" destination="gkN-Cf-t1a" id="T4o-0n-fnr"/>
                         <outlet property="searchBar" destination="gwc-TZ-l1E" id="6zO-3y-E4N"/>
+                        <outlet property="searchView" destination="QtW-UM-qrt" id="tU7-0j-igL"/>
                         <outlet property="tableBottomConstraint" destination="AZm-yg-Vxj" id="j75-qO-Vu1"/>
                         <outlet property="tableView" destination="1Vx-YJ-aJb" id="MZf-DD-Ho7"/>
                     </connections>
@@ -157,9 +156,6 @@
     <resources>
         <image name="flags-CH" width="32" height="32"/>
         <image name="ic-close" width="24" height="24"/>
-        <namedColor name="IconNorm">
-            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

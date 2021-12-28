@@ -50,5 +50,12 @@ public final class PMSegmentedControl: UISegmentedControl {
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: defaultColor, NSAttributedString.Key.font: defaultFont]
         setTitleTextAttributes(titleTextAttributes, for: .selected)
         setTitleTextAttributes(titleTextAttributes, for: .normal)
+        
+        backgroundColor = ColorProvider.SeparatorNorm
+        if #available(iOS 13.0, *) {
+            selectedSegmentTintColor = ColorProvider.BackgroundNorm
+        } else {
+            tintColor = ColorProvider.BackgroundNorm
+        }
     }
 }

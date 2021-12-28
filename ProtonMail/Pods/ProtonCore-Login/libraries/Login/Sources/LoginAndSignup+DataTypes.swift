@@ -23,7 +23,6 @@
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
-import ProtonCore_Payments
 
 public enum AccountType {
     case `internal`
@@ -94,74 +93,4 @@ public struct UserData {
 public enum LoginResult {
     case dismissed
     case loggedIn(LoginData)
-}
-
-public enum SignupInitalMode {
-    case `internal`
-    case external
-}
-
-public enum LoginFeatureAvailability<Parameters> {
-    case notAvailable
-    case available(parameters: Parameters)
-    
-    public var isNotAvailable: Bool {
-        if case .notAvailable = self { return true }
-        return false
-    }
-}
-
-public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
-
-public struct SignupParameters {
-    
-    let mode: SignupMode
-    let passwordRestrictions: SignupPasswordRestrictions
-    let summaryScreenVariant: SummaryScreenVariant
-    
-    public init(mode: SignupMode, passwordRestrictions: SignupPasswordRestrictions, summaryScreenVariant: SummaryScreenVariant) {
-        self.mode = mode
-        self.passwordRestrictions = passwordRestrictions
-        self.summaryScreenVariant = summaryScreenVariant
-    }
-}
-
-public enum SignupMode: Equatable {
-    case `internal`
-    case external
-    case both(initial: SignupInitalMode)
-}
-
-public struct SignupPasswordRestrictions: OptionSet {
-    public let rawValue: Int
-    public init(rawValue: Int) { self.rawValue = rawValue }
-
-    public static let notEmpty                   = SignupPasswordRestrictions(rawValue: 1 << 0)
-    public static let atLeastEightCharactersLong = SignupPasswordRestrictions(rawValue: 1 << 1)
-
-    public static let `default`: SignupPasswordRestrictions = [.atLeastEightCharactersLong, .notEmpty]
-
-    public func failedRestrictions(for password: String) -> SignupPasswordRestrictions {
-        var failedRestrictions: SignupPasswordRestrictions = []
-        if contains(.notEmpty) && password.isEmpty {
-            failedRestrictions.insert(.notEmpty)
-        }
-        if contains(.atLeastEightCharactersLong) && password.count < 8 {
-            failedRestrictions.insert(.atLeastEightCharactersLong)
-        }
-        return failedRestrictions
-    }
-}
-
-public typealias PaymentsAvailability = LoginFeatureAvailability<PaymentsParameters>
-
-public struct PaymentsParameters {
-    
-    let listOfIAPIdentifiers: ListOfIAPIdentifiers
-    var reportBugAlertHandler: BugAlertHandler
-    
-    public init(listOfIAPIdentifiers: ListOfIAPIdentifiers, reportBugAlertHandler: BugAlertHandler) {
-        self.listOfIAPIdentifiers = listOfIAPIdentifiers
-        self.reportBugAlertHandler = reportBugAlertHandler
-    }
 }

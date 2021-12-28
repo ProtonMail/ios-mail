@@ -58,6 +58,11 @@ public protocol ServicePlanDataStorage: AnyObject {
 public struct Credits {
     public let credit: Double
     public let currency: String
+    
+    public init(credit: Double, currency: String) {
+        self.credit = credit
+        self.currency = currency
+    }
 }
 
 public protocol CurrentSubscriptionChangeDelegate: AnyObject {
@@ -94,7 +99,7 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public var plans: [Plan] {
         let subscriptionDetails = currentSubscription.flatMap { $0.planDetails } ?? []
         let defaultDetails = defaultPlanDetails.map { [$0] } ?? []
-        return subscriptionDetails + defaultDetails + availablePlansDetails 
+        return subscriptionDetails + availablePlansDetails + defaultDetails
     }
 
     public var currentSubscription: Subscription? {
@@ -210,8 +215,6 @@ extension ServicePlanDataService {
                 let subscriptionRes = try AwaitKit.await(subscriptionApi.run())
                 self.currentSubscription = subscriptionRes.subscription
 
-                try self.updatePaymentMethods()
-
                 let organizationsApi = self.paymentsApi.organizationsRequest(api: self.service)
                 let organizationsRes = try AwaitKit.await(organizationsApi.run())
                 self.currentSubscription?.organization = organizationsRes.organization
@@ -232,17 +235,6 @@ extension ServicePlanDataService {
                     seal.reject(error)
                 }
             }
-        }
-    }
-
-    private func updatePaymentMethods() throws {
-        do {
-            let paymentMethodsApi = paymentsApi.methodsRequest(api: service)
-            let paymentMethodsRes = try AwaitKit.await(paymentMethodsApi.run())
-            currentSubscription?.paymentMethods = paymentMethodsRes.methods
-        } catch {
-            currentSubscription?.paymentMethods = nil
-            throw error
         }
     }
     

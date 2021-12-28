@@ -253,6 +253,10 @@ the given headers. Empty parameters are omitted from the headers.
  */
 - (BOOL)isPrivate;
 /**
+ * IsRevoked checks whether the key or the primary identity has a valid revocation signature.
+ */
+- (BOOL)isRevoked;
+/**
  * IsUnlocked checks if a private key is unlocked.
  */
 - (BOOL)isUnlocked:(BOOL* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;

@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(UIKit)
 import UIKit
 
 class CountryCodeTableHeaderView: UITableViewHeaderFooterView {
@@ -32,4 +31,3 @@ class CountryCodeTableHeaderView: UITableViewHeaderFooterView {
         titleLabel.textColor = ColorProvider.TextWeak
     }
 }
-#endif

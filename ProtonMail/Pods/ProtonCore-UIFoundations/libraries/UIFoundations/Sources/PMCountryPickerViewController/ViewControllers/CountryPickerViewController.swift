@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(UIKit)
 import UIKit
 import ProtonCore_Foundations
 
@@ -33,6 +32,7 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
     // MARK: Outlets
 
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var cancelButton: UIButton!
@@ -81,10 +81,17 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
         cancelButton.tintColor = ColorProvider.IconNorm
         contentView.layer.cornerRadius = 4
         searchBar.placeholder = viewModel.getSearchBarPlaceholderText()
+        searchBar.backgroundColor = ColorProvider.BackgroundNorm
+        searchBar.searchBarTextField?.textColor = ColorProvider.TextNorm
+
         searchBar.delegate = self
         contentView.backgroundColor = ColorProvider.BackgroundNorm
+        searchView.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
-
+        tableView.tintColor = ColorProvider.BrandNorm
+        tableView.separatorColor = ColorProvider.SeparatorNorm
+        tableView.tableHeaderView?.backgroundColor = ColorProvider.BackgroundNorm
+        
         let nib = UINib(nibName: countryCodeHeader, bundle: PMUIFoundations.bundle)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: countryCodeHeader)
     }
@@ -197,5 +204,3 @@ extension CountryPickerViewController: UIGestureRecognizerDelegate {
     }
 
 }
-
-#endif

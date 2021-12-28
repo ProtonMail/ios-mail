@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import enum ProtonCore_DataModel.ClientApp
 import ProtonCore_Payments
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
@@ -37,7 +38,9 @@ final class PaymentsUICoordinator {
     private let planService: ServicePlanDataServiceProtocol
     private let storeKitManager: StoreKitManagerProtocol
     private let purchaseManager: PurchaseManagerProtocol
+    private let shownPlanNames: ListOfShownPlanNames
     private let alertManager: PaymentsUIAlertManager
+    private let clientApp: ClientApp
     
     private var processingAccountPlan: InAppPurchasePlan? {
         didSet {
@@ -54,11 +57,15 @@ final class PaymentsUICoordinator {
     init(planService: ServicePlanDataServiceProtocol,
          storeKitManager: StoreKitManagerProtocol,
          purchaseManager: PurchaseManagerProtocol,
+         clientApp: ClientApp,
+         shownPlanNames: ListOfShownPlanNames,
          alertManager: PaymentsUIAlertManager) {
         self.planService = planService
         self.storeKitManager = storeKitManager
         self.purchaseManager = purchaseManager
+        self.shownPlanNames = shownPlanNames
         self.alertManager = alertManager
+        self.clientApp = clientApp
     }
     
     func start(viewController: UIViewController?, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -83,7 +90,7 @@ final class PaymentsUICoordinator {
         let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self)
         paymentsUIViewController.delegate = self
         
-        viewModel = PaymentsUIViewModelViewModel(mode: mode, storeKitManager: storeKitManager, servicePlan: servicePlan, updateCredits: updateCredits,
+        viewModel = PaymentsUIViewModelViewModel(mode: mode, storeKitManager: storeKitManager, servicePlan: servicePlan, shownPlanNames: shownPlanNames, clientApp: clientApp, updateCredits: updateCredits,
                                                       planRefreshHandler: { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
@@ -146,8 +153,6 @@ final class PaymentsUICoordinator {
     
     private func showError(error: Error) {
         if let error = error as? StoreKitManagerErrors {
-            // ignore payment cancellation error
-            if error == .cancelled || error == .unknown { return }
             self.showError(message: error.localizedDescription)
         } else if let error = error as? ResponseError {
             let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription ?? error.localizedDescription
