@@ -131,11 +131,6 @@ extension SearchViewModel: SearchVMProtocol {
         if fromStart {
             self.messages = []
         }
-        self.uiDelegate?.activityIndicator(isAnimating: true)
-        
-        self.query = query
-        let pageToLoad = fromStart ? 0: self.currentPage + 1
-        
         if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             if fromStart {
                 EncryptedSearchService.shared.isSearching = true
@@ -143,7 +138,7 @@ extension SearchViewModel: SearchVMProtocol {
                 EncryptedSearchService.shared.clearSearchState()
             } else {
                 if EncryptedSearchService.shared.isSearching == false {
-                    print("Search finished. No need to fetch further data!")
+                    // print("Search finished. No need to fetch further data!")
                     DispatchQueue.main.async {
                         self.uiDelegate?.activityIndicator(isAnimating: false)
                         self.uiDelegate?.reloadTable()
@@ -151,6 +146,13 @@ extension SearchViewModel: SearchVMProtocol {
                     return
                 }
             }
+        }
+        self.uiDelegate?.activityIndicator(isAnimating: true)
+        
+        self.query = query
+        let pageToLoad = fromStart ? 0: self.currentPage + 1
+        
+        if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] error in
                 DispatchQueue.main.async {
                     self?.uiDelegate?.activityIndicator(isAnimating: false)
