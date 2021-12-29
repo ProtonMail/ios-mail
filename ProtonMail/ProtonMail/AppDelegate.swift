@@ -387,6 +387,13 @@ extension AppDelegate: UIApplicationDelegate {
         let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
+
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        PushUpdater().update(with: userInfo)
+        completionHandler(.noData)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {

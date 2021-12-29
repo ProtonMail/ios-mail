@@ -242,6 +242,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/FeatureFlagsDownloadService/FeatureFlagsDownloadService.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/FeatureFlagsAPI/FeatureFlagsResponse.swift
   - ${PWD}/ProtonMailCommon/DataServices/InAppFeedbackStateService.swift
+  - ${PWD}/ProtonMail/Utilities/PushUpdater.swift
 
 excluded:
   - ${PWD}/Pods
