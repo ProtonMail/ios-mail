@@ -478,22 +478,22 @@ extension EncryptedSearchService {
                     case .delete:
                         self.updateMessageMetadataInSearchIndex(message, action)
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
                     case .insert:
                         self.insertSingleMessageToSearchIndex(message)  // update search index db
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
                     case .move:
                         self.updateMessageMetadataInSearchIndex(message, action)
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
                     case .update:
                         self.updateMessageMetadataInSearchIndex(message, action)
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message!)
+                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
                     default:
                         return
@@ -1319,6 +1319,9 @@ extension EncryptedSearchService {
 
             // Send some search metrics
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
+
+            // Call completion handler
+            completion!(nil)
         } else {
             print("Error when searching. User unknown!")
         }
