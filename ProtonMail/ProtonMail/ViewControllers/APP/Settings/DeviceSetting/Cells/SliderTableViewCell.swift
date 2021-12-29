@@ -54,6 +54,7 @@ import UIKit
         ])
         
         self.slider.translatesAutoresizingMaskIntoConstraints = false
+        self.slider.minimumTrackTintColor = ColorProvider.BrandNorm
         NSLayoutConstraint.activate([
             self.slider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 64),
             self.slider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -48),

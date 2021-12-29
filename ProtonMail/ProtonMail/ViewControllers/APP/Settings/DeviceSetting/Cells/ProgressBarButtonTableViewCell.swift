@@ -41,7 +41,7 @@ import UIKit
         ])
 
         self.progressView.translatesAutoresizingMaskIntoConstraints = false
-        //self.progressView.progressViewStyle = .bar
+        self.progressView.progressTintColor = ColorProvider.BrandNorm
         NSLayoutConstraint.activate([
             self.progressView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 24),
             self.progressView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
