@@ -146,6 +146,7 @@ extension SearchViewModel: SearchVMProtocol {
                     print("Search finished. No need to fetch further data!")
                     DispatchQueue.main.async {
                         self.uiDelegate?.activityIndicator(isAnimating: false)
+                        self.uiDelegate?.reloadTable()
                     }
                     return
                 }
@@ -158,7 +159,9 @@ extension SearchViewModel: SearchVMProtocol {
                     PMLog.D(" search error: \(String(describing: error))")
                     return
                 }
-                //self.currentPage = pageToLoad
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.reloadTable()
+                }
             }
         } else {
             let service = user.messageService
@@ -643,7 +646,7 @@ extension SearchViewModel {
         guard let messageBoxes = messageBoxes else {
             print("search error!")
             if currentPage == 0 {
-                self.fetchLocalObjects()    //Why
+                self.fetchLocalObjects()
             }
             return
         }

@@ -68,7 +68,12 @@ extension EncryptedSearchCacheService {
         return false
     }
 
-    func updateCachedMessage(userID: String, message: Message) -> Bool {
+    func updateCachedMessage(userID: String, message: Message?) -> Bool {
+        guard let message = message else {
+            print("Error updating cached message. Message nil!")
+            return false
+        }
+
         if userID == currentUserID {
             if let cache = self.cache {
                 let msg: EncryptedsearchMessage? = self.messageToEncryptedsearchMessage(msg: message, userID: userID)
