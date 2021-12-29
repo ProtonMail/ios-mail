@@ -137,7 +137,7 @@ extension PopUpView {
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         self.button.titleLabel?.adjustsFontSizeToFitWidth = false
         self.button.setTitleColor(ColorProvider.BackgroundNorm, for: .normal)
-        self.button.backgroundColor = ColorProvider.InteractionNorm
+        self.button.tintColor = ColorProvider.BrandNorm
         self.button.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
             self.button.topAnchor.constraint(equalTo: self.topAnchor, constant: 264),
