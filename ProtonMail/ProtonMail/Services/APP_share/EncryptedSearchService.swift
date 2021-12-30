@@ -102,6 +102,7 @@ public class EncryptedSearchService {
     internal var indexingStartTime: Double = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
     internal var indexBuildingTimer: Timer? = nil
+    internal var slowSearchTimer: Timer? = nil
     
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
@@ -1358,9 +1359,8 @@ extension EncryptedSearchService {
 
             // Start timing search
             let startSearch: Double = CFAbsoluteTimeGetCurrent()
-            var slowSearchTimer: Timer? = nil
             DispatchQueue.main.async {
-                slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
             }
 
             // Initialize searcher, cipher
@@ -1377,13 +1377,13 @@ extension EncryptedSearchService {
             }
 
             // Do cache search first
-            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer!)
+            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page)
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
 
             // Do index search next - unless search is already completed
             var numberOfResultsFoundByIndexSearch: Int = 0
             if !self.searchState!.isComplete {
-                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer!)
+                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page)
             }
             print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
 
@@ -1395,7 +1395,7 @@ extension EncryptedSearchService {
             self.isSearching = false
             // Invalidate timer on same thread as it has been created
             DispatchQueue.main.async {
-                slowSearchTimer?.invalidate()
+                self.slowSearchTimer?.invalidate()
             }
 
             // Send some search metrics
@@ -1500,7 +1500,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
-    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, searchViewModel: SearchViewModel, page: Int, slowSearch: inout Timer) -> Int {
+    private func doIndexSearch(searcher: EncryptedsearchSimpleSearcher, cipher: EncryptedsearchAESGCMCipher, searchState: inout EncryptedsearchSearchState?, resultsFoundInCache:Int, userID: String, searchViewModel: SearchViewModel, page: Int) -> Int {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
@@ -1531,9 +1531,10 @@ extension EncryptedSearchService {
             // If some results are found - disable timer for slow search
             if resultsFound > 0 {
                 DispatchQueue.main.async {
-                    slowSearch.invalidate()
+                    self.slowSearchTimer?.invalidate()
+                    self.slowSearchTimer = nil
                     // start a new timer if search continues
-                    slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                    self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
                 }
             }
 
@@ -1565,7 +1566,7 @@ extension EncryptedSearchService {
     }
     
     #if !APP_EXTENSION
-    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int, slowSearch: inout Timer) -> Int {
+    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
         var found: Int = 0
         let searchResultPageSize: Int = 50
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
@@ -1584,9 +1585,10 @@ extension EncryptedSearchService {
             // If some results are found - disable timer for slow search
             if found > 0 {
                 DispatchQueue.main.async {
-                    slowSearch.invalidate()
+                    self.slowSearchTimer?.invalidate()
+                    self.slowSearchTimer = nil
                     // start a new timer if search continues
-                    slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                    self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
                 }
             }
             
