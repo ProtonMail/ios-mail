@@ -28,6 +28,7 @@ class PopUpView: PMView {
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet private var backgroundView: UIView!
+    @IBOutlet weak var topBGView: UIView!
     
     typealias buttonActionBlock = () -> Void
     var callback: buttonActionBlock?
@@ -76,14 +77,25 @@ extension PopUpView {
 
         // sizing
         let popUpWidth: CGFloat = baseView.bounds.width
-        let popUpHeight: CGFloat = 376.0    // TODO calculate
+        let popUpHeight: CGFloat = 376.0
         
         let size: CGSize = CGSize(width: popUpWidth, height: popUpHeight)
         self.frame = CGRect(origin: .zero, size: size)
 
+        // add gray part of the view on top
+        self.topBGView.backgroundColor = ColorProvider.BackgroundSecondary
+        self.topBGView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.topBGView.topAnchor.constraint(equalTo: self.topAnchor),
+            self.topBGView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.topBGView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.topBGView.heightAnchor.constraint(equalToConstant: 160)
+        ])
+        // set bg color of view
+        self.backgroundColor = UIColor(hexColorCode: "#FFFFFF")
+
         // Add dismiss icon + callback
         if let image = UIImage(named: "mail_label_cross_icon") {
-            //print("width: \(image.size.width), height: \(image.size.height)")
             let tintableImage = image.withRenderingMode(.alwaysTemplate)
             let dismissImageView = UIImageView(image: tintableImage)
             dismissImageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -94,10 +106,10 @@ extension PopUpView {
             dismissImageView.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(dismissImageView)
             NSLayoutConstraint.activate([
-                dismissImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-                dismissImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8)
-                //dismissImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -327),
-                //dismissImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -331.22)
+                dismissImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
+                dismissImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+                dismissImageView.widthAnchor.constraint(equalToConstant: 24),
+                dismissImageView.heightAnchor.constraint(equalToConstant: 24)
             ])
         }
 
@@ -112,7 +124,7 @@ extension PopUpView {
 
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.textAlignment = .center
-        self.titleLabel.font = UIFont.systemFont(ofSize: 17)
+        self.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         self.titleLabel.textColor = ColorProvider.TextNorm
         NSLayoutConstraint.activate([
             self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 176),
@@ -143,8 +155,7 @@ extension PopUpView {
             self.button.topAnchor.constraint(equalTo: self.topAnchor, constant: 264),
             self.button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            self.button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -64),
-            //self.button.heightAnchor.constraint(equalToConstant: 48)
+            self.button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -64)
         ])
 
         self.layoutIfNeeded()
