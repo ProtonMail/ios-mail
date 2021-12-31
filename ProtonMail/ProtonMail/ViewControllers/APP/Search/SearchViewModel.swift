@@ -102,6 +102,13 @@ final class SearchViewModel: NSObject {
             }
         }
     }
+    var encryptedSearchIndexingComplete: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.uiDelegate?.removeSearchInfoBanner()
+            }
+        }
+    }
     
     init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
         self.user = user
@@ -639,6 +646,7 @@ extension SearchViewModel {
             }
             return
         }
+        self.uiDelegate?.stopSearchInfoActivityIndicator()
 
         self.currentPage = currentPage
         
