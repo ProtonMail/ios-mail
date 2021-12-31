@@ -45,6 +45,8 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private let searchBar = SearchBarView()
     private var searchInfoBanner: BannerView? = nil
     private var slowSearchBanner: BannerView? = nil
+    private var popupView: PopUpView? = nil
+    private var grayedOutView: UIView? = nil
     private var searchInfoActivityIndicator: UIActivityIndicatorView? = nil
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
@@ -106,7 +108,9 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
 
         // show pop up to turn ES on
         if userCachedStatus.isEncryptedSearchOn == false {
-            self.showPopUpToEnableEncryptedSearch()
+            if self.popupView == nil {  // Show popup if it is not already shown
+                self.showPopUpToEnableEncryptedSearch()
+            }
         }
     }
     
@@ -114,6 +118,23 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
+        // Remove pop up when indexing is in progress
+        if userCachedStatus.isEncryptedSearchOn == true {
+            self.popupView?.remove()
+            // remove gray view
+            self.grayedOutView?.removeFromSuperview()
+            // show keyboard again
+            self.searchBar.textField.becomeFirstResponder()
+
+            if self.searchInfoBanner != nil {
+                // Only show the banner while downloading
+                if EncryptedSearchService.shared.state != .downloading {
+                    UIView.performWithoutAnimation {
+                        self.searchInfoBanner?.remove(animated: false)
+                    }
+                }
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -181,9 +202,9 @@ extension SearchViewController {
 
     private func showPopUpToEnableEncryptedSearch() {
         // Gray out superview
-        let grayView = UIView(frame: UIScreen.main.bounds)
-        grayView.backgroundColor = ColorProvider.BlenderNorm
-        self.view.addSubview(grayView)
+        self.grayedOutView = UIView(frame: UIScreen.main.bounds)
+        self.grayedOutView!.backgroundColor = ColorProvider.BlenderNorm
+        self.view.addSubview(self.grayedOutView!)
 
         // hide keyboard when pop up is active
         self.searchBar.textField.resignFirstResponder()
@@ -198,23 +219,23 @@ extension SearchViewController {
         }
         let dismissAction: PopUpView.dismissActionBlock? = {
             // remove gray view
-            grayView.removeFromSuperview()
+            self.grayedOutView?.removeFromSuperview()
             // show keyboard again
             self.searchBar.textField.becomeFirstResponder()
         }
-        let popUp = PopUpView(title: LocalString._encrypted_search_popup_title, description: LocalString._encrypted_search_popup_description, image: image, titleOfButton: LocalString._encrypted_search_popup_button_title, buttonAction: buttonAction, dismissAction: dismissAction)
-        self.view.addSubview(popUp)
+        self.popupView = PopUpView(title: LocalString._encrypted_search_popup_title, description: LocalString._encrypted_search_popup_description, image: image, titleOfButton: LocalString._encrypted_search_popup_button_title, buttonAction: buttonAction, dismissAction: dismissAction)
+        self.view.addSubview(self.popupView!)
         
-        popUp.translatesAutoresizingMaskIntoConstraints = false
-        popUp.layer.cornerRadius = 8
+        self.popupView!.translatesAutoresizingMaskIntoConstraints = false
+        self.popupView!.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
-            popUp.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.bounds.height-376),
-            popUp.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            popUp.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            popUp.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            self.popupView!.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.bounds.height-376),
+            self.popupView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.popupView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.popupView!.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
 
-        popUp.popUp(on: self.view, from: .bottom)
+        self.popupView!.popUp(on: self.view, from: .bottom)
     }
 }
 
@@ -869,7 +890,9 @@ extension SearchViewController: UITextFieldDelegate {
         }
         // If Encrypted search is on, display a notification if the index is still being built
         if userCachedStatus.isEncryptedSearchOn {
-            self.showSearchInfoBanner()    // display only when ES is on
+            if EncryptedSearchService.shared.state == .downloading{
+                self.showSearchInfoBanner()    // display only when ES is on
+            }
         }
         self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: false)
         self.cancelEditingMode()
