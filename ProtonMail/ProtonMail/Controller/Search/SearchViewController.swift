@@ -34,6 +34,8 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadTable()
     func reloadRows(rows: [IndexPath])
     func showSlowSearchBanner()
+    func removeSearchInfoBanner()
+    func stopSearchInfoActivityIndicator()
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
@@ -125,13 +127,12 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             self.grayedOutView?.removeFromSuperview()
             // show keyboard again
             self.searchBar.textField.becomeFirstResponder()
-
-            if self.searchInfoBanner != nil {
-                // Only show the banner while downloading
-                if EncryptedSearchService.shared.state != .downloading {
-                    UIView.performWithoutAnimation {
-                        self.searchInfoBanner?.remove(animated: false)
-                    }
+        }
+        if self.searchInfoBanner != nil {
+            // Only show the banner while downloading/paused/refreshed
+            if EncryptedSearchService.shared.state == .partial || EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .undetermined {
+                UIView.performWithoutAnimation {
+                    self.removeSearchInfoBanner()
                 }
             }
         }
@@ -245,11 +246,11 @@ extension SearchViewController {
         var link: String = ""
         let state = EncryptedSearchService.shared.state
         switch state {
-        case .downloading:
+        case .downloading, .paused, .refresh:
             text = LocalString._encrypted_search_info_search_downloading
             link = LocalString._encrypted_search_info_search_downloading_link
             break
-        case .complete, .undetermined, .background, .backgroundStopped, .partial, .refresh, .paused, .lowstorage, .disabled:
+        case .complete, .undetermined, .background, .backgroundStopped, .partial, .lowstorage, .disabled:
             return
         }
 
@@ -259,9 +260,9 @@ extension SearchViewController {
             }
             let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                 switch state {
-                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial, .paused, .refresh:
+                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial:
                     break
-                case .downloading:
+                case .downloading, .paused, .refresh:
                     let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
                     let vc = SettingsEncryptedSearchViewController()
                     vc.set(viewModel: vm)
@@ -289,6 +290,24 @@ extension SearchViewController {
                 self.searchInfoActivityIndicator!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             ])
         }
+    }
+    
+    internal func removeSearchInfoBanner() {
+        self.searchInfoBanner?.remove(animated: false)
+        self.searchInfoBanner = nil
+        self.stopSearchInfoActivityIndicator()
+
+        if userCachedStatus.isEncryptedSearchOn == false {
+            // Clear existing search results
+            self.viewModel.cleanExistingSearchResults()
+            // Run search on server
+            self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: true)
+        }
+    }
+    
+    internal func stopSearchInfoActivityIndicator() {
+        self.searchInfoActivityIndicator?.stopAnimating()
+        self.searchInfoActivityIndicator?.isHidden = true
     }
 }
 
@@ -890,7 +909,7 @@ extension SearchViewController: UITextFieldDelegate {
         }
         // If Encrypted search is on, display a notification if the index is still being built
         if userCachedStatus.isEncryptedSearchOn {
-            if EncryptedSearchService.shared.state == .downloading{
+            if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
                 self.showSearchInfoBanner()    // display only when ES is on
             }
         }

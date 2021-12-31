@@ -227,6 +227,8 @@ extension SettingsEncryptedSearchViewController {
                             // Pause indexing
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
                         }
+                        EncryptedSearchService.shared.state = .disabled
+                        print("ENCRYPTEDSEARCH-STATE: disabled")
                         // Hide sections
                         self.hideSections = true
                         // Remove banner
