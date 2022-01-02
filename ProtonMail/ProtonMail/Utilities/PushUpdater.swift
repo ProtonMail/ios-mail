@@ -45,7 +45,7 @@ extension UserCachedStatus: UserSessionProvider {}
 
 struct PushUpdater {
     private let collapseId = "collapseID"
-    private let userId = "uid"
+    private let uid = "UID"
     private let viewMode = "viewMode"
     static private let unreadConversations = "unreadConversations"
     static private let unreadMessages = "unreadMessages"
@@ -71,8 +71,8 @@ struct PushUpdater {
         if let notificationId = userInfo[collapseId] as? String {
             notificationCenter.removeDeliveredNotifications(withIdentifiers: [notificationId])
         }
-        guard let userId = userInfo[userId] as? String,
-              userStatus.primaryUserSessionId == userId,
+        guard let uid = userInfo[uid] as? String,
+              userStatus.primaryUserSessionId == uid,
               let viewModeValue = userInfo[viewMode] as? Int,
               let viewMode = ViewMode(rawValue: viewModeValue),
               let unread = userInfo[viewMode.userInfoKey] as? Int else {
