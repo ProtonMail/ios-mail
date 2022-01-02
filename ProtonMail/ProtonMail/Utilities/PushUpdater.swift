@@ -50,6 +50,10 @@ struct PushUpdater {
     static private let unreadConversations = "unreadConversations"
     static private let unreadMessages = "unreadMessages"
 
+    private let notificationCenter: NotificationCenterProtocol
+    private let application: UIApplicationBadgeProtocol
+    private let userStatus: UserSessionProvider
+
     private enum ViewMode: Int {
         case conversations = 0
         case messages = 1
@@ -64,10 +68,15 @@ struct PushUpdater {
         }
     }
 
-    func update(with userInfo: [AnyHashable: Any],
-                notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
-                application: UIApplicationBadgeProtocol = UIApplicationBadge(),
-                userStatus: UserSessionProvider = userCachedStatus) {
+    init(notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
+         application: UIApplicationBadgeProtocol = UIApplicationBadge(),
+         userStatus: UserSessionProvider = userCachedStatus) {
+        self.notificationCenter = notificationCenter
+        self.application = application
+        self.userStatus = userStatus
+    }
+
+    func update(with userInfo: [AnyHashable: Any]) {
         if let notificationId = userInfo[collapseId] as? String {
             notificationCenter.removeDeliveredNotifications(withIdentifiers: [notificationId])
         }

@@ -565,6 +565,7 @@
 		33A1F3522DF7D1473BD1FA8D0E2EE394 /* CoreDataContextProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A713B4B7CF594A0C98D65E6458004 /* CoreDataContextProviderProtocol.swift */; };
 		33B7B1A9E0990522B69BA422F5EC85CB /* TaskCompletionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B5591005C637EA58276A635E1EC265 /* TaskCompletionHelper.swift */; };
 		34005820E565F52F13719B76E7136F69 /* UIBarButtonItem+BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E9FEEB21A4D685005EF145A09F6B64 /* UIBarButtonItem+BackButton.swift */; };
+		3403030D0DD059788304742B4DD03D6B /* PushUpdaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4BDEF4A9B9A50475275F840F4E58E5 /* PushUpdaterTests.swift */; };
 		3410FF24F07E8C9073381016733F7555 /* Attachment+StrippingExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5756514E41C4809A3C2C5CE75D628 /* Attachment+StrippingExif.swift */; };
 		343E8202AAAA7A714DC8E2A31E96D391 /* SingleMessageChildViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A948B3B76C01D39AF67A867A706D3FF4 /* SingleMessageChildViewModels.swift */; };
 		3472370C3D65A54FD4821993601D45A1 /* SettingsDarkModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6A2170F2D777B955E8FEA9C324BEA2 /* SettingsDarkModeViewModel.swift */; };
@@ -3361,6 +3362,7 @@
 		59E18578CB653A258E0ACF84A8C0C74F /* Message+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Helpers.swift"; sourceTree = "<group>"; };
 		5A19672A9B9DC49C6DB077FE51B5A418 /* ExpirationIconView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpirationIconView.xib; sourceTree = "<group>"; };
 		5A468C765C57673CCF7F0A66C7B99B38 /* UnlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockManager.swift; sourceTree = "<group>"; };
+		5A4BDEF4A9B9A50475275F840F4E58E5 /* PushUpdaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushUpdaterTests.swift; sourceTree = "<group>"; };
 		5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
 		5A6212048241C8B5D38449A43140A027 /* NSError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Extension.swift"; sourceTree = "<group>"; };
 		5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserDataService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -5083,6 +5085,7 @@
 				E518270ED150E12FA0CF85A6A6AEEFC2 /* MimeParser */,
 				43BA372F820B848EDE7AB8FE1B6AA2DA /* BackgroundTimerTests.swift */,
 				AB513DF5433EEDA2409F48ABCB426310 /* InternetConnectionStatusProviderTests.swift */,
+				5A4BDEF4A9B9A50475275F840F4E58E5 /* PushUpdaterTests.swift */,
 				175D1DDFB4BEAA84363601411751A658 /* SharedUserDefaultsTests.swift */,
 			);
 			path = Utilities;
@@ -8814,6 +8817,7 @@
 				24EA270436A70580EDFFA9D3AFE01DB7 /* PushNotificationHandlerTests.swift in Sources */,
 				7458149CC56A6217E4E4A0259BBA565F /* PushNotificationServiceSubscriptionTests.swift in Sources */,
 				5C89A7BAA54B8F1C981CB5DCA8164DB7 /* PushNotificationServiceTests.swift in Sources */,
+				3403030D0DD059788304742B4DD03D6B /* PushUpdaterTests.swift in Sources */,
 				F63A2B7BD4E783FD456D1D66888703CB /* QueueManagerTests.swift in Sources */,
 				D5015843CA7711014170E58D83DE481C /* ReachabilityStub.swift in Sources */,
 				6F59E4FAE5B60C85BCBB55E1C69794D3 /* ReplyStateButtonTests.swift in Sources */,
