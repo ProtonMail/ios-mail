@@ -47,6 +47,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataServices/UserFeedbackServiceTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Contacts/ContactParserTest.swift
+  - ${PWD}/ProtonMailTests/ProtonMail/Components/PushNotificationHandlerTests.swift
 
 excluded:
   - ${PWD}/Pods

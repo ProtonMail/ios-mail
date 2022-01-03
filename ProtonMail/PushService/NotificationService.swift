@@ -20,109 +20,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UserNotifications
 
 @available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
-    
-    var contentHandler: ((UNNotificationContent) -> Void)?
-    var bestAttemptContent: UNMutableNotificationContent?
-    
-    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        self.contentHandler = contentHandler
-        SharedUserDefaults().setLastReceivedPush(at: Date().timeIntervalSince1970)
-        guard let bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
-            contentHandler(request.content)
-            return
-        }
-        bestAttemptContent.body = "You received a new message!"
-        bestAttemptContent.sound = UNNotificationSound.default
-        #if Enterprise
-        bestAttemptContent.title = "You received a new message!"
-        #endif
+    private let handler = PushNotificationHandler()
 
-        guard let UID = bestAttemptContent.userInfo["UID"] as? String else {
-            #if Enterprise
-            bestAttemptContent.body = "without UID"
-            #endif
-            contentHandler(bestAttemptContent)
-            return
-        }
-        
-        bestAttemptContent.threadIdentifier = UID
-        
-        userCachedStatus.hasMessageFromNotification = true
-        
-        guard let encryptionKit = PushNotificationDecryptor.encryptionKit(forSession: UID) else {
-            PushNotificationDecryptor.markForUnsubscribing(uid: UID)
-            #if Enterprise
-            bestAttemptContent.body = "no encryption kit for UID"
-            #endif
-            contentHandler(bestAttemptContent)
-            return
-        }
-
-        guard let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String else {
-            #if Enterprise
-            bestAttemptContent.body = "no encrypted message in push"
-            #endif
-            contentHandler(bestAttemptContent)
-            return
-        }
-        
-        do {
-            let plaintext = try Crypto().decrypt(encrypted: encrypted,
-                                                 privateKey: encryptionKit.privateKey,
-                                                 passphrase: encryptionKit.passphrase)
-            
-            guard let push = PushData.parse(with: plaintext) else {
-                #if Enterprise
-                bestAttemptContent.body = "failed to decrypt"
-                #endif
-                contentHandler(bestAttemptContent)
-                return
-            }
-            
-            bestAttemptContent.title = push.sender.name.isEmpty ? push.sender.address : push.sender.name
-            bestAttemptContent.body = push.body
-
-            if userCachedStatus.primaryUserSessionId == UID {
-                if bestAttemptContent.userInfo["viewMode"] as? Int == 0,
-                   let unread = bestAttemptContent.userInfo["unreadConversations"] as? Int { // conversation
-                    bestAttemptContent.badge = NSNumber(value: unread)
-                } else if bestAttemptContent.userInfo["viewMode"] as? Int == 1,
-                          let unread = bestAttemptContent.userInfo["unreadMessages"] as? Int { // single message
-                    bestAttemptContent.badge = NSNumber(value: unread)
-                } else if push.badge > 0 {
-                    bestAttemptContent.badge = NSNumber(value: push.badge)
-                } else {
-                    bestAttemptContent.badge = nil
-                }
-            } else {
-                bestAttemptContent.badge = nil
-            }
-        } catch let error {
-            #if Enterprise
-            bestAttemptContent.body = "error: \(error.localizedDescription)"
-            #endif
-        }
-        
-        contentHandler(bestAttemptContent)
+    override func didReceive(_ request: UNNotificationRequest,
+                             withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        handler.handle(request: request, contentHandler: contentHandler)
     }
-    
+
     override func serviceExtensionTimeWillExpire() {
-        // Called just before the extension will be terminated by the system.
-        // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
-        if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
-            contentHandler(bestAttemptContent)
-        }
+        handler.willTerminate()
     }
-    
 }
 
 protocol CacheStatusInject {
-    var isPinCodeEnabled : Bool { get }
-    var isTouchIDEnabled : Bool { get }
-    var pinFailedCount : Int { get set }
+    var isPinCodeEnabled: Bool { get }
+    var isTouchIDEnabled: Bool { get }
+    var pinFailedCount: Int { get set }
 }
