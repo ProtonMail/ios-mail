@@ -26,4 +26,5 @@ protocol EncryptedSearchCacheProtocol {
     var isEncryptedSearchOn: Bool { get set }
     var downloadViaMobileData: Bool { get set }
     var indexComplete: Bool { get set }
+    var indexStatus: Int { get set }
 }
