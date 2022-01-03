@@ -27,7 +27,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal var viewModel: SettingsEncryptedSearchViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
 
-    internal var interruption: Bool = false
     internal var hideSections: Bool = true
     internal var banner: BannerView!
 
@@ -73,19 +72,19 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupIndexingFinishedObserver()
         setupIndexingInterruptionObservers()
 
+        // Load ES state from user cache
+        EncryptedSearchService.shared.state = EncryptedSearchService.EncryptedSearchIndexState(rawValue: self.viewModel.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
+        print("ES-STATE: loaded from chache: -> \(EncryptedSearchService.shared.state)")
+
+        // If the state cannot be load from cache - try to figure it out
         if EncryptedSearchService.shared.state == .undetermined {
             // Determine current encrypted search state
             EncryptedSearchService.shared.determineEncryptedSearchState()
 
             // If we cannot determine the state - disable encrypted search
             if EncryptedSearchService.shared.state == .undetermined {
-                print("Error cannot determine state of ES! set to disabled")
                 EncryptedSearchService.shared.state = .disabled
-                self.viewModel.isEncryptedSearch = false
             }
-        } else if EncryptedSearchService.shared.state == .background || EncryptedSearchService.shared.state == .backgroundStopped {
-            EncryptedSearchService.shared.state = .downloading
-            print("ENCRYPTEDSEARCH-STATE: downloading - from background")
         }
 
         //Speed up indexing when on this view
@@ -105,9 +104,27 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // If encrypted search is switched on
         if self.viewModel.isEncryptedSearch {
             self.hideSections = false
-        } else {
+
+            // Set state correctly form BG to foreground
+            if EncryptedSearchService.shared.state == .background || EncryptedSearchService.shared.state == .backgroundStopped {
+                EncryptedSearchService.shared.state = .downloading
+                self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
+                print("ENCRYPTEDSEARCH-STATE: downloading - from background")
+            }
+
+            // Check network status - when downloading/paused/refresh
+            if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
+                if #available(iOS 12, *) {
+                    print("ES-NETWORK viewwillappear - check network state")
+                    let _ = EncryptedSearchService.shared.checkIfNetworkAvailable()
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
+        } else {    // If encrypted search is off
             self.hideSections = true
         }
         self.tableView.reloadData()
@@ -228,6 +245,7 @@ extension SettingsEncryptedSearchViewController {
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
                         }
                         EncryptedSearchService.shared.state = .disabled
+                        self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
                         print("ENCRYPTEDSEARCH-STATE: disabled")
                         // Hide sections
                         self.hideSections = true
@@ -249,22 +267,9 @@ extension SettingsEncryptedSearchViewController {
                     self.viewModel.downloadViaMobileData = !status
 
                     if #available(iOS 12, *) {
-                        // Disable interupt when mobile data is enabled
-                        if self.viewModel.downloadViaMobileData {
-                            //check if internet is availabel
-                            if EncryptedSearchService.shared.networkMonitor?.currentPath.status == .satisfied {
-                                self.interruption = false
-                                DispatchQueue.main.async {
-                                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
-
-                                    UIView.performWithoutAnimation {
-                                        self.tableView.reloadRows(at: [path], with: .none)
-                                    }
-                                }
-                            }
-                        }
                         // Check network connection
-                        EncryptedSearchService.shared.checkIfNetworkAvailable()
+                        print("ES-NETWORK toggle mobile data switch!")
+                        let _ = EncryptedSearchService.shared.checkIfNetworkAvailable()
                     } else {
                         // Fallback on earlier versions
                     }
@@ -355,8 +360,8 @@ extension SettingsEncryptedSearchViewController {
                     }
 
                     // Handle UI changes when an interruption occurs
-                    if self.interruption {
-                        estimatedTimeText = self.viewModel.interruptStatus.value ?? LocalString._encrypted_search_default_text_estimated_time_label
+                    if let interrupt = self.viewModel.interruptStatus.value {
+                        estimatedTimeText = interrupt 
                         progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
                         progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
                         if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
@@ -400,6 +405,7 @@ extension SettingsEncryptedSearchViewController {
                         if EncryptedSearchService.shared.state == .paused { // Resume indexing
                             // Set the state
                             EncryptedSearchService.shared.state = .downloading
+                            self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
 
                             // Update UI
                             DispatchQueue.main.async {
@@ -413,6 +419,7 @@ extension SettingsEncryptedSearchViewController {
                         } else {    // Pause indexing
                             // Set the state
                             EncryptedSearchService.shared.state = .paused
+                            self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
 
                             // Update UI
                             DispatchQueue.main.async {
@@ -565,7 +572,6 @@ extension SettingsEncryptedSearchViewController {
     func setupIndexingInterruptionObservers() {
         self.viewModel.interruptStatus.bind {
             (_) in
-            self.interruption = true
             DispatchQueue.main.async {
                 let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
