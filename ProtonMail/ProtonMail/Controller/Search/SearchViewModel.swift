@@ -160,16 +160,10 @@ extension SearchViewModel: SearchVMProtocol {
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         
         if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
-            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] error in
-                DispatchQueue.main.async {
-                    self?.uiDelegate?.activityIndicator(isAnimating: false)
-                }
+            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { error in
                 guard error == nil else {
                     PMLog.D(" search error: \(String(describing: error))")
                     return
-                }
-                DispatchQueue.main.async {
-                    self?.uiDelegate?.reloadTable()
                 }
             }
         } else {
