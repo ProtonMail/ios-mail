@@ -27,15 +27,17 @@ class WebContents {
     let body: String
     let remoteContentMode: RemoteContentPolicy
     let isNewsLetter: Bool
+    let supplementCSS: String?
 
     var bodyForJS: String {
         return self.body.escaped
     }
 
-    init(body: String, remoteContentMode: RemoteContentPolicy, isNewsLetter: Bool) {
+    init(body: String, remoteContentMode: RemoteContentPolicy, isNewsLetter: Bool, supplementCSS: String? = nil) {
         self.body = body
         self.remoteContentMode = remoteContentMode
         self.isNewsLetter = isNewsLetter
+        self.supplementCSS = supplementCSS
     }
 
     var contentSecurityPolicy: String {

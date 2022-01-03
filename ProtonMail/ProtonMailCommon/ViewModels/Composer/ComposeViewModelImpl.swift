@@ -720,13 +720,15 @@ class ComposeViewModelImpl : ComposeViewModel {
         switch messageAction {
         case .openDraft:
             var body = ""
+            var css: String?
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
+                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
             } catch let ex as NSError {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false, supplementCSS: css)
         case .reply, .replyAll:
             
             var body = ""
@@ -755,7 +757,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+            var css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false, supplementCSS: css)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
@@ -802,6 +805,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
+            var css = CSSMagic.generateCSSForDarkMode(htmlString: body)
             return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
         case .newDraftFromShare:
             if !self.body.isEmpty {

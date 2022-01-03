@@ -48,9 +48,11 @@ struct BodyParts {
     let originalBody: String
     let strippedBody: String
     let fullBody: String
+    let darkModeCSS: String
 
     init(originalBody: String) {
         self.originalBody = originalBody
+        self.darkModeCSS = CSSMagic.generateCSSForDarkMode(htmlString: originalBody)
         self.strippedBody = originalBody.body(strippedFromQuotes: true)
         self.fullBody = originalBody.body(strippedFromQuotes: false)
     }
@@ -207,7 +209,8 @@ class NewMessageBodyViewModel {
                     self.contents = WebContents(
                         body: self.bodyParts?.body(for: self.displayMode) ?? "",
                         remoteContentMode: remoteContentMode,
-                        isNewsLetter: isNewsLetter
+                        isNewsLetter: isNewsLetter,
+                        supplementCSS: self.bodyParts?.darkModeCSS
                     )
                 }
                 return false
@@ -215,7 +218,8 @@ class NewMessageBodyViewModel {
                 self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                             remoteContentMode:
                                                 remoteContentMode,
-                                            isNewsLetter: isNewsLetter
+                                            isNewsLetter: isNewsLetter,
+                                            supplementCSS: self.bodyParts?.darkModeCSS
                 )
             }
         } else if !message.body.isEmpty {
