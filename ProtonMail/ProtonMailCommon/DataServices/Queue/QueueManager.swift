@@ -65,11 +65,6 @@ final class QueueManager: Service {
          miscQueue: PMPersistentQueueProtocol) {
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
-        self.internetStatusProvider.getConnectionStatuses { [weak self] status in
-            if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
-                self?.dequeueIfNeeded()
-            }
-        }
     }
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
