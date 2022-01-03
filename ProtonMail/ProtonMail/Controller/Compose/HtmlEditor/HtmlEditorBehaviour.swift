@@ -230,6 +230,12 @@ class HtmlEditorBehaviour: NSObject {
         firstly { () -> Promise<Void> in
             self.run(with: "html_editor.setCSP(\"\(self.contentHTML.remoteContentMode.cspRaw)\");")
         }.then { () -> Promise<Void> in
+            if let css = self.contentHTML.supplementCSS {
+                return self.run(with: "html_editor.addSupplementCSS(`\(css)`)")
+            } else {
+                return Promise()
+            }
+        }.then { () -> Promise<Void> in
             self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(HTTPRequestSecureLoader.domPurifyConfiguration));")
         }.then { (_) -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")

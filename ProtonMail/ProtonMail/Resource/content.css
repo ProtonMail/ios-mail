@@ -10,6 +10,7 @@
       --text-color: white;
       --bg-color: #16171C;
   }
+  a:link { color: deepskyblue; }
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {

@@ -105,7 +105,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
-        let css = contents.isNewsLetter ? WebContents.cssLightModeOnly : WebContents.css
+        var css = WebContents.css
+        if contents.isNewsLetter {
+            css = WebContents.cssLightModeOnly
+        } else if let supplementCSS = contents.supplementCSS {
+            css += supplementCSS
+        }
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
         var clean0 = DOMPurify.sanitize(dirty);
@@ -115,7 +120,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.appendChild(document.createTextNode('\(css)'));
+        style.appendChild(document.createTextNode(`\(css)`));
         document.getElementsByTagName('head')[0].appendChild(style);
         
         var metaWidth = document.createElement('meta');

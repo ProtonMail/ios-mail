@@ -109,6 +109,12 @@ html_editor.setCSP = function(content) {
     mvp.setAttribute('content', content);
 };
 
+html_editor.addSupplementCSS = function(css) {
+    let style = document.createElement(`style`);
+    style.textContent = css;
+    document.head.appendChild(style);
+};
+
 /// update view port width. set to the content size otherwise the text selection will not work
 html_editor.setWidth = function(width) {
     var mvp = document.getElementById('myViewport');

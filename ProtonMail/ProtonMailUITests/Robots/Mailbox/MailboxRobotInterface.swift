@@ -7,7 +7,6 @@
 //
 
 import pmtest
-import SwiftUI
 import XCTest
 
 fileprivate struct id {

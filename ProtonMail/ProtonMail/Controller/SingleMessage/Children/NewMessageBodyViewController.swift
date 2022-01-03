@@ -349,7 +349,9 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if let validator = PMAPIService.trustKit?.pinningValidator {
+        if PMAPIService.noTrustKit {
+            completionHandler(.performDefaultHandling, challenge.proposedCredential)
+        } else if let validator = PMAPIService.trustKit?.pinningValidator {
             if !validator.handle(challenge, completionHandler: completionHandler) {
                 completionHandler(.performDefaultHandling, challenge.proposedCredential)
             }
