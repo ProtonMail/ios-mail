@@ -246,13 +246,10 @@ extension MessageSendingRequestBuilder {
                 .fetchAttachmentForAttachment(att,
                                               customAuthCredential: att.message.cachedAuthCredential,
                                               downloadTask: { (_: URLSessionDownloadTask) -> Void in },
-                                              completion: { _, _, error -> Void in
+                                              completion: { _, _, _ -> Void in
                     let decryptedAttachment = att.base64DecryptAttachment(userInfo: userInfo,
                                                                           passphrase: passphrase)
                     seal.fulfill(decryptedAttachment)
-                    if error != nil {
-                        PMLog.D("\(String(describing: error))")
-                    }
                 })
         }
     }
@@ -275,8 +272,8 @@ extension MessageSendingRequestBuilder {
                 case .fulfilled(let body):
                     let preAttachment = self.preAttachments[index].att
                     self.attachmentBodys[preAttachment.attachmentID] = body
-                case .rejected(let error):
-                    PMLog.D(error.localizedDescription)
+                case .rejected:
+                    break
                 }
             }
             return .value(self)
@@ -436,7 +433,6 @@ extension MessageSendingRequestBuilder {
 
     func generatePlainTextBody() -> String {
         let body = self.clearBody ?? ""
-        // TODO: need improve replace part
         return body.html2String.preg_replace("\n", replaceto: "\r\n")
     }
 

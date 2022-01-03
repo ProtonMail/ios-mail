@@ -35,7 +35,6 @@ final class MenuViewModel: NSObject {
     
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
-            Analytics.shared.debug(message: .menuSetupFailed, extra: ["IsUserNil": self.currentUser == nil])
             return nil
         }
         
@@ -323,9 +322,6 @@ extension MenuViewModel: NSFetchedResultsControllerDelegate {
 extension MenuViewModel {
     private func fetchLabels() {
         guard let service = self.labelDataService else {
-            let user = self.currentUser
-            Analytics.shared.debug(message: .menuSetupFailed,
-                                   extra: ["IsUserNil": user == nil])
             return
         }
         
@@ -344,8 +340,7 @@ extension MenuViewModel {
                 return
             }
             self.handle(dbLabels: labels)
-        } catch let ex as NSError {
-            PMLog.D("MenuVM load label from coredata error: \(ex)")
+        } catch {
         }
     }
     
@@ -366,8 +361,7 @@ extension MenuViewModel {
         guard let fetcher = self.labelUpdateFetcher else {return}
         do {
             try fetcher.performFetch()
-        } catch let ex as NSError {
-            PMLog.D("MenuVM fetch label unread from coredata error: \(ex)")
+        } catch {
         }
     }
     
@@ -388,8 +382,7 @@ extension MenuViewModel {
         guard let fetcher = self.conversationCountFetcher else {return}
         do {
             try fetcher.performFetch()
-        } catch let ex as NSError {
-            PMLog.D("MenuVM fetch label unread from coredata error: \(ex)")
+        } catch {
         }
     }
     

@@ -147,8 +147,7 @@ extension MessageDataService {
             if let messages = try context.fetch(fetchRequest) as? [Message] {
                 return messages
             }
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
         return [Message]()
     }

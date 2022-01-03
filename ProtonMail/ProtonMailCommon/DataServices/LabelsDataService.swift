@@ -128,21 +128,15 @@ class LabelsDataService: Service, HasLocalStorage {
                 let context = self.coreDataService.operationContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
-                        let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
+                        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: allFolders, in: context)
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
-                            if labels_out.count != allFolders.count {
-                                PMLog.D("error: label insertions failed partially!")
-                            }
                             seal.fulfill_()
                         } else {
-                            //TODO:: error
                             seal.reject(error!)
-                            PMLog.D("error: \(String(describing: error))")
                         }
                     } catch let ex as NSError {
                         seal.reject(ex)
-                        PMLog.D("error: \(ex)")
                     }
                 }
             }.catch { (error) in
@@ -172,21 +166,15 @@ class LabelsDataService: Service, HasLocalStorage {
                 let context = self.coreDataService.operationContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
-                        let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
+                        _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
-                            if labels_out.count != labels.count {
-                                PMLog.D("error: label insertions failed partially!")
-                            }
                             seal.fulfill_()
                         } else {
-                            //TODO:: error
                             seal.reject(error!)
-                            PMLog.D("error: \(String(describing: error))")
                         }
                     } catch let ex as NSError {
                         seal.reject(ex)
-                        PMLog.D("error: \(ex)")
                     }
                 }
             }
@@ -215,12 +203,8 @@ class LabelsDataService: Service, HasLocalStorage {
             let results = try context.fetch(fetchRequest)
             if let results = results as? [Label] {
                 return results
-            } else {
-                // TODO: handle error
-                PMLog.D("COnversion to Label error")
             }
         } catch {
-            PMLog.D("Get context failed")
         }
         
         return []
@@ -276,11 +260,8 @@ class LabelsDataService: Service, HasLocalStorage {
                 do {
                     label["UserID"] = self.userID
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("addNewLabel error: \(error)")
-                    }
-                } catch let ex as NSError {
-                    PMLog.D("addNewLabel error: \(ex)")
+                    _ = context.saveUpstreamIfNeeded()
+                } catch {
                 }
             }
         }

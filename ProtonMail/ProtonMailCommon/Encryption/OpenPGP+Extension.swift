@@ -191,7 +191,6 @@ extension Data {
                 if firstError == nil {
                     firstError = error
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         if let error = firstError {
@@ -247,7 +246,6 @@ extension Data {
                 if firstError == nil {
                     firstError = error
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         if let error = firstError {

@@ -212,8 +212,6 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              user: self.viewModel.user,
                                                              selectedEmails: data.viewModel.getEmails(),
                                                              refreshHandler: refreshHandler)
-        } else {
-            PMLog.D("FatalError: No such segue")
         }
     }
 }
@@ -276,7 +274,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .manageContact:
             self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
         case .email:
-            PMLog.D("email actions")
+            break
         case .deleteGroup:
             let deleteActionHandler = {
                 (action: UIAlertAction) -> Void in
@@ -310,7 +308,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
 
             self.present(alertController, animated: true, completion: nil)
         case .error:
-            PMLog.D("FatalError: This is a bug")
+            break
         }
     }
 }

@@ -79,8 +79,7 @@ extension UsersManager {
                     let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
             return ""
         }
@@ -92,8 +91,7 @@ extension UsersManager {
                     let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
             return ""
         }

@@ -113,8 +113,6 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
         guard indexPath.row < emailIDsArray.count else {
-            // TODO: handle error
-            PMLog.D("FatalError: Invalid index row request")
             return ("", "", "")
         }
         

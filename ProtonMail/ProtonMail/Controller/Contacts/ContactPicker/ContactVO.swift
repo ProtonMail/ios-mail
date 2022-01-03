@@ -334,8 +334,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                     }
                 }
                 complete?(nil, -1)
-            }.catch(policy: .allErrors) { (error) in
-                PMLog.D(error.localizedDescription)
+            }.catch(policy: .allErrors) { _ in
                 complete?(nil, -1)
             }
         }

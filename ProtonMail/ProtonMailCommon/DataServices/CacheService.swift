@@ -80,8 +80,7 @@ class CacheService: Service {
             }
 
             let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -121,8 +120,7 @@ class CacheService: Service {
             contextToUse.delete(msgToUpdate)
 
             let error = contextToUse.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -154,8 +152,7 @@ class CacheService: Service {
             self.updateCounterSync(markUnRead: unRead, on: msgToUpdate, context: context)
 
             let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -199,8 +196,7 @@ class CacheService: Service {
             }
 
             let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -239,14 +235,11 @@ class CacheService: Service {
                     for message in oldMessages {
                         context.delete(message)
                     }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    } else {
+                    if context.saveUpstreamIfNeeded() == nil {
                         result = true
                     }
                 }
             } catch {
-                PMLog.D(" error: \(error)")
             }
         }
         return result
@@ -259,9 +252,7 @@ class CacheService: Service {
                 labelObjs.removeAllObjects()
                 self.context.delete(msg)
             }
-            if let error = self.context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-            }
+            _ = self.context.saveUpstreamIfNeeded()
             completion?()
         }
     }
@@ -275,12 +266,9 @@ class CacheService: Service {
                     for msg in messages {
                         self.context.delete(msg)
                     }
-                    if let error = self.context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                    _ = self.context.saveUpstreamIfNeeded()
                 }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+            } catch {
             }
             completion?()
         }
@@ -298,9 +286,7 @@ class CacheService: Service {
                 msg.password = pwd
                 msg.passwordHint = pwdHint
                 msg.expirationOffset = Int32(expirationTime)
-                if let error = contextToUse.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = contextToUse.saveUpstreamIfNeeded()
             }
             completion?()
         }
@@ -331,9 +317,7 @@ class CacheService: Service {
                     self.updateConversation(by: msg)
                     self.context.delete(msg)
                 }
-                if let error = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
+                _ = self.context.saveUpstreamIfNeeded()
             }
             DispatchQueue.main.async {
                 completion?()
@@ -392,10 +376,7 @@ extension CacheService {
             let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
                 try self.context.execute(request)
-            } catch let ex as NSError {
-                Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex)
-                PMLog.D("error : \(ex)")
+            } catch {
             }
         }
     }
@@ -441,9 +422,7 @@ extension CacheService {
                         // mark the status of metadata being set
                         msg.messageStatus = 1
                     }
-                    if let err = self.context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(err)")
-                    }
+                    _ = self.context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
                         self.updateLastUpdatedTime(labelID: labelID, isUnread: isUnread, startTime: firstMsg.time ?? Date(), endTime: lastMsg.time ?? Date(), msgCount: messagesCount, msgType: .singleMessage)
@@ -452,7 +431,6 @@ extension CacheService {
                     completion?(nil)
                 }
             } catch {
-                PMLog.D("error: \(error)")
                 completion?(error)
             }
         }
@@ -483,9 +461,7 @@ extension CacheService {
                 }
                 updateTime.update = Date()
             }
-            if let err = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(err)")
-            }
+            _ = context.saveUpstreamIfNeeded()
         }
     }
 
@@ -567,11 +543,8 @@ extension CacheService {
                 var response = serverResponse
                 response["UserID"] = self.userID
                 try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
-                if let error = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+                _ = self.context.saveUpstreamIfNeeded()
+            } catch {
             }
             completion?()
         }
@@ -586,11 +559,8 @@ extension CacheService {
                     response["ParentID"] = ""
                 }
                 try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
-                if let error = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+                _ = self.context.saveUpstreamIfNeeded()
+            } catch {
             }
             DispatchQueue.main.async {
                 completion?()
@@ -603,9 +573,7 @@ extension CacheService {
             if let labelToUpdate = try? self.context.existingObject(with: label.objectID) as? Label {
                 labelToUpdate.name = name
                 labelToUpdate.color = color
-                if let err = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(err)")
-                }
+                _ = self.context.saveUpstreamIfNeeded()
             }
             DispatchQueue.main.async {
                 completion?()
@@ -617,9 +585,7 @@ extension CacheService {
         context.perform {
             if let labelToDelete = try? self.context.existingObject(with: label.objectID) {
                 self.context.delete(labelToDelete)
-                if let err = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(err)")
-                }
+                _ = self.context.saveUpstreamIfNeeded()
             }
             DispatchQueue.main.async {
                 completion?()
@@ -635,9 +601,7 @@ extension CacheService {
                 }
                 self.context.delete(label)
             }
-            if let err = self.context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(err)")
-            }
+            _ = self.context.saveUpstreamIfNeeded()
         }
         DispatchQueue.main.async {
             completion?()
@@ -674,13 +638,11 @@ extension CacheService {
                     }
                 }
                 if let error = self.context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
                     completion?(nil, error)
                 } else {
                     completion?(contacts, nil)
                 }
             } catch {
-                PMLog.D("error: \(error)")
                 completion?(nil, error as NSError)
             }
         }
@@ -701,14 +663,11 @@ extension CacheService {
 
                 if let newContact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: cardsJson, in: self.context) as? Contact {
                     newContact.needsRebuild = true
-                    if let err = self.context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(err)")
-                    } else {
+                    if self.context.saveUpstreamIfNeeded() == nil {
                         completion?(.success([newContact]))
                     }
                 }
             } catch {
-                PMLog.D("error: \(error)")
                 completion?(.failure(error as NSError))
             }
         }
@@ -721,7 +680,6 @@ extension CacheService {
                 self.context.delete(contact)
             }
             if let error = self.context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
                 err = error
             }
             completion?(err)
@@ -735,7 +693,6 @@ extension CacheService {
                     contact.isDownloaded = true
                     _ = contact.fixName(force: true)
                     if let error = self.context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
                         completion?(nil, error)
                     } else {
                         completion?(contact, nil)
@@ -744,7 +701,6 @@ extension CacheService {
                     completion?(nil, NSError.unableToParseResponse(serverResponse))
                 }
             } catch {
-                PMLog.D("error: \(error)")
                 completion?(nil, error as NSError)
             }
         }

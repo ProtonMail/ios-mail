@@ -36,7 +36,6 @@ extension UIDevice: BiometricStatusProvider {
             let context = LAContext()
             var error: NSError?
             guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-                PMLog.D(error?.localizedDescription ?? "")
                 return .none
             }
             switch context.biometryType {

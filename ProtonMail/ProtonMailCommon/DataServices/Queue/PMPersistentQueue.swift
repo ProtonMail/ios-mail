@@ -89,7 +89,6 @@ class BackupExcluder: BackupExcluderProtocol {
                 try dataSaver.save(data: data, url: self.queueURL)
                 backupExcluder.excludeFromBackup(url: &queueURL)
             } catch {
-                PMLog.D("Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
             }
         }
     }

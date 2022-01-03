@@ -82,15 +82,9 @@ class CoreDataStore {
 
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { (persistentStoreDescription, error) in
-            if let ex = error as NSError? {
-                Analytics.shared.error(message: .coreDataError, error: ex)
-                PMLog.D(api: ex)
-
+            if let _ = error as NSError? {
                 container.loadPersistentStores { (_, error) in
                     if let ex = error as NSError? {
-                        Analytics.shared.error(message: .coreDataError, error: ex)
-                        PMLog.D(api: ex)
-
                         do {
                             try FileManager.default.removeItem(at: url)
                             LastUpdatedStore.clear()
@@ -116,11 +110,7 @@ class CoreDataStore {
         let description = NSPersistentStoreDescription()
         description.url = URL(fileURLWithPath: "/dev/null")
         container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { (_, error) in
-            if let ex = error as NSError? {
-                PMLog.D(api: ex)
-            }
-//            fatalError()
+        container.loadPersistentStores { (_, _) in
         }
         return container
     }
@@ -130,8 +120,7 @@ class CoreDataStore {
         // Coordinator with in-mem store type
         do {
             try coordinator?.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-        } catch let ex as NSError {
-            PMLog.D(api: ex)
+        } catch {
         }
         return coordinator
     }
@@ -176,14 +165,6 @@ class CoreDataStore {
         _ = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any] as? [String: Any])
 
         assert(false, "Unresolved error \(error), \(error.userInfo)")
-        PMLog.D("Unresolved error \(error), \(error.userInfo)")
-
-        // TODO::Fix should use delegate let windown to know
-        // let alertController = alertError.alertController()
-        // alertController.addAction(UIAlertAction(title: LocalString._general_close_action, style: .default, handler: { (action) -> Void in
-        // abort()
-        // }))
-        // UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
 
     func cleanLegacy() {
@@ -191,11 +172,7 @@ class CoreDataStore {
         let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
             try FileManager.default.removeItem(at: url)
-            PMLog.D("clean ok")
-        } catch let error as NSError {
-            PMLog.D("\(error)")
+        } catch {
         }
     }
-
-   // func migrate(from model, to model, replace : Bool)
 }

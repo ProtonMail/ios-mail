@@ -95,7 +95,6 @@ extension ConversationDataService {
                             }
                         }
                     } catch {
-                        PMLog.D("error: \(error)")
                         DispatchQueue.main.async {
                             completion?(.failure(error))
                         }

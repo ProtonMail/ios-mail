@@ -1302,10 +1302,7 @@ extension EmailHeaderView: UITableViewDelegate {
                     if let att = attachment.att, let context = att.managedObjectContext {
                         CoreDataService.shared.enqueue(context: context) { (context) in
                             att.localURL = nil
-                            let error = context.saveUpstreamIfNeeded()
-                            if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                             self.downloadAttachment(att, forIndexPath: indexPath)
                         }
                     }

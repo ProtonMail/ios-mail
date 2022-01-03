@@ -354,7 +354,6 @@ class UsersManager : Service, Migrate {
     func tryRestore() {
         // try new version first
         guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
-            Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsMainKeyNil": true])
             return
         }
         
@@ -383,7 +382,6 @@ class UsersManager : Service, Migrate {
             
         } else {
             guard let encryptedAuthData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.authKeychainStore) ?? KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
-                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsKeychainNil": true])
                 return
             }
             let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
@@ -393,23 +391,19 @@ class UsersManager : Service, Migrate {
             } catch {
                 SharedCacheBase.getDefault().setValue(nil, forKey: CoderKey.authKeychainStore)
                 KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
-                Analytics.shared.error(message: .usersRestoreFailed, error: error, extra: ["IsUnlockFail": true])
                 return
             }
             
             guard let encryptedUsersData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.usersInfo) else {
-                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataNil": true])
                 return
             }
             
             let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
             guard let userinfos = try? userslocked.unlock(with: mainKey)  else {
-                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataUnlockFail": true])
                 return
             }
             
             guard userinfos.count == auths.count else {
-                Analytics.shared.debug(message: .usersRestoreFailed, extra: ["IsDataNotMatch": true])
                 return
             }
             
@@ -636,7 +630,6 @@ extension UsersManager {
                 let data = try? JSONEncoder().encode(newValue),
                 let locked = try? Locked(clearValue: data, with: mainKey) else
             {
-                PMLog.D("Failed to save disconnectedUsers to keychain")
                 return
             }
             KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)

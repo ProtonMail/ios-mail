@@ -42,12 +42,7 @@ class ShareUnlockCoordinator : PushCoordinator {
         case composer = "composer"
     }
     
-    deinit {
-        PMLog.D("deinit ShareUnlockCoordinator")
-    }
-    
     init(navigation : UINavigationController?, services: ServiceFactory) {
-        PMLog.D("init ShareUnlockCoordinator")
         //parent navigation
         self.navigationController = navigation
         self.services = services

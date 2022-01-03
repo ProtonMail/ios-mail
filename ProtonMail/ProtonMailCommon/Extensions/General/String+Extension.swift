@@ -56,7 +56,6 @@ extension String {
                                                  range: NSMakeRange(0, self.count))
             return matchCount > 0
         } catch {
-            PMLog.D("\(error)")
         }
         return false;
     }
@@ -136,14 +135,12 @@ extension String {
             return [];
         }
         
-//        PMLog.D(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String : Any]]
                 return decoded
             }
-        } catch let ex as NSError {
-            PMLog.D(" func parseJson() -> error error \(ex)")
+        } catch {
         }
         return nil
     }
@@ -263,8 +260,7 @@ extension String {
             if !replacedString.isEmpty && replacedString.count > 0 {
                 return replacedString
             }
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
+        } catch {
         }
         return self
     }
@@ -276,8 +272,7 @@ extension String {
             return regex.firstMatch(in: self,
                                     options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                     range: NSRange(location: 0, length: self.count)) != nil
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
+        } catch {
         }
         
         return false
@@ -369,8 +364,6 @@ extension String {
     func decodeBase64() -> String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         let decodedString = NSString(data: decodedData!, encoding: String.Encoding.utf8.rawValue)
-//        PMLog.D(any: decodedString!)
-        
         return decodedString! as String
     }
     
@@ -413,8 +406,7 @@ extension String {
             let data : Data! = self.data(using: String.Encoding.utf8)
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String] ?? ["" : ""]
             return decoded
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
+        } catch {
         }
         return ["":""]
     }

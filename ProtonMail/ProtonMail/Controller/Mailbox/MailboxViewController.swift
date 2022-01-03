@@ -1004,7 +1004,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func handleRequestError(_ error : NSError) {
-        PMLog.D("error: \(error)")
         guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
         guard checkDoh(error) == false else {
             return
@@ -1297,7 +1296,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
                 self?.hideProgressHud()
                 if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
                     let alert = LocalString._unable_to_edit_offline.alertController()
                     alert.addOKAction()
                     self?.present(alert, animated: true, completion: nil)
@@ -1424,8 +1422,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             guard indexPath == visibleRowIndexPath else { return }
             tableView(tableView, didSelectRowAt: indexPath)
         }
-
-        PMLog.D("Long press on table view at row \(indexPath.row)")
     }
     
     private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -2020,7 +2016,6 @@ extension MailboxViewController {
             self.updateInterface(reachability: currentReachability)
         } else {
             if let status = note.object as? Int, sharedInternetReachability.currentReachabilityStatus() != .NotReachable {
-                PMLog.D("\(status)")
                 DispatchQueue.main.async {
                     if status == 0 { //time out
                         self.showTimeOutErrorMessage()
@@ -2038,23 +2033,20 @@ extension MailboxViewController {
         let netStatus = reachability.currentReachabilityStatus()
         switch netStatus {
         case .NotReachable:
-            PMLog.D("Access Not Available")
             self.showNoInternetErrorMessage()
             self.hasNetworking = false
             self.showInternetConnectionBanner()
             self.hasNetworking = false
         case .ReachableViaWWAN:
-            PMLog.D("Reachable WWAN")
             self.hideInternetConnectionBanner()
             self.afterNetworkChange(status: netStatus)
             self.hasNetworking = true
         case .ReachableViaWiFi:
-            PMLog.D("Reachable WiFi")
             self.hideInternetConnectionBanner()
             self.afterNetworkChange(status: netStatus)
             self.hasNetworking = true
         default:
-            PMLog.D("Reachable default unknow")
+            break
         }
         lastNetworkStatus = netStatus
         

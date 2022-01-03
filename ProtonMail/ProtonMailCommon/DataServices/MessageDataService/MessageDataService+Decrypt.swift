@@ -36,7 +36,6 @@ import ProtonCore_Services
 /// Message data service
 extension MessageDataService {
     func decryptBodyIfNeeded(message: Message) throws -> String? {
-        PMLog.D("Flags: \(message.flag.description)")
         var keys: [Key] = []
         if let addressID = message.addressID,
            let _keys = self.userDataSource?.getAllAddressKey(address_id: addressID) {
@@ -52,7 +51,6 @@ extension MessageDataService {
                                 passphrase: passphrase) :
                 try message.decryptBody(keys: keys,
                                 passphrase: passphrase) { //DONE
-            //PMLog.D(body)
             if message.isPgpMime || message.isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
                     if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
@@ -157,8 +155,6 @@ extension MessageDataService {
             return body
         }
         
-        Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "passphrase is nil")
         return message.body
     }
     
@@ -197,9 +193,7 @@ extension MessageDataService {
                 conversation.numMessages = NSNumber(value: newCount)
             }
             
-            if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-            }
+            _ = newMessage.managedObjectContext?.saveUpstreamIfNeeded()
             
             var key: Key?
             if let address_id = message.addressID,
@@ -216,8 +210,7 @@ extension MessageDataService {
             }
             
             var newAttachmentCount : Int = 0
-            for (index, attachment) in message.attachments.enumerated() {
-                PMLog.D("index: \(index)")
+            for (_, attachment) in message.attachments.enumerated() {
                 if let att = attachment as? Attachment {
                     if att.inline() || copyAtts {
                         /// this logic to filter out the inline messages without cid in the message body
@@ -261,16 +254,13 @@ extension MessageDataService {
                             
                         }
                         
-                        if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        } else {
+                        if attachment.managedObjectContext?.saveUpstreamIfNeeded() == nil {
                             newAttachmentCount += 1
                         }
                     }
                     
                 }
             }
-    //        newMessage.numAttachments = NSNumber(value: message.attachments.count)
             newMessage.numAttachments = NSNumber(value: newAttachmentCount)
             _ = context.saveUpstreamIfNeeded()
         }

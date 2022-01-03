@@ -238,7 +238,6 @@ final class SignInCoordinator: DefaultCoordinator {
             let alertController = nsError.alertController()
             showAlertAndFinish(controller: alertController, result: .errored(flowError(error)))
         }
-        PMLog.D("error: \(error)")
     }
 
     private func showAlertAndFinish(controller alertController: UIAlertController, result: FlowResult) {

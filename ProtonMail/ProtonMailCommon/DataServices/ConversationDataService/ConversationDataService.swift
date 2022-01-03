@@ -107,9 +107,7 @@ extension ConversationDataService {
                 contextlabels.forEach{ context.delete($0) }
             }
 
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-            }
+            _ = context.saveUpstreamIfNeeded()
         }
     }
 }
@@ -122,8 +120,7 @@ extension ConversationDataService {
             if let conversations = try context.fetch(fetchRequest) as? [Conversation] {
                 return conversations
             }
-        } catch let ex as NSError {
-            PMLog.D("fetch error: \(ex)")
+        } catch {
         }
         return []
     }

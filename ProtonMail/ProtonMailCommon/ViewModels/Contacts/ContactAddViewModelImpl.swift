@@ -252,7 +252,6 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        PMLog.D(vcard2Str)
         //TODO:: fix the try?
         let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
                                                        privateKey: userkey.privateKey,
@@ -368,10 +367,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         vcard3.setUid(uuid)
         
         let vcard3Str = PMNIEzvcard.write(vcard3)
-        PMLog.D(vcard3Str)
         //TODO:: fix the try!
         let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
-        PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
                                                        privateKey: userkey.privateKey,
                                                        passphrase: mailboxPassword)

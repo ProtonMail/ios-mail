@@ -87,14 +87,12 @@ extension Email {
         PMLog.D("ContactID: \(self.contactID)")
         PMLog.D("Email: \(self.email)")
         PMLog.D("Name: \(self.name)")
-        //PMLog.D("Encrypt: \(self.encrypt)")
         PMLog.D("Order: \(self.order)")
         PMLog.D("Type: \(self.type)")
     }
     
     func emailType() -> String {
-//        let pasred = type.parseJson();
-        return type;
+        type
     }
 }
 

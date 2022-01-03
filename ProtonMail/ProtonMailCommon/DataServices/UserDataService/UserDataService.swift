@@ -212,9 +212,7 @@ class UserDataService : Service, HasLocalStorage {
                                 addr.keys[index].privateKey = new_private_key
                                 addr.keys[index].activation = nil
                             }
-                        } catch let ex {
-                            PMLog.D(ex.localizedDescription)
-                            //ignore error for now
+                        } catch {
                         }
                     }
                 }
@@ -457,8 +455,6 @@ class UserDataService : Service, HasLocalStorage {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                Analytics.shared.error(message: .updateLoginPassword,
-                                       error: error)
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -627,8 +623,6 @@ class UserDataService : Service, HasLocalStorage {
                 }
                 return
             } catch let error as NSError {
-                Analytics.shared.error(message: .updateMailBoxPassword,
-                                       error: error)
                 DispatchQueue.main.async {
                     completion(nil, nil, error)
                 }
@@ -736,8 +730,6 @@ class UserDataService : Service, HasLocalStorage {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                Analytics.shared.error(message: .updateLoginPassword,
-                                       error: error)
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async

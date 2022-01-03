@@ -300,8 +300,7 @@ extension Array where Element: Any {
                 if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
         }
         return ""

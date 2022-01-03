@@ -81,20 +81,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         func checkPermission() {
             let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
             switch photoAuthorizationStatus {
-            case .authorized:
-                print("Access is granted by user")
+            case .authorized, .restricted, .denied:
+                break
             case .notDetermined:
-                PHPhotoLibrary.requestAuthorization({
-                    (newStatus) in
-                    print("status is \(newStatus)")
-                    if newStatus == PHAuthorizationStatus.authorized {
-                        
-                    }
-                })
-            case .restricted:
-                print("User do not have access to photo album.")
-            case .denied:
-                print("User has denied the permission.")
+                PHPhotoLibrary.requestAuthorization { _ in }
             default: break
             }
         }

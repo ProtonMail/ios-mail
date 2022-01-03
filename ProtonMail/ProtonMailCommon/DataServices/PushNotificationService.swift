@@ -274,8 +274,7 @@ public class PushNotificationService: NSObject, Service {
                     return nil
                 }
                 return push.messageId
-            } catch let error {
-                PMLog.D("Error while opening message via push: \(error)")
+            } catch {
                 return nil
             }
         } else if let messageArray = userInfo["message_id"] as? NSArray { // old pushes

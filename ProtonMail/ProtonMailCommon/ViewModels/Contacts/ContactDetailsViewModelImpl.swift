@@ -217,9 +217,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                 self.coreDataService.rootSavingContext.performAndWait {
                     if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
                         contactToUpdate.needsRebuild = false
-                        if let error = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        }
+                        _ = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
                     }
                 }
             }

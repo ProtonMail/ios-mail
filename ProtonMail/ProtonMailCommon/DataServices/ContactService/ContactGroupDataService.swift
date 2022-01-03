@@ -98,7 +98,6 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                     seal.reject(error)
                 } else {
                     if let updatedContactGroup = response.label {
-                        PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
                         self.labelDataService.addNewLabel(updatedContactGroup)
                         seal.fulfill(())
                     } else {
@@ -122,8 +121,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                 if let error = response.error {
                     seal.reject(error)
                 } else {
-                    if let returnedCode = response.returnedCode {
-                        PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
+                    if response.returnedCode != nil {
                         // successfully deleted on the server
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
@@ -136,7 +134,6 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 seal.fulfill(())
                                 return
                             } catch {
-                                PMLog.D("deleteContactGroup updating error: \(error)")
                                 seal.reject(error)
                                 return
                             }
@@ -174,7 +171,6 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                 } else {
                     if !response.emailIDs.isEmpty {
                         // save
-                        PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
                             let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
@@ -198,13 +194,11 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 label.emails = newSet as NSSet
 
                                 if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
                                 } else {
                                     seal.fulfill(())
                                 }
                             } else {
-                                PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                                 seal.reject(ContactGroupEditError.InternalError)
                             }
                         }
@@ -239,7 +233,6 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                 } else {
                     if !response.emailIDs.isEmpty {
                         // save
-                        PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
                         let context = self.coreDataService.operationContext
                         self.coreDataService.enqueue(context: context) { (context) in
@@ -262,14 +255,12 @@ class ContactGroupsDataService: Service, HasLocalStorage {
                                 }
 
                                 if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D("addEmailsToContactGroup updating error: \(error)")
                                     seal.reject(error)
                                 } else {
                                     seal.fulfill(())
                                 }
 
                             } else {
-                                PMLog.D("addEmailsToContactGroup error: can't get label or newSet")
                                 seal.reject(ContactGroupEditError.InternalError)
                             }
                         }

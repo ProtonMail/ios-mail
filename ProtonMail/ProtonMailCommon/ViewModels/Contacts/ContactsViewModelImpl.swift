@@ -62,9 +62,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
                     }
                 }
                 if needsSave {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                    _ = context.saveUpstreamIfNeeded()
                 }
                 completion?()
             }
@@ -77,8 +75,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         if let fetchedResultsController = contactService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+            } catch {
             }
             return fetchedResultsController
         }
@@ -100,8 +97,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         
         do {
             try fetchedResultsController?.performFetch()
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         
     }

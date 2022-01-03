@@ -79,9 +79,6 @@ struct TaskCompletionHelper {
             return
         }
 
-        PMLog.D("Handle queue task error: \(String(describing: error))")
-        Analytics.shared.error(message: .queueError, error: error)
-
         var statusCode = 200
         let errorCode = error.code
         var isInternetIssue = false

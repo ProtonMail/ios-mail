@@ -114,9 +114,7 @@ class AttachmentListViewModel {
             if let context = attachment.managedObjectContext {
                 context.performAndWait {
                     attachment.localURL = nil
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(String(describing: error))")
-                    }
+                    _ = context.saveUpstreamIfNeeded()
                 }
             }
             self.downloadAttachment(attachment,

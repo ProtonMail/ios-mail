@@ -185,7 +185,6 @@ final class LocalConversationUpdater {
                       completion: ((Result<Void, Error>) -> Void)?) {
         let error = context.saveUpstreamIfNeeded()
         if let error = error {
-            PMLog.D(" error: \(error)")
             completion?(.failure(error))
         } else {
             completion?(.success(()))

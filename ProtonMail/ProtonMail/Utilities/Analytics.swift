@@ -55,7 +55,6 @@ class Analytics {
             
             isEnabled = true
         } catch {
-            print("Error while initializing Sentry: \(error)")
             isEnabled = false
         }
         #endif

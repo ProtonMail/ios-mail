@@ -261,8 +261,7 @@ class ContactDataService: Service, HasLocalStorage {
             context.perform {
                 if let error = response.error {
                     if error.responseCode == 13043 { //not exsit
-                        self.cacheService.deleteContact(by: contactID) { (cacheError) in
-                            PMLog.D(" error: \(String(describing: cacheError))")
+                        self.cacheService.deleteContact(by: contactID) { _ in
                         }
                     } else {
                         let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context)
@@ -315,11 +314,10 @@ class ContactDataService: Service, HasLocalStorage {
                         if let fEmail = contactEmails.first(where: { (e) -> Bool in
                             e.contactID == value.contactID
                         }) {
-                            PMLog.D(value.cardData)
                             parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
                         }
-                    case .rejected(let error):
-                        PMLog.D(error.localizedDescription)
+                    case .rejected:
+                        break
                     }
                 }
                 return when(resolved: parsers)
@@ -329,8 +327,8 @@ class ContactDataService: Service, HasLocalStorage {
                     switch c {
                     case .fulfilled(let value):
                         sucessed.append(value)
-                    case .rejected(let error):
-                        PMLog.D(error.localizedDescription)
+                    case .rejected:
+                        break
                     }
                 }
                 return .value(sucessed)
@@ -348,7 +346,6 @@ class ContactDataService: Service, HasLocalStorage {
                 for c in cards {
                     switch c.type {
                     case .SignedOnly:
-                        //PMLog.D(c.data)
                         if let vcard = PMNIEzvcard.parseFirst(c.data) {
                             let emails = vcard.getEmails()
                             for e in emails {
@@ -560,8 +557,7 @@ class ContactDataService: Service, HasLocalStorage {
             if let emails = try context.fetch(fetchRequest) as? [Email] {
                 return emails
             }
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
         return []
     }
@@ -574,8 +570,7 @@ class ContactDataService: Service, HasLocalStorage {
             if let emails = try context.fetch(fetchRequest) as? [Email] {
                 return emails
             }
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
         return []
     }
@@ -634,8 +629,7 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                 }
                 complete?(c.pgpType.lockImage, c.pgpType.rawValue)
-            }.catch(policy: .allErrors) { (error) in
-                PMLog.D(error.localizedDescription)
+            }.catch(policy: .allErrors) { _ in
                 complete?(nil, -1)
             }
         }

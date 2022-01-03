@@ -49,9 +49,7 @@ extension UserEvent {
         let event = UserEvent(context: context)
         event.userID = userID
         event.eventID = ""
-        if let error = event.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-        }
+        _ = event.managedObjectContext?.saveUpstreamIfNeeded()
         return event
     }
     
@@ -65,9 +63,7 @@ extension UserEvent {
             for update in toDeletes {
                 context.delete(update)
             }
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
+            if context.saveUpstreamIfNeeded() == nil {
                 return true
             }
         }

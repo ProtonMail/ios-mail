@@ -105,7 +105,6 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
             complete?(c.pgpType.lockImage, c.pgpType.rawValue)
         }.catch(policy: .allErrors) { error in
             self.message.checkingSign = false
-            PMLog.D(error.localizedDescription)
             complete?(nil, -1)
         }
     }

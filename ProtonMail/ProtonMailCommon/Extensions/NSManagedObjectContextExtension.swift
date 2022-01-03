@@ -32,9 +32,7 @@ extension NSManagedObjectContext {
         
         do {
             try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
-            PMLog.D("Deleted \(entityName) objects.")
-        } catch let error as NSError {
-            PMLog.D("error: \(error)")
+        } catch {
         }
     }
     
@@ -52,8 +50,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -72,8 +69,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -86,8 +82,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -102,8 +97,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -114,8 +108,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(request)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -126,8 +119,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(request)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }

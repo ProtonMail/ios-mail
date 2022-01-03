@@ -333,7 +333,6 @@ extension QueueManager {
         }
 
         guard task.dependencyIDs.count == 0 else {
-            PMLog.D("The dependency should be empty, some previous task failed, current action is \(task.action.rawValue)")
             self.removeAllTasks(of: task.messageID, removalCondition: { action in
                 switch action {
                 case .saveDraft, .uploadAtt,
@@ -349,7 +348,6 @@ extension QueueManager {
         }
 
         guard let handler = self.handlers[task.userID] else {
-            PMLog.D(" Unsupported action: \(task.action.rawValue) or handler is nil: \(self.handlers[task.userID] == nil). removing from message queue.")
             _ = self.messageQueue.remove(task.uuid)
             self.dequeueMessageQueue()
             return
@@ -393,7 +391,6 @@ extension QueueManager {
         }
 
         guard let handler = self.handlers[task.userID] else {
-            PMLog.D(" Unsupported action \(task.action.rawValue) or handler is nil: \(self.handlers[task.userID] == nil), removing from misc queue.")
             _ = self.miscQueue.remove(task.uuid)
             return
         }

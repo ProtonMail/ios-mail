@@ -312,11 +312,7 @@ class UserManager : Service, HasLocalStorage {
         #if !APP_EXTENSION
         self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
         self.payments.storeKitManager.subscribeToPaymentQueue()
-        self.payments.storeKitManager.updateAvailableProductsList { error in
-            let errorMessage = error?.localizedDescription ?? "unKnow"
-            Analytics.shared.error(message: .paymentGetProductsListError,
-                                   error: errorMessage)
-        }
+        self.payments.storeKitManager.updateAvailableProductsList { _ in }
         #endif
     }
 

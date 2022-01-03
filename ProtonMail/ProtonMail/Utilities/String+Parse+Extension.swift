@@ -33,8 +33,7 @@ extension String {
             let data : Data! = self.data(using: String.Encoding.utf8)
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
             return decoded
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
+        } catch {
         }
         return nil
     }

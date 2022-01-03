@@ -510,14 +510,12 @@ extension ComposeContainerViewController: AttachmentController {
                 
                 guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                     self.sizeError(0)
-                    PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
                     seal.fulfill_()
                     return
                 }
                 
                 guard let message = self.coordinator.editor.viewModel.message,
                       message.managedObjectContext != nil else {
-                    PMLog.D(" Error during copying size incorrect")
                     self.error(LocalString._system_cant_copy_the_file)
                     seal.fulfill_()
                     return
@@ -527,7 +525,6 @@ extension ComposeContainerViewController: AttachmentController {
                 
                 let attachment = try? `await`(fileData.contents.toAttachment(message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
                 guard let att = attachment else {
-                    PMLog.D(" Error during copying size incorrect")
                     self.error(LocalString._cant_copy_the_file)
                     return
                 }

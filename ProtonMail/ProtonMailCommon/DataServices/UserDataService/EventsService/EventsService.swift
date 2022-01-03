@@ -332,12 +332,6 @@ extension EventsService {
                                 context.delete(message)
                                 //in case
                                 error = context.saveUpstreamIfNeeded()
-                                if error != nil  {
-                                    Analytics.shared.error(message: .grtJSONSerialization,
-                                                           error: error!,
-                                                           extra: [Analytics.Reason.status: "Delete"])
-                                    PMLog.D(" error: \(String(describing: error))")
-                                }
                             }
                         }
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
@@ -412,54 +406,25 @@ extension EventsService {
                                     if let messageid = msg.message?["ID"] as? String {
                                         messagesNoCache.append(messageid)
                                     }
-                                    Analytics.shared.error(message: .grtJSONSerialization,
-                                                           error: "GRTJSONSerialization Insert - context nil")
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
                                     messagesNoCache.append(messageid)
                                 }
-                                PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
-                                Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: "GRTJSONSerialization Insert - insert empty")
                             }
-                        } catch let err as NSError {
+                        } catch {
                             // when GRTJSONSerialization insert failed
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(messageid)
                             }
-                            var status = ""
-                            switch msg.Action {
-                            case IncrementalUpdateType.update_draft:
-                                status = "Update1"
-                            case IncrementalUpdateType.update_flags:
-                                status = "Update2"
-                            case IncrementalUpdateType.insert:
-                                status = "Insert"
-                            case IncrementalUpdateType.delete:
-                                status = "Delete"
-                            default:
-                                status = "Other: \(String(describing: msg.Action))"
-                                break
-                            }
-                            Analytics.shared.error(message: .grtJSONSerialization,
-                                                   error: err,
-                                                   extra: [Analytics.Reason.status: status])
-                            PMLog.D(" error: \(err)")
                         }
                     default:
-                        PMLog.D(" unknown type in message: \(message)")
+                        break
                         
                     }
                     //TODO:: move this to the loop and to catch the error also put it in noCache queue.
                     error = context.saveUpstreamIfNeeded()
-                    if error != nil  {
-                        Analytics.shared.error(message: .grtJSONSerialization,
-                                               error: error!,
-                                               extra: [Analytics.Reason.status: "Save"])
-                        PMLog.D(" error: \(String(describing: error))")
-                    }
                 }
 
                 self.userManager.messageService.fetchMessageInBatches(messageIDs: messagesNoCache)
@@ -483,7 +448,6 @@ extension EventsService {
         guard let conversationsDict = conversations else {
             return Promise()
         }
-//        PMLog.D(conversationsDict.debugDescription)
         return Promise { seal in
             self.incrementalUpdateQueue.sync {
                 let context = self.coreDataService.operationContext
@@ -493,7 +457,6 @@ extension EventsService {
                     }
                     var conversationsNeedRefetch: [String] = []
                     
-                    var error: NSError?
                     for conDict in conversationsDict {
                         //Parsing conversation event
                         guard let conversationEvent = ConversationEvent(event: conDict) else {
@@ -509,13 +472,7 @@ extension EventsService {
                                 labelObjs.removeAllObjects()
                                 context.delete(conversation)
                                 
-                                error = context.saveUpstreamIfNeeded()
-                                if error != nil {
-                                    Analytics.shared.error(message: .coreDataError,
-                                                           error: error!,
-                                                           extra: [Analytics.Reason.status: "Delete"])
-                                    PMLog.D(" error: \(String(describing: error))")
-                                }
+                                _ = context.saveUpstreamIfNeeded()
                             }
                         case IncrementalUpdateType.insert: // treat it as same as update
                             if Conversation.conversationForConversationID(conversationEvent.ID, inManagedObjectContext: context) != nil {
@@ -530,20 +487,10 @@ extension EventsService {
                                         }
                                     }
                                 }
-                                error = context.saveUpstreamIfNeeded()
-                                if error != nil {
-                                    Analytics.shared.error(message: .coreDataError,
-                                                           error: error!,
-                                                           extra: [Analytics.Reason.status: "Insert"])
-                                    PMLog.D(" error: \(String(describing: error))")
-                                    conversationsNeedRefetch.append(conversationEvent.ID)
-                                }
+                                _ = context.saveUpstreamIfNeeded()
                             } catch {
                                 //Refetch after insert failed
                                 conversationsNeedRefetch.append(conversationEvent.ID)
-                                Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: error,
-                                                       extra: [Analytics.Reason.status: "Insert"])
                             }
                         case IncrementalUpdateType.update_draft, IncrementalUpdateType.update_flags:
                             do {
@@ -568,31 +515,15 @@ extension EventsService {
                                         conversationsNeedRefetch.append(conversationEvent.ID)
                                     }
                                 }
-                                error = context.saveUpstreamIfNeeded()
-                                if error != nil {
-                                    Analytics.shared.error(message: .coreDataError,
-                                                           error: error!,
-                                                           extra: [Analytics.Reason.status: "Update"])
-                                    PMLog.D(" error: \(String(describing: error))")
-                                    conversationsNeedRefetch.append(conversationEvent.ID)
-                                }
+                                _ = context.saveUpstreamIfNeeded()
                             } catch {
                                 conversationsNeedRefetch.append(conversationEvent.ID)
-                                Analytics.shared.error(message: .grtJSONSerialization,
-                                                       error: error,
-                                                       extra: [Analytics.Reason.status: "Update"])
                             }
                         default:
                             break
                         }
                         
-                        error = context.saveUpstreamIfNeeded()
-                        if error != nil  {
-                            Analytics.shared.error(message: .grtJSONSerialization,
-                                                   error: error!,
-                                                   extra: [Analytics.Reason.status: "Save"])
-                            PMLog.D(" error: \(String(describing: error))")
-                        }
+                        _ = context.saveUpstreamIfNeeded()
                     }
                     
                     self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
@@ -625,9 +556,7 @@ extension EventsService {
                             }
                         }
                         //save it earily
-                        if let error = context.saveUpstreamIfNeeded()  {
-                            PMLog.D(" error: \(error)")
-                        }
+                        _ = context.saveUpstreamIfNeeded()
                     case .insert, .update:
                         do {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -651,14 +580,11 @@ extension EventsService {
                                     }
                                 }
                             }
-                        } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)")
+                        } catch {
                         }
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D(" error: \(error)")
-                        }
+                        _ = context.saveUpstreamIfNeeded()
                     default:
-                        PMLog.D(" unknown type in contact: \(contact)")
+                        break
                     }
                 }
             }
@@ -704,17 +630,14 @@ extension EventsService {
                                 }
                             }
                             
-                        } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)")
+                        } catch {
                         }
                     default:
-                        PMLog.D(" unknown type in contact: \(email)")
+                        break
                     }
                 }
                 
-                if let error = context.saveUpstreamIfNeeded()  {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
             }
         }
     }
@@ -754,16 +677,13 @@ extension EventsService {
                                         new_or_update_label["UserID"] = self.userManager.userInfo.userId
                                         try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
                                     }
-                                } catch let ex as NSError {
-                                    PMLog.D(" error: \(ex)")
+                                } catch {
                                 }
                             default:
-                                PMLog.D(" unknown type in message: \(label)")
+                                break
                             }
                         }
-                        if let error = context.saveUpstreamIfNeeded(){
-                            PMLog.D(" error: \(error)")
-                        }
+                        _ = context.saveUpstreamIfNeeded()
                     }
                 }
             }
@@ -823,11 +743,10 @@ extension EventsService {
                         }
                         do {
                             try `await`(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
-                        } catch let error {
-                            print(error.localizedDescription)
+                        } catch {
                         }
                     default:
-                        PMLog.D(" unknown type in message: \(address)")
+                        break
                     }
                 }
                 seal.fulfill_()
@@ -855,9 +774,7 @@ extension EventsService {
                 }
             }
             
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(error.localizedDescription)
-            }
+            _ = context.saveUpstreamIfNeeded()
 
             guard let users = self.userManager.parentManager,
                   let primaryUser = users.firstUser,
@@ -884,9 +801,7 @@ extension EventsService {
                 }
             }
             
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(error.localizedDescription)
-            }
+            _ = context.saveUpstreamIfNeeded()
             
             guard let users = self.userManager.parentManager,
                   let primaryUser = users.firstUser,

@@ -353,8 +353,7 @@ extension Message {
         do {
             let results = try context.fetch(fetchRequest)
             return results as? [Message]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -366,9 +365,6 @@ extension Message {
     }
     
     // MARK: methods
-//    func decryptBody(keys: Data, passphrase: String) throws -> String? {
-//        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
-//    }
     
     func decryptBody(keys: [Key], passphrase: String) throws -> String? {
         var firstError : Error?
@@ -385,23 +381,12 @@ extension Message {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         
-        let extra: [String: Any] = ["newSchema": false,
-                                    "Ks count": keys.count,
-                                    "Error message": errorMessages]
-        
         if let error = firstError {
-            Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                                   error: error,
-                                   extra: extra)
             throw error
         }
-        Analytics.shared.error(message: .decryptedMessageBodyFailed,
-                               error: "No error from crypto library",
-                               extra: extra)
         return nil
     }
     
@@ -424,7 +409,6 @@ extension Message {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         return nil

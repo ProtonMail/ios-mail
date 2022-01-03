@@ -212,7 +212,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
 
             self?.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
                 if let error = error as NSError? {
-                    PMLog.D(" error: \(error)")
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self?.present(alertController, animated: true, completion: nil)

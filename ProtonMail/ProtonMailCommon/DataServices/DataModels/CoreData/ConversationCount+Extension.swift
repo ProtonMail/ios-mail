@@ -39,8 +39,7 @@ extension ConversationCount {
         do {
             let results = try context.fetch(fetchRequest)
             return results as? [ConversationCount] ?? []
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return []
     }
@@ -67,9 +66,7 @@ extension ConversationCount {
         update.total = 0
         update.unread = 0
 
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-        }
+        _ = context.saveUpstreamIfNeeded()
 
         return update
     }
@@ -81,9 +78,7 @@ extension ConversationCount {
             for update in toDeletes {
                 context.delete(update)
             }
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
+            if context.saveUpstreamIfNeeded() == nil {
                 return true
             }
         }

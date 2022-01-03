@@ -90,9 +90,7 @@ extension AppDelegate: UserDataServiceDelegate {
             (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow(.form))
             
             for session in sessions where session != oneToStay {
-                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                    PMLog.D(error.localizedDescription)
-                }
+                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { _ in }
             }
         } else {
             self.coordinator.go(dest: .signInWindow(.form))
@@ -173,10 +171,6 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
-        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-
         if CommandLine.arguments.contains("-disableAnimations") {
             UIView.setAnimationsEnabled(false)
         }
@@ -313,11 +307,8 @@ extension AppDelegate: UIApplicationDelegate {
         let queueManager: QueueManager = sharedServices.get()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask {
-            PMLog.D("Background Task Timed Out")
-        }
+        taskID = application.beginBackgroundTask { }
         let delayedCompletion: ()->Void = {
-            PMLog.D("End Background Task")
             application.endBackgroundTask(taskID)
             taskID = .invalid
         }
@@ -335,7 +326,6 @@ extension AppDelegate: UIApplicationDelegate {
         } else {
             delayedCompletion()
         }
-        PMLog.D("Enter Background")
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
     
@@ -393,12 +383,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     // MARK: Notification methods
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Analytics.shared.error(message: .notificationError, error: error)
-    }
-
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        PMLog.D(deviceToken.stringFromToken())
         let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }

@@ -172,13 +172,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
                 for contactGroup in contactGroups {
                     origContactGroupIDs.insert(contactGroup.labelID)
                 }
-            } else {
-                // TODO: handle error
-                PMLog.D("Can't get contact groups")
             }
-        } else {
-            // TODO: handle error
-            PMLog.D("Can't get email from address")
         }
         
         newContactGroupIDs = origContactGroupIDs
@@ -190,9 +184,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
             let context = self.coreDataService.mainContext
             if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
-            } else {
-                // TODO: handle error
-                PMLog.D(("Can't get label from ID"))
             }
         }
         
@@ -219,9 +210,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
             
             if let label = label {
                 colors.append(label.color)
-            } else {
-                // TODO: handle error
-                PMLog.D("Can't retrieve label by ID")
             }
         }
         

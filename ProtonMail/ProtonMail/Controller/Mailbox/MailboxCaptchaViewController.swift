@@ -105,7 +105,6 @@ extension MailboxCaptchaViewController {
 extension MailboxCaptchaViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
-        PMLog.D("\(navigationAction.request)")
         guard let urlString = navigationAction.request.url?.absoluteString else {
             decisionHandler(.allow)
             return

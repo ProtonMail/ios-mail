@@ -41,8 +41,7 @@ extension Dictionary where Key == String, Value == Any {
                 if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
         }
         return ""
@@ -69,8 +68,7 @@ extension Array where Iterator.Element == [String: Any]  {
                 if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
         }
         return ""

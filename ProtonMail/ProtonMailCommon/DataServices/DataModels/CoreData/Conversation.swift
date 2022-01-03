@@ -221,7 +221,6 @@ extension Conversation {
         do {
             return (try context.fetch(request) as? [Label]) ?? []
         } catch {
-            PMLog.D("error: \(error)")
             return []
         }
     }

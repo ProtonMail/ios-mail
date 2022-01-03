@@ -76,7 +76,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         .parsePlainTextContact(data: c.data,
                                                coreDataService: self.coreDataService,
                                                contactID: self.contact?.contactID ?? "")
-                    PMLog.D("Parse plain contact text\n \(c.data)")
                 case .EncryptedOnly:
                     _ = self.contactParser
                         .parseEncryptedOnlyContact(card: c,
@@ -96,8 +95,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                     userKeys: userInfo.userKeys)
                 }
             }
-        } else {
-            //TODO:: here should have a error pop
         }
     }
     
@@ -268,7 +265,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
                 
                 let vcard0Str = PMNIEzvcard.write(vCard0)
-                PMLog.D(vcard0Str)
                 let card0 = CardData(t: .PlainText,
                                      d: vcard0Str,
                                      s: "")
@@ -363,7 +359,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
-                PMLog.D(vcard2Str);
                 //TODO:: fix try later
                 let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
                                                               privateKey: userkey.privateKey,
@@ -506,7 +501,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
-                PMLog.D(vcard3Str);
                 //TODO:: fix the try! later
                 let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",

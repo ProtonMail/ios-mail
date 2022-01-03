@@ -32,7 +32,6 @@ func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
     let outAuth = SrpNewAuth(hashVersion, userName, passwordSlic, salt, signedModulus, serverEphemeral, &error)
     
     if let err = error {
-        PMLog.D(api: err)
         throw err
     }
     return outAuth
