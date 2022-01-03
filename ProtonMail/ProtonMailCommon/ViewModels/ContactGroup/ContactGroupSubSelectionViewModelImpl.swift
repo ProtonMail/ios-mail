@@ -192,8 +192,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     
     func cellForRow(at indexPath: IndexPath) -> ContactGroupSubSelectionViewModelEmailInfomation {
         guard indexPath.row < self.getTotalRows() else {
-            // TODO: handle error
-            PMLog.D("FatalError: Invalid access")
             return ContactGroupSubSelectionViewModelEmailInfomation.init(email: "", name: "")
         }
         
@@ -204,8 +202,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                                          to status: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?) {
         guard indexPath.row < self.getTotalRows() else {
-            // TODO: handle error
-            PMLog.D("FatalError: Invalid access")
             return
         }
         

@@ -120,8 +120,7 @@ extension Contact {
                     }
                 }
             }
-        } catch let ex as NSError {
-            PMLog.D(" func parseJson() -> error error \(ex)")
+        } catch {
         }
         return cards
     }

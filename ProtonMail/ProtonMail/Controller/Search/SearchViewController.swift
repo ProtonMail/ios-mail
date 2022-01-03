@@ -573,8 +573,6 @@ extension SearchViewController {
             guard indexPath == visibleRowIndexPath else { return }
             tableView(tableView, didSelectRowAt: indexPath)
         }
-
-        PMLog.D("Long press on table view at row \(indexPath.row)")
     }
 
     private func handleEditingDataSelection(of id: String, indexPath: IndexPath) {

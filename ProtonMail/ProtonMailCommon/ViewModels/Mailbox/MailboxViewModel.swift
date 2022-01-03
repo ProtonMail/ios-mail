@@ -265,8 +265,7 @@ class MailboxViewModel: StorageLimit {
         if let fetchedResultsController = fetchedResultsController {
             do {
                 try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
+            } catch {
             }
         }
         return fetchedResultsController
@@ -279,8 +278,7 @@ class MailboxViewModel: StorageLimit {
         
         do {
             try controller.performFetch()
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
         
         return controller
@@ -323,8 +321,7 @@ class MailboxViewModel: StorageLimit {
         
         do {
             try fetchController.performFetch()
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
         
         return fetchController

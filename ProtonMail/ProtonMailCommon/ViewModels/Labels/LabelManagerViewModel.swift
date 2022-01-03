@@ -360,8 +360,7 @@ extension LabelManagerViewModel {
             try result.performFetch()
             let dbItems = (result.fetchedObjects as? [Label]) ?? []
             self.sortoutDBData(dbItems: dbItems)
-        } catch let error as NSError {
-            PMLog.D("MenuVM load label from coredata error: \(error)")
+        } catch {
         }
     }
 

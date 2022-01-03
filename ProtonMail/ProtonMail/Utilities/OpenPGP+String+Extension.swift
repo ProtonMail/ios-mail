@@ -55,7 +55,6 @@ extension String {
                 if firstError == nil {
                     firstError = error
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         if let error = firstError {

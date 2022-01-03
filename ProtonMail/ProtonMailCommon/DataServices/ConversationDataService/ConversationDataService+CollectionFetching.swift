@@ -107,9 +107,7 @@ extension ConversationDataService {
                                     }
                                 }
                             }
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                             
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
                                 let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID,
@@ -145,7 +143,6 @@ extension ConversationDataService {
                             completion?(.success(()))
                         }
                     } catch {
-                        PMLog.D("error: \(error)")
                         DispatchQueue.main.async {
                             completion?(.failure(error))
                         }
@@ -207,15 +204,12 @@ extension ConversationDataService {
                                     }
                                 }
                             }
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                         }
                         DispatchQueue.main.async {
                             completion?(.success(()))
                         }
                     } catch {
-                        PMLog.D("error: \(error)")
                         DispatchQueue.main.async {
                             completion?(.failure(error as NSError))
                         }

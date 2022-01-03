@@ -182,17 +182,11 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                             // mark this indexPath as selected
                             if let cell = tableView.cellForRow(at: visibleIndexPath) as? ContactGroupsViewCell {
                                 self.selectRow(at: visibleIndexPath, groupID: cell.getLabelID())
-                            } else {
-                                PMLog.D("FatalError: Conversion failed")
                             }
                         }
                     }
-                } else {
-                    PMLog.D("No visible index path")
                 }
             }
-        } else {
-            PMLog.D("Not long pressed on the cell")
         }
     }
     
@@ -558,8 +552,6 @@ extension ContactGroupsViewController: UITableViewDelegate
                 if viewModel.initEditing() {
                     cell.setCount(viewModel.dateForRow(at: indexPath).count)
                 }
-            } else {
-                PMLog.D("FatalError: Conversion failed")
             }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -583,8 +575,6 @@ extension ContactGroupsViewController: UITableViewDelegate
                 if viewModel.initEditing() {
                     cell.setCount(viewModel.dateForRow(at: indexPath).count)
                 }
-            } else {
-                PMLog.D("FatalError: Conversion failed")
             }
         }
     }

@@ -233,7 +233,6 @@ extension MainQueueHandler {
                             completion?(task, nil, error)
                         }
                         guard let err = error else { return }
-                        Analytics.shared.error(message: .saveDraftError, error: err)
                         DispatchQueue.main.async {
                             NSError.alertSavingDraftError(details: err.localizedDescription)
                         }
@@ -245,12 +244,6 @@ extension MainQueueHandler {
                     }
                     
                     guard let messageID = mess["ID"] as? String else {
-                        // error: not ID field in response
-                        let keys = Array(mess.keys)
-                        let messageIDError = NSError.badParameter("messageID")
-                        Analytics.shared.error(message: .saveDraftError,
-                                               error: messageIDError,
-                                               extra: ["dicKeys": keys])
                         // The error is messageID missing from the response
                         // But this is meanless to users
                         // I think parse error is more understandable
@@ -260,7 +253,6 @@ extension MainQueueHandler {
                         return
                     }
                     
-                    PMLog.D("SendAttachmentDebug == finish save draft!")
                     if message.messageID != messageID {
                         // Cancel scheduled local notification and re-schedule
                         self.localNotificationService
@@ -306,26 +298,19 @@ extension MainQueueHandler {
                         }
                     }
                 
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+                    _ = context.saveUpstreamIfNeeded()
                 
                     if hasTemp {
                         do {
                             try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                            if let save_error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(save_error)")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                         } catch let exc as NSError {
-                            Analytics.shared.error(message: .grtJSONSerialization, error: exc)
                             completion?(task, response, exc)
                             return
                         }
                     }
                     completion?(task, response, error)
                 }
-                
-                PMLog.D("SendAttachmentDebug == start save draft!")
                 
                 if let atts = message.attachments.allObjects as? [Attachment] {
                     for att in atts {
@@ -362,7 +347,6 @@ extension MainQueueHandler {
                 }
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .saveDraftError, error: ex)
                 completion?(nil, nil, ex)
                 return
             }
@@ -407,9 +391,7 @@ extension MainQueueHandler {
                         $0.attachmentID != "0" }) {
                 // This upload is duplicated
                 context.delete(attachment)
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
                 completion?(nil, nil, nil)
                 return
             }
@@ -442,7 +424,6 @@ extension MainQueueHandler {
                                              userKeys: userKeys,
                                              passphrase: passphrase)
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    PMLog.D("SendAttachmentDebug == finish upload att!")
                     if error == nil,
                        let attDict = response?["Attachment"] as? [String : Any],
                        let id = attDict["ID"] as? String
@@ -458,9 +439,7 @@ extension MainQueueHandler {
                             }
                             attachment.cleanLocalURLs()
                             
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                             NotificationCenter
                                 .default
                                 .post(name: .attachmentUploaded,
@@ -475,7 +454,6 @@ extension MainQueueHandler {
                         }
                         guard let err = error else { return }
                         
-                        Analytics.shared.error(message: .uploadAttachmentError, error: err)
                         let reason = err.localizedDescription
                         NotificationCenter
                             .default
@@ -487,7 +465,6 @@ extension MainQueueHandler {
                     }
                 }
                 
-                PMLog.D("SendAttachmentDebug == start upload att!")
                 ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
                 self.user?.apiService.uploadFromFile(byPath: "/attachments",
                                                      parameters: params,
@@ -595,7 +572,6 @@ extension MainQueueHandler {
                 completion?(nil, nil, nil)
             } catch let ex as NSError {
                 // error: context thrown trying to get Message
-                Analytics.shared.error(message: .updateAddressIDError, error: ex)
                 completion?(nil, nil, ex)
                 return
             }
@@ -621,11 +597,6 @@ extension MainQueueHandler {
             
             let messageIds = messages.map { $0.messageID }
             guard messageIds.count > 0 else {
-                Analytics.shared.debug(message: .coredataIssue,
-                                       extra: [
-                                        "API": "Message action",
-                                        "ObjectCounts": managedObjectIds.count
-                                       ])
                 completion!(nil, nil, nil)
                 return
             }

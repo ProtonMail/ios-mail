@@ -265,8 +265,7 @@ class NewMessageBodyViewModel {
                 self.delegate?.hideDecryptionErrorBanner()
             }
             return decryptedMessage
-        } catch let error as NSError {
-            PMLog.D("purifyEmailBody error : \(error)")
+        } catch {
             self.delegate?.showDecryptionErrorBanner()
             if !self.hasAutoRetried {
                 // If failed, auto retry one time

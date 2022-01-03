@@ -48,25 +48,15 @@ extension UIApplication {
             do {
                 let binaryString = try String(contentsOfFile: provisioningPath, encoding: String.Encoding.isoLatin1)
                 let scanner : Scanner = Scanner(string: binaryString)
-                var ok : Bool = scanner.scanUpTo("<plist" , into: nil)
-                if !ok {
-                    PMLog.D("unable to find beginning of plist");
-                    //return UIApplicationReleaseUnknown;
-                }
                 
                 var plistString : NSString?
-                ok = scanner.scanUpTo("</plist>" , into: &plistString)
-                if !ok {
-                    PMLog.D("unable to find end of plist");
-                    //return UIApplicationReleaseUnknown;
-                }
+                _ = scanner.scanUpTo("</plist>" , into: &plistString)
                 let newStr = String("\(plistString!)</plist>")
                 // juggle latin1 back to utf-8!
                 let plistdata_latin1 : Data = newStr.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)!
                 
                 MP.mobileProvision = try PropertyListSerialization.propertyList(from: plistdata_latin1, options: PropertyListSerialization.ReadOptions(rawValue: 0), format: nil) as? [String : Any]
             } catch {
-                PMLog.D("error parsing extracted plist — \(error)");
                 MP.mobileProvision = nil;
                 return nil;
             }

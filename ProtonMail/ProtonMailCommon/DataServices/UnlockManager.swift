@@ -119,7 +119,6 @@ class UnlockManager: Service {
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
         var error: NSError?
         guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            PMLog.D("LAContext canEvaluatePolicy is false, error: " + String(describing: error?.localizedDescription))
             assert(false, "LAContext canEvaluatePolicy is false")
             return
         }
@@ -197,15 +196,6 @@ class UnlockManager: Service {
     
     #if !APP_EXTENSION
     func updateCommonUserData() {
-//        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
-//        //TODO:: here need to be changed
-//        sharedContactDataService.fetchContacts { (contacts, error) in
-//            if error != nil {
-//                PMLog.D("\(String(describing: error))")
-//            } else {
-//                PMLog.D("Contacts count: \(contacts?.count)")
-//            }
-//        }
     }
     #endif
 }

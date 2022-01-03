@@ -114,8 +114,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             } else {
                 self.refresh()
             }
-        }.catch { error in
-            //PMLog.D(error)
+        }.catch { _ in
         }
     }
 
@@ -161,7 +160,6 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                           emailIDs: viewModel.getEmailIDs())
             } else {
                 // TODO: handle error
-                PMLog.D("FatalError: Can't prepare for the contact group edit view")
                 return
             }
         } else if segue.identifier == kToComposerSegue {

@@ -250,8 +250,7 @@ class HtmlEditorBehaviour: NSObject {
         }.done { (height) in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
-        }.catch { (error) in
-            PMLog.D("\(error)")
+        }.catch { _ in
         }
     }
     
@@ -259,8 +258,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTTPRequestSecureLoader.domPurifyConfiguration));").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTTPRequestSecureLoader.domPurifyConfiguration));").catch { _ in
         }
     }
     
@@ -274,8 +272,7 @@ class HtmlEditorBehaviour: NSObject {
         //Use batch process to add the percent encoding to solve the memory issue
         let escapedBlob: String = blob.batchAddingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
         
-        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { _ in
         }
     }
     
@@ -284,8 +281,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter cid: the embed image content id
     func remove(embedImage cid : String) {
-        self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { _ in
         }
     }
     

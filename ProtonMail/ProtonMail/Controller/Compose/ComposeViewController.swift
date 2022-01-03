@@ -158,9 +158,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 }
             }
             
-        }.catch { error in
-            // TODO: handle error
-            PMLog.D("Load all contacts and groups error \(error)")
+        }.catch { _ in
         }
 
         self.attachments = viewModel.getAttachments()
@@ -173,11 +171,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private func retrievePMContacts() -> Promise<Void> {
         return Promise { seal in
             let service = self.viewModel.getUser().contactService
-            service.getContactVOs() { (contacts, error) in
-                if let error = error {
-                    PMLog.D(" error: \(error)")
-                    // seal.reject(error) // TODO: should I?
-                }
+            service.getContactVOs() { (contacts, _) in
                 self.contacts = contacts
                 seal.fulfill(())
             }
@@ -187,10 +181,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private func retrievePhoneContacts() -> Promise<Void> {
         return Promise { seal in
             let service = self.viewModel.getUser().contactService
-            service.getContactVOsFromPhone { phoneContacts, error in
-                if let error = error {
-                    PMLog.D(" error: \(error)")
-                }
+            service.getContactVOsFromPhone { phoneContacts, _ in
                 self.phoneContacts = phoneContacts
                 seal.fulfill(())
             }

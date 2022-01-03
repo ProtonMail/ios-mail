@@ -114,7 +114,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         defer {
             group.leave()//#0
         }
-        PMLog.D("\(items)")
         group.enter() //#0
         for item in items {
             let plainText = item.attributedContentText?.string
@@ -127,7 +126,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                             group.leave() //#1
                         }
                     } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                        PMLog.D("1")
                     } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
                         group.enter()//#2
                         itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
@@ -145,8 +143,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     } else if let pt = plainText {
                         self.inputSubject = ""
                         self.inputContent = self.inputContent + "\n"  + pt
-                    } else {
-                        PMLog.D("4")
                     }
                     
                 }

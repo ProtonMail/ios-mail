@@ -100,8 +100,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             self.tableView.reloadData()
             self.loaded = true
         }.catch { (error) in
-            //show error
-            PMLog.D(error.localizedDescription)
             error.alert(at: self.view)
         }.finally {
             MBProgressHUD.hide(for: self.view, animated: true)

@@ -31,8 +31,7 @@ extension FileManager {
             do {
                 try self.createDirectory(at: attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
             }
-            catch let ex as NSError {
-                PMLog.D(" error : \(ex).")
+            catch {
             }
         }
         return attachmentDirectory
@@ -56,8 +55,7 @@ extension FileManager {
                 }
             }
         }
-        catch let ex as NSError {
-            PMLog.D("cleanCachedAtts error : \(ex).")
+        catch {
         }
     }
 }

@@ -93,8 +93,7 @@ class MessageDataService : Service, HasLocalStorage {
             label.color = color
             
             let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -116,8 +115,7 @@ class MessageDataService : Service, HasLocalStorage {
             labels.forEach(context.delete)
             
             let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D(" error: \(error)")
+            if error != nil {
                 hasError = true
             }
         }
@@ -349,9 +347,6 @@ class MessageDataService : Service, HasLocalStorage {
                         attachment.localURL = url
                     }
                     complete( attachment.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
-                    if error != nil {
-                        PMLog.D("\(String(describing: error))")
-                    }
                 }
             })
         } 
@@ -483,33 +478,11 @@ class MessageDataService : Service, HasLocalStorage {
                                     for message in messages {
                                         message.messageStatus = 1
                                     }
-                                    if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
-                                        Analytics.shared.error(message: .fetchMetadata,
-                                                               error: error,
-                                                               extra: [Analytics.Reason.status: "save"])
-                                    }
-                                } else {
-                                    Analytics.shared.error(message: .fetchMetadata,
-                                                           error: "insert empty")
-                                    PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
+                                    _ = context.saveUpstreamIfNeeded()
                                 }
-                            } catch let err as NSError {
-                                Analytics.shared.error(message: .fetchMetadata,
-                                                       error: err,
-                                                       extra: ["status": "try catch"])
-                                PMLog.D("fetchMessagesWithIDs failed \(err)")
+                            } catch {
                             }
                         }
-                    } else {
-                        
-                        var details = ""
-                        if let err = error {
-                            details = err.description
-                        }
-                        Analytics.shared.error(message: .fetchMetadata,
-                                               error: "Can't get the response Messages -- " + details)
-                        PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
                 
@@ -541,7 +514,6 @@ class MessageDataService : Service, HasLocalStorage {
                                                customAuthCredential: customAuthCredential,
                                                downloadTask: downloadTask,
                                                completion: { task, fileURL, error in
-                                                var error = error
                                                 self.coreDataService.enqueue(context: self.coreDataService.rootSavingContext) { (context) in
                                                     if let fileURL = fileURL, let attachmentToUpdate = try? context.existingObject(with: attachment.objectID) as? Attachment {
                                                         attachmentToUpdate.localURL = fileURL
@@ -552,16 +524,12 @@ class MessageDataService : Service, HasLocalStorage {
                                                         } else {
                                                             attachmentToUpdate.fileData = try? Data(contentsOf: fileURL)
                                                         }
-                                                        error = context.saveUpstreamIfNeeded()
-                                                        if error != nil  {
-                                                            PMLog.D(" error: \(String(describing: error))")
-                                                        }
+                                                        _ = context.saveUpstreamIfNeeded()
                                                     }
                                                     completion?(task, fileURL, error)
                                                 }
                                                })
         } else {
-            PMLog.D("The attachment not exist")
             completion?(nil, nil, nil)
         }
     }
@@ -652,9 +620,6 @@ class MessageDataService : Service, HasLocalStorage {
                         DispatchQueue.main.async {
                             completion(task, response, Message.ObjectIDContainer(message), error)
                         }
-                    }
-                    if error != nil  {
-                        PMLog.D(" error: \(String(describing: error))")
                     }
                 }
             }
@@ -896,9 +861,7 @@ class MessageDataService : Service, HasLocalStorage {
                     conversations.forEach{ context.delete($0) }
                 }
 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
 
                 UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
@@ -970,12 +933,9 @@ class MessageDataService : Service, HasLocalStorage {
                             for message in messages {
                                 message.messageStatus = 1
                             }
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
 
                             if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
                                 completion?(nil, error)
                             } else {
                                 completion?(messages.map(ObjectBox.init), error)
@@ -984,7 +944,6 @@ class MessageDataService : Service, HasLocalStorage {
                             completion?(nil, error)
                         }
                     } catch let ex as NSError {
-                        PMLog.D(" error: \(ex)")
                         if let completion = completion {
                             completion(nil, ex)
                         }
@@ -1005,9 +964,7 @@ class MessageDataService : Service, HasLocalStorage {
     func saveDraft(_ message : Message?) {
         if let message = message, let context = message.managedObjectContext {
             context.performAndWait {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
             }
             self.queue(message, action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString))
         }
@@ -1028,10 +985,7 @@ class MessageDataService : Service, HasLocalStorage {
                     
                     self.fetchMessageInBatches(messageIDs: badIDs)
                 }
-            } catch let ex as NSError {
-                Analytics.shared.error(message: .purgeOldMessages,
-                                       error: ex)
-                PMLog.D("error : \(ex)")
+            } catch {
             }
         }
     }
@@ -1118,7 +1072,6 @@ class MessageDataService : Service, HasLocalStorage {
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()
                 let err = RuntimeError.bad_draft.error
-                Analytics.shared.error(message: .sendMessageError, error: err)
                 errorBlock(nil, nil, err)
                 return
             }
@@ -1322,15 +1275,6 @@ class MessageDataService : Service, HasLocalStorage {
                 //Debug info
                 status.insert(SendStatus.buildSend)
                 
-                if msgs.count == 0 {
-                    Analytics.shared.debug(message: .sendMessageError,
-                                           extra: ["SendStatus": status,
-                                                   "IsBodyEmpty": message.body == "",
-                                                   "HasPlainText": sendBuilder.hasPlainText,
-                                                   "HasMIME": sendBuilder.hasMime,
-                                                   "HasAtt": attachments.count != 0])
-                }
-                
                 if let _ = UUID(uuidString: message.messageID) {
                     // Draft saved failed, can't send this message
                     let parseError = NSError(domain: APIServiceErrorDomain,
@@ -1372,9 +1316,7 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     }
                     
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    } else {
+                    if context.saveUpstreamIfNeeded() == nil {
                         _ = self.markReplyStatus(message.orginalMessageID, action: message.action)
                     }
                 } else {
@@ -1390,12 +1332,6 @@ class MessageDataService : Service, HasLocalStorage {
                         error?.toNSError.alertErrorToast()
                     }
                     NSError.alertMessageSentErrorToast()
-                    let _err = error?.localizedDescription ?? "Unknow error"
-                    Analytics.shared.error(message: .sendMessageError, error: _err, extra: [
-                        "status": status.rawValue,
-                        "emailCount": emails.count,
-                        "attCount": attachments.count
-                    ])
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                                  error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
@@ -1412,7 +1348,6 @@ class MessageDataService : Service, HasLocalStorage {
                     completion?(nil, nil, error as NSError)
                     return
                 }
-                PMLog.D(error.localizedDescription)
                 if responseCode == 9001 {
                     //here need let user to show the human check.
                     self.queueManager?.isRequiredHumanCheck = true
@@ -1455,11 +1390,6 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                              error: errorMsg,
                                                                                              timeInterval: 1,
                                                                                              subtitle: message.title))
-                Analytics.shared.error(message: .sendMessageError, error: err, extra: [
-                    "status": status.rawValue,
-                    "emailCount": emails.count,
-                    "attCount": attachments.count
-                ])
                 completion?(nil, nil, err as NSError)
             }.finally {
                 context.performAndWait {
@@ -1501,13 +1431,10 @@ class MessageDataService : Service, HasLocalStorage {
                         } else {
                             //ignore
                         }
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D(" error: \(error)")
-                        }
+                        _ = context.saveUpstreamIfNeeded()
                     }
                 }
             } catch {
-                PMLog.D(" error: \(error)")
                 seal.fulfill_()
             }
         }
@@ -1543,7 +1470,6 @@ class MessageDataService : Service, HasLocalStorage {
                 do {
                     try message.managedObjectContext?.obtainPermanentIDs(for: [message])
                 } catch {
-                    PMLog.D("error: \(error)")
                 }
             }
         }
@@ -1656,7 +1582,6 @@ class MessageDataService : Service, HasLocalStorage {
                 return SignStatus(rawValue: verification.status) ?? .notSigned
             }
         } catch {
-            PMLog.D("error: \(error.localizedDescription)")
         }
         return .failed
     }
@@ -1677,8 +1602,7 @@ class MessageDataService : Service, HasLocalStorage {
                 let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
                 message.body = try clearBody.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
             }
-        } catch let error {//TODO:: error handling
-            PMLog.D(any: error.localizedDescription)
+        } catch {
             message.body = ""
         }
     }
@@ -1777,7 +1701,6 @@ class MessageDataService : Service, HasLocalStorage {
                 }
             }
         } catch {
-            PMLog.D("error: \(error)")
         }
         return message
     }

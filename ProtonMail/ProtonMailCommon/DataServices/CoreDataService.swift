@@ -63,7 +63,6 @@ class CoreDataService: Service {
             do {
                 try context.obtainPermanentIDs(for: Array(insertedObjects))
             } catch {
-                PMLog.D("Failed to obtain permanent ID(s) for \(numberOfInsertedObjects) inserted object(s). Error:\(error)")
             }
         }
 
@@ -121,7 +120,6 @@ class CoreDataService: Service {
             do {
                 try context.obtainPermanentIDs(for: Array(insertedObjects))
             } catch {
-                PMLog.D("Failed to obtain permanent ID(s) for \(numberOfInsertedObjects) inserted object(s). Error:\(error)")
             }
         }
         // setup notification
@@ -178,9 +176,7 @@ class CoreDataService: Service {
         let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
             try FileManager.default.removeItem(at: url)
-            PMLog.D("clean ok")
-        } catch let error as NSError {
-            PMLog.D("\(error)")
+        } catch {
         }
     }
 

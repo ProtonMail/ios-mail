@@ -110,14 +110,8 @@ extension UIColor {
                     green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
                     blue  = CGFloat((hexValue & 0x0000FF00) >> 8)  / 255.0
                     alpha = CGFloat(hexValue & 0x000000FF)         / 255.0
-                } else {
-                    PMLog.D("invalid hex code string, length should be 7 or 9")
                 }
-            } else {
-                PMLog.D("scan hex error")
             }
-        } else {
-            PMLog.D("invalid hex code string, missing '#' as prefix")
         }
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }

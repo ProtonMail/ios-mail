@@ -470,7 +470,6 @@ private extension ConversationViewController {
             .ForcefetchDetailForMessage(draft, runInQueue: false) { [weak self] _, _, container, error in
                 guard let self = self else { return }
                 if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
                     let alert = LocalString._unable_to_edit_offline.alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)

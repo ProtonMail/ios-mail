@@ -54,8 +54,7 @@ class ContactImportViewController: UIViewController {
         if let fetchedResultsController = self.user.contactService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+            } catch {
             }
             return fetchedResultsController
         }

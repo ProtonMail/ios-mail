@@ -70,8 +70,7 @@ class AddressBookService: Service {
         var allContainers: [CNContainer] = []
         do {
             allContainers = try store.containers(matching: nil)
-        } catch let error {
-            PMLog.D("Error fetching containers: " + error.localizedDescription)
+        } catch {
         }
         
         var results: [CNContact] = []
@@ -82,8 +81,7 @@ class AddressBookService: Service {
             do {
                 let containerResults = try store.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
                 results.append(contentsOf: containerResults)
-            } catch let error {
-                PMLog.D("Error fetching results for container: " + error.localizedDescription)
+            } catch {
             }
         }
         

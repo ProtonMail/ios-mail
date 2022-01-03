@@ -159,8 +159,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if let fetchController = self.fetchedResultsController {
             do {
                 try fetchController.performFetch()
-            } catch let error as NSError {
-                PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
+            } catch {
             }
         }
         return self.fetchedResultsController

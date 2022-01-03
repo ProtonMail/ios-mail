@@ -37,7 +37,6 @@ extension Data {
                                                     .characterEncoding: String.Encoding.utf8.rawValue],
                                           documentAttributes: nil)
         } catch {
-            PMLog.D("error:\(error)")
             return nil
         }
     }

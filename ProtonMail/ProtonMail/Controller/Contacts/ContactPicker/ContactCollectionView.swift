@@ -521,9 +521,6 @@ extension ContactCollectionView : UICollectionViewDelegate {
                             self.removeFromSelectedContacts(index: self.selectedContactIndexFromRow(row: indexPath.row),
                                                             withCompletion: nil)
                         }
-                    } else {
-                        // TODO: handle error
-                        PMLog.D("FatalError: This shouldn't happen")
                     }
                 }
                 

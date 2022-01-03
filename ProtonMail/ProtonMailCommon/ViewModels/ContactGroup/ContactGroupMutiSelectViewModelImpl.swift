@@ -92,7 +92,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         let row = indexPath.row
         
         guard row < self.groupCountInformation.count else {
-            PMLog.D("FatalError: The row count is not correct")
             return ("", "", "", 0)
         }
         
@@ -282,7 +281,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         
         let row = indexPath.row
         guard row < self.groupCountInformation.count else {
-            PMLog.D("FatalError: The row count is not correct")
             return ("", "", "", 0, false, false)
         }
         let data = self.groupCountInformation[row]

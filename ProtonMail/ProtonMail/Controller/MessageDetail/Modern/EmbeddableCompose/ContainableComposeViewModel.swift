@@ -30,8 +30,6 @@ class ContainableComposeViewModel: ComposeViewModelImpl {
     func parse(mailToURL: URL) {
         guard let mailToData = mailToURL.parseMailtoLink() else { return }
 
-        PMLog.D("mailto: \(mailToData)")
-
         mailToData.to.forEach { (recipient) in
             self.addToContacts(ContactVO(name: recipient, email: recipient))
         }

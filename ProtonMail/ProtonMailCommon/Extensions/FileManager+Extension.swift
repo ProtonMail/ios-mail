@@ -35,8 +35,7 @@ extension FileManager {
         if !FileManager.default.fileExists(atPath: applicationSupportDirectoryURL.absoluteString) {
             do {
                 try FileManager.default.createDirectory(at: applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-            } catch let ex as NSError {
-                PMLog.D("Could not create \(applicationSupportDirectoryURL.absoluteString) with error: \(ex)")
+            } catch {
             }
         }
         return applicationSupportDirectoryURL
@@ -61,8 +60,7 @@ extension FileManager {
             do {
                 try FileManager.default.createDirectory(at: tempUrl, withIntermediateDirectories: false, attributes: nil)
                 tempUrl.excludeFromBackup()
-            } catch let ex as NSError {
-                PMLog.D("Could not create \(tempUrl.absoluteString) with error: \(ex)")
+            } catch {
             }
         }
         return tempUrl

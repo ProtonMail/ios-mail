@@ -47,8 +47,7 @@ extension Attachment {
         if let localURL = localURL {
             do {
                 try FileManager.default.removeItem(at: localURL as URL)
-            } catch let ex as NSError {
-                PMLog.D("Could not delete \(localURL) with error: \(ex)")
+            } catch {
             }
         }
     }
@@ -181,8 +180,7 @@ extension Attachment {
                             }
                         }
                     }
-                } catch let ex as NSError{
-                    PMLog.D("\(ex)")
+                } catch {
                 }
             } else if let data = self.fileData, data.count > 0 {
                 do {
@@ -202,8 +200,7 @@ extension Attachment {
                             }
                         }
                     }
-                } catch let ex as NSError{
-                    PMLog.D("\(ex)")
+                } catch {
                 }
             }
         }
@@ -336,11 +333,7 @@ extension UIImage: AttachmentConvertible {
                     let newNum = number > 0 ? number + 1 : 1
                     message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
 
-                    var error: NSError? = nil
-                    error = context.saveUpstreamIfNeeded()
-                    if error != nil {
-                        PMLog.D("toAttachment () with error: \(String(describing: error))")
-                    }
+                    _ = context.saveUpstreamIfNeeded()
                     seal.fulfill(attachment)
                 }
             }
@@ -380,11 +373,7 @@ extension Data: AttachmentConvertible {
                 let newNum = number > 0 ? number + 1 : 1
                 message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
 
-                var error: NSError? = nil
-                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
-                }
+                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }
@@ -416,11 +405,7 @@ extension URL: AttachmentConvertible {
                 let newNum = number > 0 ? number + 1 : 1
                 message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
 
-                var error: NSError? = nil
-                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
-                }
+                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }

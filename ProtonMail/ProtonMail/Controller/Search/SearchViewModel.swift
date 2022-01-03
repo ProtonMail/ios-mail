@@ -134,8 +134,6 @@ extension SearchViewModel: SearchVMProtocol {
             guard error == nil,
                   let self = self,
                   let messageBoxes = messageBoxes else {
-                PMLog.D(" search error: \(String(describing: error))")
-
                 if pageToLoad == 0 {
                     self?.fetchLocalObjects()
                 }
@@ -482,8 +480,7 @@ extension SearchViewModel {
                 overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
-            } catch let error {
-                PMLog.D(" performFetch error: \(error)")
+            } catch {
                 assert(false, "Failed to fetch message dicts")
             }
         }
@@ -582,8 +579,7 @@ extension SearchViewModel {
         self.fetchController?.delegate = self
         do {
             try self.fetchController?.performFetch()
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+        } catch {
         }
     }
 

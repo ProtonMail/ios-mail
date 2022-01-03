@@ -62,8 +62,6 @@ extension Message {
     }
     
     func getSentLockType(email : String) -> PGPType {
-        PMLog.D(self.flag.description)
-        
         guard self.isDetailDownloaded  else {
             return .none
         }
@@ -71,8 +69,6 @@ extension Message {
         guard let header = self.header, let raw = header.data(using: .utf8), let mainPart = Part(header: raw) else {
             return .none
         }
-        
-        PMLog.D(header)
         
         let autoReply = mainPart.headers.first { (left) -> Bool in
             return left.name == "X-Autoreply"

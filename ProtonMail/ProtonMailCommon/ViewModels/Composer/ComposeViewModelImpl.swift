@@ -190,10 +190,6 @@ class ComposeViewModelImpl : ComposeViewModel {
 
     }
     
-    deinit {
-        PMLog.D("ComposeViewModelImpl deinit")
-    }
-    
     fileprivate let k12HourMinuteFormat = "h:mm a"
     fileprivate let k24HourMinuteFormat = "HH:mm"
     private func using12hClockFormat() -> Bool {
@@ -380,7 +376,6 @@ class ComposeViewModelImpl : ComposeViewModel {
                 let error = error as NSError
                 errCode = error.code
             }
-            PMLog.D(error.localizedDescription)
             defer {
                 complete?(nil, errCode)
             }
@@ -636,9 +631,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 self.message?.passwordHint = pwdHit
                 self.message?.expirationOffset = Int32(expir)
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
             } else {
                 self.message?.toList = self.toJsonString(self.toSelectedContacts)
                 self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
@@ -658,15 +651,12 @@ class ComposeViewModelImpl : ComposeViewModel {
                                                       mailbox_pwd: mailboxPassword)
                 }
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
                 
                 if let msg = self.message, msg.objectID.isTemporaryID {
                     do {
                         try context.obtainPermanentIDs(for: [msg])
                     } catch {
-                        PMLog.D("error: \(error)")
                     }
                 }
             }
@@ -724,8 +714,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
                 css = CSSMagic.generateCSSForDarkMode(htmlString: body)
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+            } catch {
                 body = self.message!.bodyToHtml()
             }
             return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false, supplementCSS: css)
@@ -734,8 +723,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             var body = ""
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+            } catch {
                 body = self.message!.bodyToHtml()
             }
             
@@ -785,8 +773,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             do {
                 body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+            } catch {
                 body = self.message!.bodyToHtml()
             }
             
@@ -928,7 +915,6 @@ extension ComposeViewModelImpl {
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String]
             return decoded ?? ["" : ""]
         } catch {
-            PMLog.D(" func parseJson() -> error error \(error)")
         }
         return ["":""]
     }

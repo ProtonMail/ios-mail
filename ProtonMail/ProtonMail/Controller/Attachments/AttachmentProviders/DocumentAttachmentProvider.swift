@@ -73,7 +73,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                         let fileName = url.lastPathComponent
                         fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
                     } catch let error {
-                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                         seal.reject(error)
                         return
                     }
@@ -84,7 +83,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                         url.stopAccessingSecurityScopedResource()
                         fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
                     } catch let error {
-                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                         seal.reject(error)
                         return
                     }
@@ -144,7 +142,5 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         }
     }
     
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        PMLog.D("")
-    }
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) { }
 }
