@@ -48,7 +48,8 @@ class ConversationCountResponse: Response {
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         responseDict = response
 
-        guard let data = try? JSONSerialization.data(withJSONObject: response["Counts"] as Any, options: .prettyPrinted) else {
+        guard let jsonObject = response["Counts"],
+                let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
             return false
         }
 
