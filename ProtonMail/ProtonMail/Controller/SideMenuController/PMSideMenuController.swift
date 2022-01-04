@@ -44,7 +44,9 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
 
 extension PMSideMenuController {
     private var additionalHeight: CGFloat {
-        return UIApplication.shared.statusBarFrame.height / 2
+        // The status bar height is 44 when it has notch
+        // is 20 when it doesn't have notch
+        return UIDevice.hasNotch ? 22: 10
     }
     
     private func handleStatusBar(add: Bool) {
