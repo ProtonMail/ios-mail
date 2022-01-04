@@ -525,13 +525,8 @@ extension SettingsEncryptedSearchViewController {
             self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-            if EncryptedSearchService.shared.state == .paused {
-                // If indexing has been paused, automatically resume it when ES is switched on again
-                EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
-            } else {
-                // Start building the search index
-                EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
-            }
+            // Start building the search index
+            EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
 
             // Update UI
             self.hideSections = false

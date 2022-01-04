@@ -355,7 +355,7 @@ extension EncryptedSearchIndexService {
         return self.timeToDateString(time: oldestMessage)
     }
 
-    /*func getNewestMessageInSearchIndex(for userID: String) -> String {
+    func getNewestMessageInSearchIndex(for userID: String) -> Int {
         let time: Expression<CLong> = self.databaseSchema.time
         let query = self.searchableMessages.select(time).order(time.desc).limit(1)
         // SELECT "time" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
@@ -369,8 +369,8 @@ extension EncryptedSearchIndexService {
         } catch {
             print("Error when querying newest message in search index: \(error)")
         }
-        return self.timeToDateString(time: newestMessage)
-    }*/
+        return Int(newestMessage)
+    }
 
     private func timeToDateString(time: CLong) -> String {
         let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
