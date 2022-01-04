@@ -91,7 +91,6 @@ public class EncryptedSearchService {
     internal var searchViewModel: SearchViewModel? = nil
     #endif
 
-    //internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProgress: Bool = false
@@ -104,13 +103,12 @@ public class EncryptedSearchService {
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = "Message Indexing Queue"
-        //queue.maxConcurrentOperationCount = 1
         return queue
     }()
     lazy var downloadPageQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = "Download Page Queue"
-        queue.maxConcurrentOperationCount = 1   //download 1 page at a time
+        queue.maxConcurrentOperationCount = 1   // Download 1 page at a time
         return queue
     }()
     
@@ -129,11 +127,7 @@ public class EncryptedSearchService {
     
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
-    
-    //internal var startBackgroundTask: Double = 0.0
-    //internal var backgroundTaskCounter: Int = 0
-    
-    //internal var fetchMessageCounter: Int = 0
+
     internal var isFirstSearch: Bool = true
     internal var isFirstIndexingTimeEstimate: Bool = true
     internal var initialIndexingEstimate: Int = 0
@@ -249,78 +243,99 @@ extension EncryptedSearchService {
         self.state = .downloading
         self.viewModel?.indexStatus = self.state.rawValue
         print("ENCRYPTEDSEARCH-STATE: downloading")
-        
-        //add a notification when app is put in background
-        /*let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
-         */
 
         self.indexBuildingInProgress = true
         self.viewModel = viewModel
-        let uid: String? = self.updateCurrentUserIfNeeded()    //check that we have the correct user selected
+        let uid: String? = self.updateCurrentUserIfNeeded()    // Check that we have the correct user selected
         if let userID = uid {
-            //check if search index db exists - and if not create it
+            // Check if search index db exists - and if not create it
             EncryptedSearchIndexService.shared.createSearchIndexDBIfNotExisting(for: userID)
-
-            //set up timer to estimate time for index building every 2 seconds
-            self.indexingStartTime = CFAbsoluteTimeGetCurrent()
-            // Create timer on main thread
-            DispatchQueue.main.async {
-                self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
-            }
 
             // Network checks
             if #available(iOS 12, *) {
                 // Check network status - enable network monitoring if not available
-                print("ES-NETWORK - build search index - check network state")
-                let networkSuccess: Bool = self.checkIfNetworkAvailable()
-                if networkSuccess == false || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {
-                    // Some simple clean up
+                print("ES-NETWORK - build search index - enable network monitoring")
+                self.registerForNetworkChangeNotifications()
+                if self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {
                     self.indexBuildingInProgress = false
-                    // Invalidate timer on same thread as it has been created
-                    DispatchQueue.main.async {
-                        self.indexBuildingTimer?.invalidate()
-                    }
                     return
                 }
             } else {
                 // Fallback on earlier versions
             }
 
+            // Set up timer to estimate time for index building every 2 seconds
+            DispatchQueue.main.async {
+                self.indexingStartTime = CFAbsoluteTimeGetCurrent()
+                self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+            }
+
             self.getTotalMessages() {
                 print("Total messages: ", self.totalMessages)
-                
-                //check if search index needs updating
-                if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
+
+                let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                if numberOfMessageInIndex == 0 {
+                    print("ES-DEBUG: Build search index completely new")
+                    // If there are no message in the search index - build completely new
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        self.downloadAndProcessPage(userID: userID){ [weak self] in
+                            self?.checkIfIndexingIsComplete(){}
+                            return
+                        }
+                    }
+                } else if numberOfMessageInIndex == self.totalMessages {
+                    // No new messages on server - set to complete
                     self.state = .complete
                     self.viewModel?.indexStatus = self.state.rawValue
                     print("ENCRYPTEDSEARCH-STATE: complete 4")
-                    
+
                     // update user cached status
                     userCachedStatus.indexComplete = true
-                    
+
                     self.cleanUpAfterIndexing()
                     return
-                }
-
-                //build search index completely new
-                DispatchQueue.global(qos: .userInitiated).async {
-                    self.downloadAndProcessPage(userID: userID){ [weak self] in
-                        self?.checkIfIndexingIsComplete(){}
-                        return
-                    }
+                } else {
+                    print("ES-DEBUG: refresh search index")
+                    // There are some new messages on the server - refresh the index
+                    self.refreshSearchIndex(userID: userID)
                 }
             }
         } else {
-            print("User ID unknown!")
+            print("Error: User ID unknown!")
         }
     }
-    
+
+    private func refreshSearchIndex(userID: String) -> Void {
+        // Set the state to refresh
+        self.state = .refresh
+        self.viewModel?.indexStatus = self.state.rawValue
+        print("ENCRYPTEDSEARCH-STATE: refresh")
+
+        // Update the UI with refresh state
+        self.updateUIWithIndexingStatus()
+
+        // Set processed message to the number of entries in the search index
+        self.processedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        self.prevProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+
+        // Update last indexed message with the newest message in search index
+        self.lastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+
+        // Start refreshing the index
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.downloadAndProcessPage(userID: userID){ [weak self] in
+                self?.checkIfIndexingIsComplete(){}
+            }
+        }
+    }
+
     private func checkIfIndexingIsComplete(completionHandler: @escaping () -> Void) {
         self.getTotalMessages() {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             let userID: String = (usersManager.firstUser?.userInfo.userId)!
-            if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
+            let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+            print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(self.totalMessages)")
+            if numberOfEntriesInSearchIndex == self.totalMessages {
                 self.state = .complete
                 self.viewModel?.indexStatus = self.state.rawValue
                 print("ENCRYPTEDSEARCH-STATE: complete 5")
@@ -331,14 +346,14 @@ extension EncryptedSearchService {
                 // cleanup
                 self.cleanUpAfterIndexing()
             } else {
-                if self.state == .downloading {
+                if self.state == .downloading || self.state == .refresh {
                     self.state = .partial
                     self.viewModel?.indexStatus = self.state.rawValue
                     print("ENCRYPTEDSEARCH-STATE: partial 3")
-                    
+
                     // update user cached status
                     userCachedStatus.indexComplete = true
-                    
+
                     // cleanup
                     self.cleanUpAfterIndexing()
                 }
@@ -960,7 +975,7 @@ extension EncryptedSearchService {
         let group = DispatchGroup()
         group.enter()
         self.downloadPage(userID: userID) {
-            print("Processed messages: \(self.processedMessages)")
+            print("Processed messages: \(self.processedMessages), total messages: \(self.totalMessages)")
             group.leave()
         }
         
@@ -1936,7 +1951,9 @@ extension EncryptedSearchService {
 
     @available(iOS 12, *)
     private func registerForNetworkChangeNotifications() {
-        self.networkMonitor = NWPathMonitor()
+        if self.networkMonitor == nil {
+            self.networkMonitor = NWPathMonitor()
+        }
         self.networkMonitor?.pathUpdateHandler = { path in
             self.responseToNetworkChanges(path: path)
         }
@@ -2193,23 +2210,6 @@ extension EncryptedSearchService {
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
         self.viewModel?.currentProgress.value = Int(updateStep)
     }
-    
-    // TODO remove?
-    /*@available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    func updateUIWithProgressBarStatus(){
-        DispatchQueue.main.async {
-            switch UIApplication.shared.applicationState {
-            case .active:
-                self.updateIndexBuildingProgress(processedMessages: self.processedMessages)
-            case .background:
-                print("Background time remaining = \(self.timeFormatter.string(from: UIApplication.shared.backgroundTimeRemaining)!)")
-            case .inactive:
-                break
-            @unknown default:
-                print("Unknown state. What to do?")
-            }
-        }
-    }*/
     
     private func updateUIWithIndexingStatus() {
         if self.pauseIndexingDueToNetworkConnectivityIssues {

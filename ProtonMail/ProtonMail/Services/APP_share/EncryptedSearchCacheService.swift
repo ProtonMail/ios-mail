@@ -109,7 +109,8 @@ extension EncryptedSearchCacheService {
                 print("Error cache is nil!")
             }
         } else {
-            print("Error no cache for user \(userID) found!")
+            // print("Error no cache for user \(userID) found!")
+            return false
         }
         return false
     }
