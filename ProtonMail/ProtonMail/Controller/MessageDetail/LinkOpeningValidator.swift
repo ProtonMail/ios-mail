@@ -22,15 +22,16 @@
     
 
 import UIKit
+import ProtonCore_DataModel
 
 protocol LinkOpeningValidator {
-    var user: UserManager { get }
+    var linkConfirmation: LinkOpeningMode { get }
+
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void)
 }
 extension LinkOpeningValidator {
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
-        let userInfo = self.user.userInfo
-        guard userInfo.linkConfirmation == .confirmationAlert else {
+        guard linkConfirmation == .confirmationAlert else {
             handler(true)
             return
         }

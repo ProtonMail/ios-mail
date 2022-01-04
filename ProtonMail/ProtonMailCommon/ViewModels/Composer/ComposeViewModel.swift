@@ -177,7 +177,7 @@ class ComposeViewModel: NSObject {
     
     func getHtmlBody() -> WebContents {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-        return WebContents(body: "", remoteContentMode: .lockdown, isNewsLetter: false)
+        return WebContents(body: "", remoteContentMode: .lockdown)
     }
     
     func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {

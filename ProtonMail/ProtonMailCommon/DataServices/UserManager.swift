@@ -606,3 +606,18 @@ extension UserManager: ViewModeDataSource {
         return conversationStateService.viewMode
     }
 }
+
+extension UserManager: UserAddressUpdaterProtocol {
+    func updateUserAddresses(completion: (() -> Void)?) {
+        userService.fetchUserAddresses { [weak self] result in
+            switch result {
+            case .failure(_):
+                completion?()
+            case .success(let addressResponse):
+                self?.userinfo.set(addresses: addressResponse.addresses)
+                self?.save()
+                completion?()
+            }
+        }
+    }
+}

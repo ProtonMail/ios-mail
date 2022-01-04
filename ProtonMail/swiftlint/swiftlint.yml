@@ -224,6 +224,9 @@ included:
   - ${PWD}/ProtonMailCommon/Helpers/NewsLetterCheckHelper.swift
   - ${PWD}/ProtonMailCommon/DataService/APIService/FeedbackAPI.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Contacts/ContactParser.swift
+  - ${PWD}/ProtonMailCommon/Utilities/WebContentsSecureLoader/WebContents.swift
+  - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataProcessProtocol.swift
+  - ${PWD}/ProtonMailCommon/DataServices/UserAddressUpdaterProtocol.swift
   - ${PWD}/../ProtonMail/PushService/NotificationService.swift
   - ${PWD}/../ProtonMail/PushService/PushNotificationHandler.swift
 

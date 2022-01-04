@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import TrustKit
@@ -363,8 +364,8 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
 }
 
 extension NewMessageBodyViewController: LinkOpeningValidator {
-    var user: UserManager {
-        return viewModel.userManager
+    var linkConfirmation: LinkOpeningMode {
+        return viewModel.linkConfirmation
     }
 
     func webView(_ webView: WKWebView,
@@ -395,7 +396,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
     // Won't be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared
     @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "")
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return user.userService.linkConfirmation == .openAtWill
+        return linkConfirmation == .openAtWill
     }
 
     @available(iOS 13.0, *)
@@ -403,7 +404,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
         // This will show default preview and default menu
-        guard user.userService.linkConfirmation != .openAtWill else {
+        guard linkConfirmation != .openAtWill else {
             completionHandler(nil)
             return
         }

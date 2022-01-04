@@ -77,11 +77,14 @@ class ConversationViewModel {
         .header(subject: conversation.subject)
     }
 
+    let isDarkModeEnableClosure: () -> Bool
+
     init(labelId: String,
          conversation: Conversation,
          user: UserManager,
          openFromNotification: Bool = false,
          coreDataService: CoreDataService,
+         isDarkModeEnableClosure: @escaping () -> Bool,
          targetID: String? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -97,6 +100,7 @@ class ConversationViewModel {
         self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
+        self.isDarkModeEnableClosure = isDarkModeEnableClosure
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
@@ -146,7 +150,8 @@ class ConversationViewModel {
         let viewModel = ConversationMessageViewModel(labelId: labelId,
                                                      message: message,
                                                      user: user,
-                                                     replacingEmails: sharedReplacingEmails)
+                                                     replacingEmails: sharedReplacingEmails,
+                                                     isDarkModeEnableClosure: isDarkModeEnableClosure)
         return .message(viewModel: viewModel)
     }
 

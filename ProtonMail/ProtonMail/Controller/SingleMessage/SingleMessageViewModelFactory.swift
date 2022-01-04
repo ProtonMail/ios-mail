@@ -24,10 +24,11 @@ class SingleMessageContentViewModelFactory {
 
     func createViewModel(
         context: SingleMessageContentViewContext,
-        user: UserManager
+        user: UserManager,
+        isDarkModeEnableClosure: @escaping () -> Bool
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
-            messageBody: messageBody(message: context.message, user: user),
+            messageBody: messageBody(message: context.message, user: user, isDarkModeEnableClosure: isDarkModeEnableClosure),
             nonExpandedHeader: .init(labelId: context.labelId, message: context.message, user: user),
             bannerViewModel: banner(labelId: context.labelId, message: context.message, user: user),
             attachments: attachments(message: context.message)
@@ -35,14 +36,18 @@ class SingleMessageContentViewModelFactory {
         return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: .init())
     }
 
-    private func messageBody(message: Message, user: UserManager) -> NewMessageBodyViewModel {
+    private func messageBody(message: Message,
+                             user: UserManager,
+                             isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
         .init(
             message: message,
-            messageService: user.messageService,
-            userManager: user,
+            messageDataProcessor: user.messageService,
+            userAddressUpdater: user,
             shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
             shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
-            internetStatusProvider: InternetConnectionStatusProvider()
+            internetStatusProvider: InternetConnectionStatusProvider(),
+            isDarkModeEnableClosure: isDarkModeEnableClosure,
+            linkConfirmation: user.userinfo.linkConfirmation
         )
     }
 
@@ -84,25 +89,32 @@ class SingleMessageContentViewModelFactory {
 
 class SingleMessageViewModelFactory {
 
-    func createViewModel(labelId: String, message: Message, user: UserManager) -> SingleMessageViewModel {
+    func createViewModel(labelId: String,
+                         message: Message,
+                         user: UserManager,
+                         isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
-            messageBody: messageBody(message: message, user: user),
+            messageBody: messageBody(message: message, user: user, isDarkModeEnableClosure: isDarkModeEnableClosure),
             nonExpandedHeader: .init(labelId: labelId, message: message, user: user),
             bannerViewModel: banner(labelId: labelId, message: message, user: user),
             attachments: attachments(message: message)
         )
 
-        return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels, internetStatusProvider: InternetConnectionStatusProvider())
+        return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels, internetStatusProvider: InternetConnectionStatusProvider(), isDarkModeEnableClosure: isDarkModeEnableClosure)
     }
 
-    private func messageBody(message: Message, user: UserManager) -> NewMessageBodyViewModel {
+    private func messageBody(message: Message,
+                             user: UserManager,
+                             isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
         .init(
             message: message,
-            messageService: user.messageService,
-            userManager: user,
+            messageDataProcessor: user.messageService,
+            userAddressUpdater: user,
             shouldAutoLoadRemoteImages: user.userinfo.showImages.contains(.remote),
             shouldAutoLoadEmbeddedImages: user.userinfo.showImages.contains(.embedded),
-            internetStatusProvider: InternetConnectionStatusProvider()
+            internetStatusProvider: InternetConnectionStatusProvider(),
+            isDarkModeEnableClosure: isDarkModeEnableClosure,
+            linkConfirmation: user.userinfo.linkConfirmation
         )
     }
 

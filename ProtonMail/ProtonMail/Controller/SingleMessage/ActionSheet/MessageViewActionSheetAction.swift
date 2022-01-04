@@ -41,6 +41,8 @@ enum MessageViewActionSheetAction: Equatable {
     case spamMoveToInbox
     case star
     case unstar
+    case viewInLightMode
+    case viewInDarkMode
 
     var title: String {
         switch self {
@@ -84,6 +86,10 @@ enum MessageViewActionSheetAction: Equatable {
             return LocalString._title_of_star_action_in_action_sheet
         case .unstar:
             return LocalString._title_of_unstar_action_in_action_sheet
+        case .viewInLightMode:
+            return LocalString._title_of_viewInLightMode_action_in_action_sheet
+        case .viewInDarkMode:
+            return LocalString._title_of_viewInDarkMode_action_in_action_sheet
         }
     }
 
@@ -125,6 +131,10 @@ enum MessageViewActionSheetAction: Equatable {
             return Asset.actionSheetStar.image
         case .unstar:
             return Asset.actionSheetUnstar.image
+        case .viewInLightMode:
+            return Asset.actionSheetLight.image
+        case .viewInDarkMode:
+            return Asset.actionSheetDark.image
         }
     }
 }

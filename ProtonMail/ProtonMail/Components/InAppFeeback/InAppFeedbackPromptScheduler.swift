@@ -21,6 +21,7 @@ protocol InAppFeedbackStorageProtocol {
     var feedbackWasSubmitted: Bool { get set }
     var feedbackPromptWasShown: Bool { get set }
     var numberOfForegroundEnteringRegistered: Int { get set }
+
     func reset()
 }
 

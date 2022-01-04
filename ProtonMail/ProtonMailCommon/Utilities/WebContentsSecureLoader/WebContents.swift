@@ -26,22 +26,26 @@ import WebKit
 class WebContents {
     let body: String
     let remoteContentMode: RemoteContentPolicy
-    let isNewsLetter: Bool
+    private(set) var renderStyle: MessageRenderStyle
     let supplementCSS: String?
 
     var bodyForJS: String {
         return self.body.escaped
     }
 
-    init(body: String, remoteContentMode: RemoteContentPolicy, isNewsLetter: Bool, supplementCSS: String? = nil) {
+    init(body: String, remoteContentMode: RemoteContentPolicy, renderStyle: MessageRenderStyle = .dark, supplementCSS: String? = nil) {
         self.body = body
         self.remoteContentMode = remoteContentMode
-        self.isNewsLetter = isNewsLetter
+        self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
     }
 
     var contentSecurityPolicy: String {
         return self.remoteContentMode.cspRaw
+    }
+
+    func changeRenderStyle(_ style: MessageRenderStyle) {
+        self.renderStyle = style
     }
 
     enum RemoteContentPolicy: Int {
@@ -53,9 +57,11 @@ class WebContents {
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
 
             case .disallowed: // this cuts off all remote content
+                // swiftlint:disable line_length
                 return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
 
             case .allowed: // this cuts off only scripts and connections
+                // swiftlint:disable line_length
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
             }
         }
@@ -66,10 +72,13 @@ class WebContents {
         case allowed
     }
 
+    // swiftlint:disable force_try force_unwrapping
     static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content", ofType: "css")!,
                                          encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    // swiftlint:disable line_length force_try force_unwrapping
     static var cssLightModeOnly: String = try! String(contentsOfFile: Bundle.main.path(forResource: "content_light", ofType: "css")!,
                                                       encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    // swiftlint:disable force_try force_unwrapping
     static var domPurifyConstructor: WKUserScript = {
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)

@@ -65,7 +65,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         self.webView = webView
 
-        self.webView?.backgroundColor = contents.isNewsLetter ? .white : ColorProvider.BackgroundNorm
+        switch contents.renderStyle {
+        case .lightOnly:
+            self.webView?.backgroundColor = .white
+        case .dark:
+            self.webView?.backgroundColor = ColorProvider.BackgroundNorm
+        }
         
         let urlString = (UUID().uuidString + ".proton").lowercased()
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
@@ -105,11 +110,15 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
-        var css = WebContents.css
-        if contents.isNewsLetter {
+        var css: String
+        switch contents.renderStyle {
+        case .lightOnly:
             css = WebContents.cssLightModeOnly
-        } else if let supplementCSS = contents.supplementCSS {
-            css += supplementCSS
+        case .dark:
+            css = WebContents.css
+			if let supplementCSS = contents.supplementCSS {
+				css += supplementCSS
+			}
         }
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();

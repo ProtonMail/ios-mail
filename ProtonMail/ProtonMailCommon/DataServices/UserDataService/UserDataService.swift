@@ -102,15 +102,7 @@ class UserDataService : Service, HasLocalStorage {
         //TODO:: fix me
         //        return userInfo?.linkConfirmation ?? .confirmationAlert
     }
-    //
-    //    var addresses: [Address] { //never be null
-    //        return userInfo?.userAddresses ?? [Address]()
-    //    }
-    //
-    //    var displayName: String {
-    //        return (userInfo?.displayName ?? "").decodeHtml()
-    //    }
-    //
+
     var isMailboxPasswordStored: Bool {
         return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
@@ -807,6 +799,17 @@ class UserDataService : Service, HasLocalStorage {
     func launchCleanUp() {
         if !self.isUserCredentialStored {
             passwordMode = 2
+        }
+    }
+
+    func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {
+        let req = GetAddressesRequest()
+        apiService.exec(route: req) { (_, res: AddressesResponse) in
+            if let error = res.error {
+                completion?(.failure(error))
+            } else {
+                completion?(.success(res))
+            }
         }
     }
     

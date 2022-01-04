@@ -2501,7 +2501,7 @@ extension MailboxViewController {
                 return
             }
             switch result {
-            case .success(let userFeedback):
+            case .success(_):
                 completedHandler?(true)
                 // TODO: Connect the new service here. Till then this is just temporary
                 let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerStyle.success)
