@@ -29,7 +29,10 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
          includeStarring: Bool,
          isStarred: Bool,
          isBodyDecryptable: Bool,
-         hasMoreThanOneRecipient: Bool) {
+         hasMoreThanOneRecipient: Bool,
+         messageRenderStyle: MessageRenderStyle,
+         shouldShowRenderModeOption: Bool
+    ) {
         self.title = title
         
         items.append(.reply)
@@ -45,6 +48,15 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
 
         if includeStarring {
             items.append(isStarred ? .unstar : .star)
+        }
+
+        if shouldShowRenderModeOption {
+            switch messageRenderStyle {
+            case .lightOnly:
+                items.append(.viewInDarkMode)
+            case .dark:
+                items.append(.viewInLightMode)
+            }
         }
 
         if labelID != Message.Location.trash.rawValue {

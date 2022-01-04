@@ -717,7 +717,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             } catch {
                 body = self.message!.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false, supplementCSS: css)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .reply, .replyAll:
             
             var body = ""
@@ -746,7 +746,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
             var css = CSSMagic.generateCSSForDarkMode(htmlString: result)
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false, supplementCSS: css)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
@@ -784,29 +784,29 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
             var css = CSSMagic.generateCSSForDarkMode(htmlString: body)
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
                 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             } else if signatureHtml.trim().isEmpty {
                 //add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
             }
-            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, isNewsLetter: false)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
         }
         
     }

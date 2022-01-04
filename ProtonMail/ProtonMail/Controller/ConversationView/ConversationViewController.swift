@@ -2,6 +2,7 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
+// swiftlint:disable type_body_length
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
@@ -245,7 +246,10 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     required init?(coder: NSCoder) { nil }
 
-    private func presentActionSheet(for message: Message, isBodyDecrpytable: Bool) {
+    private func presentActionSheet(for message: Message,
+                                    isBodyDecrpytable: Bool,
+                                    messageRenderStyle: MessageRenderStyle,
+                                    shouldShowRenderModeOption: Bool) {
         let forbidden = [Message.Location.allmail.rawValue,
                           Message.Location.starred.rawValue,
                           Message.HiddenLocation.sent.rawValue,
@@ -268,7 +272,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                                         includeStarring: true,
                                                         isStarred: message.starred,
                                                         isBodyDecryptable: isBodyDecrpytable,
-                                                        hasMoreThanOneRecipient: message.isHavingMoreThanOneContact)
+                                                        hasMoreThanOneRecipient: message.isHavingMoreThanOneContact,
+                                                        messageRenderStyle: messageRenderStyle,
+                                                        shouldShowRenderModeOption: shouldShowRenderModeOption)
         actionSheetPresenter.present(on: navigationController ?? self,
                                      listener: self,
                                      viewModel: viewModel) { [weak self] in
@@ -650,7 +656,15 @@ private extension ConversationViewController {
                 let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
                 let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
                     .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
-                presentActionSheet(for: message, isBodyDecrpytable: isBodyDecryptable)
+                let bodyViewModel = viewModel?.messageViewModel?.state
+                    .expandedViewModel?.messageContent
+                    .messageBodyViewModel
+                let renderStyle = bodyViewModel?.currentMessageRenderStyle ?? .dark
+                let shouldDisplayRenderModeOptions = bodyViewModel?.shouldDisplayRenderModeOptions ?? false
+                presentActionSheet(for: message,
+                                   isBodyDecrpytable: isBodyDecryptable,
+                                   messageRenderStyle: renderStyle,
+                                   shouldShowRenderModeOption: shouldDisplayRenderModeOptions)
             }
         case .url(let url):
             coordinator.handle(navigationAction: .url(url: url))

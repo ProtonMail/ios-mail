@@ -49,7 +49,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     func start() {
         let singleMessageViewModelFactory = SingleMessageViewModelFactory()
-        let viewModel = singleMessageViewModelFactory.createViewModel(labelId: labelId, message: message, user: user)
+        let viewModel = singleMessageViewModelFactory.createViewModel(labelId: labelId,
+                                                                      message: message,
+                                                                      user: user,
+                                                                      isDarkModeEnableClosure: { [weak self] in
+            if #available(iOS 12.0, *) {
+                return self?.viewController?.traitCollection.userInterfaceStyle == .dark
+            } else {
+                return false
+            }
+        })
         let viewController = SingleMessageViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)

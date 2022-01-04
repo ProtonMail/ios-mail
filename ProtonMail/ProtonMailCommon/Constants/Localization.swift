@@ -23,8 +23,7 @@
 
 import Foundation
 
-/// object for all the localization strings, this avoid some issues with xcode 9 import/export
-/// this o
+// object for all the localization strings, this avoid some issues with xcode 9 import/export
 var LocalString = LocalizedString()
 
 class LocalizedString {
@@ -2016,6 +2015,9 @@ class LocalizedString {
     lazy var _title_of_archive_action_in_action_sheet = NSLocalizedString("Archive", comment: "The title of the archive action in action sheet")
     
     lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
+
+    lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
+    lazy var _title_of_viewInDarkMode_action_in_action_sheet = NSLocalizedString("View message in Dark mode", comment: "The title of the view message in dark mode action in action sheet")
 
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")

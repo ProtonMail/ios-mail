@@ -90,6 +90,7 @@ protocol InAppFeedbackViewModelProtocol {
     var viewMode: InAppFeedbackViewMode { get }
     var updateViewCallback: (() -> Void)? { get set }
     var ratingScale: [Rating] { get }
+
     func select(rating: Rating)
     func updateFeedbackComment(comment: String)
     func submitFeedback()

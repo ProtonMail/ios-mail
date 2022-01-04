@@ -189,7 +189,7 @@ class ReportBugsViewController: ProtonMailViewController {
         user.reportService.reportBug(text,
                                      username: String(username),
                                      email: self.user.defaultEmail,
-                                     lastReceivedPush: SharedUserDefaults().lastReceivedPushTimestamp ?? "Undefined",
+                                     lastReceivedPush: SharedUserDefaults().lastReceivedPushTimestamp,
                                      reachabilityStatus: reachabilityStatus) { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true

@@ -54,6 +54,16 @@ extension ConversationViewModel {
                                 from: [messageLocation],
                                 to: Message.Location.inbox.rawValue,
                                 queue: true)
+        case .viewInDarkMode:
+            guard let dataModel = self.messagesDataSource.first(where: { $0.message?.messageID == message.messageID }) else {
+                break
+            }
+            dataModel.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.reloadMessageWith(style: .dark)
+        case .viewInLightMode:
+            guard let dataModel = self.messagesDataSource.first(where: { $0.message?.messageID == message.messageID }) else {
+                break
+            }
+            dataModel.messageViewModel?.state.expandedViewModel?.messageContent.messageBodyViewModel.reloadMessageWith(style: .lightOnly)
         default:
             break
         }

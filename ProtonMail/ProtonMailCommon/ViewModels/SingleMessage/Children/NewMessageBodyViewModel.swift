@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_DataModel
 import WebKit
 
 protocol NewMessageBodyViewModelDelegate: AnyObject {
@@ -72,8 +73,8 @@ class NewMessageBodyViewModel {
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
 
     private(set) var message: Message
-    private let messageService: MessageDataService
-    let userManager: UserManager
+    private let messageDataProcessor: MessageDataProcessProtocol
+    let userAddressUpdater: UserAddressUpdaterProtocol
     var hasStrippedVersionObserver: ((Bool) -> Void)?
     private(set) var hasStrippedVersion: Bool = false
     private(set) var bodyParts: BodyParts? {
@@ -125,16 +126,24 @@ class NewMessageBodyViewModel {
     }
     private var hasAutoRetried = false
 
-    lazy var placeholderContent: String = {
+    var placeholderContent: String {
+        var css: String
+        switch currentMessageRenderStyle {
+        case .lightOnly:
+            css = WebContents.cssLightModeOnly
+        case .dark:
+            css = WebContents.css
+        }
+
         let meta = "<meta name=\"viewport\" content=\"width=device-width\">"
 
         let htmlString = """
                             <html><head>\(meta)<style type='text/css'>
-                            \(WebContents.css)</style>
+                            \(css)</style>
                             </head><body>\(LocalString._loading_)</body></html>
                          """
         return htmlString
-    }()
+    }
 
     var webViewPreferences: WKPreferences {
         let preferences = WKPreferences()
@@ -151,16 +160,36 @@ class NewMessageBodyViewModel {
 
     private(set) var isBodyDecryptable = false
 
+    let isDarkModeEnableClosure: () -> Bool
+
+    /// This property is used to record the current render style of the message body in the webView.
+    private(set) var currentMessageRenderStyle: MessageRenderStyle = .dark {
+        didSet {
+            self.contents?.changeRenderStyle(currentMessageRenderStyle)
+        }
+    }
+    var shouldDisplayRenderModeOptions: Bool {
+        return message.isNewsLetter ? false : isDarkModeEnableClosure()
+    }
+
+    let linkConfirmation: LinkOpeningMode
+
     init(message: Message,
-         messageService: MessageDataService,
-         userManager: UserManager,
+         messageDataProcessor: MessageDataProcessProtocol,
+         userAddressUpdater: UserAddressUpdaterProtocol,
          shouldAutoLoadRemoteImages: Bool,
          shouldAutoLoadEmbeddedImages: Bool,
-         internetStatusProvider: InternetConnectionStatusProvider) {
+         internetStatusProvider: InternetConnectionStatusProvider,
+         isDarkModeEnableClosure: @escaping () -> Bool,
+         linkConfirmation: LinkOpeningMode
+        ) {
         self.message = message
-        self.messageService = messageService
-        self.userManager = userManager
+        self.messageDataProcessor = messageDataProcessor
+        self.userAddressUpdater = userAddressUpdater
         self.internetStatusProvider = internetStatusProvider
+        self.isDarkModeEnableClosure = isDarkModeEnableClosure
+        self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
+        self.linkConfirmation = linkConfirmation
 
         remoteContentPolicy = shouldAutoLoadRemoteImages ?
             WebContents.RemoteContentPolicy.allowed.rawValue :
@@ -178,15 +207,14 @@ class NewMessageBodyViewModel {
     }
 
     func tryDecryptionAgain(handler: (() -> Void)?) {
-        let req = GetAddressesRequest()
-        self.userManager.apiService.exec(route: req) { [weak self] (_, res: AddressesResponse) in
-            guard res.error == nil,
-                  let self = self else { return }
-            self.userManager.userinfo.set(addresses: res.addresses)
-            self.userManager.save()
-            self.reload(from: self.message)
+        userAddressUpdater.updateUserAddresses {
             handler?()
         }
+    }
+
+    func reloadMessageWith(style: MessageRenderStyle) {
+        self.currentMessageRenderStyle = style
+        delegate?.reloadWebView(forceRecreate: false)
     }
 
     /// - Returns: Should reload webView or not
@@ -196,8 +224,6 @@ class NewMessageBodyViewModel {
             return true
         }
         if let decryptedBody = decryptBody(from: message) {
-            let isNewsLetter = message.isNewsLetter
-
             isBodyDecryptable = true
             bodyParts = BodyParts(originalBody: decryptedBody)
 
@@ -209,16 +235,15 @@ class NewMessageBodyViewModel {
                     self.contents = WebContents(
                         body: self.bodyParts?.body(for: self.displayMode) ?? "",
                         remoteContentMode: remoteContentMode,
-                        isNewsLetter: isNewsLetter,
+                        renderStyle: self.currentMessageRenderStyle,
                         supplementCSS: self.bodyParts?.darkModeCSS
                     )
                 }
                 return false
             } else {
                 self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
-                                            remoteContentMode:
-                                                remoteContentMode,
-                                            isNewsLetter: isNewsLetter,
+                                            remoteContentMode: remoteContentMode,
+                                            renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS
                 )
             }
@@ -226,8 +251,7 @@ class NewMessageBodyViewModel {
             // If the detail hasn't download, don't show encrypted body to user
             bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? message.bodyToHtml(): .empty)
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
-                                        remoteContentMode: remoteContentMode,
-                                        isNewsLetter: false)
+                                        remoteContentMode: remoteContentMode)
         }
         return true
     }
@@ -260,7 +284,7 @@ class NewMessageBodyViewModel {
         }
 
         do {
-            let decryptedMessage = try messageService.decryptBodyIfNeeded(message: message)
+            let decryptedMessage = try messageDataProcessor.decryptBodyIfNeeded(message: message)
             if decryptedMessage != nil {
                 self.delegate?.hideDecryptionErrorBanner()
             }
@@ -298,7 +322,7 @@ class NewMessageBodyViewModel {
         for att in atts {
             group.enter()
             let work = DispatchWorkItem {
-                self.messageService.base64AttachmentData(att: att) { based64String in
+                self.messageDataProcessor.base64AttachmentData(att: att) { based64String in
                     if !based64String.isEmpty, let contentID = att.contentID() {
                         stringsQueue.sync {
                             strings["src=\"cid:\(contentID)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""

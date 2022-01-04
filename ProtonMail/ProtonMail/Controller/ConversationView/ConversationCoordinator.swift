@@ -30,6 +30,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             user: user,
             openFromNotification: openFromNotification,
             coreDataService: CoreDataService.shared,
+            isDarkModeEnableClosure: { [weak self] in
+                if #available(iOS 12.0, *) {
+                    return self?.viewController?.traitCollection.userInterfaceStyle == .dark
+                } else {
+                    return false
+                }
+            },
             targetID: targetID
         )
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)

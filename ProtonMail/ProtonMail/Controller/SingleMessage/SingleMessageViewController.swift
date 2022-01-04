@@ -205,12 +205,16 @@ extension SingleMessageViewController {
         guard let navigationVC = self.navigationController else { return }
         let isBodyDecryptable = viewModel.contentViewModel.messageBodyViewModel.isBodyDecryptable
         let hasMoreThanOneRecipient = viewModel.message.isHavingMoreThanOneContact
+        let renderStyle = viewModel.contentViewModel.messageBodyViewModel.currentMessageRenderStyle
+        let shouldDisplayRenderModeOptions = viewModel.contentViewModel.messageBodyViewModel.shouldDisplayRenderModeOptions
         let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,
                                                                    isStarred: viewModel.message.starred,
                                                                    isBodyDecryptable: isBodyDecryptable,
-                                                                   hasMoreThanOneRecipient: hasMoreThanOneRecipient)
+                                                                   hasMoreThanOneRecipient: hasMoreThanOneRecipient,
+                                                                   messageRenderStyle: renderStyle,
+                                                                   shouldShowRenderModeOption: shouldDisplayRenderModeOptions)
         actionSheetPresenter.present(on: navigationVC,
                                      listener: self,
                                      viewModel: actionSheetViewModel) { [weak self] action in

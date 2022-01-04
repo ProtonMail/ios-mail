@@ -31,7 +31,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 /// Message data service
-class MessageDataService : Service, HasLocalStorage {
+class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol {
     
     ///Message fetch details
     internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?,

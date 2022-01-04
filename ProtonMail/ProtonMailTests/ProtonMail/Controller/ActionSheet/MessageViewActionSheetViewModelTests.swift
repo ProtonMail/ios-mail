@@ -33,7 +33,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .forward,
@@ -55,7 +57,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -77,7 +81,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -98,7 +104,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -120,7 +128,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .forward,
@@ -142,7 +152,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -163,7 +175,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -185,7 +199,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -208,7 +224,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions: [MessageViewActionSheetAction] = [.reply,
                                                                .forward,
@@ -230,7 +248,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -251,7 +271,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions3: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -273,7 +295,9 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
-                                              hasMoreThanOneRecipient: false)
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: false)
         let expectedOptions4: [MessageViewActionSheetAction] = [.reply,
                                                                 .forward,
                                                                 .markUnread,
@@ -288,5 +312,57 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                 .reportPhishing]
         // check isBodyDecryptable
         XCTAssertEqual(sut.items, expectedOptions4)
+    }
+
+    func testActionSheet_withDarkModeEnable() {
+        sut = MessageViewActionSheetViewModel(title: testTitle,
+                                              labelID: Message.Location.inbox.rawValue,
+                                              includeStarring: true,
+                                              isStarred: false,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .dark,
+                                              shouldShowRenderModeOption: true)
+        XCTAssertEqual(sut.title, testTitle)
+        let expectedOptions: [MessageViewActionSheetAction] = [.reply,
+                                                               .forward,
+                                                               .markUnread,
+                                                               .labelAs,
+                                                               .star,
+                                                               .viewInLightMode,
+                                                               .trash,
+                                                               .archive,
+                                                               .spam,
+                                                               .moveTo,
+                                                               .print,
+                                                               .viewHeaders,
+                                                               .viewHTML,
+                                                               .reportPhishing]
+        XCTAssertEqual(sut.items, expectedOptions)
+
+        sut = MessageViewActionSheetViewModel(title: testTitle,
+                                              labelID: Message.Location.inbox.rawValue,
+                                              includeStarring: true,
+                                              isStarred: false,
+                                              isBodyDecryptable: true,
+                                              hasMoreThanOneRecipient: false,
+                                              messageRenderStyle: .lightOnly,
+                                              shouldShowRenderModeOption: true)
+        XCTAssertEqual(sut.title, testTitle)
+        let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
+                                                               .forward,
+                                                               .markUnread,
+                                                               .labelAs,
+                                                               .star,
+                                                               .viewInDarkMode,
+                                                               .trash,
+                                                               .archive,
+                                                               .spam,
+                                                               .moveTo,
+                                                               .print,
+                                                               .viewHeaders,
+                                                               .viewHTML,
+                                                               .reportPhishing]
+        XCTAssertEqual(sut.items, expectedOptions2)
     }
 }

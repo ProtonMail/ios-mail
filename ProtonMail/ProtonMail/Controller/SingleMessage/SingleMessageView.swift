@@ -123,6 +123,7 @@ private enum SubviewsFactory {
         let view = UITextView(frame: .zero)
         view.isEditable = false
         view.isScrollEnabled = false
+        view.backgroundColor = ColorProvider.BackgroundNorm
         return view
     }
 
