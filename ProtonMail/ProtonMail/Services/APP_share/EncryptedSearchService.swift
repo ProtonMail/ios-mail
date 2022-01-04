@@ -1341,13 +1341,13 @@ extension EncryptedSearchService {
 
     // MARK: - Search Functions
     #if !APP_EXTENSION
-    func search(_ query: String, page: Int, searchViewModel: SearchViewModel, completion: ((NSError?) -> Void)?) {
+    func search(_ query: String, page: Int, searchViewModel: SearchViewModel, completion: ((NSError?, Int?) -> Void)?) {
         print("encrypted search on client side!")
         print("Query: ", query)
         print("Page: ", page)
 
         if query == "" {
-            completion!(nil) //There are no results for an empty search query
+            completion?(nil, nil) //There are no results for an empty search query
         }
 
         //update necessary variables needed
@@ -1404,7 +1404,7 @@ extension EncryptedSearchService {
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
 
             // Call completion handler
-            completion!(nil)
+            completion?(nil, numberOfResultsFoundByCachedSearch + numberOfResultsFoundByIndexSearch)
         } else {
             print("Error when searching. User unknown!")
         }
