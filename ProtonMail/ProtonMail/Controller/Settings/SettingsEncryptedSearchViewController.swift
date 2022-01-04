@@ -251,7 +251,9 @@ extension SettingsEncryptedSearchViewController {
                         self.hideSections = true
                         // Remove banner
                         UIView.performWithoutAnimation {
-                            self.banner.remove(animated: false)
+                            if let banner = self.banner {
+                                banner.remove(animated: false)
+                            }
                         }
                         // Reload table
                         self.tableView.reloadData()
