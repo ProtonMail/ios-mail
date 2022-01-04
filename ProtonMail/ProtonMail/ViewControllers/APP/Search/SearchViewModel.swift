@@ -160,10 +160,18 @@ extension SearchViewModel: SearchVMProtocol {
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         
         if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
-            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { error in
+            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
                 guard error == nil else {
                     PMLog.D(" search error: \(String(describing: error))")
                     return
+                }
+
+                // Update activity indicator and resultsnotfound label only if there are 0 results - otherwise it will be updated with displayIntermediateSearchResults
+                if EncryptedSearchService.shared.isSearching == false && numberOfResults == 0 {
+                    DispatchQueue.main.async {
+                        self?.uiDelegate?.activityIndicator(isAnimating: false)
+                        self?.uiDelegate?.reloadTable()
+                    }
                 }
             }
         } else {
