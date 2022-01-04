@@ -2,7 +2,6 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-// swiftlint:disable type_body_length
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
@@ -245,7 +244,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     required init?(coder: NSCoder) { nil }
+}
 
+private extension ConversationViewController {
     private func presentActionSheet(for message: Message,
                                     isBodyDecrpytable: Bool,
                                     messageRenderStyle: MessageRenderStyle,
@@ -333,9 +334,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         cell.customView.titleTextView.attributedText = subject.apply(style: style)
         return cell
     }
-}
 
-private extension ConversationViewController {
     private func messageCell(
         _ tableView: UITableView,
         indexPath: IndexPath,

@@ -745,7 +745,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            var css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            let css = CSSMagic.generateCSSForDarkMode(htmlString: result)
             return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -792,7 +792,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            var css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            let css = CSSMagic.generateCSSForDarkMode(htmlString: body)
             return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {

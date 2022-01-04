@@ -157,7 +157,7 @@ enum NotificationPingBackError: Error {
 enum NotificationPingBack {
     static let method = "POST"
     static var endpoint: String? {
-        DoHMail().getHostUrl() + "/core/v4/pushes/ack"
+        DoHMail().getCurrentlyUsedHostUrl() + "/core/v4/pushes/ack"
     }
 
     static func request(with body: NotificationPingBackBody) throws -> URLRequest {
