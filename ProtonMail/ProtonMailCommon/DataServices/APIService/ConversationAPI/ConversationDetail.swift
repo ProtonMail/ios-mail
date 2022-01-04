@@ -43,25 +43,20 @@ class ConversationDetailsRequest: Request {
 }
 
 class ConversationDetailsResponse: Response {
-//    var conversation: ConversationData?
     var messages: [[String: Any]]? // one full and others metadata only
     var conversation: [String: Any]?
-//    var responseDict: [String : Any]?
 
-    override func ParseResponse(_ response: [String: Any]!) -> Bool {
-//        self.responseDict = response
-        messages = response["Messages"] as? [[String: Any]]
-        conversation = response["Conversation"] as? [String: Any]
-
-//        guard let data = try? JSONSerialization.data(withJSONObject: response["Conversation"] as Any, options: .prettyPrinted) else {
-//            return false
-//        }
-
-//        guard let  result = try? JSONDecoder().decode(ConversationData.self, from: data) else {
-//            return false
-//        }
-//        self.conversation = result
-
-        return true
+    override func ParseResponse(_ response: [String: Any]?) -> Bool {
+        guard let jsonObject = response else { return false }
+        var hasResponse = false
+        if let messages = jsonObject["Messages"] as? [[String: Any]] {
+            self.messages = messages
+            hasResponse = true
+        }
+        if let conversation = jsonObject["Conversation"] as? [String: Any] {
+            self.conversation = conversation
+            hasResponse = true
+        }
+        return hasResponse
     }
 }
