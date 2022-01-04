@@ -33,7 +33,10 @@ class WebContents {
         return self.body.escaped
     }
 
-    init(body: String, remoteContentMode: RemoteContentPolicy, renderStyle: MessageRenderStyle = .dark, supplementCSS: String? = nil) {
+    init(body: String,
+         remoteContentMode: RemoteContentPolicy,
+         renderStyle: MessageRenderStyle = .dark,
+         supplementCSS: String? = nil) {
         self.body = body
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle

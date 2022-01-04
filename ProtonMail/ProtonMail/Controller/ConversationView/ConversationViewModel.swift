@@ -285,7 +285,10 @@ class ConversationViewModel {
             }
         }
     }
+}
 
+// MARK: - Actions
+extension ConversationViewModel {
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
@@ -331,10 +334,6 @@ class ConversationViewModel {
             tableView.moveRow(at: .init(row: fromRow, section: 1), to: .init(row: toRow, section: 1))
         }
     }
-}
-
-// MARK: - Actions
-extension ConversationViewModel {
 
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
         if conversation.starred {

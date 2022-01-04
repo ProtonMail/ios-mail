@@ -35,7 +35,7 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        self.download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
+        self.download(byUrl: self.doh.getCurrentlyUsedHostUrl() + pathForAttachmentID(attachmentID),
                       destinationDirectoryURL: filepath,
                       headers: .empty,
                       authenticated: true,

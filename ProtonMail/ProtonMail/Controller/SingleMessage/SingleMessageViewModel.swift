@@ -136,17 +136,7 @@ class SingleMessageViewModel {
         case .delete:
             messageService.delete(messages: [message], label: labelId)
         case .reportPhishing:
-            let displayMode = contentViewModel.messageBodyViewModel.displayMode
-            let messageBody = contentViewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
-            BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
-                                                                     messageBody: messageBody
-                                                                        ?? LocalString._error_no_object) { _ in
-                self.messageService.move(messages: [self.message],
-                                         from: [self.labelId],
-                                         to: Message.Location.spam.rawValue,
-                                         queue: true)
-                completion()
-            }
+            reportPhishing(completion)
             return
         case .inbox, .spamMoveToInbox:
             messageService.move(messages: [message],
@@ -163,6 +153,20 @@ class SingleMessageViewModel {
             break
         }
         completion()
+    }
+
+    private func reportPhishing(_ completion: @escaping () -> Void) {
+        let displayMode = contentViewModel.messageBodyViewModel.displayMode
+        let messageBody = contentViewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
+        BugDataService(api: self.user.apiService).reportPhishing(messageID: message.messageID,
+                                                                 messageBody: messageBody
+                                                                 ?? LocalString._error_no_object) { _ in
+            self.messageService.move(messages: [self.message],
+                                     from: [self.labelId],
+                                     to: Message.Location.spam.rawValue,
+                                     queue: true)
+            completion()
+        }
     }
 
     func getMessageHeaderUrl() -> URL? {

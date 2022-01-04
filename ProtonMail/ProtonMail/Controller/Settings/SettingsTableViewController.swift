@@ -751,7 +751,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             case .network:
                 let netItem = setting_network_items[indexPath.row]
                 if netItem == .clear {
-                    DoHMail.default.clearAll()
+                    DoHMail.default.clearCache()
                 }
             default:
                 break

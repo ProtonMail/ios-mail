@@ -48,5 +48,5 @@ class DoHMail : DoH, ServerConfig {
 
     var timeout: TimeInterval = 5
 
-    static let `default` = try! DoHMail()
+    static let `default` = DoHMail()
 }

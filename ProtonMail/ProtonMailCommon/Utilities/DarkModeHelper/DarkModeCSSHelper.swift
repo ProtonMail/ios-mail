@@ -304,7 +304,6 @@ struct CSSMagic {
             }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
-            let message = error.localizedDescription
             return []
         }
     }
