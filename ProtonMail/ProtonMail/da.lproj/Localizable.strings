@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "Brugeren er allerede logget ind";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "Brugernavnet er allerede taget.";
 
 /* title */
 "The verification email invalid" = "Ugyldig bekræftelses e-mail";
@@ -2663,7 +2663,7 @@
 "This contact belongs to your Address Book." = "Denne kontakt er fra din Kontakter.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "Denne samtale indeholder ikke-kasserede beskeder.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
@@ -2672,7 +2672,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail fejlede Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail har ikke bestået sit domænes autentificeringskrav. Den kan være forfalsket eller ukorrekt videresendt!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail lader til at være fra en ProtonMail-adresse, men kom fra et eksternt system og fejlede bl.a. Reverse DNS Lookup-tjek. Den kan være falsk eller forkert videresendt!";

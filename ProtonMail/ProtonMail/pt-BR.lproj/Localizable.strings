@@ -2663,7 +2663,7 @@
 "This contact belongs to your Address Book." = "Este contato pertence ao seu catálogo de endereços.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "Esta conversa contém mensagens que não estão na lixeira.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Esta conversa contém mensagens descartadas";

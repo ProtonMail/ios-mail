@@ -26,7 +26,7 @@
 "%@ storage capacity" = "%@ストレージ容量";
 
 /* Description */
-"%d attempt remaining" = "%d attempt remaining";
+"%d attempt remaining" = "残り %d 回試すことができます";
 
 /* Error */
 "%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
@@ -74,7 +74,7 @@
 "+ Drop here to add as attachment" = "+添付ファイルとして追加するにはここにドロップしてください";
 
 /* alert body for how many extra mail addresses, e.g. +3 others */
-"+%d others" = "+%d others";
+"+%d others" = "+他 %d";
 
 /* default empty object */
 "<no object>" = "<件名無し>";
@@ -221,7 +221,7 @@
 "Also Archive" = "アーカイブも実施する";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "アーカイブも行いますか?";
 
 /* Description */
 "Also used to reset a forgotten password." = "パスワードを忘れた場合のリセットにも使用されます。";
@@ -230,10 +230,10 @@
 "Alternative routing" = "代替ルーティング";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "常に無効";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "常に有効";
 
 /* agree check box middle word */
 "and" = "かつ";
@@ -260,16 +260,16 @@
 "App PIN" = "App PIN";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "App の PIN と Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "App の PIN と Touch ID";
 
 /* section title in settings */
 "App settings" = "アプリの設定";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Appearance";
+"Appearance" = "外観";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Appleのアプリ内購入料金";
@@ -311,13 +311,13 @@
 "Are you sure? This can't be undone." = "元には戻せませんが、本当によろしいですか？";
 
 /* At {time}, e.g.: At 19:00 */
-"At %@" = "At %@";
+"At %@" = "%@";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found" = "グループ内のメールアドレスが見つからないものがありました。";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "At least one email address in the group could not be found.";
+"At least one email address in the group could not be found." = "グループ内のメールアドレスが見つからないものがありました。";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "宛先のメールアドレスが正しくないものがあります。再度確認してください。";
@@ -332,16 +332,16 @@
 "Attachment" = "添付ファイル";
 
 /* Alert title when attachment upload failed */
-"Attachment failure" = "Attachment failure";
+"Attachment failure" = "添付に失敗しました";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "添付ファイルがインポートされました。";
 
 /* Alert title */
-"Attachment limit" = "Attachment limit";
+"Attachment limit" = "添付の上限に達しました";
 
 /* No comment provided by engineer. */
-"attachments" = "attachments";
+"attachments" = "添付ファイル";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "添付ファイル";
@@ -356,7 +356,7 @@
 "Authentication Failed Wrong username or password" = "認証に失敗しました。ログイン名またはパスワードが間違っています。";
 
 /* Error */
-"Authentication failed. Please try to sign in again." = "Authentication failed. Please try to sign in again.";
+"Authentication failed. Please try to sign in again." = "認証に失敗しました。 もう一度サインインを試してください。";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "アプリがロックされているため、認証トークンにアクセスできません。";
@@ -377,7 +377,7 @@
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "悪い";
 
 /* top left back button */
 "Back" = "戻る";
@@ -422,7 +422,7 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "アカウントを削除すると、再度追加しない限りこの端末からアクセスできなくなります。\n\nこのアカウントを本当に削除しますか？";
 
 /* agree check box first part words */
-"By using ProtonMail, you agree to our" = "By using ProtonMail, you agree to our";
+"By using ProtonMail, you agree to our" = "ProtonMail を利用することにより、以下に同意したものとみなされます。";
 
 /* No comment provided by engineer. */
 "By using ProtonMail, you agree to our %@ and %@." = "ProtonMailを利用することにより、%1$@および%2$@に同意したものとみなされます。";
@@ -474,10 +474,10 @@
 "Can't find this attachment!" = "添付ファイルが見つかりません。";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus ID!" = "Can't get a Modulus ID!";
+"Can't get a Modulus ID!" = "Modulus ID を取得できません!";
 
 /* update password error = typo:Modulus */
-"Can't get a Modulus!" = "Can't get a Modulus!";
+"Can't get a Modulus!" = "Modulus を取得できません!";
 
 /* update password error */
 "Can't get user auth info" = "ユーザー認証情報を取得できません";
@@ -554,7 +554,7 @@
 "Change sender address to .." = "差出人アドレスの変更";
 
 /* change password input label */
-"Change sign-in password" = "Change sign-in password";
+"Change sign-in password" = "サインインパスワードを変更";
 
 /* Title */
 "Change single password" = "シングルパスワードを変更";
@@ -596,10 +596,10 @@
 "Closing" = "終了中です";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "フォルダーを折りたたむ";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "メッセージを折りたたむ";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -626,7 +626,7 @@
 "Confirm new password" = "新しいパスワードの確認";
 
 /* Title */
-"Confirm new sign-in password" = "Confirm new sign-in password";
+"Confirm new sign-in password" = "新しいサインインパスワードを確認";
 
 /* Placeholder */
 "Confirm Password" = "パスワードの確認";
@@ -644,13 +644,13 @@
 "Connect Account" = "アカウントに接続";
 
 /* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+"Contact deleted, will be synced when connection is available" = "連絡先が削除されました。ネットワーク接続が使用可能なときに同期します。";
 
 /* contact section title */
 "Contact details" = "連絡先の詳細";
 
 /* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Contact saved, will be synced when connection is available";
+"Contact saved, will be synced when connection is available" = "連絡先が保存されました。ネットワーク接続が使用可能なときに同期します。";
 
 /* Title */
 "Contact the ProtonMail team" = "ProtonMailチームへの連絡";
@@ -724,7 +724,7 @@
 "Current Recovery Email" = "現在の回復用メールアドレス";
 
 /* Title */
-"Current sign-in password" = "Current sign-in password";
+"Current sign-in password" = "現在のサインインパスワード";
 
 /* action sheet option
    contacts default label type
@@ -732,7 +732,7 @@
 "Custom" = "カスタム";
 
 /* Title */
-"Cut" = "Cut";
+"Cut" = "切り取り";
 
 /* cell title in app setting */
 "Dark mode" = "ダークモード";
@@ -878,7 +878,7 @@
 "Draft" = "下書き";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading…" = "Draft is still uploading…";
+"Draft is still uploading…" = "下書きはまだアップロード中です…";
 
 /* hint message */
 "Draft moved to trash" = "下書きがごみ箱に移動されました";
@@ -1054,10 +1054,10 @@
 "Enter" = "入力";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Enter a PIN code with min 4 characters and max 21 characters.";
+"Enter a PIN code with min 4 characters and max 21 characters." = "4 ~ 21 文字の PIN コードを入力してください。";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Enter current PIN code";
+"Enter current PIN code" = "現在の PIN を入力";
 
 /* Title */
 "Enter Verification Code" = "検証コードの入力";
@@ -1090,7 +1090,7 @@
 "Error Logs" = "エラーログ";
 
 /* Error alert title */
-"Error occurred" = "Error occurred";
+"Error occurred" = "エラーが発生しました";
 
 /* incorrect email format error in composer */
 "Error sending" = "送信中にエラーが発生しました。";
@@ -1099,7 +1099,7 @@
 "Every time enter app" = "アプリ切り替え時";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "フォルダーを展開";
 
 /* alert title */
 "Expiration not supported" = "有効期限はサポートされていません";
@@ -1127,7 +1127,7 @@
 "Failed to initialize the application's saved data" = "アプリケーションの保存データの初期化に失敗しました。";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+"Failed to load content!\nPlease try again." = "コンテンツを読み込めませんでした!\n再度お試しください。";
 
 /* default vcard types */
 "Fax" = "Fax";
@@ -1151,7 +1151,7 @@
 "Folders" = "フォルダー";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "デバイス設定に従う";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "費用なしで安全な通信方法を探している個人向けです。";
@@ -1169,7 +1169,7 @@
 "For power users and groups of people that value full anonymity and privacy" = "上級ユーザーと匿名性とプライバシーに価値を感じる方向けです。";
 
 /* The title of alert that the app is not having the permission to access photo library */
-"Forbidden" = "Forbidden";
+"Forbidden" = "権限がありません";
 
 /* signin page forgot pwd */
 "FORGOT PASSWORD?" = "パスワードをお忘れですか？";
@@ -1184,7 +1184,7 @@
 "From" = "差出人";
 
 /* Title */
-"From your photo library" = "From your photo library";
+"From your photo library" = "写真ライブラリから";
 
 /* message From: field text */
 "From:" = "差出人:";
@@ -1211,13 +1211,13 @@
 "general_message" = "general_message";
 
 /* Screen header, like 'Get VISIONARY' */
-"Get %@" = "Get %@";
+"Get %@" = "%@ を入手";
 
 /* Action */
 "Get more information" = "詳細情報を入手";
 
 /* title of the next button */
-"Get Started" = "Get Started";
+"Get Started" = "始めましょう";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "下書きを開く";
@@ -1229,10 +1229,10 @@
 "Go to settings" = "設定を開く";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign-in" = "Go to sign-in";
+"Go to sign-in" = "サインインに移動";
 
 /* network troubleshot cell title */
-"Government block" = "政府等による検閲";
+"Government block" = "政府による検閲";
 
 /* The title for the contact group detail view */
 "Group details" = "グループの詳細";
@@ -1271,7 +1271,7 @@
 "Hours" = "時間";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "新しい ProtonMail の使い心地について評価していただけますか?";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1298,10 +1298,10 @@
 "Import File From..." = "ファイルのインポート";
 
 /* Title */
-"Import File From…" = "Import File From…";
+"Import File From…" = "ファイルのインポート…";
 
 /* Title */
-"Import from…" = "Import from…";
+"Import from…" = "インポート元…";
 
 /* Downloading attachments from cloud */
 "Importing" = "インポートしています...";
@@ -1313,7 +1313,7 @@
 "Importing Contacts" = "連絡先をインポートしています";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Proton のサイトがブロックされている場合、この設定により、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。サービスへの接続の信頼性向上の観点から、私たちはこの設定を有効にしておくことをお勧めします。[より詳しく]";
 
 /* network troubleshot cell title
    The footer of alternative routing setting */
@@ -1333,7 +1333,7 @@
 "Incorrect password" = "間違ったパスワード";
 
 /* Error */
-"Incorrect PIN." = "Incorrect PIN.";
+"Incorrect PIN." = "間違った PIN です。";
 
 /* Option title */
 "Inherit color from parent folder" = "親フォルダーの色を継承";
@@ -1348,10 +1348,10 @@
 "Input Display Name ..." = "表示名を入力してください";
 
 /* place holder */
-"Input Display Name…" = "Input Display Name…";
+"Input Display Name…" = "表示名を入力…";
 
 /* place holder */
-"Input Notification Email …" = "Input Notification Email …";
+"Input Notification Email …" = "通知メールを入力…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "安全ではない接続";
@@ -1375,7 +1375,7 @@
 "Invalid hashed password!" = "無効なハッシュ化されたパスワードです";
 
 /* The error message of entering an invalid password */
-"Invalid password" = "Invalid password";
+"Invalid password" = "無効なパスワードです";
 
 /* Error */
 "Invalid Password" = "無効なパスワードです。";
@@ -1387,7 +1387,7 @@
 "Invalid UserName" = "無効なユーザー名です";
 
 /* Error message */
-"Invalid username!" = "Invalid username!";
+"Invalid username!" = "無効なユーザー名です!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "アプリ内課金についてのバグ報告ですか？";
@@ -1411,7 +1411,7 @@
 "Key invalid. Please go back and try again." = "鍵が無効です。戻ってもう一度やり直してください。";
 
 /* No comment provided by engineer. */
-"Label as" = "Label as";
+"Label as" = "ラベル付け";
 
 /* *
  *  MoreOptionsView */
@@ -1419,7 +1419,7 @@
 
 /* The title of the label as action in action sheet
    Title */
-"Label as…" = "Label as…";
+"Label as…" = "…としてラベル付け";
 
 /* (No Comment) */
 "Label Management" = "ラベルの管理";
@@ -1447,7 +1447,7 @@
 "Language" = "言語";
 
 /* Action */
-"Later" = "Later";
+"Later" = "後で";
 
 /* network troubleshot cell title
    The title of learn more link */
@@ -1463,16 +1463,16 @@
 "Left to Right" = "左から右";
 
 /* Title of alert when the free account limit is reached */
-"Limit reached" = "アカウントのご利用限度に達しました。";
+"Limit reached" = "アカウントの利用上限に到達しました";
 
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "1日あたり150件のメッセージ送信制限";
 
 /* No comment provided by engineer. */
-"Load content" = "Load content";
+"Load content" = "コンテンツを読み込む";
 
 /* No comment provided by engineer. */
-"Load images" = "Load images";
+"Load images" = "画像を読み込む";
 
 /* Action */
 "Load remote content" = "外部コンテンツを読み込む";
@@ -1525,7 +1525,7 @@
 "Manage accounts" = "アカウント管理";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage addresses" = "Manage addresses";
+"Manage addresses" = "アドレスの管理";
 
 /* The title of folder manager page */
 "Manage folders" = "フォルダー管理";
@@ -1534,7 +1534,7 @@
 "Manage in device Settings" = "端末の設定で管理";
 
 /* The title of label manager page */
-"Manage labels" = "Manage labels";
+"Manage labels" = "ラベルを管理";
 
 /* Title */
 "Manage Labels/Folders" = "ラベル/フォルダー管理";
@@ -1546,7 +1546,7 @@
 "Mark as read" = "既読にする";
 
 /* Action */
-"Mark as read/unread" = "Mark as read/unread";
+"Mark as read/unread" = "既読/未読にする";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "未読に戻す";
@@ -1580,7 +1580,7 @@
 "Message has been moved." = "メッセージが移動されました。";
 
 /* Title of the view showing the message header */
-"Message headers" = "Message headers";
+"Message headers" = "メッセージのヘッダー";
 
 /* Placeholder */
 "Message Password" = "メッセージのパスワード";
@@ -1629,13 +1629,13 @@
 "More Credits" = "クレジットの追加";
 
 /* No comment provided by engineer. */
-"Move to" = "Move to";
+"Move to" = "移動先";
 
 /* move action */
 "Move to All Mail" = "全てのメールに移動";
 
 /* Action title of move to archive */
-"Move to archive" = "Move to archive";
+"Move to archive" = "アーカイブに移動";
 
 /* move action */
 "Move to Archive" = "アーカイブに移動";
@@ -1647,7 +1647,7 @@
 "Move to Folder" = "フォルダーに移動";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Move to inbox";
+"Move to inbox" = "受信トレイに移動";
 
 /* "Trash" */
 "Move to Inbox" = "受信箱に移動";
@@ -1657,13 +1657,13 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "Move to spam";
+"Move to spam" = "迷惑メールに移動";
 
 /* move action */
 "Move to Spam" = "迷惑メールに移動";
 
 /* The title of the remove action in action sheet */
-"Move to trash" = "Move to trash";
+"Move to trash" = "ごみ箱に移動";
 
 /* move action */
 "Move to Trash" = "ごみ箱に移動";
@@ -1673,7 +1673,7 @@
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Move to…";
+"Move to…" = "移動…";
 
 /* Title */
 "Multiple Addresses" = "アドレスの管理";
@@ -1701,25 +1701,25 @@
 "New Folder" = "新しいフォルダー";
 
 /* The title for the contact group creation view */
-"New group" = "New group";
+"New group" = "新しいグループ";
 
 /* The title of create label page */
-"New label" = "New label";
+"New label" = "新しいラベル";
 
 /* No comment provided by engineer. */
-"New Label" = "New Label";
+"New Label" = "新しいラベル";
 
 /* Title */
 "New mailbox password" = "メールボックスの新しいパスワード";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "New Message";
+"New Message" = "新規メッセージ";
 
 /* Placeholder */
 "New password" = "新しいパスワード";
 
 /* Title */
-"New sign-in password" = "New sign-in password";
+"New sign-in password" = "新しいサインインパスワード";
 
 /* title of the next button */
 "Next" = "次へ";
@@ -1728,16 +1728,16 @@
 "Nickname" = "ニックネーム";
 
 /* Title */
-"No connectivity detected…" = "No connectivity detected…";
+"No connectivity detected…" = "接続を検出できません…";
 
 /* network troubleshot cell title */
-"No internet connection" = "インターネットに接続されていない";
+"No internet connection" = "インターネット接続がありません";
 
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "メッセージはありません。";
 
 /* no object error, local only , this could be not translated! */
-"no object" = "no object";
+"no object" = "オブジェクトなし";
 
 /* Placeholder if message sender is empty */
 "No Recipient" = "宛先が未入力です";
@@ -1782,7 +1782,7 @@
 "Notes" = "メモ";
 
 /* The main title of no result message */
-"Nothing to see here" = "Nothing to see here";
+"Nothing to see here" = "何もありません";
 
 /* Alert title */
 "Notice" = "お知らせ";
@@ -1820,10 +1820,10 @@
 "On" = "オン";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "On %@";
+"On %@" = "%@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "On %1$@ at %2$@";
+"On %@ at %@" = "%1$@ %2$@";
 
 /* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
@@ -1838,7 +1838,7 @@
 "Open" = "開く";
 
 /* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Open account switcher";
+"Open account switcher" = "アカウント変更を開く";
 
 /* (No Comment) */
 "OpenDraft" = "下書きを開く";
@@ -1948,7 +1948,7 @@
 "Please check your email for the verification code." = "メールで検証コードを確認してください。";
 
 /* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Please connect and retry";
+"Please connect and retry" = "接続して再試行してください";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "次のアドレスには、PGPを無効にして送信してください。";
@@ -1960,7 +1960,7 @@
 "Please input a valid email address." = "有効なメールアドレスを入力してください。";
 
 /* Alert message */
-"Please keep ProtonMail open until the operation is done." = "Please keep ProtonMail open until the operation is done.";
+"Please keep ProtonMail open until the operation is done." = "操作が完了するまで ProtonMail を閉じないでください。";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "インターネットに接続されていることをご確認ください。";
@@ -1987,7 +1987,7 @@
 "Please set a password." = "パスワードを設定してください。";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Please set a recovery / notification email";
+"Please set a recovery / notification email" = "回復 / 通知メールをセットしてください";
 
 /* (No Comment) */
 "Please try a different domain." = "別のドメインを試してください。";
@@ -2005,19 +2005,19 @@
 "Please try again." = "もう一度試してください。";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 folders" = "Please upgrade to a paid plan to use more than 3 folders";
+"Please upgrade to a paid plan to use more than 3 folders" = "3 つ以上のフォルダーを使うには有料プランにアップグレードしてください";
 
 /* Alert message */
-"Please upgrade to a paid plan to use more than 3 labels" = "Please upgrade to a paid plan to use more than 3 labels";
+"Please upgrade to a paid plan to use more than 3 labels" = "3 つ以上のラベルを使うには有料プランにアップグレードしてください";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "プランをアップグレードしてください";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "メールを送受信するには有料プランにアップグレードしてください";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
+"Please use ProtonMail App sign-in first." = "最初に ProtonMail にサインインしてください。";
 
 /* Alert */
 "Please use the web application to reset your password." = "パスワードのリセットにはウェブ版 ProtonMail をご使用ください。";
@@ -2074,10 +2074,10 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMailは現在オフラインです。現在の状態については私たちのtwitterを参照してください: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail is currently offline…";
+"ProtonMail is currently offline…" = "ProtonMail は現在障害発生中です…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"ProtonMail needs photo library access in your device settings." = "設定から写真ライブラリのアクセスを許可する必要があります。";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "モバイル署名を編集するには、ProtonMail Plusプラン以上のご契約が必要です。";
@@ -2092,7 +2092,7 @@
 "ProtonVPN included" = "ProtonVPNも含まれています";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "フィードバックを提供";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
@@ -2104,7 +2104,7 @@
 "Rate & Review" = "評価 & レビュー";
 
 /* The title of re auth alert */
-"Re-authenticate" = "Re-authenticate";
+"Re-authenticate" = "再認証";
 
 /* set PIN title */
 "Re-Enter your PIN" = "PINコードを再入力してください";
@@ -2116,13 +2116,13 @@
 "Read" = "既読";
 
 /* Title */
-"Reading device contacts data…" = "Reading device contacts data…";
+"Reading device contacts data…" = "デバイスの連絡先データを読み取っています…";
 
 /* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Receipt sent";
+"Receipt sent" = "開封確認が送信されました";
 
 /* No comment provided by engineer. */
-"Recipient details" = "Recipient details";
+"Recipient details" = "宛先の詳細";
 
 /* The error message is shown in composer */
 "Recipient not found" = "宛先が見つかりません";
@@ -2131,7 +2131,7 @@
 "Recovery Code" = "回復用コード";
 
 /* Title */
-"Recovery email" = "Recovery email";
+"Recovery email" = "回復用メールアドレス";
 
 /* *
  *  SignUpEmailViewController */
@@ -2141,7 +2141,7 @@
 "Recovery Email Warning" = "回復用メールアドレス警告";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Recovery enabled";
+"Recovery enabled" = "回復は有効です";
 
 /* No comment provided by engineer. */
 "Reload" = "再読み込み";
@@ -2156,7 +2156,7 @@
 "Remove All" = "全て削除";
 
 /* Settings row */
-"Remove image metadata" = "Remove image metadata";
+"Remove image metadata" = "画像のメタデータを削除する";
 
 /* action title */
 "Remove password" = "パスワードを削除";
@@ -2165,13 +2165,13 @@
 "Remove Star" = "星印をはずす";
 
 /* The button to enable label list reorder */
-"Reorder" = "Reorder";
+"Reorder" = "再整理";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "繰り返す";
 
 /* textview title */
-"Repeat password" = "Repeat password";
+"Repeat password" = "パスワードを再度入力";
 
 /* The title of PIN code setup2 view 
    The title of textfield of PIN code setup2 */
@@ -2194,7 +2194,7 @@
 "Report a bug" = "バグを報告";
 
 /* No comment provided by engineer. */
-"Report phishing" = "Report phishing";
+"Report phishing" = "フィッシングを報告";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "フィッシングを報告";
@@ -2203,7 +2203,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "フィッシングの報告により、それを分析することでフィルターの改善ができます。これは我々が内容の全てを閲覧できることを意味します。";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Request link confirmation";
+"Request link confirmation" = "リンク先を開くときに確認する";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "メールボックスのパスワードをリセット";
@@ -2218,7 +2218,7 @@
 "Retry after %d seconds" = "%d 秒後に再試行";
 
 /* settings swipe actions section title */
-"Right to Left" = "Right to Left";
+"Right to Left" = "右から左";
 
 /* Title */
 "Save" = "保存";
@@ -2246,7 +2246,7 @@
 "Select your language" = "言語を選択してください。";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Selected";
+"Selected" = "選択済み";
 
 /* Action */
 "Send" = "送信";
@@ -2255,7 +2255,7 @@
 "Send anyway" = "このまま送信";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "意見を送る";
 
 /* when subject not empty */
 "Send message without subject?" = "件名なしでメッセージを送りますか？";
@@ -2264,13 +2264,13 @@
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
 
 /* A button title to send read receipt */
-"Send receipt" = "Send receipt";
+"Send receipt" = "開封確認を送信";
 
 /* Title */
 "Send Verification Code" = "検証コードを送信";
 
 /* No comment provided by engineer. */
-"Sender details" = "Sender details";
+"Sender details" = "送信者の詳細";
 
 /* encryption lock description */
 "Sender Verification Failed" = "送信者検証に失敗";
@@ -2279,7 +2279,7 @@
 "Sending failed" = "送信できませんでした。";
 
 /* Alert title */
-"Sending in progress" = "Sending in progress";
+"Sending in progress" = "送信は進行中です";
 
 /* Description */
 "Sending Message" = "メッセージを送信しています";
@@ -2312,7 +2312,7 @@
 "Server proofs not valid!" = "サーバー証明が有効ではありません。";
 
 /* Title */
-"Set" = "Set";
+"Set" = "設定";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "ProtonMailを使用していないユーザー用に、メッセージの暗号化パスワードを設定してください。";
@@ -2327,13 +2327,13 @@
 "Set PIN code" = "PIN コードを設定";
 
 /* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Set up swipe gestures to access most used actions.";
+"Set up swipe gestures to access most used actions." = "スワイプ操作を登録するとよく使う機能に簡単にアクセスできます。";
 
 /* menu title */
 "Settings" = "設定";
 
 /* action */
-"Share contact" = "Share contact";
+"Share contact" = "連絡先を共有";
 
 /* Title */
 "Share it with your friends" = "友人と共有";
@@ -2342,13 +2342,13 @@
 "Show" = "表示";
 
 /* Title */
-"Show details" = "Show details";
+"Show details" = "詳細を表示";
 
 /* Title */
 "Sign in" = "サインイン";
 
 /* Account manager title */
-"Sign in to your ProtonMail account" = "Sign in to your ProtonMail account";
+"Sign in to your ProtonMail account" = "ProtonMail アカウントにサインイン";
 
 /* Alert title to confirm signout
    Alert title when sign out primary account from account manager
@@ -2359,13 +2359,13 @@
 "Sign Out" = "ログアウト";
 
 /* Alert title when sign out non-primary account from account manager */
-"Sign out %@?" = "Sign out %@?";
+"Sign out %@?" = "%@ からサインアウトしますか?";
 
 /* Action */
-"Sign Out All" = "Sign Out All";
+"Sign Out All" = "すべてからサインアウト";
 
 /* Error */
-"Sign-in password doesn't match" = "Sign-in password doesn't match";
+"Sign-in password doesn't match" = "サインインパスワードが一致しません";
 
 /* Title in signature settings */
 "Signature" = "署名";
@@ -2374,7 +2374,7 @@
 "Signature Updated" = "署名が更新されました。";
 
 /* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Signed in as %@";
+"Signed in as %@" = "%@ としてサインインしています";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
@@ -2449,10 +2449,10 @@
 "Storage" = "ストレージ容量";
 
 /* Alert title */
-"Storage full" = "Storage full";
+"Storage full" = "ストレージがいっぱいです";
 
 /* Storage warning */
-"Storage quota exceeded" = "ストレージの容量制限を超過しました。";
+"Storage quota exceeded" = "ストレージの容量制限を超過しました";
 
 /* Title */
 "Storage Warning" = "ストレージ容量の警告";
@@ -2505,7 +2505,7 @@
 "Switch selection mode" = "Switch selection mode";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "未読フィルターを切り替え";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "アカウントを '%@ ' に切り替えました";
@@ -2520,13 +2520,13 @@
 "Take new photo" = "新しい写真を撮影";
 
 /* No comment provided by engineer. */
-"Tap here to set" = "Tap here to set";
+"Tap here to set" = "ここをタップして設定";
 
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "これらの宛先に有効期限を設定せずに送信するにはタップしてください。";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "使い心地をお聞かせください (任意)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "ウイルス対策ソフトウェアを一時的に無効化または削除してください。";
@@ -2538,10 +2538,10 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "バグのご報告をありがとうございます。 バグ追跡システムにあなたのレポートを追加しました。";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "フィードバックありがとうございます!";
 
 /* Error message */
-"The 2 passwords are not matching" = "The 2 passwords are not matching";
+"The 2 passwords are not matching" = "2 パスワードが一致しません";
 
 /* Description */
 "The authentication credentials are invalid." = "認証情報が無効です。";
@@ -2562,7 +2562,7 @@
 "The draft format incorrectly sending failed!" = "送信に失敗しました。下書きの書式にエラーがありました。";
 
 /* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "The following files couldn't be attached:";
+"The following files couldn't be attached:" = "以下のファイルを添付できませんでした:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "利用可能な暗号化の最高レベル";
@@ -2587,19 +2587,19 @@
 "The new password does not match." = "新しいパスワードが一致しません";
 
 /* update password error */
-"The new password needs to be at least 8 characters long" = "The new password needs to be at least 8 characters long";
+"The new password needs to be at least 8 characters long" = "パスワードは 8 文字以上である必要があります。";
 
 /* (No Comment) */
 "The new password not match" = "パスワードが一致しません";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your sign-in password if you forget it." = "The optional recovery email address allows you to reset your sign-in password if you forget it.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "サインインパスワードを紛失した場合でも、任意の回復用メールアドレスを設定しておけばパスワードをリセットできます。";
 
 /* update password error */
 "The Password is wrong." = "パスワードが間違っています。";
 
 /* Error message */
-"The password must be between 8 and 21 characters long" = "The password must be between 8 and 21 characters long";
+"The password must be between 8 and 21 characters long" = "パスワードは 8 ~ 21 文字である必要があります";
 
 /* Description */
 "The password you entered does not match the current password." = "入力されたパスワードが現在のパスワードと一致しません。";
@@ -2617,7 +2617,7 @@
 "The request timed out." = "要求がタイムアウトしました。";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"The sender has requested a read receipt." = "The sender has requested a read receipt.";
+"The sender has requested a read receipt." = "送信者は、開封確認を要求しています。";
 
 /* Description */
 "The size limit for attachments is 25 MB." = "添付ファイルの容量制限は 25 MB です。";
@@ -2632,7 +2632,7 @@
 "The user is already logged in" = "ユーザーが既にログインしています";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "このユーザー名は既に使用されています。";
 
 /* title */
 "The verification email invalid" = "検証用メールアドレスが無効です";
@@ -2642,10 +2642,10 @@
 "The verification failed!" = "検証に失敗しました。";
 
 /* alert when sign out user if in queue still have tasks */
-"There are still some messages in queue. If you sign out, the draft will be deleted." = "There are still some messages in queue. If you sign out, the draft will be deleted.";
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "キューにメッセージが残っています。サインアウトすると下書きは削除されます。";
 
 /* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "There are unsent messages that will be lost if you sign out";
+"There are unsent messages that will be lost if you sign out" = "サインアウトした場合に失われる未送信のメッセージがあります。";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "アプリケーションの保存データを、作成または読み込む際にエラーが発生しました。";
@@ -2654,7 +2654,7 @@
 "There was an error creating or loading the application's saved data." = "データの作成または、読み込み時にエラーが発生しました。";
 
 /* Alert message when user tries to delete label */
-"This action cannot be undone." = "This action cannot be undone.";
+"This action cannot be undone." = "このアクションは元に戻せません。";
 
 /* Alert message when user tries to delete folder */
 "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder.";
@@ -2663,16 +2663,16 @@
 "This contact belongs to your Address Book." = "このアドレスは既に連絡帳に登録されています。";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "この会話には、ごみ箱に入れていないメッセージが含まれています。";
 
 /* No comment provided by engineer. */
-"This conversation contains trashed messages" = "This conversation contains trashed messages";
+"This conversation contains trashed messages" = "この会話には、ごみ箱に入れたメッセージが含まれています";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "このメールはドメイン認証の要求に失敗しました。なりすましや不適切に転送された可能性があります。";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは、ProtonMail のアドレスからのように見えますが、認証要求に失敗した外部からのものです。なりすましによるものか、または不適切に転送された恐れがあります。";
@@ -2681,10 +2681,10 @@
 "This folder is empty" = "このフォルダは空です";
 
 /* No comment provided by engineer. */
-"This message contains embedded images." = "This message contains embedded images.";
+"This message contains embedded images." = "このメッセージには埋め込み画像が含まれています。";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "This message contains remote content and embedded images";
+"This message contains remote content and embedded images" = "このメッセージにはリモートコンテンツと埋め込み画像が含まれています。";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "このメッセージには外部コンテンツが含まれています。";
@@ -2693,35 +2693,35 @@
 "This message is automatically generated as a response to a previous message." = "このメッセージは以前のメッセージに対する自動応答です。";
 
 /* No comment provided by engineer. */
-"This message is from a mailing list." = "This message is from a mailing list.";
+"This message is from a mailing list." = "これはメーリングリストからのメッセージです。";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "このメッセージはフィッシングの可能性があります。送信者と内容をチェックし、正当なものか確認してください。";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "This message will expire in %1$dD %2$dH %3$dM";
+"This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り%1$d日%2$d時間%3$d分です";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
 
 /* The secondary title of no result message */
-"Time to relax" = "Time to relax";
+"Time to relax" = "メッセージはありません";
 
 /* contacts talbe cell Title title */
 "Title" = "肩書き";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS 証明書の検証に失敗しました。接続が監視されている可能性があり、安全のため一時的にアプリがブロックされています。\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS 証明書の検証に失敗しました。接続が監視されている可能性があり、安全のため一時的にアプリがブロックされています。\n\nネットワークを直ちに切り替えてください。";
 
 /* message To: feild
    Title */
 "To" = "宛先　";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "ProtonMail の悪用を防ぐため、人間の操作であるか検証する必要があります。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "メールボックスのパスワードをリセットするには、protonmail.comからWeb版のProtonMailを使用してください。";
@@ -2743,10 +2743,10 @@
 "Touch ID" = "Touch ID";
 
 /* settings touchid error */
-"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID is not enrolled, enable it in the system Settings";
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID が登録されていません。設定で有効にしてください";
 
 /* settings touchid/faceid error */
-"Touch ID not available" = "Touch ID not available";
+"Touch ID not available" = "Touch ID は利用できません";
 
 /* *
  *  SettingTableViewController */
@@ -2766,13 +2766,13 @@
 "Troubleshoot" = "問題を解決する";
 
 /* network troubleshot view title */
-"Troubleshooting" = "Troubleshooting";
+"Troubleshooting" = "トラブルシューティング";
 
 /* Title */
-"Troubleshooting guide" = "Troubleshooting guide";
+"Troubleshooting guide" = "困ったときは";
 
 /* Try again action */
-"Try again" = "Try again";
+"Try again" = "再試行";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "ProtonVPNやTor等、別のネットワークから接続を試してみてください。";
@@ -2781,10 +2781,10 @@
 "Turn Off" = "オフにする";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.";
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "この機能を使用すると、アプリの自動ロックおよび、PIN コードまたは Face ID を使用したロック解除が有効になります。";
 
 /* A description string in pin & faceID setting page */
 "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "この機能を使用すると、アプリの自動ロックおよび、PIN コードまたは指紋認証を使用したロック解除が有効になります。";
@@ -2881,7 +2881,7 @@
 "Unstar" = "スターを外す";
 
 /* No comment provided by engineer. */
-"Unsubscribe" = "Unsubscribe";
+"Unsubscribe" = "登録解除";
 
 /* Error message */
 "Unsupported file type" = "対応していないファイル種別です";
@@ -2896,13 +2896,13 @@
 "Update Notification Email" = "通知用メールアドレスを更新してください";
 
 /* The title of last update status of updated time */
-"Updated %d min ago" = "Updated %d min ago";
+"Updated %d min ago" = "%d 分前に更新";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Updated >1 hour ago";
+"Updated >1 hour ago" = "1 時間前に更新";
 
 /* The title of last update status of updated just now */
-"Updated just now" = "Updated just now";
+"Updated just now" = "更新したばかりです";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "機能を使用するには有料プランにアップグレードしてください。";
@@ -2911,7 +2911,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "%@アドレスから送信するには有料プランへのアップグレードが必要です。";
 
 /* Action */
-"Upload device contacts" = "Upload device contacts";
+"Upload device contacts" = "デバイスの連絡先をアップロード";
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "ProtonMailにiOSの連絡先をアップロードしますか?";
@@ -2935,7 +2935,7 @@
 "User name invalid" = "無効なユーザー名です";
 
 /* Title */
-"USER SIGN-IN" = "USER SIGN-IN";
+"USER SIGN-IN" = "ユーザー サインイン";
 
 /* alert title */
 "Verification code request failed" = "検証コードの要求に失敗しました。";
@@ -2965,7 +2965,7 @@
 "Warning" = "警告";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Warning: Before you pass the human check you can't send email!";
+"Warning: Before you pass the human check you can't send email!" = "警告: 人間による操作であることが確認できるまでメールの送信はできません!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "警告: 回復用のメールアドレスを設定しないと、パスワードを忘れた場合のアカウントの復旧は不可能です。回復用のメールアドレスなしで続行しますか？";
@@ -2974,7 +2974,7 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。 メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "We have trouble connecting to the servers. Please reconnect.";
+"We have trouble connecting to the servers. Please reconnect." = "サーバーに接続する際に問題が発生しました。再接続してください。";
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead for the following recipients:" = "We recommend setting up a password instead for the following recipients:";
@@ -3007,7 +3007,7 @@
 "When you send an email, this is the name that appears in the sender field." = "メールを送信した際に、差出人欄に表示される名前です。";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "すばらしい";
 
 /* default vcard types */
 "Work" = "勤務先";
@@ -3034,7 +3034,7 @@
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "全てのアカウントを削除すると、再度追加しない限りこの端末からアクセスできなくなります。\n\n本当に全てのアカウントを削除しますか？";
 
 /* The main title of no result message */
-"You are all caught up" = "You are all caught up";
+"You are all caught up" = "メッセージはありません";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "You are not connected. We cannot display the content of your message.";
@@ -3076,14 +3076,14 @@
 "You have used %d%% of your storage space (%@)." = "ストレージ容量 (%@) の %d%% を使用しています。";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "%1$d%% のストレージ容量を使用しています (%2$@)。このままメールを送受信するにはプランをアップグレードしてください。";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "全てのストレージ容量 (%@) が使用されています。";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "すべてのストレージ容量を使用しました (%@)。このままメールを送受信するにはプランをアップグレードしてください。";
 
 /* "Alert" */
 "You need at least one recipient to send" = "送信するには少なくとも 1 人の受信者が必要です。";
@@ -3096,7 +3096,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
 
 /* No comment provided by engineer. */
-"Your changes will be discarded" = "Your changes will be discarded";
+"Your changes will be discarded" = "設定は破棄されます";
 
 /* view top title */
 "Your Country Code" = "国コード";
@@ -3108,23 +3108,23 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "あなたの国の政府が、 Proton への接続を検閲(遮断)している可能性があります。 Proton にアクセスするには ProtonVPN （または他社のVPN）もしくは Tor を試してみてください。";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "あなたのフィードバック";
 
 /* The section title of folder manager table */
-"Your folders" = "Your folders";
+"Your folders" = "あなたのフォルダー";
 
 /* (No Comment) */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "受信箱はエンドツーエンド暗号化され保護されています。メールを自動的に保護するには、友人にも ProtonMail を利用していただく必要があります。ProtonMail を利用していない相手でも手動で暗号化が可能です。";
 
 /* The section title of label manager table */
-"Your labels" = "Your labels";
+"Your labels" = "あなたのラベル";
 
 /* *
  *  Onboarding */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "セキュリティで保護された新しいメールアカウントの準備ができています。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "ご契約のプランは以下の日付まで有効です";
