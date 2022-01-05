@@ -57,17 +57,17 @@ import UIKit
             self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -96)
         ])
         
-        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        //self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.button.titleLabel?.adjustsFontSizeToFitWidth = true
         self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
-        self.button.translatesAutoresizingMaskIntoConstraints = false
-        self.button.backgroundColor = ColorProvider.InteractionWeak
+        self.button.tintColor = ColorProvider.InteractionWeak
         self.button.layer.cornerRadius = 8
+        self.button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.button.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 48),
             self.button.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16),
             self.button.widthAnchor.constraint(equalToConstant: 64),
             self.button.heightAnchor.constraint(equalToConstant: 32),
-            self.button.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 295),
             self.button.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
     }

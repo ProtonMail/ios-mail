@@ -16,34 +16,30 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqv-ht-MeM">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eqv-ht-MeM">
                         <rect key="frame" x="16" y="0.0" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3Q-nw-o1T">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3Q-nw-o1T">
                         <rect key="frame" x="16" y="29" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5o4-dy-NMu">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5o4-dy-NMu">
                         <rect key="frame" x="313" y="11" width="46" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
                         <connections>
                             <action selector="buttonPressed:" destination="ikv-yI-Mvm" eventType="touchUpInside" id="O4m-7w-Qxf"/>
                         </connections>
                     </button>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="Eqv-ht-MeM" firstAttribute="top" secondItem="mJj-eu-ibR" secondAttribute="topMargin" constant="-11" id="DeX-bc-g5s"/>
-                    <constraint firstItem="d3Q-nw-o1T" firstAttribute="top" secondItem="Eqv-ht-MeM" secondAttribute="bottom" constant="8" id="Ehd-yf-PDy"/>
-                    <constraint firstItem="Eqv-ht-MeM" firstAttribute="leading" secondItem="d3Q-nw-o1T" secondAttribute="leading" id="KVI-ev-7Fh"/>
-                    <constraint firstItem="5o4-dy-NMu" firstAttribute="centerY" secondItem="mJj-eu-ibR" secondAttribute="centerY" constant="-1.5" id="Ya7-A5-NL5"/>
-                    <constraint firstItem="5o4-dy-NMu" firstAttribute="trailing" secondItem="mJj-eu-ibR" secondAttribute="trailingMargin" id="alr-GJ-X6G"/>
-                    <constraint firstItem="Eqv-ht-MeM" firstAttribute="leading" secondItem="mJj-eu-ibR" secondAttribute="leadingMargin" id="xGD-Xx-EC6"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="bottomLabel" destination="d3Q-nw-o1T" id="SSt-Tu-pCN"/>
