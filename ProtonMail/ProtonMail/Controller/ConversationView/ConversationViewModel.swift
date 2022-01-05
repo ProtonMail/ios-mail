@@ -338,7 +338,8 @@ extension ConversationViewModel {
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
         if conversation.starred {
             conversationService.unlabel(conversationIDs: [conversation.conversationID],
-                                        as: Message.Location.starred.rawValue) { [weak self] result in
+                                        as: Message.Location.starred.rawValue,
+                                        isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success:
@@ -350,7 +351,8 @@ extension ConversationViewModel {
             }
         } else {
             conversationService.label(conversationIDs: [conversation.conversationID],
-                                      as: Message.Location.starred.rawValue) { [weak self] result in
+                                      as: Message.Location.starred.rawValue,
+                                      isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success:
@@ -396,7 +398,8 @@ extension ConversationViewModel {
         case .trash:
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: labelId,
-                                     to: Message.Location.trash.rawValue) { [weak self] result in
+                                     to: Message.Location.trash.rawValue,
+                                     isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -416,6 +419,7 @@ extension ConversationViewModel {
             self.conversationService.move(conversationIDs: [self.conversation.conversationID],
                                           from: self.labelId,
                                           to: destination.rawValue,
+                                          isSwipeAction: false,
                                           completion: fetchEvents)
         }
         switch action {
@@ -499,12 +503,14 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                                                               labelID: label.location.labelID)
                 conversationService.label(conversationIDs: conversationIDsToApply,
                                           as: label.location.labelID,
+                                          isSwipeAction: false,
                                           completion: fetchEvents)
             } else {
                 let conversationIDsToRemove = findConversationIDSToRemoveLables(conversations: conversations,
                                                                                 labelID: label.location.labelID)
                 conversationService.unlabel(conversationIDs: conversationIDsToRemove,
                                             as: label.location.labelID,
+                                            isSwipeAction: false,
                                             completion: fetchEvents)
             }
         }
@@ -516,6 +522,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                 conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                          from: fLabel,
                                          to: Message.Location.archive.rawValue,
+                                         isSwipeAction: false,
                                          completion: fetchEvents)
             }
         }
@@ -689,16 +696,17 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [Message]) {
+    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
-        user.messageService.move(messages: messages, to: destination.location.labelID)
+        user.messageService.move(messages: messages, to: destination.location.labelID, isSwipeAction: isFromSwipeAction)
     }
 
-    func handleMoveToAction(conversations: [Conversation]) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                  from: "",
-                                 to: destination.location.labelID) { [weak self] result in
+                                 to: destination.location.labelID,
+                                 isSwipeAction: isFromSwipeAction) { [weak self] result in
             guard let self = self else { return }
             if (try? result.get()) != nil {
                 self.eventsService.fetchEvents(labelID: self.labelId)

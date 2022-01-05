@@ -34,32 +34,6 @@ struct MessageAPI {
     /// base message api path
     static let path :String = "/\(Constants.App.API_PREFIXED)/messages"
 }
- 
-// MARK : apply label to message  -- Response
-final class ApplyLabelToMessages : Request {
-    var labelID: String
-    var messages:[String]
-    
-    init(labelID: String, messages: [String]) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["LabelID"] = self.labelID
-        out["IDs"] = messages
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .put
-    }
-    
-    var path: String {
-        return MessageAPI.path + "/label"
-    }
-}
 
 final class SearchMessage: Request {
     var keyword: String
@@ -85,35 +59,6 @@ final class SearchMessage: Request {
         return MessageAPI.path
     }
 }
-
-
-// MARK : remove label from message -- Response
-final class RemoveLabelFromMessages : Request {
-    
-    var labelID: String
-    var messages:[String]
-    
-    init(labelID:String, messages: [String]) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["LabelID"] = self.labelID
-        out["IDs"] = messages
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .put
-    }
-    
-    var path: String {
-        return MessageAPI.path + "/unlabel"
-    }
-}
-
 
 // MARK : Get messages part --- MessageCountResponse
 final class MessageCount : Request {

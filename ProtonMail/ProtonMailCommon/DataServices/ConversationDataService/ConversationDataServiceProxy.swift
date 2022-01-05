@@ -42,6 +42,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
          labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          eventsService: EventsFetching,
+         undoActionManager: UndoActionManagerProtocol,
          viewModeDataSource: ViewModeDataSource?,
          queueManager: QueueManager?) {
         self.apiService = api
@@ -58,6 +59,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                labelDataService: labelDataService,
                                                                lastUpdatedStore: lastUpdatedStore,
                                                                eventsService: eventsService,
+                                                               undoActionManager: undoActionManager,
                                                                viewModeDataSource: viewModeDataSource,
                                                                queueManager: queueManager)
     }
@@ -157,13 +159,17 @@ extension ConversationDataServiceProxy {
         }
     }
 
-    func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func label(conversationIDs: [String],
+               as labelID: String,
+               isSwipeAction: Bool,
+               completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
         self.queue(.label(currentLabelID: labelID,
                           shouldFetch: nil,
+                          isSwipeAction: isSwipeAction,
                           itemIDs: conversationIDs,
                           objectIDs: []),
                    isConversation: true)
@@ -178,13 +184,17 @@ extension ConversationDataServiceProxy {
         }
     }
 
-    func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
+    func unlabel(conversationIDs: [String],
+                 as labelID: String,
+                 isSwipeAction: Bool,
+                 completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
         self.queue(.unlabel(currentLabelID: labelID,
                             shouldFetch: nil,
+                            isSwipeAction: isSwipeAction,
                             itemIDs: conversationIDs,
                             objectIDs: []),
                    isConversation: true)
@@ -202,6 +212,7 @@ extension ConversationDataServiceProxy {
     func move(conversationIDs: [String],
               from previousFolderLabel: String,
               to nextFolderLabel: String,
+              isSwipeAction: Bool,
               completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
@@ -209,6 +220,7 @@ extension ConversationDataServiceProxy {
         }
         self.queue(.folder(nextLabelID: nextFolderLabel,
                            shouldFetch: true,
+                           isSwipeAction: isSwipeAction,
                            itemIDs: conversationIDs,
                            objectIDs: []),
                    isConversation: true)

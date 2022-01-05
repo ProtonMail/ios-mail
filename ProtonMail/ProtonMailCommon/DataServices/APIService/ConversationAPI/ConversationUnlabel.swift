@@ -51,7 +51,8 @@ class ConversationUnlabelRequest: Request {
     }
 }
 
-class ConversationUnlabelResponse: Response {
+class ConversationUnlabelResponse: Response, UndoTokenResponseProtocol {
+    var undoTokenData: UndoTokenData?
     var responseDict: [String: Any]?
     var results: [ConversationUnlabelData]?
 
@@ -67,6 +68,9 @@ class ConversationUnlabelResponse: Response {
             return false
         }
         results = result
+
+        parseUndoToken(response: response)
+
         return true
     }
 }

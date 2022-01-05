@@ -49,11 +49,18 @@ protocol ConversationProvider: AnyObject {
     func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
     func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?)
-    func label(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
-    func unlabel(conversationIDs: [String], as labelID: String, completion: ((Result<Void, Error>) -> Void)?)
+    func label(conversationIDs: [String],
+               as labelID: String,
+               isSwipeAction: Bool,
+               completion: ((Result<Void, Error>) -> Void)?)
+    func unlabel(conversationIDs: [String],
+                 as labelID: String,
+                 isSwipeAction: Bool,
+                 completion: ((Result<Void, Error>) -> Void)?)
     func move(conversationIDs: [String],
               from previousFolderLabel: String,
               to nextFolderLabel: String,
+              isSwipeAction: Bool,
               completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Clean up
     func cleanAll()
@@ -70,6 +77,7 @@ final class ConversationDataService: Service, ConversationProvider {
     private(set) weak var eventsService: EventsFetching?
     private weak var viewModeDataSource: ViewModeDataSource?
     private weak var queueManager: QueueManager?
+    let undoActionManager: UndoActionManagerProtocol
 
     init(api: APIService,
          userID: String,
@@ -77,6 +85,7 @@ final class ConversationDataService: Service, ConversationProvider {
          labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          eventsService: EventsFetching,
+         undoActionManager: UndoActionManagerProtocol,
          viewModeDataSource: ViewModeDataSource?,
          queueManager: QueueManager?) {
         self.apiService = api
@@ -87,6 +96,7 @@ final class ConversationDataService: Service, ConversationProvider {
         self.eventsService = eventsService
         self.viewModeDataSource = viewModeDataSource
         self.queueManager = queueManager
+        self.undoActionManager = undoActionManager
     }
 }
 

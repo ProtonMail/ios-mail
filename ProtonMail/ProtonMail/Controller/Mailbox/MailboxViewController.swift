@@ -65,16 +65,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     // MARK: - Private constants
     private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
     
-    private let kUndoHidePosition: CGFloat = -100.0
-    private let kUndoShowPosition: CGFloat = 44
-    
-    /// The undo related UI. //TODO:: should move to a custom view to handle it.
-    @IBOutlet weak var undoView: UIView!
-    @IBOutlet weak var undoLabel: UILabel!
-    @IBOutlet weak var undoButton: UIButton!
-    @IBOutlet weak var undoButtonWidth: NSLayoutConstraint!
-    @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
-    
     // MARK: TopActions
     @IBOutlet weak var topActionsView: UIView!
     @IBOutlet weak var updateTimeLabel: UILabel!
@@ -85,7 +75,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var mailActionBar: PMActionBar?
     
     // MARK: - Private attributes
-    private var timerAutoDismiss : Timer?
 
     private var bannerContainer: UIView?
     private var bannerShowConstrain: NSLayoutConstraint?
@@ -93,8 +82,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var isHidingBanner = false
 
     private var fetchingOlder : Bool = false
-    
-    private var undoMessage : UndoMessage?
 
     private var isCheckingHuman: Bool = false
     
@@ -228,8 +215,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         self.viewModel.setupFetchController(self,
                                             isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-        
-        self.undoButton.setTitle(LocalString._messages_undo_action, for: .normal)
+
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         
         SkeletonAppearance.default.renderSingleLineAsView = true
@@ -249,10 +235,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             userCachedStatus.resetTourValue()
             self.coordinator?.go(to: .onboarding)
         }
-        
-        self.undoBottomDistance.constant = self.kUndoHidePosition
-        self.undoButton.isHidden = true
-        self.undoView.isHidden = true
         
         //Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
@@ -296,6 +278,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.updateUnreadButton()
         deleteExpiredMessages()
+        viewModel.user.undoActionManager.register(handler: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -483,10 +466,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     // MARK: - Button Targets
-    @IBAction func undoAction(_ sender: UIButton) {
-        self.undoTheMessage()
-        self.hideUndoView()
-    }
     
     @objc internal func composeButtonTapped() {
         if checkHuman() {
@@ -780,9 +759,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         case .none:
             break
         case .labelAs:
-            labelAs(indexPath)
+            labelAs(indexPath, isSwipeAction: true)
         case .moveTo:
-            moveTo(indexPath)
+            moveTo(indexPath, isSwipeAction: true)
         case .unread:
             self.unread(indexPath)
             return false
@@ -796,74 +775,60 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.unstar(indexPath)
             return false
         case .trash:
-            return self.delete(indexPath)
+            self.delete(indexPath, isSwipeAction: true)
+            return true
         case .archive:
-            self.archive(indexPath)
+            self.archive(indexPath, isSwipeAction: true)
             return true
         case .spam:
-            self.spam(indexPath)
+            self.spam(indexPath, isSwipeAction: true)
             return true
         }
         return false
     }
 
-    private func labelAs(_ index: IndexPath) {
+    private func labelAs(_ index: IndexPath, isSwipeAction: Bool = false) {
         if let message = viewModel.item(index: index) {
-            showLabelAsActionSheet(messages: [message])
+            showLabelAsActionSheet(messages: [message],
+                                   isFromSwipeAction: isSwipeAction)
         } else if let conversation = viewModel.itemOfConversation(index: index) {
-            showLabelAsActionSheet(conversations: [conversation])
+            showLabelAsActionSheet(conversations: [conversation],
+                                   isFromSwipeAction: isSwipeAction)
         }
     }
 
-    private func moveTo(_ index: IndexPath) {
+    private func moveTo(_ index: IndexPath, isSwipeAction: Bool = false) {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
         if let message = viewModel.item(index: index) {
             showMoveToActionSheet(messages: [message],
                                   isEnableColor: isEnableColor,
-                                  isInherit: isInherit)
+                                  isInherit: isInherit,
+                                  isFromSwipeAction: isSwipeAction)
         } else if let conversation = viewModel.itemOfConversation(index: index) {
             showMoveToActionSheet(conversations: [conversation],
                                   isEnableColor: isEnableColor,
-                                  isInherit: isInherit)
+                                  isInherit: isInherit,
+                                  isFromSwipeAction: isSwipeAction)
         }
     }
     
-    private func archive(_ index: IndexPath) {
-        let (res, undo) = self.viewModel.archive(index: index)
-        switch res {
-        case .showUndo:
-            undoMessage = undo
-            showUndoView(LocalString._messages_archived)
-        case .showGeneral:
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-        default: break
-        }
+    private func archive(_ index: IndexPath, isSwipeAction: Bool = false) {
+        viewModel.archive(index: index, isSwipeAction: isSwipeAction)
+        showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title,
+                         undoActionType: .archive)
     }
     
-    private func delete(_ index: IndexPath) -> Bool {
-        let (res, undo, actionDidSucceed) = self.viewModel.delete(index: index)
-        switch res {
-        case .showUndo:
-            undoMessage = undo
-            showUndoView(LocalString._locations_deleted_desc)
-        case .showGeneral:
-            showMessageMoved(title: LocalString._messages_has_been_deleted)
-        default: break
-        }
-        return actionDidSucceed
+    private func delete(_ index: IndexPath, isSwipeAction: Bool = false) {
+        viewModel.delete(index: index, isSwipeAction: isSwipeAction)
+        showMessageMoved(title: LocalString._inbox_swipe_to_trash_banner_title,
+                         undoActionType: .trash)
     }
     
-    private func spam(_ index: IndexPath) {
-        let (res, undo) = self.viewModel.spam(index: index)
-        switch res {
-        case .showUndo:
-            undoMessage = undo
-            showUndoView(LocalString._messages_spammed)
-        case .showGeneral:
-            showMessageMoved(title: LocalString._messages_has_been_moved)
-        default: break
-        }
+    private func spam(_ index: IndexPath, isSwipeAction: Bool = false) {
+        viewModel.spam(index: index, isSwipeAction: isSwipeAction)
+        showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title,
+                         undoActionType: .spam)
     }
     
     private func star(_ indexPath: IndexPath) {
@@ -943,67 +908,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         return stackView
     }
-
-    private func undoTheMessage() { //need move into viewModel
-        if let undoMsg = undoMessage {
-            self.viewModel.undo(undoMsg)
-            undoMessage = nil
+    
+    private func showMessageMoved(title : String, undoActionType: UndoAction? = nil) {
+        if let type = undoActionType {
+            viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
-    }
-    
-    private func showUndoView(_ title : String) {
-        undoLabel.text = String(format: LocalString._messages_with_title, title)
-        self.undoBottomDistance.constant = self.kUndoShowPosition
-        self.undoButton.isHidden = true
-        self.undoView.isHidden = false
-        self.undoButtonWidth.constant = 100.0
-        self.updateViewConstraints()
-        UIView.animate(withDuration: 0.25, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
-        self.timerAutoDismiss?.invalidate()
-        self.timerAutoDismiss = nil
-        self.timerAutoDismiss = Timer.scheduledTimer(timeInterval: 3,
-                                                     target: self,
-                                                     selector: #selector(MailboxViewController.timerTriggered),
-                                                     userInfo: nil,
-                                                     repeats: false)
-    }
-    
-    private func showMessageMoved(title : String) {
-        undoLabel.text = title
-        self.undoBottomDistance.constant = self.kUndoShowPosition
-        self.undoButton.isHidden = true
-        self.undoView.isHidden = false
-        self.undoButtonWidth.constant = 0.0
-        self.updateViewConstraints()
-        UIView.animate(withDuration: 0.25, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
-        self.timerAutoDismiss?.invalidate()
-        self.timerAutoDismiss = nil
-        self.timerAutoDismiss = Timer.scheduledTimer(timeInterval: 3,
-                                                     target: self,
-                                                     selector: #selector(MailboxViewController.timerTriggered),
-                                                     userInfo: nil,
-                                                     repeats: false)
-    }
-    
-    private func hideUndoView() {
-        self.timerAutoDismiss?.invalidate()
-        self.timerAutoDismiss = nil
-        self.undoBottomDistance.constant = self.kUndoHidePosition
-        self.updateViewConstraints()
-        UIView.animate(withDuration: 0.25, animations: {
-            self.view.layoutIfNeeded()
-        }) { _ in
-            self.undoButton.isHidden = true
-            self.undoView.isHidden = true
-        }
-    }
-    
-    @objc private func timerTriggered() {
-        self.hideUndoView()
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info)
+        banner.show(at: .bottom, on: self)
     }
     
     private func handleRequestError(_ error : NSError) {
@@ -1717,7 +1628,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
         }
     }
 
-    private func showLabelAsActionSheet(messages: [Message]) {
+    private func showLabelAsActionSheet(messages: [Message], isFromSwipeAction: Bool = false) {
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                    messages: messages)
 
@@ -1725,35 +1636,45 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheet(messages: messages)
-                        }
-                        self?.coordinator?.go(to: .newLabel)
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isArchive, currentOptionsStatus in
-                        self?.labelAsActionHandler
-                            .handleLabelAsAction(messages: messages,
-                                                 shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus)
+                self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                    self?.showLabelAsActionSheet(messages: messages)
+                }
+                self?.coordinator?.go(to: .newLabel)
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
                         self?.dismissActionSheet()
-                        self?.cancelButtonTapped()
-                     })
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isArchive, currentOptionsStatus in
+                let isAnyOptionSelected = self?.labelAsActionHandler.selectedLabelAsLabels.isEmpty == false
+                self?.labelAsActionHandler
+                    .handleLabelAsAction(messages: messages,
+                                         shouldArchive: isArchive,
+                                         currentOptionsStatus: currentOptionsStatus)
+                if isFromSwipeAction && isAnyOptionSelected {
+                    let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_label_banner_title,
+                                                                 messages.count)
+                    self?.showMessageMoved(title: title)
+                }
+                if isArchive {
+                    let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_banner_title,
+                                                                 messages.count,
+                                                                 LocalString._menu_archive_title)
+                    self?.showMessageMoved(title: title,
+                                           undoActionType: .archive)
+                }
+                self?.dismissActionSheet()
+                self?.cancelButtonTapped()
+            })
     }
     
-    private func showLabelAsActionSheet(conversations: [Conversation]) {
+    private func showLabelAsActionSheet(conversations: [Conversation], isFromSwipeAction: Bool = false) {
         let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                         conversations: conversations)
 
@@ -1761,32 +1682,42 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheet(conversations: conversations)
-                        }
-                        self?.coordinator?.go(to: .newLabel)
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isArchive, currentOptionsStatus in
-                        self?.labelAsActionHandler
-                            .handleLabelAsAction(conversations: conversations,
-                                                 shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus)
+                self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                    self?.showLabelAsActionSheet(conversations: conversations)
+                }
+                self?.coordinator?.go(to: .newLabel)
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
                         self?.dismissActionSheet()
-                        self?.cancelButtonTapped()
-                     })
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isArchive, currentOptionsStatus in
+                let isAnyOptionSelected = self?.labelAsActionHandler.selectedLabelAsLabels.isEmpty == false
+                self?.labelAsActionHandler
+                    .handleLabelAsAction(conversations: conversations,
+                                         shouldArchive: isArchive,
+                                         currentOptionsStatus: currentOptionsStatus)
+                if isFromSwipeAction && isAnyOptionSelected {
+                    let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_label_conversation_banner_title,
+                                                                 conversations.count)
+                    self?.showMessageMoved(title: title)
+                }
+                if isArchive {
+                    let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_banner_title,
+                                                                 conversations.count,
+                                                                 LocalString._menu_archive_title)
+                    self?.showMessageMoved(title: title,
+                                           undoActionType: .archive)
+                }
+                self?.dismissActionSheet()
+                self?.cancelButtonTapped()
+            })
     }
 }
 
@@ -1816,7 +1747,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         }
     }
 
-    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
+    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
         let moveToViewModel =
             MoveToActionSheetViewModelMessages(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                messages: messages,
@@ -1850,14 +1781,24 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                             self?.dismissActionSheet()
                             self?.cancelButtonTapped()
                         }
-                        guard isHavingUnsavedChanges else {
+                        guard isHavingUnsavedChanges,
+                              let destination = self?.moveToActionHandler.selectedMoveToFolder else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction(messages: messages)
+
+                        self?.moveToActionHandler
+                                .handleMoveToAction(messages: messages, isFromSwipeAction: isFromSwipeAction)
+                        if isFromSwipeAction {
+                            let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_banner_title,
+                                                                         messages.count,
+                                                                         destination.name)
+                            self?.showMessageMoved(title: title,
+                                                   undoActionType: .custom(destination.location.labelID))
+                        }
                      })
     }
 
-    private func showMoveToActionSheet(conversations: [Conversation], isEnableColor: Bool, isInherit: Bool) {
+    private func showMoveToActionSheet(conversations: [Conversation], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
         let moveToViewModel =
             MoveToActionSheetViewModelConversations(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                     conversations: conversations,
@@ -1891,10 +1832,20 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                             self?.dismissActionSheet()
                             self?.cancelButtonTapped()
                         }
-                        guard isHavingUnsavedChanges else {
+                        guard isHavingUnsavedChanges,
+                              let destination = self?.moveToActionHandler.selectedMoveToFolder else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction(conversations: conversations)
+
+                        self?.moveToActionHandler
+                                .handleMoveToAction(conversations: conversations, isFromSwipeAction: isFromSwipeAction)
+                        if isFromSwipeAction {
+                            let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_conversation_banner_title,
+                                                                         conversations.count,
+                                                                         destination.name)
+                            self?.showMessageMoved(title: title,
+                                                   undoActionType: .custom(destination.location.labelID))
+                        }
                      })
     }
 
@@ -2518,5 +2469,35 @@ extension MailboxViewController {
         delay(delayTime) {
             self.present(viewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension MailboxViewController: UndoActionHandlerBase {
+
+    func showUndoAction(token: UndoTokenData, title: String) {
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info)
+        banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
+            self?.viewModel.user.undoActionManager.sendUndoAction(token: token) { [weak self] isSuccess in
+                if isSuccess {
+                    self?.showActionRevertedBanner()
+                }
+            }
+            banner.dismiss(animated: false)
+        }
+        banner.show(at: .bottom, on: self)
+        // Dismiss other banner after the undo banner is shown
+        delay(0.25) { [weak self] in
+            self?.view.subviews
+                .compactMap{ $0 as? PMBanner }
+                .filter{ $0 != banner }
+                .forEach({ $0.dismiss(animated: false) })
+        }
+    }
+
+    func showActionRevertedBanner() {
+        let banner = PMBanner(message: LocalString._inbox_action_reverted_title,
+                              style: TempPMBannerNewStyle.info,
+                              dismissDuration: 1)
+        banner.show(at: .bottom, on: self)
     }
 }

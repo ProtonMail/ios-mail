@@ -832,7 +832,8 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                guard isHavingUnsavedChanges else {
                    return
                }
-               self?.moveToActionHandler.handleMoveToAction(messages: [message])
+                self?.moveToActionHandler
+                        .handleMoveToAction(messages: [message], isFromSwipeAction: false)
             }
         )
     }
@@ -881,7 +882,8 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                         guard isHavingUnsavedChanges, let conversation = self?.viewModel.conversation else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction(conversations: [conversation])
+                        self?.moveToActionHandler
+                                .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false)
                      })
     }
 

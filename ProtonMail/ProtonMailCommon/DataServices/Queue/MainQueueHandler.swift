@@ -38,6 +38,7 @@ final class MainQueueHandler: QueueHandler {
     private let localNotificationService: LocalNotificationService
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
+    private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
     
     init(cacheService: CacheService,
@@ -47,6 +48,7 @@ final class MainQueueHandler: QueueHandler {
          conversationDataService: ConversationProvider,
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
+         undoActionManager: UndoActionManagerProtocol,
          user: UserManager) {
         self.userID = user.userinfo.userId
         self.cacheService = cacheService
@@ -58,6 +60,7 @@ final class MainQueueHandler: QueueHandler {
         self.localNotificationService = localNotificationService
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
+        self.undoActionManager = undoActionManager
         self.user = user
     }
 
@@ -88,12 +91,27 @@ final class MainQueueHandler: QueueHandler {
                 self.readConversations(itemIDs, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
             case .delete(let currentLabelID, let itemIDs):
                 self.deleteConversations(itemIDs, labelID: currentLabelID ?? "", writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .label(let currentLabelID, _, let itemIDs, _):
-                self.labelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .unlabel(let currentLabelID, _, let itemIDs, _):
-                self.unlabelConversations(itemIDs, labelID: currentLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
-            case .folder(let nextLabelID, _, let itemIDs, _):
-                self.labelConversations(itemIDs, labelID: nextLabelID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
+            case .label(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
+                self.labelConversations(itemIDs,
+                                        labelID: currentLabelID,
+                                        writeQueueUUID: uuid,
+                                        UID: UID,
+                                        isSwipeAction: isSwipeAction,
+                                        completion: completeHandler)
+            case .unlabel(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
+                self.unlabelConversations(itemIDs,
+                                          labelID: currentLabelID,
+                                          writeQueueUUID: uuid,
+                                          UID: UID,
+                                          isSwipeAction: isSwipeAction,
+                                          completion: completeHandler)
+            case .folder(let nextLabelID, _, let isSwipeAction, let itemIDs, _):
+                self.labelConversations(itemIDs,
+                                        labelID: nextLabelID,
+                                        writeQueueUUID: uuid,
+                                        UID: UID,
+                                        isSwipeAction: isSwipeAction,
+                                        completion: completeHandler)
             }
         } else {
             switch action {
@@ -121,12 +139,27 @@ final class MainQueueHandler: QueueHandler {
                 self.messageAction(objectIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
             case .delete(_, let itemIDs):
                 self.messageDelete(itemIDs, writeQueueUUID: uuid, action: action.rawValue, UID: UID, completion: completeHandler)
-            case .label(let currentLabelID, let shouldFetch, let itemIDs, _):
-                self.labelMessage(currentLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: shouldFetch ?? false, completion: completeHandler)
-            case .unlabel(let currentLabelID, let shouldFetch, let itemIDs, _):
-                self.unLabelMessage(currentLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: shouldFetch ?? false, completion: completeHandler)
-            case .folder(let nextLabelID, let shouldFetch, let itemIDs, _):
-                self.labelMessage(nextLabelID, messageIDs: itemIDs, UID: UID, shouldFetchEvent: shouldFetch ?? false, completion: completeHandler)
+            case .label(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+                self.labelMessage(currentLabelID,
+                                  messageIDs: itemIDs,
+                                  UID: UID,
+                                  shouldFetchEvent: shouldFetch ?? false,
+                                  isSwipeAction: isSwipeAction,
+                                  completion: completeHandler)
+            case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+                self.unLabelMessage(currentLabelID,
+                                    messageIDs: itemIDs,
+                                    UID: UID,
+                                    shouldFetchEvent: shouldFetch ?? false,
+                                    isSwipeAction: isSwipeAction,
+                                    completion: completeHandler)
+            case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+                self.labelMessage(nextLabelID,
+                                  messageIDs: itemIDs,
+                                  UID: UID,
+                                  shouldFetchEvent: shouldFetch ?? false,
+                                  isSwipeAction: isSwipeAction,
+                                  completion: completeHandler)
             case .updateLabel(let labelID, let name, let color):
                 self.updateLabel(labelID: labelID, name: name, color: color, completion: completeHandler)
             case .createLabel(let name, let color, let isFolder):
@@ -626,35 +659,63 @@ extension MainQueueHandler {
         }
     }
     
-    fileprivate func labelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
+    fileprivate func labelMessage(_ labelID: String,
+                                  messageIDs: [String],
+                                  UID: String,
+                                  shouldFetchEvent: Bool,
+                                  isSwipeAction: Bool,
+                                  completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
         
-        let api = ApplyLabelToMessages(labelID: labelID, messages: messageIDs)
-        // rebase TODO: need review
-        self.apiService.exec(route: api) { [weak self](task, response: Response) in
+        let api = ApplyLabelToMessagesRequest(labelID: labelID, messages: messageIDs)
+        apiService.exec(route: api) { [weak self] (result: Swift.Result<ApplyLabelToMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
                 self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
-            completion?(task, nil, response.error?.toNSError)
+            switch result {
+            case .success(let response):
+                if let undoTokenData = response.undoTokenData {
+                    let type = self?.undoActionManager.calculateUndoActionBy(labelID: labelID)
+                    self?.undoActionManager.addUndoToken(undoTokenData,
+                                                         undoActionType: type)
+                }
+                completion?(nil, nil, nil)
+            case .failure(let error):
+                completion?(nil, nil, error.toNSError)
+            }
         }
     }
     
-    fileprivate func unLabelMessage(_ labelID: String, messageIDs: [String], UID: String, shouldFetchEvent: Bool, completion: CompletionBlock?) {
+    fileprivate func unLabelMessage(_ labelID: String,
+                                    messageIDs: [String],
+                                    UID: String,
+                                    shouldFetchEvent: Bool,
+                                    isSwipeAction: Bool,
+                                    completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
             completion!(nil, nil, NSError.userLoggedOut())
             return
         }
         
-        let api = RemoveLabelFromMessages(labelID: labelID, messages: messageIDs)
-        // rebase TODO: need review
-        self.apiService.exec(route: api) { [weak self] (task, response: Response) in
+        let api = RemoveLabelFromMessagesRequest(labelID: labelID, messages: messageIDs)
+        apiService.exec(route: api) { [weak self] (result: Swift.Result<RemoveLabelFromMessagesResponse, ResponseError>) in
             if shouldFetchEvent {
                 self?.user?.eventsService.fetchEvents(labelID: labelID)
             }
-            completion?(task, nil, response.error?.toNSError)
+            switch result {
+            case .success(let response):
+                if let undoTokenData = response.undoTokenData {
+                    let type = self?.undoActionManager.calculateUndoActionBy(labelID: labelID)
+                    self?.undoActionManager.addUndoToken(undoTokenData,
+                                                         undoActionType: type)
+                }
+                completion?(nil, nil, nil)
+            case .failure(let error):
+                completion?(nil, nil, error.toNSError)
+            }
         }
     }
     
@@ -862,14 +923,24 @@ extension MainQueueHandler {
         }
     }
     
-    fileprivate func labelConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.label(conversationIDs: conversationIds, as: labelID) { result in
+    fileprivate func labelConversations(_ conversationIds: [String],
+                                        labelID: String,
+                                        writeQueueUUID: UUID,
+                                        UID: String,
+                                        isSwipeAction: Bool,
+                                        completion: CompletionBlock?) {
+        conversationDataService.label(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
     }
     
-    fileprivate func unlabelConversations(_ conversationIds: [String], labelID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
-        conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID) { result in
+    fileprivate func unlabelConversations(_ conversationIds: [String],
+                                          labelID: String,
+                                          writeQueueUUID: UUID,
+                                          UID: String,
+                                          isSwipeAction: Bool,
+                                          completion: CompletionBlock?) {
+        conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
     }

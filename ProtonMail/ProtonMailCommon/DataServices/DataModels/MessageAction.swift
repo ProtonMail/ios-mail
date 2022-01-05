@@ -72,6 +72,7 @@ enum MessageAction: Equatable {
         case cardDatas
         case emailIDs
         case removedEmailIDs
+        case isSwipeAction
     }
     
     
@@ -99,9 +100,21 @@ enum MessageAction: Equatable {
     case emptySpam
     case empty(currentLabelID: String)
     
-    case label(currentLabelID: String, shouldFetch: Bool?, itemIDs: [String], objectIDs: [String])
-    case unlabel(currentLabelID: String, shouldFetch: Bool?, itemIDs: [String], objectIDs: [String])
-    case folder(nextLabelID: String, shouldFetch: Bool?, itemIDs: [String], objectIDs: [String])
+    case label(currentLabelID: String,
+               shouldFetch: Bool?,
+               isSwipeAction: Bool,
+               itemIDs: [String],
+               objectIDs: [String])
+    case unlabel(currentLabelID: String,
+                 shouldFetch: Bool?,
+                 isSwipeAction: Bool,
+                 itemIDs: [String],
+                 objectIDs: [String])
+    case folder(nextLabelID: String,
+                shouldFetch: Bool?,
+                isSwipeAction: Bool,
+                itemIDs: [String],
+                objectIDs: [String])
 
     case updateLabel(labelID: String, name: String, color: String)
     case createLabel(name: String, color: String, isFolder: Bool)
@@ -224,13 +237,25 @@ extension MessageAction: Codable {
             self = .empty(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID))
         case .label:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .label)
-            self = .label(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID), shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+            self = .label(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID),
+                          shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch),
+                          isSwipeAction: try nestedContainer.decode(Bool.self, forKey: .isSwipeAction),
+                          itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs),
+                          objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
         case .unlabel:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unlabel)
-            self = .unlabel(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID), shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+            self = .unlabel(currentLabelID: try nestedContainer.decode(String.self, forKey: .currentLabelID),
+                            shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch),
+                            isSwipeAction: try nestedContainer.decode(Bool.self, forKey: .isSwipeAction),
+                            itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs),
+                            objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
         case .folder:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .folder)
-            self = .folder(nextLabelID: try nestedContainer.decode(String.self, forKey: .nextLabelID), shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch), itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs), objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
+            self = .folder(nextLabelID: try nestedContainer.decode(String.self, forKey: .nextLabelID),
+                           shouldFetch: try nestedContainer.decode(Bool?.self, forKey: .shouldFetch),
+                           isSwipeAction: try nestedContainer.decode(Bool.self, forKey: .isSwipeAction),
+                           itemIDs: try nestedContainer.decode([String].self, forKey: .itemIDs),
+                           objectIDs: try nestedContainer.decode([String].self, forKey: .objectIDs))
         case .updateLabel:
             let nestedContainer = try container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
             self = .updateLabel(labelID: try nestedContainer.decode(String.self, forKey: .labelID), name: try nestedContainer.decode(String.self, forKey: .name), color: try nestedContainer.decode(String.self, forKey: .color))
@@ -322,24 +347,35 @@ extension MessageAction: Codable {
         case .empty(currentLabelID: let currentLabelID):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .empty)
             try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
-        case .label(currentLabelID: let currentLabelID, shouldFetch: let shouldFetch, itemIDs: let itemIDs, objectIDs: let objectIDs):
+        case .label(currentLabelID: let currentLabelID, shouldFetch: let shouldFetch, isSwipeAction: let isSwipeAction, itemIDs: let itemIDs, objectIDs: let objectIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .label)
             try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
             try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
             try nestedContainer.encode(objectIDs, forKey: .objectIDs)
-        case .unlabel(currentLabelID: let currentLabelID, shouldFetch: let shouldFetch, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            try nestedContainer.encode(isSwipeAction, forKey: .isSwipeAction)
+        case .unlabel(currentLabelID: let currentLabelID,
+                      shouldFetch: let shouldFetch,
+                      isSwipeAction: let isSwipeAction,
+                      itemIDs: let itemIDs,
+                      objectIDs: let objectIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .unlabel)
             try nestedContainer.encode(currentLabelID, forKey: .currentLabelID)
             try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
             try nestedContainer.encode(objectIDs, forKey: .objectIDs)
-        case .folder(nextLabelID: let nextLabelID, shouldFetch: let shouldFetch, itemIDs: let itemIDs, objectIDs: let objectIDs):
+            try nestedContainer.encode(isSwipeAction, forKey: .isSwipeAction)
+        case .folder(nextLabelID: let nextLabelID,
+                     shouldFetch: let shouldFetch,
+                     isSwipeAction: let isSwipeAction,
+                     itemIDs: let itemIDs,
+                     objectIDs: let objectIDs):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .folder)
             try nestedContainer.encode(shouldFetch, forKey: .shouldFetch)
             try nestedContainer.encode(nextLabelID, forKey: .nextLabelID)
             try nestedContainer.encode(itemIDs, forKey: .itemIDs)
             try nestedContainer.encode(objectIDs, forKey: .objectIDs)
+            try nestedContainer.encode(isSwipeAction, forKey: .isSwipeAction)
         case .updateLabel(labelID: let labelID, name: let name, color: let color):
             var nestedContainer = container.nestedContainer(keyedBy: NestedCodingKeys.self, forKey: .updateLabel)
             try nestedContainer.encode(labelID, forKey: .labelID)

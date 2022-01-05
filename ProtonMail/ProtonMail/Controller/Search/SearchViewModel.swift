@@ -338,13 +338,13 @@ extension SearchViewModel: MoveToActionSheetProtocol {
         self.labelID
     }
     
-    func handleMoveToAction(messages: [Message]) {
+    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation]) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
         // search view doesn't support conversation mode
     }
 }

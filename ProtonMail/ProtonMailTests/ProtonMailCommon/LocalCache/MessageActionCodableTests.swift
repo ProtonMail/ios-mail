@@ -132,33 +132,33 @@ class MessageActionCodableTests: XCTestCase {
     }
 
     func testLabel() throws {
-        let action: MessageAction = .label(currentLabelID: "label", shouldFetch: true, itemIDs: ["bla"], objectIDs: ["foo"])
+        let action: MessageAction = .label(currentLabelID: "label", shouldFetch: true, isSwipeAction: false, itemIDs: ["bla"], objectIDs: ["foo"])
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
-        let action2: MessageAction = .label(currentLabelID: "label", shouldFetch: nil, itemIDs: [], objectIDs: [])
+        let action2: MessageAction = .label(currentLabelID: "label", shouldFetch: nil, isSwipeAction: true, itemIDs: [], objectIDs: [])
         let encoded2 = try JSONEncoder().encode(action2)
         let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
         XCTAssertEqual(action2, decoded2)
     }
 
     func testUnlabel() throws {
-        let action: MessageAction = .unlabel(currentLabelID: "label", shouldFetch: true, itemIDs: ["bla"], objectIDs: ["foo"])
+        let action: MessageAction = .unlabel(currentLabelID: "label", shouldFetch: true, isSwipeAction: false, itemIDs: ["bla"], objectIDs: ["foo"])
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
-        let action2: MessageAction = .unlabel(currentLabelID: "label", shouldFetch: nil, itemIDs: [], objectIDs: [])
+        let action2: MessageAction = .unlabel(currentLabelID: "label", shouldFetch: nil, isSwipeAction: true, itemIDs: [], objectIDs: [])
         let encoded2 = try JSONEncoder().encode(action2)
         let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
         XCTAssertEqual(action2, decoded2)
     }
 
     func testFolder() throws {
-        let action: MessageAction = .folder(nextLabelID: "next", shouldFetch: false, itemIDs: ["items"], objectIDs: ["objects"])
+        let action: MessageAction = .folder(nextLabelID: "next", shouldFetch: false, isSwipeAction: false, itemIDs: ["items"], objectIDs: ["objects"])
         let encoded = try JSONEncoder().encode(action)
         let decoded = try JSONDecoder().decode(MessageAction.self, from: encoded)
         XCTAssertEqual(action, decoded)
-        let action2: MessageAction = .folder(nextLabelID: "next", shouldFetch: true, itemIDs: [], objectIDs: [])
+        let action2: MessageAction = .folder(nextLabelID: "next", shouldFetch: true, isSwipeAction: true, itemIDs: [], objectIDs: [])
         let encoded2 = try JSONEncoder().encode(action2)
         let decoded2 = try JSONDecoder().decode(MessageAction.self, from: encoded2)
         XCTAssertEqual(action2, decoded2)

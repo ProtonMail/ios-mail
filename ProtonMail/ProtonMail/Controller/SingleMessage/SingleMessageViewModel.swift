@@ -204,12 +204,12 @@ class SingleMessageViewModel {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(messages: [Message]) {
+    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
     }
 
-    func handleMoveToAction(conversations: [Conversation]) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
         fatalError("Not implemented")
     }
 }
