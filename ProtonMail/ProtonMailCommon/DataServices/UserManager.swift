@@ -183,6 +183,7 @@ class UserManager : Service, HasLocalStorage {
                                        conversationDataService: self.conversationService.conversationDataService,
                                        labelDataService: self.labelService,
                                        localNotificationService: self.localNotificationService,
+                                       undoActionManager: self.undoActionManager,
                                        user: self)
         let shareQueueManager = sharedServices.get(by: QueueManager.self)
         shareQueueManager.registerHandler(service)
@@ -195,6 +196,7 @@ class UserManager : Service, HasLocalStorage {
                                                    coreDataService: sharedServices.get(by: CoreDataService.self),
                                                    labelDataService: labelService,
                                                    lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
+                                                   undoActionManager: undoActionManager,
                                                    viewModeDataSource: self,
                                                    queueManager: sharedServices.get(by: QueueManager.self))
         return service
@@ -225,6 +227,13 @@ class UserManager : Service, HasLocalStorage {
     public lazy var eventsService: EventsFetching = { [unowned self] in
         let service = EventsService(userManager: self)
         return service
+    }()
+
+    public lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
+        let manager = UndoActionManager(apiService: self.apiService) { [weak self] in
+            self?.eventsService.fetchEvents(labelID: Message.Location.allmail.rawValue)
+        }
+        return manager
     }()
     
     private var lastUpdatedStore: LastUpdatedStoreProtocol {

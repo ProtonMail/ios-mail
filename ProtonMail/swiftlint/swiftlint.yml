@@ -221,6 +221,13 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/DataModels/UserInfo+LocalFeatureFlags.swift
   - ${PWD}/ProtonMailCommon/LocalCache/CacheProtocols/SystemUpTimeProtocol.swift
   - ${PWD}/ProtonMailCommon/DataService/APIService/CoreAPI.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/UndoActionAPI/UndoActionAPI.swift
+  - ${PWD}/ProtonMailCommon/UndoActionHandler/UndoActionManager.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/UndoToken/UndoTokenResponseProtocol.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/UndoToken/UndoTokenData.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/UndoActionAPI/UndoActionAPI.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/MessageAPIs/RemoveLabelFromMessages.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/MessageAPIs/ApplyLabelToMessages.swift
   - ${PWD}/ProtonMailCommon/Helpers/NewsLetterCheckHelper.swift
   - ${PWD}/ProtonMailCommon/DataService/APIService/FeedbackAPI.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Contacts/ContactParser.swift

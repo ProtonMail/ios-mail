@@ -214,21 +214,4 @@ final class MailboxViewModelImpl: MailboxViewModel {
     override func reloadTable() -> Bool {
         return self.label == .draft
     }
-
-    override func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
-        if self.labelId == Message.Location.trash.rawValue {
-            return (.nothing, nil, false)
-        } else {
-            if messageService.move(messages: [message],
-                                   from: [self.label.rawValue],
-                                   to: Message.Location.trash.rawValue) {
-                return (.showUndo,
-                        UndoMessage(msgID: message.messageID,
-                                    origLabels: self.label.rawValue,
-                                    origHasStar: message.starred,
-                                    newLabels: Message.Location.trash.rawValue), true)
-            }
-        }
-        return (.nothing, nil, false)
-    }
 }

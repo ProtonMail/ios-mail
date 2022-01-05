@@ -397,7 +397,8 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                         guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
                             return
                         }
-                        self?.moveToActionHandler.handleMoveToAction(messages: [msg])
+                        self?.moveToActionHandler
+                                .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
                      })
     }
 }

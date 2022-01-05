@@ -51,7 +51,8 @@ class ConversationLabelRequest: Request {
     }
 }
 
-class ConversationLabelResponse: Response {
+class ConversationLabelResponse: Response, UndoTokenResponseProtocol {
+    var undoTokenData: UndoTokenData?
     var responseDict: [String: Any]?
     var results: [ConversationLabelData]?
 
@@ -67,6 +68,9 @@ class ConversationLabelResponse: Response {
             return false
         }
         results = result
+
+        parseUndoToken(response: response)
+
         return true
     }
 }

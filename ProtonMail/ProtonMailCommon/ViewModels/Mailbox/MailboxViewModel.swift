@@ -576,11 +576,11 @@ class MailboxViewModel: StorageLimit {
     }
     
     func labelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationService.label(conversationIDs: conversationIDs, as: labelID, completion: completion)
+        conversationService.label(conversationIDs: conversationIDs, as: labelID, isSwipeAction: false, completion: completion)
     }
     
     func unlabelConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
-        conversationService.unlabel(conversationIDs: conversationIDs, as: labelID, completion: completion)
+        conversationService.unlabel(conversationIDs: conversationIDs, as: labelID, isSwipeAction: false, completion: completion)
     }
     
     func deleteConversations(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
@@ -619,34 +619,6 @@ class MailboxViewModel: StorageLimit {
         messageService.label(messages: [message], label: labelID, apply: apply, shouldFetchEvent: false)
     }
     
-    func undo(_ undo: UndoMessage) {
-        switch locationViewMode {
-        case .conversation:
-            conversationService.move(conversationIDs: [undo.messageID],
-                                     from: undo.newLabels,
-                                     to: undo.origLabels) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-            if undo.origHasStar {
-                conversationService.label(conversationIDs: [undo.messageID],
-                                          as: Message.Location.starred.rawValue,
-                                          completion: nil)
-            }
-        case .singleMessage:
-            let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainContext)
-            let fLabels: [String] = .init(repeating: undo.newLabels, count: messages.count)
-            messageService.move(messages: messages, from: fLabels, to: undo.origLabels)
-            if undo.origHasStar {
-                messageService.label(messages: messages,
-                                     label: Message.Location.starred.rawValue,
-                                     apply: true)
-            }
-        }
-    }
-    
     final func delete(IDs: NSMutableSet) {
         switch locationViewMode {
         case .conversation:
@@ -659,44 +631,37 @@ class MailboxViewModel: StorageLimit {
         }
     }
     
-    final func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?, Bool) {
+    final func delete(index: IndexPath, isSwipeAction: Bool = false) {
         if let message = self.item(index: index) {
-            return self.delete(message: message)
+            delete(message: message, isSwipeAction : isSwipeAction)
         } else if let conversation = self.itemOfConversation(index: index) {
-            return self.delete(conversation: conversation)
+            delete(conversation: conversation)
         }
-        return (.nothing, nil, false)
     }
 
-    func delete(message: Message) -> (SwipeResponse, UndoMessage?, Bool) {
-        if self.labelID == Message.Location.trash.rawValue {
-            return (.nothing, nil, false)
-        } else {
-            if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue), true)
-            } else {
-                return (.nothing, nil, true)
-            }
+    func delete(message: Message, isSwipeAction: Bool = false) {
+        guard labelID != Message.Location.trash.rawValue else {
+            return
         }
+        messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue, isSwipeAction: isSwipeAction)
     }
 
     private func deletePermanently(message: Message) {
         messageService.delete(messages: [message], label: self.labelID)
     }
 
-    func delete(conversation: Conversation) -> (SwipeResponse, UndoMessage?, Bool) {
-        if self.labelID == Message.Location.trash.rawValue {
-            return (.nothing, nil, false)
-        } else {
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: self.labelID,
-                                     to: Message.Location.trash.rawValue) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
+    func delete(conversation: Conversation, isSwipeAction: Bool = false) {
+        guard labelID != Message.Location.trash.rawValue else {
+            return
+        }
+        conversationService.move(conversationIDs: [conversation.conversationID],
+                                 from: self.labelID,
+                                 to: Message.Location.trash.rawValue,
+                                 isSwipeAction: isSwipeAction) { [weak self] result in
+            guard let self = self else { return }
+            if let _ = try? result.get() {
+                self.eventsService.fetchEvents(labelID: self.labelId)
             }
-            return (.nothing, nil, true)
         }
     }
 
@@ -709,42 +674,36 @@ class MailboxViewModel: StorageLimit {
         }
     }
 
-    func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+    func archive(index: IndexPath, isSwipeAction: Bool = false) {
         if let message = self.item(index: index) {
-            if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.archive.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.archive.rawValue))
-            }
+            messageService.move(messages: [message], from: [self.labelID], to: Message.Location.archive.rawValue)
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: self.labelID,
-                                     to: Message.Location.archive.rawValue) { [weak self] result in
+                                     to: Message.Location.archive.rawValue,
+                                     isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
-        return (.nothing, nil)
     }
     
-    func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+    func spam(index: IndexPath, isSwipeAction: Bool = false) {
         if let message = self.item(index: index) {
-            if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.spam.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.spam.rawValue))
-            }
+            messageService.move(messages: [message], from: [self.labelID], to: Message.Location.spam.rawValue)
         } else if let conversation = self.itemOfConversation(index: index) {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: self.labelID,
-                                     to: Message.Location.spam.rawValue) { [weak self] result in
+                                     to: Message.Location.spam.rawValue,
+                                     isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
                 }
             }
-            return (.showUndo, UndoMessage(msgID: conversation.conversationID, origLabels: self.labelID, origHasStar: conversation.starred, newLabels: Message.Location.archive.rawValue))
         }
-        return (.nothing, nil)
     }
     
     func checkStorageIsCloseLimit() {
@@ -973,14 +932,14 @@ extension MailboxViewModel {
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             if apply {
-                conversationService.label(conversationIDs: messageIDs.asArrayOfStrings, as: labelID) { [weak self] result in
+                conversationService.label(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, isSwipeAction: false) { [weak self] result in
                     guard let self = self else { return }
                     if let _ = try? result.get() {
                         self.eventsService.fetchEvents(labelID: self.labelId)
                     }
                 }
             } else {
-                conversationService.unlabel(conversationIDs: messageIDs.asArrayOfStrings, as: labelID) { [weak self] result in
+                conversationService.unlabel(conversationIDs: messageIDs.asArrayOfStrings, as: labelID, isSwipeAction: false) { [weak self] result in
                     guard let self = self else { return }
                     if let _ = try? result.get() {
                         self.eventsService.fetchEvents(labelID: self.labelId)
@@ -1027,7 +986,8 @@ extension MailboxViewModel {
         case .conversation:
             conversationService.move(conversationIDs: messageIDs.asArrayOfStrings,
                                      from: fLabel,
-                                     to: tLabel) { [weak self] result in
+                                     to: tLabel,
+                                     isSwipeAction: false) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)

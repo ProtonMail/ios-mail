@@ -410,7 +410,7 @@ extension SearchViewController {
                         guard isHavingUnsavedChanges else {
                             return
                         }
-                        handler.handleMoveToAction(messages: messages)
+                        handler.handleMoveToAction(messages: messages, isFromSwipeAction: false)
                      })
     }
 

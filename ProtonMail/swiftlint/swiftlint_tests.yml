@@ -46,6 +46,9 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/Composer/ComposeViewControllerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/MessageDataService/MessageSendingRequestBuilderTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataServices/UserFeedbackServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoActionAPITests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoActionAPITests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoTokenResponseProtocolTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Contacts/ContactParserTest.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/WebContentsTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NewMessageBodyViewModelTests.swift
