@@ -43,11 +43,13 @@ class AttachmentViewModel {
     }
 
     init (attachments: [AttachmentInfo]) {
-        self.attachments = attachments
+        self.attachments = attachments.filter { ($0.att?.inline() ?? false) == false }
     }
 
     func messageHasChanged(message: Message) {
-        self.attachments = message.attachments.compactMap { $0 as? Attachment }
+        let files: [AttachmentInfo] = message.attachments
+            .compactMap { $0 as? Attachment }
             .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+        self.attachments = files.filter { $0.att?.inline() == false }
     }
 }

@@ -106,7 +106,7 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             return Promise()
         }
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata).done { (attachment) in
+        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
             self.childViewModel.uploadAtt(attachment)
         }
     }

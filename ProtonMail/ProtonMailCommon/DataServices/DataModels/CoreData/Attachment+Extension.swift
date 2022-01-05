@@ -296,7 +296,7 @@ extension Collection where Element == Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?>
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -307,7 +307,7 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?> {
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?> {
         return Promise { seal in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
@@ -326,14 +326,22 @@ extension UIImage: AttachmentConvertible {
                     attachment.keyPacket = ""
                     let dataToWrite = stripMetadata ? fileData.strippingExif() : fileData
                     try? attachment.writeToLocalURL(data: dataToWrite)
+                    if isInline {
+                        attachment.setupHeaderInfo(isInline: true, contentID: fileName)
+                    }
 
                     attachment.message = message
 
-                    let number = message.numAttachments.int32Value
-                    let newNum = number > 0 ? number + 1 : 1
-                    message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-
-                    _ = context.saveUpstreamIfNeeded()
+                    let attachments = message.attachments
+                        .compactMap({ $0 as? Attachment })
+                        .filter { !$0.inline() }
+                    message.numAttachments = NSNumber(value: attachments.count)
+                    
+                    var error: NSError? = nil
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil {
+                        PMLog.D("toAttachment () with error: \(String(describing: error))")
+                    }
                     seal.fulfill(attachment)
                 }
             }
@@ -350,7 +358,7 @@ extension Data: AttachmentConvertible {
         return self.toAttachment(message, fileName: fileName, type: "image/jpg", stripMetadata: stripMetadata)
     }
     
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool) -> Promise<Attachment?> {
+    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
         return Promise { seal in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
@@ -368,12 +376,20 @@ extension Data: AttachmentConvertible {
                 attachment.keyPacket = ""
                 try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
                 attachment.message = message
+                if isInline {
+                    attachment.setupHeaderInfo(isInline: true, contentID: fileName)
+                }
 
-                let number = message.numAttachments.int32Value
-                let newNum = number > 0 ? number + 1 : 1
-                message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
-
-                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
+                
+                var error: NSError? = nil
+                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
+                }
                 seal.fulfill(attachment)
             }
         }
@@ -382,7 +398,7 @@ extension Data: AttachmentConvertible {
 
 // THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
-    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool) -> Promise<Attachment?> {
+    func toAttachment(_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
         return Promise { seal in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
@@ -400,12 +416,20 @@ extension URL: AttachmentConvertible {
                 attachment.keyPacket = ""
                 attachment.localURL = stripMetadata ? self.strippingExif() : self
                 attachment.message = message
+                if isInline {
+                    attachment.setupHeaderInfo(isInline: true, contentID: fileName)
+                }
 
-                let number = message.numAttachments.int32Value
-                let newNum = number > 0 ? number + 1 : 1
-                message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
-
-                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                let attachments = message.attachments
+                    .compactMap({ $0 as? Attachment })
+                    .filter { !$0.inline() }
+                message.numAttachments = NSNumber(value: attachments.count)
+                
+                var error: NSError? = nil
+                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
+                }
                 seal.fulfill(attachment)
             }
         }

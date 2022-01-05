@@ -325,7 +325,7 @@ class NewMessageBodyViewModel {
                 self.messageDataProcessor.base64AttachmentData(att: att) { based64String in
                     if !based64String.isEmpty, let contentID = att.contentID() {
                         stringsQueue.sync {
-                            strings["src=\"cid:\(contentID)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
+                            strings["cid:\(contentID)"] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
                         }
                     }
                     group.leave()
@@ -343,8 +343,10 @@ class NewMessageBodyViewModel {
             if checkCount == strings.count {
                 var updatedBody = body
                 for (cid, base64) in strings {
-                    if let token = updatedBody.range(of: cid) {
-                        updatedBody.replaceSubrange(token, with: base64)
+                    let key = "src=\"\(cid)\""
+                    if let token = updatedBody.range(of: key) {
+                        let newValue = base64 + "contentID=\"\(cid)\""
+                        updatedBody.replaceSubrange(token, with: newValue)
                     }
                 }
 
@@ -415,14 +417,9 @@ extension Message {
               let body = decryptedBody else {
             return nil
         }
-        let cids = attachments.compactMap { $0.contentID() }
-        let inlines = cids.filter { cid in
-            return body.preg_match("src=\"\(cid)\"") ||
-                body.preg_match("src=\"cid:\(cid)\"") ||
-                body.preg_match("data-embedded-img=\"\(cid)\"") ||
-                body.preg_match("data-src=\"cid:\(cid)\"") ||
-                body.preg_match("proton-src=\"cid:\(cid)\"")
-        }
-        return inlines
+        let cids = attachments
+            .compactMap({ $0.contentID() })
+            .filter { body.contains(check: $0) }
+        return cids
     }
 }
