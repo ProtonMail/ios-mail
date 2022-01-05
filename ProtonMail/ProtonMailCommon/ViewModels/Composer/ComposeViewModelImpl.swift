@@ -92,7 +92,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 break
             }
             currentAttachmentSize += size
-            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
+            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
                 if let att = attachment {
                     let context = coreDataService.operationContext
                     context.performAndWait {

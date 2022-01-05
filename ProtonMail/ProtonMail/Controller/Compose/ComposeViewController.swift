@@ -595,11 +595,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         
-        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { (attachment) in
+        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata, isInline: true).done { (attachment) in
             guard let att = attachment else {
                 return
             }
-            att.setupHeaderInfo(isInline: true, contentID: sid)
             self.viewModel.uploadAtt(att)
         }
     }
@@ -609,7 +608,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
         
         // decrement number of attachments in message manually
-        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
+        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted && !$0.inline() }).count {
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.composerContext?.performAndWait {
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
@@ -917,7 +916,7 @@ extension ComposeViewController {
                 return self.viewModel.deleteAtt(attachment)
             }.ensure {
                 // decrement number of attachments in message manually
-                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted }).count {
+                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted && !$0.inline() }).count {
                     self.viewModel.composerContext?.performAndWait {
                         self.viewModel.message?.numAttachments = NSNumber(value: number)
                         _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()

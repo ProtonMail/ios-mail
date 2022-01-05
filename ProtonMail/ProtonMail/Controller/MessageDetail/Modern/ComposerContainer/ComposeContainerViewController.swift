@@ -523,7 +523,7 @@ extension ComposeContainerViewController: AttachmentController {
                 
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                 
-                let attachment = try? `await`(fileData.contents.toAttachment(message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
+                let attachment = try? `await`(fileData.contents.toAttachment(message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false))
                 guard let att = attachment else {
                     self.error(LocalString._cant_copy_the_file)
                     return

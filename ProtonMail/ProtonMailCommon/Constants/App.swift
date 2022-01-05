@@ -43,10 +43,10 @@ struct Constants {
          
         
         // live api
-        static let URL_HOST = "api.protonmail.ch"
-        static let API_PATH = ""
-        //static let URL_HOST : String = "beta.proton.black"
-        //static let API_PATH : String = "/api"
+        static let URL_HOST : String = "api.protonmail.ch"
+        static let API_PATH : String = ""
+//        static let URL_HOST : String = "proton.black"
+//        static let API_PATH : String = "/api"
         static let DOH_ENABLE : Bool = true
         
         ///

@@ -420,8 +420,9 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {
     func openAttachmentList() {
         let messageID = viewModel.message.messageID
-        let displayMode = viewModel.messageBodyViewModel.displayMode
-        let body = viewModel.messageBodyViewModel.bodyParts?.body(for: displayMode)
+        // Attachment list needs to check if the body contains content IDs
+        // So needs to use full message body or it could miss inline image in the quote
+        let body = viewModel.messageBodyViewModel.bodyParts?.body(for: .expanded)
         navigationAction(.attachmentList(messageId: messageID, decryptedBody: body))
     }
 }

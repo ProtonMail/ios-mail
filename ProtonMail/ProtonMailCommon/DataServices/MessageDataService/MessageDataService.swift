@@ -566,7 +566,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                                     }
                                 }
                                 
-                                let localAttachments = newMessage.attachments.allObjects.compactMap{ $0 as? Attachment}.filter{ !$0.isSoftDeleted }
+                                let localAttachments = newMessage.attachments.allObjects.compactMap{ $0 as? Attachment}.filter{ !$0.isSoftDeleted && !$0.inline() }
                                 let localAttachmentCount = localAttachments.count
                                 
                                 //This will remove all attachments that are still not uploaded to BE

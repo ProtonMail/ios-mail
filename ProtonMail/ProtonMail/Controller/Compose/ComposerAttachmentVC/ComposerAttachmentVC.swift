@@ -83,7 +83,9 @@ final class ComposerAttachmentVC: UIViewController {
                 }
             }
         }
-        self.datas = attachments.map { AttachInfo(attachment: $0) }
+        self.datas = attachments
+            .filter({ $0.inline() == false })
+            .map { AttachInfo(attachment: $0) }
         self.delegate = delegate
     }
 
@@ -149,7 +151,10 @@ final class ComposerAttachmentVC: UIViewController {
             guard let self = self else { return }
             let existedID = self.datas.map { $0.objectID }
             let attachments = attachments
-                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) && !$0.isSoftDeleted }
+                .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) &&
+                    !$0.isSoftDeleted &&
+                    $0.inline() == false
+                }
 
             // swiftlint:disable:next todo
             // FIXME: insert function for better UX

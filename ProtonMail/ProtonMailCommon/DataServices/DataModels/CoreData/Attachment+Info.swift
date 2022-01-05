@@ -64,7 +64,7 @@ class AttachmentInline : AttachmentInfo {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
-            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata)
+            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false)
         }
         return Promise.value(nil)
     }

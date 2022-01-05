@@ -66,7 +66,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        var titleToAdd = "\(viewModel.attachmentCount) "
+        var titleToAdd = "\(viewModel.normalAttachments.count) "
         titleToAdd += viewModel.attachmentCount > 1 ?
             LocalString._attachments_list_title :
             LocalString._one_attachment_list_title
@@ -111,29 +111,17 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.attachmentSections.count
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch viewModel.attachmentSections[section] {
-        case .normal:
-            return viewModel.normalAttachments.count
-        case .inline:
-            return viewModel.inlineAttachments.count
-        }
+        return viewModel.normalAttachments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentListTableViewCell.CellID, for: indexPath)
         if let cellToConfig = cell as? AttachmentListTableViewCell {
-            let attachment: AttachmentInfo
-            let sectionItem = viewModel.attachmentSections[indexPath.section]
-            switch sectionItem {
-            case .inline:
-                attachment = viewModel.inlineAttachments[indexPath.row]
-            case .normal:
-                attachment = viewModel.normalAttachments[indexPath.row]
-            }
+            let attachment = viewModel.normalAttachments[indexPath.row]
 
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
@@ -152,17 +140,6 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         }
 
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionItem = viewModel.attachmentSections[section]
-        guard !viewModel.isEmpty(section: sectionItem) else { return nil }
-        return PMHeaderView(title: sectionItem.actionTitle,
-                            fontSize: 15,
-                            titleColor: ColorProvider.TextWeak,
-                            titleLeft: 16,
-                            titleBottom: 8,
-                            background: ColorProvider.BackgroundNorm)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
