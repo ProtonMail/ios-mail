@@ -59,6 +59,9 @@ final class MenuViewController: UIViewController, AccessibleView {
         assert(self.coordinator != nil, "viewModel can't be empty")
         
         self.viewModel.userDataInit()
+        self.viewModel.reloadClosure = { [weak self] in
+            self?.tableView.reloadData()
+        }
         self.viewInit()
         
         generateAccessibilityIdentifiers()
@@ -422,7 +425,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let vi = UIView()
         vi.backgroundColor = .clear
         
-        if viewModel.currentUser?.userinfo.isInAppFeedbackEnabled ?? false {
+        if viewModel.isInAppFeedbackEnable {
             if section == .feedback { return vi }
         } else {
             if section == .inboxes { return vi }

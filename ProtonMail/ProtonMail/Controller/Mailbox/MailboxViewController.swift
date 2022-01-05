@@ -21,13 +21,14 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import UIKit
+import Alamofire
 import CoreData
-import SkeletonView
-import SwipyCell
+import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
-import Alamofire
+import SkeletonView
+import SwipyCell
+import UIKit
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
     typealias viewModelType = MailboxViewModel
@@ -134,6 +135,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
     var scheduleUserFeedbackCallOnAppear = false
         
+    var shouldShowFeedbackActionSheet = false
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
@@ -2423,7 +2425,7 @@ extension MailboxViewController {
     private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
         let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
             guard let self = self else { return false }
-            guard self.viewModel.isInAppFeedbackFeatureEnabled else {
+            guard self.viewModel.user.inAppFeedbackStateService.isEnable else {
                 return false
             }
             return self.navigationController?.topViewController == self

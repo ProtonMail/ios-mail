@@ -23,7 +23,7 @@
 import Foundation
 import CoreData
 
-class CoreDataService: Service {
+class CoreDataService: Service, CoreDataContextProviderProtocol {
 
     static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
 

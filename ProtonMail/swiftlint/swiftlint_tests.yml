@@ -56,6 +56,11 @@ included:
   - ${PWD}/ProtonMailTests/Mocks/NewMessageBodyViewModelDelegateMock.swift
   - ${PWD}/ProtonMailTests/Mocks/UserAddressUpdapterMock.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Components/PushNotificationHandlerTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsRequestTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsResponseTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/FeatureFlagsDownloadServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/InAppFeedbackStateServiceTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/MenuViewModelTests.swift
 
 excluded:
   - ${PWD}/Pods

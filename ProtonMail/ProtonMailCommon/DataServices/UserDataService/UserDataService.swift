@@ -778,24 +778,6 @@ class UserDataService : Service, HasLocalStorage {
         passwordMode = 2
     }
     
-    
-    //    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
-    //        return { task, response, error in
-    //            if error == nil {
-    //                self.fetchUserInfo().done { (userInfo) in
-    //
-    ////                    self.fetchUserInfo(completion)
-    //                }.catch { error in
-    //
-    ////                    self.fetchUserInfo(completion)
-    //                }
-    //
-    //            } else {
-    //                completion?(nil, nil, error)
-    //            }
-    //        }
-    //    }
-    
     func launchCleanUp() {
         if !self.isUserCredentialStored {
             passwordMode = 2

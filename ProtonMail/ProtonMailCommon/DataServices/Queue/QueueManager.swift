@@ -28,7 +28,7 @@ protocol QueueHandler {
 }
 
 /// This manager is to handle the queue opeartions of all users.
-final class QueueManager: Service {
+final class QueueManager: Service, UserStatusInQueueProtocol {
 
     enum QueueStatus {
         case idle

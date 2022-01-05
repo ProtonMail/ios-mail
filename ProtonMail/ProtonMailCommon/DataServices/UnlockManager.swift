@@ -182,7 +182,6 @@ class UnlockManager: Service {
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
         }
-        self.updateCommonUserData()
         if let primaryUser = usersManager.firstUser {
             primaryUser.payments.storeKitManager.continueRegistrationPurchase(finishHandler: nil)
         }

@@ -30,8 +30,8 @@ import UIKit
 
 final class MenuViewModel: NSObject {
     private let usersManager: UsersManager
-    private let queueManager: QueueManager
-    private let coreDataService: CoreDataService
+    private let userStatusInQueueProvider: UserStatusInQueueProtocol
+    private let coreDataContextProvider: CoreDataContextProviderProtocol
     
     private var labelDataService: LabelsDataService? {
         guard let labelService = self.currentUser?.labelService else {
@@ -55,23 +55,31 @@ final class MenuViewModel: NSObject {
     private(set) var menuWidth: CGFloat!
     
     private var rawData = [MenuLabel]()
-    let sections: [MenuSection]
-    private let feedbackItems: [MenuLabel]
+    private(set) var sections: [MenuSection]
+    private(set) var feedbackItems: [MenuLabel]
     private let inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
     private var labelItems: [MenuLabel] = []
     private var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subcription functionality
     private var subscriptionAvailable = true
+
+    var isInAppFeedbackEnable: Bool {
+        usersManager.firstUser?.inAppFeedbackStateService.isEnable ?? false
+    }
+
+    var reloadClosure: (() -> Void)?
     
-    init(usersManager: UsersManager, queueManager: QueueManager,
-         coreDataService: CoreDataService) {
+    init(usersManager: UsersManager,
+         userStatusInQueueProvider: UserStatusInQueueProtocol,
+         coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.usersManager = usersManager
-        self.queueManager = queueManager
-        self.coreDataService = coreDataService
+        self.userStatusInQueueProvider = userStatusInQueueProvider
+        self.coreDataContextProvider = coreDataContextProvider
         
         var sections: [MenuSection] = [.inboxes, .folders, .labels, .more]
-        if usersManager.users.first?.userinfo.isInAppFeedbackEnabled ?? false {
+        let localIsInAppFeedbackEnable = usersManager.firstUser?.inAppFeedbackStateService.isEnable ?? false
+        if localIsInAppFeedbackEnable {
             sections.insert(.feedback, at: 0)
             self.feedbackItems = [MenuLabel(location: .provideFeedback)]
         } else {
@@ -84,6 +92,9 @@ final class MenuViewModel: NSObject {
                                         isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
                                         isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
         self.moreItems = Self.moreItems(for: defaultInfo)
+        super.init()
+
+        usersManager.firstUser?.inAppFeedbackStateService.register(delegate: self)
     }
     
     deinit {
@@ -168,21 +179,20 @@ extension MenuViewModel: MenuVMProtocol {
         guard let user = self.currentUser else {
             return false
         }
-        return self.queueManager.isAnyQueuedMessage(of: user.userinfo.userId)
+        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userinfo.userId)
     }
     
     func removeAllQueuedMessageOfCurrentUser() {
         guard let user = self.currentUser else {
             return
         }
-        self.queueManager.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
+        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
     }
     
     func signOut(userID: String) -> Promise<Void> {
         guard let user = self.usersManager.getUser(byUserId: userID) else {
             return Promise()
         }
-//		self.queueManager.unregisterHandler(user.messageService)
         return self.usersManager.logout(user: user)
     }
     
@@ -346,7 +356,7 @@ extension MenuViewModel {
     
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
-        let moc = self.coreDataService.mainContext
+        let moc = self.coreDataContextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              LabelUpdate.Attributes.userID,
@@ -367,7 +377,7 @@ extension MenuViewModel {
     
     private func observeContextLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
-        let moc = self.coreDataService.mainContext
+        let moc = self.coreDataContextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              ConversationCount.Attributes.userID,
@@ -592,5 +602,18 @@ extension MenuViewModel {
         }
 
         return newMore
+    }
+}
+
+extension MenuViewModel: InAppFeedbackStateServiceDelegate {
+    func inAppFeedbackFeatureFlagHasChanged(enable: Bool) {
+        if enable {
+            sections.insert(.feedback, at: 0)
+            feedbackItems = [MenuLabel(location: .provideFeedback)]
+        } else {
+            sections = sections.filter({ $0 != .feedback })
+            feedbackItems = []
+        }
+        reloadClosure?()
     }
 }

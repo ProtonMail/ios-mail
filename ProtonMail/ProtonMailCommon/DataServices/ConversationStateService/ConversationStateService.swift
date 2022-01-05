@@ -15,7 +15,6 @@ class ConversationStateService {
         featureFlag ?? false
     }
 
-    private let conversationFeatureFlagService: ConversationFeatureFlagService
     private let userDefaults: KeyValueStoreProvider
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     private let featureFlagKey = "conversation_feature_flag"
@@ -50,28 +49,15 @@ class ConversationStateService {
         }
     }
 
-    init(conversationFeatureFlagService: ConversationFeatureFlagService,
-         userDefaults: KeyValueStoreProvider,
+    init(userDefaults: KeyValueStoreProvider,
          viewMode: ViewMode) {
-        self.conversationFeatureFlagService = conversationFeatureFlagService
         self.userDefaults = userDefaults
         self.viewModeState = viewMode
         self.featureFlag = savedFlag
-        refreshFlag()
     }
 
     func add(delegate: ConversationStateServiceDelegate) {
         delegatesStore.add(delegate)
-    }
-
-    func refreshFlag() {
-        guard !self.isFetchingFlag else { return }
-        self.isFetchingFlag = true
-        _ = conversationFeatureFlagService
-            .getConversationFlag().done { [weak self] in
-                self?.isFetchingFlag = false
-                self?.featureFlag = $0
-            }
     }
 
     func userInfoHasChanged(viewMode: ViewMode) {
@@ -110,4 +96,12 @@ class ConversationStateService {
             .forEach { $0.viewModeHasChanged(viewMode: newViewMode) }
     }
 
+}
+
+extension ConversationStateService: FeatureFlagsSubscribeProtocol {
+    func handleNewFeatureFlags(_ featureFlags: [String : Any]) {
+        if let removeThreadFlag = featureFlags[FeatureFlagKey.threading.rawValue] as? Bool {
+            featureFlag = removeThreadFlag
+        }
+    }
 }

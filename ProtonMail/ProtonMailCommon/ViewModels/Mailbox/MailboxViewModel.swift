@@ -1109,7 +1109,7 @@ extension MailboxViewModel: ConversationStateServiceDelegate {
 
 extension MailboxViewModel {
     var isInAppFeedbackFeatureEnabled: Bool {
-        return self.user.userinfo.isInAppFeedbackEnabled
+        return self.user.inAppFeedbackStateService.isEnable
     }
 }
 

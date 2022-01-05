@@ -31,6 +31,8 @@ protocol MenuVMProtocol: AnyObject {
     var currentUser: UserManager? { get }
     var secondUser: UserManager? { get }
     var enableFolderColor: Bool { get }
+    var isInAppFeedbackEnable: Bool { get }
+    var reloadClosure: (() -> Void)? { get set }
     
     func userDataInit()
     func menuViewInit()

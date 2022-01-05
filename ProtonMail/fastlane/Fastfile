@@ -180,7 +180,7 @@ end
 platform :ios do 
   desc "Build the app and upload to testflight"
   lane :build do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
     set_up_keychain(false)
 
     api_key = set_up_app_store_api_key
@@ -213,7 +213,7 @@ platform :ios do
 
   desc "Build enterprise app"
   lane :enterprise do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
     set_up_keychain(true)
     
     # Set build version by git log numbers
@@ -249,7 +249,7 @@ platform :ios do
 
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
     scan(
       workspace: "Protonmail.xcworkspace",
       device: "iPhone 8",
@@ -273,7 +273,7 @@ platform :ios do
 
   desc "Run ui test and get test coverage"
   lane :ui_test do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
 
     try_scan(
       workspace: "Protonmail.xcworkspace",
