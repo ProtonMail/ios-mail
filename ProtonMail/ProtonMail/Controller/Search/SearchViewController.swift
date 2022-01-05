@@ -35,7 +35,7 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadRows(rows: [IndexPath])
 }
 
-class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
+class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
     
     @IBOutlet var navigationBarView: UIView!
     @IBOutlet var tableView: UITableView!
@@ -77,6 +77,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol {
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let cellPresenter = NewMailboxMessageCellPresenter()
+    var pendingActionAfterDismissal: (() -> Void)?
 
     func set(viewModel: SearchVMProtocol) {
         self.viewModel = viewModel
@@ -386,8 +387,11 @@ extension SearchViewController {
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
-                     hasNewFolderButton: false,
-                     addNewFolder: {
+                     addNewFolder: { [weak self] in
+                        self?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                        }
+                        self?.presentCreateFolder(type: .folder)
                      },
                      selected: { menuLabel, isOn in
                         handler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -429,8 +433,11 @@ extension SearchViewController {
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
-                     hasNewLabelButton: false,
-                     addNewLabel: { 
+                     addNewLabel: { [weak self] in
+                        self?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet(messages: messages)
+                        }
+                        self?.presentCreateFolder(type: .label)
                      },
                      selected: { menuLabel, isOn in
                         handler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -452,6 +459,21 @@ extension SearchViewController {
                         self?.dismissActionSheet()
                         self?.cancelButtonTapped()
                      })
+    }
+    
+    private func presentCreateFolder(type: PMLabelType) {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let folderLabels = viewModel.user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let viewModel = LabelEditViewModel(user: viewModel.user, label: nil, type: type, labels: folderLabels)
+        let viewController = LabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: sharedServices,
+                                               viewController: viewController,
+                                               viewModel: viewModel,
+                                               coordinatorDismissalObserver: self)
+        coordinator.start()
+        if let navigation = viewController.navigationController {
+            self.navigationController?.present(navigation, animated: true, completion: nil)
+        }
     }
 }
 
