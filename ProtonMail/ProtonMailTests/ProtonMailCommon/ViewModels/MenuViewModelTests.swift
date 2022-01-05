@@ -17,10 +17,56 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonCore_TestingToolkit
 
-final class MenuViewModelTests: XCTestCase {
-    var sut = MenuViewModel.self
+class MenuViewModelTests: XCTestCase {
+    var sut: MenuViewModel!
+    var usersManagerMock: UsersManager!
+    var userStatusInQueueProviderMock: UserStatusInQueueProviderMock!
+    var coreDataContextProviderMock: CoreDataContextProviderMock!
+    var dohMock: DohMock!
+    var testUser: UserManager!
+    var apiMock: APIServiceMock!
 
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
+        coreDataContextProviderMock = CoreDataContextProviderMock()
+        dohMock = try DohMock()
+        usersManagerMock = UsersManager(doh: dohMock, delegate: nil)
+        apiMock = APIServiceMock()
+        testUser = UserManager(api: apiMock, role: .none)
+        usersManagerMock.add(newUser: testUser)
+        sut = MenuViewModel(usersManager: usersManagerMock,
+                            userStatusInQueueProvider: userStatusInQueueProviderMock,
+                            coreDataContextProvider: coreDataContextProviderMock)
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+        usersManagerMock = nil
+        userStatusInQueueProviderMock = nil
+        coreDataContextProviderMock = nil
+        testUser = nil
+        dohMock = nil
+        apiMock = nil
+    }
+
+    func testInit_withInAppFeedbackDisable() {
+        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
+        XCTAssertTrue(sut.feedbackItems.isEmpty)
+    }
+
+    func testInit_withInAppFeedbackEnable() {
+        testUser.inAppFeedbackStateService.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
+        sut = MenuViewModel(usersManager: usersManagerMock,
+                            userStatusInQueueProvider: userStatusInQueueProviderMock,
+                            coreDataContextProvider: coreDataContextProviderMock)
+        XCTAssertEqual(sut.sections, [.feedback, .inboxes, .folders, .labels, .more])
+        XCTAssertEqual(sut.feedbackItems.count, 1)
+        XCTAssertEqual(sut.feedbackItems.first?.location, .provideFeedback)
+    }
 
     func testInboxItemsAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .inbox),
@@ -31,7 +77,7 @@ final class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .spam),
                              MenuLabel(location: .trash),
                              MenuLabel(location: .allmail)]
-        XCTAssert(sut.inboxItems().map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.inboxItems().map(\.location) == expectedItems.map(\.location))
     }
 
     func testDefaultMoreItemsAreTheExpectedOnes() {
@@ -44,7 +90,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true)
-        XCTAssert(sut.moreItems(for: baseInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: baseInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsForMemberUserAreTheExpectedOnes() {
@@ -57,7 +103,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsForNonMemberUserAreTheExpectedOnes() {
@@ -71,7 +117,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: true,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsForNonMemberWithUnavailableSubscriptionAreTheExpectedOnes() {
@@ -84,7 +130,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: true)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsWithDisabledPINCodeAreTheExpectedOnes() {
@@ -97,7 +143,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: true)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsWithDisabledTouchIDAreTheExpectedOnes() {
@@ -110,7 +156,7 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: true,
                                                    isTouchIDEnabled: false)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 
     func testMoreItemsWithDisabledPINCodeAndTouchIDAreTheExpectedOnes() {
@@ -122,6 +168,6 @@ final class MenuViewModelTests: XCTestCase {
                                                    subscriptionAvailable: false,
                                                    isPinCodeEnabled: false,
                                                    isTouchIDEnabled: false)
-        XCTAssert(sut.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
+        XCTAssert(MenuViewModel.moreItems(for: moreInfo).map(\.location) == expectedItems.map(\.location))
     }
 }

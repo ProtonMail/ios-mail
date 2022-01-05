@@ -236,6 +236,10 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/UserAddressUpdaterProtocol.swift
   - ${PWD}/../ProtonMail/PushService/NotificationService.swift
   - ${PWD}/../ProtonMail/PushService/PushNotificationHandler.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/FeatureFlagsAPI/FeatureFlagsRequest.swift
+  - ${PWD}/ProtonMailCommon/DataServices/FeatureFlagsDownloadService/FeatureFlagsDownloadService.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/FeatureFlagsAPI/FeatureFlagsResponse.swift
+  - ${PWD}/ProtonMailCommon/DataServices/InAppFeedbackStateService.swift
 
 excluded:
   - ${PWD}/Pods

@@ -15,14 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import ProtonCore_DataModel
-@testable import ProtonMail
+import Foundation
 
-final class UserInfoLocalFeatureFlagsTests: XCTestCase {
-
-    func testInAppFeedbackShouldBeDisabled() {
-        // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
-        XCTAssertTrue(UserInfo.isInAppFeedbackEnabled)
-    }
+enum FeatureFlagTestData {
+    static let data = """
+{
+    "Code": 1000,
+    "Features": [
+        {
+            "Code": "ThreadingIOS",
+            "Type": "boolean",
+            "Global": true,
+            "DefaultValue": true,
+            "Value": true,
+            "Writable": true
+        },
+        {
+            "Code": "TestInteger",
+            "Type": "integer",
+            "Global": 1,
+            "DefaultValue": 1,
+            "Value": 1,
+            "UpdateTime": 1638767627,
+            "Writable": true
+        }
+    ],
+    "Total": 14
+}
+"""
 }

@@ -15,14 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import ProtonCore_DataModel
-@testable import ProtonMail
+import CoreData
+import Foundation
 
-final class UserInfoLocalFeatureFlagsTests: XCTestCase {
-
-    func testInAppFeedbackShouldBeDisabled() {
-        // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
-        XCTAssertTrue(UserInfo.isInAppFeedbackEnabled)
-    }
+protocol CoreDataContextProviderProtocol {
+    var mainContext: NSManagedObjectContext { get }
+    var rootSavingContext: NSManagedObjectContext { get }
 }

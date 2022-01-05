@@ -19,19 +19,15 @@ import ProtonCore_Common
 import ProtonCore_DataModel
 
 extension UserInfo {
-    var isInAppFeedbackEnabled: Bool {
+    static var isInAppFeedbackEnabled: Bool {
         if ProcessInfo.isRunningUnitTests {
-            return false
+            return true
         }
         // The `-disableAnimations` flag is set for UI tests runs
         if CommandLine.arguments.contains("-disableAnimations") {
             return false
         }
-#if DEBUG
         return true
-#else
-        return false
-#endif
     }
 
     static var isDarkModeEnable: Bool {

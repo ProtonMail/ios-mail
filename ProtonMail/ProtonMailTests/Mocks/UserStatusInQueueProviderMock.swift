@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-import ProtonCore_DataModel
+import Foundation
 @testable import ProtonMail
 
-final class UserInfoLocalFeatureFlagsTests: XCTestCase {
+class UserStatusInQueueProviderMock: UserStatusInQueueProtocol {
+    func isAnyQueuedMessage(of userID: String) -> Bool {
+        return false
+    }
 
-    func testInAppFeedbackShouldBeDisabled() {
-        // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
-        XCTAssertTrue(UserInfo.isInAppFeedbackEnabled)
+    func deleteAllQueuedMessage(of userID: String, completeHander: (() -> Void)?) {
+        completeHander?()
     }
 }

@@ -111,22 +111,15 @@ class UserManager : Service, HasLocalStorage {
     
     var delegate : UserManagerSave?
     
-    
-    //weak var delegate : UsersManagerDelegate?
-    
     public var apiService : APIService
     public var userinfo : UserInfo
     public var auth : AuthCredential
 
     var isUserSelectedUnreadFilterInInbox = false
-    //TODO:: add a user status. logging in, expired, no key etc...
-
-    //public let user
 
     public lazy var conversationStateService: ConversationStateService = { [unowned self] in
         let conversationFeatureFlagService = ConversationFeatureFlagService(apiService: self.apiService)
         return ConversationStateService(
-            conversationFeatureFlagService: conversationFeatureFlagService,
             userDefaults: SharedCacheBase.getDefault(),
             viewMode: self.userinfo.viewMode
         )
@@ -235,10 +228,23 @@ class UserManager : Service, HasLocalStorage {
         }
         return manager
     }()
+
+	public lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
+        let service = FeatureFlagsDownloadService(apiService: self.apiService)
+        service.register(newSubscriber: conversationStateService)
+        service.register(newSubscriber: inAppFeedbackStateService)
+        service.getFeatureFlags(completion: nil)
+        return service
+    }()
     
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
+
+    public lazy var inAppFeedbackStateService: InAppFeedbackStateServiceProtocol = {
+        let service = InAppFeedbackStateService()
+        return service
+    }()
     
     #if !APP_EXTENSION
     public lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
@@ -296,6 +302,7 @@ class UserManager : Service, HasLocalStorage {
     }
     
     func fetchUserInfo() {
+        featureFlagsDownloadService.getFeatureFlags(completion: nil)
         _ = self.userService.fetchUserInfo(auth: self.auth).done { [weak self] info in
             guard let info = info else { return }
             self?.userinfo = info
@@ -314,7 +321,7 @@ class UserManager : Service, HasLocalStorage {
     }
 
     func refreshFeatureFlags() {
-        conversationStateService.refreshFlag()
+        featureFlagsDownloadService.getFeatureFlags(completion: nil)
     }
 
     func activatePayments() {

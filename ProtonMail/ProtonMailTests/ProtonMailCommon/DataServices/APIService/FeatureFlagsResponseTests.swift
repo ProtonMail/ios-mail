@@ -16,13 +16,32 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCore_DataModel
 @testable import ProtonMail
 
-final class UserInfoLocalFeatureFlagsTests: XCTestCase {
+class FeatureFlagsResponseTests: XCTestCase {
 
-    func testInAppFeedbackShouldBeDisabled() {
-        // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
-        XCTAssertTrue(UserInfo.isInAppFeedbackEnabled)
+    var sut: FeatureFlagsResponse!
+    override func setUp() {
+        super.setUp()
+        sut = FeatureFlagsResponse()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+    }
+
+    func testParseResponse() throws {
+        XCTAssertTrue(sut.ParseResponse(FeatureFlagTestData.data.parseObjectAny()!))
+
+        let threadValue = try XCTUnwrap(sut.result["ThreadingIOS"] as? Bool)
+        XCTAssertEqual(threadValue, true)
+
+        let integerValue = try XCTUnwrap(sut.result["TestInteger"] as? Int)
+        XCTAssertEqual(integerValue, 1)
+    }
+
+    func testEmptyResponse() {
+        XCTAssertFalse(sut.ParseResponse([:]))
     }
 }
