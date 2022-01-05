@@ -69,16 +69,15 @@ import UIKit
             self.currentProgressLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
 
-        self.pauseButton.titleLabel?.adjustsFontSizeToFitWidth = false
-        self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        //self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.pauseButton.titleLabel?.adjustsFontSizeToFitWidth = true
         self.pauseButton.setTitleColor(ColorProvider.TextNorm, for: .normal)
-        self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
+        self.pauseButton.tintColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
         self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.pauseButton.topAnchor.constraint(equalTo: self.estimatedTimeLabel.bottomAnchor, constant: 16),
             self.pauseButton.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
-            self.pauseButton.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -290),
             self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
             self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
         ])

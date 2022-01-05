@@ -230,6 +230,9 @@ extension SettingsEncryptedSearchViewController {
         if section > 0 && self.hideSections {
             return CGFloat.leastNormalMagnitude
         }
+        if section == 2 {
+            return CGFloat.leastNormalMagnitude
+        }
         return Key.footerHeight
     }
 

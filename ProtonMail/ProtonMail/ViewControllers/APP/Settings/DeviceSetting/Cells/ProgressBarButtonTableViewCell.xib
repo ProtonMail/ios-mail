@@ -48,13 +48,11 @@
                         <rect key="frame" x="16" y="52" width="343" height="4"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </progressView>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                        <rect key="frame" x="16" y="78" width="64.5" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe">
+                        <rect key="frame" x="18" y="79" width="62" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="gray" title="Button">
-                            <fontDescription key="titleFontDescription" type="system" pointSize="13"/>
-                        </buttonConfiguration>
+                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
                         <connections>
                             <action selector="pauseButtonPressed:" destination="3QP-tG-Vhv" eventType="touchUpInside" id="9rs-Bn-xuR"/>
                         </connections>
