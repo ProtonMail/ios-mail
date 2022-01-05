@@ -239,13 +239,14 @@ extension EncryptedSearchService {
                 self.scheduleNewBGProcessingTask()
             }
         #endif
+        
+        self.indexBuildingInProgress = true
+        self.viewModel = viewModel
 
         self.state = .downloading
         self.viewModel?.indexStatus = self.state.rawValue
         print("ENCRYPTEDSEARCH-STATE: downloading")
 
-        self.indexBuildingInProgress = true
-        self.viewModel = viewModel
         let uid: String? = self.updateCurrentUserIfNeeded()    // Check that we have the correct user selected
         if let userID = uid {
             // Check if search index db exists - and if not create it
@@ -302,6 +303,44 @@ extension EncryptedSearchService {
             }
         } else {
             print("Error: User ID unknown!")
+        }
+    }
+
+    func restartIndexBuilding(userID: String, viewModel: SettingsEncryptedSearchViewModel) -> Void {
+        // set viewmodel
+        self.viewModel = viewModel
+
+        // Set the state to downloading
+        self.state = .downloading
+        self.viewModel?.indexStatus = self.state.rawValue
+        print("ENCRYPTEDSEARCH-STATE: downloading - restart index building")
+        self.indexBuildingInProgress = true
+
+        // Update the UI with refresh state
+        self.updateUIWithIndexingStatus()
+
+        // Set processed message to the number of entries in the search index
+        self.processedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        self.prevProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+
+        // Update last indexed message with the newest message in search index
+        self.lastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+
+        // Restart index building timers
+        DispatchQueue.main.async {
+            self.indexingStartTime = CFAbsoluteTimeGetCurrent()
+            if self.indexBuildingTimer != nil {
+                self.indexBuildingTimer?.invalidate()
+                self.indexBuildingTimer = nil
+            }
+            self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+        }
+
+        // Start refreshing the index
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.downloadAndProcessPage(userID: userID){ [weak self] in
+                self?.checkIfIndexingIsComplete(){}
+            }
         }
     }
 
@@ -1913,17 +1952,17 @@ extension EncryptedSearchService {
             }
         }
 
-        if self.state == .downloading && self.processedMessages != self.prevProcessedMessages {
+        if self.state == .downloading {
             DispatchQueue.global().async {
                 let result = self.estimateIndexingTime()
-                
+
                 if self.isFirstIndexingTimeEstimate {
                     let minute: Int = 60_000
                     self.initialIndexingEstimate = result.estimatedMinutes * minute
                     self.isFirstIndexingTimeEstimate = false
                 }
-                
-                //update viewModel
+
+                // Update UI
                 self.viewModel?.currentProgress.value = result.currentProgress
                 self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
                 print("Remaining indexing time: \(result.estimatedMinutes)")

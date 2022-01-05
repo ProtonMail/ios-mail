@@ -73,7 +73,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupIndexingInterruptionObservers()
 
         // Load ES state from user cache
-        EncryptedSearchService.shared.state = EncryptedSearchService.EncryptedSearchIndexState(rawValue: self.viewModel.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
+        EncryptedSearchService.shared.state = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
         print("ES-STATE: loaded from chache: -> \(EncryptedSearchService.shared.state)")
 
         // If the state cannot be load from cache - try to figure it out
@@ -87,9 +87,19 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
             }
         }
 
-        //Speed up indexing when on this view
+        // Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
-        
+
+        // Automatically restart indexing when previous state was downloading
+        if EncryptedSearchService.shared.state == .downloading {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                EncryptedSearchService.shared.restartIndexBuilding(userID: userID, viewModel: self.viewModel)
+            } else {
+                print("ERROR when restarting download. User unknown!")
+            }
+        }
+
         if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
             self.showInfoBanner()
         }
