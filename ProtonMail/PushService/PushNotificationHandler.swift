@@ -167,6 +167,8 @@ enum NotificationPingBack {
         var request = URLRequest(url: url)
         request.httpMethod = Self.method
         request.httpBody = try JSONEncoder().encode(body)
+        request.setValue("iOS_\(Bundle.main.majorVersion)", forHTTPHeaderField: "x-pm-appversion")
+        request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
         return request
     }
 }

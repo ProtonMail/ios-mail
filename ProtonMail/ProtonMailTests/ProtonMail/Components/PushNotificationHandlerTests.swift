@@ -65,6 +65,8 @@ final class PushNotificationHandlerTests: XCTestCase {
                    request: notificationRequest) { _ in
             XCTAssertEqual(mock.dataTaskCallCount, 1)
             XCTAssertEqual(mock.dataTaskArgsRequest[0].httpMethod, "POST")
+            XCTAssertEqual(mock.dataTaskArgsRequest[0].value(forHTTPHeaderField: "x-pm-appversion"), "iOS_\(Bundle.main.majorVersion)")
+            XCTAssertEqual(mock.dataTaskArgsRequest[0].value(forHTTPHeaderField: "Content-Type"), "application/json;charset=utf-8")
             XCTAssertNotNil(mock.dataTaskArgsRequest[0].url?.absoluteString)
             XCTAssertEqual(mock.dataTaskArgsRequest[0].url?.absoluteString, NotificationPingBack.endpoint)
             let decodedBody = try! JSONDecoder().decode(NotificationPingBackBody.self, from: mock.dataTaskArgsRequest[0].httpBody!)
@@ -90,6 +92,8 @@ final class PushNotificationHandlerTests: XCTestCase {
             XCTAssertEqual(decryptedContent.body, testBody)
             XCTAssertEqual(mock.dataTaskCallCount, 1)
             XCTAssertEqual(mock.dataTaskArgsRequest[0].httpMethod, "POST")
+            XCTAssertEqual(mock.dataTaskArgsRequest[0].value(forHTTPHeaderField: "x-pm-appversion"), "iOS_\(Bundle.main.majorVersion)")
+            XCTAssertEqual(mock.dataTaskArgsRequest[0].value(forHTTPHeaderField: "Content-Type"), "application/json;charset=utf-8")
             XCTAssertNotNil(mock.dataTaskArgsRequest[0].url?.absoluteString)
             XCTAssertEqual(mock.dataTaskArgsRequest[0].url?.absoluteString, NotificationPingBack.endpoint)
             let decodedBody = try! JSONDecoder().decode(NotificationPingBackBody.self, from: mock.dataTaskArgsRequest[0].httpBody!)
