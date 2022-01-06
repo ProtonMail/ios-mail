@@ -230,6 +230,8 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/APIService/MessageAPIs/ApplyLabelToMessages.swift
   - ${PWD}/ProtonMailCommon/Helpers/NewsLetterCheckHelper.swift
   - ${PWD}/ProtonMailCommon/DataService/APIService/FeedbackAPI.swift
+  - ${PWD}/ProtonMailCommon/DataServices/UsersManager/UsersManager+Migrate.swift
+  - ${PWD}/ProtonMailCommon/DataServices/UsersManager/UsersManager.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Contacts/ContactParser.swift
   - ${PWD}/ProtonMailCommon/Utilities/WebContentsSecureLoader/WebContents.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageDataProcessProtocol.swift
