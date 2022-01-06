@@ -287,13 +287,6 @@ class UserManager : Service, HasLocalStorage {
         return false
     }
     
-    func isExist(userID: String) -> Bool {
-        if userInfo.userId == userID {
-            return true
-        }
-        return false
-    }
-    
     func save() {
         DispatchQueue.main.async {
             self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)

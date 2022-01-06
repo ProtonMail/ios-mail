@@ -182,79 +182,65 @@ class MailboxViewModel: StorageLimit {
 
     private var fetchingMessageForOhters : Bool = false
     
-    func getLatestMessagesForOthers() {
+    func getLatestMessagesForOthers(isForceRefresh: Bool = false) {
         if fetchingMessageForOhters == false {
             fetchingMessageForOhters = true
             DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                guard let users = self.users else { return }
-                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
-                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
-                    var loadMore: Int = 0
-                    if error == nil {
-                        if let more = res?["More"] as? Int {
-                            loadMore = more
+                guard let self = self,
+                      let usersManager = self.users else { return }
+                let usersToFetch = usersManager.getUsersWithoutTheActiveOne()
+                let group = DispatchGroup()
+                usersToFetch.forEach { user in
+                    let completion: CompletionBlock = { (task, res, error) -> Void in
+                        defer {
+                            group.leave()
                         }
-                        if loadMore <= 0 {
-                            secondUser.messageService.updateMessageCount()
+                        guard error == nil else {
+                            return
                         }
+                        user.messageService.updateMessageCount(completion: nil)
                     }
-                    
-                    if loadMore > 0 {
-                        //self.retry()
-                    } else {
-                        self.fetchingMessageForOhters = false
+
+                    group.enter()
+                    if isForceRefresh {
+                        user.messageService.fetchMessagesWithReset(byLabel: self.labelID,
+                                                                   time: 0,
+                                                                   cleanContact: false,
+                                                                   completion: completion)
+                    } else if let updateTime = self.lastUpdatedStore.lastUpdate(by: self.labelID,
+                                                                                userID: user.userInfo.userId,
+                                                                                context: self.coreDataService.mainContext,
+                                                                                type: .singleMessage),
+                              updateTime.isNew == false,
+                              user.messageService.isEventIDValid(context: self.coreDataService.mainContext) {
+                        user.eventsService.fetchEvents(byLabel: self.labelID,
+                                                       notificationMessageID: nil,
+                                                       completion: completion)
+                    } else {// this new
+                        if !user.messageService.isEventIDValid(context: self.coreDataService.operationContext) { //if event id is not valid reset
+                            user.messageService.fetchMessagesWithReset(byLabel: self.labelID,
+                                                                       time: 0,
+                                                                       completion: completion)
+                        }
+                        else {
+                            user.messageService.fetchMessages(byLabel: self.labelID,
+                                                              time: 0,
+                                                              forceClean: false,
+                                                              isUnread: false,
+                                                              completion: completion)
+                        }
                     }
                 }
-                
-                if let updateTime = self.lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId, context: self.coreDataService.mainContext, type: .singleMessage),
-                   updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainContext) {
-                    secondUser.eventsService.fetchEvents(byLabel: self.labelID,
-                                                          notificationMessageID: nil,
-                                                          completion: secondComplete)
-                } else {// this new
-                    if !secondUser.messageService.isEventIDValid(context: self.coreDataService.operationContext) { //if event id is not valid reset
-                        secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
-                    }
-                    else {
-                        secondUser.messageService.fetchMessages(byLabel: self.labelID,
-                                                                time: 0,
-                                                                forceClean: false,
-                                                                isUnread: false,
-                                                                completion: secondComplete)
-                    }
+
+                group.notify(queue: .main) { [weak self] in
+                    self?.fetchingMessageForOhters = false
                 }
             }
         }
     }
     
     func forceRefreshMessagesForOthers() {
-        if fetchingMessageForOhters == false {
-            fetchingMessageForOhters = true
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                guard let users = self.users else { return }
-                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
-                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
-                    var loadMore: Int = 0
-                    if error == nil {
-                        if let more = res?["More"] as? Int {
-                            loadMore = more
-                        }
-                        if loadMore <= 0 {
-                            secondUser.messageService.updateMessageCount()
-                        }
-                    }
-                    
-                    if loadMore > 0 {
-                        //self.retry()
-                    } else {
-                        self.fetchingMessageForOhters = false
-                    }
-                }
-                secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, cleanContact: false, completion: secondComplete)
-            }
-        }
+        getLatestMessagesForOthers(isForceRefresh: true)
     }
     
     /// create a fetch controller with labelID
