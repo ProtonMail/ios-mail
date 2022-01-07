@@ -634,7 +634,7 @@ extension SettingsEncryptedSearchViewController {
 
         UIView.performWithoutAnimation {
             self.view.addSubview(self.banner)
-            self.banner.drop(on: self.view, from: .top)
+            self.banner.drop(on: self.view, from: .top, animate: false)
         }
     }
 }
