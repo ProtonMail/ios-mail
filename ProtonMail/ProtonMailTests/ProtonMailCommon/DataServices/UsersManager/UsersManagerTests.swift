@@ -30,7 +30,7 @@ class UsersManagerTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.apiMock = APIServiceMock()
-        self.doh = try DohMock()
+        self.doh = DohMock()
         sut = UsersManager(doh: doh, delegate: nil)
     }
 

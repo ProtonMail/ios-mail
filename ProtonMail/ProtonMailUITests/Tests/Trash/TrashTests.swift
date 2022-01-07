@@ -58,7 +58,6 @@ class TrashTests: BaseTestCase {
         let recipient = testData.onePassUser
         let subject1 = "Test trash 1"
         let subject2 = "Test trash 2"
-        let positions = [0,1]
         LoginRobot()
             .loginUser(user)
             .compose()

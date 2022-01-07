@@ -95,10 +95,10 @@ final class UndoActionManager: UndoActionManagerProtocol {
         let request = UndoActionRequest(token: token.token)
         apiService.exec(route: request) { [weak self] (result: Result<UndoActionResponse, ResponseError>) in
             switch result {
-            case .success(_):
+            case .success:
                 self?.fetchEventClosure?()
                 completion?(true)
-            case .failure(_):
+            case .failure:
                 completion?(false)
             }
         }
