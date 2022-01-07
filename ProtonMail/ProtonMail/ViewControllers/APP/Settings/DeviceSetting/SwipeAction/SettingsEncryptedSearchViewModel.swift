@@ -69,7 +69,6 @@ class SettingsEncryptedSearchViewModel {
     
     init(encryptedSearchCache: EncryptedSearchCacheProtocol) {
         self.encryptedSearchCache = encryptedSearchCache
-        self.estimatedTimeRemaining.value = 0
         self.currentProgress.value = 0
     }
     
@@ -113,7 +112,7 @@ class SettingsEncryptedSearchViewModel {
     var interruptStatus = Bindable<String>()
     var interruptAdvice = Bindable<String>()
     var currentProgress = Bindable<Int>()
-    var estimatedTimeRemaining = Bindable<Int>()
+    var estimatedTimeRemaining = Bindable<String>()
 
     var sections: [SettingSection] = [.encryptedSearch, .downloadViaMobileData, .downloadedMessages]
 }

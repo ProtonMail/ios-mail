@@ -412,7 +412,7 @@ extension EncryptedSearchService {
             // set some status variables
             self.viewModel?.isEncryptedSearch = true
             self.viewModel?.currentProgress.value = 100
-            self.viewModel?.estimatedTimeRemaining.value = 0
+            self.viewModel?.estimatedTimeRemaining.value = nil
             self.indexBuildingInProgress = false
 
             // Unregister network monitoring
@@ -725,7 +725,7 @@ extension EncryptedSearchService {
                 // Update viewmodel
                 self.viewModel?.isEncryptedSearch = false
                 self.viewModel?.currentProgress.value = 0
-                self.viewModel?.estimatedTimeRemaining.value = 0
+                self.viewModel?.estimatedTimeRemaining.value = nil
 
                 // Invalidate timer on same thread as it has been created
                 DispatchQueue.main.async {
@@ -1915,24 +1915,26 @@ extension EncryptedSearchService {
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         }
     }
-    
-    private func estimateIndexingTime() -> (estimatedMinutes: Int, currentProgress: Int){
-        var estimatedMinutes: Int = 0
+
+    private func estimateIndexingTime() -> (estimatedTime: String?, currentProgress: Int){
+        var estimatedTime: Double = 0
         var currentProgress: Int = 0
         let currentTime: Double = CFAbsoluteTimeGetCurrent()
-        let minute: Double = 60_000.0
+        //let minute: Double = 60_000.0
 
         if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
             let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
             let timeDifference: Double = currentTime-self.indexingStartTime
             let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
-            estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
+            //estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
+            estimatedTime = ceil((timeDifference/processedMessageDifference)*remainingMessages)
             currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
             self.prevProcessedMessages = self.processedMessages
         }
-        return (estimatedMinutes, currentProgress)
+
+        return (self.timeToDate(time: estimatedTime), currentProgress)
     }
-    
+
     @objc private func updateRemainingIndexingTime() {
         // Stop timer if indexing is finished or paused
         if self.state == .complete || self.state == .partial || self.state == .paused || self.state == .undetermined || self.state == .disabled {
@@ -1947,15 +1949,16 @@ extension EncryptedSearchService {
                 let result = self.estimateIndexingTime()
 
                 if self.isFirstIndexingTimeEstimate {
-                    let minute: Int = 60_000
-                    self.initialIndexingEstimate = result.estimatedMinutes * minute
+                    //let minute: Int = 60_000
+                    //self.initialIndexingEstimate = //result.estimatedMinutes * minute
+                    self.initialIndexingEstimate = 0    // TODO replace correctly
                     self.isFirstIndexingTimeEstimate = false
                 }
 
                 // Update UI
                 self.viewModel?.currentProgress.value = result.currentProgress
-                self.viewModel?.estimatedTimeRemaining.value = result.estimatedMinutes
-                print("Remaining indexing time: \(result.estimatedMinutes)")
+                self.viewModel?.estimatedTimeRemaining.value = result.estimatedTime
+                print("Remaining indexing time: \(String(describing: result.estimatedTime))")
                 print("Current progress: \(result.currentProgress)")
                 print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
             }
@@ -1967,7 +1970,21 @@ extension EncryptedSearchService {
         // print state for debugging
         print("ES-DEBUG: \(self.state)")
     }
-    
+
+    private func timeToDate(time: Double) -> String? {
+        let date: Date = Date(timeIntervalSinceNow: TimeInterval(time))
+
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.unitsStyle = .full    // spells out units
+        formatter.collapsesLargestUnit = true
+        formatter.includesTimeRemainingPhrase = true    // adds remaining in the end
+        formatter.zeroFormattingBehavior = .dropLeading // drops leading units that are zero
+        
+        let datecomp = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
+        return formatter.string(from: datecomp)
+    }
+
     // Not used at the moment - use low power mode notification instead
     /*private func registerForBatteryLevelChangeNotifications() {
         UIDevice.current.isBatteryMonitoringEnabled = true
