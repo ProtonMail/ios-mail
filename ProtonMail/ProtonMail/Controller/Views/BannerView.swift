@@ -197,7 +197,7 @@ class BannerView : PMView {
 
 extension BannerView: UIGestureRecognizerDelegate {
     
-    func drop(on baseView: UIView, from: Base) {
+    func drop(on baseView: UIView, from: Base, animate: Bool = true) {
         self.superView = baseView
 
         // sizing
@@ -298,15 +298,17 @@ extension BannerView: UIGestureRecognizerDelegate {
             ])
         }
         
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.1,
-                       options: [.curveEaseIn],
-                       animations: {
-                        self.center = initAnchor
-        }) { _ in
-            self.startTimer()
+        if animate {
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           usingSpringWithDamping: 0.7,
+                           initialSpringVelocity: 0.1,
+                           options: [.curveEaseIn],
+                           animations: {
+                            self.center = initAnchor
+            }) { _ in
+                self.startTimer()
+            }
         }
     }
     

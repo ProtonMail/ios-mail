@@ -214,15 +214,17 @@ extension EncryptedSearchService {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             let userID: String? = usersManager.firstUser?.userInfo.userId
             if let userID = userID {
-                self.state = .partial
-                self.viewModel?.indexStatus = self.state.rawValue
-                print("ENCRYPTEDSEARCH-STATE: partial 2")
-
                 let success: Bool = EncryptedSearchIndexService.shared.resizeSearchIndex(userID: userID, expectedSize: expectedSize)
                 if success == false {
                     self.state = .complete
                     self.viewModel?.indexStatus = self.state.rawValue
                     print("ENCRYPTEDSEARCH-STATE: complete 3")
+                } else {
+                    self.state = .partial
+                    self.viewModel?.indexStatus = self.state.rawValue
+                    print("ENCRYPTEDSEARCH-STATE: partial 2")
+
+                    self.lastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
                 }
             } else {
                 print("Error when resizing the search index: User not found!")
@@ -1730,9 +1732,6 @@ extension EncryptedSearchService {
 
             //slow down indexing again - will be speed up if user switches to ES screen
             self.slowDownIndexing()
-
-            //send notification - debugging - TODO remove
-            self.sendNotification(text: "BGPROCESSING-TASK stop indexing in BG")
         }
 
         //index is build in foreground - no need for a background task
@@ -1742,12 +1741,9 @@ extension EncryptedSearchService {
             self.state = .background
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: background")
-            
+
             // in the background we can index with full speed
             self.speedUpIndexing()
-
-            //send a notification - debugging - TODO remove
-            self.sendNotification(text: "BGPROCESSING-TASK start indexing in BG")
 
             //start indexing in background
             self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
@@ -1804,9 +1800,6 @@ extension EncryptedSearchService {
             
             //slow down indexing again - will be speed up if user switches to ES screen
             self.slowDownIndexing()
-            
-            //send notification - debugging - TODO remove
-            self.sendNotification(text: "BGAPPREFRESH-TASK stop indexing in BG")
         }
         
         //index is build in foreground - no need for a background task
@@ -1819,9 +1812,6 @@ extension EncryptedSearchService {
 
             // in the background we can index with full speed
             self.speedUpIndexing()
-
-            //send a notification - debugging - TODO remove
-            self.sendNotification(text: "BGAPPREFRESH-TASK start indexing in BG")
 
             //start indexing in background
             self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
@@ -1899,7 +1889,7 @@ extension EncryptedSearchService {
     }
 
     // MARK: - Helper Functions
-    private func sendNotification(text: String){
+    /* private func sendNotification(text: String){
         let content = UNMutableNotificationContent()
         content.title = "Background Processing Task"
         content.subtitle = text
@@ -1907,15 +1897,15 @@ extension EncryptedSearchService {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
-    }
+    } */
     
     // Notification when app moves to BG
-    @objc private func appMovedToBackground(){
+    /* @objc private func appMovedToBackground(){
         print("App moved to background")
         if self.indexBuildingInProgress {
             self.sendNotification(text: "Index building is in progress... Please tap to resume index building in foreground.")
         }
-    }
+    } */
     
     private func checkIfEnoughStorage() {
         let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()

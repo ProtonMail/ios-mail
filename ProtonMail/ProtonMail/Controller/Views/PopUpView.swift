@@ -137,7 +137,7 @@ extension PopUpView {
         self.descriptionLabel.textAlignment = .center
         self.descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         self.descriptionLabel.textColor = ColorProvider.TextWeak
-        self.descriptionLabel.numberOfLines = 2
+        self.descriptionLabel.numberOfLines = 3
         NSLayoutConstraint.activate([
             self.descriptionLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 208),
             self.descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
@@ -147,9 +147,10 @@ extension PopUpView {
 
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-        self.button.titleLabel?.adjustsFontSizeToFitWidth = false
+        self.button.titleLabel?.numberOfLines = 1
         self.button.setTitleColor(ColorProvider.BackgroundNorm, for: .normal)
         self.button.tintColor = ColorProvider.BrandNorm
+        self.button.backgroundColor = ColorProvider.BrandNorm
         self.button.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
             self.button.topAnchor.constraint(equalTo: self.topAnchor, constant: 264),
