@@ -43,7 +43,7 @@ extension SignInCoordinatorEnvironment {
         unlockIfRememberedCredentials: @escaping (String?, () -> Void, (() -> Void)?, (() -> Void)?) -> Void = dummyUnlockIfRememberedCredentials
     ) -> SignInCoordinatorEnvironment {
         .init(services: ServiceFactory(),
-              doh: try! DohMock(),
+              doh: DohMock(),
               forceUpgradeDelegate: ForceUpgradeDelegateMock(),
               apiServiceDelegate: APIServiceDelegateMock(),
               mailboxPassword: mailboxPassword,

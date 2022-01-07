@@ -80,7 +80,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let expectation1 = expectation(description: "Closure called")
         sut.getFeatureFlags { result in
             switch result {
-            case .success(_):
+            case .success:
                 XCTFail("Should not reach here")
             case .failure(let error):
                 if case .fetchingTooOften = error {

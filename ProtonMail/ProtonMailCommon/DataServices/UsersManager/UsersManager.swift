@@ -33,7 +33,6 @@ import ProtonCore_Services
 protocol UsersManagerDelegate: AnyObject {}
 
 /// manager all the users and there services
-// swiftlint:disable type_body_length
 class UsersManager: Service {
     enum Version: Int {
         static let version: Int = 1 // this is app cache version
@@ -515,8 +514,7 @@ extension UsersManager {
         set {
             guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let data = try? JSONEncoder().encode(newValue),
-                let locked = try? Locked(clearValue: data, with: mainKey) else
-            {
+                let locked = try? Locked(clearValue: data, with: mainKey) else {
                 return
             }
             KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)

@@ -27,11 +27,7 @@ class UsersManagerHelperTest: XCTestCase {
 
     override func setUpWithError() throws {
         self.apiMock = APIServiceMock()
-        guard let doh = try? DohMock() else {
-            XCTFail("DohMock init failed")
-            return
-        }
-        self.doh = doh
+        self.doh = DohMock()
     }
 
     override func tearDown() {

@@ -26,7 +26,7 @@ import XCTest
 class MessageActionCodableTests: XCTestCase {
 
     func checkIfAllCasesAreTested() {
-        let action: MessageAction = .emptySpam
+        let action: MessageAction = Bool.random() ? .emptySpam : .emptyTrash
         switch action {
         case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .read, .unread, .delete, .send, .emptyTrash,
              .emptySpam, .empty, .label, .unlabel, .folder, .updateLabel, .createLabel, .deleteLabel, .signout,

@@ -448,11 +448,7 @@ extension XCUIElement {
     }
     
     func assertWithLabel(_ text: String) {
-        guard let label = self.label as? String else {
-            XCTFail("Element doesn't have text label.")
-            return
-        }
-        XCTAssertTrue(label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
+        XCTAssertTrue(self.label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
     }
     
     func assertHasStaticTextChild(withText: String) {

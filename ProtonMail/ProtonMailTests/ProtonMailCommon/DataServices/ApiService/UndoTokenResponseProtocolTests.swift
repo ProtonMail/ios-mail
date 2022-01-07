@@ -37,11 +37,11 @@ class UndoTokenResponseProtocolTests: XCTestCase {
         let undoResponse = [
             "Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
             "ValidUntil": 1637823326
-        ] as [String : Any]
+        ] as [String: Any]
 
         let response = [
             "UndoToken": undoResponse
-        ] as [String : Any]
+        ] as [String: Any]
 
         sut.parseUndoToken(response: response)
 
