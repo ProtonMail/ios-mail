@@ -85,7 +85,7 @@ public class EncryptedSearchService {
     var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
     var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
-    internal var prevProcessedMessages: Int = 0 //used to calculate estimated time for indexing
+    internal var prevProcessedMessages: Int = 0 // number of messages that are processed in an previous index building attempt
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -131,6 +131,7 @@ public class EncryptedSearchService {
     internal var isFirstSearch: Bool = true
     internal var isFirstIndexingTimeEstimate: Bool = true
     internal var initialIndexingEstimate: Int = 0
+    internal var estimateIndexTimeRounds: Int = 0
     internal var isRefreshed: Bool = false
     
     public var isSearching: Bool = false    // indicates that a search is currently active
@@ -414,6 +415,9 @@ extension EncryptedSearchService {
             self.viewModel?.currentProgress.value = 100
             self.viewModel?.estimatedTimeRemaining.value = nil
             self.indexBuildingInProgress = false
+            self.estimateIndexTimeRounds = 0
+            self.isFirstIndexingTimeEstimate = true
+            self.initialIndexingEstimate = 0
 
             // Unregister network monitoring
             if #available(iOS 12, *) {
@@ -430,7 +434,6 @@ extension EncryptedSearchService {
             // Stop background tasks
             #if !APP_EXTENSION
                 if #available(iOS 13, *) {
-                    //index building finished - we no longer need a background task
                     self.cancelBGProcessingTask()
                     self.cancelBGAppRefreshTask()
                 }
@@ -536,8 +539,8 @@ extension EncryptedSearchService {
             } else {    // Resume indexing
                 print("Resume indexing...")
                 self.indexBuildingInProgress = true
+                self.prevProcessedMessages = self.viewModel?.progressedMessages.value ?? 0
                 // Clean up timer
-                // Invalidate timer on same thread as it has been created
                 DispatchQueue.main.async {
                     self.indexBuildingTimer?.invalidate()
                     self.indexBuildingTimer = nil
@@ -721,6 +724,7 @@ extension EncryptedSearchService {
                 self.pauseIndexingDueToLowStorage = false
                 self.numPauses = 0
                 self.numInterruptions = 0
+                self.estimateIndexTimeRounds = 0
                 
                 // Update viewmodel
                 self.viewModel?.isEncryptedSearch = false
@@ -1916,23 +1920,23 @@ extension EncryptedSearchService {
         }
     }
 
-    private func estimateIndexingTime() -> (estimatedTime: String?, currentProgress: Int){
+    private func estimateIndexingTime() -> (estimatedTime: String?, time: Double, currentProgress: Int){
         var estimatedTime: Double = 0
         var currentProgress: Int = 0
         let currentTime: Double = CFAbsoluteTimeGetCurrent()
-        //let minute: Double = 60_000.0
 
         if self.totalMessages != 0 && currentTime != self.indexingStartTime && self.processedMessages != self.prevProcessedMessages {
             let remainingMessages: Double = Double(self.totalMessages - self.processedMessages)
             let timeDifference: Double = currentTime-self.indexingStartTime
             let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
-            //estimatedMinutes = Int(ceil(((timeDifference/processedMessageDifference)*remainingMessages)/minute))
+
+            // Estimate time
             estimatedTime = ceil((timeDifference/processedMessageDifference)*remainingMessages)
+            // Estimate progress
             currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
-            self.prevProcessedMessages = self.processedMessages
         }
 
-        return (self.timeToDate(time: estimatedTime), currentProgress)
+        return (self.timeToDate(time: estimatedTime), estimatedTime, currentProgress)
     }
 
     @objc private func updateRemainingIndexingTime() {
@@ -1949,22 +1953,25 @@ extension EncryptedSearchService {
                 let result = self.estimateIndexingTime()
 
                 if self.isFirstIndexingTimeEstimate {
-                    //let minute: Int = 60_000
-                    //self.initialIndexingEstimate = //result.estimatedMinutes * minute
-                    self.initialIndexingEstimate = 0    // TODO replace correctly
+                    self.initialIndexingEstimate = Int(result.time / 1000)  // provide the initial estimate in seconds
                     self.isFirstIndexingTimeEstimate = false
                 }
 
                 // Update UI
                 self.viewModel?.currentProgress.value = result.currentProgress
-                self.viewModel?.estimatedTimeRemaining.value = result.estimatedTime
+                if self.estimateIndexTimeRounds >= 3 {   // Just show an time estimate after a few rounds (to have a more stable estimate)
+                    self.viewModel?.estimatedTimeRemaining.value = result.estimatedTime
+                } else {
+                    self.estimateIndexTimeRounds += 1
+                    self.viewModel?.estimatedTimeRemaining.value = nil
+                }
                 print("Remaining indexing time: \(String(describing: result.estimatedTime))")
                 print("Current progress: \(result.currentProgress)")
                 print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
             }
         }
         
-        //check if there is still enought storage left
+        // Check if there is still enought storage left
         self.checkIfEnoughStorage()
         
         // print state for debugging
