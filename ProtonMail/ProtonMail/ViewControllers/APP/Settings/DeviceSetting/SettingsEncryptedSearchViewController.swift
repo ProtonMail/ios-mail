@@ -69,6 +69,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         setupEstimatedTimeUpdateObserver()
         setupProgressUpdateObserver()
+        setupProgressedMessagesObserver()
         setupIndexingFinishedObserver()
         setupIndexingInterruptionObservers()
 
@@ -411,7 +412,16 @@ extension SettingsEncryptedSearchViewController {
                     // Set advice text
                     let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
 
-                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle) {
+                    // Set text for message count label
+                    var messageCountText: String = ""
+                    if EncryptedSearchService.shared.state == .downloading {
+                        progressBarButtonCell.messageCountLabel.isHidden = false
+                        messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(EncryptedSearchService.shared.totalMessages)
+                    } else {
+                        progressBarButtonCell.messageCountLabel.isHidden = true
+                    }
+
+                    progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle, messageCountText) {
                         if EncryptedSearchService.shared.state == .paused { // Resume indexing
                             // Set the state
                             EncryptedSearchService.shared.state = .downloading
@@ -562,6 +572,20 @@ extension SettingsEncryptedSearchViewController {
 
     func setupProgressUpdateObserver() {
         self.viewModel.currentProgress.bind { (_) in
+            if EncryptedSearchService.shared.state == .downloading {
+                DispatchQueue.main.async {
+                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
+                }
+            }
+        }
+    }
+
+    func setupProgressedMessagesObserver() {
+        self.viewModel.progressedMessages.bind { (_) in
             if EncryptedSearchService.shared.state == .downloading {
                 DispatchQueue.main.async {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)

@@ -82,6 +82,7 @@ open class IndexSingleMessageAsyncOperation: Operation {
         EncryptedSearchService.shared.getMessageDetailsForSingleMessage(for: self.message, userID: self.userID) { messageWithDetails in
             EncryptedSearchService.shared.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: self.userID) { [weak self] in
                 EncryptedSearchService.shared.processedMessages += 1
+                EncryptedSearchService.shared.updateProgressedMessagesUI(progressedMessages: EncryptedSearchService.shared.processedMessages)
                 self?.state = .finished
             }
         }

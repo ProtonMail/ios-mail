@@ -22,7 +22,7 @@ import UIKit
     static var CellID : String {
         return "\(self)"
     }
-    
+
     typealias buttonActionBlock = () -> Void
     var callback: buttonActionBlock?
 
@@ -80,10 +80,8 @@ import UIKit
             self.pauseButton.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16)
         ])
 
-        //status label is hidden by default
+        // status label is hidden by default
         self.statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        //self.statusLabel.textAlignment = .left
-        //self.statusLabel.isHidden = true
         self.statusLabel.textColor = ColorProvider.TextWeak
         self.statusLabel.font = UIFont.systemFont(ofSize: 13)
         NSLayoutConstraint.activate([
@@ -91,30 +89,40 @@ import UIKit
             self.statusLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.statusLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
-        
+
+        self.messageCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.messageCountLabel.textColor = ColorProvider.TextWeak
+        self.messageCountLabel.font = UIFont.systemFont(ofSize: 13)
+        NSLayoutConstraint.activate([
+            self.messageCountLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 4),
+            self.messageCountLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.messageCountLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
+        ])
+
         self.layoutIfNeeded()
     }
-    
+
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var estimatedTimeLabel: UILabel!
     @IBOutlet weak var currentProgressLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
-    
+    @IBOutlet weak var messageCountLabel: UILabel!
+
     @IBAction func pauseButtonPressed(_ sender: UIButton) {
         callback?()
         self.layoutIfNeeded()
     }
-    
-    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, complete: buttonActionBlock?) {
+
+    func configCell(_ titleLine: String, _ advice: String, _ estimatedTime: String, _ currentProgress: Int, _ buttonTitle: String, _ messageCount: String, complete: buttonActionBlock?) {
         titleLabel.text = titleLine
         statusLabel.text = advice
         estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.setProgress(Float(currentProgress)/100.0, animated: true)
-
         self.pauseButton.setTitle(buttonTitle, for: UIControl.State.normal)
+        messageCountLabel.text = messageCount
 
         //implementation of pause button
         callback = complete

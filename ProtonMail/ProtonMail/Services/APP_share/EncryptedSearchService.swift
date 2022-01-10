@@ -2290,4 +2290,9 @@ extension EncryptedSearchService {
             self.searchViewModel?.encryptedSearchIndexingComplete = true
         #endif
     }
+
+    func updateProgressedMessagesUI(progressedMessages: Int) {
+        print("UI progressed messages: \(progressedMessages)")
+        self.viewModel?.progressedMessages.value = progressedMessages
+    }
 }
