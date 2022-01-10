@@ -112,6 +112,7 @@ class SettingsEncryptedSearchViewModel {
     var interruptStatus = Bindable<String>()
     var interruptAdvice = Bindable<String>()
     var currentProgress = Bindable<Int>()
+    var progressedMessages = Bindable<Int>()
     var estimatedTimeRemaining = Bindable<String>()
 
     var sections: [SettingSection] = [.encryptedSearch, .downloadViaMobileData, .downloadedMessages]
