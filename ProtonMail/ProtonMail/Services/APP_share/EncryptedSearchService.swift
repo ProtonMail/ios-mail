@@ -689,75 +689,85 @@ extension EncryptedSearchService {
         }
     }
     
-    func deleteSearchIndex(){
+    func deleteSearchIndex(userID: String){
         // Update state
         self.state = .disabled
         self.viewModel?.indexStatus = self.state.rawValue
         print("ENCRYPTEDSEARCH-STATE: disabled")
-        
+
+        // Cancle any running indexing process
+        self.downloadPageQueue.cancelAllOperations()
+        self.messageIndexingQueue.cancelAllOperations()
+
         // update user cached status
         userCachedStatus.isEncryptedSearchOn = false
         userCachedStatus.indexComplete = false
 
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-        let uid: String? = users.firstUser?.userInfo.userId
-        if let userID = uid {
-            // Just delete the search index if it exists
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-                let result: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
+        // Just delete the search index if it exists
+        var isIndexSuccessfullyDelete: Bool = false
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+            isIndexSuccessfullyDelete = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
+        }
 
-                // Update some variables
-                self.totalMessages = 0
-                self.lastMessageTimeIndexed = 0
-                self.processedMessages = 0
-                self.prevProcessedMessages = 0
-                self.noNewMessagesFound = 0
-                self.indexingStartTime = 0
-                self.indexBuildingInProgress = false
-                self.slowDownIndexBuilding = false
-                self.eventsWhileIndexing = []
-                
-                self.pauseIndexingDueToNetworkConnectivityIssues = false
-                self.pauseIndexingDueToWiFiNotDetected = false
-                self.pauseIndexingDueToOverheating = false
-                self.pauseIndexingDueToLowBattery = false
-                self.pauseIndexingDueToLowStorage = false
-                self.numPauses = 0
-                self.numInterruptions = 0
-                self.estimateIndexTimeRounds = 0
-                
-                // Update viewmodel
-                self.viewModel?.isEncryptedSearch = false
-                self.viewModel?.currentProgress.value = 0
-                self.viewModel?.estimatedTimeRemaining.value = nil
+        // Update some variables
+        self.totalMessages = 0
+        self.lastMessageTimeIndexed = 0
+        self.processedMessages = 0
+        self.prevProcessedMessages = 0
+        self.noNewMessagesFound = 0
+        self.indexingStartTime = 0
+        self.indexBuildingInProgress = false
+        self.slowDownIndexBuilding = false
+        self.eventsWhileIndexing = []
 
-                // Invalidate timer on same thread as it has been created
-                DispatchQueue.main.async {
-                    self.indexBuildingTimer?.invalidate()
-                }
-                
-                // Stop background tasks
-                #if !APP_EXTENSION
-                    self.endBackgroundTask()
-                #endif
-                if #available(iOS 13.0, *) {
-                    self.cancelBGProcessingTask()
-                    self.cancelBGAppRefreshTask()
-                }
-                
-                // Unregister network monitoring
-                if #available(iOS 12, *) {
-                    self.unRegisterForNetworkChangeNotifications()
-                } else {
-                    // Fallback on earlier versions
-                }
+        self.pauseIndexingDueToNetworkConnectivityIssues = false
+        self.pauseIndexingDueToWiFiNotDetected = false
+        self.pauseIndexingDueToOverheating = false
+        self.pauseIndexingDueToLowBattery = false
+        self.pauseIndexingDueToLowStorage = false
+        self.numPauses = 0
+        self.numInterruptions = 0
+        self.estimateIndexTimeRounds = 0
 
-                if result {
-                    print("Search index for user \(userID) sucessfully deleted!")
-                }
-            }
+        // Reset view model
+        self.viewModel?.isEncryptedSearch = false
+        self.viewModel?.indexComplete = false
+        self.viewModel?.progressedMessages.value = 0
+        self.viewModel?.currentProgress.value = 0
+        self.viewModel?.isIndexingComplete.value = false
+        self.viewModel?.interruptStatus.value = nil
+        self.viewModel?.interruptAdvice.value = nil
+        self.viewModel?.estimatedTimeRemaining.value = nil
+        self.viewModel = nil
+        #if !APP_EXTENSION
+            self.searchViewModel = nil
+        #endif
+
+        // Invalidate timer on same thread as it has been created
+        DispatchQueue.main.async {
+            self.indexBuildingTimer?.invalidate()
+        }
+
+        // Stop background tasks
+        #if !APP_EXTENSION
+            self.endBackgroundTask()
+        #endif
+        if #available(iOS 13.0, *) {
+            self.cancelBGProcessingTask()
+            self.cancelBGAppRefreshTask()
+        }
+
+        // Unregister network monitoring
+        if #available(iOS 12, *) {
+            self.unRegisterForNetworkChangeNotifications()
         } else {
-            print("Error when deleting the search index. User unknown!")
+            // Fallback on earlier versions
+        }
+
+        if isIndexSuccessfullyDelete {
+            print("Search index for user \(userID) sucessfully deleted!")
+        } else {
+            print("Error when deleting the search index!")
         }
     }
     
