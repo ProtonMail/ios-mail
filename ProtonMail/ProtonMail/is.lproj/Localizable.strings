@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<ekkert atriði>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1 Message moved to archive";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 Message moved to spam";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "2FA failed. Please try to sign in again.";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "Stillingar notandaaðgangs";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Action reverted";
 
 /* (No Comment) */
 "Add" = "Bæta við";
@@ -1582,6 +1591,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "Message headers";
 
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Message moved to trash";
+
 /* Placeholder */
 "Message Password" = "Lykilorð skilaboða";
 
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Swipe to set up swipable actions";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Strokubendingar";
@@ -2960,6 +2984,12 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "Skoða HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "View message in Dark mode";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "View message in Light mode";
 
 /* Title */
 "Warning" = "Aðvörun";

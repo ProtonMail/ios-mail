@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<aucun objet>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1 message déplacé vers les archives";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 message déplacé vers les indésirables";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "La double authentification a échoué. Veuillez essayer de vous connecter à nouveau.";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "Paramètres du compte";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Action annulée";
 
 /* (No Comment) */
 "Add" = "Ajouter";
@@ -174,7 +183,7 @@
 "Add new phone number" = "Ajouter un nouveau numéro de téléphone";
 
 /* action */
-"Add new URL" = "Ajouter une URL";
+"Add new URL" = "Ajouter une nouvelle URL";
 
 /* new contacts add Nickname */
 "Add nickname" = "Ajouter un pseudonyme";
@@ -254,7 +263,7 @@
 "APP INFORMATION" = "INFORMATIONS DE L'APPLICATION";
 
 /* Error */
-"App is locked" = "L’App est verrouillée";
+"App is locked" = "L'application est verrouillée";
 
 /* security title in settings */
 "App PIN" = "Code PIN de l'application";
@@ -272,7 +281,7 @@
 "Appearance" = "Apparence";
 
 /* Price breakdown */
-"Apple in-app purchase fee" = "Frais d’achat in-app Apple";
+"Apple in-app purchase fee" = "Frais d'achat intégré Apple";
 
 /* Apply action */
 "Apply" = "Appliquer";
@@ -353,7 +362,7 @@
 "Authentication failed" = "Échec de l'authentification";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Échec d'authentification, identifiant ou mot de passe incorrect";
+"Authentication Failed Wrong username or password" = "Échec d'authentification : identifiant ou mot de passe incorrect.";
 
 /* Error */
 "Authentication failed. Please try to sign in again." = "L'authentification a échoué. Veuillez essayer de vous connecter à nouveau.";
@@ -371,7 +380,7 @@
 "Auto Show Images" = "Afficher automatiquement les images";
 
 /* settings general section title */
-"Auto show remote content" = "Charger automatiquement le contenu distant";
+"Auto show remote content" = "Afficher automatiquement le contenu distant";
 
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images incorporées";
@@ -431,7 +440,7 @@
 "Call contact" = "Appeler le contact";
 
 /* key size note part 2 */
-"Can take several minutes to setup." = "Peut prendre plusieurs minutes.";
+"Can take several minutes to setup." = "La configuration peut prendre plusieurs minutes.";
 
 /* Error */
 "Can't copy the file" = "Impossible de copier le fichier";
@@ -1582,6 +1591,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "En-têtes du message";
 
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Message déplacé dans la corbeille";
+
 /* Placeholder */
 "Message Password" = "Mot de passe du message";
 
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Glissez pour configurer des actions par balayage";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Gestes de balayage";
@@ -2960,6 +2984,12 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "Voir le HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Voir le message en mode sombre";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Voir le message en mode clair";
 
 /* Title */
 "Warning" = "Avertissement";

@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>swipe_to_move_title</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d message</string>
-			<key>other</key>
-			<string>%d messages</string>
-		</dict>
-	</dict>
 	<key>%d attempt remaining</key>
 	<dict>
 		<key>ATTEMPT</key>
@@ -202,53 +186,85 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
-	<key>swipe_to_move_conversation_title</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversation</string>
-			<key>other</key>
-			<string>%d conversations</string>
-		</dict>
-	</dict>
 	<key>swipe_to_label_conversation_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
 		<key>Conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d konverzace</string>
+			<key>many</key>
+			<string>%d konverzací</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d konverzace</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d konverzací</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ označena</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
 		<key>Message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d zprávy</string>
+			<key>many</key>
+			<string>%d zpráv</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d zpráva</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d zprávy</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ označena</string>
+	</dict>
+	<key>swipe_to_move_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d konverzace</string>
+			<key>many</key>
+			<string>%d konverzací</string>
+			<key>one</key>
+			<string>%d konverzace</string>
+			<key>other</key>
+			<string>%d konverzace</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ přesunuta do %@</string>
+	</dict>
+	<key>swipe_to_move_title</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d zprávy</string>
+			<key>many</key>
+			<string>%d zpráv</string>
+			<key>one</key>
+			<string>%d zpráva</string>
+			<key>other</key>
+			<string>%d zprávy</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ přesunuta do %@</string>
 	</dict>
 </dict>
 </plist>
