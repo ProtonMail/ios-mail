@@ -2138,6 +2138,9 @@ class LocalizedString {
     lazy var _encrypted_search_delete_messages_alert_button_delete = NSLocalizedString("Delete", comment: "Title for the alert button to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel delete all downloaded messages.")
     
+    lazy var _encrypted_search_message_count_prefix = NSLocalizedString("Downloading message ", comment: "The prefix text for the number of downloaded messages.")
+    lazy var _encrypted_search_message_count_combiner = NSLocalizedString(" out of ", comment: "The combining text for the number of downloaded messages.")
+    
     // MARK: - Title of MessageSwipeActions
     lazy var _swipe_action_none = NSLocalizedString("Swipe to set up swipable actions", comment: "")
     lazy var _swipe_action_unread = NSLocalizedString("Unread", comment: "")
