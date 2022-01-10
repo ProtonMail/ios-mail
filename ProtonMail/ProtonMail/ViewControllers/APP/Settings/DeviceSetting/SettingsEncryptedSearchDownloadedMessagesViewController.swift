@@ -214,7 +214,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     
                     sliderCell.bottomLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: Int64(displayValue))
 
-                    //update storageusage row with storage limit
+                    // Update storageusage row with storage limit
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
                     UIView.performWithoutAnimation {
                         self.tableView.reloadRows(at: [path], with: .none)
@@ -225,9 +225,13 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .storageUsage:
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.CellID, for: indexPath)
             if let buttonCell = cell as? ButtonTableViewCell {
+                var sizeOfIndex: String = ""
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                let userID: String = (usersManager.firstUser?.userInfo.userId)!
-                let sizeOfIndex: String = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                let userID: String? = usersManager.firstUser?.userInfo.userId
+                if let userID = userID {
+                    sizeOfIndex = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                }
+
                 let storageLimit: String = self.fileByteCountFormatter.string(fromByteCount: self.viewModel.storageLimit)
                 let bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
 
@@ -269,19 +273,21 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
     }
 
     func showAlertDeleteDownloadedMessages() {
-        //create the alert
         let alert = UIAlertController(title: LocalString._encrypted_search_delete_messages_alert_title, message: LocalString._encrypted_search_delete_messages_alert_message, preferredStyle: UIAlertController.Style.alert)
-        //add the buttons
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_cancel, style: UIAlertAction.Style.cancel){ (action:UIAlertAction!) in
             self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete, style: UIAlertAction.Style.destructive){ (action:UIAlertAction!) in
-            //delete search index
-            EncryptedSearchService.shared.deleteSearchIndex()
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String? = usersManager.firstUser?.userInfo.userId
+            if let userID = userID {
+                EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+            } else {
+                print("Error when deleting the search index. User unknown!")
+            }
             self.navigationController?.popViewController(animated: true)
         })
 
-        //show alert
         self.present(alert, animated: true, completion: nil)
     }
 }

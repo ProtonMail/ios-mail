@@ -254,9 +254,18 @@ extension SettingsEncryptedSearchViewController {
                     if self.viewModel.isEncryptedSearch {
                         self.showAlertContentSearchEnabled(for: indexPath, cell: switchCell)
                     } else {
-                        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .refresh {
+                        if EncryptedSearchService.shared.state == .refresh {
                             // Pause indexing
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
+                        }
+                        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
+                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                            let userID: String? = usersManager.firstUser?.userInfo.userId
+                            if let userID = userID {
+                                EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                            } else {
+                                print("Error when deleting the search index. User unknown!")
+                            }
                         }
                         EncryptedSearchService.shared.state = .disabled
                         self.viewModel.indexStatus = EncryptedSearchService.shared.state.rawValue
@@ -357,7 +366,7 @@ extension SettingsEncryptedSearchViewController {
                 }
                 return cell
             } else {
-                //index building in progress
+                // index building in progress
                 let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
                 if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
                     // Set text for estimate time label
@@ -606,7 +615,7 @@ extension SettingsEncryptedSearchViewController {
 
                 UIView.performWithoutAnimation {
                     self.tableView.reloadRows(at: [path], with: .none)
-                    self.showInfoBanner()
+                    //self.showInfoBanner()
                 }
             }
         }
