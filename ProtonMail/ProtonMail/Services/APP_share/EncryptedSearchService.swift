@@ -1968,7 +1968,9 @@ extension EncryptedSearchService {
                 }
 
                 // Update UI
-                self.viewModel?.currentProgress.value = result.currentProgress
+                if result.currentProgress != 0 {
+                    self.viewModel?.currentProgress.value = result.currentProgress
+                }
                 if self.estimateIndexTimeRounds >= 3 {   // Just show an time estimate after a few rounds (to have a more stable estimate)
                     self.viewModel?.estimatedTimeRemaining.value = result.estimatedTime
                 } else {
@@ -2268,11 +2270,12 @@ extension EncryptedSearchService {
         return availableMemory
     }
     
-    private func updateIndexBuildingProgress(processedMessages: Int){
+    // TODO remove?
+    /*private func updateIndexBuildingProgress(processedMessages: Int){
         //progress bar runs from 0 to 1 - normalize by totalMessages
         let updateStep: Float = Float(processedMessages)/Float(self.totalMessages)
         self.viewModel?.currentProgress.value = Int(updateStep)
-    }
+    }*/
     
     private func updateUIWithIndexingStatus() {
         if self.pauseIndexingDueToNetworkConnectivityIssues {
