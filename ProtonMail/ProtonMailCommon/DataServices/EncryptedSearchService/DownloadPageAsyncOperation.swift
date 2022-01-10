@@ -98,4 +98,9 @@ open class DownloadPageAsyncOperation: Operation {
     public func finish() {
         state = .finished
     }
+
+    public override func cancel() {
+        super.cancel()
+        self.finish()
+    }
 }
