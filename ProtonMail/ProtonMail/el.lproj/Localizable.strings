@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<no object>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1 Message moved to archive";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 Message moved to spam";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "Το 2FA απέτυχε. Παρακαλώ προσπαθήστε να συνδεθείτε ξανά.";
 
@@ -102,7 +108,7 @@
 "A sub-folder with this name already exists in the destination folder" = "Ένας υποφάκελος με αυτό το όνομα υπάρχει ήδη στο φάκελο προορισμού";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής. Συνδεθείτε μέσω του protonmail.com για να εξοφλήσετε το υπόλοιπο σας.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη, λόγω μη πληρωμής. Παρακαλούμε συνδεθείτε από το protonmail.com προς εξόφληση του απλήρωτου τιμολόγιού σας.";
 
 /* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Η πρόσβαση σε αυτόν τον λογαριασμό είναι απενεργοποιημένη λόγω μη πληρωμής.\n Παρακαλώ επισκεφθείτε <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">βάση γνώσεων μας</a> για περισσότερες πληροφορίες.";
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "Ρυθμίσεις λογαριασμού";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Action reverted";
 
 /* (No Comment) */
 "Add" = "Προσθήκη";
@@ -1582,6 +1591,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "Επικεφαλίδες μηνύματος";
 
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Message moved to trash";
+
 /* Placeholder */
 "Message Password" = "Κωδικός Πρόσβασης Μηνύματος";
 
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Σύρετε για να ρυθμίσετε τις ενέργειες με δυνατότητα ολίσθησης";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Χειρονομίες ολίσθησης";
@@ -2960,6 +2984,12 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "Προβολή HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Προβολή μηνύματος σε Σκούρα διαμόρφωση";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Προβολή μηνύματος σε Ανοιχτή διαμόρφωση";
 
 /* Title */
 "Warning" = "Προειδοποίηση";

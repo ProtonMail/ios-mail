@@ -150,42 +150,8 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
-	<key>swipe_to_move_title</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d message</string>
-			<key>other</key>
-			<string>%d messages</string>
-		</dict>
-	</dict>
-	<key>swipe_to_move_conversation_title</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversation</string>
-			<key>other</key>
-			<string>%d conversations</string>
-		</dict>
-	</dict>
 	<key>swipe_to_label_conversation_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
 		<key>Conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -193,15 +159,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d samtale</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d samtaler</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ etikkeret</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
 		<key>Message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -209,10 +175,44 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d besked</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d beskeder</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ etikkeret</string>
+	</dict>
+	<key>swipe_to_move_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d samtale</string>
+			<key>other</key>
+			<string>%d samtaler</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ flyttet til %@</string>
+	</dict>
+	<key>swipe_to_move_title</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d besked</string>
+			<key>other</key>
+			<string>%d beskeder</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ flyttet til %@</string>
 	</dict>
 </dict>
 </plist>

@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<öğe yok>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1 Mesaj arşive taşındı";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 İleti spam'e taşındı";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "İki aşamalı doğrulama başarısız. Lütfen tekrar oturum açmayı deneyin.";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "Hesap ayarları";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "İşlem geri alındı";
 
 /* (No Comment) */
 "Add" = "Ekle";
@@ -269,7 +278,7 @@
 "App settings" = "Uygulama ayarları";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Appearance";
+"Appearance" = "Görünüm";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple uygulama içi satın alma ücreti";
@@ -596,10 +605,10 @@
 "Closing" = "Kapatılıyor";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "Klasörü daralt";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "İletiyi küçült";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -1099,7 +1108,7 @@
 "Every time enter app" = "Uygulamaya her girişte";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "Klasörü genişlet";
 
 /* alert title */
 "Expiration not supported" = "Geçerlilik süresi desteklenmiyor";
@@ -1581,6 +1590,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "İleti başlıkları";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "İleti çöp kutusuna taşındı";
 
 /* Placeholder */
 "Message Password" = "İleti Parolası";
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Kaydırma komutlarını ayarlamak için kaydır";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Kaydırma hareketleri";
@@ -2505,7 +2529,7 @@
 "Switch selection mode" = "Seçici moda geç";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "Okunmamış filtresini değiştir";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "'%@' hesabına geçiş yapıldı";
@@ -2632,7 +2656,7 @@
 "The user is already logged in" = "Kullanıcı zaten oturum açtı";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "Bu kullanıcı adı alınmıştır.";
 
 /* title */
 "The verification email invalid" = "Geçersiz doğrulama e-postası";
@@ -2663,7 +2687,7 @@
 "This contact belongs to your Address Book." = "Bu kişi adres defterinize ait.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "Bu konuşma, çöp kutusuna gönderilmemiş iletiler içeriyor.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Bu konuşma çöp kutusuna atılmış iletiler içerir";
@@ -2672,7 +2696,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının kimlik doğrulama şartlarından başarısız oldu. Sahte ya da yanlış yönlendirilmiş olabilir!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, alan adı tarafından doğrulanmamıştır. Gönderi sahte olabilir ya da uygunsuz biçimde iletilmiş olabilir!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, ProtonMail adresinden görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimizden başarısız oldu. Sahte ya da yanlış yönlendirilmiş olabilir!";
@@ -2960,6 +2984,12 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "HTML olarak görüntüle";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Mesajı Koyu temada görüntüleyin";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Mesajı Açık temada görüntüleyin";
 
 /* Title */
 "Warning" = "Uyarı";

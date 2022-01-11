@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<brak obiektu>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "Wiadomość została przeniesiona do Archiwum";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "Wiadomość została przeniesiona do Spamu";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "Uwierzytelnianie dwustopniowe nie powiodło się. Spróbuj ponownie.";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "Ustawienia konta";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Akcja została cofnięta";
 
 /* (No Comment) */
 "Add" = "Dodaj";
@@ -1582,6 +1591,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "Nagłówki wiadomości";
 
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Wiadomość została przeniesiona do Kosza";
+
 /* Placeholder */
 "Message Password" = "Hasło wiadomości";
 
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "Przesuń, aby ustawić gesty przesunięcia palcem";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Gesty przeciągania";
@@ -2960,6 +2984,12 @@
 
 /* No comment provided by engineer. */
 "View HTML" = "Widok HTML";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Pokaż wiadomość w ciemnym motywie";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Pokaż wiadomość w jasnym motywie";
 
 /* Title */
 "Warning" = "Ostrzeżenie";

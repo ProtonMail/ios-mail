@@ -14,7 +14,7 @@
 "NSContactsUsageDescription" = "Cihaza kaydedilen kişiler için e-posta adreslerine erişmek amacıyla kullanılır. Böylece ileti oluştururken veya cihaz kişilerini hesabınıza elle yüklerken kullanılabilirler. Kişi bilgileri, açık bir işlem yapılmadan sunucularımıza yüklenmez.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+"NSFaceIDUsageDescription" = "Uygulamanızın kilidini hızlı ve güvenli bir şekilde açmanızı sağlar.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Fotoğraf eklerini fotoğraf kütüphanesine kaydetmek için gereklidir.";

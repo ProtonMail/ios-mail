@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<无对象>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1则消息被移动到存储文件夹";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 则消息已移至垃圾邮件箱";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "双重验证失败，请重新登录。";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "账户设置";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Action reverted";
 
 /* (No Comment) */
 "Add" = "新建";
@@ -221,7 +230,7 @@
 "Also Archive" = "同时存档";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "同时存档？";
 
 /* Description */
 "Also used to reset a forgotten password." = "也会用来重置忘记的密码。";
@@ -230,10 +239,10 @@
 "Alternative routing" = "备用线路";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "始终关闭";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "始终开启";
 
 /* agree check box middle word */
 "and" = "和";
@@ -269,7 +278,7 @@
 "App settings" = "程序设置";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Appearance";
+"Appearance" = "外观";
 
 /* Price breakdown */
 "Apple in-app purchase fee" = "Apple 应用内购分成";
@@ -377,7 +386,7 @@
 "Auto-load embedded images" = "自动加载嵌入图像";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "太糟糕了";
 
 /* top left back button */
 "Back" = "返回";
@@ -407,7 +416,7 @@
 "Birthday" = "生日";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
 
 /* Title */
 "Bug Description" = "问题描述";
@@ -419,7 +428,7 @@
 "Buy More Credits" = "充值";
 
 /* Alert for removing disconnected accounts */
-"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "移除此账户后需要重新添加账户才能再次登录。\n\n确定要移除此账户吗？";
 
 /* agree check box first part words */
 "By using ProtonMail, you agree to our" = "使用 ProtonMail 即表示您同意我们的";
@@ -557,7 +566,7 @@
 "Change sign-in password" = "更改登录密码";
 
 /* Title */
-"Change single password" = "Change single password";
+"Change single password" = "修改密码";
 
 /* Action */
 "Check Again" = "再次检查";
@@ -596,10 +605,10 @@
 "Closing" = "正在关闭";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "收起文件夹";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "收起邮件";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -735,7 +744,7 @@
 "Cut" = "剪切";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "深色模式";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -896,7 +905,7 @@
 "DRAFTS" = "草稿箱";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "易于更新";
 
 /* Action */
 "Edit" = "更改";
@@ -1099,10 +1108,10 @@
 "Every time enter app" = "每次进入应用程序";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "展开文件夹";
 
 /* alert title */
-"Expiration not supported" = "Expiration not supported";
+"Expiration not supported" = "不支持过期时间";
 
 /* VoiceOver: email can expire */
 "Expires" = "过期时间";
@@ -1139,7 +1148,7 @@
 "Fetch user info failed" = "获取用户信息失败";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
+"File, label, and color code messages to create your perfect, custom inbox." = "用文件夹，标签以及颜色区分的信息来创建您的完美定制收件箱。";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "文件夹";
@@ -1151,7 +1160,7 @@
 "Folders" = "文件夹";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "遵循系统设置";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "适合想免费享受加密通信服务的个人";
@@ -1271,7 +1280,7 @@
 "Hours" = "小时";
 
 /* Prompt of user feedback view */
-"How would you describe your experience with the new ProtonMail?" = "How would you describe your experience with the new ProtonMail?";
+"How would you describe your experience with the new ProtonMail?" = "您对 ProtonMail 的使用体验作何评价？";
 
 /* Title of the view showing the message HTML source */
 "HTML" = "HTML";
@@ -1457,7 +1466,7 @@
 "Learn More" = "了解详情";
 
 /* learn more button */
-"Learn more here" = "在此处了解更多";
+"Learn more here" = "了解详情";
 
 /* settings swipe actions section title */
 "Left to Right" = "从左向右";
@@ -1582,6 +1591,9 @@
 /* Title of the view showing the message header */
 "Message headers" = "邮件头";
 
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Message moved to trash";
+
 /* Placeholder */
 "Message Password" = "邮件密码";
 
@@ -1682,7 +1694,7 @@
 "Name" = "姓名";
 
 /* Onboarding title */
-"Neat and tidy" = "Neat and tidy";
+"Neat and tidy" = "整洁又清爽";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "免费注册";
@@ -1829,7 +1841,7 @@
 "On E, MMM d, yyyy at %@" = "于yyyy年MMM月d日E %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "您应当先确认订购的所有项目均已生效再跳过激活步骤。如需进一步协助，请联系客服。\n\n确定要跳过激活步骤吗？";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "只能同时登录一个免费账户";
@@ -2011,10 +2023,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "请开通付费账户以使用 3 个以上标签";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "请升级账户";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "请升级账户后再继续收发邮件。";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "请先使用 ProtonMail App 登录。";
@@ -2077,7 +2089,7 @@
 "ProtonMail is currently offline…" = "ProtonMail 当前处于离线状态…";
 
 /* The message about the app is not having the permission to access photo library */
-"ProtonMail needs photo library access in your device settings." = "ProtonMail needs photo library access in your device settings.";
+"ProtonMail needs photo library access in your device settings." = "您需要在系统设置中允许 ProtonMail 访问照片。";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "开通 ProtonMail 增强版方可更改移动设备落款";
@@ -2092,7 +2104,7 @@
 "ProtonVPN included" = "包含 ProtonVPN";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "意见反馈";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理服务器或防火墙干扰";
@@ -2141,7 +2153,7 @@
 "Recovery Email Warning" = "密保邮箱警告";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Recovery enabled";
+"Recovery enabled" = "已启用恢复";
 
 /* No comment provided by engineer. */
 "Reload" = "重新加载";
@@ -2246,7 +2258,7 @@
 "Select your language" = "选择语言";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Selected";
+"Selected" = "已选中";
 
 /* Action */
 "Send" = "发送​​";
@@ -2255,7 +2267,7 @@
 "Send anyway" = "仍然发送";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "提交反馈";
 
 /* when subject not empty */
 "Send message without subject?" = "发送没有主题的邮件吗？";
@@ -2380,7 +2392,7 @@
 "Signed out from %@ and signed in with %@" = "已退出 %1$@ 并登录 %2$@";
 
 /* Onboarding title */
-"Simply private" = "Simply private";
+"Simply private" = "简单隐私";
 
 /* skip button title in onboarding page */
 "Skip" = "跳过";
@@ -2417,10 +2429,10 @@
 "SRP Server" = "SRP 服务器";
 
 /* Description */
-"SRP single password keysalt invalid!" = "SRP single password keysalt invalid!";
+"SRP single password keysalt invalid!" = "SRP 单一密码 keysalt 无效 ！";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+"Srp single password keyslat invalid!" = "Srp 单一密码 keyslat 无效 ！";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -2497,6 +2509,18 @@
 /* No comment provided by engineer. */
 "Swipe to set up swipable actions" = "滑动以设置可滑动操作";
 
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
+
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "滑动手势";
@@ -2505,7 +2529,7 @@
 "Switch selection mode" = "切换选择模式";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "切换显示已读或未读邮件";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "已转至 %@";
@@ -2526,7 +2550,7 @@
 "Tap send anyway to send without expiration to these recipients" = "点击“仍然发送”向这些收件人发送没有有效期的邮件。";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "详细叙述您的使用体验。（非必填）";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "暂时关闭或卸载杀毒软件。";
@@ -2538,7 +2562,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "感谢您的反馈，我们已将其收入缺陷追踪系统中。";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "感谢您的反馈！";
 
 /* Error message */
 "The 2 passwords are not matching" = "2 次密码不匹配";
@@ -2632,7 +2656,7 @@
 "The user is already logged in" = "用户已登录";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "此用户名已被使用。";
 
 /* title */
 "The verification email invalid" = "验证邮箱无效";
@@ -2663,7 +2687,7 @@
 "This contact belongs to your Address Book." = "您的通讯录中有此联系人。";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "此会话包含不在废件箱中的邮件。";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此会话含有废件箱中的邮件";
@@ -2672,7 +2696,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 ProtonMail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";
@@ -2690,7 +2714,7 @@
 "This message contains remote content." = "此邮件含有外链内容。";
 
 /* No comment provided by engineer. */
-"This message is automatically generated as a response to a previous message." = "This message is automatically generated as a response to a previous message.";
+"This message is automatically generated as a response to a previous message." = "这是一封自动回复邮件。";
 
 /* No comment provided by engineer. */
 "This message is from a mailing list." = "此邮件来自邮件列表。";
@@ -2721,7 +2745,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "为避免 ProtonMail 被滥用，\n我们需要验证您是真人操作。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "请使用ProtonMail网页版:protonmail.com 重置您的邮箱密码";
@@ -2961,6 +2985,12 @@
 /* No comment provided by engineer. */
 "View HTML" = "查看 HTML";
 
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "在夜间模式下查看信息";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "在日间模式下查看信息";
+
 /* Title */
 "Warning" = "警告";
 
@@ -3007,7 +3037,7 @@
 "When you send an email, this is the name that appears in the sender field." = "当你发送邮件时，这个名称将作为发件人的名称。";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "太棒了";
 
 /* default vcard types */
 "Work" = "工作";
@@ -3034,7 +3064,7 @@
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "即将移除所有账户，需要重新添加账户才能再次登录。\n\n确定要移除所有账户吗？";
 
 /* The main title of no result message */
-"You are all caught up" = "You are all caught up";
+"You are all caught up" = "看来没有要处理的事务了";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "当前无网络连接，我们无法显示您的邮件内容。";
@@ -3076,14 +3106,14 @@
 "You have used %d%% of your storage space (%@)." = "您的存储空间（%@）已使用 %d%%。";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "您的存储空间（%2$@）已经使用了 %1$d%%，请升级账户后再继续收发邮件。";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "您的存储空间（%@）已用尽。";
 
 /* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "您的存储空间（%@）已满，请升级账户后再继续收发邮件。";
 
 /* "Alert" */
 "You need at least one recipient to send" = "需要至少一位收件人";
@@ -3108,7 +3138,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "您所在的国家可能屏蔽了 Proton。尝试使用 ProtonVPN（或其他 VPN）或 Tor 连接 Proton。";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "意见反馈";
 
 /* The section title of folder manager table */
 "Your folders" = "您的文件夹";
@@ -3124,7 +3154,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "您的加密邮箱账户已经设置完毕，可以收发加密邮件了。";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "您崭新的加密邮箱\n现已准备就绪。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的订阅有效期至";

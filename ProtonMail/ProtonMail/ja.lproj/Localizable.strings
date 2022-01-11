@@ -29,7 +29,7 @@
 "%d attempt remaining" = "残り %d 回試すことができます";
 
 /* Error */
-"%d attempt remaining until secure data wipe!" = "%d attempt remaining until secure data wipe!";
+"%d attempt remaining until secure data wipe!" = "%d 回間違えるとデータが削除されます!";
 
 /* The title of single selected conversation of action sheet in inbox */
 "%d conversation" = "%d 件の会話";
@@ -79,6 +79,12 @@
 /* default empty object */
 "<no object>" = "<件名無し>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "1 件のメッセージをアーカイブに移動しました";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 件のメッセージを迷惑メールに移動しました";
+
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "2 要素認証に失敗しました。もう一度サインインしてください。";
 
@@ -115,6 +121,9 @@
 
 /* section title in settings */
 "Account settings" = "アカウントの設定";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "アクションを取り消しました";
 
 /* (No Comment) */
 "Add" = "追加";
@@ -407,7 +416,7 @@
 "Birthday" = "誕生日";
 
 /* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+"Breeze through threaded messages in conversation mode." = "会話モードでスレッドのメッセージを読み進めることができます。";
 
 /* Title */
 "Bug Description" = "バグの説明";
@@ -1048,7 +1057,7 @@
 "End-to-End Encryption" = "エンドツーエンド暗号化";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Proton の連絡先ではない人でもエンドツーエンド暗号化を使用には ProtonMail に招待するか、手動でメッセージを暗号化します。";
 
 /* Action in 2fa popup view */
 "Enter" = "入力";
@@ -1540,7 +1549,7 @@
 "Manage Labels/Folders" = "ラベル/フォルダー管理";
 
 /* No comment provided by engineer. */
-"Mark as legitimate" = "Mark as legitimate";
+"Mark as legitimate" = "正当なものとしてマーク";
 
 /* The title of the read action in action sheet */
 "Mark as read" = "既読にする";
@@ -1581,6 +1590,9 @@
 
 /* Title of the view showing the message header */
 "Message headers" = "メッセージのヘッダー";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "メッセージをゴミ箱に移動しました";
 
 /* Placeholder */
 "Message Password" = "メッセージのパスワード";
@@ -1829,7 +1841,7 @@
 "On E, MMM d, yyyy at %@" = "On E, MMM d, yyyy at %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "すべてのサブスクリプションが最新であることが確認されている場合にのみ、アクティベーションの購入を無視してください。 さらなるサポートが必要な場合はカスタマーサポートにお問い合わせください。 \n\n アクティベーションを無視してもよろしいですか?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "無料アカウントは１つのみ追加できます";
@@ -1859,7 +1871,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "AppStoreが購買時にそのアプリに提供した技術情報を添付することに同意していただける場合、当社の顧客サポート チームが手動でサービスプランを有効にします。 これには、あなたの iTunesアカウント、Apple ID、紐づけられたクレジットカード情報、その他のユーザー情報の詳細は含まれません。 AppStoreのサーバー上での決済の検証と確認のためのデータのみ含まれます。";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Our system flagged this message as a phishing attempt. Please check that it is legitimate";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "ProtonMail のシステムはこのメッセージを迷惑メールとしてフラグを立てました。これが正当なものであるか確認してください";
 
 /* "Draft" = "Draft"; */
 "Outbox" = "送信箱";
@@ -2035,7 +2047,7 @@
 "Please wait until the email downloaded!" = "メールがダウンロードされるまでお待ちください。";
 
 /* alert title */
-"Please, manage it in your phone." = "Please, manage it in your phone.";
+"Please, manage it in your phone." = "電話で管理してください。";
 
 /* Action */
 "Print" = "印刷";
@@ -2377,7 +2389,7 @@
 "Signed in as %@" = "%@ としてサインインしています";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
+"Signed out from %@ and signed in with %@" = "%1$@ から %2$@ に切り替えました";
 
 /* Onboarding title */
 "Simply private" = "Simply private";
@@ -2427,7 +2439,7 @@
 "Star" = "星印をつける";
 
 /* Title */
-"Star/unstar" = "スター/スターを外す";
+"Star/unstar" = "星印を 付ける/外す";
 
 /* "Spam" */
 "Starred" = "星印付き";
@@ -2495,7 +2507,19 @@
 "Swipe Right to Left" = "右から左へのスワイプ";
 
 /* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
+"Swipe to set up swipable actions" = "スワイプしてスワイプアクションを設定する";
+
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
 
 /* cell title in device settings
    Swiping gestures */
@@ -2657,7 +2681,7 @@
 "This action cannot be undone." = "このアクションは元に戻せません。";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "このアクションは元に戻せません。このフォルダーに保管されたメールは削除されるわけではなく、すべてのメールから見ることができます。";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "このアドレスは既に連絡帳に登録されています。";
@@ -2835,7 +2859,7 @@
 "Unable to parse response" = "応答を解析できません。";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
+"Unable to parse the response object:\n%@" = "レスポンスを解析できません:\n%@";
 
 /* alert title */
 "Unable to parse token" = "トークンを解析できません。";
@@ -2878,7 +2902,7 @@
 "Unread" = "未読に戻す";
 
 /* The title of the star action in action sheet */
-"Unstar" = "スターを外す";
+"Unstar" = "星印を外す";
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "登録解除";
@@ -2961,6 +2985,12 @@
 /* No comment provided by engineer. */
 "View HTML" = "HTMLを表示";
 
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "ダークモードでメッセージを表示";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "ライトモードでメッセージを表示";
+
 /* Title */
 "Warning" = "警告";
 
@@ -3037,7 +3067,7 @@
 "You are all caught up" = "メッセージはありません";
 
 /* No comment provided by engineer. */
-"You are not connected. We cannot display the content of your message." = "You are not connected. We cannot display the content of your message.";
+"You are not connected. We cannot display the content of your message." = "接続していません。メッセージのコンテンツを表示できません。";
 
 /* The text shown on the mailbox when the device is in offline mode */
 "You are offline" = "オフラインです";
@@ -3064,10 +3094,10 @@
 "You have a new email!" = "新着メールがあります。";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "You have entered at least one invalid email address. Please verify your recipients.";
+"You have entered at least one invalid email address. Please verify your recipients." = "1 件以上の無効なメールアドレスが入力されています。宛先を確認してください。";
 
 /* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "You have entered at least one unknown recipient. Please verify your recipients.";
+"You have entered at least one unknown recipient. Please verify your recipients." = "1 件以上の不明な宛先が入力されています。宛先を確認してください。";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "保存されていない変更があります。保存しますか？";

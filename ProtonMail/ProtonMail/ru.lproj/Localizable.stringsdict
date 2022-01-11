@@ -186,69 +186,85 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
-	<key>swipe_to_move_title</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d message</string>
-			<key>other</key>
-			<string>%d messages</string>
-		</dict>
-	</dict>
 	<key>swipe_to_label_conversation_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
 		<key>Conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d цепочки писем</string>
+			<key>many</key>
+			<string>%d цепочек писем</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d цепочка писем</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d цепочек писем</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ помечен</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
 		<key>Message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d сообщения</string>
+			<key>many</key>
+			<string>%d сообщений</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d сообщение</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d сообщений</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ помечено</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
 		<key>Conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>few</key>
+			<string>%d цепочки писем</string>
+			<key>many</key>
+			<string>%d цепочек писем</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d цепочка писем</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d цепочек писем</string>
 		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ перемещён в %@</string>
+	</dict>
+	<key>swipe_to_move_title</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d сообщения</string>
+			<key>many</key>
+			<string>%d сообщений</string>
+			<key>one</key>
+			<string>%d сообщение</string>
+			<key>other</key>
+			<string>%d сообщений</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ перемещено в %@</string>
 	</dict>
 </dict>
 </plist>
