@@ -31,9 +31,11 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     internal let pauseIndexingButton = UIButton(type: UIButton.ButtonType.system) as UIButton
     internal var progressView: UIProgressView!
     
+    internal var hideSections: Bool = true
+    
     struct Key {
         static let cellHeight: CGFloat = 48.0
-        
+        static let footerHeight : CGFloat = 48.0
         static let headerCell: String = "header_cell"
     }
     
@@ -41,15 +43,23 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.viewModel.isEncryptedSearch {
+            self.hideSections = false
+        } else {
+            self.hideSections = true
+        }
+        
         self.updateTitle()
         self.view.backgroundColor = UIColorManager.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SwitchTableViewCell.self)
+        self.tableView.register(ProgressBarButtonTableViewCell.self)
         
-        self.tableView.estimatedSectionFooterHeight = 36.0
+        self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
         
         self.tableView.estimatedRowHeight = Key.cellHeight
+        //self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableView.automaticDimension
         
         self.deleteSearchIndexButton.frame = CGRect(x: 50, y: 100, width: 150, height: 45)
@@ -121,25 +131,40 @@ extension SettingsEncryptedSearchViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section > 0 && !viewModel.isEncryptedSearch {
+        print("section: \(section), hide sections: \(self.hideSections)")
+        if section > 0 && self.hideSections {
             return 0
         }
         return 1
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = indexPath.section
+        
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .encryptedSearch:
+            return Key.cellHeight
+        case .downloadViaMobileData:
+            return Key.cellHeight
+        case .downloadedMessages:
+            return 100.0
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section > 0 && !viewModel.isEncryptedSearch {
-            return 0
+        if section > 0 && self.hideSections {
+            return CGFloat.leastNormalMagnitude
         }
         return super.tableView(tableView, heightForHeaderInSection: section)
     }
     
-    /*override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section > 0 && !viewModel.isEncryptedSearch {
-            return 0
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section > 0 && self.hideSections {
+            return CGFloat.leastNormalMagnitude
         }
-        return super.tableView(tableView, heightForFooterInSection: section)
-    }*/
+        return Key.footerHeight//super.tableView(tableView, heightForFooterInSection: section)
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let section = indexPath.section
@@ -153,11 +178,16 @@ extension SettingsEncryptedSearchViewController {
                     _, _, _ in
                     let status = self.viewModel.isEncryptedSearch
                     self.viewModel.isEncryptedSearch = !status
+
+                    print("slider: \(self.viewModel.isEncryptedSearch)")
                     
                     //If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
                         //show alert
-                        self.showAlertContentSearchEnabled(for: indexPath)
+                        self.showAlertContentSearchEnabled(for: indexPath, cell: switchCell)
+                    } else {
+                        //hide sections
+                        self.hideSections = true
                     }
                 }
             }
@@ -172,10 +202,10 @@ extension SettingsEncryptedSearchViewController {
             //cell.isHidden = true
             return cell
         case .downloadedMessages:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-            if let switchCell = cell as? SwitchTableViewCell {
-                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
-                    //TODO code here for progress view
+            let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
+            if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
+                progressBarButtonCell.configCell("Downloading messages...", "15 minutes remaining...", 0.45, "Pause", "Resume") { _, _, _ in
+                    //TODO code here for pause button
                 }
             }
             //cell.isHidden = true
@@ -208,7 +238,7 @@ extension SettingsEncryptedSearchViewController {
         return header
     }
     
-    func showAlertContentSearchEnabled(for index: IndexPath) {
+    func showAlertContentSearchEnabled(for index: IndexPath, cell: SwitchTableViewCell) {
         //create the alert
         let alert = UIAlertController(title: "Enable content search", message: "Messages will download via WiFi. This could take some time and your device may heat up slightly.\n You can pause the action at any time.", preferredStyle: UIAlertController.Style.alert)
         //add the buttons
@@ -221,15 +251,13 @@ extension SettingsEncryptedSearchViewController {
             self.progressView.isHidden = false
             self.deleteSearchIndexButton.isHidden = false
             self.pauseIndexingButton.isHidden = false
-            //self.tableView.cellForRow(at: IndexPath.index(index)) as? SwitchTableViewCell
+            self.hideSections = false
+
+            print("es on? : \(self.viewModel.isEncryptedSearch)")
             self.tableView.reloadData() //refresh the view to show changes in UI
 
-            //TODO check return value
-            var returnValue: Bool = false
-            returnValue = EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
-            
-            //set or reset toggle switch according to successfull indexing
-            self.viewModel.isEncryptedSearch = returnValue
+            //build search index
+            EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
         })
         
         //show alert
@@ -241,6 +269,9 @@ extension SettingsEncryptedSearchViewController {
         self.viewModel.isEncryptedSearch = false //set toggle button to false
         self.progressView.isHidden = true //hide progress bar
         self.progressView.progress = 0 //reset value of progress bar
+        self.deleteSearchIndexButton.isHidden = true
+        self.pauseIndexingButton.isHidden = true
+        self.hideSections = true
         self.tableView.reloadData() //refresh the view after
     }
     

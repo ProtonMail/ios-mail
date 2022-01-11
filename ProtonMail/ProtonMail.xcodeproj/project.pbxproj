@@ -401,6 +401,7 @@
 		245B6AC5AE3EE165EDCB5704E48E8585 /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
 		24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776244072981B1B471989C22C5729D64 /* MockDiskSaver.swift */; };
 		2492ED78B3ECA7F50E37AD920587F8A5 /* BCrypt+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */; };
+		249D81CF8F75F241435BEC6B47983F71 /* ProgressBarButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF70D867654B87BF65205BDEDACE42BC /* ProgressBarButtonTableViewCell.swift */; };
 		24AC3718A900577F7B9AC0FBA389E52F /* UpdateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */; };
 		24AE0C576D6F5391C74735C9704BE6F3 /* SettingsEncryptedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C10CE0EE8FB856275B4120F16A7855 /* SettingsEncryptedSearchViewModel.swift */; };
 		24C7182E4DFD9228EAC4666E46D76C22 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C719ABBD61BBF8EAD325D0130B2124 /* QueueManager.swift */; };
@@ -579,6 +580,7 @@
 		334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */; };
 		33614903A8407F333ED0ECA3437E4048 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73309C33F5F5C80FA75D6D03008FBC /* TableCellLabelView.swift */; };
 		3372A73224F8E4849B373A951C291D64 /* AppCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */; };
+		337B18FCED8DCEB02C8B628F85AC291F /* ProgressBarButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09DFF512C96A0D6CDCBD8C704343A3B4 /* ProgressBarButtonTableViewCell.xib */; };
 		339DBBE6A02A55BCAE5217D2F2D26FA5 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE70CDBED11AD04DF17590E45AC2E6EE /* Environment.swift */; };
 		339F0958CB911D297E56B848D4C9A88D /* DisplayNameRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50EEB51DEBAE20EB18DFC176CA92BF8 /* DisplayNameRobot.swift */; };
 		33A1F3522DF7D1473BD1FA8D0E2EE394 /* CoreDataContextProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A713B4B7CF594A0C98D65E6458004 /* CoreDataContextProviderProtocol.swift */; };
@@ -3015,6 +3017,7 @@
 		097A82D6D121778D73C0FD65B975D91F /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		09850548088C72E18863E9118187897A /* SwipeActionRightToLeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionRightToLeftTableViewCell.swift; sourceTree = "<group>"; };
 		09B7BD7737149F2EE90881D4898AEC16 /* MailboxViewModel+MoveTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailboxViewModel+MoveTo.swift"; sourceTree = "<group>"; };
+		09DFF512C96A0D6CDCBD8C704343A3B4 /* ProgressBarButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressBarButtonTableViewCell.xib; sourceTree = "<group>"; };
 		0A8B854E9663E924BA98511AB6033591 /* UserInfo+ViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+ViewMode.swift"; sourceTree = "<group>"; };
 		0ABB1BADD0CC0A08BA06B3A3327B0D79 /* LabelColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelColorCell.swift; sourceTree = "<group>"; };
 		0B2CFA0A2EC91C90BA021AA2387FA522 /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -4283,6 +4286,7 @@
 		FE7D4CE87A107E1A78DFD4EABB388329 /* AttachmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewController.swift; sourceTree = "<group>"; };
 		FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiLabelDisplayView.swift; sourceTree = "<group>"; };
+		FF70D867654B87BF65205BDEDACE42BC /* ProgressBarButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FF9CF3527172D409CB88A0F7E6804714 /* SwipeActionLeftToRightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionLeftToRightTableViewCell.swift; sourceTree = "<group>"; };
 		FFF27F43FC7314C887D5AFB7651F1E24 /* ConversationActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationActionSheetViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -5687,6 +5691,8 @@
 				D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */,
 				6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */,
 				51A9677C42715B118E115E2A2F45923B /* GeneralSettingViewCell.xib */,
+				FF70D867654B87BF65205BDEDACE42BC /* ProgressBarButtonTableViewCell.swift */,
+				09DFF512C96A0D6CDCBD8C704343A3B4 /* ProgressBarButtonTableViewCell.xib */,
 				921313A1AF9861232042AC6AB5FC0C2F /* SettingsAccountCell.swift */,
 				980E8539D3193CC91069D1BA4F3B3238 /* SettingsAccountCell.xib */,
 				47A766C2DFB30C6AEA644CCC8B55A26D /* SettingsButtonCell.swift */,
@@ -6495,12 +6501,6 @@
 				8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		AC32A6C15A576438B1EF56289E166D03 /* ConversationDataService */ = {
@@ -8125,6 +8125,7 @@
 				EB6F42153AB28F3A84144A60A12AE75A /* PinCodeConfirmationViewController.xib in Resources */,
 				CFF0031F9C1AD4EB611D62F08D9A71FC /* PinCodeSetUpViewController.xib in Resources */,
 				CE2165155EF9AFC8784F1902ED7A2E4D /* PinCodeView.xib in Resources */,
+				337B18FCED8DCEB02C8B628F85AC291F /* ProgressBarButtonTableViewCell.xib in Resources */,
 				38AE15E914403F3294DDE2BB86916854 /* QuoteBreaker.js in Resources */,
 				E427B15A1468319F705C3D9F36185C89 /* RecipientCell.xib in Resources */,
 				CAEBC1F1C1A2DE1C380E06125BF76B3C /* RecipientView.xib in Resources */,
@@ -9924,6 +9925,9 @@
 				300FAB471D79465022B087D1A6FAC654 /* PlainTextViewerViewController.swift in Sources */,
 				353D3CA72E2F83D1E1FBE50302E49ECE /* PreAddress+MessageDataServiceTypes.swift in Sources */,
 				30D05E57904F53686BD5D97AC545E68D /* ProcessInfo+Extension.swift in Sources */,
+				482FB484E7D7A4F17F316EA943266485 /* ProcessInfo+Extension.swift in Sources */,
+				249D81CF8F75F241435BEC6B47983F71 /* ProgressBarButtonTableViewCell.swift in Sources */,
+				B308F25B64E576D18A105960C0D06D45 /* Promise+BrokenPromise.swift in Sources */,
 				146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */,
 				3F25D02E596C1D6CF978943860299041 /* ProtonMailAddresses.swift in Sources */,

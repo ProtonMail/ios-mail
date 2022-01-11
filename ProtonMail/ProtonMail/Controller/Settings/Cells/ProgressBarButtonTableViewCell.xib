@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProgressBarButtonTableViewCell" id="3QP-tG-Vhv" customClass="ProgressBarButtonTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3QP-tG-Vhv" id="y8B-Bl-9LP">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52F-0H-slb">
+                        <rect key="frame" x="317" y="52" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb4-cr-rI8">
+                        <rect key="frame" x="16" y="40" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading messages..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htb-a2-PH0">
+                        <rect key="frame" x="16" y="11" width="195" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bau-AF-ClQ">
+                        <rect key="frame" x="16" y="40" width="343" height="4"/>
+                    </progressView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fi0-qG-XTe">
+                        <rect key="frame" x="16" y="40" width="46" height="30"/>
+                        <state key="normal" title="Button"/>
+                        <connections>
+                            <action selector="pauseButtonPressed:" destination="3QP-tG-Vhv" eventType="touchUpInside" id="9rs-Bn-xuR"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="top" secondItem="y8B-Bl-9LP" secondAttribute="top" constant="11" id="27J-UG-9RD" userLabel="Top Label.top = top + 12"/>
+                    <constraint firstItem="Fi0-qG-XTe" firstAttribute="top" secondItem="Xb4-cr-rI8" secondAttribute="top" id="9dG-Tz-nZu" userLabel="Pause Button.top = Estimated Time Label.bottom + 8"/>
+                    <constraint firstItem="52F-0H-slb" firstAttribute="trailing" secondItem="Bau-AF-ClQ" secondAttribute="trailing" id="GVr-UX-YaS"/>
+                    <constraint firstItem="Bau-AF-ClQ" firstAttribute="top" secondItem="htb-a2-PH0" secondAttribute="bottom" constant="8" id="IGh-3d-HuS"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Xb4-cr-rI8" secondAttribute="leading" id="Jaa-61-b7f"/>
+                    <constraint firstItem="Bau-AF-ClQ" firstAttribute="centerX" secondItem="y8B-Bl-9LP" secondAttribute="centerX" id="Kip-gW-ZpX"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Fi0-qG-XTe" secondAttribute="leading" id="QWe-tf-Ggg"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="Bau-AF-ClQ" secondAttribute="leading" id="VoM-6N-CB6"/>
+                    <constraint firstItem="52F-0H-slb" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="bottom" constant="8" id="mQ3-AN-rKq"/>
+                    <constraint firstItem="htb-a2-PH0" firstAttribute="leading" secondItem="y8B-Bl-9LP" secondAttribute="leadingMargin" id="nVl-eO-Rxz"/>
+                    <constraint firstItem="Xb4-cr-rI8" firstAttribute="top" secondItem="Bau-AF-ClQ" secondAttribute="top" id="oW9-fW-wBI" userLabel="Estimated Time Label.top = Progress View.bottom + 8"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="currentProgressLabel" destination="52F-0H-slb" id="oew-Vm-x0c"/>
+                <outlet property="estimatedTimeLabel" destination="Xb4-cr-rI8" id="8ge-EJ-Wk3"/>
+                <outlet property="pauseButton" destination="Fi0-qG-XTe" id="bzu-qz-ViY"/>
+                <outlet property="progressView" destination="Bau-AF-ClQ" id="1OR-Ju-pqr"/>
+                <outlet property="topLabel" destination="htb-a2-PH0" id="9vm-n2-Ky2"/>
+            </connections>
+            <point key="canvasLocation" x="463.19999999999999" y="-198.80059970014995"/>
+        </tableViewCell>
+    </objects>
+</document>
