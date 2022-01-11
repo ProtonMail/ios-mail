@@ -59,6 +59,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.register(ProgressBarButtonTableViewCell.self)
         self.tableView.register(ThreeLinesTableViewCell.self)
+        self.tableView.register(SpinnerTableViewCell.self)
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.sectionFooterHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = Key.cellHeight
@@ -200,7 +201,13 @@ extension SettingsEncryptedSearchViewController {
             }
             return cell
         case .downloadedMessages:
-            /*if EncryptedSearchService.shared.indexBuildingInProgress == false && EncryptedSearchService.shared.totalMessages == EncryptedSearchService.shared.processedMessages && !EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+            if EncryptedSearchService.shared.state == .refresh {
+                let cell = tableView.dequeueReusableCell(withIdentifier: SpinnerTableViewCell.CellID, for: indexPath)
+                if let spinnerCell = cell as? SpinnerTableViewCell {
+                    spinnerCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, LocalString._settings_encrypted_search_refresh_index)
+                }
+                return cell
+            } else if EncryptedSearchService.shared.state == .complete {
                 //index building completely finished
                 let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                 if let threeLineCell = cell as? ThreeLinesTableViewCell {
@@ -212,7 +219,7 @@ extension SettingsEncryptedSearchViewController {
                     threeLineCell.accessoryType = .checkmark
                 }
                 return cell
-            } else {*/
+            } else {
                 //index building in progress
                 let cell = tableView.dequeueReusableCell(withIdentifier: ProgressBarButtonTableViewCell.CellID, for: indexPath)
                 if let progressBarButtonCell = cell as? ProgressBarButtonTableViewCell {
@@ -252,7 +259,7 @@ extension SettingsEncryptedSearchViewController {
                     }
                 }
                 return cell
-            //}
+            }
         }
     }
     
