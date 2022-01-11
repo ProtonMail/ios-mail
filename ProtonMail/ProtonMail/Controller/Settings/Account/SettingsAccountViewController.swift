@@ -240,7 +240,7 @@ extension SettingsAccountViewController {
             case .conversation:
                 cellToUpdate.configure(right: "")
             case .search:
-                cellToUpdate.configure(right: "off")
+                cellToUpdate.configure(right: "")
             case .labels:
                 cellToUpdate.configure(right: "")
             case .folders:
@@ -326,7 +326,7 @@ extension SettingsAccountViewController {
         case .privacy:
             self.coordinator?.go(to: .privacy)
         case .search:
-            break
+            self.coordinator?.go(to: .search)
         case .labels:
             self.coordinator?.go(to: .labels)
         case .folders:

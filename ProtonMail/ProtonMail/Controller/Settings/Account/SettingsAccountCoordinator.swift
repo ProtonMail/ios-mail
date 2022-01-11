@@ -65,6 +65,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case labels = "labels_management"
         case folders = "folders_management"
         case conversation
+        case search
     }
     
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -91,6 +92,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             openFolderManagement(type: .folder)
         case .conversation:
             openConversationSettings()
+        case .search:
+            openEncryptedSearch()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
@@ -168,7 +171,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             }
             let users: UsersManager = services.get()
             next.setViewModel(ChangeSinglePasswordViewModel(user: users.firstUser!))
-        case .privacy, .labels, .folders, .conversation:
+        case .privacy, .labels, .folders, .conversation, .search:
             break
         }
         return true
@@ -203,6 +206,15 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         )
         let viewController = SettingsConversationViewController(viewModel: viewModel)
         self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func openEncryptedSearch() {
+        //TODO
+        let vc = SettingsEncryptedSearchViewController()
+        let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+        vc.set(viewModel: vm)
+        //vc.set(coordinator: TODO)
+        self.viewController?.navigationController?.show(vc, sender: nil)
     }
 
 }
