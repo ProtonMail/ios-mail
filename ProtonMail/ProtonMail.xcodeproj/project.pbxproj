@@ -229,7 +229,6 @@
 		1491D1A19E71E3253A732663E3025D9D /* MessageDecrypterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80B5B723CE49E38359944D2CFFFEF86 /* MessageDecrypterTests.swift */; };
 		14D2F535E086675D77E872B826E957BB /* ContactAddEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726BA305A27A1391F0D599859BDEAA77 /* ContactAddEmailCell.swift */; };
 		1539607764354AA467AE67EA255EA11D /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50052FFF65FBBF04B82577272D5299A8 /* MenuItemTableViewCell.swift */; };
-		15534B99E796035F12C9C93DBFD0E3B3 /* SearchInfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E80093024BFFB918559381BC7F5DFB /* SearchInfoBannerView.swift */; };
 		1566F8F46A6456E7906FC35965BAF884 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */; };
 		1599A0BD95566B4A87A1AD3E247750CD /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */; };
 		15B7D84014B41AD594B935BC2605E835 /* UserInfoOrganizationRoleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE9AAE9188A3EC012F7F9D8A8498B49 /* UserInfoOrganizationRoleTests.swift */; };
@@ -239,7 +238,6 @@
 		1618555CAFF94EC13FE4DF078D531CDF /* ContactsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */; };
 		162DF13E122DAC3901024E4C6EEBF248 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */; };
 		162F7F24C1BBACB682DCE9100C7E30B5 /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */; };
-		163FFDB751D54BB8EABD4BC786DE372D /* SearchInfoBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E80093024BFFB918559381BC7F5DFB /* SearchInfoBannerView.swift */; };
 		167BDA7F2F4A21445C598DC43CC59052 /* ConversationDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB9C874239834B5F1B59146FB97B46A /* ConversationDataService.swift */; };
 		168E8ACAB68B4E829B74EE7A8D50FF06 /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
 		16E3697B45454767A0628F08D62F6429 /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */; };
@@ -4353,7 +4351,6 @@
 		F6361F552FE92E8ABE00B0A67F808477 /* MessageViewActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewActionSheetViewModel.swift; sourceTree = "<group>"; };
 		F652425B2A28AFB1E9CB5BF63F558242 /* case1_token.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = case1_token.txt; sourceTree = "<group>"; };
 		F67B62A4099F73D6D1B1A58B0C6B9326 /* SettingsGeneralCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsGeneralCell.xib; sourceTree = "<group>"; };
-		F6E80093024BFFB918559381BC7F5DFB /* SearchInfoBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInfoBannerView.swift; sourceTree = "<group>"; };
 		F70769869A75AE1734939BF9A939D048 /* ProtonMailDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProtonMailDev.entitlements; sourceTree = "<group>"; };
 		F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequestSecureLoader.swift; sourceTree = "<group>"; };
 		F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -5951,7 +5948,6 @@
 			isa = PBXGroup;
 			children = (
 				B3221DC867E35D1A0AEF46F584A41502 /* SearchBarView.swift */,
-				F6E80093024BFFB918559381BC7F5DFB /* SearchInfoBannerView.swift */,
 				6C94282905B31CB4FD9261528DC8F5C7 /* SearchViewController.swift */,
 				E865C6674C2F8D20657331E1AC340900 /* SearchViewModel.swift */,
 			);
@@ -10234,7 +10230,6 @@
 				DBA1EE07ABCFDBA1AB49706ADD12DEBC /* Result+Error.swift in Sources */,
 				E4A7F23025FF576C9420BEE714445243 /* Saver.swift in Sources */,
 				05BAA09EDF0471AF560FE1D2D5A232DA /* SearchBarView.swift in Sources */,
-				15534B99E796035F12C9C93DBFD0E3B3 /* SearchInfoBannerView.swift in Sources */,
 				67E2DD4FD492DEEAEF3FA8F7BED42955 /* SearchViewController.swift in Sources */,
 				0CA591031921EB2184849E4AF2D1D467 /* SearchViewModel.swift in Sources */,
 				B8DFC0DCFFA2952F4A042CBAE7036785 /* SelectableTableViewCell.swift in Sources */,
@@ -11011,7 +11006,6 @@
 				4FC4B0D9D1CD3592B0277A174EC6ECE9 /* Result+Error.swift in Sources */,
 				780C99C4C808DB76F9928C7E9AB3816D /* Saver.swift in Sources */,
 				7DB0E19679B4157182B86A68E5219968 /* SearchBarView.swift in Sources */,
-				163FFDB751D54BB8EABD4BC786DE372D /* SearchInfoBannerView.swift in Sources */,
 				77919769E353983445EFB87679112F5F /* SearchViewController.swift in Sources */,
 				C45EE92A5519B124397A9A5B3E325910 /* SearchViewModel.swift in Sources */,
 				916BF021AE1DD13B690CE685B1B5C1FD /* SelectableTableViewCell.swift in Sources */,
