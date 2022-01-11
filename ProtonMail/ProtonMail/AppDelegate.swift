@@ -341,6 +341,13 @@ extension AppDelegate: UIApplicationDelegate {
         } else {
             delayedCompletion()
         }
+
+        // Extend background time when encrypted search is enabled
+        if userCachedStatus.isEncryptedSearchOn {
+            EncryptedSearchService.shared.continueIndexingInBackground()
+        }
+        
+        PMLog.D("Enter Background")
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
     
