@@ -1880,6 +1880,14 @@
 		ACE3FC5DC6F54E2E1B97D7D06DEF87E8 /* ContactCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */; };
 		ACF04BAA09EC7C6EE1A48A2EF4B9BE12 /* SettingsDarkModeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ADF776F24452D383EFA105ADABC939 /* SettingsDarkModeViewModelTests.swift */; };
 		ACFBA49B268CB48D0040621F /* SettingsEncryptedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49A268CB48D0040621F /* SettingsEncryptedSearchViewController.swift */; };
+		ACFBA49D268DC42F0040621F /* SettingsEncryptedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49C268DC42E0040621F /* SettingsEncryptedSearchViewModel.swift */; };
+		ACFBA49F268DCC790040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
+		ACFBA4A0268F06420040621F /* SettingsEncryptedSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49A268CB48D0040621F /* SettingsEncryptedSearchViewController.swift */; };
+		ACFBA4A1268F09260040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
+		ACFBA4A2268F09280040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
+		ACFBA4A3268F092D0040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
+		ACFBA4A4268F092E0040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
+		ACFBA4A5268F09320040621F /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */; };
 		ACFE5E13F22AE1E690313DEAC1DFA486 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B553E0FE138B6EB544BF3C3DBE10AF1 /* ChangePasswordViewModel.swift */; };
 		AD1381107CA2AFBB5D949946BC994864 /* SettingsCombineContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715770966F3F649B547637D38E3242DD /* SettingsCombineContactViewModel.swift */; };
 		AD217B3C02E0CFF8AE34DEA7EAAE9444 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4C4DF9DD2ADD58D87E2891CBE59CD /* MIMEType.swift */; };
@@ -3855,6 +3863,8 @@
 		ACAAC52A508F45B42274C36434138C7E /* UndoActionHandlerBaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoActionHandlerBaseMock.swift; sourceTree = "<group>"; };
 		ACDBEDB4F669613BB777BA63A3596C43 /* ExpandedHeaderContactContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderContactContext.swift; sourceTree = "<group>"; };
 		ACFBA49A268CB48D0040621F /* SettingsEncryptedSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEncryptedSearchViewController.swift; sourceTree = "<group>"; };
+		ACFBA49C268DC42E0040621F /* SettingsEncryptedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEncryptedSearchViewModel.swift; sourceTree = "<group>"; };
+		ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchCacheProtocol.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD582027DF251AB61A346296CBA10FC4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ADAF5E5011C30A623AEEAB65309AA864 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4658,6 +4668,7 @@
 				33288E2548C6D35CEA36353B8D45CC7B /* SettingsSwipeActionSelectViewModel.swift */,
 				6070AD30387D7CA0B61DDC4BD7CF501D /* SettingsViewModel.swift */,
 				0329B2D1C050CD483F5A611FC8B4F3CB /* SettingsViewModelImpl.swift */,
+				ACFBA49C268DC42E0040621F /* SettingsEncryptedSearchViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -5805,6 +5816,7 @@
 				AC526600186BFADBF928D87FB626F1AC /* LinkOpenerCacheProtocol.swift */,
 				BE33338562E664D5FA911E596B71F0C4 /* SwipeActionCacheProtocol.swift */,
 				66EEBB83F2E225D3DF52EA91E12927F0 /* SystemUpTimeProtocol.swift */,
+				ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */,
 			);
 			path = CacheProtocols;
 			sourceTree = "<group>";
@@ -9149,6 +9161,7 @@
 				B250BBE5318E416226D4D1144303F630 /* Crypto.swift in Sources */,
 				BE0F3E708A0261B6108254077A342096 /* DarkModeCacheProtocol.swift in Sources */,
 				01A9AEE94E752686C61DE16E449BD069 /* DoHMail.swift in Sources */,
+				ACFBA4A2268F09280040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				E99874A17D8E7F5F72E452330B26CEAA /* DohCacheProtocol.swift in Sources */,
 				6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */,
 				9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */,
@@ -9200,6 +9213,7 @@
 				F3C68389377104C02FCAF5FEBC824859 /* AccessibleCell.swift in Sources */,
 				CCF71C4155176996D15EC191B2E4EB6B /* AccessibleView.swift in Sources */,
 				5A815A07A018C324A31DE23700F7922B /* ActionLabel.swift in Sources */,
+				ACFBA49D268DC42F0040621F /* SettingsEncryptedSearchViewModel.swift in Sources */,
 				CEE9D6FEBF9289A4DF4C3B1CF3336931 /* ActionSheetPresentProtocol.swift in Sources */,
 				54223F3BBE115ABBC819ED1049F01780 /* ActionSheetViewModel.swift in Sources */,
 				BA36E66BF1C01E53370D5FA066E175B7 /* Address.swift in Sources */,
@@ -9665,6 +9679,9 @@
 				77B721E816A30DEF8514E3186975B79C /* OnboardView.swift in Sources */,
 				E826A3AA1E7F0D103938EAFB0D6B6587 /* OnboardViewController.swift in Sources */,
 				9E0168A849F55F77372A4C644140087C /* Onboarding.swift in Sources */,
+				BEA98836096B013C6D83F5172795DA09 /* OnboardingView.swift in Sources */,
+				A3BCF0E24697018917EB2040E8B0EE4B /* OnboardingViewController.swift in Sources */,
+				ACFBA49F268DCC790040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				D8C99DCD22606D598BD5DB49FA2893B0 /* OneClickUnsubscribe.swift in Sources */,
 				899B289FF6339103D81AEA51AC327B19 /* OpenPGP+Extension.swift in Sources */,
 				17C8DE8143362CEE711CB48E244CD17C /* OpenPGP+String+Extension.swift in Sources */,
@@ -10045,6 +10062,7 @@
 				6B354B23FE3B66248748AA7112D6521A /* ContactDetailsUpgradeCell.swift in Sources */,
 				000DD5CA8875B2EFB42CFB39CBA187C7 /* ContactDetailsViewModel.swift in Sources */,
 				3796ED98A01848ABA4DB967E32D790E7 /* ContactDetailsViewModelImpl.swift in Sources */,
+				ACFBA4A0268F06420040621F /* SettingsEncryptedSearchViewController.swift in Sources */,
 				81BC2CEC77ADF6AB36F1F0770FFCA958 /* ContactEditAddCell.swift in Sources */,
 				CB459753EBCD37431C4AB7D887E3FE84 /* ContactEditAddressCell.swift in Sources */,
 				17131F4C7C8F2441B81FE9863EDBD005 /* ContactEditCell+Delegates.swift in Sources */,
@@ -10180,6 +10198,7 @@
 				4EEA59BEEE6ED3DBB32AB34AACCC3201 /* DarkModeCSSHelper.swift in Sources */,
 				04992A0601ECE0796FF20C1ACE87393E /* DarkModeCacheProtocol.swift in Sources */,
 				17CA82A84806A11909026D69BD91905A /* Data+Extension.swift in Sources */,
+				ACFBA4A3268F092D0040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				93A4792B8D0AFB6929EB721D35DDF560 /* Data+Mime.swift in Sources */,
 				98140CA52DADACF09A66644095F94E59 /* DataService+Error.swift in Sources */,
 				4B2752C4CBD7F19C91947A532ED66E9A /* Date+Extension.swift in Sources */,
@@ -10701,6 +10720,7 @@
 				6E68955FEF07C5F5925C385D46497125 /* Crypto.swift in Sources */,
 				609EA5B9F48EB92ACA936BEDA9F4E365 /* DarkModeCacheProtocol.swift in Sources */,
 				A5B1C6628EC175D471B31F5204B70900 /* DoHMail.swift in Sources */,
+				ACFBA4A5268F09320040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				F84A68BD4D6DB97B4DC257C6E6782DF3 /* DohCacheProtocol.swift in Sources */,
 				3E82044001396820D1AB44C18F556191 /* EncryptionKit.swift in Sources */,
 				5DC2FADD1235BE606034F241E18CDD38 /* Key.swift in Sources */,
@@ -11022,6 +11042,7 @@
 				2366E20D29480AC1CBDC5A05C6D460F5 /* SharePinUnlockViewController.swift in Sources */,
 				D04B28DDAE7C3EFF6FA24BB575F36236 /* ShareUnlockCoordinator.swift in Sources */,
 				871898B7C24C611415A842947272D3CB /* ShareUnlockPinCodeModelImpl.swift in Sources */,
+				ACFBA4A1268F09260040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				E9710A92098A25BB8602D3866E923039 /* ShareUnlockViewController.swift in Sources */,
 				3016A2818AD0AC78137FB8F30A6B0D2F /* ShareUnlockViewModel.swift in Sources */,
 				D7D858E3F4A1862BB465B161B10516C8 /* SharedCacheBase.swift in Sources */,
@@ -11438,6 +11459,7 @@
 				8FD96DAB340776700C59F409A0DC1B2B /* UIBarButtonItem+swizzle.swift in Sources */,
 				82D0300A46CB97B95E602981B97854BC /* UIColor+ProtonMail.swift in Sources */,
 				493FB0EE5157E86FAC68BA6A3CABF342 /* UIEdgeInsets+All.swift in Sources */,
+				ACFBA4A4268F092E0040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				3E9D6672ECABDD2B0EAB0D7BE50A2E5B /* UIImage+Color.swift in Sources */,
 				D574B7D252A6D566DAA5BD6C11E6990D /* UIImage+Extension.swift in Sources */,
 				4EC6A8568F86DA279E9F15F649A6BD0F /* UIImageView+Extension.swift in Sources */,

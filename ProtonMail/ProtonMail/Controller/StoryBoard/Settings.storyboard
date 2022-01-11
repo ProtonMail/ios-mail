@@ -1179,7 +1179,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8J-r1-ETb">
-                                <rect key="frame" x="0.0" y="76" width="414" height="48"/>
+                                <rect key="frame" x="0.0" y="120" width="414" height="48"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ix-UV-Qx3">
                                         <rect key="frame" x="16" y="12" width="379" height="24"/>
@@ -1209,7 +1209,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xwX-fw-gA4">
-                                <rect key="frame" x="0.0" y="176" width="414" height="200"/>
+                                <rect key="frame" x="0.0" y="220" width="414" height="200"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Sent from &lt;a href=&quot;https://protonmail.ch&quot;&gt;ProtonMail&lt;/a&gt;, encrypted email based in Switzerland." translatesAutoresizingMaskIntoConstraints="NO" id="Trf-Y0-Ult">
                                         <rect key="frame" x="10" y="8" width="394" height="184"/>
@@ -1250,13 +1250,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-uv-1hU">
-                                <rect key="frame" x="16" y="456" width="382" height="0.0"/>
+                                <rect key="frame" x="16" y="500" width="382" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0BN-uT-yFJ">
-                                <rect key="frame" x="0.0" y="400" width="414" height="48"/>
+                                <rect key="frame" x="0.0" y="444" width="414" height="48"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Login Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="st0-uB-chB">
                                         <rect key="frame" x="16" y="7" width="382" height="34"/>
@@ -1280,7 +1280,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXx-UI-NQP">
-                                <rect key="frame" x="16" y="147" width="382" height="21"/>
+                                <rect key="frame" x="16" y="191" width="382" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1405,28 +1405,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RIz-j0-4UJ" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                <rect key="frame" x="36" y="76" width="342" height="88"/>
+                                <rect key="frame" x="36" y="120" width="342" height="88"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="Bk3-P0-80Q"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l0E-UU-nDi" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                <rect key="frame" x="36" y="188" width="342" height="88"/>
+                                <rect key="frame" x="36" y="232" width="342" height="88"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="TpS-f0-kAU"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-gf-Tva" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                <rect key="frame" x="36" y="300" width="342" height="88"/>
+                                <rect key="frame" x="36" y="344" width="342" height="88"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="Aru-J5-E4f"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQX-oy-Xze" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                <rect key="frame" x="36" y="412" width="342" height="48"/>
+                                <rect key="frame" x="36" y="456" width="342" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="FUS-VK-axj"/>
                                 </constraints>
@@ -1916,6 +1916,11 @@
         <segue reference="PpL-SW-U8F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="XGq-2C-ssO"/>
+        <segue reference="Kuy-7Q-G0X"/>
+        <segue reference="gwz-B9-War"/>
+        <segue reference="HWt-Ev-5P1"/>
+        <segue reference="fg1-oe-9jP"/>
+        <segue reference="XQx-Pm-sNq"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
