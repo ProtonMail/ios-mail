@@ -3857,9 +3857,8 @@
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		AC526600186BFADBF928D87FB626F1AC /* LinkOpenerCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOpenerCacheProtocol.swift; sourceTree = "<group>"; };
-		ACAAC52A508F45B42274C36434138C7E /* UndoActionHandlerBaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoActionHandlerBaseMock.swift; sourceTree = "<group>"; };
 		AC54F7ED26932D4A00CA9396 /* EncryptedSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchService.swift; sourceTree = "<group>"; };
-		ACDBEDB4F669613BB777BA63A3596C43 /* ExpandedHeaderContactContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderContactContext.swift; sourceTree = "<group>"; };
+		ACAAC52A508F45B42274C36434138C7E /* UndoActionHandlerBaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoActionHandlerBaseMock.swift; sourceTree = "<group>"; };
 		ACFBA49A268CB48D0040621F /* SettingsEncryptedSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEncryptedSearchViewController.swift; sourceTree = "<group>"; };
 		ACFBA49C268DC42E0040621F /* SettingsEncryptedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEncryptedSearchViewModel.swift; sourceTree = "<group>"; };
 		ACFBA49E268DCC780040621F /* EncryptedSearchCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchCacheProtocol.swift; sourceTree = "<group>"; };
@@ -4552,7 +4551,6 @@
 				2BE915688FFC19D8F5B29AB61805E981 /* SettingsPrivacyCoordinator.swift */,
 				CC5FC67CBD076550EE169F2F359913C8 /* SettingsPrivacyViewController.swift */,
 				CC6FB7A9464582BFE7709A9BFE7B9EF1 /* SettingsTableViewController.swift */,
-				E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */,
 				ACFBA49A268CB48D0040621F /* SettingsEncryptedSearchViewController.swift */,
 			);
 			path = Settings;
@@ -9672,8 +9670,6 @@
 				77B721E816A30DEF8514E3186975B79C /* OnboardView.swift in Sources */,
 				E826A3AA1E7F0D103938EAFB0D6B6587 /* OnboardViewController.swift in Sources */,
 				9E0168A849F55F77372A4C644140087C /* Onboarding.swift in Sources */,
-				BEA98836096B013C6D83F5172795DA09 /* OnboardingView.swift in Sources */,
-				A3BCF0E24697018917EB2040E8B0EE4B /* OnboardingViewController.swift in Sources */,
 				ACFBA49F268DCC790040621F /* EncryptedSearchCacheProtocol.swift in Sources */,
 				D8C99DCD22606D598BD5DB49FA2893B0 /* OneClickUnsubscribe.swift in Sources */,
 				899B289FF6339103D81AEA51AC327B19 /* OpenPGP+Extension.swift in Sources */,
