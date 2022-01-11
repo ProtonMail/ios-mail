@@ -130,14 +130,6 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
                 return true
             }
             return false
-        case .encryptedSearch:
-            if let vc = destination as? SettingsEncryptedSearchViewController {
-                let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                vc.set(viewModel: vm)
-                vc.set(coordinator: self)
-                return true
-            }
-            return false
         case .swipeAction:
             openGesture()
             return true
