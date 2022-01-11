@@ -4016,6 +4016,7 @@
 		CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.3.xcdatamodel; sourceTree = "<group>"; };
 		CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
 		CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
 		CB274E7AC7516891D1938CF3BEA40049 /* PGPMimeAddressBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPMimeAddressBuilder.swift; sourceTree = "<group>"; };
 		CBF3B98E120BE095A6776D6F6904AFCA /* RemoteContentBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteContentBannerView.swift; sourceTree = "<group>"; };
 		CC4CDB6401C97884FDAC9AAC06E88BA9 /* 2.0.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.0.xcdatamodel; sourceTree = "<group>"; };
@@ -6422,7 +6423,6 @@
 				50378943F315426D0D58706441EB8335 /* Pods-SiriDev.debug.xcconfig */,
 				FB1C218B8C6CC2F3C0C0DF990417F3A0 /* Pods-SiriDev.distribution.xcconfig */,
 				30ADF59BCFD3E4CBE9BCF9226A75EB08 /* Pods-SiriDev.release.xcconfig */,
-				20B43D6E02BF6ED7B347A567 /* Pods-PushService.distribution.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -6495,6 +6495,12 @@
 				8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		AC32A6C15A576438B1EF56289E166D03 /* ConversationDataService */ = {
@@ -13219,7 +13225,7 @@
 		};
 		B758691E308D6B8D68103BD0D97FCA18 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20B43D6E02BF6ED7B347A567 /* Pods-PushService.distribution.xcconfig */;
+			baseConfigurationReference = CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
