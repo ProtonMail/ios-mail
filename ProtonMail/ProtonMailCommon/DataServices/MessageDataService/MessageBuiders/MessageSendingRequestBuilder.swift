@@ -433,6 +433,7 @@ extension MessageSendingRequestBuilder {
 
     func generatePlainTextBody() -> String {
         let body = self.clearBody ?? ""
+        // Need to improve replace part
         return body.html2String.preg_replace("\n", replaceto: "\r\n")
     }
 

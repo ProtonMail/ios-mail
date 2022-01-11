@@ -101,7 +101,7 @@ protocol InAppFeedbackViewModelProtocol {
 final class InAppFeedbackViewModel: InAppFeedbackViewModelProtocol {
     typealias SubmissionHandler = (Swift.Result<UserFeedback, InAppFeedbackViewModelError>) -> Void
 
-    static let defaultFeedbackType = "v4_feedback"
+    static let defaultFeedbackType = "mail_ios_v4_launch"
 
     private(set) var submissionHandler: SubmissionHandler
 
