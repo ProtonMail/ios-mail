@@ -1894,6 +1894,7 @@
 		AC2169ABF9A6B206FDE98C3FE1A3F589 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		AC605B9B38AA13DECF3F001C220ADC45 /* Result+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D095084C0661C11C333F7AEC1E6C3AA /* Result+Error.swift */; };
 		AC8B4DFA209328C2A958DF0B27E45374 /* Alerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */; };
+		AC8E635226E771C50070C2B3 /* HTMLEmailParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8E635126E771C40070C2B3 /* HTMLEmailParser.framework */; };
 		AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		ACA06AB626C1705400BF7AA4 /* EncryptedSearchCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA06AB526C1705400BF7AA4 /* EncryptedSearchCacheService.swift */; };
 		ACA06AB826C1705400BF7AA4 /* EncryptedSearchCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA06AB526C1705400BF7AA4 /* EncryptedSearchCacheService.swift */; };
@@ -3895,6 +3896,9 @@
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		AC526600186BFADBF928D87FB626F1AC /* LinkOpenerCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOpenerCacheProtocol.swift; sourceTree = "<group>"; };
 		ACAAC52A508F45B42274C36434138C7E /* UndoActionHandlerBaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoActionHandlerBaseMock.swift; sourceTree = "<group>"; };
+		AC8E635126E771C40070C2B3 /* HTMLEmailParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HTMLEmailParser.framework; sourceTree = "<group>"; };
+		ACA06AB526C1705400BF7AA4 /* EncryptedSearchCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchCacheService.swift; sourceTree = "<group>"; };
+		ACA384D326C6A7EC00B9C350 /* EncryptedSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchTests.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD582027DF251AB61A346296CBA10FC4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ADAF5E5011C30A623AEEAB65309AA864 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4352,6 +4356,8 @@
 				0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */,
 				BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */,
 				48D5E369E1DD804DC3794800139A18DD /* libc++.tbd in Frameworks */,
+				AC8E635226E771C50070C2B3 /* HTMLEmailParser.framework in Frameworks */,
+				10A88E948DD31C65D7DF0904 /* Pods_ProtonMail.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7233,6 +7239,7 @@
 		E82E69E71ACE409E41C4CFA61526BB54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC8E635126E771C40070C2B3 /* HTMLEmailParser.framework */,
 				E33950DFCB062014445E32F48781310E /* Crypto.xcframework */,
 				6507F5A0DDED58BDE2C2C67F5A178AEB /* OpenPGP.xcframework */,
 				41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */,
