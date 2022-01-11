@@ -767,6 +767,22 @@
             </objects>
             <point key="canvasLocation" x="2929" y="4456"/>
         </scene>
+        <!--Settings Encrypted Search Scene-->
+        <scene sceneID="f3c-g7-OFg">
+            <objects>
+                <viewController title="Settings Encrypted Search Scene" id="Vvd-ci-kPo" customClass="SettingsEncryptedSearchViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="SNc-yi-wLx">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="ggM-iH-5lk"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eXz-aN-TfW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1500" y="3627"/>
+        </scene>
         <!--SettingsDevice-->
         <scene sceneID="epK-CT-cZ9">
             <objects>
@@ -908,7 +924,7 @@
                                     <outlet property="topLineLabel" destination="lZ2-NH-Jfj" id="fRg-7y-paf"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="touch_id_switch_table_cell" id="y3E-lV-wni" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_encrypted_search" id="y3E-lV-wni" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="199.5" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y3E-lV-wni" id="Fzt-Le-b4D">
@@ -944,6 +960,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="switchView" destination="NfY-sa-6xI" id="m5v-b3-ahj"/>
+                                    <segue destination="Vvd-ci-kPo" kind="show" identifier="settings_encrypted_search" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="gsr-so-AA0"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="sbX-uo-hwE" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
