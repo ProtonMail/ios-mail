@@ -1874,6 +1874,8 @@ class LocalizedString {
     lazy var _combined_contacts = NSLocalizedString("Combined contacts", comment: "cell title in device settings")
     lazy var _local_cache_management = NSLocalizedString("Local Cache Management", comment: "cell title in device settings")
     lazy var _encrypted_search = NSLocalizedString("Search message content", comment: "cell title in device settings")
+    lazy var _encrypted_search_downloaded_messages = NSLocalizedString("Downloaded messages", comment: "cell title in device settings")
+    lazy var _encrypted_search_downloaded_messages_explanation = NSLocalizedString("You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched.", comment: "Explanation of downloaded messages for encrypted search")
 
     lazy var _swipe_actions = NSLocalizedString("Swipe actions", comment: "cell title in app settings")
     lazy var _alternative_routing = NSLocalizedString("Alternative routing", comment: "cell title in app settings")
@@ -2030,6 +2032,9 @@ class LocalizedString {
     lazy var _settings_title_of_download_via_mobile_data = NSLocalizedString("Download via mobile data", comment: "The title of the slider for download via mobile data in settings")
     lazy var _settings_footer_of_downloaded_messages = NSLocalizedString("TODO", comment: "The footer of TODO in settings")
     lazy var _settings_title_of_downloaded_messages = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in settings")
+    lazy var _settings_title_of_message_history = NSLocalizedString("Message history", comment: "The title of message history in settings for encrypted search")
+    lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
+    lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter current PIN code", comment: "The title of textfield of PIN code setup1")

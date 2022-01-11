@@ -24,4 +24,5 @@ import Foundation
 
 protocol EncryptedSearchCacheProtocol {
     var isEncryptedSearchOn: Bool { get set }
+    var downloadViaMobileData: Bool { get set }
 }
