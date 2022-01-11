@@ -87,6 +87,16 @@ extension SettingsEncryptedSearchViewController {
                     _, _, _ in
                     let status = self.viewModel.isEncryptedSearch
                     self.viewModel.isEncryptedSearch = !status
+                    
+                    //If cell is active -> start building a search index
+                    if self.viewModel.isEncryptedSearch {
+                        //TODO check return value
+                        var returnValue: Bool = false
+                        returnValue = EncryptedSearchService.shared.buildSearchIndex()
+                        
+                        //set or reset toggle switch according to successfull indexing
+                        self.viewModel.isEncryptedSearch = returnValue
+                    }
                 }
             }
             return cell
