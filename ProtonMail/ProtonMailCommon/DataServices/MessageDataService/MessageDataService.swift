@@ -979,16 +979,13 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     }
     
     func search(_ query: String, page: Int, completion comp: (([Message.ObjectIDContainer]?, NSError?) -> Void)?){
-        //TODO implement
-        
-        //TODO check if encryptedsearch flag is set
-        //should be stored in cache. Can I access it outside of a viewcontroller?
-        
-        
-        //if yes, do encrypted search
-        //EncryptedSearchService.shared.search()
-        //if no, do normal serverside search
-        searchOnServer(query, page: page, completion: comp)
+        if userCachedStatus.isEncryptedSearchOn {
+            //if yes, do encrypted search
+            EncryptedSearchService.shared.search(query, page: page, completion: comp)
+        } else {
+            //if no, do normal serverside search
+            searchOnServer(query, page: page, completion: comp)
+        }
     }
     
     func searchOnServer(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
