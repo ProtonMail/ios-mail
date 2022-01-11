@@ -173,6 +173,17 @@ open class UiElement {
         self.index = index
         return self
     }
+    
+    public func containing(_ elementType: XCUIElement.ElementType, _ identifier: String) -> UiElement {
+        self.containType = elementType
+        self.containIdentifier = identifier
+        return self
+    }
+    
+    public func containsLabel(_ label: String) -> UiElement {
+        self.containLabel = label
+        return self
+    }
 
     public func hasDescendant(_ element: UiElement) -> UiElement {
         self.containsType = element.getType()
@@ -343,6 +354,42 @@ open class UiElement {
         start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
         return self
     }
+    
+    @discardableResult
+    public func tapThenSwipeLeft( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeRight( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeDown( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
+    
+    @discardableResult
+    public func tapThenSwipeUp( _ forDuration: TimeInterval, _ speed: XCUIGestureVelocity) -> UiElement {
+        Wait().forElement(uiElement())
+        let start = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9))
+        let finish = uiElement().coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
+        start.press(forDuration: forDuration, thenDragTo: finish, withVelocity: speed, thenHoldForDuration: 0.1)
+        return self
+    }
 
     @discardableResult
     public func tap() -> UiElement {
@@ -484,6 +531,16 @@ open class UiElement {
         XCTAssertTrue(labelValue == label, "Expected Element text label to be: \"\(label)\", but found: \"\(labelValue)\"")
         return self
     }
+    
+    @discardableResult
+    public func checkContainsLabel(_ label: String) -> UiElement {
+        guard let labelValue = uiElement().label as? String else {
+            XCTFail("Element doesn't have text label.")
+            return self
+        }
+        XCTAssertTrue(labelValue.contains(label), "Expected Element text label to contain: \"\(label)\", but found: \"\(labelValue)\"")
+        return self
+    }
 
     @discardableResult
         public func checkContainsLabel(_ label: String) -> UiElement {
@@ -612,6 +669,16 @@ open class UiElement {
         /// Filer out XCUIElementQuery based on isHittable state.
         if elementHittable == true {
             uiElementQuery = uiElementQuery?.matching(Predicate.hittable)
+        }
+        
+        /// Matching elements by the sub-elements it contains
+        if containType != nil && containIdentifier != nil {
+            uiElementQuery = uiElementQuery!.containing(containType!, identifier: containIdentifier!)
+        }
+        
+        if containLabel != nil {
+            let predicate = NSPredicate(format: "label CONTAINS[c] %@", containLabel!)
+            uiElementQuery = uiElementQuery!.matching(predicate)
         }
 
         /// Matching elements by the sub-elements it contains

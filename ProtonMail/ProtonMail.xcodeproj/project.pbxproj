@@ -12825,7 +12825,7 @@
 			baseConfigurationReference = 8D0D8871C5AF26D9C5679C65AD042501 /* Pods-ProtonMailTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -13271,7 +13271,7 @@
 			baseConfigurationReference = 207C28C353C648762C0484F2A341BD51 /* Pods-ProtonMailTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -13760,7 +13760,7 @@
 			baseConfigurationReference = 1B3055A244AAD264664E2E6C96BE6938 /* Pods-ProtonMailTests.distribution.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 2SB5Z68H26;
 				FRAMEWORK_SEARCH_PATHS = (
