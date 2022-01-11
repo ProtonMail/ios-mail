@@ -2529,6 +2529,7 @@
 		E4A7F23025FF576C9420BEE714445243 /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
 		E4B35FC9376A071907C6C09798B04EEC /* MoveToActionSheetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BEEC49D68A2D1D93DD422BC98A2A8CB /* MoveToActionSheetProtocol.swift */; };
 		E4D07DC908C6383FE33E86A273BFE13F /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A468C765C57673CCF7F0A66C7B99B38 /* UnlockManager.swift */; };
+		E4E08BDEF03AE3B4868754E36EED8E8A /* SettingsEncryptedSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C10CE0EE8FB856275B4120F16A7855 /* SettingsEncryptedSearchViewModel.swift */; };
 		E5087FFD6AB25E954115ECD1F5AB031B /* ComposerAttachmentCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C685D655562CB2BE439A61C87FF0D /* ComposerAttachmentCellTableViewCell.swift */; };
 		E51486F5F3F683D97E7F6F6F932AD9F6 /* DataAttachmentDecryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7C4B26537A089491D66B410956D660 /* DataAttachmentDecryptionTests.swift */; };
 		E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED38F3AA08F1433223C4769A991F274 /* User.swift */; };
@@ -11057,6 +11058,7 @@
 				97A0C45098A7AB279AC4C3EDAE1AD691 /* ServiceFactory.swift in Sources */,
 				9442E4EEA9825AE9ADA9948F84634641 /* Settings+Defined.swift in Sources */,
 				A5D1DD47043C861FF8BE761A0CDFE846 /* SettingsAPI.swift in Sources */,
+				E4E08BDEF03AE3B4868754E36EED8E8A /* SettingsEncryptedSearchViewModel.swift in Sources */,
 				65F1E4F60651566208B4712F8704166A /* ShareAppCoordinator.swift in Sources */,
 				C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */,
 				F1F3F93C1C1433C9DF97B2FA0BEAC3A6 /* SharePinUnlockCoordinator.swift in Sources */,
