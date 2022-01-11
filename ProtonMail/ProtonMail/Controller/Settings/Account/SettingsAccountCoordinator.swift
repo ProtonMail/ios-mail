@@ -66,6 +66,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case folders = "folders_management"
         case conversation
         case search
+        case localStorage
     }
     
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -94,6 +95,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             openConversationSettings()
         case .search:
             openEncryptedSearch()
+        case .localStorage:
+            openLocalStorage()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
@@ -171,7 +174,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             }
             let users: UsersManager = services.get()
             next.setViewModel(ChangeSinglePasswordViewModel(user: users.firstUser!))
-        case .privacy, .labels, .folders, .conversation, .search:
+        case .privacy, .labels, .folders, .conversation, .search, .localStorage:
             break
         }
         return true
@@ -216,6 +219,14 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         //vc.set(coordinator: TODO)
         self.viewController?.navigationController?.show(vc, sender: nil)
     }
-
+    
+    private func openLocalStorage() {
+        //TODO
+        let vc = SettingsLocalStorageViewController()
+        let vm = SettingsLocalStorageViewModel()
+        vc.set(viewModel: vm)
+        //vc.set(coordinator: TODO)
+        self.viewController?.navigationController?.show(vc, sender: nil)
+    }
 }
 

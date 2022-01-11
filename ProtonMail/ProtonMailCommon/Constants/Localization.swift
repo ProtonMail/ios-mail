@@ -2037,6 +2037,12 @@ class LocalizedString {
     lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
     lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
     lazy var _encrypted_search_default_text_estimated_time_label = NSLocalizedString("Estimating time remaining ...", comment: "The default text while estimating the time remaining")
+    
+    lazy var _settings_title_of_local_storage = NSLocalizedString("Local storage", comment: "The title of local storage in settings")
+    lazy var _settings_title_of_cached_data = NSLocalizedString("Cached data", comment: "The title of cached data in local storage settings")
+    lazy var _settings_title_of_attachments = NSLocalizedString("Attachments", comment: "The title of attachments in local storage settings")
+    lazy var _settings_title_of_downloaded_messages_local_storage = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in local storage settings")
+    lazy var _settings_foot_of_downloaded_messages_local_storage = NSLocalizedString("Information about how much storage space this ProtonMail account is using on your device.", comment: "The foot of downloaded messages in local storage settings")
 
     lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
     lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
