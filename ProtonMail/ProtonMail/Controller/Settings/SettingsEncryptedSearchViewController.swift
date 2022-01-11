@@ -174,7 +174,7 @@ extension SettingsEncryptedSearchViewController {
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     let userID: String = (usersManager.firstUser?.userInfo.userId)!
                     let oldestIndexedMessage: String = "Oldest message: " + EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                    let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID)
+                    let sizeOfIndex: String = "Storage used: " + EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                     threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestIndexedMessage, sizeOfIndex)
                     threeLineCell.accessoryType = .checkmark
                 }
