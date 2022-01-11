@@ -77,6 +77,7 @@
 		05260992DB23246FC4639C9BB4153766 /* Deeplinkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34198E539CEA034BEB0FDCCE8CAF0FD1 /* Deeplinkable.swift */; };
 		052C1245242682AF00C4101A1674C86A /* StorageLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DF350EE3CB54D27FD0E93BE458A8F5 /* StorageLimit.swift */; };
 		05340581A9261710BF6D3E1BAA8AD267 /* String+Toast+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A82D6D121778D73C0FD65B975D91F /* String+Toast+Extension.swift */; };
+		05570BFFF37CABBBA368E83A35946077 /* LocalStorageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7290B7D48C6CAB735447D6884E4BC3 /* LocalStorageTableViewCell.swift */; };
 		0567C9A49D34AB9FD6B2F49C5DF4955B /* DateFormatter+ContactBirthdayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3045F5D173D01B261D3C040A09382CF7 /* DateFormatter+ContactBirthdayFormatter.swift */; };
 		058D76F48D5B03361C133D4D51C7F5DD /* LabelManagerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B0B4CCDF297F1A8EA1AE98741B9951 /* LabelManagerCoordinator.swift */; };
 		058FF386E01C1E062856F0A1B3F3BD42 /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */; };
@@ -1628,6 +1629,7 @@
 		91FF1BD9704CF93D69C9758635BA0019 /* ContactGroupSubSelectionActionSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9653AABE5BF72BCB0D55E916660539 /* ContactGroupSubSelectionActionSheetPresenter.swift */; };
 		9217E4518F612DACB3723DE8DFCC38D6 /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA346F47B1BA35A6AFABC8166354C421 /* EncryptedSearchCacheProtocol.swift */; };
 		92246A8C749E11EB8B15101AE67E6C3B /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B134B304EA7B3B50AB022AD491099FA /* String+Mime.swift */; };
+		923FC1D8DFC18CFAE5FBF5F3681730FC /* SettingsLocalStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7C80A77D6C31A70DF0C7AFA8046DD2 /* SettingsLocalStorageViewController.swift */; };
 		92434AE3FD282B5F49C85B841C43DA41 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334452152689851E51C6CDFFF44EFE36 /* APIService+DeviceExtension.swift */; };
 		924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499999580B77BFB0F2290C522EBB8A46 /* Data+Extension.swift */; };
 		927F407EC46665B1CCCC3B116638D462 /* ConversationDataService+SingleItemFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B6B54DF5A1A4C4D7DB510E996CF07 /* ConversationDataService+SingleItemFetching.swift */; };
@@ -2364,6 +2366,7 @@
 		D4EF9304C44ED1025C876A7AB7D3FAB0 /* HTTPRequestSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */; };
 		D4F3D7D6DA1A96685161DB06BBED0124 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		D5015843CA7711014170E58D83DE481C /* ReachabilityStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092051B550AA459664BDAA47E1302426 /* ReachabilityStub.swift */; };
+		D5094860B533C70899DE1F3A29D5C73E /* SettingsLocalStorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A7659115EB8EA21B68CC8BA9F7D82 /* SettingsLocalStorageViewModel.swift */; };
 		D51B9587E0AC5AF4E38AF8775B5B6869 /* HeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD3391781915BE1AE69E96A848D1C8 /* HeaderContainerView.swift */; };
 		D534B62AF287E5F97977D4CD175233BE /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EB6B00191E0E5383A6CE540F8ED1A5 /* UIEdgeInsets+All.swift */; };
 		D53B8556E1A60986F1EB3A22DC67E20D /* ConversationRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D2DBC32B4D3D66F4158A5C1A14FEC1 /* ConversationRead.swift */; };
@@ -2408,6 +2411,7 @@
 		D87BF3CC0F25CC66D6B156421ADE4134 /* LabelAsActionSheetPresentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA26B1DED365640497B3A425C5AD672 /* LabelAsActionSheetPresentProtocol.swift */; };
 		D87C92E0CB6E35473A5AD88F74101589 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
 		D880FD208C3FBBB24228D285F3F883B2 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
+		D8921D6EBD29C27031F0FDA4ECAD1EBD /* LocalStorageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EA7EB6062F4BF2C1F0D99E50978EA1 /* LocalStorageTableViewCell.xib */; };
 		D898A24A4520D16660C12BB55538FA7E /* ContactCollectionViewPromptCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCDC9E5C0ABB64938146DA5CA9CE02C /* ContactCollectionViewPromptCell.swift */; };
 		D899D73ED3F6B51795DC7636D85A610D /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 366FD930B9937DFC8E8C2224A7260FA7 /* Localizable.stringsdict */; };
 		D8A076C0C0882E78A3C82012E6447D3F /* UsersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CEEDA43C22C3E26A7A182640617F70 /* UsersManager.swift */; };
@@ -3134,6 +3138,7 @@
 		1B3055A244AAD264664E2E6C96BE6938 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		1B5D5AC76468FB86BA2584A13B6C297A /* AccountManagerRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagerRobot.swift; sourceTree = "<group>"; };
 		1B61D2D5C0B4BD97409E6104098DB003 /* Siri.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Siri.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B7C80A77D6C31A70DF0C7AFA8046DD2 /* SettingsLocalStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLocalStorageViewController.swift; sourceTree = "<group>"; };
 		1BBAB3378173BB2EA0DA5B8ED856A693 /* ru */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1BDD7FD10D95137C336E30D587C14514 /* AuthCredential+Locked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthCredential+Locked.swift"; sourceTree = "<group>"; };
 		1C235ADD02BE4F2B8F49466034029919 /* LabelColorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelColorCell.xib; sourceTree = "<group>"; };
@@ -3668,6 +3673,7 @@
 		7D998FF174BC3616A32E44EC24349EB9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7DF6A239AA17CF4AF1CF3CD27CE2602A /* ClearMimeAddressBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearMimeAddressBuilder.swift; sourceTree = "<group>"; };
 		7DFBF249F3C293E82857F6EBC6C0EE12 /* MessageDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataServiceTests.swift; sourceTree = "<group>"; };
+		7E7290B7D48C6CAB735447D6884E4BC3 /* LocalStorageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageTableViewCell.swift; sourceTree = "<group>"; };
 		7E8E6CAFE8161C4CC4EE727FF3036063 /* SwipeActionLeftToRightTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwipeActionLeftToRightTableViewCell.xib; sourceTree = "<group>"; };
 		7EA328A76E3A60FE666DB6C2946E9B24 /* URLSessionDataTaskStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTaskStub.swift; sourceTree = "<group>"; };
 		7EDDC36F25E6B78789851946734B9616 /* ContactsRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRobot.swift; sourceTree = "<group>"; };
@@ -3693,6 +3699,7 @@
 		8378026E8C39E63CD8B71C8B8ECBA8AE /* SingleMessageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMessageCoordinator.swift; sourceTree = "<group>"; };
 		8386FECF18884638287496DF015DBF6A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		8392D6E1ACBF3D68B6A6D94AB3C9017E /* AccountSettingsTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = AccountSettingsTests.xctestplan; path = ProtonMailUITests/Tests/TestPlans/AccountSettingsTests.xctestplan; sourceTree = SOURCE_ROOT; };
+		839A7659115EB8EA21B68CC8BA9F7D82 /* SettingsLocalStorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLocalStorageViewModel.swift; sourceTree = "<group>"; };
 		83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorBehaviour.swift; sourceTree = "<group>"; };
 		83D6D4F0FE71F616455353AE8720D609 /* Push.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Push.entitlements; sourceTree = "<group>"; };
 		84A90610267786480D43EC567B4FD014 /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
@@ -4002,6 +4009,7 @@
 		C0A6A9213EBF556CB9344EDEDD80B021 /* LabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelDisplayView.xib; sourceTree = "<group>"; };
 		C0C10CE0EE8FB856275B4120F16A7855 /* SettingsEncryptedSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEncryptedSearchViewModel.swift; sourceTree = "<group>"; };
 		C0DC8A3502A5F9890337FE2FBB9B2EA8 /* Notification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+KeyboardExtension.swift"; sourceTree = "<group>"; };
+		C0EA7EB6062F4BF2C1F0D99E50978EA1 /* LocalStorageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocalStorageTableViewCell.xib; sourceTree = "<group>"; };
 		C0EB6B00191E0E5383A6CE540F8ED1A5 /* UIEdgeInsets+All.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+All.swift"; sourceTree = "<group>"; };
 		C1A64CB4541958977741F9BAA9924619 /* SliderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTableViewCell.swift; sourceTree = "<group>"; };
 		C2240E33C109510857B1C1889DE4B70A /* EncryptedSearchDownloadedMessagesCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchDownloadedMessagesCacheProtocol.swift; sourceTree = "<group>"; };
@@ -4616,6 +4624,7 @@
 				5B638CAEF36AC7D048561717D2293B44 /* SettingsDeviceViewController.swift */,
 				48999D174333D5CE332E07031E007CAE /* SettingsEncryptedSearchDownloadedMessagesViewController.swift */,
 				84D22D272B496227702D6E9BB2DD863D /* SettingsEncryptedSearchViewController.swift */,
+				1B7C80A77D6C31A70DF0C7AFA8046DD2 /* SettingsLocalStorageViewController.swift */,
 				557EDDD2F75D3AD64D8574EC4EF51077 /* SettingsLockCoordinator.swift */,
 				85CB18A8436A71ED72AD8D63463EBE2E /* SettingsLockViewController.swift */,
 				A7B37A78E919D44E6C6F955CD035C38B /* SettingsNetworkTableViewController.swift */,
@@ -4731,6 +4740,7 @@
 				E5407AF0E6B8791F5B87DB5BF91E5F80 /* SettingsEncryptedSearchDownloadedMessagesViewModel.swift */,
 				C0C10CE0EE8FB856275B4120F16A7855 /* SettingsEncryptedSearchViewModel.swift */,
 				A8AA750B6B171EF6759553F4F16CF1C9 /* SettingsGestureViewModel.swift */,
+				839A7659115EB8EA21B68CC8BA9F7D82 /* SettingsLocalStorageViewModel.swift */,
 				5F184F5E623173C0B5F53ED9D924E549 /* SettingsLockViewModel.swift */,
 				30DD0600C64F94E29E6EA8283786EC39 /* SettingsNetworkViewModel.swift */,
 				34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */,
@@ -5732,6 +5742,8 @@
 				D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */,
 				6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */,
 				51A9677C42715B118E115E2A2F45923B /* GeneralSettingViewCell.xib */,
+				7E7290B7D48C6CAB735447D6884E4BC3 /* LocalStorageTableViewCell.swift */,
+				C0EA7EB6062F4BF2C1F0D99E50978EA1 /* LocalStorageTableViewCell.xib */,
 				FF70D867654B87BF65205BDEDACE42BC /* ProgressBarButtonTableViewCell.swift */,
 				09DFF512C96A0D6CDCBD8C704343A3B4 /* ProgressBarButtonTableViewCell.xib */,
 				921313A1AF9861232042AC6AB5FC0C2F /* SettingsAccountCell.swift */,
@@ -8165,6 +8177,7 @@
 				D253E9DD19EFF5C2DA285EB196B7492F /* LabelPaletteCell.xib in Resources */,
 				8F680F6C2012BC73800F2A44A3041C3D /* LabelsCollectionView.xib in Resources */,
 				240CA34E535AACA5A9BC039334E5EDFB /* LaunchScreen.xib in Resources */,
+				D8921D6EBD29C27031F0FDA4ECAD1EBD /* LocalStorageTableViewCell.xib in Resources */,
 				43E064A834A18827A899967F3EA0AA6D /* Localizable.strings in Resources */,
 				D899D73ED3F6B51795DC7636D85A610D /* Localizable.stringsdict in Resources */,
 				C3C1C470E3E0F6D91F2211D849E5ABC0 /* MailBoxSkeletonLoadingCell.xib in Resources */,
@@ -9831,6 +9844,7 @@
 				0BC9B66F6E12EA22834AF60D73722C85 /* LinkOpeningValidator.swift in Sources */,
 				CC7FEE5C504DEB14F9817ADA942102D5 /* LocalConversationUpdater.swift in Sources */,
 				DB34D1699BBC4C9133E34AA5EA288110 /* LocalNotificationService.swift in Sources */,
+				05570BFFF37CABBBA368E83A35946077 /* LocalStorageTableViewCell.swift in Sources */,
 				08E9D65EC0622BEE54AF297AF2B3DCD1 /* Localization.swift in Sources */,
 				D3EA3B6F55B52D2A3EE56DF019B33EAC /* LockCoordinator.swift in Sources */,
 				60F95241EC733A8763097CA61A5FD606 /* MBProgressHUD+Helper.swift in Sources */,
@@ -10057,6 +10071,8 @@
 				E62091D9906EEA18CF5439B900DF8859 /* SettingsGestureViewModel.swift in Sources */,
 				222AEA4659529824201BED307130B940 /* SettingsGesturesCoordinator.swift in Sources */,
 				3935784E41BEF7976CCDAF4EF271E76E /* SettingsGesturesViewController.swift in Sources */,
+				923FC1D8DFC18CFAE5FBF5F3681730FC /* SettingsLocalStorageViewController.swift in Sources */,
+				D5094860B533C70899DE1F3A29D5C73E /* SettingsLocalStorageViewModel.swift in Sources */,
 				6A25D4621BD0EA344CA63038F536C166 /* SettingsLockCoordinator.swift in Sources */,
 				A759DB5D1D2BDF719D914A47C3AB0AB6 /* SettingsLockViewController.swift in Sources */,
 				319B417BCB53C99F20213C7311746D41 /* SettingsLockViewModel.swift in Sources */,

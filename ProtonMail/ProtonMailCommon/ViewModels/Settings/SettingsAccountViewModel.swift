@@ -90,6 +90,7 @@ public enum MailboxItem : Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case search
+    case localStorage
     case labels
     case folders
     case storage
@@ -102,6 +103,8 @@ public enum MailboxItem : Int, CustomStringConvertible, Equatable {
             return LocalString._account_settings_conversation_row_title
         case .search:
             return LocalString._settings_title_of_encrypted_search
+        case .localStorage:
+            return LocalString._settings_title_of_local_storage
         case .labels:
             return LocalString._labels
         case .folders:
@@ -143,7 +146,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems :  [MailboxItem] = [.privacy, .search, .labels, .folders]
+    var mailboxItems :  [MailboxItem] = [.privacy, .search, .localStorage, .labels, .folders]
 
     var setting_swipe_action_items : [SwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
