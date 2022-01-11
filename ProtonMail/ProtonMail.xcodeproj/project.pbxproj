@@ -2802,6 +2802,7 @@
 		F6C9F40F07E4D4199C7201EC8823CA72 /* ExpandedHeaderRecipientsRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319347111FB41B3A33724E88D1678BDF /* ExpandedHeaderRecipientsRowViewModel.swift */; };
 		F7094FDFA2A4050842A4F4AB6D97782B /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */; };
 		F709BE405A233A79E62397FAB1F67CEE /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD07200A5B2025A1A0842FF853355DC4 /* Conversation.swift */; };
+		F710035B1432A0DACE90398778840C50 /* SettingsLocalStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7C80A77D6C31A70DF0C7AFA8046DD2 /* SettingsLocalStorageViewController.swift */; };
 		F71A9E243FCB15ADCFDB56C1B00D84DE /* WindowsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BCF9A240B28AE531F0FE2AF1DBFDCA /* WindowsCoordinator.swift */; };
 		F71C85A144E71614AF19680873B6B87A /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
 		F732ECE48AF09300930DEA31066A8974 /* UndoTokenData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CD5257BA9A35DF58E352F96FA766 /* UndoTokenData.swift */; };
@@ -11047,6 +11048,7 @@
 				889A9738E20467DBD5B490E1CEA8F3BC /* SettingsGestureViewModel.swift in Sources */,
 				220E9DD71EA49FBB9C34F3826EE55518 /* SettingsGesturesCoordinator.swift in Sources */,
 				3FABB70C2137E89B1B8E6D6872A28C23 /* SettingsGesturesViewController.swift in Sources */,
+				F710035B1432A0DACE90398778840C50 /* SettingsLocalStorageViewController.swift in Sources */,
 				899979E5DE5B8A6807CF8E32BBA76AAB /* SettingsLocalStorageViewModel.swift in Sources */,
 				0420EC05CE37F28A303104FC17ACC19A /* SettingsLockCoordinator.swift in Sources */,
 				1879EA548FCB10EC85F750BD52CAD356 /* SettingsLockViewController.swift in Sources */,
