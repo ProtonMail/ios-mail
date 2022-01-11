@@ -744,19 +744,20 @@ extension EncryptedSearchService {
                 let numberOfResultsFoundByCachedSearch: Int = (self.searchResults?.length())!
                 print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
                 
-                print("searchedCount: ", self.searchResults!.searchedCount)
+                /*print("searchedCount: ", self.searchResults!.searchedCount)
                 print("cacheSearchedCount: ", self.searchResults!.cacheSearchedCount)
                 print("cache search done?: ", self.searchResults!.cachedSearchDone)
                 print("search completed?: ", self.searchResults!.isComplete)
                 print("last message id searched: ", self.searchResults!.lastIDSearched)
                 print("last message time searched: ", self.searchResults!.lastTimeSearched)
+                */
                 
                 //Check if there are enough results from the cached search
                 let searchResultPageSize: Int = 15  //TODO Why 15?
-                if !self.searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
+                /*if !self.searchResults!.isComplete && numberOfResultsFoundByCachedSearch <= searchResultPageSize {
                     print("do index search")
                     self.doIndexSearch(searcher: searcher, cipher: cipher, searchResults: &self.searchResults, totalMessages: self.totalMessages)
-                }
+                }*/
                 
                 if self.searchResults!.length() == 0 {
                     completion!(nil, error)
@@ -845,17 +846,17 @@ extension EncryptedSearchService {
         }
         
         print("Start index search...")
-        while !searchResults!.isComplete && !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
+        while /*!searchResults!.isComplete &&*/ !hasEnoughResults(searchResults: searchResults!) {   //TODO add some more condition-> see Android
             let startBatchSearch: Double = NSDate().timeIntervalSince1970   //do we need it more accurate?
             
             let SEARCH_BATCH_HEAP_PERCENT = 0.1 // Percentage of heap that can be used to load messages from the index
             let SEARCH_MSG_SIZE: Double = 14000 // An estimation of how many bytes take a search message in memory
             let batchSize: Int = Int((getTotalAvailableMemory() * SEARCH_BATCH_HEAP_PERCENT)/SEARCH_MSG_SIZE)
             do {
-                try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)
+                /*try index.searchNewBatch(fromDB: searcher, cipher: cipher, results: searchResults, batchSize: batchSize)*/
                 //Is that running async?
                 print("search result: ", searchResults!)
-                print("searchedCount: \(searchResults!.searchedCount), lastID: \(searchResults!.lastIDSearched), lasttime: \(searchResults!.lastTimeSearched), iscomplete: \(searchResults!.isComplete)")
+                /*print("searchedCount: \(searchResults!.searchedCount), lastID: \(searchResults!.lastIDSearched), lasttime: \(searchResults!.lastTimeSearched), iscomplete: \(searchResults!.isComplete)")*/
                 print("batchsize: ", batchSize)
             } catch {
                 print("Error while searching... ", error)
@@ -882,11 +883,11 @@ extension EncryptedSearchService {
     func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchResult: inout EncryptedsearchResultList?, totalMessages: Int){
         let startCacheSearch: Double = NSDate().timeIntervalSince1970
         //print("Start cache search...")
-        do {
+        /*do {
             try cache.search(searchResult, searcher: searcher)
         } catch {
             print("Error while searching the cache: \(error)")
-        }
+        }*/
         let endCacheSearch: Double = NSDate().timeIntervalSince1970
         print("Cache search: start: \(startCacheSearch), end: \(endCacheSearch)")
     }
