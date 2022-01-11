@@ -53,7 +53,10 @@ public class EncryptedSearchService {
         self.registerForPowerStateChangeNotifications()
         // Enable network monitoring
         if #available(iOS 12, *) {
-            self.registerForNetworkChangeNotifications()
+            // Enable network monitoring if not already enabled
+            if self.networkMonitor == nil {
+                self.registerForNetworkChangeNotifications()
+            }
         } else {
             // Use Reachability for iOS 11
         }
@@ -91,14 +94,14 @@ public class EncryptedSearchService {
     internal var searchViewModel: SearchViewModel? = nil
     #endif
 
-    internal var searchIndex: Connection? = nil
+    //internal var searchIndex: Connection? = nil
     internal var cipherForSearchIndex: EncryptedsearchAESGCMCipher? = nil
     internal var searchState: EncryptedsearchSearchState? = nil
     internal var indexBuildingInProgress: Bool = false
     internal var slowDownIndexBuilding: Bool = false
     internal var indexingStartTime: Double = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
-    internal lazy var indexBuildingTimer: Timer? = nil
+    internal var indexBuildingTimer: Timer? = nil
     
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
@@ -129,10 +132,10 @@ public class EncryptedSearchService {
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
     
-    internal var startBackgroundTask: Double = 0.0
-    internal var backgroundTaskCounter: Int = 0
+    //internal var startBackgroundTask: Double = 0.0
+    //internal var backgroundTaskCounter: Int = 0
     
-    internal var fetchMessageCounter: Int = 0
+    //internal var fetchMessageCounter: Int = 0
     internal var isFirstSearch: Bool = true
     internal var isFirstIndexingTimeEstimate: Bool = true
     internal var initialIndexingEstimate: Int = 0
@@ -167,7 +170,7 @@ extension EncryptedSearchService {
                     //Check if search index is complete
                     if userCachedStatus.indexComplete {
                         self.state = .complete
-                        print("ENCRYPTEDSEARCH-STATE: complete")
+                        print("ENCRYPTEDSEARCH-STATE: complete 1")
                         return
                     } else {
                         //check if search index exists and the number of messages in the search index
@@ -182,7 +185,7 @@ extension EncryptedSearchService {
                         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
                             self.checkIfIndexingIsComplete() {
                                 self.state = .complete
-                                print("ENCRYPTEDSEARCH-STATE: complete")
+                                print("ENCRYPTEDSEARCH-STATE: complete 2")
                                 
                                 // update user cached status
                                 userCachedStatus.indexComplete = true
@@ -191,7 +194,7 @@ extension EncryptedSearchService {
                             }
                             // Set state to partial in the meantime - if it is complete it will get updated once determined
                             self.state = .partial
-                            print("ENCRYPTEDSEARCH-STATE: partial")
+                            print("ENCRYPTEDSEARCH-STATE: partial 1")
                         } else {
                             print("Error search index does not exist for user!")
                             self.state = .undetermined
@@ -211,12 +214,12 @@ extension EncryptedSearchService {
             let userID: String? = usersManager.firstUser?.userInfo.userId
             if let userID = userID {
                 self.state = .partial
-                print("ENCRYPTEDSEARCH-STATE: partial")
+                print("ENCRYPTEDSEARCH-STATE: partial 2")
 
                 let success: Bool = EncryptedSearchIndexService.shared.resizeSearchIndex(userID: userID, expectedSize: expectedSize)
                 if success == false {
                     self.state = .complete
-                    print("ENCRYPTEDSEARCH-STATE: complete")
+                    print("ENCRYPTEDSEARCH-STATE: complete 3")
                 }
             } else {
                 print("Error when resizing the search index: User not found!")
@@ -228,9 +231,6 @@ extension EncryptedSearchService {
     //function to build the search index needed for encrypted search
     func buildSearchIndex(_ viewModel: SettingsEncryptedSearchViewModel) -> Void {
         #if !APP_EXTENSION
-            //enable background processing
-            self.continueIndexingInBackground()   //pre ios-13 background task for 30 seconds
-
             if #available(iOS 13, *) {
                 self.scheduleNewAppRefreshTask()
                 self.scheduleNewBGProcessingTask()
@@ -254,21 +254,26 @@ extension EncryptedSearchService {
 
             //set up timer to estimate time for index building every 2 seconds
             self.indexingStartTime = CFAbsoluteTimeGetCurrent()
-            self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+            // Create timer on main thread
+            DispatchQueue.main.async {
+                self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+            }
 
             // Network checks
             if #available(iOS 12, *) {
+                // Enable network monitoring if not already enabled
+                if self.networkMonitor == nil {
+                    self.registerForNetworkChangeNotifications()
+                }
+                // Check network status
                 self.checkIfNetworkAvailable()
                 if self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {
                     // Some simple clean up
                     self.indexBuildingInProgress = false
-                    // Stop background extension task
-                    #if !APP_EXTENSION
-                        if self.backgroundTask != .invalid {
-                            //background processing not needed any longer - clean up
-                            self.endBackgroundTask()
-                        }
-                    #endif
+                    // Invalidate timer on same thread as it has been created
+                    DispatchQueue.main.async {
+                        self.indexBuildingTimer?.invalidate()
+                    }
                     return
                 }
             } else {
@@ -281,7 +286,7 @@ extension EncryptedSearchService {
                 //check if search index needs updating
                 if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
                     self.state = .complete
-                    print("ENCRYPTEDSEARCH-STATE: complete")
+                    print("ENCRYPTEDSEARCH-STATE: complete 4")
                     
                     // update user cached status
                     userCachedStatus.indexComplete = true
@@ -309,7 +314,7 @@ extension EncryptedSearchService {
             let userID: String = (usersManager.firstUser?.userInfo.userId)!
             if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
                 self.state = .complete
-                print("ENCRYPTEDSEARCH-STATE: complete")
+                print("ENCRYPTEDSEARCH-STATE: complete 5")
                 
                 // update user cached status
                 userCachedStatus.indexComplete = true
@@ -317,14 +322,16 @@ extension EncryptedSearchService {
                 // cleanup
                 self.cleanUpAfterIndexing()
             } else {
-                self.state = .partial
-                print("ENCRYPTEDSEARCH-STATE: partial")
-                
-                // update user cached status
-                userCachedStatus.indexComplete = true
-                
-                // cleanup
-                self.cleanUpAfterIndexing()
+                if self.state == .downloading {
+                    self.state = .partial
+                    print("ENCRYPTEDSEARCH-STATE: partial 3")
+                    
+                    // update user cached status
+                    userCachedStatus.indexComplete = true
+                    
+                    // cleanup
+                    self.cleanUpAfterIndexing()
+                }
             }
             completionHandler()
         }
@@ -349,15 +356,13 @@ extension EncryptedSearchService {
                 // Fallback on earlier versions
             }
 
-            // Invalidate timer
-            self.indexBuildingTimer?.invalidate()
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                self.indexBuildingTimer?.invalidate()
+            }
 
             // Stop background tasks
             #if !APP_EXTENSION
-                if self.backgroundTask != .invalid {
-                    //background processing not needed any longer - clean up
-                    self.endBackgroundTask()
-                }
                 if #available(iOS 13, *) {
                     //index building finished - we no longer need a background task
                     self.cancelBGProcessingTask()
@@ -385,10 +390,29 @@ extension EncryptedSearchService {
             self.processEventsAfterIndexing() {
                 // Set state to complete when finished
                 self.state = .complete
-                print("ENCRYPTEDSEARCH-STATE: complete")
+                print("ENCRYPTEDSEARCH-STATE: complete 6")
+
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
 
                 // Update UI
                 self.updateUIIndexingComplete()
+            }
+        } else if self.state == .paused {
+            self.indexBuildingInProgress = false
+
+            // Unregister network monitoring
+            if #available(iOS 12, *) {
+                self.unRegisterForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
+
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                self.indexBuildingTimer?.invalidate()
             }
         }
     }
@@ -397,12 +421,14 @@ extension EncryptedSearchService {
         if isPause {
             self.numPauses += 1
             self.state = .paused
-            print("ENCRYPTEDSEARCH-STATE: paused")
+            print("ENCRYPTEDSEARCH-STATE: paused - by user")
         } else {
             self.state = .downloading
-            print("ENCRYPTEDSEARCH-STATE: downloading")
+            print("ENCRYPTEDSEARCH-STATE: downloading - resume by user")
         }
-        self.pauseAndResumeIndexing()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.pauseAndResumeIndexing()
+        }
     }
     
     func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: (() -> Void)? = nil){
@@ -423,7 +449,9 @@ extension EncryptedSearchService {
             print("ENCRYPTEDSEARCH-STATE: downloading")
         }
         
-        self.pauseAndResumeIndexing(completionHandler: completionHandler)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.pauseAndResumeIndexing(completionHandler: completionHandler)
+        }
     }
     
     private func pauseAndResumeIndexing(completionHandler: (() -> Void)? = {}) {
@@ -435,11 +463,32 @@ extension EncryptedSearchService {
                 self.messageIndexingQueue.cancelAllOperations()
                 self.indexBuildingInProgress = false
 
-                self.updateUIWithIndexingStatus()
-            } else {    //resume indexing
+                self.cleanUpAfterIndexing()
+                // In case of an interrupt - update UI
+                if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
+                    self.updateUIWithIndexingStatus()
+                }
+            } else {    // Resume indexing
                 print("Resume indexing...")
                 self.indexBuildingInProgress = true
-                self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+                // Clean up timer
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                    self.indexBuildingTimer = nil
+                    // Recreate timer
+                    self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+                }
+
+                // Enable network monitoring
+                if #available(iOS 12, *) {
+                    // Enable network monitoring if not already enabled
+                    if self.networkMonitor == nil {
+                        self.registerForNetworkChangeNotifications()
+                    }
+                } else {
+                    // Use Reachability for iOS 11
+                }
 
                 self.downloadAndProcessPage(userID: userID){ [weak self] in
                     self?.checkIfIndexingIsComplete {
@@ -467,7 +516,7 @@ extension EncryptedSearchService {
     }
     
     func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
-        if self.indexBuildingInProgress {
+        if self.state == .downloading || self.state == .paused || self.state == .background || self.state == .backgroundStopped {
             let messageAction: MessageAction = MessageAction(action: action, message: message)
             self.eventsWhileIndexing!.append(messageAction)
         } else {
@@ -519,7 +568,7 @@ extension EncryptedSearchService {
 
                 // Set state to complete when finished
                 self.state = .complete
-                print("ENCRYPTEDSEARCH-STATE: complete")
+                print("ENCRYPTEDSEARCH-STATE: complete 7")
 
                 // Update UI
                 self.updateUIIndexingComplete()
@@ -580,7 +629,7 @@ extension EncryptedSearchService {
     }
     
     func deleteSearchIndex(){
-        //update state
+        // Update state
         self.state = .disabled
         print("ENCRYPTEDSEARCH-STATE: disabled")
         
@@ -591,28 +640,55 @@ extension EncryptedSearchService {
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
         let uid: String? = users.firstUser?.userInfo.userId
         if let userID = uid {
-            //just delete the search index if it exists
+            // Just delete the search index if it exists
             if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
                 let result: Bool = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
-                self.totalMessages = -1
-                self.processedMessages = 0
+
+                // Update some variables
+                self.totalMessages = 0
                 self.lastMessageTimeIndexed = 0
+                self.processedMessages = 0
                 self.prevProcessedMessages = 0
+                self.noNewMessagesFound = 0
                 self.indexingStartTime = 0
                 self.indexBuildingInProgress = false
-                self.indexBuildingTimer?.invalidate()   //stop timer to estimate remaining time for indexing
+                self.slowDownIndexBuilding = false
+                self.eventsWhileIndexing = []
                 
-                //cancel background tasks
+                self.pauseIndexingDueToNetworkConnectivityIssues = false
+                self.pauseIndexingDueToWiFiNotDetected = false
+                self.pauseIndexingDueToOverheating = false
+                self.pauseIndexingDueToLowBattery = false
+                self.pauseIndexingDueToLowStorage = false
+                self.numPauses = 0
+                self.numInterruptions = 0
+                
+                // Update viewmodel
+                self.viewModel?.isEncryptedSearch = false
+                self.viewModel?.currentProgress.value = 0
+                self.viewModel?.estimatedTimeRemaining.value = 0
+
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
+                
+                // Stop background tasks
+                #if !APP_EXTENSION
+                    self.endBackgroundTask()
+                #endif
                 if #available(iOS 13.0, *) {
                     self.cancelBGProcessingTask()
                     self.cancelBGAppRefreshTask()
                 }
                 
-                //update viewmodel
-                self.viewModel?.isEncryptedSearch = false
-                self.viewModel?.currentProgress.value = 0
-                self.viewModel?.estimatedTimeRemaining.value = 0
-                
+                // Unregister network monitoring
+                if #available(iOS 12, *) {
+                    self.unRegisterForNetworkChangeNotifications()
+                } else {
+                    // Fallback on earlier versions
+                }
+
                 if result {
                     print("Search index for user \(userID) sucessfully deleted!")
                 }
@@ -797,7 +873,6 @@ extension EncryptedSearchService {
     }
 
     public func fetchMessages(userID: String, byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
-        self.fetchMessageCounter += 1
         let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: 150)
         self.apiService?.GET(request, priority: "u=7"){ [weak self] (task, responseDict, error) in
             if error != nil {
@@ -1283,7 +1358,10 @@ extension EncryptedSearchService {
 
             // Start timing search
             let startSearch: Double = CFAbsoluteTimeGetCurrent()
-            var slowSearchTimer: Timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+            var slowSearchTimer: Timer? = nil
+            DispatchQueue.main.async {
+                slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+            }
 
             // Initialize searcher, cipher
             let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query)
@@ -1299,13 +1377,13 @@ extension EncryptedSearchService {
             }
 
             // Do cache search first
-            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer)
+            let numberOfResultsFoundByCachedSearch: Int = self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer!)
             print("Results found by cache search: ", numberOfResultsFoundByCachedSearch)
 
             // Do index search next - unless search is already completed
             var numberOfResultsFoundByIndexSearch: Int = 0
             if !self.searchState!.isComplete {
-                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer)
+                numberOfResultsFoundByIndexSearch = self.doIndexSearch(searcher: searcher, cipher: cipher, searchState: &self.searchState, resultsFoundInCache: numberOfResultsFoundByCachedSearch, userID: userID, searchViewModel: searchViewModel, page: page, slowSearch: &slowSearchTimer!)
             }
             print("Results found by index search: ", numberOfResultsFoundByIndexSearch)
 
@@ -1315,7 +1393,10 @@ extension EncryptedSearchService {
 
             // Search finished - clean up
             self.isSearching = false
-            slowSearchTimer.invalidate()
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                slowSearchTimer?.invalidate()
+            }
 
             // Send some search metrics
             self.sendSearchMetrics(searchTime: endSearch-startSearch, cache: cache, userID: userID)
@@ -1449,9 +1530,11 @@ extension EncryptedSearchService {
 
             // If some results are found - disable timer for slow search
             if resultsFound > 0 {
-                slowSearch.invalidate()
-                // start a new timer if search continues
-                slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                DispatchQueue.main.async {
+                    slowSearch.invalidate()
+                    // start a new timer if search continues
+                    slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                }
             }
 
             //visualize intemediate results
@@ -1500,9 +1583,11 @@ extension EncryptedSearchService {
             
             // If some results are found - disable timer for slow search
             if found > 0 {
-                slowSearch.invalidate()
-                // start a new timer if search continues
-                slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                DispatchQueue.main.async {
+                    slowSearch.invalidate()
+                    // start a new timer if search continues
+                    slowSearch = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
+                }
             }
             
             //visualize intemediate results
@@ -1528,7 +1613,7 @@ extension EncryptedSearchService {
     // MARK: - Background Tasks
     //pre-ios 13 background tasks
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    private func continueIndexingInBackground() {
+    public func continueIndexingInBackground() {
         self.state = .background
         print("ENCRYPTEDSEARCH-STATE: background")
         self.speedUpIndexing()
@@ -1539,17 +1624,13 @@ extension EncryptedSearchService {
 
     //pre-ios 13 background tasks
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
-    private func endBackgroundTask() {
-        if self.state != .complete {
-            print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
-            self.state = .backgroundStopped
-            self.slowDownIndexing()
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+    public func endBackgroundTask() {
+        if self.backgroundTask != nil {
+            UIApplication.shared.endBackgroundTask(self.backgroundTask)
+            self.backgroundTask = .invalid
         }
-        UIApplication.shared.endBackgroundTask(self.backgroundTask)
-        self.backgroundTask = .invalid
     }
-    
+
     // BG Processing Task functions
     @available(iOS 13.0, *)
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
@@ -1614,7 +1695,7 @@ extension EncryptedSearchService {
             self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
                 //if indexing is finshed during background task - set to complete
                 self.state = .complete
-                print("ENCRYPTEDSEARCH-STATE: complete")
+                print("ENCRYPTEDSEARCH-STATE: complete 8")
                 
                 // update user cached status
                 userCachedStatus.indexComplete = true
@@ -1685,7 +1766,7 @@ extension EncryptedSearchService {
             self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
                 //if indexing is finshed during background task - set to complete
                 self.state = .complete
-                print("ENCRYPTEDSEARCH-STATE: complete")
+                print("ENCRYPTEDSEARCH-STATE: complete 9")
                 
                 // update user cached status
                 userCachedStatus.indexComplete = true
@@ -1801,8 +1882,15 @@ extension EncryptedSearchService {
     }
     
     @objc private func updateRemainingIndexingTime() {
-        let elapsedTime = self.indexingStartTime - CFAbsoluteTimeGetCurrent()
-        if self.indexBuildingInProgress && self.processedMessages != self.prevProcessedMessages {
+        // Stop timer if indexing is finished or paused
+        if self.state == .complete || self.state == .partial || self.state == .paused || self.state == .undetermined || self.state == .disabled {
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                self.indexBuildingTimer?.invalidate()
+            }
+        }
+
+        if self.state == .downloading && self.processedMessages != self.prevProcessedMessages {
             DispatchQueue.global().async {
                 let result = self.estimateIndexingTime()
                 

@@ -114,7 +114,7 @@ import UIKit
         estimatedTimeLabel.text = estimatedTime
         currentProgressLabel.text = String(currentProgress) + "%"
         progressView.setProgress(Float(currentProgress)/100.0, animated: true)
-        
+
         self.pauseButton.setTitle(buttonTitle, for: UIControl.State.normal)
 
         //implementation of pause button

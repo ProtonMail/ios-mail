@@ -83,6 +83,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                 EncryptedSearchService.shared.state = .disabled
                 self.viewModel.isEncryptedSearch = false
             }
+        } else if EncryptedSearchService.shared.state == .background || EncryptedSearchService.shared.state == .backgroundStopped {
+            EncryptedSearchService.shared.state = .downloading
+            print("ENCRYPTEDSEARCH-STATE: downloading - from background")
         }
 
         //Speed up indexing when on this view
@@ -216,13 +219,22 @@ extension SettingsEncryptedSearchViewController {
                     let status = self.viewModel.isEncryptedSearch
                     self.viewModel.isEncryptedSearch = !status
 
-                    //If cell is active -> start building a search index
+                    // If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
-                        //show alert
                         self.showAlertContentSearchEnabled(for: indexPath, cell: switchCell)
                     } else {
-                        //hide sections
+                        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .refresh {
+                            // Pause indexing
+                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
+                        }
+                        // Hide sections
                         self.hideSections = true
+                        // Remove banner
+                        UIView.performWithoutAnimation {
+                            self.banner.remove(animated: false)
+                        }
+                        // Reload table
+                        self.tableView.reloadData()
                     }
                 }
             }
@@ -383,12 +395,33 @@ extension SettingsEncryptedSearchViewController {
                     let adviceText: String = self.viewModel.interruptAdvice.value ?? ""
 
                     progressBarButtonCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, adviceText, estimatedTimeText, self.viewModel.currentProgress.value!, buttonTitle) {
-                        if EncryptedSearchService.shared.state == .paused {
+                        if EncryptedSearchService.shared.state == .paused { // Resume indexing
+                            // Set the state
+                            EncryptedSearchService.shared.state = .downloading
+
+                            // Update UI
+                            DispatchQueue.main.async {
+                                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+                                UIView.performWithoutAnimation {
+                                    self.tableView.reloadRows(at: [path], with: .none)
+                                }
+                            }
+                            // Resume indexing
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
-                        } else {
+                        } else {    // Pause indexing
+                            // Set the state
+                            EncryptedSearchService.shared.state = .paused
+
+                            // Update UI
+                            DispatchQueue.main.async {
+                                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+                                UIView.performWithoutAnimation {
+                                    self.tableView.reloadRows(at: [path], with: .none)
+                                }
+                            }
+
+                            // Pause indexing
                             EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
-                            progressBarButtonCell.estimatedTimeLabel.text = LocalString._encrypted_search_download_paused
-                            progressBarButtonCell.pauseButton.setTitle(LocalString._encrypted_search_resume_button, for: .normal)
                         }
                     }
                 }
@@ -481,13 +514,18 @@ extension SettingsEncryptedSearchViewController {
             self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+            if EncryptedSearchService.shared.state == .paused {
+                // If indexing has been paused, automatically resume it when ES is switched on again
+                EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
+            } else {
+                // Start building the search index
+                EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
+            }
+
             // Update UI
             self.hideSections = false
             self.tableView.reloadData() // Refresh the view to show changes in UI
             self.showInfoBanner()
-
-            // Start building the search index
-            EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
         })
 
         // Show alert
