@@ -30,7 +30,8 @@ import SkeletonView
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
+    
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
@@ -135,7 +136,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
     var scheduleUserFeedbackCallOnAppear = false
         
-    var shouldShowFeedbackActionSheet = false
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
@@ -631,9 +631,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                         target: self,
                                         selector: #selector(self.handleAccessibilityAction))
         inputCell?.accessibilityCustomActions = [accessibilityAction]
-        #if DEBUG
-        mailboxCell.accessibilityIdentifier = "MailboxViewController.NewMailboxMessageCell.\(mailboxCell.customView.messageContentView.titleLabel.text!)"
-        #endif
     }
 
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {
@@ -2457,11 +2454,17 @@ extension MailboxViewController {
                 return
             }
             switch result {
-            case .success:
-                completedHandler?(true)
-                // TODO: Connect the new service here. Till then this is just temporary
-                let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerNewStyle.success)
-                banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+            case .success(let userFeedback):
+                // Submit the feedback
+                let apiService = self.viewModel.user.apiService
+                let feedbackService = UserFeedbackService(apiService: apiService)
+                self.submit(userFeedback, service: feedbackService, successHandler: {
+                    completedHandler?(true)
+                    let banner = PMBanner(message: LocalString._thank_you_feedback, style: PMBannerNewStyle.success)
+                    banner.show(at: .bottom, on: self, ignoreKeyboard: true)
+                }, failureHandler: {
+                    completedHandler?(false)
+                })
             default:
                 completedHandler?(false)
                 return

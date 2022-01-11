@@ -31,7 +31,7 @@ protocol HasLocalStorage {
     static func cleanUpAll() -> Promise<Void>
 }
 
-/// tempeary here. //device level service
+/// temporary here: device level service
 let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
     // app cache service
@@ -39,7 +39,7 @@ let sharedServices: ServiceFactory = {
     helper.add(CoreDataService.self, for: CoreDataService.shared)
     helper.add(LastUpdatedStore.self, for: LastUpdatedStore(coreDataService: helper.get(by: CoreDataService.self)))
     #if !APP_EXTENSION
-    
+
     // push service
     helper.add(PushNotificationService.self, for: PushNotificationService())
     

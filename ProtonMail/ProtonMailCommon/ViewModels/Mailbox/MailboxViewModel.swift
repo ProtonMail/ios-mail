@@ -1099,6 +1099,8 @@ extension MailboxViewModel {
     }
 }
 
+// MARK: - Misc
+
 extension String {
     static func actionSheetTitle(selectedCount: Int, viewMode: ViewMode) -> String {
         switch viewMode {
