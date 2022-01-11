@@ -193,6 +193,8 @@ extension SearchViewController {
 extension SearchViewController {
     internal func showSearchInfoBanner() {
         var text: String = ""
+        var link: String = ""
+        
         let state = EncryptedSearchService.shared.state
         switch state {
         case .disabled:
@@ -204,7 +206,7 @@ extension SearchViewController {
             let userID: String = (users.firstUser?.userInfo.userId)!
             text += EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
             text += LocalString._encrypted_search_info_search_partial_second
-            text += LocalString._encrypted_search_info_search_partial_link
+            link = LocalString._encrypted_search_info_search_partial_link
             break
         case .lowstorage:
             text = LocalString._encrypted_search_info_search_partial_first
@@ -215,21 +217,22 @@ extension SearchViewController {
             break
         case .downloading:
             text = LocalString._encrypted_search_info_search_downloading
-            text += LocalString._encrypted_search_info_search_downloading_link
+            link = LocalString._encrypted_search_info_search_downloading_link
             break
         case .paused:
             text = LocalString._encrypted_search_info_search_paused
-            text += LocalString._encrypted_search_info_search_paused_link
+            link = LocalString._encrypted_search_info_search_paused_link
             break
         case .refresh:
             text = LocalString._encrypted_search_info_search_refresh
+            link = LocalString._encrypted_search_info_search_downloading_link
             break
         case .complete:
             return
         }
         
         DispatchQueue.main.async {
-            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity)
+            self.searchInfoBanner = BannerView(appearance: .gray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link)
             self.view.addSubview(self.searchInfoBanner!)
             self.searchInfoBanner!.drop(on: self.view, from: .top)
         }
