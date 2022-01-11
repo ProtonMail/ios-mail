@@ -6648,20 +6648,6 @@
 			path = ConversationDataService;
 			sourceTree = "<group>";
 		};
-		CF6055620210CBFDE528B90FB7E3F28F /* EncryptedSearchService */ = {
-			isa = PBXGroup;
-			children = (
-				5275411037E0C87418B79BF2378F5EDB /* DownloadPageAsyncOperation.swift */,
-				61F97A92D0471BCA14273F788DC3F85E /* ESMessage.swift */,
-				81CA106F0FC05AFADBC8133287387688 /* EncryptedSearchCacheService.swift */,
-				AFA4CD7A34F59D05E8C36D76B08B4524 /* EncryptedSearchIndexService.swift */,
-				0EF6695B1231F66CAA04AF4E615FACE2 /* EncryptedSearchService.swift */,
-				F4F5E950EF8C960EC2CA9BA2A95C0010 /* EncryptedSearchService.swift */,
-				CEEE1A76062D7953BF3453065B197422 /* IndexSingleMessageAsyncOperation.swift */,
-			);
-			path = EncryptedSearchService;
-			sourceTree = "<group>";
-		};
 		AC611CB84D8D805178BD7D0FC369C4A8 /* ConversationView */ = {
 			isa = PBXGroup;
 			children = (
