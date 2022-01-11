@@ -28,7 +28,7 @@ let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -83,6 +83,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let dohWarningAsk = "doh_warning_ask"
         
         static let combineContactFlag = "combine_contact_flag"
+        static let encrypedSearchFlag = "encrypted_search_flag"
         
         static let primaryUserSessionId = "primary_user_session_id"
         
@@ -163,6 +164,18 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     private(set) var hasShownStorageOverAlert: Bool = false
+    
+    var isEncryptedSearchOn: Bool {
+        get {
+            if getShared()?.object(forKey: Key.encrypedSearchFlag) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.encrypedSearchFlag)
+        }
+        set {
+            setValue(newValue, forKey: Key.encrypedSearchFlag)
+        }
+    }
     
     struct CoderKey {//Conflict with Key object
            static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"

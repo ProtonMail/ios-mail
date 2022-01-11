@@ -34,6 +34,7 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
+        case encryptedSearch = "settings_encrypted_search"
     }
     
     let viewModel : SettingsDeviceViewModel
@@ -124,6 +125,14 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         case .combineContact:
             if let vc = destination as? SettingsContactCombineViewController {
                 let vm = SettingsCombineContactViewModel(combineContactCache: userCachedStatus)
+                vc.set(viewModel: vm)
+                vc.set(coordinator: self)
+                return true
+            }
+            return false
+        case .encryptedSearch:
+            if let vc = destination as? SettingsEncryptedSearchViewController {
+                let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
                 vc.set(viewModel: vm)
                 vc.set(coordinator: self)
                 return true
