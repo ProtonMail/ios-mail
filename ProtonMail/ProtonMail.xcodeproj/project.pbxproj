@@ -2129,6 +2129,7 @@
 		C21E81A911210F7B9AC1F171C99F4478 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802CFC07A6A34A5D00DFB1F7B580798 /* Localization.swift */; };
 		C23046CC1DE40CA1247FCACF8929C22B /* ContactDetailDisplayEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525498C216604CE5DAA350CA7E38B198 /* ContactDetailDisplayEmailCell.swift */; };
 		C266AE1096AE160282E12CECB2C8D030 /* CaptchaViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BA3128CD6BC4853F3E492451F2B407 /* CaptchaViewModelImpl.swift */; };
+		C289327E9B2A54EA7972D208608A4893 /* EncryptedSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0401E0BF242D9C9078D2C45EFC9964E5 /* EncryptedSearchTests.swift */; };
 		C28983256E33F7A41D748622B041E2DC /* PinCodeSetUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBFAB969FDBAF5EE06B5AA8D89BB22D /* PinCodeSetUpViewController.swift */; };
 		C2A452260DF81D0A153DB3F20B83E0A0 /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */; };
 		C2CE4327A23E486F2531C58922B0E9EA /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9AF0A74A77653AD47949D28EACEC7 /* Int+Extension.swift */; };
@@ -2982,6 +2983,7 @@
 		03412BA317CA05F8177DD09A6ADED4A1 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
 		035BFF9AFA90B021BE0E9EBAD1236F39 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03DABB043F1364D4CCB33F7F57486494 /* MarkLegitimateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkLegitimateService.swift; sourceTree = "<group>"; };
+		0401E0BF242D9C9078D2C45EFC9964E5 /* EncryptedSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchTests.swift; sourceTree = "<group>"; };
 		04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ProtonMail_to_1.12.0.xcmappingmodel; sourceTree = "<group>"; };
 		04A8A1968645EEDF3C5C5B7D3A621A95 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -6004,6 +6006,7 @@
 				4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */,
 				2B62F7CBA20BFC6C1C6263A39C23CBE3 /* CoreDataStoreTest.swift */,
 				70FC2759FD850748A9264AFB4CE70EB8 /* LocalNotificationServiceTests.swift */,
+				0401E0BF242D9C9078D2C45EFC9964E5 /* EncryptedSearchTests.swift */,
 				7DFBF249F3C293E82857F6EBC6C0EE12 /* MessageDataServiceTests.swift */,
 				8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */,
 				2D13A6FA3F0FDEE829964B0017371329 /* PushNotificationServiceTests.swift */,
@@ -9060,6 +9063,7 @@
 				69621C82AFE0EEB8C05EC1D4299C1925 /* Dictionary_ExtensionTests.swift in Sources */,
 				A13CF12EACAEFDC06CD59EB4B91E5B03 /* DohStub.swift in Sources */,
 				C73BF57E9E8333A74C0FEC98C9E58F94 /* EmailListTestData.swift in Sources */,
+				C289327E9B2A54EA7972D208608A4893 /* EncryptedSearchTests.swift in Sources */,
 				B42607E6F9DEB156FF62EEB6BA546990 /* EncryptionKitProviderMock.swift in Sources */,
 				4A475B0873F8B641F68802511DEDFF0B /* EventAPITests.swift in Sources */,
 				2AF249C4708F487188BA5100C2BF6E92 /* EventTestData.swift in Sources */,
