@@ -196,7 +196,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     var storageLimit: Int64 {
         get {
             if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
-                return 600_000_000    //initial value
+                return 600_000_000    // in bytes - default storage limit is 600 MB
             }
             return Int64(getShared().int(forKey: Key.encryptedSearchStorageLimit) ?? 600_000_000)
         }
