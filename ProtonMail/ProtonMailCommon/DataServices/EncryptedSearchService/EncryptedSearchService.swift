@@ -473,7 +473,7 @@ extension EncryptedSearchService {
         }
     }
     
-    func pauseAndResumeIndexingByUser(isPause: Bool) -> Void {
+    func pauseAndResumeIndexingByUser(isPause: Bool, userID: String) -> Void {
         if isPause {
             self.numPauses += 1
             self.state = .paused
@@ -485,11 +485,11 @@ extension EncryptedSearchService {
             print("ENCRYPTEDSEARCH-STATE: downloading - resume by user")
         }
         DispatchQueue.global(qos: .userInitiated).async {
-            self.pauseAndResumeIndexing()
+            self.pauseAndResumeIndexing(userID: userID)
         }
     }
     
-    func pauseAndResumeIndexingDueToInterruption(isPause: Bool, completionHandler: (() -> Void)? = nil){
+    func pauseAndResumeIndexingDueToInterruption(isPause: Bool, userID: String, completionHandler: (() -> Void)? = nil){
         if isPause {
             self.numInterruptions += 1
             self.state = .paused
@@ -511,54 +511,48 @@ extension EncryptedSearchService {
         }
         
         DispatchQueue.global(qos: .userInitiated).async {
-            self.pauseAndResumeIndexing(completionHandler: completionHandler)
+            self.pauseAndResumeIndexing(userID: userID, completionHandler: completionHandler)
         }
     }
     
-    private func pauseAndResumeIndexing(completionHandler: (() -> Void)? = {}) {
-        let uid: String? = self.updateCurrentUserIfNeeded()
-        if let userID = uid {
-            if self.state == .paused {  //pause indexing
-                print("Pause indexing!")
-                self.downloadPageQueue.cancelAllOperations()
-                self.messageIndexingQueue.cancelAllOperations()
-                self.indexBuildingInProgress = false
+    private func pauseAndResumeIndexing(userID: String, completionHandler: (() -> Void)? = {}) {
+        if self.state == .paused {  //pause indexing
+            print("Pause indexing!")
+            self.downloadPageQueue.cancelAllOperations()
+            self.messageIndexingQueue.cancelAllOperations()
+            self.indexBuildingInProgress = false
 
-                self.cleanUpAfterIndexing(userID: userID)
-                // In case of an interrupt - update UI
-                if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
-                    self.updateUIWithIndexingStatus()
-                }
-            } else {    // Resume indexing
-                print("Resume indexing...")
-                self.indexBuildingInProgress = true
-                self.prevProcessedMessages = self.viewModel?.progressedMessages.value ?? 0
-                // Clean up timer
-                DispatchQueue.main.async {
-                    self.indexBuildingTimer?.invalidate()
-                    self.indexBuildingTimer = nil
-                    // Recreate timer
-                    self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
-                }
+            self.cleanUpAfterIndexing(userID: userID)
+            // In case of an interrupt - update UI
+            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
+                self.updateUIWithIndexingStatus()
+            }
+        } else {    // Resume indexing
+            print("Resume indexing...")
+            self.indexBuildingInProgress = true
+            self.prevProcessedMessages = self.viewModel?.progressedMessages.value ?? 0
+            // Clean up timer
+            DispatchQueue.main.async {
+                self.indexBuildingTimer?.invalidate()
+                self.indexBuildingTimer = nil
+                // Recreate timer
+                self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
+            }
 
-                // Enable network monitoring - if not already enabled
-                if #available(iOS 12, *) {
-                    if self.networkMonitor == nil {
-                        self.registerForNetworkChangeNotifications()
-                    }
-                } else {
-                    // Use Reachability for iOS 11
+            // Enable network monitoring - if not already enabled
+            if #available(iOS 12, *) {
+                if self.networkMonitor == nil {
+                    self.registerForNetworkChangeNotifications()
                 }
+            } else {
+                // Use Reachability for iOS 11
+            }
 
-                self.downloadAndProcessPage(userID: userID){ [weak self] in
-                    self?.checkIfIndexingIsComplete(userID: userID) {
-                        completionHandler?()
-                    }
+            self.downloadAndProcessPage(userID: userID){ [weak self] in
+                self?.checkIfIndexingIsComplete(userID: userID) {
+                    completionHandler?()
                 }
             }
-        } else {
-            print("Error in pauseAndResume Indexing. User unknown!")
-            completionHandler?()
         }
     }
 
@@ -1728,23 +1722,29 @@ extension EncryptedSearchService {
 
     @available(iOS 13.0, *)
     private func bgProcessingTask(task: BGProcessingTask) {
-        //Provide an expiration handler in case indexing is not finished in time
+        // Provide an expiration handler in case indexing is not finished in time
         task.expirationHandler = {
-            //schedule a new background processing task if index building is not finished
+            // Schedule a new background processing task if index building is not finished
             self.scheduleNewBGProcessingTask()
 
             self.state = .backgroundStopped
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
 
-            //slow down indexing again - will be speed up if user switches to ES screen
+            // Slow down indexing again - will be speed up if user switches to ES screen
             self.slowDownIndexing()
         }
 
-        //index is build in foreground - no need for a background task
+        // Index is build in foreground - no need for a background task
         if self.state == .downloading {
             task.setTaskCompleted(success: true)
         } else {
+            // Check if indexing is in progress
+            if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+                task.setTaskCompleted(success: true)
+                return
+            }
+
             self.state = .background
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: background")
@@ -1752,13 +1752,21 @@ extension EncryptedSearchService {
             // in the background we can index with full speed
             self.speedUpIndexing()
 
-            //start indexing in background
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
-                //if indexing is finshed during background task - set to complete
+            // Check if user is known
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String? = usersManager.firstUser?.userInfo.userId
+            guard let userID = userID else {
+                print("Error when running bg processing task. User unknown!")
+                return
+            }
+
+            // Start indexing in background
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID) {
+                // If indexing is finshed during background task - set to complete
                 self.state = .complete
                 self.viewModel?.indexStatus = self.state.rawValue
                 print("ENCRYPTEDSEARCH-STATE: complete 8")
-                
+
                 // update user cached status
                 userCachedStatus.indexComplete = true
                 
@@ -1796,23 +1804,29 @@ extension EncryptedSearchService {
     
     @available(iOS 13.0, *)
     private func appRefreshTask(task: BGAppRefreshTask) {
-        //Provide an expiration handler in case indexing is not finished in time
+        // Provide an expiration handler in case indexing is not finished in time
         task.expirationHandler = {
-            //schedule a new background app refresh task
+            // Schedule a new background app refresh task
             self.scheduleNewAppRefreshTask()
-            
+
             self.state = .backgroundStopped
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
-            
-            //slow down indexing again - will be speed up if user switches to ES screen
+
+            // Slow down indexing again - will be speed up if user switches to ES screen
             self.slowDownIndexing()
         }
         
-        //index is build in foreground - no need for a background task
+        // Index is build in foreground - no need for a background task
         if self.state == .downloading {
             task.setTaskCompleted(success: true)
         } else {
+            // Check if indexing is in progress
+            if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+                task.setTaskCompleted(success: true)
+                return
+            }
+
             self.state = .background
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: background")
@@ -1820,9 +1834,17 @@ extension EncryptedSearchService {
             // in the background we can index with full speed
             self.speedUpIndexing()
 
-            //start indexing in background
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false) {
-                //if indexing is finshed during background task - set to complete
+            // Check if user is known
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String? = usersManager.firstUser?.userInfo.userId
+            guard let userID = userID else {
+                print("Error when running bg apprefresh task. User unknown!")
+                return
+            }
+
+            // Start indexing in background
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID) {
+                // if indexing is finshed during background task - set to complete
                 self.state = .complete
                 self.viewModel?.indexStatus = self.state.rawValue
                 print("ENCRYPTEDSEARCH-STATE: complete 9")
@@ -1915,11 +1937,24 @@ extension EncryptedSearchService {
     } */
     
     private func checkIfEnoughStorage() {
+        // Check if indexing is in progress
+        if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+            return
+        }
+
+        // Check if user is known
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        guard let userID = userID else {
+            print("Error when responding to low power mode. User unknown!")
+            return
+        }
+
         let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
         print("Current storage space: \(remainingStorageSpace)")
-        if remainingStorageSpace < 100 {
+        if remainingStorageSpace < 100 {    // TODO is 100 correct?
             self.pauseIndexingDueToLowStorage = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
         }
     }
 
@@ -2037,6 +2072,19 @@ extension EncryptedSearchService {
 
     @available(iOS 12, *)
     private func responseToNetworkChanges(path: NWPath) {
+        // Check if indexing is in progress
+        if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+            return
+        }
+
+        // Check if user is known
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        guard let userID = userID else {
+            print("Error when responding to network changes. User unknown!")
+            return
+        }
+
         if path.status == .satisfied {
             // Either cellular or a WiFi hotspot
             if path.isExpensive {
@@ -2053,7 +2101,7 @@ extension EncryptedSearchService {
                     // If indexing was paused - resume indexing
                     print("state: \(self.state)")
                     if self.state == .paused {
-                        self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
                     }
                 } else {
                     // Mobile data available - however user switched indexing on mobile data off
@@ -2066,7 +2114,7 @@ extension EncryptedSearchService {
                     // If downloading - Pause indexing
                     print("state: \(self.state)")
                     if self.state == .downloading {
-                        self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+                        self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
                     }
                 }
             } else {    // WiFi available
@@ -2079,7 +2127,7 @@ extension EncryptedSearchService {
                 // If indexing was paused - continue on wifi again
                 print("state: \(self.state)")
                 if self.state == .paused {
-                    self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+                    self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
                 }
             }
         } else {
@@ -2092,7 +2140,7 @@ extension EncryptedSearchService {
             // Pause indexing
             print("state: \(self.state)")
             if self.state == .downloading {
-                self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+                self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
             }
         }
 
@@ -2174,16 +2222,29 @@ extension EncryptedSearchService {
     }*/
     
     @objc private func responseToLowPowerMode(_ notification: Notification) {
+        // Check if indexing is in progress
+        if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+            return
+        }
+
+        // Check if user is known
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        guard let userID = userID else {
+            print("Error when responding to low power mode. User unknown!")
+            return
+        }
+
         if ProcessInfo.processInfo.isLowPowerModeEnabled && !self.pauseIndexingDueToLowBattery {
             // Low power mode is enabled - pause indexing
             self.pauseIndexingDueToLowBattery = true
             print("Pause indexing due to low battery!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
         } else if !ProcessInfo.processInfo.isLowPowerModeEnabled && self.pauseIndexingDueToLowBattery {
             // Low power mode is disabled - continue indexing
             self.pauseIndexingDueToLowBattery = false
             print("Resume indexing as battery is charged again!")
-            self.pauseAndResumeIndexingDueToInterruption(isPause: false)
+            self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
         }
     }
     
@@ -2205,32 +2266,45 @@ extension EncryptedSearchService {
     }
     
     @objc private func responseToHeat(_ notification: Notification){
+        // Check if indexing is in progress
+        if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+            return
+        }
+
+        // Check if user is known
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        guard let userID = userID else {
+            print("Error when responding to low power mode. User unknown!")
+            return
+        }
+
         let termalState = ProcessInfo.processInfo.thermalState
         switch termalState {
         case .nominal:
             print("Thermal state nomial. No further action required")
             if self.pauseIndexingDueToOverheating {
                 self.pauseIndexingDueToOverheating = false
-                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)    // Resume indexing
             }
         case .fair:
             print("Thermal state fair. No further action required")
             if self.pauseIndexingDueToOverheating {
                 self.pauseIndexingDueToOverheating = false
-                self.pauseAndResumeIndexingDueToInterruption(isPause: false)    //resume indexing
+                self.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)    // Resume indexing
             }
         case .serious:
             print("Thermal state serious. Reduce CPU usage.")
         case .critical:
             print("Thermal state critical. Stop indexing!")
             self.pauseIndexingDueToOverheating = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true)    //pause indexing
+            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)    // Pause indexing
         @unknown default:
-            print("Unknown temperature state. Do something?")
+            break
         }
     }
     
-    //Code from here: https://stackoverflow.com/a/64738201
+    // Code from here: https://stackoverflow.com/a/64738201
     func getTotalAvailableMemory() -> Double {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
