@@ -182,7 +182,7 @@ extension EncryptedSearchService {
                             return
                         }
                         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
-                            self.checkIfIndexingIsComplete() {
+                            self.checkIfIndexingIsComplete(userID: userID!) {
                                 self.state = .complete
                                 self.viewModel?.indexStatus = self.state.rawValue
                                 print("ENCRYPTEDSEARCH-STATE: complete 2")
@@ -283,8 +283,7 @@ extension EncryptedSearchService {
                     // If there are no message in the search index - build completely new
                     DispatchQueue.global(qos: .userInitiated).async {
                         self.downloadAndProcessPage(userID: userID){ [weak self] in
-                            self?.checkIfIndexingIsComplete(){}
-                            return
+                            self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
                         }
                     }
                 } else if numberOfMessageInIndex == self.totalMessages {
@@ -296,8 +295,7 @@ extension EncryptedSearchService {
                     // update user cached status
                     userCachedStatus.indexComplete = true
 
-                    self.cleanUpAfterIndexing()
-                    return
+                    self.cleanUpAfterIndexing(userID: userID)
                 } else {
                     print("ES-DEBUG: refresh search index")
                     // There are some new messages on the server - refresh the index
@@ -342,7 +340,7 @@ extension EncryptedSearchService {
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
             self.downloadAndProcessPage(userID: userID){ [weak self] in
-                self?.checkIfIndexingIsComplete(){}
+                self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
             }
         }
     }
@@ -366,15 +364,13 @@ extension EncryptedSearchService {
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
             self.downloadAndProcessPage(userID: userID){ [weak self] in
-                self?.checkIfIndexingIsComplete(){}
+                self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
             }
         }
     }
 
-    private func checkIfIndexingIsComplete(completionHandler: @escaping () -> Void) {
+    private func checkIfIndexingIsComplete(userID: String, completionHandler: @escaping () -> Void) {
         self.getTotalMessages() {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String = (usersManager.firstUser?.userInfo.userId)!
             let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(self.totalMessages)")
             if numberOfEntriesInSearchIndex == self.totalMessages {
@@ -386,7 +382,7 @@ extension EncryptedSearchService {
                 userCachedStatus.indexComplete = true
                 
                 // cleanup
-                self.cleanUpAfterIndexing()
+                self.cleanUpAfterIndexing(userID: userID)
             } else {
                 if self.state == .downloading || self.state == .refresh {
                     self.state = .partial
@@ -397,7 +393,7 @@ extension EncryptedSearchService {
                     userCachedStatus.indexComplete = true
 
                     // cleanup
-                    self.cleanUpAfterIndexing()
+                    self.cleanUpAfterIndexing(userID: userID)
                 }
             }
             completionHandler()
@@ -405,11 +401,8 @@ extension EncryptedSearchService {
     }
     
     //called when indexing is complete
-    private func cleanUpAfterIndexing() {
+    private func cleanUpAfterIndexing(userID: String) {
         if self.state == .complete || self.state == .partial {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String = (usersManager.firstUser?.userInfo.userId)!
-
             // set some status variables
             self.viewModel?.isEncryptedSearch = true
             self.viewModel?.currentProgress.value = 100
@@ -531,7 +524,7 @@ extension EncryptedSearchService {
                 self.messageIndexingQueue.cancelAllOperations()
                 self.indexBuildingInProgress = false
 
-                self.cleanUpAfterIndexing()
+                self.cleanUpAfterIndexing(userID: userID)
                 // In case of an interrupt - update UI
                 if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
                     self.updateUIWithIndexingStatus()
@@ -558,7 +551,7 @@ extension EncryptedSearchService {
                 }
 
                 self.downloadAndProcessPage(userID: userID){ [weak self] in
-                    self?.checkIfIndexingIsComplete {
+                    self?.checkIfIndexingIsComplete(userID: userID) {
                         completionHandler?()
                     }
                 }
