@@ -30,10 +30,10 @@ extension Array {
 }
 
 public class EncryptedSearchService {
-    //instance of Singleton
+    // Instance of Singleton
     static let shared = EncryptedSearchService()
-    
-    //set initializer to private - Singleton
+
+    // Set initializer to private - Singleton
     private init(){
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
         if users.firstUser != nil {
@@ -42,14 +42,13 @@ public class EncryptedSearchService {
             self.apiService = user.apiService
             self.userDataSource = user.messageService.userDataSource
         }
-        
+
         self.timeFormatter.allowedUnits = [.hour, .minute, .second]
         self.timeFormatter.unitsStyle = .abbreviated
-        
+
         // Enable temperature monitoring
         self.registerForTermalStateChangeNotifications()
         // Enable battery level monitoring
-        //self.registerForBatteryLevelChangeNotifications()
         self.registerForPowerStateChangeNotifications()
         // Enable network monitoring
         if #available(iOS 12, *) {
@@ -61,7 +60,7 @@ public class EncryptedSearchService {
             // Use Reachability for iOS 11
         }
     }
-    
+
     enum EncryptedSearchIndexState: Int {
         case disabled = 0
         case partial = 1
@@ -71,18 +70,18 @@ public class EncryptedSearchService {
         case refresh = 5
         case complete = 6
         case undetermined = 7
-        case background = 8     //indicates that the index is currently build in the background
-        case backgroundStopped = 9  // indicates that the index building has been paused while building in the background
+        case background = 8     // Indicates that the index is currently build in the background
+        case backgroundStopped = 9  // Indicates that the index building has been paused while building in the background
     }
     var state: EncryptedSearchIndexState = .undetermined
-    
+
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil
     internal var apiService: APIService? = nil
     internal var userDataSource: UserDataSource? = nil
-    
+
     var totalMessages: Int = 0
-    var lastMessageTimeIndexed: Int = 0     //stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
+    var lastMessageTimeIndexed: Int = 0     // Stores the time of the last indexed message in case of an interrupt, or to fetch more than the limit of messages per request
     var processedMessages: Int = 0
     var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
     internal var prevProcessedMessages: Int = 0 // number of messages that are processed in an previous index building attempt
@@ -99,7 +98,7 @@ public class EncryptedSearchService {
     internal var eventsWhileIndexing: [MessageAction]? = []
     internal var indexBuildingTimer: Timer? = nil
     internal var slowSearchTimer: Timer? = nil
-    
+
     lazy var messageIndexingQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.name = "Message Indexing Queue"
@@ -111,7 +110,7 @@ public class EncryptedSearchService {
         queue.maxConcurrentOperationCount = 1   // Download 1 page at a time
         return queue
     }()
-    
+
     //internal lazy var internetStatusProvider: InternetConnectionStatusProvider? = nil
     //internal lazy var reachability: Reachability? = nil
     @available(iOS 12, *)
@@ -124,7 +123,7 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToLowStorage: Bool = false
     internal var numPauses: Int = 0
     internal var numInterruptions: Int = 0
-    
+
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     let timeFormatter = DateComponentsFormatter()
 
@@ -133,7 +132,7 @@ public class EncryptedSearchService {
     internal var initialIndexingEstimate: Int = 0
     internal var estimateIndexTimeRounds: Int = 0
     internal var isRefreshed: Bool = false
-    
+
     public var isSearching: Bool = false    // indicates that a search is currently active
 }
 
@@ -448,12 +447,17 @@ extension EncryptedSearchService {
             // Update UI
             self.updateUIIndexingComplete()
 
+            let stateBeforeRefreshing: EncryptedSearchIndexState = self.state
             // Process events that have been accumulated during indexing
             self.processEventsAfterIndexing() {
-                // Set state to complete when finished
-                self.state = .complete
+                // Set state when finished
+                self.state = stateBeforeRefreshing
                 self.viewModel?.indexStatus = self.state.rawValue
-                print("ENCRYPTEDSEARCH-STATE: complete 6")
+                if self.state == .complete {
+                    print("ENCRYPTEDSEARCH-STATE: complete 6")
+                } else {
+                    print("ENCRYPTEDSEARCH-STATE: partial 6")
+                }
 
                 // Invalidate timer on same thread as it has been created
                 DispatchQueue.main.async {
@@ -1958,6 +1962,36 @@ extension EncryptedSearchService {
         }
     }
 
+    private func checkIfStorageLimitIsExceeded() {
+        // Check if indexing is in progress
+        if self.state == .undetermined || self.state == .disabled || self.state == .complete || self.state == .partial {
+            return
+        }
+
+        // Check if user is known
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        let userID: String? = usersManager.firstUser?.userInfo.userId
+        guard let userID = userID else {
+            print("Error when responding to low power mode. User unknown!")
+            return
+        }
+
+        let sizeOfSearchIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
+        if sizeOfSearchIndex! > userCachedStatus.storageLimit {
+            // Cancle any running indexing process
+            self.downloadPageQueue.cancelAllOperations()
+            self.messageIndexingQueue.cancelAllOperations()
+
+            // Set state to partial
+            self.state = .partial
+            self.viewModel?.indexStatus = self.state.rawValue
+            print("ENCRYPTEDSEARCH-STATE: partial")
+
+            // clean up indexing
+            self.cleanUpAfterIndexing(userID: userID)
+        }
+    }
+
     private func estimateIndexingTime() -> (estimatedTime: String?, time: Double, currentProgress: Int){
         var estimatedTime: Double = 0
         var currentProgress: Int = 0
@@ -2010,10 +2044,11 @@ extension EncryptedSearchService {
                 print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
             }
         }
-        
+
         // Check if there is still enought storage left
         self.checkIfEnoughStorage()
-        
+        self.checkIfStorageLimitIsExceeded()
+
         // print state for debugging
         print("ES-DEBUG: \(self.state)")
     }
