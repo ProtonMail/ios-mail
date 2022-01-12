@@ -225,12 +225,25 @@ extension MainQueueHandler {
         self.apiService.exec(route: api) { (task, response: Response) in
             completion?(task, nil, response.error?.toNSError)
         }
+        self.setupTimerToCleanSoftDeletedMessage()
     }
     
     private func empty(labelID: String, completion: CompletionBlock?) {
         let api = EmptyMessage(labelID: labelID)
         self.apiService.exec(route: api) { (task, response: Response) in
             completion?(task, nil, response.error?.toNSError)
+        }
+        self.setupTimerToCleanSoftDeletedMessage()
+    }
+
+    private func setupTimerToCleanSoftDeletedMessage() {
+        DispatchQueue.main.async {
+            // BE schedule a task to delete
+            // The task should be executed right after initialization
+            // The execute duration depends on the folder size
+            Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
+                self?.user?.cacheService.cleanSoftDeletedMessagesAndConversation()
+            }
         }
     }
 }

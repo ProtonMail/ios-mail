@@ -80,8 +80,9 @@ extension ConversationDataService {
                 }
                 let messcount = responseDict?["Total"] as? Int ?? 0
                 let context = self.coreDataService.rootSavingContext
-                self.coreDataService.enqueue(context: context) { context in
+                self.coreDataService.enqueue(context: context) { [weak self] context in
                     do {
+                        guard let self = self else { return }
                         var conversationsDict = response.conversationsDict
 
                         for index in conversationsDict.indices {
@@ -106,6 +107,7 @@ extension ConversationDataService {
                                         label.order = conversation.order
                                     }
                                 }
+                                self.modifyNumMessageIfNeeded(conversation: conversation)
                             }
                             _ = context.saveUpstreamIfNeeded()
                             
@@ -150,6 +152,45 @@ extension ConversationDataService {
                 }
             }
         }
+    }
+
+    func modifyNumMessageIfNeeded(conversation: Conversation) {
+        guard conversation.isSoftDeleted else { return }
+        var spamNum: Int = 0
+        if let spamLabel = conversation.getContextLabel(location: .spam) {
+            spamNum = spamLabel.messageCount.intValue
+        }
+        var trashNum: Int = 0
+        if let trashLabel = conversation.getContextLabel(location: .trash) {
+            trashNum = trashLabel.messageCount.intValue
+        }
+        let numMessage = conversation.numMessages.intValue - spamNum - trashNum
+        conversation.numMessages = NSNumber(value: numMessage)
+    }
+
+    func softDeleteMessageIfNeeded(conversation: Conversation, messages: [Message]) {
+        let messages = messages.filter { $0.conversationID == conversation.conversationID }
+        guard conversation.isSoftDeleted,
+              !messages.isEmpty else { return }
+        if let _ = conversation.getContextLabel(location: .spam) {
+            self.softDelete(messages: messages, location: .spam)
+        }
+        if let _ = conversation.getContextLabel(location: .trash) {
+            self.softDelete(messages: messages, location: .trash)
+        }
+    }
+
+    private func softDelete(messages: [Message], location: Message.Location) {
+        messages
+            .filter { message in
+                let label = message.labels
+                    .compactMap { $0 as? Label }
+                    .map(\.labelID)
+                    .compactMap(Message.Location.init)
+                    .first(where: { $0 != .allmail && $0 != .starred })
+                return label == location
+            }
+            .forEach { $0.isSoftDeleted = true }
     }
 
     func fetchConversations(with conversationIDs: [String], completion: ((Result<Void, Error>) -> Void)?) {

@@ -106,13 +106,13 @@ extension ConversationDataService {
         let context = coreDataService.rootSavingContext
         context.performAndWait {
             let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-            conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
+            conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID, Conversation.Attributes.isSoftDeleted, NSNumber(false))
             if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
                 conversations.forEach{ context.delete($0) }
             }
 
             let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-            contextLabelFetch.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
+            contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
             if let contextlabels = try? context.fetch(contextLabelFetch) as? [NSManagedObject] {
                 contextlabels.forEach{ context.delete($0) }
             }

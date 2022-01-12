@@ -281,6 +281,15 @@ class LabelsDataService: Service, HasLocalStorage {
         let context = self.coreDataService.mainContext
         return Label.labelForLabelName(name, inManagedObjectContext: context)
     }
+
+    func lastUpdate(by labelID : String, userID: String? = nil) -> LabelCount? {
+        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
+            return nil
+        }
+        let context = self.coreDataService.mainContext
+        let id = userID ?? self.userID
+        return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, context: context, type: viewMode)
+    }
     
     func unreadCount(by labelID: String, userID: String? = nil) -> Promise<Int> {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
@@ -306,6 +315,11 @@ class LabelsDataService: Service, HasLocalStorage {
         case .singleMessage:
             return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: userID ?? self.userID, type: .singleMessage)
         }
+    }
+
+    func resetCounter(labelID: String, userID: String? = nil, viewMode: ViewMode? = nil) {
+        let id = userID ?? self.userID
+        self.lastUpdatedStore.resetCounter(labelID: labelID, userID: id, type: viewMode)
     }
 
     func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, objectID: String? = nil, completion: ((String?, NSError?) -> Void)?) {

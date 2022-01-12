@@ -124,6 +124,11 @@ class MailboxViewModel: StorageLimit {
         }
         return self.conversationStateService.viewMode
     }
+
+    var isTrashOrSpam: Bool {
+        let ids = [LabelLocation.trash.labelID, LabelLocation.spam.labelID]
+        return ids.contains(self.labelID)
+    }
     
     var isRequiredHumanCheck: Bool {
         get { return self.queueManager.isRequiredHumanCheck }
@@ -464,7 +469,40 @@ class MailboxViewModel: StorageLimit {
         return result
     }
     
-    
+    func updateListAndCounter(complete: @escaping ((LabelCount?) -> Void)) {
+        let group = DispatchGroup()
+        group.enter()
+        self.messageService.updateMessageCount {
+            group.leave()
+        }
+
+        group.enter()
+        self.fetchMessages(time: 0, forceClean: false, isUnread: false) { task, response, error in
+            group.leave()
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            delay(0.2) {
+                // For operation context sync with main context
+                let count = self.user.labelService.lastUpdate(by: self.labelID, userID: self.user.userinfo.userId)
+                complete(count)
+            }
+            
+        }
+    }
+
+    func getEmptyFolderCheckMessage(count: Int) -> String {
+        let format = self.currentViewMode == .conversation ? LocalString._clean_conversation_warning: LocalString._clean_message_warning
+        let message = String(format: format, count)
+        return message
+    }
+
+    func emptyFolder() {
+        let isTrashFolder = self.labelID == LabelLocation.trash.labelID
+        let location: Message.Location = isTrashFolder ? .trash: .spam
+        self.messageService.empty(location: location)
+    }
+
     /// process push
     func processCachedPush() {
         self.pushService.processCachedLaunchOptions()
@@ -541,10 +579,6 @@ class MailboxViewModel: StorageLimit {
         return false
     }
     
-    func emptyFolder() {
-        
-    }
-    
     func fetchConversationDetail(conversationID: String, completion: ((Result<Conversation, Error>) -> Void)?) {
         conversationService.fetchConversation(with: conversationID, includeBodyOf: nil, completion: completion)
     }
@@ -611,9 +645,7 @@ class MailboxViewModel: StorageLimit {
             deletePermanently(conversationIDs: IDs.asArrayOfStrings)
         case .singleMessage:
             let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainContext)
-            for msg in messages {
-                deletePermanently(message: msg)
-            }
+            self.deletePermanently(messages: messages)
         }
     }
     
@@ -632,8 +664,8 @@ class MailboxViewModel: StorageLimit {
         messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue, isSwipeAction: isSwipeAction)
     }
 
-    private func deletePermanently(message: Message) {
-        messageService.delete(messages: [message], label: self.labelID)
+    private func deletePermanently(messages: [Message]) {
+        messageService.delete(messages: messages, label: self.labelID)
     }
 
     func delete(conversation: Conversation, isSwipeAction: Bool = false) {

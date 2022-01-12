@@ -34,12 +34,14 @@ class ContextLabel: NSManagedObject {
     @NSManaged public var labelID: String
     @NSManaged public var userID: String
     @NSManaged public var order: NSNumber
+    @NSManaged public var isSoftDeleted: Bool
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)
         static let userID = "userID"
         static let labelID = "labelID"
         static let unreadCount = "unreadCount"
+        static let isSoftDeleted = "isSoftDeleted"
     }
 
     class func deleteAll(inContext context: NSManagedObjectContext) {

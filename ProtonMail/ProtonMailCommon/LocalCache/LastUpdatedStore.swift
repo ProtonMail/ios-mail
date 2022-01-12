@@ -46,8 +46,9 @@ protocol LastUpdatedStoreProtocol {
     func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount
     func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int>
     func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Int
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool)
+    func updateUnreadCount(by labelID : String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool)
     func removeUpdateTime(by userID: String, type: ViewMode)
+    func resetCounter(labelID: String, userID: String, type: ViewMode?)
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode)
     func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount]
     func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]>
@@ -301,11 +302,13 @@ extension LastUpdatedStore {
         return Int(result)
     }
     
-    
-    func updateUnreadCount(by labelID : String, userID: String, count: Int, type: ViewMode, shouldSave: Bool) {
+    func updateUnreadCount(by labelID : String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool) {
         context.performAndWait {
             let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: type)
-            update.unread = Int32(count)
+            update.unread = Int32(unread)
+            if let total = total {
+                update.total = Int32(total)
+            }
 
             if shouldSave {
                 let _ = context.saveUpstreamIfNeeded()
@@ -317,7 +320,34 @@ extension LastUpdatedStore {
               isPrimary,
               let viewMode = users.firstUser?.getCurrentViewMode(),
               type == viewMode else { return }
-        UIApplication.setBadge(badge: count)
+        UIApplication.setBadge(badge: unread)
+    }
+
+    
+    /// Reset counter value to zero
+    /// - Parameters:
+    ///   - type: Optional, nil will reset conversation and message counter
+    func resetCounter(labelID: String, userID: String, type: ViewMode?) {
+        context.performAndWait { [weak self] in
+            guard let self = self else { return }
+            let counts: [LabelCount]
+            if let type = type {
+                let count = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: type)
+                counts = [count]
+            } else {
+                let conversationCount = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: .conversation)
+                let messageCount = self.lastUpdateDefault(by: labelID, userID: userID, context: context, type: .singleMessage)
+                counts = [conversationCount, messageCount]
+            }
+            counts.forEach { count in
+                count.total = 0
+                count.unread = 0
+                count.unreadStart = nil
+                count.unreadEnd = nil
+                count.unreadUpdate = nil
+            }
+            let _ = context.saveUpstreamIfNeeded()
+        }
     }
     
     //remove all updates for a user

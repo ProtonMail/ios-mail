@@ -272,8 +272,8 @@ class CacheServiceTest: XCTestCase {
 extension CacheServiceTest {
     func loadTestDataOfUnreadCount(defaultUnreadCount: Int, labelID: String) {
         _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .singleMessage)
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, count: defaultUnreadCount, type: .singleMessage, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .singleMessage, shouldSave: true)
         _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .conversation)
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, count: defaultUnreadCount, type: .conversation, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .conversation, shouldSave: true)
     }
 }

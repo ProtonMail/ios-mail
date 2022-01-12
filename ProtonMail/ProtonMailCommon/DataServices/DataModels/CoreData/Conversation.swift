@@ -35,6 +35,7 @@ public final class Conversation: NSManagedObject {
         static let labels = "labels"
         static let userID = "userID"
         static let numUnread = "numUnread"
+        static let isSoftDeleted = "isSoftDeleted"
     }
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Conversation> {
@@ -51,6 +52,9 @@ public final class Conversation: NSManagedObject {
 
     @NSManaged public var senders: String
     @NSManaged public var recipients: String
+    /// Local use flag to mark this conversation is deleted
+    /// (usually caused by empty trash/ spam action)
+    @NSManaged public var isSoftDeleted: Bool
 
     @NSManaged public var size: NSNumber?
     @NSManaged public var subject: String
@@ -223,6 +227,12 @@ extension Conversation {
         } catch {
             return []
         }
+    }
+
+    func getContextLabel(location: LabelLocation) -> ContextLabel? {
+        guard let context = self.managedObjectContext else { return nil }
+        let contextLabels = self.labels.compactMap { $0 as? ContextLabel }
+        return contextLabels.first(where: { $0.labelID == location.labelID })
     }
 }
 

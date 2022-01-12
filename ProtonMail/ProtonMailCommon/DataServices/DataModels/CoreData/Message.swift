@@ -63,6 +63,9 @@ final public class Message: NSManagedObject {
     @NSManaged public var flags: NSNumber
     ///"Header":"(No Header)",
     @NSManaged public var header: String?
+    /// Local use flag to mark this conversation is deleted
+    /// (usually caused by empty trash/ spam action)
+    @NSManaged public var isSoftDeleted: Bool
     
     ///local use, check if details downloaded
     @NSManaged public var isDetailDownloaded: Bool

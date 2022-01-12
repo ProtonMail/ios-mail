@@ -72,6 +72,7 @@ extension ConversationDataService {
                             for label in labels {
                                 label.order = conversation.order
                             }
+                            self.modifyNumMessageIfNeeded(conversation: conversation)
                         }
                         for (index, _) in messagesDict.enumerated() {
                             messagesDict[index]["UserID"] = self.userID
@@ -79,6 +80,9 @@ extension ConversationDataService {
                         let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
                         if let messages = message as? [Message] {
                             messages.first(where: { $0.messageID == messageID })?.isDetailDownloaded = true
+                            if let conversation = conversation as? Conversation {
+                                self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
+                            }
                         }
                         
                         if let error = context.saveUpstreamIfNeeded() {

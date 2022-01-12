@@ -383,6 +383,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                         return
                     }
                     self.parent?.eventsService.processEvents(counts: response.counts)
+                    completion?()
                 }
             case .conversation:
                 let conversationCountApi = ConversationCountRequest(addressID: nil)
@@ -450,9 +451,9 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     }
     
     func empty(labelID: String) {
-        if self.cacheService.deleteMessage(by: labelID) {
-            queue(.empty(currentLabelID: labelID), isConversation: false)
-        }
+        self.cacheService.markMessageAndConversationDeleted(labelID: labelID)
+        self.labelDataService.resetCounter(labelID: labelID)
+        queue(.empty(currentLabelID: labelID), isConversation: false)
     }
 
     func updateEO(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
@@ -764,11 +765,25 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
             let moc = self.coreDataService.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if isUnread {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@)",
-                                                     labelID, Message.Attributes.messageStatus, 0, Message.Attributes.userID, self.userID, Message.Attributes.unRead, NSNumber(true))
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@) AND (%K == %@)",
+                                                     labelID,
+                                                     Message.Attributes.messageStatus,
+                                                     0,
+                                                     Message.Attributes.userID,
+                                                     self.userID,
+                                                     Message.Attributes.unRead,
+                                                     NSNumber(true),
+                                                     Message.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
             } else {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@)",
-                                                     labelID, Message.Attributes.messageStatus, 0, Message.Attributes.userID, self.userID)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@) AND (%K == %@)",
+                                                     labelID,
+                                                     Message.Attributes.messageStatus,
+                                                     0,
+                                                     Message.Attributes.userID,
+                                                     self.userID,
+                                                     Message.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
             fetchRequest.fetchBatchSize = 30
@@ -778,11 +793,22 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
             let moc = self.coreDataService.mainContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
             if isUnread {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0)",
-                                                     ContextLabel.Attributes.labelID, labelID, ContextLabel.Attributes.userID, self.userID, ContextLabel.Attributes.unreadCount)
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K > 0) AND (%K == %@)",
+                                                     ContextLabel.Attributes.labelID,
+                                                     labelID,
+                                                     ContextLabel.Attributes.userID,
+                                                     self.userID,
+                                                     ContextLabel.Attributes.unreadCount,
+                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
             } else {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil)",
-                                                                ContextLabel.Attributes.labelID, labelID, ContextLabel.Attributes.userID, self.userID)
+                fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@) AND (conversation != nil) AND (%K == %@)",
+                                                     ContextLabel.Attributes.labelID,
+                                                     labelID,
+                                                     ContextLabel.Attributes.userID,
+                                                     self.userID,
+                                                     ContextLabel.Attributes.isSoftDeleted,
+                                                     NSNumber(false))
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: false), NSSortDescriptor(keyPath: \ContextLabel.order, ascending: false)]
             fetchRequest.fetchBatchSize = 30
@@ -855,11 +881,26 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                 }
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
 
-                let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-                conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
-                if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
-                    conversations.forEach{ context.delete($0) }
+                let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+                contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                                          ContextLabel.Attributes.userID,
+                                                          self.userID,
+                                                          ContextLabel.Attributes.isSoftDeleted,
+                                                          NSNumber(false))
+                if let labels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
+                    labels.forEach { label in
+                        if label.conversation != nil {
+                            context.delete(label.conversation)
+                        }
+                        context.delete(label)
+                    }
                 }
+                
+//                let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+//                conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
+//                if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
+//                    conversations.forEach{ context.delete($0) }
+//                }
 
                 _ = context.saveUpstreamIfNeeded()
 
@@ -873,7 +914,13 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     // In some conditions, some of the messages can't be deleted
     private func removeMessageFromDB(context: NSManagedObjectContext, removeAllDraft: Bool = true) {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
+        // Don't delete the soft deleted message
+        // Or they would come back when user pull down to refresh
+        fetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                      Message.Attributes.userID,
+                                      self.userID,
+                                      Message.Attributes.isSoftDeleted,
+                                      NSNumber(false))
         
         guard let results = try? context.fetch(fetch) as? [NSManagedObject] else {
             return

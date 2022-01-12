@@ -12,7 +12,7 @@ import pmtest
 fileprivate struct id {
     static let mailboxTableView = "mailboxTableView"
     static let inboxTitleLabel = LocalString._menu_inbox_title
-    static let composeButtonLabel = "Compose"
+    static let composeButtonLabel = "MailboxViewController.composeBarButtonItem"
     static let buttonSkipTutorial = LocalString._skip_btn_title
 }
 
