@@ -121,28 +121,32 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         }
     }
     
-    func updateUnreadCount(by labelID: String, userID: String, count: Int, type: ViewMode, shouldSave: Bool) {
+    func updateUnreadCount(by labelID: String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool) {
         switch type {
         case .singleMessage:
             if let data = self.msgLabelUpdate[labelID] {
-                data.unread = Int32(count)
+                data.unread = Int32(unread)
             } else {
                 let newData = LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: testContext!)
-                newData.unread = Int32(count)
+                newData.unread = Int32(unread)
                 self.msgLabelUpdate[labelID] = newData
             }
         case .conversation:
             if let data = self.conversationLabelUpdate[labelID] {
-                data.unread = Int32(count)
+                data.unread = Int32(unread)
             } else {
                 let newData = ConversationCount.newConversationCount(by: labelID, userID: userID, inManagedObjectContext: testContext!)
-                newData.unread = Int32(count)
+                newData.unread = Int32(unread)
                 self.conversationLabelUpdate[labelID] = newData
             }
         }
     }
     
     func removeUpdateTime(by userID: String, type: ViewMode) {
+        
+    }
+
+    func resetCounter(labelID: String, userID: String, type: ViewMode?) {
         
     }
 

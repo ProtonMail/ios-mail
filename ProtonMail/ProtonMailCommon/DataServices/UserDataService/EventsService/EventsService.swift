@@ -770,7 +770,8 @@ extension EventsService {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, count: unread, type: .singleMessage, shouldSave: false)
+                    let total = count["Total"] as? Int
+                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .singleMessage, shouldSave: false)
                 }
             }
             
@@ -797,7 +798,8 @@ extension EventsService {
                     guard let unread = count["Unread"] as? Int else {
                         continue
                     }
-                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, count: unread, type: .conversation, shouldSave: false)
+                    let total = count["Total"] as? Int
+                    self.lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userManager.userInfo.userId, unread: unread, total: total, type: .conversation, shouldSave: false)
                 }
             }
             

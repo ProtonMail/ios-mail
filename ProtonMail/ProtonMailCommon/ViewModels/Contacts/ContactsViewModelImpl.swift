@@ -169,11 +169,11 @@ final class ContactsViewModelImpl : ContactsViewModel {
             self.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
                                                  completion: { (task, res, error) in
-                self.isFetching = false
-                self.fetchComplete?(nil, nil)
+                
             })
             self.user.contactService.fetchContacts { (_, error) in
-                
+                self.isFetching = false
+                self.fetchComplete?(nil, nil)
             }
         }
     }

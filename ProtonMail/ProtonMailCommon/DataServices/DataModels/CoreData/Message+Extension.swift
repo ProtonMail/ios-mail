@@ -54,6 +54,7 @@ extension Message {
 
         // 2.0.0
         static let conversationID = "conversationID"
+        static let isSoftDeleted = "isSoftDeleted"
     }
 
     var recipients: [[String: Any]] {

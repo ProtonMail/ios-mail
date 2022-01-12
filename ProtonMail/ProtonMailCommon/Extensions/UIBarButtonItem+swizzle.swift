@@ -58,10 +58,12 @@ extension UIBarButtonItem {
     @available(iOS 14.0, *)
     @objc dynamic var swizzledMenu: UIMenu? {
         get {
-            nil
+            return self.swizzledMenu
         }
         set {
-            
+            guard let id = newValue?.identifier.rawValue,
+                  !id.hasPrefix("com.apple.menu.dynamic") else { return }
+            self.swizzledMenu = newValue
         }
     }
 }

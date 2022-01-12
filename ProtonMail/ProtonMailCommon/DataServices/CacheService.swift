@@ -223,6 +223,52 @@ class CacheService: Service {
         }
     }
 
+    func markMessageAndConversationDeleted(labelID: String) {
+        let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
+        
+        let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID)
+
+        context.performAndWait {
+            if let messages = try? context.fetch(messageFetch) as? [Message] {
+                messages.forEach { $0.isSoftDeleted = true }
+            }
+            if let contextLabels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
+                contextLabels.forEach { label in
+                    label.conversation.isSoftDeleted = true
+                    let num = max(0, label.conversation.numMessages.intValue - label.messageCount.intValue)
+                    label.conversation.numMessages = NSNumber(value: num)
+                    label.isSoftDeleted = true
+                }
+            }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
+    func cleanSoftDeletedMessagesAndConversation() {
+        let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        messageFetch.predicate = NSPredicate(format: "%K = %@", Message.Attributes.isSoftDeleted, NSNumber(true))
+        
+        let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
+        contextLabelFetch.predicate = NSPredicate(format: "%K = %@", ContextLabel.Attributes.isSoftDeleted, NSNumber(true))
+
+        context.performAndWait {
+            if let messages = try? context.fetch(messageFetch) as? [Message] {
+                messages.forEach(context.delete)
+            }
+            if let contextLabels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
+                contextLabels.forEach { label in
+                    if label.conversation != nil {
+                        label.conversation.isSoftDeleted = false
+                    }
+                    context.delete(label)
+                }
+            }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
     func deleteMessage(by labelID: String) -> Bool {
         var result = false
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
@@ -474,7 +520,7 @@ extension CacheService {
             if count < 0 {
                 count = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, type: .singleMessage, shouldSave: false)
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: false)
 
             // Conversation Count
             let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: .conversation)
@@ -482,7 +528,7 @@ extension CacheService {
             if conversationCount < 0 {
                 conversationCount = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: conversationCount, type: .conversation, shouldSave: false)
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: false)
         }
     }
 
@@ -494,7 +540,7 @@ extension CacheService {
         if count < 0 {
             count = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, type: .singleMessage, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: true)
 
         // Conversation Count
         let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: .conversation)
@@ -502,7 +548,7 @@ extension CacheService {
         if conversationCount < 0 {
             conversationCount = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: conversationCount, type: .conversation, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
     }
 
     func updateCounterInsideContext(plus: Bool, with labelID: String, context: NSManagedObjectContext) {

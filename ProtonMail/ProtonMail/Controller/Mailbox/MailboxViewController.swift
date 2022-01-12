@@ -99,12 +99,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
     
-    // MARK: - Right bar buttons
-    private var composeBarButtonItem: UIBarButtonItem!
-    private var storageExceededBarButtonItem: UIBarButtonItem!
-    private var searchBarButtonItem: UIBarButtonItem!
-    private var cancelBarButtonItem: UIBarButtonItem!
-    
     // MARK: - Left bar button
     private var menuBarButtonItem: UIBarButtonItem!
     
@@ -469,7 +463,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     // MARK: - Button Targets
     
-    @objc internal func composeButtonTapped() {
+    @objc func composeButtonTapped() {
         if checkHuman() {
             self.coordinator?.go(to: .composer)
         }
@@ -479,11 +473,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         LocalString._storage_exceeded.alertToastBottom()
     }
     
-    @objc internal func searchButtonTapped() {
+    @objc func searchButtonTapped() {
         self.coordinator?.go(to: .search)
     }
     
-    @objc internal func cancelButtonTapped() {
+    @objc func cancelButtonTapped() {
         self.viewModel.removeAllSelectedIDs()
         self.hideCheckOptions()
         self.updateNavigationController(false)
@@ -492,6 +486,47 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.hideActionBar()
         self.dismissActionSheet()
+    }
+
+    @objc func ellipsisMenuTapped() {
+        let action = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let composeAction = UIAlertAction(title: LocalString._compose_message,
+                                          style: .default) { [weak self] _ in
+            self?.composeButtonTapped()
+        }
+        let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
+        let title = isTrashFolder ? LocalString._empty_trash: LocalString._empty_spam
+        let emptyAction = UIAlertAction(title: title,
+                                        style: .default) { [weak self] _ in
+            guard self?.isAllowedEmptyFolder() ?? false else { return }
+            self?.clickEmptyFolderAction()
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
+        action.addAction(composeAction)
+        action.addAction(emptyAction)
+        action.addAction(cancel)
+        self.present(action, animated: true, completion: nil)
+    }
+
+    func isAllowedEmptyFolder() -> Bool {
+        guard self.viewModel.isTrashOrSpam else { return false }
+        guard self.hasNetworking else {
+            LocalString._cannot_empty_folder_now.toast(at: self.view)
+            return false
+        }
+        return true
+    }
+
+    func clickEmptyFolderAction() {
+        self.viewModel.updateListAndCounter { [weak self] count in
+            guard let count = count else {
+                if let self = self {
+                    LocalString._cannot_empty_folder_now.toast(at: self.view)
+                }
+                return
+            }
+            self?.showEmptyFolderAlert(total: Int(count.total))
+        }
     }
     
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -1262,60 +1297,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         }
     }
-    
-    private func setupRightButtons(_ editingMode: Bool) {
-        if editingMode {
-            if self.cancelBarButtonItem == nil {
-                let item = UIBarButtonItem(title: LocalString._general_cancel_button,
-                                           style: UIBarButtonItem.Style.plain,
-                                           target: self,
-                                           action: #selector(cancelButtonTapped))
-                item.tintColor = ColorProvider.BrandNorm
-                self.cancelBarButtonItem = item
-            }
-            self.navigationItem.setRightBarButtonItems([self.cancelBarButtonItem],
-                                                       animated: true)
-            return
-        }
 
-        if self.composeBarButtonItem == nil {
-            let button = Asset.composeIcon.image.toUIBarButtonItem(
-                target: self,
-                action: #selector(composeButtonTapped),
-                tintColor: ColorProvider.IconNorm,
-                backgroundSquareSize: 40
-            )
-            self.composeBarButtonItem = button
-            self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
-        }
-        
-        if self.storageExceededBarButtonItem == nil {
-            let button = Asset.composeIcon.image.toUIBarButtonItem(
-                target: self,
-                action: #selector(storageExceededButtonTapped),
-                tintColor: ColorProvider.Shade50,
-                backgroundSquareSize: 40
-            )
-            self.storageExceededBarButtonItem = button
-            self.storageExceededBarButtonItem.accessibilityLabel = LocalString._storage_exceeded
-        }
-        
-        if self.searchBarButtonItem == nil {
-            let button = Asset.searchIcon.image.toUIBarButtonItem(
-                target: self,
-                action: #selector(searchButtonTapped),
-                tintColor: ColorProvider.IconNorm,
-                backgroundSquareSize: 40
-            )
-            self.searchBarButtonItem = button
-            self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
-        }
-
-        let item: UIBarButtonItem = self.viewModel.user.isStorageExceeded ? self.storageExceededBarButtonItem: self.composeBarButtonItem
-        let rightButtons: [UIBarButtonItem] = [item, self.searchBarButtonItem]
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-    }
-    
     private func hideCheckOptions() {
         guard listEditing else { return }
         self.listEditing = false
@@ -1586,6 +1568,19 @@ extension MailboxViewController {
         }
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showEmptyFolderAlert(total: Int) {
+        let isTrashFolder = self.viewModel.labelID == LabelLocation.trash.labelID
+        let title = isTrashFolder ? LocalString._empty_trash_folder: LocalString._empty_spam_folder
+        let message = self.viewModel.getEmptyFolderCheckMessage(count: total)
+        let alert = UIAlertController(title: "\(title)?", message: message, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
+            self?.viewModel.emptyFolder()
+        }
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_action, style: .cancel, handler: nil)
+        [deleteAction, cancelAction].forEach(alert.addAction)
+        self.present(alert, animated: true, completion: nil)
     }
 
     @objc

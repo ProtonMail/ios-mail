@@ -322,6 +322,7 @@ class UsersManager: Service {
         }
 
         self.users.forEach { $0.fetchUserInfo() }
+        self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
         self.loggedIn()
     }
 

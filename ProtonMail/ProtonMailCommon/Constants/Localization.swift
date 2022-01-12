@@ -2218,4 +2218,12 @@ class LocalizedString {
     lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("swipe_to_label_conversation_title", comment: "The title of swipe banner after swiping to label conversations") 
 
     lazy var _inbox_action_reverted_title = NSLocalizedString("Action reverted", comment: "The title of toast message that is shown after the undo action is done") 
+    lazy var _compose_message = NSLocalizedString("Compose message", comment: "An action title shows in ellipsis menu")
+    lazy var _empty_trash = NSLocalizedString("Empty Trash", comment: "An action title shows in ellipsis menu")
+    lazy var _empty_trash_folder = NSLocalizedString("Empty trash folder", comment: "Alert title")
+    lazy var _empty_spam = NSLocalizedString("Empty Spam", comment: "An action title shows in ellipsis menu")
+    lazy var _empty_spam_folder = NSLocalizedString("Empty spam folder", comment: "Alert title")
+    lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
+    lazy var _clean_message_warning = NSLocalizedString("clean_message_warning", comment: "Warning message when users try to empty messages in the folder")
+    lazy var _clean_conversation_warning = NSLocalizedString("clean_conversation_warning", comment: "Warning message when users try to empty conversations in the folder")
 }
