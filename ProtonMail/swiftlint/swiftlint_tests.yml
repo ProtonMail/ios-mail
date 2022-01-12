@@ -61,6 +61,9 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/FeatureFlagsDownloadServiceTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/InAppFeedbackStateServiceTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/MenuViewModelTests.swift
+  - ${PWD}/ProtonMailAnalyticsTests/ProtonMailAnalyticsTests.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockProtonMailAnalytics.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/AnalyticsTests.swift
 
 excluded:
   - ${PWD}/Pods

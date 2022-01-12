@@ -1,523 +1,568 @@
-//
-//  SentryClient.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 02/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/SentryClient.h>
-#import <Sentry/SentryClient+Internal.h>
-#import <Sentry/SentryLog.h>
-#import <Sentry/SentryDsn.h>
-#import <Sentry/SentryError.h>
-#import <Sentry/SentryUser.h>
-#import <Sentry/SentryQueueableRequestManager.h>
-#import <Sentry/SentryEvent.h>
-#import <Sentry/SentryNSURLRequest.h>
-#import <Sentry/SentryInstallation.h>
-#import <Sentry/SentryBreadcrumbStore.h>
-#import <Sentry/SentryFileManager.h>
-#import <Sentry/SentryBreadcrumbTracker.h>
-#import <Sentry/SentryCrash.h>
-#import <Sentry/SentryOptions.h>
-#else
 #import "SentryClient.h"
-#import "SentryClient+Internal.h"
-#import "SentryLog.h"
+#import "NSDictionary+SentrySanitize.h"
+#import "SentryCrashDefaultMachineContextWrapper.h"
+#import "SentryCrashIntegration.h"
+#import "SentryCrashStackEntryMapper.h"
+#import "SentryDebugImageProvider.h"
+#import "SentryDefaultCurrentDateProvider.h"
 #import "SentryDsn.h"
-#import "SentryError.h"
-#import "SentryUser.h"
-#import "SentryQueueableRequestManager.h"
+#import "SentryEnvelope.h"
+#import "SentryEnvelopeItemType.h"
 #import "SentryEvent.h"
-#import "SentryNSURLRequest.h"
-#import "SentryInstallation.h"
-#import "SentryBreadcrumbStore.h"
+#import "SentryException.h"
 #import "SentryFileManager.h"
-#import "SentryBreadcrumbTracker.h"
-#import "SentryCrash.h"
+#import "SentryFrameRemover.h"
+#import "SentryGlobalEventProcessor.h"
+#import "SentryId.h"
+#import "SentryInAppLogic.h"
+#import "SentryInstallation.h"
+#import "SentryLog.h"
+#import "SentryMechanism.h"
+#import "SentryMechanismMeta.h"
+#import "SentryMessage.h"
+#import "SentryMeta.h"
+#import "SentryNSError.h"
+#import "SentryOptions+Private.h"
 #import "SentryOptions.h"
-#endif
+#import "SentryOutOfMemoryTracker.h"
+#import "SentrySDK+Private.h"
+#import "SentryScope+Private.h"
+#import "SentryScope.h"
+#import "SentrySpan.h"
+#import "SentryStacktraceBuilder.h"
+#import "SentryThreadInspector.h"
+#import "SentryTraceState.h"
+#import "SentryTracer.h"
+#import "SentryTransaction.h"
+#import "SentryTransport.h"
+#import "SentryTransportFactory.h"
+#import "SentryUser.h"
+#import "SentryUserFeedback.h"
 
 #if SENTRY_HAS_UIKIT
-#import <UIKit/UIKit.h>
+#    import <UIKit/UIKit.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *const SentryClientVersionString = @"4.5.0";
-NSString *const SentryClientSdkName = @"sentry-cocoa";
+@interface
+SentryClient ()
 
-static SentryClient *sharedClient = nil;
-static SentryLogLevel logLevel = kSentryLogLevelError;
-
-static SentryInstallation *installation = nil;
-
-@interface SentryClient ()
-
-@property(nonatomic, strong) SentryDsn *dsn;
-@property(nonatomic, strong) SentryFileManager *fileManager;
-@property(nonatomic, strong) id <SentryRequestManager> requestManager;
+@property (nonatomic, strong) id<SentryTransport> transport;
+@property (nonatomic, strong) SentryFileManager *fileManager;
+@property (nonatomic, strong) SentryDebugImageProvider *debugImageProvider;
+@property (nonatomic, strong) SentryThreadInspector *threadInspector;
 
 @end
 
+NSString *const DropSessionLogMessage = @"Session has no release name. Won't send it.";
+
 @implementation SentryClient
 
-@synthesize environment = _environment;
-@synthesize releaseName = _releaseName;
-@synthesize dist = _dist;
-@synthesize tags = _tags;
-@synthesize extra = _extra;
-@synthesize user = _user;
-@synthesize sampleRate = _sampleRate;
-@synthesize maxEvents = _maxEvents;
-@synthesize maxBreadcrumbs = _maxBreadcrumbs;
-@dynamic logLevel;
+- (_Nullable instancetype)initWithOptions:(SentryOptions *)options
+{
+    if (self = [super init]) {
+        self.options = options;
 
-#pragma mark Initializer
+        self.debugImageProvider = [[SentryDebugImageProvider alloc] init];
 
-- (_Nullable instancetype)initWithOptions:(NSDictionary<NSString *, id> *)options
-                         didFailWithError:(NSError *_Nullable *_Nullable)error {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-    return [self initWithOptions:options
-                  requestManager:[[SentryQueueableRequestManager alloc] initWithSession:session]
-                didFailWithError:error];
-}
-    
-    
-- (_Nullable instancetype)initWithDsn:(NSString *)dsn
-                     didFailWithError:(NSError *_Nullable *_Nullable)error {
-    return [self initWithOptions:@{@"dsn": dsn}
-                didFailWithError:error];
-}
+        SentryInAppLogic *inAppLogic =
+            [[SentryInAppLogic alloc] initWithInAppIncludes:options.inAppIncludes
+                                              inAppExcludes:options.inAppExcludes];
+        SentryCrashStackEntryMapper *crashStackEntryMapper =
+            [[SentryCrashStackEntryMapper alloc] initWithInAppLogic:inAppLogic];
+        SentryStacktraceBuilder *stacktraceBuilder =
+            [[SentryStacktraceBuilder alloc] initWithCrashStackEntryMapper:crashStackEntryMapper];
+        id<SentryCrashMachineContextWrapper> machineContextWrapper =
+            [[SentryCrashDefaultMachineContextWrapper alloc] init];
 
-- (_Nullable instancetype)initWithOptions:(NSDictionary<NSString *, id> *)options
-                           requestManager:(id <SentryRequestManager>)requestManager
-                         didFailWithError:(NSError *_Nullable *_Nullable)error {
-    self = [super init];
-    if (self) {
-        [self restoreContextBeforeCrash];
-        [self setupQueueing];
-        _extra = [NSDictionary new];
-        _tags = [NSDictionary new];
-        
-        SentryOptions *sentryOptions = [[SentryOptions alloc] initWithOptions:options didFailWithError:error];
-        if (nil != error && nil != *error) {
-            [SentryLog logWithMessage:(*error).localizedDescription andLevel:kSentryLogLevelError];
+        self.threadInspector =
+            [[SentryThreadInspector alloc] initWithStacktraceBuilder:stacktraceBuilder
+                                            andMachineContextWrapper:machineContextWrapper];
+
+        NSError *error = nil;
+
+        self.fileManager = [[SentryFileManager alloc]
+                   initWithOptions:self.options
+            andCurrentDateProvider:[SentryDefaultCurrentDateProvider sharedInstance]
+                             error:&error];
+        if (nil != error) {
+            [SentryLog logWithMessage:error.localizedDescription andLevel:kSentryLevelError];
             return nil;
         }
-        
-        if (nil == sentryOptions.enabled) {
-            self.enabled = @YES;
-        } else {
-            self.enabled = sentryOptions.enabled;
-        }
-        self.dsn = sentryOptions.dsn;
-        self.environment = sentryOptions.environment;
-        self.releaseName = sentryOptions.releaseName;
-        self.dist = sentryOptions.dist;
-        
-        self.requestManager = requestManager;
-        if (logLevel > 1) { // If loglevel is set > None
-            NSLog(@"Sentry Started -- Version: %@", self.class.versionString);
-        }
-        self.fileManager = [[SentryFileManager alloc] initWithDsn:self.dsn didFailWithError:error];
-        self.breadcrumbs = [[SentryBreadcrumbStore alloc] initWithFileManager:self.fileManager];
-        if (nil != error && nil != *error) {
-            [SentryLog logWithMessage:(*error).localizedDescription andLevel:kSentryLogLevelError];
-            return nil;
-        }
-        
-        // We want to send all stored events on start up
-        if ([self.enabled boolValue] && [self.requestManager isReady]) {
-            [self sendAllStoredEvents];
-        }
+
+        self.transport = [SentryTransportFactory initTransport:self.options
+                                             sentryFileManager:self.fileManager];
     }
     return self;
 }
 
-- (void)setupQueueing {
-    self.shouldQueueEvent = ^BOOL(SentryEvent *_Nonnull event, NSHTTPURLResponse *_Nullable response, NSError *_Nullable error) {
-        // Taken from Apple Docs:
-        // If a response from the server is received, regardless of whether the request completes successfully or fails,
-        // the response parameter contains that information.
-        if (response == nil) {
-            // In case response is nil, we want to queue the event locally since this
-            // indicates no internet connection
-            return YES;
-        } else if ([response statusCode] == 429) {
-            [SentryLog logWithMessage:@"Rate limit reached, event will be stored and sent later" andLevel:kSentryLogLevelError];
-            return YES;
+/** Internal constructor for testing */
+- (instancetype)initWithOptions:(SentryOptions *)options
+                   andTransport:(id<SentryTransport>)transport
+                 andFileManager:(SentryFileManager *)fileManager
+{
+    self = [self initWithOptions:options];
+
+    self.transport = transport;
+    self.fileManager = fileManager;
+
+    return self;
+}
+
+- (SentryFileManager *)fileManager
+{
+    return _fileManager;
+}
+
+- (SentryId *)captureMessage:(NSString *)message
+{
+    return [self captureMessage:message withScope:[[SentryScope alloc] init]];
+}
+
+- (SentryId *)captureMessage:(NSString *)message withScope:(SentryScope *)scope
+{
+    SentryEvent *event = [[SentryEvent alloc] initWithLevel:kSentryLevelInfo];
+    event.message = [[SentryMessage alloc] initWithFormatted:message];
+    return [self sendEvent:event withScope:scope alwaysAttachStacktrace:NO];
+}
+
+- (SentryId *)captureException:(NSException *)exception
+{
+    return [self captureException:exception withScope:[[SentryScope alloc] init]];
+}
+
+- (SentryId *)captureException:(NSException *)exception withScope:(SentryScope *)scope
+{
+    SentryEvent *event = [self buildExceptionEvent:exception];
+    return [self sendEvent:event withScope:scope alwaysAttachStacktrace:YES];
+}
+
+- (SentryId *)captureException:(NSException *)exception
+                   withSession:(SentrySession *)session
+                     withScope:(SentryScope *)scope
+{
+    SentryEvent *event = [self buildExceptionEvent:exception];
+    event = [self prepareEvent:event withScope:scope alwaysAttachStacktrace:YES];
+    return [self sendEvent:event withSession:session withScope:scope];
+}
+
+- (SentryEvent *)buildExceptionEvent:(NSException *)exception
+{
+    SentryEvent *event = [[SentryEvent alloc] initWithLevel:kSentryLevelError];
+    SentryException *sentryException = [[SentryException alloc] initWithValue:exception.reason
+                                                                         type:exception.name];
+    event.exceptions = @[ sentryException ];
+    [self setUserInfo:exception.userInfo withEvent:event];
+    return event;
+}
+
+- (SentryId *)captureError:(NSError *)error
+{
+    return [self captureError:error withScope:[[SentryScope alloc] init]];
+}
+
+- (SentryId *)captureError:(NSError *)error withScope:(SentryScope *)scope
+{
+    SentryEvent *event = [self buildErrorEvent:error];
+    return [self sendEvent:event withScope:scope alwaysAttachStacktrace:YES];
+}
+
+- (SentryId *)captureError:(NSError *)error
+               withSession:(SentrySession *)session
+                 withScope:(SentryScope *)scope
+{
+    SentryEvent *event = [self buildErrorEvent:error];
+    event = [self prepareEvent:event withScope:scope alwaysAttachStacktrace:YES];
+    return [self sendEvent:event withSession:session withScope:scope];
+}
+
+- (SentryEvent *)buildErrorEvent:(NSError *)error
+{
+    SentryEvent *event = [[SentryEvent alloc] initWithError:error];
+
+    NSString *exceptionValue = [NSString stringWithFormat:@"Code: %ld", (long)error.code];
+    SentryException *exception = [[SentryException alloc] initWithValue:exceptionValue
+                                                                   type:error.domain];
+
+    // Sentry uses the error domain and code on the mechanism for gouping
+    SentryMechanism *mechanism = [[SentryMechanism alloc] initWithType:@"NSError"];
+    SentryMechanismMeta *mechanismMeta = [[SentryMechanismMeta alloc] init];
+    mechanismMeta.error = [[SentryNSError alloc] initWithDomain:error.domain code:error.code];
+    mechanism.meta = mechanismMeta;
+    // The description of the error can be especially useful for error from swift that
+    // use a simple enum.
+    mechanism.desc = error.description;
+
+    NSDictionary<NSString *, id> *userInfo = [error.userInfo sentry_sanitize];
+    mechanism.data = userInfo;
+    exception.mechanism = mechanism;
+    event.exceptions = @[ exception ];
+
+    // Once the UI displays the mechanism data we can the userInfo from the event.context.
+    [self setUserInfo:userInfo withEvent:event];
+
+    return event;
+}
+
+- (SentryId *)captureCrashEvent:(SentryEvent *)event withScope:(SentryScope *)scope
+{
+    return [self sendEvent:event withScope:scope alwaysAttachStacktrace:NO isCrashEvent:YES];
+}
+
+- (SentryId *)captureCrashEvent:(SentryEvent *)event
+                    withSession:(SentrySession *)session
+                      withScope:(SentryScope *)scope
+{
+    SentryEvent *preparedEvent = [self prepareEvent:event
+                                          withScope:scope
+                             alwaysAttachStacktrace:NO
+                                       isCrashEvent:YES];
+    return [self sendEvent:preparedEvent withSession:session withScope:scope];
+}
+
+- (SentryId *)captureEvent:(SentryEvent *)event
+{
+    return [self captureEvent:event withScope:[[SentryScope alloc] init]];
+}
+
+- (SentryId *)captureEvent:(SentryEvent *)event withScope:(SentryScope *)scope
+{
+    return [self sendEvent:event withScope:scope alwaysAttachStacktrace:NO];
+}
+
+- (SentryId *)sendEvent:(SentryEvent *)event
+                 withScope:(SentryScope *)scope
+    alwaysAttachStacktrace:(BOOL)alwaysAttachStacktrace
+{
+    return [self sendEvent:event
+                     withScope:scope
+        alwaysAttachStacktrace:alwaysAttachStacktrace
+                  isCrashEvent:NO];
+}
+
+- (nullable SentryTraceState *)getTraceStateWithEvent:(SentryEvent *)event
+                                            withScope:(SentryScope *)scope
+{
+    id<SentrySpan> span;
+    if ([event isKindOfClass:[SentryTransaction class]]) {
+        span = [(SentryTransaction *)event trace];
+    } else {
+        // Even envelopes without transactions can contain the trace state, allowing Sentry to
+        // eventually sample attachments belonging to a transaction.
+        span = scope.span;
+    }
+
+    SentryTracer *tracer = [SentryTracer getTracer:span];
+    if (tracer == nil)
+        return nil;
+
+    return [[SentryTraceState alloc] initWithTracer:tracer scope:scope options:_options];
+}
+
+- (SentryId *)sendEvent:(SentryEvent *)event
+                 withScope:(SentryScope *)scope
+    alwaysAttachStacktrace:(BOOL)alwaysAttachStacktrace
+              isCrashEvent:(BOOL)isCrashEvent
+{
+    SentryEvent *preparedEvent = [self prepareEvent:event
+                                          withScope:scope
+                             alwaysAttachStacktrace:alwaysAttachStacktrace
+                                       isCrashEvent:isCrashEvent];
+
+    if (nil != preparedEvent) {
+        SentryTraceState *traceState = _options.experimentalEnableTraceSampling
+            ? [self getTraceStateWithEvent:event withScope:scope]
+            : nil;
+
+        [self.transport sendEvent:preparedEvent
+                       traceState:traceState
+                      attachments:scope.attachments];
+        return preparedEvent.eventId;
+    }
+
+    return SentryId.empty;
+}
+
+- (SentryId *)sendEvent:(SentryEvent *)event
+            withSession:(SentrySession *)session
+              withScope:(SentryScope *)scope
+{
+    if (nil != event) {
+        if (nil == session.releaseName || [session.releaseName length] == 0) {
+            SentryTraceState *traceState = _options.experimentalEnableTraceSampling
+                ? [self getTraceStateWithEvent:event withScope:scope]
+                : nil;
+
+            [SentryLog logWithMessage:DropSessionLogMessage andLevel:kSentryLevelDebug];
+            [self.transport sendEvent:event traceState:traceState attachments:scope.attachments];
+            return event.eventId;
         }
-        // In all other cases we don't want to retry sending it and just discard the event
-        return NO;
-    };
+
+        [self.transport sendEvent:event withSession:session attachments:scope.attachments];
+        return event.eventId;
+    } else {
+        [self captureSession:session];
+        return SentryId.empty;
+    }
 }
 
-- (void)enableAutomaticBreadcrumbTracking {
-    [[SentryBreadcrumbTracker alloc] start];
+- (void)captureSession:(SentrySession *)session
+{
+    if (nil == session.releaseName || [session.releaseName length] == 0) {
+        [SentryLog logWithMessage:DropSessionLogMessage andLevel:kSentryLevelDebug];
+        return;
+    }
+
+    SentryEnvelope *envelope = [[SentryEnvelope alloc] initWithSession:session];
+    [self captureEnvelope:envelope];
 }
 
-- (void)trackMemoryPressureAsEvent {
-    #if SENTRY_HAS_UIKIT
-    __weak SentryClient *weakSelf = self;
-    SentryEvent *event = [[SentryEvent alloc] initWithLevel:kSentrySeverityWarning];
-    event.message = @"Memory Warning";
-    [NSNotificationCenter.defaultCenter addObserverForName:UIApplicationDidReceiveMemoryWarningNotification
-                                                    object:nil
-                                                     queue:nil
-                                                usingBlock:^(NSNotification *notification) {
-                                                    [weakSelf storeEvent:event];
-                                                }];
-    #endif
+- (void)captureEnvelope:(SentryEnvelope *)envelope
+{
+    // TODO: What is about beforeSend
+
+    if ([self isDisabled]) {
+        [self logDisabledMessage];
+        return;
+    }
+
+    [self.transport sendEnvelope:envelope];
 }
 
-#pragma mark Static Getter/Setter
+- (void)captureUserFeedback:(SentryUserFeedback *)userFeedback
+{
+    if ([self isDisabled]) {
+        [self logDisabledMessage];
+        return;
+    }
 
-+ (_Nullable instancetype)sharedClient {
-    return sharedClient;
+    if ([SentryId.empty isEqual:userFeedback.eventId]) {
+        [SentryLog logWithMessage:@"Capturing UserFeedback with an empty event id. Won't send it."
+                         andLevel:kSentryLevelDebug];
+        return;
+    }
+
+    [self.transport sendUserFeedback:userFeedback];
 }
 
-+ (void)setSharedClient:(SentryClient *_Nullable)client {
-    sharedClient = client;
+- (void)storeEnvelope:(SentryEnvelope *)envelope
+{
+    [self.fileManager storeEnvelope:envelope];
 }
 
-+ (NSString *)versionString {
-    return SentryClientVersionString;
+/**
+ * returns BOOL chance of YES is defined by sampleRate.
+ * if sample rate isn't within 0.0 - 1.0 it returns YES (like if sampleRate
+ * is 1.0)
+ */
+- (BOOL)checkSampleRate:(NSNumber *)sampleRate
+{
+    if (nil == sampleRate || ![self.options isValidSampleRate:sampleRate]) {
+        return YES;
+    }
+    return ([sampleRate floatValue] >= ((double)arc4random() / 0x100000000));
 }
 
-+ (NSString *)sdkName {
-    return SentryClientSdkName;
+- (SentryEvent *_Nullable)prepareEvent:(SentryEvent *)event
+                             withScope:(SentryScope *)scope
+                alwaysAttachStacktrace:(BOOL)alwaysAttachStacktrace
+{
+    return [self prepareEvent:event
+                     withScope:scope
+        alwaysAttachStacktrace:alwaysAttachStacktrace
+                  isCrashEvent:NO];
 }
 
-+ (void)setLogLevel:(SentryLogLevel)level {
-    NSParameterAssert(level);
-    logLevel = level;
-}
-
-+ (SentryLogLevel)logLevel {
-    return logLevel;
-}
-
-#pragma mark Event
-
-- (void)sendEvent:(SentryEvent *)event withCompletionHandler:(_Nullable SentryRequestFinished)completionHandler {
-    [self sendEvent:event useClientProperties:YES withCompletionHandler:completionHandler];
-}
-
-- (void)prepareEvent:(SentryEvent *)event
- useClientProperties:(BOOL)useClientProperties {
+- (SentryEvent *_Nullable)prepareEvent:(SentryEvent *)event
+                             withScope:(SentryScope *)scope
+                alwaysAttachStacktrace:(BOOL)alwaysAttachStacktrace
+                          isCrashEvent:(BOOL)isCrashEvent
+{
     NSParameterAssert(event);
-    if (useClientProperties) {
-        [self setSharedPropertiesOnEvent:event];
+    if ([self isDisabled]) {
+        [self logDisabledMessage];
+        return nil;
     }
 
-    if (nil != self.beforeSerializeEvent) {
-        self.beforeSerializeEvent(event);
+    if (NO == [self checkSampleRate:self.options.sampleRate]) {
+        [SentryLog logWithMessage:@"Event got sampled, will not send the event"
+                         andLevel:kSentryLevelDebug];
+        return nil;
     }
+
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    if (nil != infoDict && nil == event.dist) {
+        event.dist = infoDict[@"CFBundleVersion"];
+    }
+
+    // Use the values from SentryOptions as a fallback,
+    // in case not yet set directly in the event nor in the scope:
+    NSString *releaseName = self.options.releaseName;
+    if (nil == event.releaseName && nil != releaseName) {
+        // If no release was already set (i.e: crashed on an older version) use
+        // current release name
+        event.releaseName = releaseName;
+    }
+
+    NSString *dist = self.options.dist;
+    if (nil != dist) {
+        event.dist = dist;
+    }
+
+    NSString *environment = self.options.environment;
+    if (nil != environment && nil == event.environment) {
+        // Set the environment from option to the event before Scope is applied
+        event.environment = environment;
+    }
+
+    NSMutableDictionary *sdk =
+        @{ @"name" : SentryMeta.sdkName, @"version" : SentryMeta.versionString }.mutableCopy;
+    if (nil != sdk && nil == event.sdk) {
+        if (event.extra[@"__sentry_sdk_integrations"]) {
+            [sdk setValue:event.extra[@"__sentry_sdk_integrations"] forKey:@"integrations"];
+        }
+        event.sdk = sdk;
+    }
+
+    // We don't want to attach debug meta and stacktraces for transactions
+    BOOL eventIsNotATransaction
+        = event.type == nil || ![event.type isEqualToString:SentryEnvelopeItemTypeTransaction];
+    if (eventIsNotATransaction) {
+        BOOL shouldAttachStacktrace = alwaysAttachStacktrace || self.options.attachStacktrace
+            || (nil != event.exceptions && [event.exceptions count] > 0);
+
+        BOOL debugMetaNotAttached = !(nil != event.debugMeta && event.debugMeta.count > 0);
+        if (!isCrashEvent && shouldAttachStacktrace && debugMetaNotAttached) {
+            event.debugMeta = [self.debugImageProvider getDebugImages];
+        }
+
+        BOOL threadsNotAttached = !(nil != event.threads && event.threads.count > 0);
+        if (!isCrashEvent && shouldAttachStacktrace && threadsNotAttached) {
+            event.threads = [self.threadInspector getCurrentThreads];
+        }
+    }
+
+    event = [scope applyToEvent:event maxBreadcrumb:self.options.maxBreadcrumbs];
+
+    // Remove free_memory if OOM as free_memory stems from the current run and not of the time of
+    // the OOM.
+    if ([self isOOM:event isCrashEvent:isCrashEvent]) {
+        [self removeFreeMemoryFromDeviceContext:event];
+    }
+
+    // With scope applied, before running callbacks run:
+    if (nil == event.environment) {
+        // We default to environment 'production' if nothing was set
+        event.environment = @"production";
+    }
+
+    // Need to do this after the scope is applied cause this sets the user if there is any
+    [self setUserIdIfNoUserSet:event];
+
+    // User can't be nil as setUserIdIfNoUserSet sets it.
+    if (self.options.sendDefaultPii && nil == event.user.ipAddress) {
+        // Let Sentry infer the IP address from the connection.
+        event.user.ipAddress = @"{{auto}}";
+    }
+
+    event = [self callEventProcessors:event];
+
+    if (nil != self.options.beforeSend) {
+        event = self.options.beforeSend(event);
+    }
+
+    if (isCrashEvent && nil != self.options.onCrashedLastRun && !SentrySDK.crashedLastRunCalled) {
+        // We only want to call the callback once. It can occur that multiple crash events are
+        // about to be sent.
+        self.options.onCrashedLastRun(event);
+        SentrySDK.crashedLastRunCalled = YES;
+    }
+
+    return event;
 }
 
-- (void)storeEvent:(SentryEvent *)event {
-    [self prepareEvent:event useClientProperties:YES];
-    [self.fileManager storeEvent:event];
+- (BOOL)isDisabled
+{
+    return !self.options.enabled || nil == self.options.parsedDsn;
 }
 
-- (void)    sendEvent:(SentryEvent *)event
-  useClientProperties:(BOOL)useClientProperties
-withCompletionHandler:(_Nullable SentryRequestFinished)completionHandler {
-    [self prepareEvent:event useClientProperties:useClientProperties];
-
-    if (nil != self.shouldSendEvent && !self.shouldSendEvent(event)) {
-        NSString *message = @"SentryClient shouldSendEvent returned NO so we will not send the event";
-        [SentryLog logWithMessage:message andLevel:kSentryLogLevelDebug];
-        if (completionHandler) {
-            completionHandler(NSErrorFromSentryError(kSentryErrorEventNotSent, message));
-        }
-        return;
-    }
-
-    NSError *requestError = nil;
-    SentryNSURLRequest *request = [[SentryNSURLRequest alloc] initStoreRequestWithDsn:self.dsn
-                                                                             andEvent:event
-                                                                     didFailWithError:&requestError];
-    if (nil != requestError) {
-        [SentryLog logWithMessage:requestError.localizedDescription andLevel:kSentryLogLevelError];
-        if (completionHandler) {
-            completionHandler(requestError);
-        }
-        return;
-    }
-
-    NSString *storedEventPath = [self.fileManager storeEvent:event];
-    
-    if (![self.enabled boolValue]) {
-        [SentryLog logWithMessage:@"SentryClient is disabled, event will be stored to send later." andLevel:kSentryLogLevelDebug];
-        return;
-    }
-    
-    __block SentryClient *_self = self;
-    [self sendRequest:request withCompletionHandler:^(NSHTTPURLResponse *_Nullable response, NSError *_Nullable error) {
-        // We check if we should leave the event locally stored and try to send it again later
-        if (self.shouldQueueEvent == nil || self.shouldQueueEvent(event, response, error) == NO) {
-            [_self.fileManager removeFileAtPath:storedEventPath];
-        }
-        if (nil == error) {
-            _self.lastEvent = event;
-            [NSNotificationCenter.defaultCenter postNotificationName:@"Sentry/eventSentSuccessfully"
-                                                              object:nil
-                                                            userInfo:[event serialize]];
-            // Send all stored events in background if the queue is ready
-            if ([_self.enabled boolValue] && [_self.requestManager isReady]) {
-                [_self sendAllStoredEvents];
-            }
-        }
-        if (completionHandler) {
-            completionHandler(error);
-        }
-    }];
+- (void)logDisabledMessage
+{
+    [SentryLog logWithMessage:@"SDK disabled or no DSN set. Won't do anyting."
+                     andLevel:kSentryLevelDebug];
 }
 
-- (void)  sendRequest:(SentryNSURLRequest *)request
-withCompletionHandler:(_Nullable SentryRequestOperationFinished)completionHandler {
-    if (nil != self.beforeSendRequest) {
-        self.beforeSendRequest(request);
+- (SentryEvent *_Nullable)callEventProcessors:(SentryEvent *)event
+{
+    SentryEvent *newEvent = event;
+
+    for (SentryEventProcessor processor in SentryGlobalEventProcessor.shared.processors) {
+        newEvent = processor(newEvent);
+        if (nil == newEvent) {
+            [SentryLog logWithMessage:@"SentryScope callEventProcessors: An event "
+                                      @"processor decided to remove this event."
+                             andLevel:kSentryLevelDebug];
+            break;
+        }
     }
-    [self.requestManager addRequest:request completionHandler:completionHandler];
+    return newEvent;
 }
 
-- (void)sendAllStoredEvents {
-    dispatch_group_t dispatchGroup = dispatch_group_create();
-
-    for (NSDictionary<NSString *, id> *fileDictionary in [self.fileManager getAllStoredEvents]) {
-        dispatch_group_enter(dispatchGroup);
-
-        SentryNSURLRequest *request = [[SentryNSURLRequest alloc] initStoreRequestWithDsn:self.dsn
-                                                                                  andData:fileDictionary[@"data"]
-                                                                         didFailWithError:nil];
-        [self sendRequest:request withCompletionHandler:^(NSHTTPURLResponse *_Nullable response, NSError *_Nullable error) {
-            if (nil == error) {
-                NSDictionary *serializedEvent = [NSJSONSerialization JSONObjectWithData:fileDictionary[@"data"]
-                                                                                options:0
-                                                                                  error:nil];
-                if (nil != serializedEvent) {
-                    [NSNotificationCenter.defaultCenter postNotificationName:@"Sentry/eventSentSuccessfully"
-                                                                      object:nil
-                                                                    userInfo:serializedEvent];
-                }
-            }
-            // We want to delete the event here no matter what (if we had an internet connection)
-            // since it has been tried already
-            if (response != nil) {
-                [self.fileManager removeFileAtPath:fileDictionary[@"path"]];
-            }
-
-            dispatch_group_leave(dispatchGroup);
-        }];
-    }
-
-    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-        [NSNotificationCenter.defaultCenter postNotificationName:@"Sentry/allStoredEventsSent"
-                                                          object:nil
-                                                        userInfo:nil];
-    });
-}
-
-- (void)setSharedPropertiesOnEvent:(SentryEvent *)event {
-    if (nil != self.tags) {
-        if (nil == event.tags) {
-            event.tags = self.tags;
+- (void)setUserInfo:(NSDictionary *)userInfo withEvent:(SentryEvent *)event
+{
+    if (nil != event && nil != userInfo && userInfo.count > 0) {
+        NSMutableDictionary *context;
+        if (nil == event.context) {
+            context = [[NSMutableDictionary alloc] init];
+            event.context = context;
         } else {
-            NSMutableDictionary *newTags = [NSMutableDictionary new];
-            [newTags addEntriesFromDictionary:self.tags];
-            [newTags addEntriesFromDictionary:event.tags];
-            event.tags = newTags;
+            context = [event.context mutableCopy];
         }
-    }
 
-    if (nil != self.extra) {
-        if (nil == event.extra) {
-            event.extra = self.extra;
-        } else {
-            NSMutableDictionary *newExtra = [NSMutableDictionary new];
-            [newExtra addEntriesFromDictionary:self.extra];
-            [newExtra addEntriesFromDictionary:event.extra];
-            event.extra = newExtra;
-        }
-    }
-
-    if (nil != self.user && nil == event.user) {
-        event.user = self.user;
-    }
-
-    if (nil == event.breadcrumbsSerialized) {
-        event.breadcrumbsSerialized = [self.breadcrumbs serialize];
-    }
-
-    if (nil == event.infoDict) {
-        event.infoDict = [[NSBundle mainBundle] infoDictionary];
-    }
-    
-    if (nil != self.environment && nil == event.environment) {
-        event.environment = self.environment;
-    }
-    
-    if (nil != self.releaseName && nil == event.releaseName) {
-        event.releaseName = self.releaseName;
-    }
-    
-    if (nil != self.dist && nil == event.dist) {
-        event.dist = self.dist;
+        [context setValue:[userInfo sentry_sanitize] forKey:@"user info"];
     }
 }
 
-- (void)appendStacktraceToEvent:(SentryEvent *)event {
-    if (nil != self._snapshotThreads && nil != self._debugMeta) {
-        event.threads = self._snapshotThreads;
-        event.debugMeta = self._debugMeta;
+- (void)setUserIdIfNoUserSet:(SentryEvent *)event
+{
+    // We only want to set the id if the customer didn't set a user so we at least set something to
+    // identify the user.
+    if (nil == event.user) {
+        SentryUser *user = [[SentryUser alloc] init];
+        user.userId = [SentryInstallation id];
+        event.user = user;
     }
 }
 
-#pragma mark Global properties
+- (BOOL)isOOM:(SentryEvent *)event isCrashEvent:(BOOL)isCrashEvent
+{
+    if (!isCrashEvent) {
+        return NO;
+    }
 
-- (void)setTags:(NSDictionary<NSString *, NSString *> *_Nullable)tags {
-    [[NSUserDefaults standardUserDefaults] setObject:tags forKey:@"sentry.io.tags"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _tags = tags;
-}
+    if (nil == event.exceptions || event.exceptions.count != 1) {
+        return NO;
+    }
 
-- (void)setExtra:(NSDictionary<NSString *, id> *_Nullable)extra {
-    [[NSUserDefaults standardUserDefaults] setObject:extra forKey:@"sentry.io.extra"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _extra = extra;
-}
-
-- (void)setUser:(SentryUser *_Nullable)user {
-    [[NSUserDefaults standardUserDefaults] setObject:[user serialize] forKey:@"sentry.io.user"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _user = user;
-}
-    
-- (void)setReleaseName:(NSString *_Nullable)releaseName {
-    [[NSUserDefaults standardUserDefaults] setObject:releaseName forKey:@"sentry.io.releaseName"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _releaseName = releaseName;
-}
-    
-- (void)setDist:(NSString *_Nullable)dist {
-    [[NSUserDefaults standardUserDefaults] setObject:dist forKey:@"sentry.io.dist"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _dist = dist;
-}
-    
-- (void)setEnvironment:(NSString *_Nullable)environment {
-    [[NSUserDefaults standardUserDefaults] setObject:environment forKey:@"sentry.io.environment"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    _environment = environment;
+    SentryException *exception = event.exceptions[0];
+    return nil != exception.mechanism &&
+        [exception.mechanism.type isEqualToString:SentryOutOfMemoryMechanismType];
 }
 
-- (void)clearContext {
-    [self setReleaseName:nil];
-    [self setDist:nil];
-    [self setEnvironment:nil];
-    [self setUser:nil];
-    [self setExtra:[NSDictionary new]];
-    [self setTags:[NSDictionary new]];
-}
-
-- (void)restoreContextBeforeCrash {
-    NSMutableDictionary *context = [[NSMutableDictionary alloc] init];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.tags"] forKey:@"tags"];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.extra"] forKey:@"extra"];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.user"] forKey:@"user"];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.releaseName"] forKey:@"releaseName"];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.dist"] forKey:@"dist"];
-    [context setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"sentry.io.environment"] forKey:@"environment"];
-    self.lastContext = context;
-}
-
-- (void)setSampleRate:(float)sampleRate {
-    if (sampleRate < 0 || sampleRate > 1) {
-        [SentryLog logWithMessage:@"sampleRate must be between 0.0 and 1.0" andLevel:kSentryLogLevelError];
+- (void)removeFreeMemoryFromDeviceContext:(SentryEvent *)event
+{
+    if (nil == event.context || event.context.count == 0 || nil == event.context[@"device"]) {
         return;
     }
-    _sampleRate = sampleRate;
-    self.shouldSendEvent = ^BOOL(SentryEvent *_Nonnull event) {
-        return (sampleRate >= ((double)arc4random() / 0x100000000));
-    };
-}
 
-- (void)setMaxEvents:(NSUInteger)maxEvents {
-    self.fileManager.maxEvents = maxEvents;
-}
+    NSMutableDictionary *context = [[NSMutableDictionary alloc] initWithDictionary:event.context];
+    NSMutableDictionary *device =
+        [[NSMutableDictionary alloc] initWithDictionary:context[@"device"]];
+    [device removeObjectForKey:SentryDeviceContextFreeMemoryKey];
+    context[@"device"] = device;
 
-- (void)setMaxBreadcrumbs:(NSUInteger)maxBreadcrumbs {
-    self.fileManager.maxBreadcrumbs = maxBreadcrumbs;
-}
-
-#pragma mark SentryCrash
-
-- (BOOL)crashedLastLaunch {
-    return SentryCrash.sharedInstance.crashedLastLaunch;
-}
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-- (BOOL)startCrashHandlerWithError:(NSError *_Nullable *_Nullable)error {
-    [SentryLog logWithMessage:@"SentryCrashHandler started" andLevel:kSentryLogLevelDebug];
-    static dispatch_once_t onceToken = 0;
-    dispatch_once(&onceToken, ^{
-        installation = [[SentryInstallation alloc] init];
-        [installation install];
-        [installation sendAllReports];
-    });
-    return YES;
-}
-#pragma GCC diagnostic pop
-
-- (void)crash {
-    int* p = 0;
-    *p = 0;
-}
-
-- (void)reportUserException:(NSString *)name
-                     reason:(NSString *)reason
-                   language:(NSString *)language
-                 lineOfCode:(NSString *)lineOfCode
-                 stackTrace:(NSArray *)stackTrace
-              logAllThreads:(BOOL)logAllThreads
-           terminateProgram:(BOOL)terminateProgram {
-    if (nil == installation) {
-        [SentryLog logWithMessage:@"SentryCrash has not been initialized, call startCrashHandlerWithError" andLevel:kSentryLogLevelError];
-        return;
-    }
-    [SentryCrash.sharedInstance reportUserException:name
-                                         reason:reason
-                                       language:language
-                                     lineOfCode:lineOfCode
-                                     stackTrace:stackTrace
-                                  logAllThreads:logAllThreads
-                               terminateProgram:terminateProgram];
-    [installation sendAllReports];
-}
-
-- (void)snapshotStacktrace:(void (^)(void))snapshotCompleted {
-    if (nil == installation) {
-        [SentryLog logWithMessage:@"SentryCrash has not been initialized, call startCrashHandlerWithError" andLevel:kSentryLogLevelError];
-        return;
-    }
-    [SentryCrash.sharedInstance reportUserException:@"SENTRY_SNAPSHOT"
-                                         reason:@"SENTRY_SNAPSHOT"
-                                       language:@""
-                                     lineOfCode:@""
-                                     stackTrace:[[NSArray alloc] init]
-                                  logAllThreads:NO
-                               terminateProgram:NO];
-    [installation sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {
-        snapshotCompleted();
-    }];
+    event.context = context;
 }
 
 @end

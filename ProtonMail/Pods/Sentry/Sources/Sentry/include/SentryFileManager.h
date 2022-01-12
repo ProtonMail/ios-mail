@@ -1,44 +1,52 @@
-//
-//  SentryFileManager.h
-//  Sentry
-//
-//  Created by Daniel Griesser on 23/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Sentry/Sentry.h>)
-#import <Sentry/SentryDefines.h>
-#else
+#import "SentryCurrentDateProvider.h"
 #import "SentryDefines.h"
-#endif
+#import "SentrySession.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SentryEvent, SentryBreadcrumb, SentryDsn;
+@class SentryEvent, SentryOptions, SentryEnvelope, SentryFileContents, SentryAppState;
 
+NS_SWIFT_NAME(SentryFileManager)
 @interface SentryFileManager : NSObject
 SENTRY_NO_INIT
 
-- (_Nullable instancetype)initWithDsn:(SentryDsn *)dsn didFailWithError:(NSError **)error;
+- (nullable instancetype)initWithOptions:(SentryOptions *)options
+                  andCurrentDateProvider:(id<SentryCurrentDateProvider>)currentDateProvider
+                                   error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 
-- (NSString *)storeEvent:(SentryEvent *)event;
+- (NSString *)storeEnvelope:(SentryEnvelope *)envelope;
 
-- (NSString *)storeBreadcrumb:(SentryBreadcrumb *)crumb;
-- (NSString *)storeBreadcrumb:(SentryBreadcrumb *)crumb maxCount:(NSUInteger)maxCount;
+- (void)storeCurrentSession:(SentrySession *)session;
+- (void)storeCrashedSession:(SentrySession *)session;
+- (SentrySession *_Nullable)readCurrentSession;
+- (SentrySession *_Nullable)readCrashedSession;
+- (void)deleteCurrentSession;
+- (void)deleteCrashedSession;
+
+- (void)storeTimestampLastInForeground:(NSDate *)timestamp;
+- (NSDate *_Nullable)readTimestampLastInForeground;
+- (void)deleteTimestampLastInForeground;
 
 + (BOOL)createDirectoryAtPath:(NSString *)path withError:(NSError **)error;
 
-- (void)deleteAllStoredEvents;
-
-- (void)deleteAllStoredBreadcrumbs;
+- (void)deleteAllEnvelopes;
 
 - (void)deleteAllFolders;
 
-- (NSArray<NSDictionary<NSString *, id> *> *)getAllStoredEvents;
+/**
+ * Get all envelopes sorted ascending by the timeIntervalSince1970 the envelope was stored and if
+ * two envelopes are stored at the same time sorted by the order they were stored.
+ */
+- (NSArray<SentryFileContents *> *)getAllEnvelopes;
 
-- (NSArray<NSDictionary<NSString *, id> *> *)getAllStoredBreadcrumbs;
+/**
+ * Gets the oldest stored envelope. For the order see getAllEnvelopes.
+ *
+ * @return SentryFileContens if there is an envelope and nil if there are no envelopes.
+ */
+- (SentryFileContents *_Nullable)getOldestEnvelope;
 
 - (BOOL)removeFileAtPath:(NSString *)path;
 
@@ -46,8 +54,9 @@ SENTRY_NO_INIT
 
 - (NSString *)storeDictionary:(NSDictionary *)dictionary toPath:(NSString *)path;
 
-@property(nonatomic, assign) NSUInteger maxEvents;
-@property(nonatomic, assign) NSUInteger maxBreadcrumbs;
+- (void)storeAppState:(SentryAppState *)appState;
+- (SentryAppState *_Nullable)readAppState;
+- (void)deleteAppState;
 
 @end
 
