@@ -311,7 +311,7 @@ extension EncryptedSearchIndexService {
         let urlToDB: URL? = URL(string: pathToDB)
 
         var size: String = ""
-        var sizeOfIndex: Int64? = nil
+        var sizeOfIndex: Int64? = 0
         if FileManager.default.fileExists(atPath: urlToDB!.path) {
             // Check size of file
             sizeOfIndex = FileManager.default.sizeOfFile(atPath: urlToDB!.path)
