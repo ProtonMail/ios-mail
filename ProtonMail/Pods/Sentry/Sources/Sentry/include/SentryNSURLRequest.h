@@ -1,11 +1,3 @@
-//
-//  SentryNSURLRequest.h
-//  Sentry
-//
-//  Created by Daniel Griesser on 05/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (_Nullable instancetype)initStoreRequestWithDsn:(SentryDsn *)dsn
                                           andData:(NSData *)data
                                  didFailWithError:(NSError *_Nullable *_Nullable)error;
+
+- (_Nullable instancetype)initEnvelopeRequestWithDsn:(SentryDsn *)dsn
+                                             andData:(NSData *)data
+                                    didFailWithError:(NSError *_Nullable *_Nullable)error;
 
 @end
 

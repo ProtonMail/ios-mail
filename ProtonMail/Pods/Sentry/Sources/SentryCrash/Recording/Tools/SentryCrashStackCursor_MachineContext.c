@@ -22,7 +22,6 @@
 // THE SOFTWARE.
 //
 
-
 #include "SentryCrashStackCursor_MachineContext.h"
 
 #include "SentryCrashCPU.h"
@@ -33,25 +32,21 @@
 #define SentryCrashLogger_LocalLevel TRACE
 #include "SentryCrashLogger.h"
 
-
 /** Represents an entry in a frame list.
  * This is modeled after the various i386/x64 frame walkers in the xnu source,
  * and seems to work fine in ARM as well. I haven't included the args pointer
  * since it's not needed in this context.
  */
-typedef struct FrameEntry
-{
+typedef struct FrameEntry {
     /** The previous frame in the list. */
-    struct FrameEntry* previous;
+    struct FrameEntry *previous;
 
     /** The instruction address. */
     uintptr_t return_address;
 } FrameEntry;
 
-
-typedef struct
-{
-    const struct SentryCrashMachineContext* machineContext;
+typedef struct {
+    const struct SentryCrashMachineContext *machineContext;
     int maxStackDepth;
     FrameEntry currentFrame;
     uintptr_t instructionAddress;
@@ -59,56 +54,55 @@ typedef struct
     bool isPastFramePointer;
 } MachineContextCursor;
 
-static bool advanceCursor(SentryCrashStackCursor *cursor)
+static bool
+advanceCursor(SentryCrashStackCursor *cursor)
 {
-    MachineContextCursor* context = (MachineContextCursor*)cursor->context;
+    sentrycrash_async_backtrace_t *async_caller = cursor->state.current_async_caller;
+    if (async_caller) {
+        return sentrycrashsc_advanceAsyncCursor(cursor);
+    }
+
+    MachineContextCursor *context = (MachineContextCursor *)cursor->context;
     uintptr_t nextAddress = 0;
 
-    if(cursor->state.currentDepth >= context->maxStackDepth)
-    {
+    if (cursor->state.currentDepth >= context->maxStackDepth) {
         cursor->state.hasGivenUp = true;
         return false;
     }
 
-    if(context->instructionAddress == 0)
-    {
+    if (context->instructionAddress == 0) {
         context->instructionAddress = sentrycrashcpu_instructionAddress(context->machineContext);
-        if(context->instructionAddress == 0)
-        {
-            return false;
+        if (context->instructionAddress == 0) {
+            goto tryAsyncChain;
         }
         nextAddress = context->instructionAddress;
         goto successfulExit;
     }
 
-    if(context->linkRegister == 0 && !context->isPastFramePointer)
-    {
+    if (context->linkRegister == 0 && !context->isPastFramePointer) {
         // Link register, if available, is the second address in the trace.
         context->linkRegister = sentrycrashcpu_linkRegister(context->machineContext);
-        if(context->linkRegister != 0)
-        {
+        if (context->linkRegister != 0) {
             nextAddress = context->linkRegister;
             goto successfulExit;
         }
     }
 
-    if(context->currentFrame.previous == NULL)
-    {
-        if(context->isPastFramePointer)
-        {
-            return false;
+    if (context->currentFrame.previous == NULL) {
+        if (context->isPastFramePointer) {
+            goto tryAsyncChain;
         }
-        context->currentFrame.previous = (struct FrameEntry*)sentrycrashcpu_framePointer(context->machineContext);
+        context->currentFrame.previous
+            = (struct FrameEntry *)sentrycrashcpu_framePointer(context->machineContext);
         context->isPastFramePointer = true;
     }
 
-    if(!sentrycrashmem_copySafely(context->currentFrame.previous, &context->currentFrame, sizeof(context->currentFrame)))
-    {
+    if (!sentrycrashmem_copySafely(context->currentFrame.previous, &context->currentFrame,
+            sizeof(context->currentFrame))) {
         return false;
     }
-    if(context->currentFrame.previous == 0 || context->currentFrame.return_address == 0)
-    {
-        return false;
+    if (context->currentFrame.previous == 0 || context->currentFrame.return_address == 0) {
+        goto tryAsyncChain;
     }
 
     nextAddress = context->currentFrame.return_address;
@@ -117,12 +111,16 @@ successfulExit:
     cursor->stackEntry.address = sentrycrashcpu_normaliseInstructionPointer(nextAddress);
     cursor->state.currentDepth++;
     return true;
+
+tryAsyncChain:
+    return sentrycrashsc_tryAsyncChain(cursor, cursor->async_caller);
 }
 
-static void resetCursor(SentryCrashStackCursor* cursor)
+static void
+resetCursor(SentryCrashStackCursor *cursor)
 {
     sentrycrashsc_resetCursor(cursor);
-    MachineContextCursor* context = (MachineContextCursor*)cursor->context;
+    MachineContextCursor *context = (MachineContextCursor *)cursor->context;
     context->currentFrame.previous = 0;
     context->currentFrame.return_address = 0;
     context->instructionAddress = 0;
@@ -130,11 +128,16 @@ static void resetCursor(SentryCrashStackCursor* cursor)
     context->isPastFramePointer = 0;
 }
 
-void sentrycrashsc_initWithMachineContext(SentryCrashStackCursor *cursor, int maxStackDepth, const struct SentryCrashMachineContext* machineContext)
+void
+sentrycrashsc_initWithMachineContext(SentryCrashStackCursor *cursor, int maxStackDepth,
+    const struct SentryCrashMachineContext *machineContext)
 {
     sentrycrashsc_initCursor(cursor, resetCursor, advanceCursor);
-    MachineContextCursor* context = (MachineContextCursor*)cursor->context;
+    MachineContextCursor *context = (MachineContextCursor *)cursor->context;
     context->machineContext = machineContext;
     context->maxStackDepth = maxStackDepth;
     context->instructionAddress = cursor->stackEntry.address;
+
+    SentryCrashThread thread = sentrycrashmc_getThreadFromContext(machineContext);
+    cursor->async_caller = sentrycrash_get_async_caller_for_thread(thread);
 }

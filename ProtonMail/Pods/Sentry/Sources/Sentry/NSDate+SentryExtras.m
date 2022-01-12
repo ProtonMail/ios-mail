@@ -1,26 +1,12 @@
-//
-//  NSDate+SentryExtras.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 19/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/NSDate+SentryExtras.h>
-
-#else
 #import "NSDate+SentryExtras.h"
-#endif
-
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSDate (SentryExtras)
+@implementation
+NSDate (SentryExtras)
 
-+ (NSDateFormatter *)getIso8601Formatter {
++ (NSDateFormatter *)getIso8601Formatter
+{
     static NSDateFormatter *isoFormatter = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -33,12 +19,48 @@ NS_ASSUME_NONNULL_BEGIN
     return isoFormatter;
 }
 
-+ (NSDate *)sentry_fromIso8601String:(NSString *)string {
-    return [[self.class getIso8601Formatter] dateFromString:string];
+/**
+ * The NSDateFormatter only works with milliseconds resolution, even though NSDate has a higher
+ * precision. For more information checkout
+ * https://stackoverflow.com/questions/23684727/nsdateformatter-milliseconds-bug/23685280#23685280.
+ * The SDK can either send timestamps to Sentry a string as defined in RFC 3339 or a numeric
+ * (integer or float) value representing the number of seconds that have elapsed since the Unix
+ * epoch, see https://develop.sentry.dev/sdk/event-payloads/. Instead of appending micro and
+ * nanoseconds to the output of NSDateFormatter please use a numeric float instead, which can be
+ * retrieved with timeIntervalSince1970.
+ */
++ (NSDateFormatter *)getIso8601FormatterWithMillisecondPrecision
+{
+    static NSDateFormatter *isoFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        isoFormatter = [[NSDateFormatter alloc] init];
+        [isoFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+        isoFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [isoFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    });
+
+    return isoFormatter;
 }
 
-- (NSString *)sentry_toIso8601String {
-    return [[self.class getIso8601Formatter] stringFromDate:self];
++ (NSDate *)sentry_fromIso8601String:(NSString *)string
+{
+    NSDate *date = [[self.class getIso8601FormatterWithMillisecondPrecision] dateFromString:string];
+    if (nil == date) {
+        // Parse date with low precision formatter for backward compatible
+        return [[self.class getIso8601Formatter] dateFromString:string];
+    } else {
+        return date;
+    }
+}
+
+/**
+ * Only works with milliseconds precision. For more details see
+ * getIso8601FormatterWithMillisecondPrecision.
+ */
+- (NSString *)sentry_toIso8601String
+{
+    return [[self.class getIso8601FormatterWithMillisecondPrecision] stringFromDate:self];
 }
 
 @end

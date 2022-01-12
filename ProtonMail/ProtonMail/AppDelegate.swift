@@ -174,8 +174,17 @@ extension AppDelegate: UIApplicationDelegate {
         if CommandLine.arguments.contains("-disableAnimations") {
             UIView.setAnimationsEnabled(false)
         }
+        Analytics.shared.setup(isInDebug: true, isProduction: true)
+        #else
+        
+        #if ENTERPRISE
+        Analytics.shared.setup(isInDebug: false, isProduction: true)
+        #else
+        Analytics.shared.setup(isInDebug: false, isProduction: false)
         #endif
-        Analytics.shared.setup()
+        
+        #endif
+        
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
 

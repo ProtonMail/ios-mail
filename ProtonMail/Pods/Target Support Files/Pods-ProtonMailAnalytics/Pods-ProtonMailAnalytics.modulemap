@@ -1,0 +1,6 @@
+framework module Pods_ProtonMailAnalytics {
+  umbrella header "Pods-ProtonMailAnalytics-umbrella.h"
+
+  export *
+  module * { export * }
+}

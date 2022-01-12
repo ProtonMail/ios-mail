@@ -37,7 +37,6 @@ def common_pods
   pod 'PromiseKit', '6.13.1'
   pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'MCSwipeTableViewCell', '2.1.4'
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.5.0'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'SwiftGen', '~> 6.0'
@@ -88,7 +87,6 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-#  pod 'AFNetworking', '4.0.1'
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'
@@ -124,6 +122,10 @@ end
 
 target 'SiriDev' do
   pm_siri
+end
+
+target 'ProtonMailAnalytics' do
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.8.0'
 end
 
 post_install do | installer |
