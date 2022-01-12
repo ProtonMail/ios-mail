@@ -97,13 +97,13 @@ extension Contact {
     
     
     func log() {
-        PMLog.D("ContactID: \(self.contactID)")
-        PMLog.D("Name: \(self.name)")
-        PMLog.D("Cards: \(self.cardData)")
-        PMLog.D("Size: \(self.size)")
-        PMLog.D("UUID: \(self.uuid)")
-        PMLog.D("CreateTime: \(String(describing: self.createTime))")
-        PMLog.D("ModifyTime: \(String(describing: self.modifyTIme))")
+        print("ContactID: \(self.contactID)")
+        print("Name: \(self.name)")
+        print("Cards: \(self.cardData)")
+        print("Size: \(self.size)")
+        print("UUID: \(self.uuid)")
+        print("CreateTime: \(String(describing: self.createTime))")
+        print("ModifyTime: \(String(describing: self.modifyTIme))")
     }
     
     func getCardData() -> [CardData] {
