@@ -137,8 +137,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     func testBuildCacheForUser() throws {
         let sut = EncryptedSearchCacheService.shared.buildCacheForUser
-        let dbname = EncryptedSearchIndexService.shared.getSearchIndexName(self.testUserID)
-        //print("path to db: \(EncryptedSearchIndexService.shared.getSearchIndexPathToDB(dbname))")
+
         let dbParams = EncryptedSearchIndexService.shared.getDBParams(self.testUserID)
         let testKey = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + self.testUserID)
         let cipher = EncryptedsearchAESGCMCipher(testKey!)

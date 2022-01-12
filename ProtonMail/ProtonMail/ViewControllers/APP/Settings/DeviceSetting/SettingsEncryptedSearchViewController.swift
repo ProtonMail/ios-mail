@@ -256,7 +256,13 @@ extension SettingsEncryptedSearchViewController {
                     } else {
                         if EncryptedSearchService.shared.state == .refresh {
                             // Pause indexing
-                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
+                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                            let userID: String? = usersManager.firstUser?.userInfo.userId
+                            if let userID = userID {
+                                EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
+                            } else {
+                                print("Error when pause indexing. User unknown!")
+                            }
                         }
                         if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
                             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
@@ -444,7 +450,13 @@ extension SettingsEncryptedSearchViewController {
                                 }
                             }
                             // Resume indexing
-                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false)
+                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                            let userID: String? = usersManager.firstUser?.userInfo.userId
+                            if let userID = userID {
+                                EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false, userID: userID)
+                            } else {
+                                print("Error when resume indexing. User unknown!")
+                            }
                         } else {    // Pause indexing
                             // Set the state
                             EncryptedSearchService.shared.state = .paused
@@ -459,7 +471,13 @@ extension SettingsEncryptedSearchViewController {
                             }
 
                             // Pause indexing
-                            EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true)
+                            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                            let userID: String? = usersManager.firstUser?.userInfo.userId
+                            if let userID = userID {
+                                EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
+                            } else {
+                                print("Error when pause indexing. User unknown!")
+                            }
                         }
                     }
                 }
