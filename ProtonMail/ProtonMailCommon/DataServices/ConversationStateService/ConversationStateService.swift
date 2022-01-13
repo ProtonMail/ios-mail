@@ -1,6 +1,11 @@
 import ProtonCore_Common
 
-class ConversationStateService {
+protocol ConversationStateProviderProtocol: AnyObject {
+    var viewMode: ViewMode { get set }
+    func add(delegate: ConversationStateServiceDelegate)
+}
+
+class ConversationStateService: ConversationStateProviderProtocol {
 
     var viewMode: ViewMode {
         get {

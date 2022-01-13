@@ -260,33 +260,67 @@ extension MenuCoordinator {
         case .customize(let id):
             if labelInfo.type == .folder,
                let label = self.queryLabel(id: id) {
-                viewModel = FolderboxViewModelImpl(label: label, userManager: user,
-                                                   usersManager: self.usersManager,
-                                                   pushService: self.pushService,
-                                                   coreDataService: self.coreDataService,
-                                                   lastUpdatedStore: self.lastUpdatedStore,
-                                                   queueManager: self.services.get(by: QueueManager.self))
+                viewModel = MailboxViewModel(labelID: label.labelID,
+                                             label: LabelInfo(label: label),
+                                             labelType: .folder,
+                                             userManager: user,
+                                             pushService: pushService,
+                                             coreDataContextProvider: coreDataService,
+                                             lastUpdatedStore: lastUpdatedStore,
+                                             humanCheckStatusProvider: self.services.get(by: QueueManager.self),
+                                             conversationStateProvider: user.conversationStateService,
+                                             totalUserCountClosure: { [weak self] in
+                    return self?.usersManager.count ?? 0
+                }, getOtherUsersClosure: { [weak self] userID in
+                    if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
+                        return otherUser
+                    } else {
+                        return []
+                    }
+                })
             } else if labelInfo.type == .label,
                       let label = self.queryLabel(id: id) {
-                viewModel = LabelboxViewModelImpl(label: label, userManager: user,
-                                                  usersManager: self.usersManager,
-                                                  pushService: self.pushService,
-                                                  coreDataService: self.coreDataService,
-                                                  lastUpdatedStore: self.lastUpdatedStore,
-                                                  queueManager: self.services.get(by: QueueManager.self))
+                viewModel = MailboxViewModel(labelID: label.labelID,
+                                             label: LabelInfo(label: label),
+                                             labelType: .label,
+                                             userManager: user,
+                                             pushService: pushService,
+                                             coreDataContextProvider: coreDataService,
+                                             lastUpdatedStore: lastUpdatedStore,
+                                             humanCheckStatusProvider: self.services.get(by: QueueManager.self),
+                                             conversationStateProvider: user.conversationStateService,
+                                             totalUserCountClosure: { [weak self] in
+                    return self?.usersManager.count ?? 0
+                }, getOtherUsersClosure: { [weak self] userID in
+                    if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
+                        return otherUser
+                    } else {
+                        return []
+                    }
+                })
             } else {
                 // the type is unknown or the label doesn't exist
                 return
             }
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail:
-            let msgLocation = labelInfo.location.toMessageLocation
-            viewModel = MailboxViewModelImpl(label: msgLocation,
-                                             userManager: user,
-                                             usersManager: self.usersManager,
-                                             pushService: self.pushService,
-                                             coreDataService: self.coreDataService,
-                                             lastUpdatedStore: self.lastUpdatedStore,
-                                             queueManager: self.services.get(by: QueueManager.self))
+            viewModel = MailboxViewModel(labelID: labelInfo.location.labelID,
+                                         label: nil,
+                                         labelType: .folder,
+                                         userManager: user,
+                                         pushService: pushService,
+                                         coreDataContextProvider: coreDataService,
+                                         lastUpdatedStore: lastUpdatedStore,
+                                         humanCheckStatusProvider: services.get(by: QueueManager.self),
+                                         conversationStateProvider: user.conversationStateService,
+                                         totalUserCountClosure: { [weak self] in
+                return self?.usersManager.count ?? 0
+            }, getOtherUsersClosure: { [weak self] userID in
+                if let otherUser = self?.usersManager.getUsersWithoutTheActiveOne() {
+                    return otherUser
+                } else {
+                    return []
+                }
+            })
         default: return
         }
         

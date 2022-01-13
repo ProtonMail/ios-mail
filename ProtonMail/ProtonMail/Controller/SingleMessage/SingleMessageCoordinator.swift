@@ -110,7 +110,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
         viewModel.addToContacts(contact)
 
@@ -163,7 +163,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             action: composeAction,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
@@ -187,7 +187,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
@@ -233,7 +233,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
                                                     action: .newDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataService: sharedServices.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
 
         mailToData.to.forEach { recipient in
             viewModel.addToContacts(ContactVO(name: recipient, email: recipient))

@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import Foundation
+@testable import ProtonMail
 
-protocol CoreDataContextProviderProtocol {
-    var mainContext: NSManagedObjectContext { get }
-    var rootSavingContext: NSManagedObjectContext { get }
-
-    func makeComposerMainContext() -> NSManagedObjectContext
+class MockConversationStateProvider: ConversationStateProviderProtocol {
+    var delegateJustAdded: ConversationStateServiceDelegate?
+    
+    var viewMode: ViewMode = .singleMessage
+    func add(delegate: ConversationStateServiceDelegate) {
+        
+    }
 }

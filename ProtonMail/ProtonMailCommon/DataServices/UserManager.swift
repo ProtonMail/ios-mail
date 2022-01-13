@@ -256,7 +256,7 @@ class UserManager : Service, HasLocalStorage {
     })
     #endif
     
-    init(api: APIService, userinfo: UserInfo, auth: AuthCredential, parent: UsersManager) {
+    init(api: APIService, userinfo: UserInfo, auth: AuthCredential, parent: UsersManager?) {
         self.userinfo = userinfo
         self.auth = auth
         self.apiService = api

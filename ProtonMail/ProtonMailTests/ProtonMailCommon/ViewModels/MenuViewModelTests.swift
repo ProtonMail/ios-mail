@@ -23,7 +23,7 @@ class MenuViewModelTests: XCTestCase {
     var sut: MenuViewModel!
     var usersManagerMock: UsersManager!
     var userStatusInQueueProviderMock: UserStatusInQueueProviderMock!
-    var coreDataContextProviderMock: CoreDataContextProviderMock!
+    var coreDataContextProviderMock: MockCoreDataContextProvider!
     var dohMock: DohMock!
     var testUser: UserManager!
     var apiMock: APIServiceMock!
@@ -31,8 +31,8 @@ class MenuViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
-        coreDataContextProviderMock = CoreDataContextProviderMock()
-        dohMock = DohMock()
+        coreDataContextProviderMock = MockCoreDataContextProvider()
+        dohMock = try DohMock()
         usersManagerMock = UsersManager(doh: dohMock, delegate: nil)
         apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)

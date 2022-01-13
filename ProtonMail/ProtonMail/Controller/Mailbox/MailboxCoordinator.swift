@@ -214,7 +214,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                                                             action: .openDraft,
                                                             msgService: msgService,
                                                             user: user,
-                                                            coreDataService: coreDataService)
+                                                            coreDataContextProvider: coreDataService)
 
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
@@ -225,7 +225,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                                                             action: .newDraft,
                                                             msgService: user.messageService,
                                                             user: user,
-                                                            coreDataService: coreDataService)
+                                                            coreDataContextProvider: coreDataService)
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
         case .composeMailto where path.value != nil:
@@ -299,7 +299,7 @@ extension MailboxCoordinator {
                                                     action: .newDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataService: self.services.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: self.services.get(by: CoreDataService.self))
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
     }
@@ -310,7 +310,7 @@ extension MailboxCoordinator {
                                                     action: .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataService: self.services.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: self.services.get(by: CoreDataService.self))
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
     }
@@ -370,7 +370,7 @@ extension MailboxCoordinator {
                                                         action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
-                                                        coreDataService: coreDataService)
+                                                        coreDataContextProvider: coreDataService)
             viewModel.parse(mailToURL: mailToURL)
             let containerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
             let composer = ComposeContainerViewCoordinator(nav: nav,

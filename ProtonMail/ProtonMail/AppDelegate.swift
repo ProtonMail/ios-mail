@@ -177,10 +177,10 @@ extension AppDelegate: UIApplicationDelegate {
         Analytics.shared.setup(isInDebug: true, isProduction: true)
         #else
         
-        #if ENTERPRISE
-        Analytics.shared.setup(isInDebug: false, isProduction: true)
-        #else
+        #if Enterprise
         Analytics.shared.setup(isInDebug: false, isProduction: false)
+        #else
+        Analytics.shared.setup(isInDebug: false, isProduction: true)
         #endif
         
         #endif

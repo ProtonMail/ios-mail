@@ -28,14 +28,43 @@ protocol StorageLimit {}
 
 extension StorageLimit {
     
-    // MARK: - Public methods
-    func checkSpace(_ usedSpace: Int64, maxSpace: Int64, user: UserManager) {
-        let maxSpace : Double = Double(maxSpace)
-        let usedSpace : Double = Double(usedSpace)
-        let usedPercentage = usedSpace / maxSpace
-        let threshold = Constants.App.SpaceWarningThresholdDouble / 100.0
+    func calculateSpaceUsedPercentage(usedSpace: Int64,
+                                      maxSpace: Int64) -> Double {
+        let maxSpace: Double = Double(maxSpace)
+        let usedSpace: Double = Double(usedSpace)
+        return usedSpace / maxSpace
+    }
+    
+    func calculateIsUsedSpaceExceedThreshold(usedPercentage: Double,
+                                             threshold: Double) -> Bool {
+        let thresholdInPercent = threshold / 100.0
+        return usedPercentage > thresholdInPercent
+    }
+    
+    func calculateFormattedMaxSpace(maxSpace: Int64) -> String {
+        ByteCountFormatter.string(fromByteCount: maxSpace, countStyle: ByteCountFormatter.CountStyle.binary)
+    }
+    
+    func calculateSpaceMessage(usedSpace: Double,
+                               maxSpace: Double,
+                               formattedMaxSpace: String,
+                               usedSpacePercentage: Double) -> String {
+        if usedSpace >= maxSpace {
+            let localized = LocalString._space_all_used_warning
+            return String(format: localized, formattedMaxSpace)
+        } else {
+            let percentageStr = Int(String(format: "%.0f", (usedSpacePercentage * 100.0))) ?? 90
+            return String(format: LocalString._space_partial_used_warning, percentageStr, formattedMaxSpace);
+        }
+    }
+    
+    func checkSpace(_ usedSpace: Int64, maxSpace: Int64, userID: String) {
+        let usedPercentage = calculateSpaceUsedPercentage(usedSpace: usedSpace,
+                                                          maxSpace: maxSpace)
+        let isExceed = calculateIsUsedSpaceExceedThreshold(usedPercentage: usedPercentage,
+                                                           threshold: Constants.App.SpaceWarningThresholdDouble)
 
-        let isSpaceDisable = userCachedStatus.getIsCheckSpaceDisabledStatus(by: user.userInfo.userId) ?? false
+        let isSpaceDisable = userCachedStatus.getIsCheckSpaceDisabledStatus(by: userID) ?? false
         if isSpaceDisable {
             if usedSpace > maxSpace {
                 self.showUpgradeAlert()
@@ -43,27 +72,22 @@ extension StorageLimit {
             return
         }
 
-        if maxSpace == 0 || usedPercentage < threshold {
+        if maxSpace == 0 || !isExceed {
             return
         }
         
-        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-        var message = ""
-        
-        if usedSpace >= maxSpace {
-            let localized = LocalString._space_all_used_warning
-            message = String(format: localized, formattedMaxSpace)
-        } else {
-            let percentageStr = Int(String(format: "%.0f", (usedPercentage * 100.0))) ?? 90
-            message = String(format: LocalString._space_partial_used_warning, percentageStr, formattedMaxSpace);
-        }
+        let formattedMaxSpace = calculateFormattedMaxSpace(maxSpace: maxSpace)
+        let message = calculateSpaceMessage(usedSpace: Double(usedSpace),
+                                            maxSpace: Double(maxSpace),
+                                            formattedMaxSpace: formattedMaxSpace,
+                                            usedSpacePercentage: usedPercentage)
         
         let alertController = UIAlertController(title: LocalString._space_warning,
                                                 message: message,
                                                 preferredStyle: .alert)
         alertController.addOKAction()
         alertController.addAction(UIAlertAction(title: LocalString._hide, style: .destructive, handler: { action in
-            userCachedStatus.setIsCheckSpaceDisabledStatus(uid: user.userInfo.userId, value: true)
+            userCachedStatus.setIsCheckSpaceDisabledStatus(uid: userID, value: true)
         }))
         userCachedStatus.showStorageOverAlert()
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)

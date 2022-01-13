@@ -27,7 +27,7 @@ import UserNotifications
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public class PushNotificationService: NSObject, Service {
+public class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
 
     typealias SubscriptionSettings = PushSubscriptionSettings
     

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -15,16 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
+import Foundation
 @testable import ProtonMail
 
-class CoreDataContextProviderMock: CoreDataContextProviderProtocol {
-    let coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-
-    var mainContext: NSManagedObjectContext {
-        coreDataService.mainContext
-    }
-    var rootSavingContext: NSManagedObjectContext {
-        coreDataService.rootSavingContext
-    }
+class MockHumanCheckStatusProvider: HumanCheckStatusProviderProtocol {
+    var isRequiredHumanCheck: Bool = false
 }

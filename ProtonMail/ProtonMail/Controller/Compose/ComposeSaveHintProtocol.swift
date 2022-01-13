@@ -27,7 +27,7 @@ protocol ComposeSaveHintProtocol: UIViewController {
     func removeDraftSaveHintBanner()
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
-                                 coreDataService: CoreDataService)
+                                 coreDataContextProvider: CoreDataContextProviderProtocol)
     func showDraftMoveToTrashBanner(messages: [Message],
                                     cache: UserCachedStatus,
                                     messageService: MessageDataService)
@@ -42,14 +42,14 @@ extension ComposeSaveHintProtocol {
     
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
-                                 coreDataService: CoreDataService) {
+                                 coreDataContextProvider: CoreDataContextProviderProtocol) {
         // If the users doesn't contain user that means the user is logged out
         // Shouldn't show the banner
         guard let user = messageService.parent,
               let manager = user.parentManager,
               let _ = manager.users.first(where: { $0.userinfo.userId == user.userinfo.userId }),
               let messageID = cache.lastDraftMessageID else { return }
-        let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataService.mainContext)
+        let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
 
         let banner = PMBanner(message: LocalString._composer_draft_saved, style: TempPMBannerNewStyle.info)
         banner.addButton(text: LocalString._menu_trash_title) { [weak self] _ in
