@@ -563,6 +563,7 @@
 		332F92A4C7B67D61896AC43A08A42B47 /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905502183909756FA3618F30C369DD71 /* MenuCoordinator.swift */; };
 		333C373B925FEA9C9155783C00D9056D /* EOAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E231F339F80EFD267CC44C4D988D17 /* EOAddressBuilder.swift */; };
 		3347C6DAF0E7ED2D8A49ADFFF3961810 /* BackgroundSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AC6486173FD8A42D905BFDAE935817 /* BackgroundSaveTests.swift */; };
+		334D16281BC94FDB2993D131D8EE9EF4 /* UpdatePrivateKeyRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE759CEC2DD4B9FE34D014291A2310F9 /* UpdatePrivateKeyRequestTests.swift */; };
 		334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */; };
 		33614903A8407F333ED0ECA3437E4048 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73309C33F5F5C80FA75D6D03008FBC /* TableCellLabelView.swift */; };
 		3372A73224F8E4849B373A951C291D64 /* AppCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */; };
@@ -3841,6 +3842,7 @@
 		ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		ADE124BE2D5AF5FCDA78619AB220634F /* ConversationUpdateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationUpdateType.swift; sourceTree = "<group>"; };
 		AE1449C89BAF998E29518AF2A143C1EB /* KeyTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTestData.swift; sourceTree = "<group>"; };
+		AE759CEC2DD4B9FE34D014291A2310F9 /* UpdatePrivateKeyRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePrivateKeyRequestTests.swift; sourceTree = "<group>"; };
 		AE922CDAAC1F72D4BF99842123E91078 /* UndoActionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoActionManager.swift; sourceTree = "<group>"; };
 		AEED05C7EADA3DD772CA5DF3FDEC0155 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessageViewActionSheetViewModelTests.swift; path = ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift; sourceTree = SOURCE_ROOT; };
@@ -5917,6 +5919,7 @@
 				7DFBF249F3C293E82857F6EBC6C0EE12 /* MessageDataServiceTests.swift */,
 				8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */,
 				2D13A6FA3F0FDEE829964B0017371329 /* PushNotificationServiceTests.swift */,
+				AE759CEC2DD4B9FE34D014291A2310F9 /* UpdatePrivateKeyRequestTests.swift */,
 				DC30C37EE04CA134AFD8C227321C0AD8 /* UserDataServiceKeyHelperTests.swift */,
 				7365AFB13B18E9E68C6AB2364A5F5CCC /* UserFeedbackServiceTests.swift */,
 			);
@@ -9016,6 +9019,7 @@
 				044FC5AB02D89EA739AB098A404D8329 /* UndoActionHandlerBaseMock.swift in Sources */,
 				766885216A079D75FA774809E449C865 /* UndoActionManagerTests.swift in Sources */,
 				1FE23C824B97D513DA302283A5FCF394 /* UndoTokenResponseProtocolTests.swift in Sources */,
+				334D16281BC94FDB2993D131D8EE9EF4 /* UpdatePrivateKeyRequestTests.swift in Sources */,
 				4852C2E0DDFCDC31860CEB299301DF47 /* UserAddressUpdapterMock.swift in Sources */,
 				08325189ADCB4D91CC7ACDFF0D234B72 /* UserDataServiceKeyHelperTests.swift in Sources */,
 				AB34937B4DCBC770AA1900B45BE38AC0 /* UserFeedbackServiceTests.swift in Sources */,

@@ -146,41 +146,11 @@ final class UpdatePrivateKeyRequest : Request {
     let SRPSession : String //hex encoded session id
     let tfaCode : String? // optional
     let keySalt : String //base64 encoded need random value
-    
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
     let orgKey : String?
-    
     let userKeys: [Key]?
-    
     let auth : PasswordAuth?
-    
-    init(clientEphemeral: String,
-         clientProof: String,
-         SRPSession: String,
-         keySalt: String,
-         tfaCode : String? = nil,
-         orgKey: String? = nil,
-         userKeys: [Key]? = nil,
-         auth: PasswordAuth?,
-         authCredential: AuthCredential?
-         ) {
-        self.clientEphemeral = clientEphemeral
-        self.clientProof = clientProof
-        self.SRPSession = SRPSession
-        self.keySalt = keySalt
-        self.userLevelKeys = []
-        self.userAddressKeys = []
-        
-        self.userKeys = userKeys
-        
-        //optional values
-        self.orgKey = orgKey
-        self.tfaCode = tfaCode
-        self.auth = auth
-        
-        self.credential = authCredential
-    }
 
     init(clientEphemeral: String,
          clientProof: String,
@@ -190,9 +160,7 @@ final class UpdatePrivateKeyRequest : Request {
          addressKeys: [Key] = [],
          tfaCode : String? = nil,
          orgKey: String? = nil,
-
          userKeys: [Key]?,
-         
          auth: PasswordAuth?,
          authCredential: AuthCredential?
          ) {
@@ -223,15 +191,11 @@ final class UpdatePrivateKeyRequest : Request {
     
     var parameters: [String : Any]? {
         var keysDict : [Any] = [Any]()
-        for _key in userLevelKeys {
-            if _key.isUpdated {
-                keysDict.append( ["ID": _key.keyID, "PrivateKey" : _key.privateKey] )
-            }
+        for userLevelKey in userLevelKeys where userLevelKey.isUpdated {
+            keysDict.append( ["ID": userLevelKey.keyID, "PrivateKey" : userLevelKey.privateKey] )
         }
-        for _key in userAddressKeys {
-            if _key.isUpdated {
-                keysDict.append( ["ID": _key.keyID, "PrivateKey" : _key.privateKey] )
-            }
+        for userAddressKey in userAddressKeys where userAddressKey.isUpdated {
+            keysDict.append( ["ID": userAddressKey.keyID, "PrivateKey" : userAddressKey.privateKey] )
         }
         
         var out : [String : Any] = [
@@ -246,9 +210,9 @@ final class UpdatePrivateKeyRequest : Request {
         }
         
         if let userKeys = self.userKeys {
-            var userKeysDict : [Any] = [Any]()
-            for key in userKeys {
-                userKeysDict.append( ["ID": key.keyID, "PrivateKey" : key.privateKey] )
+            var userKeysDict: [Any] = []
+            for userKey in userKeys where userKey.isUpdated {
+                userKeysDict.append( ["ID": userKey.keyID, "PrivateKey" : userKey.privateKey] )
             }
             if !userKeysDict.isEmpty {
                 out["UserKeys"] = userKeysDict

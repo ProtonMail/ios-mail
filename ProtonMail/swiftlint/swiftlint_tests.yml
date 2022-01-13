@@ -64,6 +64,7 @@ included:
   - ${PWD}/ProtonMailAnalyticsTests/ProtonMailAnalyticsTests.swift
   - ${PWD}/ProtonMailTests/Mocks/MockProtonMailAnalytics.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Utilities/AnalyticsTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/UpdatePrivateKeyRequestTests.swift
 
 excluded:
   - ${PWD}/Pods
