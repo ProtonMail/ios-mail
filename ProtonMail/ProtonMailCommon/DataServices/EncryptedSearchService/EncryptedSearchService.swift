@@ -316,6 +316,9 @@ extension EncryptedSearchService {
         print("ENCRYPTEDSEARCH-STATE: downloading - restart index building")
         self.indexBuildingInProgress = true
 
+        // Update API service if its not available
+        let _ = self.updateCurrentUserIfNeeded()
+
         // Update the UI with refresh state
         self.updateUIWithIndexingStatus()
 
@@ -338,8 +341,10 @@ extension EncryptedSearchService {
 
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
-            self.downloadAndProcessPage(userID: userID){ [weak self] in
-                self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+            self.getTotalMessages() {
+                self.downloadAndProcessPage(userID: userID){ [weak self] in
+                    self?.checkIfIndexingIsComplete(userID: userID, completionHandler: {})
+                }
             }
         }
     }
