@@ -487,6 +487,7 @@
 		2CADCD834EE46ECE2101AA6F90795F2E /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA66852CB9BDBA5E864BF9166EA0EFA8 /* EmailHeaderView.swift */; };
 		2CB04E562B8E0CFF20A8F70023ABE28D /* LabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484F23D4585CEBB7867B9769B4E528FA /* LabelTextField.swift */; };
 		2CC3C2ABB9772C2C01B59E0E07F9307A /* UserInfo+LocalFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F9223976A3BCE789D7C5F4CF945F98 /* UserInfo+LocalFeatureFlags.swift */; };
+		2CE2A09EE598F20474703ACDC52BCC9A /* RemoveLabelFromMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F520C389803F57E57E58DD2A0F6CF92F /* RemoveLabelFromMessages.swift */; };
 		2D167D8028366315D75C660A9DF9B04E /* HtmlEditorBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */; };
 		2D21E0DD45618DED3713B926CF66680D /* NewMessageBodyViewController+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4F26A1107CFB9BC038004D16EE7A0F /* NewMessageBodyViewController+Print.swift */; };
 		2D44C77998E9A27A15BF041762590268 /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
