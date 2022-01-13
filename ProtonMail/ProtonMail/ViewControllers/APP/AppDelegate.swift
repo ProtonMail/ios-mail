@@ -320,14 +320,19 @@ extension AppDelegate: UIApplicationDelegate {
             user.refreshFeatureFlags()
         }
         
-        // If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
-        if EncryptedSearchService.shared.state == .backgroundStopped {
-            // Check if user is known
-            let userID: String? = users.firstUser?.userInfo.userId
-            if userID != nil {
-                EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID!)
+        // If encrypted search is switched on
+        if userCachedStatus.isEncryptedSearchOn {
+            let esState: EncryptedSearchService.EncryptedSearchIndexState = EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined
+            // If indexing the encrypted search index has not finished in the background - resume indexing when in foreground
+            if esState == .backgroundStopped {
+                // Check if user is known
+                let userID: String? = users.firstUser?.userInfo.userId
+                if userID != nil {
+                    EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID!)
+                }
             }
         }
+        
     }
 
     // MARK: Background methods
