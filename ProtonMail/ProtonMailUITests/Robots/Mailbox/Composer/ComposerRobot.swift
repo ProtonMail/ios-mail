@@ -282,6 +282,11 @@ class ComposerRobot: CoreElements {
         return self
     }
     
+    func tapBody() -> ComposerRobot {
+        webView(id.composerWebViewIdentifier).tap()
+        return self
+    }
+    
     func subject(_ subjectText: String) -> ComposerRobot {
         textField(id.subjectTextFieldIdentifier)
             .forceKeyboardFocus()
@@ -450,7 +455,7 @@ class ComposerRobot: CoreElements {
         
         @discardableResult
         func recipientNotFoundToastIsShown() -> ComposerRobot {
-            staticText(id.recipientNotFoundStaticTextIdentifier).wait().checkExists()
+            staticText(id.recipientNotFoundStaticTextIdentifier).firstMatch().checkExists()
             return ComposerRobot()
         }
         

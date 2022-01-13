@@ -100,7 +100,7 @@ class MultiuserManagementTests : BaseTestCase {
             .logoutPrimaryAccount(twoPassUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountSignedOut(twoPassUser)
+            .verify.accountAtPositionSignedOut(0)
     }
 
     func testLogoutSecondaryAccount() {
@@ -120,7 +120,7 @@ class MultiuserManagementTests : BaseTestCase {
             .closeManageAccounts()
             .menuDrawer()
             .accountsList()
-            .verify.accountSignedOut(onePassUser)
+            .verify.accountAtPositionSignedOut(0)
     }
 
     func testRemovePrimaryAccount() {
@@ -175,6 +175,7 @@ class MultiuserManagementTests : BaseTestCase {
             .manageAccounts()
             .addAccount()
             .cancelLoginOnTwoFaPrompt(onePassUserWith2Fa)
+            .closeManageAccounts()
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -194,7 +195,8 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.limitReachedDialogDisplayed()
     }
 
-    func testSwitchAccount() {
+    /// DIsabled due to issue with account switcher identifiers - we should use email instead of the account name.
+    func xtestSwitchAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot

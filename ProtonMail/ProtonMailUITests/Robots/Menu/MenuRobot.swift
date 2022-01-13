@@ -36,10 +36,8 @@ fileprivate struct id {
     static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
     static let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
     static let signInButtonLabel = CoreString._ls_sign_in_button
-    static func userAccountCellIdentifier(_ name: String) -> String { return
-        "AccountSwitcherCell.\(name)" }
-    static func userAccountCellPredicate(_ name: String) -> NSPredicate { return
-        NSPredicate(format: "identifier CONTAINS[c] %@", name)}
+    static let signInButtonIdentifier = "mail_address.signInBtn"
+    static let userAccountCellIdentifier = "AccountSwitcherCell.mail_address"
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
@@ -146,7 +144,7 @@ class MenuRobot: CoreElements {
         }
 
         func switchToAccount(_ user: User) -> InboxRobot {
-            cell(id.userAccountCellPredicate(user.name)).tap()
+            cell(id.userAccountCellIdentifier).tap()
             return InboxRobot()
         }
 
@@ -156,12 +154,7 @@ class MenuRobot: CoreElements {
         class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserNameTextIdentifier))
-                    .wait()
-                    .checkExists()
-                    .checkContainsLabel(user.name)
-                otherElement(id.primaryViewIdentifier).onChild(staticText(id.primaryUserMailTextIdentifier))
-                    .wait()
+                staticText(id.primaryUserMailTextIdentifier)
                     .checkExists()
                     .checkHasLabel(user.email)
             }
@@ -170,8 +163,11 @@ class MenuRobot: CoreElements {
                 staticText(shortName).wait().checkExists()
             }
             
-            func accountSignedOut(_ user: User) {
-                cell(id.userAccountCellIdentifier(user.name)).wait().checkExists().onChild(button(id.signInButtonLabel)).checkExists()
+            func accountAtPositionSignedOut(_ position: Int) {
+                cell(id.userAccountCellIdentifier).byIndex(position)
+                    .onChild(button(id.signInButtonIdentifier))
+                    .checkExists()
+                    .checkHasLabel(id.signInButtonLabel)
             }
         }
     }

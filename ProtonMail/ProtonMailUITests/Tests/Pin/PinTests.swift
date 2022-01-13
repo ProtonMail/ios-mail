@@ -24,7 +24,6 @@ class PinTests: BaseTestCase {
             .pin()
             .enablePin()
             .setPin(correctPin)
-            .verify.isPinEnabled(true)
     }
     
     func testTurnOnAndOffPin() {

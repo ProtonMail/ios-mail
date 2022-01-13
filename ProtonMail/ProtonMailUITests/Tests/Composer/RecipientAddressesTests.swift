@@ -17,7 +17,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -28,7 +27,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.recipientNotFoundToastIsShown()
     }
     
@@ -39,7 +37,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.recipientNotFoundToastIsShown()
     }
     
@@ -50,7 +47,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -61,7 +57,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .typeAndSelectRecipients(recipientGroup)
-            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -72,7 +67,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.invalidAddressToastIsNotShown()
     }
     
@@ -83,7 +77,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.invalidAddressToastIsShown()
     }
     
@@ -94,7 +87,6 @@ class RecipientAddressesTests: BaseTestCase {
             .loginUser(user)
             .compose()
             .recipients(recipient)
-            .tapSubject()
             .verify.invalidAddressToastIsShown()
     }
 }
