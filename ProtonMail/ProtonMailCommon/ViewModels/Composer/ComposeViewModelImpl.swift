@@ -52,7 +52,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     let messageService : MessageDataService
-    let coreDataService: CoreDataService
+    let coreDataContextProvider: CoreDataContextProviderProtocol
     let user : UserManager
     /// Only use in share extension, to record if the share items over 25 mb or not
     private(set) var shareOverLimitationAttachment = false
@@ -62,14 +62,14 @@ class ComposeViewModelImpl : ComposeViewModel {
          action : ComposeMessageAction,
          msgService: MessageDataService,
          user: UserManager,
-         coreDataService: CoreDataService) {
+         coreDataContextProvider: CoreDataContextProviderProtocol) {
 
         self.messageService = msgService
         self.user = user
-        self.coreDataService = coreDataService
+        self.coreDataContextProvider = coreDataContextProvider
         
         super.init()
-        self.composerContext = coreDataService.makeComposerMainContext()
+        self.composerContext = coreDataContextProvider.makeComposerMainContext()
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -94,7 +94,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             currentAttachmentSize += size
             f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
                 if let att = attachment {
-                    let context = coreDataService.operationContext
+                    let context = coreDataContextProvider.rootSavingContext
                     context.performAndWait {
                         att.message = self.message!
                         _ = context.saveUpstreamIfNeeded()
@@ -122,13 +122,13 @@ class ComposeViewModelImpl : ComposeViewModel {
     ///   - msg: optional value
     ///   - action: tell is the draft new / open exsiting / reply etc
     ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
-    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService) {
-        self.coreDataService = coreDataService
+    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataContextProvider: CoreDataContextProviderProtocol) {
+        self.coreDataContextProvider = coreDataContextProvider
         self.messageService = msgService
         self.user = user
         
         super.init()
-        self.composerContext = coreDataService.makeComposerMainContext()
+        self.composerContext = coreDataContextProvider.makeComposerMainContext()
         
         if msg == nil || msg?.draft == true {
             if let m = msg, let msgToEdit = try? self.composerContext?.existingObject(with: m.objectID) as? Message {
@@ -255,7 +255,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 seal.reject(error)
                 return
             }
-            let context = self?.coreDataService.operationContext
+            let context = self?.coreDataContextProvider.rootSavingContext
             if let _ = self?.user.userinfo.userAddresses.first(where: { $0.addressID == address_id}) {
                 context?.performAndWait {
                     if let messageInContext = try? context?.existingObject(with: message.objectID) as? Message {

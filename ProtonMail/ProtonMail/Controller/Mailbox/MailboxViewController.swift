@@ -290,7 +290,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
         }
         
-        guard let users = self.viewModel.users, users.count > 0 else {
+        guard viewModel.isHavingUser else {
             return
         }
         
@@ -673,7 +673,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
-                                                                                        message: message)
+                                                                                        isStarred: message.contains(label: .starred),
+                                                                                        isUnread: message.unRead)
 
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, message: message) {
             let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
@@ -691,7 +692,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
-        let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction, message: message)
+        let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
+                                                                                        isStarred: message.contains(label: .starred),
+                                                                                        isUnread: message.unRead)
 
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, message: message) {
             let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
@@ -712,7 +715,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, conversation: Conversation) {
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
-                                                                                        conversation: conversation)
+                                                                                        isStarred: conversation.starred,
+                                                                                        isUnread: conversation.isUnread(labelID: viewModel.labelId))
 
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, conversation: conversation) {
             let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
@@ -726,7 +730,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
         let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
-                                                                                        conversation: conversation)
+                                                                                        isStarred: conversation.starred,
+                                                                                        isUnread: conversation.isUnread(labelID: viewModel.labelId))
 
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, conversation: conversation) {
             let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
@@ -751,7 +756,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         guard !self.processSwipeActions(action,
-                                     indexPath: indexPathOfCell) else {
+                                        indexPath: indexPathOfCell,
+                                        itemID: message.messageID) else {
             return
         }
 
@@ -774,7 +780,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         guard !self.processSwipeActions(action,
-                                     indexPath: indexPathOfCell) else {
+                                        indexPath: indexPathOfCell,
+                                        itemID: conversation.conversationID) else {
             return
         }
 
@@ -785,7 +792,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         cell.swipeToOrigin {}
     }
 
-    private func processSwipeActions(_ action: MessageSwipeAction, indexPath: IndexPath) -> Bool {
+    private func processSwipeActions(_ action: MessageSwipeAction,
+                                     indexPath: IndexPath,
+                                     itemID: String) -> Bool {
         /// UIAccessibility
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
         // TODO: handle conversation
@@ -793,35 +802,38 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         case .none:
             break
         case .labelAs:
-            labelAs(indexPath, isSwipeAction: true)
+            labelAs(indexPath, itemID: itemID, isSwipeAction: true)
         case .moveTo:
-            moveTo(indexPath, isSwipeAction: true)
+            moveTo(indexPath, itemID: itemID, isSwipeAction: true)
         case .unread:
-            self.unread(indexPath)
+            self.unread(indexPath, itemID: itemID)
             return false
         case .read:
-            self.read(indexPath)
+            self.read(indexPath, itemID: itemID)
             return false
         case .star:
-            self.star(indexPath)
+            self.star(indexPath, itemID: itemID)
             return false
         case .unstar:
-            self.unstar(indexPath)
+            self.unstar(indexPath, itemID: itemID)
             return false
         case .trash:
-            self.delete(indexPath, isSwipeAction: true)
+            self.delete(indexPath, itemID: itemID, isSwipeAction: true)
             return true
         case .archive:
-            self.archive(indexPath, isSwipeAction: true)
+            self.archive(indexPath, itemID: itemID, isSwipeAction: true)
             return true
         case .spam:
-            self.spam(indexPath, isSwipeAction: true)
+            self.spam(indexPath, itemID: itemID, isSwipeAction: true)
             return true
         }
         return false
     }
 
-    private func labelAs(_ index: IndexPath, isSwipeAction: Bool = false) {
+    private func labelAs(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
+            return
+        }
         if let message = viewModel.item(index: index) {
             showLabelAsActionSheet(messages: [message],
                                    isFromSwipeAction: isSwipeAction)
@@ -831,7 +843,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func moveTo(_ index: IndexPath, isSwipeAction: Bool = false) {
+    private func moveTo(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
+            return
+        }
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
         if let message = viewModel.item(index: index) {
@@ -847,25 +862,37 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
     
-    private func archive(_ index: IndexPath, isSwipeAction: Bool = false) {
+    private func archive(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
+            return
+        }
         viewModel.archive(index: index, isSwipeAction: isSwipeAction)
         showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title,
                          undoActionType: .archive)
     }
     
-    private func delete(_ index: IndexPath, isSwipeAction: Bool = false) {
+    private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
+            return
+        }
         viewModel.delete(index: index, isSwipeAction: isSwipeAction)
         showMessageMoved(title: LocalString._inbox_swipe_to_trash_banner_title,
                          undoActionType: .trash)
     }
     
-    private func spam(_ index: IndexPath, isSwipeAction: Bool = false) {
+    private func spam(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
+            return
+        }
         viewModel.spam(index: index, isSwipeAction: isSwipeAction)
         showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title,
                          undoActionType: .spam)
     }
     
-    private func star(_ indexPath: IndexPath) {
+    private func star(_ indexPath: IndexPath, itemID: String) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
+            return
+        }
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
@@ -879,7 +906,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func unstar(_ indexPath: IndexPath) {
+    private func unstar(_ indexPath: IndexPath, itemID: String) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
+            return
+        }
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.label(msg: message, with: Message.Location.starred.rawValue, apply: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
@@ -893,7 +923,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func unread(_ indexPath: IndexPath) {
+    private func unread(_ indexPath: IndexPath, itemID: String) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
+            return
+        }
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.mark(messages: [message])
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
@@ -903,7 +936,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func read(_ indexPath: IndexPath) {
+    private func read(_ indexPath: IndexPath, itemID: String) {
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
+            return
+        }
         if let message = self.viewModel.item(index: indexPath) {
             self.viewModel.mark(messages: [message], unread: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {

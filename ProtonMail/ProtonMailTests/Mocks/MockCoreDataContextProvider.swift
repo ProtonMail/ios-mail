@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2021 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -16,11 +16,19 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import Foundation
+@testable import ProtonMail
 
-protocol CoreDataContextProviderProtocol {
-    var mainContext: NSManagedObjectContext { get }
-    var rootSavingContext: NSManagedObjectContext { get }
+class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
+    let coreDataService = sharedServices.get(by: CoreDataService.self)
 
-    func makeComposerMainContext() -> NSManagedObjectContext
+    var mainContext: NSManagedObjectContext {
+        coreDataService.mainContext
+    }
+    var rootSavingContext: NSManagedObjectContext {
+        coreDataService.rootSavingContext
+    }
+    
+    func makeComposerMainContext() -> NSManagedObjectContext {
+        return coreDataService.makeComposerMainContext()
+    }
 }

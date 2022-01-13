@@ -255,7 +255,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             return
         }
         let messageService = self.viewModel.getUser().messageService
-        let coreDataService = viewModel.coreDataService
+        let coreDataContextProvider = viewModel.coreDataContextProvider
         if self.dismissBySending {
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
@@ -264,7 +264,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         } else {
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,
                                           messageService: messageService,
-                                          coreDataService: coreDataService)
+                                          coreDataContextProvider: coreDataContextProvider)
         }
         #endif
     }

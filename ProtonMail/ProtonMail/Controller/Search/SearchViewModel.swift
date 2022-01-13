@@ -56,7 +56,7 @@ protocol SearchVMProtocol {
 final class SearchViewModel: NSObject {
     typealias LocalObjectsIndexRow = Dictionary<String, Any>
     let user: UserManager
-    let coreDataService: CoreDataService
+    let coreDataContextProvider: CoreDataContextProviderProtocol
 
     private weak var uiDelegate: SearchViewUIProtocol?
     private(set) var messages: [Message] = [] {
@@ -94,9 +94,11 @@ final class SearchViewModel: NSObject {
     }
     var selectedConversations: [Conversation] { [] }
     
-    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
+    init(user: UserManager,
+         coreDataContextProvider: CoreDataContextProviderProtocol,
+         uiDelegate: SearchViewUIProtocol) {
         self.user = user
-        self.coreDataService = coreDataService
+        self.coreDataContextProvider = coreDataContextProvider
         self.uiDelegate = uiDelegate
     }
 }
@@ -148,7 +150,7 @@ extension SearchViewModel: SearchVMProtocol {
                 return
             }
             
-            let context = self.coreDataService.mainContext
+            let context = self.coreDataContextProvider.mainContext
             context.perform { [weak self] in
                 let messagesInContext = messageBoxes
                     .compactMap { context.object(with: $0.objectID) as? Message }
@@ -181,7 +183,7 @@ extension SearchViewModel: SearchVMProtocol {
                                     action: .openDraft,
                                     msgService: user.messageService,
                                     user: user,
-                                    coreDataService: self.coreDataService)
+                                    coreDataContextProvider: coreDataContextProvider)
     }
     
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel {
@@ -392,8 +394,8 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 extension SearchViewModel {
     private func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
-        coreDataService.mainContext.performAndWait {
-            let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
+        coreDataContextProvider.mainContext.performAndWait {
+            let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
             readCount = messages.reduce(0) { (result, next) -> Int in
                 if next.unRead == false {
                     return result + 1
@@ -406,13 +408,13 @@ extension SearchViewModel {
     }
 
     private func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
     }
     
     private func move(toLabel: Message.Location) {
         let messageIDs = NSMutableSet(set: selectedIDs)
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         var fLabels: [String] = []
         for msg in messages {
             // the label that is not draft, sent, starred, allmail
@@ -422,7 +424,7 @@ extension SearchViewModel {
     }
     
     private func delete(IDs: NSMutableSet) {
-        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataService.mainContext)
+        let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
         for msg in messages {
             let _ = self.delete(message: msg)
         }
@@ -436,7 +438,7 @@ extension SearchViewModel {
     }
 
     private func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataService.mainContext)
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
 
@@ -471,7 +473,7 @@ extension SearchViewModel {
 
 extension SearchViewModel {
     private func indexLocalObjects(_ completion: @escaping ()->Void) {
-        let context = self.coreDataService.operationContext
+        let context = coreDataContextProvider.rootSavingContext
         var count = 0
         context.performAndWait {
             do {
@@ -550,7 +552,7 @@ extension SearchViewModel {
             return nil
         }
         
-        let context = self.coreDataService.mainContext
+        let context = coreDataContextProvider.mainContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -569,7 +571,7 @@ extension SearchViewModel {
             self.fetchController = nil
         }
 
-        let context = self.coreDataService.mainContext
+        let context = coreDataContextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         let ids = self.messages.map { $0.messageID }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)

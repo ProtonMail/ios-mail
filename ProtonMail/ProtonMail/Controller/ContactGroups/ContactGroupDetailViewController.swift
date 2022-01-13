@@ -173,7 +173,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                         action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
-                                                        coreDataService: sharedServices.get(by: CoreDataService.self))
+                                                        coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()

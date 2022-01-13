@@ -110,7 +110,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
         viewModel.addToContacts(contact)
 
@@ -130,7 +130,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
         viewModel.parse(mailToURL: mailToURL)
 
@@ -151,7 +151,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataService: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
         viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
