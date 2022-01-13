@@ -37,7 +37,8 @@ class WebContents {
          remoteContentMode: RemoteContentPolicy,
          renderStyle: MessageRenderStyle = .dark,
          supplementCSS: String? = nil) {
-        self.body = body
+        // \u00A0 is white space that will break dompurify
+        self.body = body.preg_replace("\u{00A0}", replaceto: " ")
         self.remoteContentMode = remoteContentMode
         self.renderStyle = renderStyle
         self.supplementCSS = supplementCSS
