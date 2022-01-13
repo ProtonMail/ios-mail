@@ -705,7 +705,7 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var isIAPUpgradePlanAvailable: Bool {
+    var paymentsBackendStatusAcceptsIAP: Bool {
         get {
             return self.getShared().bool(forKey: Key.isIAPAvailableOnBE)
         }

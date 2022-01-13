@@ -176,7 +176,7 @@ final class SignInCoordinator: DefaultCoordinator {
         case .dismissed:
             onFinish(.dismissed)
 
-        case .loggedIn(let loginData):
+        case .signedUp(let loginData), .loggedIn(let loginData):
             environment.finalizeSignIn(loginData: loginData) { [weak self] error in
                 self?.handleRequestError(error, wrapIn: FlowError.finalizingSignInFailed)
             } reachLimit: {

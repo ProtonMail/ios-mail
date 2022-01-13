@@ -20,12 +20,13 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
 protocol PMActionSheetToggleDelegate: AnyObject {
     func toggleTriggeredAt(indexPath: IndexPath)
 }
 
-final class PMActionSheetToggleCell: UITableViewCell {
+final class PMActionSheetToggleCell: UITableViewCell, AccessibleView {
     // MARK: Constants
     private let PADDING: CGFloat = 16
 
@@ -58,6 +59,7 @@ extension PMActionSheetToggleCell {
 
         self.indexPath = indexPath
         self.delegate = delegate
+        generateAccessibilityIdentifiers()
     }
 }
 

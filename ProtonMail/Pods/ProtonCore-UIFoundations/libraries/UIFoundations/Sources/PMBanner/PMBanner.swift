@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public class PMBanner: UIView {
+public class PMBanner: UIView, AccessibleView {
 
     // MARK: Constants
     private let BORDER_PADDING: CGFloat = 8
@@ -92,6 +93,7 @@ public class PMBanner: UIView {
         self.backgroundColor = style.bannerColor
         self.roundCorner(style.borderRadius)
         self.setupPanGesture()
+        generateAccessibilityIdentifiers()
     }
 
     deinit {

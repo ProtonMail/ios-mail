@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMTabBarController: UITabBarController {
+public final class PMTabBarController: UITabBarController, AccessibleView {
     // MARK: Constant
     private let TAGOFFSET = 10
     private let PADDING: CGFloat = 7
@@ -92,6 +93,7 @@ extension PMTabBarController {
         }
         self.tabBarConfig = config
         try self.setupTabbar()
+        generateAccessibilityIdentifiers()
     }
 }
 

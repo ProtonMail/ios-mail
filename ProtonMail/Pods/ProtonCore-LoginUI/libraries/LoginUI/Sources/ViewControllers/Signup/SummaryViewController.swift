@@ -24,9 +24,12 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
-public typealias SummaryScreenVariant = ScreenVariant<SummaryStartButtonText, SummaryScreenCustomData>
-
 public typealias SummaryStartButtonText = String
+
+public enum SummaryScreenVariant {
+    case noSummaryScreen
+    case screenVariant(ScreenVariant<SummaryStartButtonText, SummaryScreenCustomData>)
+}
 
 public struct SummaryScreenCustomData {
     let image: UIImage

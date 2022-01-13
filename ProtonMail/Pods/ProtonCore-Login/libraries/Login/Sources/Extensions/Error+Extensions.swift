@@ -25,7 +25,7 @@ import ProtonCore_Networking
 extension LoginError {
     public var description: String {
         switch self {
-        case let .generic(message: message):
+        case let .generic(message: message, _):
             return message
         case let .invalidCredentials(message: message):
             return message
@@ -60,9 +60,9 @@ public extension AuthErrors {
                     ? .invalid2FACode(message: responseError.localizedDescription)
                     : .invalidCredentials(message: responseError.localizedDescription)
             }
-            return .generic(message: responseError.messageForTheUser)
+            return .generic(message: responseError.networkResponseMessageForTheUser, code: codeInNetworking)
         default:
-            return .generic(message: messageForTheUser)
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
         }
     }
 
@@ -71,7 +71,7 @@ public extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 12106:
             return .notAvailable(message: localizedDescription)
         default:
-            return .generic(message: messageForTheUser)
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
         }
     }
 
@@ -80,11 +80,11 @@ public extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 2011:
             return .alreadySet(message: localizedDescription)
         default:
-            return .generic(message: messageForTheUser)
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
         }
     }
 
     func asCreateAddressKeysError() -> CreateAddressKeysError {
-        .generic(message: messageForTheUser)
+        .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
     }
 }

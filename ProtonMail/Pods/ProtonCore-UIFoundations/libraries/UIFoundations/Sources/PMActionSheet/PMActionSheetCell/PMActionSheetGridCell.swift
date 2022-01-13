@@ -20,12 +20,13 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
 protocol PMActionSheetGridDelegate: AnyObject {
     func tapGridItemAt(section: Int, row: Int)
 }
 
-final class PMActionSheetGridCell: UITableViewCell {
+final class PMActionSheetGridCell: UITableViewCell, AccessibleView {
     // MARK: Constants
     private let ROW_HEIGHT: CGFloat = 100
     private let TAGOFFSET = 10
@@ -65,6 +66,7 @@ extension PMActionSheetGridCell {
         let numberOfRow: CGFloat = CGFloat((group.items.count + 1) / 2)
         let container = self.createContainer(numberOfRow: numberOfRow)
         self.appendSubitems(group.items, in: container, numberOfRow: numberOfRow)
+        generateAccessibilityIdentifiers()
     }
 }
 

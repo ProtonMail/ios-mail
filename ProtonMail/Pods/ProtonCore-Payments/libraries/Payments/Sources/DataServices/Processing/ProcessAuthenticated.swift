@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import StoreKit
-import AwaitKit
 import ProtonCore_Log
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -39,6 +38,11 @@ final class ProcessAuthenticated: ProcessProtocol {
                  plan: PlanToBeProcessed,
                  completion: @escaping ProcessCompletionCallback) throws {
 
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+        
         // Create token
         guard let token = dependencies.tokenStorage.get() else {
             return try getToken(transaction: transaction, plan: plan, completion: completion)
@@ -47,7 +51,7 @@ final class ProcessAuthenticated: ProcessProtocol {
         do {
             PMLog.debug("Making TokenRequestStatus")
             let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
-            let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
+            let tokenStatusRes = try tokenStatusApi.awaitResponse()
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:
@@ -78,7 +82,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 completion(.finished)
             }
         } catch let error {
-            PMLog.debug("StoreKit: Get token info failed: \(error.messageForTheUser)")
+            PMLog.debug("StoreKit: Get token info failed: \(error.userFacingMessageInPayments)")
             completion(.erroredWithUnspecifiedError(error))
         }
     }
@@ -92,7 +96,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 api: dependencies.apiService, amount: plan.amount, receipt: receipt
             )
             PMLog.debug("Making TokenRequest")
-            let tokenRes = try AwaitKit.await(tokenApi.run())
+            let tokenRes = try tokenApi.awaitResponse()
             guard let token = tokenRes.paymentToken else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
             dependencies.tokenStorage.add(token)
             try self.process(transaction: transaction, plan: plan, completion: completion) // Exception would've been thrown on the first call
@@ -127,7 +131,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 amountDue: plan.amountDue,
                 paymentAction: .token(token: token.token)
             )
-            let recieptRes = try AwaitKit.await(request.run())
+            let recieptRes = try request.awaitResponse()
             PMLog.debug("StoreKit: success (1)")
             if let newSubscription = recieptRes.newSubscription {
                 dependencies.updateSubscription(newSubscription)
@@ -145,7 +149,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 let serverUpdateApi = dependencies.paymentsApiProtocol.creditRequest(
                     api: dependencies.apiService, amount: plan.amount, paymentAction: .token(token: token.token)
                 )
-                _ = try AwaitKit.await(serverUpdateApi.run())
+                _ = try serverUpdateApi.awaitResponse()
                 dependencies.finishTransaction(transaction)
                 dependencies.tokenStorage.clear()
                 completion(.errored(.creditsApplied))

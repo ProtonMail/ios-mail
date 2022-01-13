@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMActionBar: UIView {
+public final class PMActionBar: UIView, AccessibleView {
 
     /// These constants specify width config of the action bar
     public enum Width {
@@ -109,6 +110,7 @@ extension PMActionBar {
         self.setupActionBarConstraint(at: parentVC.view)
         let stack = self.setupStackContainer()
         self.appendItems(items: self.items, at: stack)
+        generateAccessibilityIdentifiers()
     }
 
     /// Dismisses the action bar that was presented.
@@ -232,6 +234,7 @@ extension PMActionBar {
                     let spacer = self.createSpacer()
                     stack.addArrangedSubview(spacer)
                 }
+                assignIdentifier(label, prefix: "items", identifier: "\(idx + 1)")
             case .button:
                 var btn: UIButton!
                 if item.icon != nil && item.text != nil {
@@ -246,6 +249,7 @@ extension PMActionBar {
                     indicator.centerInSuperview()
                 }
                 stack.addArrangedSubview(btn)
+                assignIdentifier(btn, prefix: "items", identifier: "\(idx + 1)")
             case .separator:
                 guard let width = item.userInfo?["width"] as? CGFloat,
                       let padding = item.userInfo?["verticalPadding"] as? CGFloat else {

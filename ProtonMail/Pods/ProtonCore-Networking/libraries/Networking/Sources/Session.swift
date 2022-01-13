@@ -28,6 +28,40 @@ public typealias ProgressCompletion = (_ progress: Progress) -> Void
 
 public let defaultTimeout: TimeInterval = 60.0
 
+public func handleAuthenticationChallenge(
+    didReceive challenge: URLAuthenticationChallenge,
+    noTrustKit: Bool,
+    trustKit: TrustKit?,
+    challengeCompletionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void,
+    trustKitCompletionHandler: @escaping(URLSession.AuthChallengeDisposition,
+                                         URLCredential?, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void = { disposition, credential, completionHandler in completionHandler(disposition, credential) }
+) {
+    if noTrustKit {
+        guard let trust = challenge.protectionSpace.serverTrust else {
+            challengeCompletionHandler(.performDefaultHandling, nil)
+            return
+        }
+        let credential = URLCredential(trust: trust)
+        challengeCompletionHandler(.useCredential, credential)
+        
+    } else if let tk = trustKit {
+        let wrappedCompletionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void = { disposition, credential in
+            trustKitCompletionHandler(disposition, credential, challengeCompletionHandler)
+        }
+        guard tk.pinningValidator.handle(challenge, completionHandler: wrappedCompletionHandler) else {
+            // TrustKit did not handle this challenge: perhaps it was not for server trust
+            // or the domain was not pinned. Fall back to the default behavior
+            challengeCompletionHandler(.performDefaultHandling, nil)
+            return
+        }
+        
+    } else {
+        assertionFailure("TrustKit not initialized correctly")
+        challengeCompletionHandler(.performDefaultHandling, nil)
+        
+    }
+}
+
 public protocol Session {
     func generate(with method: HTTPMethod, urlString: String, parameters: Any?, timeout: TimeInterval?) throws -> SessionRequest
     

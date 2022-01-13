@@ -403,6 +403,12 @@ If signKeyRing is not nil, it is used to do an embedded signature.
 
 // skipped method KeyRing.GetKeys with unsupported parameter or return types
 
+/**
+ * GetVerifiedSignatureTimestamp verifies a PlainMessage with a detached PGPSignature
+returns the creation time of the signature if it succeeds
+and returns a SignatureVerificationError if fails.
+ */
+- (BOOL)getVerifiedSignatureTimestamp:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime ret0_:(int64_t* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 - (CryptoAttachmentProcessor* _Nullable)newLowMemoryAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename error:(NSError* _Nullable* _Nullable)error;
 - (CryptoManualAttachmentProcessor* _Nullable)newManualAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename dataBuffer:(NSData* _Nullable)dataBuffer error:(NSError* _Nullable* _Nullable)error;
 /**

@@ -56,67 +56,51 @@ extension Plan {
     }
 
     var YAddressesDescription: String {
-        maxAddresses == 1
-            ? String(format: CoreString._pu_plan_details_n_address, maxAddresses)
-            : String(format: CoreString._pu_plan_details_n_addresses, maxAddresses)
+        String(format: CoreString._pu_plan_details_n_addresses, maxAddresses)
     }
 
     var YAddressesPerUserDescription: String {
-        maxAddresses == 1
-            ? String(format: CoreString._pu_plan_details_n_address_per_user, maxAddresses)
-            : String(format: CoreString._pu_plan_details_n_addresses_per_user, maxAddresses)
+        String(format: CoreString._pu_plan_details_n_addresses_per_user, maxAddresses)
     }
 
     var ZCalendarsDescription: String? {
         guard let maxCalendars = maxCalendars else { return nil }
-        return maxCalendars == 1
-            ? String(format: CoreString._pu_plan_details_n_calendar, maxCalendars)
-            : String(format: CoreString._pu_plan_details_n_calendars, maxCalendars)
+        return String(format: CoreString._pu_plan_details_n_calendars, maxCalendars)
     }
 
     var ZCalendarsPerUserDescription: String? {
         guard let maxCalendars = maxCalendars else { return nil }
-        return maxCalendars == 1
-            ? String(format: CoreString._pu_plan_details_n_calendar_per_user, maxCalendars)
-            : String(format: CoreString._pu_plan_details_n_calendars_per_user, maxCalendars)
+        return String(format: CoreString._pu_plan_details_n_calendars_per_user, maxCalendars)
     }
 
+    var UConnectionsDescription: String {
+        String(format: CoreString._pu_plan_details_n_connections, maxVPN)
+    }
+    
     var UVPNConnectionsDescription: String {
-        maxVPN == 1
-            ? String(format: CoreString._pu_plan_details_n_connection, maxVPN)
-            : String(format: CoreString._pu_plan_details_n_connections, maxVPN)
+        String(format: CoreString._pu_plan_details_n_vpn_connections, maxVPN)
     }
 
     var UHighSpeedVPNConnectionsDescription: String {
-        maxVPN == 1
-            ? String(format: CoreString._pu_plan_details_n_high_speed_connection, maxVPN)
-            : String(format: CoreString._pu_plan_details_n_high_speed_connections, maxVPN)
+        String(format: CoreString._pu_plan_details_n_high_speed_connections, maxVPN)
     }
 
     var UHighSpeedVPNConnectionsPerUserDescription: String {
-        maxVPN == 1
-            ? String(format: CoreString._pu_plan_details_n_high_speed_connection_per_user, maxVPN)
-            : String(format: CoreString._pu_plan_details_n_high_speed_connections_per_user, maxVPN)
+        String(format: CoreString._pu_plan_details_n_high_speed_connections_per_user, maxVPN)
     }
 
     var VCustomDomainDescription: String {
-        maxDomains == 1
-            ? String(format: CoreString._pu_plan_details_n_custom_domain, maxDomains)
-            : String(format: CoreString._pu_plan_details_n_custom_domains, maxDomains)
+        String(format: CoreString._pu_plan_details_n_custom_domains, maxDomains)
     }
 
     var WUsersDescription: String {
-        maxMembers == 1
-            ? String(format: CoreString._pu_plan_details_n_user, maxMembers)
-            : String(format: CoreString._pu_plan_details_n_users, maxMembers)
+        String(format: CoreString._pu_plan_details_n_users, maxMembers)
     }
 
     var YAddressesAndZCalendars: String {
         guard let ZCalendarsDescription = ZCalendarsDescription else { return YAddressesDescription }
         if maxAddresses == maxCalendars {
-            return maxAddresses == 1
-                ? String(format: CoreString._pu_plan_details_n_address_and_calendar, maxAddresses)
-                : String(format: CoreString._pu_plan_details_n_addresses_and_calendars, maxAddresses)
+            return String(format: CoreString._pu_plan_details_n_addresses_and_calendars, maxAddresses)
         } else {
             return String(format: CoreString._pu_plan_details_n_uneven_amounts_of_addresses_and_calendars,
                           YAddressesDescription, ZCalendarsDescription)
@@ -175,9 +159,9 @@ extension Plan {
         guard let cycle = cycle else { return nil }
         let years = cycle / 12
         if years > 0 {
-            return years == 1 ? CoreString._pu_plan_details_price_time_period_1_y : String(format: CoreString._pu_plan_details_price_time_period_x_y, years)
+            return String(format: CoreString._pu_plan_details_price_time_period_y, years)
         } else {
-            return cycle == 1 ? CoreString._pu_plan_details_price_time_period_1_m : nil
+            return String(format: CoreString._pu_plan_details_price_time_period_m, cycle)
         }
     }
 }

@@ -38,6 +38,8 @@ public protocol AuthenticatorInterface {
     func refreshCredential(_ oldCredential: Credential, completion: @escaping Authenticator.Completion)
 
     func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    
+    func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 
     func setUsername(username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 

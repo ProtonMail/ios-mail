@@ -14,7 +14,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.5.0'
+  '3.6.0'
 end
 
 def pm_shared_pods
@@ -23,6 +23,7 @@ def pm_shared_pods
   pod 'ProtonCore-SRP', proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Services', proton_core_version, :subspecs => ['AwaitKit+PromiseKit', 'Alamofire']
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
 end

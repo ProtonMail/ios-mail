@@ -186,7 +186,7 @@ class TokenStorageImp: PaymentTokenStorage {
 class DataStorageImpl: ServicePlanDataStorage {
     var servicePlansDetails: [Plan]?
     var defaultPlanDetails: Plan?
-    var isIAPUpgradePlanAvailable: Bool = false
+    var paymentsBackendStatusAcceptsIAP: Bool = false
     var credits: Credits?
     var currentSubscription: Subscription?
 }

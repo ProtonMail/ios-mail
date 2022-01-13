@@ -49,18 +49,28 @@ class SummaryViewModel {
     }
     
     var summaryImage: UIImage? {
-        if case .custom(let data) = screenVariant{
-            return data.image
+        switch screenVariant {
+        case .noSummaryScreen:
+            return nil
+        case .screenVariant(let screenVariant):
+            if case .custom(let data) = screenVariant {
+                return data.image
+            }
         }
         return nil
     }
 
     var startButtonText: String? {
         switch screenVariant {
-        case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text):
-            return text
-        case .custom(let data):
-            return data.startButtonText
+        case .noSummaryScreen:
+            return nil
+        case .screenVariant(let screenVariant):
+            switch screenVariant {
+            case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text):
+                return text
+            case .custom(let data):
+                return data.startButtonText
+            }
         }
     }
     

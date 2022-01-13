@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-final class PMActionSheetPlainCell: UITableViewCell {
+final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
 
     private var separator: UIView?
     @IBOutlet private var leftIcon: UIImageView!
@@ -73,6 +74,7 @@ final class PMActionSheetPlainCell: UITableViewCell {
                                    alignment: item.alignment,
                                    hasLeftIcon: hasLeftIcon,
                                    hasRightIcon: hasRightIcon)
+        generateAccessibilityIdentifiers()
     }
 
     private func setupTitleConstraints(

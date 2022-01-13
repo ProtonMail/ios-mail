@@ -21,8 +21,9 @@
 
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_Foundations
 
-public final class SplashViewController: UIViewController {
+public final class SplashViewController: UIViewController, AccessibleView {
 
     override public var preferredStatusBarStyle: UIStatusBarStyle {
         switch data.colorSchemeForBrand {
@@ -51,7 +52,7 @@ public final class SplashViewController: UIViewController {
     }
 }
 
-public final class SplashView: UIView {
+public final class SplashView: UIView, AccessibleView {
 
     private var appIcon: UIImageView = .init()
     private var name: String = ""
@@ -90,6 +91,7 @@ public final class SplashView: UIView {
         setupMainView()
         setupAppName()
         setupFooter()
+        generateAccessibilityIdentifiers()
     }
 
     private func setupMainView() {

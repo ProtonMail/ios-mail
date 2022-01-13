@@ -183,6 +183,19 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             }
         }
     }
+    
+    public func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        let route = AuthService.UserAvailableExternalEndpoint(email: email)
+        
+        self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableExternalResponse, ResponseError>) in
+            switch result {
+            case .failure(let responseError):
+                completion(.failure(.networkingError(responseError)))
+            case .success:
+                completion(.success(()))
+            }
+        }
+    }
 
     public func setUsername(_ credential: Credential? = nil, username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         var route = AuthService.SetUsernameEndpoint(username: username)

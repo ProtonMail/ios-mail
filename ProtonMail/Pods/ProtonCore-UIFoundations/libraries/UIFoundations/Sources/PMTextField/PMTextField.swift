@@ -46,7 +46,7 @@ public protocol PMTextFieldDelegate: AnyObject {
 /**
  An object that displays an editable text area with a title and optional assistive text and error
  */
-public class PMTextField: UIView {
+public class PMTextField: UIView, AccessibleView {
 
     // MARK: - Outlets
 
@@ -320,6 +320,7 @@ public class PMTextField: UIView {
         errorLabel.textColor = ColorProvider.NotificationError
         assistiveTextLabel.textColor = ColorProvider.TextWeak
         suffixLabel.textColor = ColorProvider.TextWeak
+        generateAccessibilityIdentifiers()
     }
     
     private func updateClearMode() {

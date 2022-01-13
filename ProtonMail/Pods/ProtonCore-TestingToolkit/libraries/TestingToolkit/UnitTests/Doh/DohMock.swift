@@ -71,8 +71,14 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.getHumanVerificationV3Host, initialReturn: .crash) public var getHumanVerificationV3HostStub
     public func getHumanVerificationV3Host() -> String { getHumanVerificationV3HostStub() }
     
+    @FuncStub(DohInterfaceMock.getHumanVerificationV3Headers, initialReturn: .crash) public var getHumanVerificationV3HeadersStub
+    public func getHumanVerificationV3Headers() -> [String: String] { getHumanVerificationV3HeadersStub() }
+    
     @FuncStub(DohInterfaceMock.getAccountHost, initialReturn: .crash) public var getAccountHostStub
     public func getAccountHost() -> String { getAccountHostStub() }
+    
+    @FuncStub(DohInterfaceMock.getAccountHeaders, initialReturn: .crash) public var getAccountHeadersStub
+    public func getAccountHeaders() -> [String: String] { getAccountHeadersStub() }
 
     @FuncStub(DohInterfaceMock.getHostUrl, initialReturn: .crash) public var getHostUrlStub
     public func getHostUrl() -> String { getHostUrlStub() }
@@ -88,6 +94,9 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     
     @FuncStub(DohInterfaceMock.getCurrentlyUsedHostUrl, initialReturn: .crash) public var getCurrentlyUsedHostUrlStub
     public func getCurrentlyUsedHostUrl() -> String { getCurrentlyUsedHostUrlStub() }
+    
+    @PropertyStub(\DohInterfaceMock.isCurrentlyUsingProxyDomain, initialGet: .crash) public var isCurrentlyUsingProxyDomainStub
+    public var isCurrentlyUsingProxyDomain: Bool { isCurrentlyUsingProxyDomainStub() }
     
     @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
     public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }

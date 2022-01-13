@@ -48,6 +48,7 @@ extension String {
 }
 
 extension String {
+    
     subscript(value: Int) -> Character {
         self[index(at: value)]
     }

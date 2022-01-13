@@ -56,7 +56,8 @@ public extension UIViewController {
     }
     
     func updateTitleAttributes() {
-        let textAttributes = [NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm]
+        let foregroundColor: UIColor = ColorProvider.TextNorm
+        let textAttributes = [NSAttributedString.Key.foregroundColor: foregroundColor]
         if #available(iOS 13.0, *) {
             let appearance = navigationController?.navigationBar.standardAppearance
             appearance?.titleTextAttributes = textAttributes

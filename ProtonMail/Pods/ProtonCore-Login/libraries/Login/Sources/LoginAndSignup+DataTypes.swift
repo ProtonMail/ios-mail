@@ -35,6 +35,43 @@ public enum LoginData {
     case userData(UserData)
 }
 
+public extension LoginData {
+    
+    var credential: Credential {
+        switch self {
+        case .userData(let userData): return Credential(userData.credential, scope: userData.scopes)
+        case .credential(let credential): return credential
+        }
+    }
+    
+    func updated(credential: Credential) -> LoginData {
+        switch self {
+        case .credential:
+            return .credential(credential)
+        case .userData(let userData):
+            return .userData(UserData(credential: AuthCredential(credential),
+                                      user: userData.user,
+                                      salts: userData.salts,
+                                      passphrases: userData.passphrases,
+                                      addresses: userData.addresses,
+                                      scopes: credential.scope))
+        }
+    }
+    
+    func updated(user: User) -> LoginData {
+        switch self {
+        case .credential: return self
+        case .userData(let userData):
+            return .userData(UserData(credential: userData.credential,
+                                      user: user,
+                                      salts: userData.salts,
+                                      passphrases: userData.passphrases,
+                                      addresses: userData.addresses,
+                                      scopes: userData.scopes))
+        }
+    }
+}
+
 public struct UserData {
     public let credential: AuthCredential
     public let user: User
@@ -93,4 +130,5 @@ public struct UserData {
 public enum LoginResult {
     case dismissed
     case loggedIn(LoginData)
+    case signedUp(LoginData)
 }

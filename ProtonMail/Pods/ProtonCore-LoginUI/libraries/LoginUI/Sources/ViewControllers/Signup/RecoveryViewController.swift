@@ -131,7 +131,8 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         recoveryPhoneTextField.isHidden = true
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
-        try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+        try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recoveryMail)
+        try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recoveryPhone)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -161,11 +162,11 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         case RecoveryMethod.email.rawValue:
             recoveryEmailTextField.isHidden = false
             recoveryPhoneTextField.isHidden = true
-            try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+            _ = recoveryEmailTextField.becomeFirstResponder()
         case RecoveryMethod.phoneNumber.rawValue:
             recoveryEmailTextField.isHidden = true
             recoveryPhoneTextField.isHidden = false
-            try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+            _ = recoveryPhoneTextField.becomeFirstResponder()
         default:
             break
         }

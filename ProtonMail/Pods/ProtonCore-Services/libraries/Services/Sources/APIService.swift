@@ -208,11 +208,16 @@ public protocol APIServiceDelegate: AnyObject {
     func onDohTroubleshot()
 }
 
-public protocol HumanVerifyDelegate: AnyObject {
-    typealias HumanVerifyHeader = [String: Any]
-    typealias HumanVerifyIsClosed = Bool
+public enum HumanVerifyFinishReason {
+    public typealias HumanVerifyHeader = [String: Any]
+    
+    case verification(header: HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?)
+    case close
+    case closeWithError(code: Int, description: String)
+}
 
-    func onHumanVerify(methods: [VerifyMethod], startToken: String?, completion: (@escaping (HumanVerifyHeader, HumanVerifyIsClosed, SendVerificationCodeBlock?) -> Void))
+public protocol HumanVerifyDelegate: AnyObject {
+    func onHumanVerify(methods: [VerifyMethod], startToken: String?, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
     func getSupportURL() -> URL
 }
 
@@ -224,6 +229,7 @@ public enum HumanVerifyEndResult {
 public protocol HumanVerifyResponseDelegate: AnyObject {
     func onHumanVerifyStart()
     func onHumanVerifyEnd(result: HumanVerifyEndResult)
+    func humanVerifyToken(token: String?, tokenType: String?)
 }
 
 public enum PaymentTokenStatusResult {
@@ -335,21 +341,26 @@ public extension APIService {
                      completion: completionWrapper)
     }
 
-    func exec<T>(route: Request, complete: @escaping (_ response: T) -> Void) where T: Response {
+    func exec<T>(route: Request,
+                 callCompletionBlockOn: DispatchQueue = .main,
+                 complete: @escaping (_ response: T) -> Void) where T: Response {
 
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper: CompletionBlock = { task, responseDict, error in
             switch T.parseNetworkCallResults(to: T.self, response: task?.response, responseDict: responseDict, error: error) {
-            case (let response, _?):
+            case (let response, let originalError?):
                 // TODO: this was a previous logic — to parse response even if there's an error. should we move it to parseNetworkCallResults?
                 if let resRaw = responseDict {
                     _ = response.ParseResponse(resRaw)
+                    // the error might have changed during the decoding try, morphing it into decode error.
+                    // This leads to wrong or missing erro info. Hence I restore the original error
+                    response.error = originalError
                 }
-                DispatchQueue.main.async {
+                callCompletionBlockOn.async {
                     complete(response)
                 }
             case (let response, nil):
-                DispatchQueue.main.async {
+                callCompletionBlockOn.async {
                     complete(response)
                 }
             }

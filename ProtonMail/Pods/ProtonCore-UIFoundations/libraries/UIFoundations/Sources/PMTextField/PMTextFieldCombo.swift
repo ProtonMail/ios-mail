@@ -47,7 +47,7 @@ public protocol PMTextFieldComboDelegate: AnyObject {
 /**
  An object that displays an editable text area with a title and optional assistive text and error
  */
-public class PMTextFieldCombo: UIView {
+public class PMTextFieldCombo: UIView, AccessibleView {
 
     // MARK: - Outlets
 
@@ -265,6 +265,7 @@ public class PMTextFieldCombo: UIView {
         titleLabel.textColor = ColorProvider.TextNorm
         assistiveTextLabel.textColor = ColorProvider.TextWeak
         pickerLabel.textColor = ColorProvider.TextNorm
+        generateAccessibilityIdentifiers()
     }
 
     private func updateClearMode() {

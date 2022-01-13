@@ -36,6 +36,7 @@ class HumanCheckV3Coordinator {
 
     /// View controllers
     private let rootViewController: UIViewController?
+    private let isModalPresentation: Bool
     private var initialViewController: HumanVerifyV3ViewController?
     private var initialHelpViewController: HVHelpViewController?
 
@@ -48,8 +49,9 @@ class HumanCheckV3Coordinator {
 
     // MARK: - Public methods
 
-    init(rootViewController: UIViewController?, apiService: APIService, methods: [VerifyMethod], startToken: String?, clientApp: ClientApp) {
+    init(rootViewController: UIViewController?, isModalPresentation: Bool = true, apiService: APIService, methods: [VerifyMethod], startToken: String?, clientApp: ClientApp) {
         self.rootViewController = rootViewController
+        self.isModalPresentation = isModalPresentation
         self.apiService = apiService
         self.clientApp = clientApp
         
@@ -78,6 +80,7 @@ class HumanCheckV3Coordinator {
         self.initialViewController = instatntiateVC(method: HumanVerifyV3ViewController.self, identifier: "HumanVerifyV3ViewController")
         self.initialViewController?.viewModel = self.humanVerifyV3ViewModel
         self.initialViewController?.delegate = self
+        self.initialViewController?.isModalPresentation = isModalPresentation
     }
 
     private func showHumanVerification() {
@@ -86,7 +89,12 @@ class HumanCheckV3Coordinator {
             let nav = UINavigationController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
-            rootViewController.present(nav, animated: true)
+            if isModalPresentation {
+                nav.hideBackground()
+                rootViewController.present(nav, animated: true)
+            } else {
+                rootViewController.show(viewController, sender: nil)
+            }
         } else {
             var topViewController: UIViewController?
             let keyWindow = UIApplication.getInstance()?.windows.filter { $0.isKeyWindow }.first
@@ -99,7 +107,12 @@ class HumanCheckV3Coordinator {
             let nav = UINavigationController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
-            topViewController?.present(nav, animated: true)
+            if isModalPresentation {
+                nav.hideBackground()
+                topViewController?.present(nav, animated: true)
+            } else {
+                topViewController?.show(viewController, sender: nil)
+            }
         }
     }
     
@@ -118,18 +131,38 @@ class HumanCheckV3Coordinator {
 // MARK: - HumanVerifyV3ViewControllerDelegate
 
 extension HumanCheckV3Coordinator: HumanVerifyV3ViewControllerDelegate {
+    func didFinishViewController() {
+        if isModalPresentation {
+            initialViewController?.navigationController?.dismiss(animated: true)
+        }
+    }
+    
     func willReopenViewController() {
         instantiateViewController()
         showHumanVerification()
     }
     
     func didDismissViewController() {
-        initialViewController?.navigationController?.dismiss(animated: true, completion: nil)
+        close()
         delegate?.close()
+    }
+    
+    func didEditEmailAddress() {
+        close()
+        // generate close with internal error to detect outside HV mechanism
+        delegate?.closeWithError(code: APIErrorCode.humanVerificationEditEmail, description: "Human Verification edit email address")
     }
     
     func didShowHelpViewController() {
         showHelp()
+    }
+    
+    private func close() {
+        if isModalPresentation {
+            initialViewController?.navigationController?.dismiss(animated: true)
+        } else {
+            initialViewController?.navigationController?.popViewController(animated: true)
+        }
     }
 }
 

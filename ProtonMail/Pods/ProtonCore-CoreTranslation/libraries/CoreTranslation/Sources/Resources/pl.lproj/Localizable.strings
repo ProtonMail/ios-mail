@@ -10,18 +10,6 @@
 /* Plan delails storage */
 "%@ storage *" = "%@ przestrzeni dyskowej *";
 
-/* Plan delails n address */
-"%i address" = "%i adres";
-
-/* Plan delails n addresses */
-"%i addresses" = "%i addresses";
-
-/* Plan delails n user */
-"%i user" = "%i użytkownik";
-
-/* Plan delails n users */
-"%i users" = "%i użytkowników";
-
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda odzyskiwania pomoże uzyskać dostęp do konta, w przypadku gdy zostanie ono zablokowane lub zapomnisz hasła.";
 
@@ -166,7 +154,7 @@
 "Error occured" = "Wystąpił błąd";
 
 /* Error message */
-"Failed to get list of available products from AppStore." = "Nie udało się uzyskać listy dostępnych produktów ze sklepu App Store.";
+"Failed to get list of available products from App Store." = "Nie udało się uzyskać listy dostępnych produktów ze sklepu App Store.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Ze względów bezpieczeństwa musimy zweryfikować, czy jesteś właścicielem tego adresu. Wysłaliśmy kod weryfikacyjny do %@. Wpisz otrzymany kod poniżej:";

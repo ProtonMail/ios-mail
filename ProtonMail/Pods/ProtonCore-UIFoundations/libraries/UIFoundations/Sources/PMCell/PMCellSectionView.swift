@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMCellSectionView: UITableViewHeaderFooterView {
+public final class PMCellSectionView: UITableViewHeaderFooterView, AccessibleView {
 
     public static let reuseIdentifier = "PMCellSectionView"
     public static let nib = UINib(nibName: "PMCellSectionView", bundle: PMUIFoundations.bundle)
@@ -43,5 +44,6 @@ public final class PMCellSectionView: UITableViewHeaderFooterView {
 
         titleLabel.textColor = ColorProvider.TextWeak
         contentView.backgroundColor = UIColor.dynamic(light: .white, dark: .black)
+        generateAccessibilityIdentifiers()
     }
 }

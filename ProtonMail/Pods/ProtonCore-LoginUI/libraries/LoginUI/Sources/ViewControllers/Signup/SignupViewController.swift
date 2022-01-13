@@ -24,9 +24,12 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_Login
+import ProtonCore_HumanVerification
+import ProtonCore_Services
 
 protocol SignupViewControllerDelegate: AnyObject {
     func validatedName(name: String, signupAccountType: SignupAccountType)
+    func validatedEmail(email: String, signupAccountType: SignupAccountType)
     func signupCloseButtonPressed()
     func signinButtonPressed()
 }
@@ -185,7 +188,11 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         if signupAccountType == .internal {
             checkUsername(userName: self.currentlyUsedTextField.value)
         } else {
-            requestValidationToken(email: self.currentlyUsedTextField.value)
+            if TemporaryHacks.isV3 {
+                checkEmail(email: self.currentlyUsedTextField.value)
+            } else {
+                requestValidationToken(email: self.currentlyUsedTextField.value)
+            }
         }
     }
 
@@ -255,7 +262,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 switch error {
-                case .generic(let message):
+                case .generic(let message, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
@@ -266,6 +273,33 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                     }
                 }
             }
+        }
+    }
+    
+    private func checkEmail(email: String) {
+        viewModel.checkEmail(email: email) { result in
+            self.nextButton.isSelected = false
+            switch result {
+            case .success:
+                self.delegate?.validatedEmail(email: email, signupAccountType: self.signupAccountType)
+            case .failure(let error):
+                self.unlockUI()
+                switch error {
+                case .generic(let message, _):
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                case .notAvailable(let message):
+                    self.currentlyUsedTextField.isError = true
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                }
+            }
+        } editEmail: {
+            self.nextButton.isSelected = false
+            self.unlockUI()
+            _ = self.currentlyUsedTextField.becomeFirstResponder()
         }
     }
 

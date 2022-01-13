@@ -73,6 +73,7 @@ public protocol LoginAndSignupInterface {
 
     func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void)
 
+    // swiftlint:disable:next function_parameter_count
     func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                       welcomeScreen: WelcomeScreenVariant,
                                       username: String?,
@@ -236,6 +237,7 @@ public class LoginAndSignup: LoginAndSignupInterface {
         mailboxPasswordCoordinator?.start(viewController: viewController)
     }
 
+    // swiftlint:disable:next function_parameter_count
     public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                              welcomeScreen: WelcomeScreenVariant,
                                              username: String?,
@@ -325,7 +327,7 @@ extension LoginAndSignup: SignupCoordinatorDelegate {
     }
     
     func signupCoordinatorDidFinish(signupCoordinator: SignupCoordinator, loginData: LoginData) {
-        loginCompletion(.loggedIn(loginData))
+        loginCompletion(.signedUp(loginData))
     }
     
     func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController) {

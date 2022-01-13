@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class LoginNavigationViewController: UINavigationController {
+public final class LoginNavigationViewController: UINavigationController, AccessibleView {
 
     public enum TransitionStyle {
         case systemDefault
@@ -36,6 +37,7 @@ public final class LoginNavigationViewController: UINavigationController {
         modalPresentationStyle = .fullScreen
         setUpShadowLessNavigationBar()
         setNavigationBarHidden(navigationBarHidden, animated: false)
+        generateAccessibilityIdentifiers()
     }
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

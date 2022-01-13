@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-class PMActionSheetPlainCellHeader: UITableViewHeaderFooterView, LineSeparatable, Reusable {
+class PMActionSheetPlainCellHeader: UITableViewHeaderFooterView, LineSeparatable, Reusable, AccessibleView {
     private lazy var label = UILabel(nil, font: .systemFont(ofSize: 13),
                                      textColor: ColorProvider.TextWeak)
     private var separator: UIView?
@@ -38,6 +39,7 @@ class PMActionSheetPlainCellHeader: UITableViewHeaderFooterView, LineSeparatable
     private func setupView() {
         setupBackground()
         setupLabel()
+        generateAccessibilityIdentifiers()
     }
 
     func setupBackground() {

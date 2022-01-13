@@ -26,6 +26,7 @@ import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import ProtonCore_Payments
 import ProtonCore_PaymentsUI
+import ProtonCore_HumanVerification
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -58,6 +59,7 @@ final class SignupCoordinator {
     private var name: String?
     private var password: String?
     private var verifyToken: String?
+    private var tokenType: String?
     private var loginData: LoginData?
     private var performBeforeFlow: WorkBeforeFlow?
     private var customErrorPresenter: LoginErrorPresenter?
@@ -79,7 +81,9 @@ final class SignupCoordinator {
         self.customErrorPresenter = customErrorPresenter
         if case .available(let paymentParameters) = paymentsAvailability {
             self.paymentsManager = container.makePaymentsCoordinator(
-                for: paymentParameters.listOfIAPIdentifiers, shownPlanNames: paymentParameters.listOfShownPlanNames,  reportBugAlertHandler: paymentParameters.reportBugAlertHandler
+                for: paymentParameters.listOfIAPIdentifiers,
+                shownPlanNames: paymentParameters.listOfShownPlanNames,
+                reportBugAlertHandler: paymentParameters.reportBugAlertHandler
             )
         }
         externalLinks = container.makeExternalLinks()
@@ -203,6 +207,7 @@ final class SignupCoordinator {
         completeViewController.email = email
         completeViewController.phoneNumber = phoneNumber
         completeViewController.verifyToken = verifyToken
+        completeViewController.tokenType = tokenType
         navigationController?.setUpShadowLessNavigationBar()
         navigationController?.pushViewController(completeViewController, animated: true)
     }
@@ -255,31 +260,58 @@ final class SignupCoordinator {
     }
     
     private func finalizeAccountCreation(loginData: LoginData) {
-        if let paymentsManager = paymentsManager {
-            if !(paymentsManager.selectedPlan?.isFreePlan ?? true) {
-                completeViewModel?.progressStepWait(progressStep: .payment)
+        guard let paymentsManager = paymentsManager else {
+            tryRefreshingLoginDataBeforeFinishingAccountCreation(loginData: loginData)
+            return
+        }
+            
+        if !(paymentsManager.selectedPlan?.isFreePlan ?? true) {
+            completeViewModel?.progressStepWait(progressStep: .payment)
+        }
+        
+        paymentsManager.finishPaymentProcess(loginData: loginData) { [weak self] result in
+            switch result {
+            case .success(let purchasedPlan):
+                self?.tryRefreshingLoginDataBeforeFinishingAccountCreation(loginData: loginData, purchasedPlan: purchasedPlan)
+            case .failure(let error):
+                self?.errorHandler(error: error)
             }
-            paymentsManager.finishPaymentProcess(loginData: loginData) { [weak self] result in
-                DispatchQueue.main.async { [weak self] in
-                    switch result {
-                    case .success(let purchasedPlan):
-                        self?.finishAccountCreation(loginData: loginData, purchasedPlan: purchasedPlan)
-                    case .failure(let error):
-                        self?.errorHandler(error: error)
-                    }
+        }
+    }
+    
+    private func tryRefreshingLoginDataBeforeFinishingAccountCreation(loginData: LoginData, purchasedPlan: InAppPurchasePlan? = nil) {
+        let login = container.login
+        login.refreshCredentials { [weak self] credentialsResult in
+            var possiblyRefreshedLoginData = loginData
+            switch credentialsResult {
+            case .success(let credential):
+                possiblyRefreshedLoginData = possiblyRefreshedLoginData.updated(credential: credential)
+            case .failure:
+                break
+            }
+            
+            guard possiblyRefreshedLoginData.credential.hasFullScope else {
+                self?.finishAccountCreation(loginData: possiblyRefreshedLoginData, purchasedPlan: purchasedPlan)
+                return
+            }
+            
+            login.refreshUserInfo { [weak self] userResult in
+                switch userResult {
+                case .success(let user):
+                    possiblyRefreshedLoginData = possiblyRefreshedLoginData.updated(user: user)
+                case .failure: break
                 }
+                self?.finishAccountCreation(loginData: possiblyRefreshedLoginData, purchasedPlan: purchasedPlan)
             }
-        } else {
-            finishAccountCreation(loginData: loginData)
         }
     }
     
     private func finishAccountCreation(loginData: LoginData, purchasedPlan: InAppPurchasePlan? = nil) {
-        guard let performBeforeFlow = performBeforeFlow else {
-            summarySignupFlow(data: loginData, purchasedPlan: purchasedPlan)
-            return
-        }
         DispatchQueue.main.async { [weak self] in
+            guard let performBeforeFlow = self?.performBeforeFlow else {
+                self?.summarySignupFlow(data: loginData, purchasedPlan: purchasedPlan)
+                return
+            }
             self?.completeViewModel?.progressStepWait(progressStep: .custom(performBeforeFlow.stepName))
             performBeforeFlow.completion(loginData) { [weak self] result in
                 DispatchQueue.main.async { [weak self] in
@@ -298,7 +330,14 @@ final class SignupCoordinator {
     private func summarySignupFlow(data: LoginData, purchasedPlan: InAppPurchasePlan? = nil) {
         completeViewModel?.progressStepAllDone()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.showSummaryViewController(data: data, purchasedPlan: purchasedPlan)
+            switch self.signupParameters?.summaryScreenVariant {
+            case .noSummaryScreen:
+                self.completeSignupFlow(data: data)
+            case .screenVariant:
+                self.showSummaryViewController(data: data, purchasedPlan: purchasedPlan)
+            case .none:
+                break
+            }
         }
     }
     
@@ -340,6 +379,15 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         }
     }
     
+    func validatedEmail(email: String, signupAccountType: SignupAccountType) {
+        self.name = email
+        self.verifyToken = container.token
+        self.tokenType = container.tokenType
+        self.signupAccountType = signupAccountType
+        updateAccountType(accountType: .external)
+        showPasswordViewController()
+    }
+    
     func signupCloseButtonPressed() {
         navigationController?.dismiss(animated: true)
         delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
@@ -349,7 +397,7 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: nil, navigationViewController: navigationController)
     }
-    
+
     private func updateAccountType(accountType: AccountType) {
         // changing accountType to intenal, or external is causing key generation on login part. To avoid that we need to skip this when accountType is username
         if container.login.minimumAccountType == .username { return }
@@ -360,6 +408,13 @@ extension SignupCoordinator: SignupViewControllerDelegate {
 // MARK: PasswordViewControllerDelegate
 
 extension SignupCoordinator: PasswordViewControllerDelegate {
+    func passwordIsShown() {
+        if TemporaryHacks.isV3, signupAccountType == .external {
+            // if PasswordViewController is presented we need to remove HumanVerifyV3ViewController from the navigation stack to don't allow to come back to it.
+            HumanCheckHelper.removeHumanVerification(from: navigationController)
+        }
+    }
+    
     func validatedPassword(password: String, completionHandler: (() -> Void)?) {
         self.password = password
         if signupAccountType == .internal {
@@ -420,6 +475,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
         errorHandler(error: error)
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     private func errorHandler(error: Error) {
         if activeViewController != nil {
             navigationController?.popViewController(animated: true)
@@ -444,21 +500,23 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
             if let vc = errorVC, self.customErrorPresenter?.willPresentError(error: error, from: vc) == true {
             } else if let vc = errorVC as? SignUpErrorCapable {
                 switch error {
-                case .generic(let message), .notAvailable(let message):
-                    vc.showError(error: SignupError.generic(message: message))
+                case .generic(let message, let code):
+                    vc.showError(error: SignupError.generic(message: message, code: code))
+                case .notAvailable(let message):
+                    vc.showError(error: SignupError.generic(message: message, code: error.bestShotAtReasonableErrorCode))
                 }
             }
         } else if let error = error as? ResponseError, let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription {
             if let vc = errorVC, self.customErrorPresenter?.willPresentError(error: error, from: vc) == true {
             } else if let vc = errorVC as? SignUpErrorCapable {
-                vc.showError(error: SignupError.generic(message: message))
+                vc.showError(error: SignupError.generic(message: message, code: error.bestShotAtReasonableErrorCode))
             }
         } else {
             if let vc = errorVC, self.customErrorPresenter?.willPresentError(error: error, from: vc) == true {
             } else if let vc = errorVC as? SignUpErrorCapable {
-                vc.showError(error: SignupError.generic(message: error.messageForTheUser))
+                vc.showError(error: SignupError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode))
             } else if let vc = errorVC as? LoginErrorCapable {
-                vc.showError(error: LoginError.generic(message: error.messageForTheUser))
+                vc.showError(error: LoginError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode))
             }
         }
         if let vc = errorVC as? PaymentsUIViewController {
@@ -478,6 +536,7 @@ extension SignupCoordinator: TCViewControllerDelegate {
 extension SignupCoordinator: EmailVerificationViewControllerDelegate {
     func validatedToken(verifyToken: String) {
         self.verifyToken = verifyToken
+        self.tokenType = VerifyMethod.PredefinedMethod.email.rawValue
         showPasswordViewController()
     }
     

@@ -35,9 +35,16 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
     case wrongTokenStatus(PaymentToken.Status)
     case cancelled
     case notAllowed
-    case unknown
+    case unknown(code: Int)
     case appIsLocked                            // (mail only)
     case pleaseSignIn                           // (mail only)
+    
+    var isUnknown: Bool {
+        switch self {
+        case .unknown: return true
+        default: return false
+        }
+    }
 
     public var errorDescription: String? {
         switch self {
@@ -55,5 +62,14 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
         case .wrongTokenStatus: return CoreString._error_wrong_token_status
         case .cancelled, .notAllowed, .unknown: return nil
         }
+    }
+}
+
+extension Error {
+    public var userFacingMessageInPayments: String {
+        if let storeKitError = self as? StoreKitManagerErrors {
+            return storeKitError.errorDescription ?? storeKitError.localizedDescription
+        }
+        return messageForTheUser
     }
 }

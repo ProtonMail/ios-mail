@@ -412,7 +412,9 @@ public class PMAPIService: APIService {
                             error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
                         }
                         
-                        self.doh.handleErrorResolvingProxyDomainIfNeeded(host: url, error: error) { shouldRetry in
+                        self.doh.handleErrorResolvingProxyDomainIfNeeded(
+                            host: url, error: error
+                        ) { shouldRetry in
                             guard shouldRetry else { parseBlock(task, res, error); return }
                             // retry. will use the proxy domain automatically if it was successfully fetched
                             self.request(method: method,
@@ -848,62 +850,80 @@ public class PMAPIService: APIService {
         DispatchQueue.global(qos: .default).async {
             self.hvDispatchGroup.enter()
             DispatchQueue.main.async {
-                self.humanDelegate?.onHumanVerify(methods: hvResponse.methods, startToken: hvResponse.startToken) { header, isClosed, verificationCodeBlock in
+                var currentURL: URL?
+                if var url = URLComponents(string: path) {
+                    url.query = nil
+                    currentURL = url.url
+                }
+                self.humanDelegate?.onHumanVerify(methods: hvResponse.methods, startToken: hvResponse.startToken, currentURL: currentURL) { finishReason in
                     
-                    // close human verification UI
-                    if isClosed {
+                    switch finishReason {
+                    case .close:
                         // finish request with existing completion block
                         completion?(task, responseDict, error)
                         self.isHumanVerifyUIPresented = false
                         self.hvDispatchGroup.leave()
-                        return
+                        
+                    case .closeWithError(let code, let description):
+                        // finish request with existing completion block
+                        var newResponse: [String: Any] = responseDict
+                        newResponse["Error"] = description
+                        newResponse["Code"] = code
+                        completion?(task, newResponse, error)
+                        self.isHumanVerifyUIPresented = false
+                        self.hvDispatchGroup.leave()
+                        
+                    case .verification(let header, let verificationCodeBlock):
+                        verificationHandler(header: header, verificationCodeBlock: verificationCodeBlock)
                     }
-                    
-                    // human verification completion
-                    let hvCompletion: CompletionBlock = { task, response, error in
-                        // check if error code is one of the HV codes
-                        if let error = error, self.invalidHVCodes.first(where: { error.code == $0 }) != nil {
-                            let responseError = self.getResponseError(task: task, response: response, error: error)
-                            verificationCodeBlock?(false, responseError, nil)
-                        } else {
-                            let code = response?["Code"] as? Int
-                            var result = false
-                            if code == APIErrorCode.responseOK {
-                                result = true
-                            } else {
-                                // check if response "Code" is one of the HV codes
-                                result = !(self.invalidHVCodes.first { code == $0 } != nil)
-                            }
-                            let responseError = result ? nil : self.getResponseError(task: task, response: response, error: error)
-                            verificationCodeBlock?(result, responseError) {
-                                // finish request with new completion block
-                                completion?(task, response, error)
-                                self.isHumanVerifyUIPresented = false
-                                self.hvDispatchGroup.leave()
-                            }
-                        }
-                    }
-                    
-                    // merge headers
-                    var newHeaders = headers ?? [:]
-                    newHeaders.merge(header) { (_, new) in new }
-                    
-                    // retry request
-                    self.request(method: method,
-                                 path: path,
-                                 parameters: parameters,
-                                 headers: newHeaders,
-                                 authenticated: authenticated,
-                                 authRetry: authRetry,
-                                 authRetryRemains: authRetryRemains,
-                                 customAuthCredential: customAuthCredential,
-                                 nonDefaultTimeout: nonDefaultTimeout,
-                                 completion: hvCompletion)
                 }
             }
         }
+        
+        func verificationHandler(header: HumanVerifyFinishReason.HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?) {
+            // human verification completion
+            let hvCompletion: CompletionBlock = { task, response, error in
+                // check if error code is one of the HV codes
+                if let error = error, self.invalidHVCodes.first(where: { error.code == $0 }) != nil {
+                    let responseError = self.getResponseError(task: task, response: response, error: error)
+                    verificationCodeBlock?(false, responseError, nil)
+                } else {
+                    let code = response?["Code"] as? Int
+                    var result = false
+                    if code == APIErrorCode.responseOK {
+                        result = true
+                    } else {
+                        // check if response "Code" is one of the HV codes
+                        result = !(self.invalidHVCodes.first { code == $0 } != nil)
+                    }
+                    let responseError = result ? nil : self.getResponseError(task: task, response: response, error: error)
+                    verificationCodeBlock?(result, responseError) {
+                        // finish request with new completion block
+                        completion?(task, response, error)
+                        self.isHumanVerifyUIPresented = false
+                        self.hvDispatchGroup.leave()
+                    }
+                }
+            }
+            
+            // merge headers
+            var newHeaders = headers ?? [:]
+            newHeaders.merge(header) { (_, new) in new }
+            
+            // retry request
+            self.request(method: method,
+                         path: path,
+                         parameters: parameters,
+                         headers: newHeaders,
+                         authenticated: authenticated,
+                         authRetry: authRetry,
+                         authRetryRemains: authRetryRemains,
+                         customAuthCredential: customAuthCredential,
+                         nonDefaultTimeout: nonDefaultTimeout,
+                         completion: hvCompletion)
+        }
     }
-    
+
     private func getResponseError(task: URLSessionDataTask?, response: [String: Any]?, error: NSError?) -> ResponseError {
         return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
                              responseCode: response?["Code"] as? Int,

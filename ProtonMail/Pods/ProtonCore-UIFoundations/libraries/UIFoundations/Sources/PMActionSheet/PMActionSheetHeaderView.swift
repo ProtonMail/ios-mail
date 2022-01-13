@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMActionSheetHeaderView: UIView {
+public final class PMActionSheetHeaderView: UIView, AccessibleView {
 
     // MARK: Constant
     private let TITLE_PADDING: CGFloat = 63
@@ -82,6 +83,7 @@ extension PMActionSheetHeaderView {
         if hasSeparator {
             self.addLine()
         }
+        generateAccessibilityIdentifiers()
     }
 
     private func createTitleView() -> UIStackView {

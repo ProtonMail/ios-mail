@@ -32,6 +32,7 @@ protocol HumanCheckMenuCoordinatorDelegate: AnyObject {
     func verificationCode(tokenType: TokenType,
                           verificationCodeBlock: (@escaping SendVerificationCodeBlock))
     func close()
+    func closeWithError(code: Int, description: String)
 }
 
 enum NotificationType: String, Codable {
@@ -45,6 +46,8 @@ enum MessageType: String, Codable {
     case human_verification_success = "HUMAN_VERIFICATION_SUCCESS"
     case notification = "NOTIFICATION"
     case resize = "RESIZE"
+    case close = "CLOSE"
+    case loaded = "LOADED"
 }
 
 struct MessageSuccess: Codable {

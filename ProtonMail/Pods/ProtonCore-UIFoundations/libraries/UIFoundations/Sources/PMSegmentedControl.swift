@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMSegmentedControl: UISegmentedControl {
+public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
 
     private let defaultFont = UIFont.systemFont(ofSize: 14)
     private let defaultColor: UIColor = ColorProvider.TextNorm
@@ -57,5 +58,6 @@ public final class PMSegmentedControl: UISegmentedControl {
         } else {
             tintColor = ColorProvider.BackgroundNorm
         }
+        generateAccessibilityIdentifiers()
     }
 }

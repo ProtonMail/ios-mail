@@ -24,14 +24,6 @@ import ProtonCore_Networking
 
 extension Error {
 
-    private var responseCode: Int? {
-        (self as? ResponseError)?.responseCode
-    }
-
-    private var httpCode: Int? {
-        (self as? ResponseError)?.httpCode
-    }
-
     var isNoSubscriptionError: Bool {
         return responseCode == 22110
     }

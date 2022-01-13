@@ -65,6 +65,22 @@ class SignupViewModel {
             }
         }
     }
+    
+    func checkEmail(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void, editEmail: @escaping () -> Void) {
+        loginService.checkAvailabilityExternal(email: email) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                if error.codeInLogin == APIErrorCode.humanVerificationEditEmail {
+                    // transform internal HV error to editEmail closure
+                    editEmail()
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
 
     func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         signupService.requestValidationToken(email: email, completion: completion)

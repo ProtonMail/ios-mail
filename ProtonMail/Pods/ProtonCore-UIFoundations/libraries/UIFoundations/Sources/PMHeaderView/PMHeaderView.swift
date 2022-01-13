@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMHeaderView: UIView {
+public final class PMHeaderView: UIView, AccessibleView {
 
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var titleLabelLeft: NSLayoutConstraint!
@@ -64,6 +65,7 @@ extension PMHeaderView {
 
         addSubview(self.contentView)
         self.setup()
+        generateAccessibilityIdentifiers()
     }
 
     private func loadViewFromNib() -> UIView {

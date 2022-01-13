@@ -42,6 +42,10 @@ public struct ResponseError: Error, Equatable {
     public let underlyingError: NSError?
 
     public var localizedDescription: String { userFacingMessage ?? underlyingError?.localizedDescription ?? "" }
+    
+    public var bestShotAtReasonableErrorCode: Int {
+        responseCode ?? httpCode ?? (self as NSError).code
+    }
 
     public init(httpCode: Int?, responseCode: Int?, userFacingMessage: String?, underlyingError: NSError?) {
         self.httpCode = httpCode
@@ -183,7 +187,7 @@ open class Response: ResponseType {
 }
 
 public extension ResponseError {
-    var messageForTheUser: String {
+    var networkResponseMessageForTheUser: String {
         if isNetworkIssueError {
             return CoreString._net_connection_error
         }
@@ -192,6 +196,9 @@ public extension ResponseError {
 }
 
 public extension Error {
+    
+    // TODO: these widely accessible API is making it very difficult to understand what is actually presented to the user
+    
     var responseCode: Int? {
         (self as? ResponseError)?.responseCode
     }
@@ -199,11 +206,13 @@ public extension Error {
     var httpCode: Int? {
         (self as? ResponseError)?.httpCode
     }
+    
+    var bestShotAtReasonableErrorCode: Int {
+        (self as? ResponseError)?.bestShotAtReasonableErrorCode ?? (self as NSError).code
+    }
 
     var messageForTheUser: String {
-        (self as? ResponseError)?.userFacingMessage
-            ?? (self as? ResponseError)?.localizedDescription
-            ?? self.localizedDescription
+        (self as? ResponseError)?.networkResponseMessageForTheUser ?? self.localizedDescription
     }
     
     var isNetworkIssueError: Bool {

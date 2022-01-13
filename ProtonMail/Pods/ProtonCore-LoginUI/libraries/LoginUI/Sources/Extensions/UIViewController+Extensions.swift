@@ -68,7 +68,7 @@ extension LoginErrorCapable {
             showBanner(message: message)
         case let .invalidAccessToken(message: message):
             showBanner(message: message)
-        case let .generic(message: message):
+        case let .generic(message: message, _):
             showBanner(message: message)
         case .invalidSecondPassword:
             showBanner(message: CoreString._ls_error_invalid_mailbox_password)
@@ -149,7 +149,7 @@ extension SignUpErrorCapable {
         case .passwordNotEqual:
             showBanner(message: CoreString._su_error_password_not_equal)
             self.invalidPassword(reason: .notEqual)
-        case let .generic(message: message):
+        case let .generic(message: message, _):
             showBanner(message: message)
         case .generateVerifier:
             showBanner(message: CoreString._su_error_create_user_failed)

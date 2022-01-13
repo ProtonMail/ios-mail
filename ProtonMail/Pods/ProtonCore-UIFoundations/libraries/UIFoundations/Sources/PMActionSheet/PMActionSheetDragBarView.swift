@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-final class PMActionSheetDragBarView: UIView {
+final class PMActionSheetDragBarView: UIView, AccessibleView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,6 +40,7 @@ extension PMActionSheetDragBarView {
     private func setup() {
         self.setupBar()
         self.backgroundColor = ColorProvider.BackgroundNorm
+        generateAccessibilityIdentifiers()
     }
 
     private func setupBar() {

@@ -25,6 +25,7 @@ import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import ProtonCore_Foundations
 import ProtonCore_Networking
+import ProtonCore_Services
 
 class RecaptchaViewController: UIViewController, AccessibleView {
 
@@ -205,11 +206,15 @@ extension RecaptchaViewController: WKNavigationDelegate {
         setWaitingIndicatorState(state: .off)
     }
     
-    func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let serverTrust = challenge.protectionSpace.serverTrust else { return completionHandler(.useCredential, nil) }
-        let exceptions = SecTrustCopyExceptions(serverTrust)
-        SecTrustSetExceptions(serverTrust, exceptions)
-        completionHandler(.useCredential, URLCredential(trust: serverTrust))
+    func webView(_ webView: WKWebView,
+                 didReceive challenge: URLAuthenticationChallenge,
+                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        handleAuthenticationChallenge(
+            didReceive: challenge,
+            noTrustKit: PMAPIService.noTrustKit,
+            trustKit: PMAPIService.trustKit,
+            challengeCompletionHandler: completionHandler
+        )
     }
 
     private func enableUserInteraction(for webView: WKWebView) {

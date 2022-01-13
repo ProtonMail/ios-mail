@@ -243,6 +243,9 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     }
 
     private func createPlan(details baseDetails: Plan, isSelectable: Bool, isCurrent: Bool, isMultiUser: Bool, endDate: NSAttributedString? = nil, price: String? = nil, cycle: Int? = nil) -> PlanPresentation? {
+        
+        // we need to remove all other plans not defined in the shownPlanNames
+        guard shownPlanNames.contains(where: { baseDetails.name == $0 || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name) }) else { return nil }
 
         // we only show plans that are either current or available for purchase
         guard isCurrent || baseDetails.isPurchasable else { return nil }

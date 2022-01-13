@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public class ProtonButton: UIButton {
+public class ProtonButton: UIButton, AccessibleView {
 
     public enum ProtonButtonMode {
         case solid
@@ -78,6 +79,7 @@ public class ProtonButton: UIButton {
         titleLabel?.lineBreakMode = .byWordWrapping
         titleLabel?.textAlignment = .center
         modeConfiguration()
+        generateAccessibilityIdentifiers()
     }
 
     fileprivate func modeConfiguration() {

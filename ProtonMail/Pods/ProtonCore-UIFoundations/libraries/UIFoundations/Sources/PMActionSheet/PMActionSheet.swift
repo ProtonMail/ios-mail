@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
 public protocol PMActionSheetEventsListener: AnyObject {
     func willPresent()
@@ -35,7 +36,7 @@ protocol PMActionSheetProtocol: AnyObject {
     func dismiss(animated: Bool)
 }
 
-public final class PMActionSheet: UIView {
+public final class PMActionSheet: UIView, AccessibleView {
 
     // MARK: Variables
     private var tableView: UITableView!
@@ -74,6 +75,7 @@ public final class PMActionSheet: UIView {
         self.enableBGTap = enableBGTap
         self.viewModel = PMActionSheetVM(actionsheet: self, itemGroups: itemGroups)
         self.setup()
+        generateAccessibilityIdentifiers()
     }
 
     override init(frame: CGRect) {

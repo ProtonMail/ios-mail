@@ -92,7 +92,7 @@ extension PlanPresentation {
                           description: nil,
                           optDetails: [
                             details.vpnPaidCountriesDescription,
-                            details.UVPNConnectionsDescription,
+                            details.UConnectionsDescription,
                             details.highSpeedDescription
                           ])
             
@@ -101,7 +101,7 @@ extension PlanPresentation {
                           description: nil,
                           optDetails: [
                             details.vpnPaidCountriesDescription,
-                            details.UVPNConnectionsDescription,
+                            details.UConnectionsDescription,
                             details.highestSpeedDescription,
                             details.adblockerDescription,
                             details.streamingServiceDescription
@@ -268,7 +268,7 @@ extension PlanPresentation {
                               description: CoreString._pu_plan_details_free_description,
                               optDetails: [
                                 details.vpnFreeCountriesDescription,
-                                details.UVPNConnectionsDescription,
+                                details.UConnectionsDescription,
                                 details.vpnFreeSppedDescription
                               ])
             default:

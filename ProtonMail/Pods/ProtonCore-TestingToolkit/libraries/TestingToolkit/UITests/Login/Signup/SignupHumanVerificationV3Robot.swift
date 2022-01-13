@@ -34,6 +34,7 @@ private let emailTextField = "EmailVerifyViewController.emailTextFieldView.textF
 private let sendCodeButtonLabel = CoreString._hv_email_verification_button
 private let verifyCodeTextField = "VerifyCodeViewController.verifyCodeTextFieldView.textField"
 private let verifyCodeButtonLabel = CoreString._hv_verification_verify_button
+private let verifyEmailButtonLabel = "Verify email"
 
 public final class SignupHumanVerificationV3Robot: CoreElements {
     public enum HV3OrCompletionRobot {
@@ -50,6 +51,17 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             case .complete(let completeRobot):
                 return completeRobot
                     .verify.completeScreenIsShown(robot: T.self)
+            }
+        }
+        
+        public func handleOwnership<T: CoreElements>(code: String, to: T.Type) -> T {
+            switch self {
+            case .humanVerification(let hvRobot):
+                return hvRobot
+                    .verify.humanVerificationScreenIsShown()
+                    .performOwnershipEmailVerificationV3(code: code, to: T.self)
+            case .complete:
+                return T()
             }
         }
     }
@@ -101,6 +113,11 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
         return Robot()
     }
     
+    public func verifyEmailButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(verifyEmailButtonLabel).wait(time: 30).tap()
+        return Robot()
+    }
+    
     public func performEmailVerificationV3<Robot: CoreElements>(
         email: String, code: String, to: Robot.Type
     ) -> Robot {
@@ -110,6 +127,13 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             .sendCodeButton()
             .fillInCodeV3(code)
             .verifyCodeButton(to: Robot.self)
+    }
+    
+    public func performOwnershipEmailVerificationV3<Robot: CoreElements>(code: String, to: Robot.Type
+    ) -> Robot {
+        self
+            .fillInCodeV3(code)
+            .verifyEmailButton(to: Robot.self)
     }
 
     public func humanVerificationCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {

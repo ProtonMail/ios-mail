@@ -168,7 +168,7 @@ final class LoginCoordinator {
                     case .success:
                         self?.completeLoginFlow(data: data)
                     case .failure(let error):
-                        self?.popAndShowError(error: .generic(message: error.messageForTheUser))
+                        self?.popAndShowError(error: .generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode))
                     }
                 }
             }

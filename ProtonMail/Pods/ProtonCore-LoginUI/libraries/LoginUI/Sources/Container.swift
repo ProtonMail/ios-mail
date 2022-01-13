@@ -35,7 +35,7 @@ import typealias ProtonCore_Payments.BugAlertHandler
 import ProtonCore_PaymentsUI
 
 extension PMChallenge: ChallangeParametersProvider {
-    public func provideParameters() -> [[String : Any]] {
+    public func provideParameters() -> [[String: Any]] {
         export().toDictArray()
     }
 }
@@ -52,6 +52,9 @@ final class Container {
     private let clientApp: ClientApp
     private let appName: String
     private let challenge: PMChallenge
+    
+    var token: String?
+    var tokenType: String?
 
     init(appName: String, clientApp: ClientApp, doh: DoH & ServerConfig, apiServiceDelegate: APIServiceDelegate, forceUpgradeDelegate: ForceUpgradeDelegate, minimumAccountType: AccountType) {
         if PMAPIService.trustKit == nil {
@@ -135,7 +138,8 @@ final class Container {
     }
 
     func setupHumanVerification(viewController: UIViewController? = nil) {
-        humanCheckHelper = HumanCheckHelper(apiService: api, viewController: viewController, clientApp: clientApp, responseDelegate: nil, paymentDelegate: self)
+        let nonModalUrl = URL(string: "/users/availableExternal")!
+        humanCheckHelper = HumanCheckHelper(apiService: api, viewController: viewController, nonModalUrls: [nonModalUrl], clientApp: clientApp, responseDelegate: self, paymentDelegate: self)
         api.humanDelegate = humanCheckHelper
     }
 
@@ -149,5 +153,15 @@ extension Container: HumanVerifyPaymentDelegate {
     func paymentTokenStatusChanged(status: PaymentTokenStatusResult) {
 
     }
+}
 
+extension Container: HumanVerifyResponseDelegate {
+    func onHumanVerifyStart() { }
+    
+    func onHumanVerifyEnd(result: HumanVerifyEndResult) { }
+    
+    func humanVerifyToken(token: String?, tokenType: String?) {
+        self.token = token
+        self.tokenType = tokenType
+    }
 }

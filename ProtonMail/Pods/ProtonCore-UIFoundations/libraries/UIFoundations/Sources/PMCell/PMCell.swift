@@ -20,8 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Foundations
 
-public final class PMCell: UITableViewCell {
+public final class PMCell: UITableViewCell, AccessibleView {
 
     public static let reuseIdentifier = "PMCell"
     public static let nib = UINib(nibName: "PMCell", bundle: PMUIFoundations.bundle)
@@ -114,6 +115,8 @@ public final class PMCell: UITableViewCell {
         let bgColorView = UIView()
         bgColorView.backgroundColor = ColorProvider.Shade10
         selectedBackgroundView = bgColorView
+        
+        generateAccessibilityIdentifiers()
     }
 
     private func setStateColors() {

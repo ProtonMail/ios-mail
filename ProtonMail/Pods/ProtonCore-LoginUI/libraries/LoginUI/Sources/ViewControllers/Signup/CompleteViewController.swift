@@ -41,6 +41,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     var email: String?
     var phoneNumber: String?
     var verifyToken: String?
+    var tokenType: String?
     private let margin: CGFloat = 8
 
     // MARK: Outlets
@@ -115,12 +116,12 @@ class CompleteViewController: UIViewController, AccessibleView {
     }
 
     private func createExternalAccount() {
-        guard let email = name, let password = password, let verifyToken = verifyToken else {
+        guard let email = name, let password = password, let verifyToken = verifyToken, let tokenType = tokenType else {
             assertionFailure("Create external account input data missing")
             return
         }
         do {
-            try viewModel?.createNewExternalUser(email: email, password: password, verifyToken: verifyToken) { result in
+            try viewModel?.createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
                 self.unlockUI()
                 switch result {
                 case .success(let loginData):

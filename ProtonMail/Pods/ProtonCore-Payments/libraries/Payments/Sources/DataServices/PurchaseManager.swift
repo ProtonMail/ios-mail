@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import ProtonCore_Services
 
 public enum PurchaseResult {
@@ -133,7 +132,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
             api: apiService, protonPlanName: protonPlanName, isAuthenticated: isAuthenticated
         )
 
-        let validationResponse = try AwaitKit.await(validateSubscriptionRequest.run())
+        let validationResponse = try validateSubscriptionRequest.awaitResponse()
         guard let amountDue = validationResponse.validateSubscription?.amountDue
         else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
 
@@ -144,7 +143,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
         plan: InAppPurchasePlan, planId: String, finishCallback: @escaping (PurchaseResult) -> Void
     ) throws {
         let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
-        let subscriptionResponse = try AwaitKit.await(subscriptionRequest.run())
+        let subscriptionResponse = try subscriptionRequest.awaitResponse()
         if let newSubscription = subscriptionResponse.newSubscription {
             planService.currentSubscription = newSubscription
             finishCallback(.purchasedPlan(accountPlan: plan))
@@ -160,7 +159,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
         self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { _ in
             finishCallback(.purchasedPlan(accountPlan: plan))
         } errorCompletion: { [weak self] error in
-            if let error = error as? StoreKitManagerErrors, error == .cancelled || error == .notAllowed || error == .unknown {
+            if let error = error as? StoreKitManagerErrors, error == .cancelled || error == .notAllowed || error.isUnknown {
                 // ignored payment errors
                 finishCallback(.purchaseCancelled)
             } else {

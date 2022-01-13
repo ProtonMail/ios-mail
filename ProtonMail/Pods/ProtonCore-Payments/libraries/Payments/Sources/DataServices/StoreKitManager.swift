@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import StoreKit
 import Reachability
 import ProtonCore_CoreTranslation
@@ -227,12 +226,12 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     public func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void) {
         let planService = planService
-        planService.updateServicePlans { [weak self] in
+        planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
             guard planService.isIAPAvailable else {
                 completion(false)
                 return
             }
-            planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+            planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil, updateCredits: false) { [weak self] in
                 completion(self?.validationManager.isValidPurchase(storeKitProductId: storeKitProductId) ?? false)
             } failure: { _ in
                 completion(false)
@@ -252,7 +251,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
               let product = availableProducts.first(where: { $0.productIdentifier == storeKitProductId })
         else { return errorCompletion(Errors.unavailableProduct) }
 
-        planService.updateServicePlans { [weak self] in
+        planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
             guard let self = self else {
                 errorCompletion(Errors.transactionFailedByUnknownReason)
                 return
@@ -314,7 +313,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         
         threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
 
-        planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+        planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil, updateCredits: false) { [weak self] in
             guard let self = self else {
                 errorCompletion(Errors.transactionFailedByUnknownReason)
                 return
@@ -502,7 +501,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 }
             } else if error.code == SKError.unknown.rawValue {
                 getErrorCompletion(for: cacheKey) {
-                    $0?(Errors.unknown)
+                    $0?(Errors.unknown(code: error.code))
                     self.refreshHandler?()
                 }
             } else {
@@ -569,7 +568,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
         if planService.detailsOfServicePlan(named: plan.protonName) == nil {
-            try AwaitKit.await(planService.updateServicePlans())
+            try planService.updateServicePlans()
         }
 
         guard let details = planService.detailsOfServicePlan(named: plan.protonName),
@@ -585,7 +584,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
                 api: apiService, protonPlanName: details.name, isAuthenticated: applicationUserId() != nil
             )
-            let response = try AwaitKit.await(validateSubscriptionRequest.run())
+            let response = try validateSubscriptionRequest.awaitResponse()
             guard let fetchedAmountDue = response.validateSubscription?.amountDue
             else { throw Errors.transactionFailedByUnknownReason }
             amountDue = fetchedAmountDue
@@ -645,13 +644,13 @@ extension StoreKitManager {
     }
 
     private func errorCompletionAlertView(error: Error) {
-        paymentsAlertManager.errorAlert(message: error.messageForTheUser)
+        paymentsAlertManager.errorAlert(message: error.userFacingMessageInPayments)
     }
 
     private func confirmUserValidationAlertView(error: Error, userName: String, completion: @escaping () -> Void) {
         let activateMsg = String(format: CoreString._do_you_want_to_bypass_validation, userName)
         let message = """
-        \(error.messageForTheUser)
+        \(error.userFacingMessageInPayments)
 
         \(activateMsg)
         """

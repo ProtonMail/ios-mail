@@ -99,10 +99,10 @@ class CompleteViewModel {
         }
     }
 
-    func createNewExternalUser(email: String, password: String, verifyToken: String, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {
+    func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {
         DispatchQueue.main.async {
             self.progressStepWait(progressStep: .createAccount)
-            self.signupService.createNewExternalUser(email: email, password: password, verifyToken: verifyToken) { result in
+            self.signupService.createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
                 switch result {
                 case .success:
                     self.login(name: email, password: password) { result in

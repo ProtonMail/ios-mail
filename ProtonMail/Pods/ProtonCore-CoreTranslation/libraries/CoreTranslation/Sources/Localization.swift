@@ -324,7 +324,7 @@ public class LocalizedString {
     public lazy var _error_apply_payment_on_registration_support = NSLocalizedString("Contact customer support", bundle: Common.bundle, comment: "Error applying credit after registration alert")
 
     /// Errors
-    public lazy var _error_unavailable_product = NSLocalizedString("Failed to get list of available products from AppStore.", bundle: Common.bundle, comment: "Error message")
+    public lazy var _error_unavailable_product = NSLocalizedString("Failed to get list of available products from App Store.", bundle: Common.bundle, comment: "Error message")
 
     public lazy var _error_invalid_purchase = NSLocalizedString("Purchase is not possible.", bundle: Common.bundle, comment: "Error message")
 
@@ -370,6 +370,8 @@ public class LocalizedString {
     public lazy var _ad_delete_account_button = NSLocalizedString("Delete account", bundle: Common.bundle, comment: "Delete account button title")
     
     public lazy var _ad_delete_account_message = NSLocalizedString("This will permanently delete your account and all of its data. You will not be able to reactivate this account.", bundle: Common.bundle, comment: "Delete account explaination under button")
+    
+    public lazy var _ad_delete_account_success = NSLocalizedString("Account deleted.\nLogging out...", bundle: Common.bundle, comment: "Delete account success")
 
     /// Account switcher
 
@@ -600,15 +602,12 @@ public class LocalizedString {
     /// Upgrade plan button
     public lazy var _pu_upgrade_plan_button = NSLocalizedString("Upgrade", bundle: Common.bundle, comment: "Upgrade plan button")
     
-    /// Plan details price time period 1 month
-    public lazy var _pu_plan_details_price_time_period_1_m = NSLocalizedString("for 1 month", bundle: Common.bundle, comment: "Plan details price time period 1 mont")
+    /// Plan details price time period n months
+    public lazy var _pu_plan_details_price_time_period_m = NSLocalizedString("for %d months", bundle: Common.bundle, comment: "Plan details price time period n months")
     
-    /// Plan details price time period 1 year
-    public lazy var _pu_plan_details_price_time_period_1_y = NSLocalizedString("for 1 year", bundle: Common.bundle, comment: "Plan details price time period 1 year")
-
-    /// Plan details price time period x years
-    public lazy var _pu_plan_details_price_time_period_x_y = NSLocalizedString("for %i years", bundle: Common.bundle, comment: "Plan details price time period x years")
-    
+    /// Plan details price time period n years
+    public lazy var _pu_plan_details_price_time_period_y = NSLocalizedString("for %d years", bundle: Common.bundle, comment: "Plan details price time period n years")
+   
     /// Plan details renew automatically expired
     public lazy var _pu_plan_details_renew_auto_expired = NSLocalizedString("Your plan will automatically renew on %@", bundle: Common.bundle, comment: "Plan details renew automatically expired")
     
@@ -618,11 +617,8 @@ public class LocalizedString {
     /// Plan details unavailable contact administrator
     public lazy var _pu_plan_details_plan_details_unavailable_contact_administrator = NSLocalizedString("Contact an administrator to make changes to your Proton subscription.", bundle: Common.bundle, comment: "Plan details unavailable contact administrator")
     
-    /// Plan details n user
-    public lazy var _pu_plan_details_n_user = NSLocalizedString("%i user", bundle: Common.bundle, comment: "Plan details n user")
-    
     /// Plan details n users
-    public lazy var _pu_plan_details_n_users = NSLocalizedString("%i users", bundle: Common.bundle, comment: "Plan details n users")
+    public lazy var _pu_plan_details_n_users = NSLocalizedString("%d users", bundle: Common.bundle, comment: "Plan details n users")
     
     /// Plan details storage
     public lazy var _pu_plan_details_storage = NSLocalizedString("%@ storage", bundle: Common.bundle, comment: "Plan details storage")
@@ -630,29 +626,23 @@ public class LocalizedString {
     /// Plan details storage per user
     public lazy var _pu_plan_details_storage_per_user = NSLocalizedString("%@ storage / user", bundle: Common.bundle, comment: "Plan details storage per user")
     
-    /// Plan details n address
-    public lazy var _pu_plan_details_n_address = NSLocalizedString("%i email address", bundle: Common.bundle, comment: "Plan details n address")
-    
     /// Plan details n addresses
-    public lazy var _pu_plan_details_n_addresses = NSLocalizedString("%i email addresses", bundle: Common.bundle, comment: "Plan details n addresses")
-
-    /// Plan details n address per user
-    public lazy var _pu_plan_details_n_address_per_user = NSLocalizedString("%i email address / user", bundle: Common.bundle, comment: "Plan details n address per user")
+    public lazy var _pu_plan_details_n_addresses = NSLocalizedString("%d email addresses", bundle: Common.bundle, comment: "Plan details n addresses")
 
     /// Plan details n addresses per user
-    public lazy var _pu_plan_details_n_addresses_per_user = NSLocalizedString("%i email addresses / user", bundle: Common.bundle, comment: "Plan details n addresses per user")
+    public lazy var _pu_plan_details_n_addresses_per_user = NSLocalizedString("%d email addresses / user", bundle: Common.bundle, comment: "Plan details n address per user")
 
     /// Plan details n calendars
-    public lazy var _pu_plan_details_n_calendar = NSLocalizedString("%i calendar", bundle: Common.bundle, comment: "Plan details n calendar")
+    public lazy var _pu_plan_details_n_calendars = NSLocalizedString("%d calendars", bundle: Common.bundle, comment: "Plan details n calendar")
     
     /// Plan details n folders / labels
-    public lazy var _pu_plan_details_n_folders = NSLocalizedString("%i folders / labels", bundle: Common.bundle, comment: "Plan details n folders / labels")
+    public lazy var _pu_plan_details_n_folders = NSLocalizedString("%d folders / labels", bundle: Common.bundle, comment: "Plan details n folders / labels")
 
     /// Plan details medium speed
     public lazy var _pu_plan_details_vpn_free_speed = NSLocalizedString("Medium speed", bundle: Common.bundle, comment: "Plan details medium speed")
     
     /// Plan details n countries
-    public lazy var _pu_plan_details_countries = NSLocalizedString("%i countries", bundle: Common.bundle, comment: "Plan details n countries")
+    public lazy var _pu_plan_details_countries = NSLocalizedString("%d countries", bundle: Common.bundle, comment: "Plan details n countries")
     
     /// Plan details custom email addresses
     public lazy var _pu_plan_details_custom_email = NSLocalizedString("Custom email addresses", bundle: Common.bundle, comment: "Plan details custom email addresses")
@@ -666,44 +656,26 @@ public class LocalizedString {
     /// Plan details adblocker
     public lazy var _pu_plan_details_streaming_service = NSLocalizedString("Streaming service support", bundle: Common.bundle, comment: "Plan details streaming service support")
 
-    /// Plan details n calendars
-    public lazy var _pu_plan_details_n_calendars = NSLocalizedString("%i calendars", bundle: Common.bundle, comment: "Plan details n calendars")
-
     /// Plan details n calendars per user
-    public lazy var _pu_plan_details_n_calendar_per_user = NSLocalizedString("%i calendar / user", bundle: Common.bundle, comment: "Plan details n calendar per user")
-
-    /// Plan details n calendars per user
-    public lazy var _pu_plan_details_n_calendars_per_user = NSLocalizedString("%i calendars / user", bundle: Common.bundle, comment: "Plan details n calendars per user")
-
-    /// Plan details n connection
-    public lazy var _pu_plan_details_n_connection = NSLocalizedString("%i connection", bundle: Common.bundle, comment: "Plan details n connection")
+    public lazy var _pu_plan_details_n_calendars_per_user = NSLocalizedString("%d calendars / user", bundle: Common.bundle, comment: "Plan details n calendars per user")
 
     /// Plan details n connections
-    public lazy var _pu_plan_details_n_connections = NSLocalizedString("%i connections", bundle: Common.bundle, comment: "Plan details n connections")
-
-    /// Plan details n high-speed connection
-    public lazy var _pu_plan_details_n_high_speed_connection = NSLocalizedString("%i high-speed VPN connection", bundle: Common.bundle, comment: "Plan details n high-speed connection")
+    public lazy var _pu_plan_details_n_connections = NSLocalizedString("%d connections", bundle: Common.bundle, comment: "Plan details n connections")
+    
+    /// Plan details n VPN connections
+    public lazy var _pu_plan_details_n_vpn_connections = NSLocalizedString("%d VPN connections", bundle: Common.bundle, comment: "Plan details n VPN connections")
 
     /// Plan details n high-speed connections
-    public lazy var _pu_plan_details_n_high_speed_connections = NSLocalizedString("%i high-speed VPN connections", bundle: Common.bundle, comment: "Plan details n high-speed connections")
-
-    /// Plan details n high-speed connection per user
-    public lazy var _pu_plan_details_n_high_speed_connection_per_user = NSLocalizedString("%i high-speed VPN connection / user", bundle: Common.bundle, comment: "Plan details n connection per user")
+    public lazy var _pu_plan_details_n_high_speed_connections = NSLocalizedString("%d high-speed VPN connections", bundle: Common.bundle, comment: "Plan details n high-speed connections")
 
     /// Plan details n high-speed connections per user
-    public lazy var _pu_plan_details_n_high_speed_connections_per_user = NSLocalizedString("%i high-speed VPN connections / user", bundle: Common.bundle, comment: "Plan details n connections per user")
-
-    /// Plan details n custom domain
-    public lazy var _pu_plan_details_n_custom_domain = NSLocalizedString("%i custom domain", bundle: Common.bundle, comment: "Plan details n custom domain")
+    public lazy var _pu_plan_details_n_high_speed_connections_per_user = NSLocalizedString("%d high-speed VPN connections / user", bundle: Common.bundle, comment: "Plan details n connections per user")
 
     /// Plan details n custom domains
-    public lazy var _pu_plan_details_n_custom_domains = NSLocalizedString("%i custom domains", bundle: Common.bundle, comment: "Plan details n custom domains")
-
-    /// Plan details n address & calendar
-    public lazy var _pu_plan_details_n_address_and_calendar = NSLocalizedString("%i address & calendar", bundle: Common.bundle, comment: "Plan details n address & calendar")
+    public lazy var _pu_plan_details_n_custom_domains = NSLocalizedString("%d custom domains", bundle: Common.bundle, comment: "Plan details n custom domains")
 
     /// Plan details n addresses & calendars
-    public lazy var _pu_plan_details_n_addresses_and_calendars = NSLocalizedString("%i addresses & calendars", bundle: Common.bundle, comment: "Plan details n addresses & calendars")
+    public lazy var _pu_plan_details_n_addresses_and_calendars = NSLocalizedString("%d addresses & calendars", bundle: Common.bundle, comment: "Plan details n addresses & calendars")
 
     /// Plan details n uneven amount of addresses & calendars
     public lazy var _pu_plan_details_n_uneven_amounts_of_addresses_and_calendars = NSLocalizedString("%@ & %@", bundle: Common.bundle, comment: "Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars")
@@ -724,7 +696,7 @@ public class LocalizedString {
     public lazy var _pu_plan_details_plus_description = NSLocalizedString("Full-featured mailbox with advanced protection.", bundle: Common.bundle, comment: "Plan details plus description")
     
     /// Plan details plus description
-    public lazy var _pu_plan_details_pro_description = NSLocalizedString("ProtonMain for professionals and businesses", bundle: Common.bundle, comment: "Plan details pro description")
+    public lazy var _pu_plan_details_pro_description = NSLocalizedString("ProtonMail for professionals and businesses", bundle: Common.bundle, comment: "Plan details pro description")
     
     /// Plan details visionary description
     public lazy var _pu_plan_details_visionary_description = NSLocalizedString("Mail + VPN bundle for families and small businesses", bundle: Common.bundle, comment: "Plan details visionary description")

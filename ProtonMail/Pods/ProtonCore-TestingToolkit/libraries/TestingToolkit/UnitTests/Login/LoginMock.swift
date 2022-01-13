@@ -42,6 +42,12 @@ public class LoginMock: Login {
             completion(.success)
         }
     }
+    
+    public func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            completion(.success)
+        }
+    }
 
     public func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -51,7 +57,7 @@ public class LoginMock: Login {
 
     public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
 
@@ -63,19 +69,19 @@ public class LoginMock: Login {
 
     public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
 
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
 
     public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
 
@@ -85,7 +91,7 @@ public class LoginMock: Login {
 
     public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
     
@@ -100,6 +106,18 @@ public class LoginMock: Login {
     public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             result("")
+        }
+    }
+    
+    public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            completion(.failure(.generic(message: "", code: 0)))
+        }
+    }
+    
+    public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            completion(.failure(.generic(message: "", code: 0)))
         }
     }
     

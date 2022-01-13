@@ -99,23 +99,3 @@ class TestApi: Request {
     var method: HTTPMethod = .get
     var parameters: [String: Any]?
 }
-
-public struct ExpireTokenResponse: Codable {
-    public var code: Int
-}
-
-public class ExpireToken: Request {
-    let uid: String
-    public init(uid: String) {
-        self.uid = uid
-    }
-    public var path: String {
-        return "/internal/quark/user:expire:access:token?UID=\(self.uid)"
-    }
-    public var method: HTTPMethod = .get
-    public var parameters: [String: Any]?
-
-    public var isAuth: Bool {
-        return false
-    }
-}
