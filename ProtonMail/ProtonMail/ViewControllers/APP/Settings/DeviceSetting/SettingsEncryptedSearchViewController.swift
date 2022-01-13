@@ -91,11 +91,14 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         // Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
 
+        // Update viewModel in EncryptedSearchService Singleton
+        EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
+
         // Automatically restart indexing when previous state was downloading
         if EncryptedSearchService.shared.state == .downloading {
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                EncryptedSearchService.shared.restartIndexBuilding(userID: userID, viewModel: self.viewModel)
+                EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
             } else {
                 print("ERROR when restarting download. User unknown!")
             }
