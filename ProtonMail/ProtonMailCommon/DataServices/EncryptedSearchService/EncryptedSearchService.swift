@@ -1974,9 +1974,9 @@ extension EncryptedSearchService {
             let timeDifference: Double = currentTime-self.indexingStartTime
             let processedMessageDifference: Double = Double(self.processedMessages-self.prevProcessedMessages)
 
-            // Estimate time
+            // Estimate time (in seconds)
             estimatedTime = ceil((timeDifference/processedMessageDifference)*remainingMessages)
-            // Estimate progress
+            // Estimate progress (in percent)
             currentProgress = Int(ceil((Double(self.processedMessages)/Double(self.totalMessages))*100))
         }
 
@@ -1997,7 +1997,7 @@ extension EncryptedSearchService {
                 let result = self.estimateIndexingTime()
 
                 if self.isFirstIndexingTimeEstimate {
-                    self.initialIndexingEstimate = Int(result.time / 1000)  // provide the initial estimate in seconds
+                    self.initialIndexingEstimate = Int(result.time)  // provide the initial estimate in seconds
                     self.isFirstIndexingTimeEstimate = false
                 }
 
@@ -2011,7 +2011,7 @@ extension EncryptedSearchService {
                     self.estimateIndexTimeRounds += 1
                     self.viewModel?.estimatedTimeRemaining.value = nil
                 }
-                print("Remaining indexing time: \(String(describing: result.estimatedTime))")
+                print("Remaining indexing time (seconds): \(String(describing: result.time))")
                 print("Current progress: \(result.currentProgress)")
                 print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
             }
@@ -2026,7 +2026,9 @@ extension EncryptedSearchService {
     }
 
     private func timeToDate(time: Double) -> String? {
-        let date: Date = Date(timeIntervalSinceNow: TimeInterval(time))
+        if time < 60 {
+            return LocalString._encrypted_search_estimated_time_less_than_a_minute
+        }
 
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.day, .hour, .minute]
@@ -2034,9 +2036,8 @@ extension EncryptedSearchService {
         formatter.collapsesLargestUnit = true
         formatter.includesTimeRemainingPhrase = true    // adds remaining in the end
         formatter.zeroFormattingBehavior = .dropLeading // drops leading units that are zero
-        
-        let datecomp = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
-        return formatter.string(from: datecomp)
+
+        return formatter.string(from: time)
     }
 
     // Not used at the moment - use low power mode notification instead
@@ -2386,7 +2387,7 @@ extension EncryptedSearchService {
     }
 
     func updateProgressedMessagesUI(progressedMessages: Int) {
-        print("UI progressed messages: \(progressedMessages)")
+        //print("UI progressed messages: \(progressedMessages)")
         self.viewModel?.progressedMessages.value = progressedMessages
     }
 }
