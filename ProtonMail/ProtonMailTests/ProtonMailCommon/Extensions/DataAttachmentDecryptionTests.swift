@@ -164,6 +164,20 @@ final class DataAttachmentDecryptionTests: XCTestCase {
         })
     }
 
+    func testGetAddressKeyPassphraseShouldThrowVerificationFailedErrorWhenTokenHasWrongFormat() throws {
+        let malformedToken = try! String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_token", withExtension: "txt")!)
+        let malformedSignature = try! String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_signature", withExtension: "txt")!)
+        let malformedAddressKey = try! String(contentsOf: Bundle(for: DataAttachmentDecryptionTests.self).url(forResource: "malformed_addressKey", withExtension: "txt")!)
+        let key = Key(keyID: "foo", privateKey: malformedAddressKey, token: malformedToken, signature: malformedSignature)
+        XCTAssertThrowsError(try Crypto.getAddressKeyPassphrase(userKeys: [userKey], passphrase: passphrase, key: key), "Should throw Crypto.CryptoError.verificationFailed Error", { error in
+            if let error = error as? Crypto.CryptoError, case .verificationFailed = error {
+                XCTAssertTrue(true)
+            } else {
+                XCTFail("Should throw Crypto.CryptoError.verificationFailed Error")
+            }
+        })
+    }
+
 }
 
 final class AttachmentDecryptorMock: AttachmentDecryptor {
