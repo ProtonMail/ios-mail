@@ -79,6 +79,8 @@ class Crypto {
 //        SIGNATURE_FAILED      int = 3
 //    }
     
+    private let EXPECTED_TOKEN_LENGTH: Int = 64
+    
     // MARK: - Message
     
     // no verify
@@ -838,16 +840,13 @@ class Crypto {
             return false
         }
     }
-    
-//    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
-//                                                                                    plainText: c.data,
-//                                                                                    publicKey: key.publicKey,
-//                                                                                    verifyTime: 0, ret0_: &ok)
-//    (pm *PmCrypto) VerifyTextSignDetachedBinKey(signature string, plaintext string, publicKey *KeyRing, verifyTime int64) (bool, error):
-//    (pm *PmCrypto) VerifyBinSignDetachedBinKey(signature string, plainData []byte, publicKey *KeyRing, verifyTime int64) (bool, error):
-//    * (to verify) (keyRing *KeyRing) VerifyDetached(message *PlainMessage, signature *PGPSignature, verifyTime int64) (error)
-//
-//
+
+    /**
+     * Check that the key token is a 32 byte value encoded in hexadecimal form.
+     */
+    private func verifyTokenFormat(decryptedToken: String) -> Bool {
+        decryptedToken.count == EXPECTED_TOKEN_LENGTH && decryptedToken.allSatisfy { $0.isHexDigit }
+    }
     
     // MARK: - Session
     
@@ -1038,6 +1037,10 @@ class Crypto {
         
         guard let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) else {
             throw Crypto.CryptoError.decryptionFromTokenFailed
+        }
+        
+        guard Crypto().verifyTokenFormat(decryptedToken: plainToken) else {
+            throw Crypto.CryptoError.verificationFailed
         }
         
         let verification = try Crypto().verifyDetached(signature: signature,
