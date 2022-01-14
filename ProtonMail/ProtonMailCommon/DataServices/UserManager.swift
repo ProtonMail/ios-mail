@@ -66,7 +66,7 @@ class UserManager : Service, HasLocalStorage {
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                self.localNotificationService.cleanUp(),
+//                self.localNotificationService.cleanUp(),
                 //                self.userService.cleanUp(),
                 lastUpdatedStore.cleanUp(userId: self.userinfo.userId),
             ]
@@ -97,7 +97,7 @@ class UserManager : Service, HasLocalStorage {
             LabelsDataService.cleanUpAll(),
             ContactDataService.cleanUpAll(),
             ContactGroupsDataService.cleanUpAll(),
-            LocalNotificationService.cleanUpAll(),
+//            LocalNotificationService.cleanUpAll(),
             UserDataService.cleanUpAll(),
             LastUpdatedStore.cleanUpAll()
         ]

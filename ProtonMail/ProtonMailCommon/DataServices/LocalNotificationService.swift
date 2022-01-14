@@ -81,23 +81,25 @@ class LocalNotificationService: Service, HasLocalStorage {
     }
     
     func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            let center = UNUserNotificationCenter.current()
-            center.getPendingNotificationRequests { all in
-                let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
-                center.removePendingNotificationRequests(withIdentifiers: belongToUser)
-            }
-            center.getDeliveredNotifications() { all in
-                let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
-                center.removeDeliveredNotifications(withIdentifiers: belongToUser)
-            }
-            seal.fulfill_()
-        }
+//        return Promise { seal in
+//            let center = UNUserNotificationCenter.current()
+//            center.getPendingNotificationRequests { all in
+//                let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
+//                center.removePendingNotificationRequests(withIdentifiers: belongToUser)
+//            }
+//            center.getDeliveredNotifications() { all in
+//                let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
+//                center.removeDeliveredNotifications(withIdentifiers: belongToUser)
+//            }
+//            seal.fulfill_()
+//        }
+        Promise()
     }
     
     static func cleanUpAll() -> Promise<Void> {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        return Promise()
+//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+//        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+//        return Promise()
+        Promise()
     }
 }

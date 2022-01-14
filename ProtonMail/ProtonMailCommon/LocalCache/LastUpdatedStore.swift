@@ -115,7 +115,7 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStor
         //sync
         getShared().synchronize()
         
-        UIApplication.setBadge(badge: 0)
+//        UIApplication.setBadge(badge: 0)
     }
     
     static func clear() {
@@ -135,7 +135,7 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStor
             //sync
             userDefault.synchronize()
             
-            UIApplication.setBadge(badge: 0)
+//            UIApplication.setBadge(badge: 0)
         }
     }
     

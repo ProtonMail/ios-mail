@@ -863,7 +863,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
 
                 _ = context.saveUpstreamIfNeeded()
 
-                UIApplication.setBadge(badge: 0)
+//                UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
             }
         }
