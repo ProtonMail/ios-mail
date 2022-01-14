@@ -383,7 +383,11 @@ extension SettingsEncryptedSearchViewController {
                     if EncryptedSearchService.shared.state == .paused {
                         estimatedTimeText = LocalString._encrypted_search_download_paused
                     } else if EncryptedSearchService.shared.state == .downloading {
-                        estimatedTimeText = self.viewModel.estimatedTimeRemaining.value ?? LocalString._encrypted_search_default_text_estimated_time_label
+                        if let estimatedTime = self.viewModel.estimatedTimeRemaining.value {
+                            estimatedTimeText = estimatedTime + " ..."
+                        } else {
+                            estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
+                        }
                     } else {
                         estimatedTimeText = LocalString._encrypted_search_default_text_estimated_time_label
                     }
