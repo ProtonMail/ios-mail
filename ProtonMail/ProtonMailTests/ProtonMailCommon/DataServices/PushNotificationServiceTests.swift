@@ -160,7 +160,7 @@ class PushNotificationServiceTests: XCTestCase {
                 XCTAssertEqual(old.UID, session.sessionIDs.first)
                 return nil // no error
         },
-            registrationDone: { },
+            registrationDone: { expect.fulfill() },
             unregistrationDone: { expect.fulfill() })
 
         let service = PushNotificationService.init(service: nil,
