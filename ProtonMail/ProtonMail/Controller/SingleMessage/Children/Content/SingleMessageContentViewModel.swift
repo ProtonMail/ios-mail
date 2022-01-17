@@ -19,6 +19,7 @@ class SingleMessageContentViewModel {
 
     var embedExpandedHeader: ((ExpandedHeaderViewModel) -> Void)?
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
+    var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
 
     var isEmbedInConversationView: Bool {
@@ -88,18 +89,18 @@ class SingleMessageContentViewModel {
 
     func messageHasChanged(message: Message) {
         self.message = message
+        self.messageHadChanged?()
     }
 
     func propagateMessageData() {
-        nonExapndedHeaderViewModel?.messageHasChanged(message: message)
-        expandedHeaderViewModel?.messageHasChanged(message: message)
-        attachmentViewModel.messageHasChanged(message: message)
-        bannerViewModel.messageHasChanged(message: message)
-
         if self.isDetailedDownloaded != message.isDetailDownloaded && message.isDetailDownloaded {
             self.isDetailedDownloaded = true
             self.messageBodyViewModel.messageHasChanged(message: self.message)
         }
+        nonExapndedHeaderViewModel?.messageHasChanged(message: message)
+        expandedHeaderViewModel?.messageHasChanged(message: message)
+        attachmentViewModel.messageHasChanged(message: message)
+        bannerViewModel.messageHasChanged(message: message)
         recalculateCellHeight?(false)
     }
 

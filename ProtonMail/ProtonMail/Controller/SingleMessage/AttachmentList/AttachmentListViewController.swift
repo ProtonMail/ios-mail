@@ -166,7 +166,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             attachment = viewModel.normalAttachments[indexPath.row]
         }
 
-        self.lastClickAttachmentID = attachment.att?.attachmentID
+        self.lastClickAttachmentID = attachment.id
         viewModel.open(attachmentInfo: attachment,
                        showPreviewer: { [weak self] in
             guard let self = self else { return }

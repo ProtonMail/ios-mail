@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -15,13 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Foundation
 @testable import ProtonMail
 
-class MessageDataProcessMock: MessageDataProcessProtocol {
-    var messageDecrypter: MessageDecrypterProtocol = MessageDecrypterMock()
-
-    func base64AttachmentData(att: Attachment, _ complete: @escaping MessageDataService.base64AttachmentDataComplete) {
-
+final class MessageDecrypterMock: MessageDecrypterProtocol {
+    func decrypt(message: Message) throws -> String? {
+        return "Test body"
     }
+    
+    func copy(message: Message, copyAttachments: Bool, context: NSManagedObjectContext) -> Message {
+        return message
+    }
+    
+    
 }

@@ -144,7 +144,7 @@ final public class Message: NSManagedObject {
     var unencrypt_outside : Bool = false
     typealias ObjectIDContainer = ObjectBox<Message>
     
-    var tempAtts: [AttachmentInline]? = nil
+    var tempAtts: [MimeAttachment]? = nil
 }
 
 //IsEncrypted = 2;
