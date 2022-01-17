@@ -34,16 +34,12 @@ class SingleMessageContentViewController: UIViewController {
         let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
         let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
         self.customView =  SingleMessageContentView(replyState: replyState)
-        if viewModel.message.numAttachments != 0 {
-            attachmentViewController = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
-        }
         super.init(nibName: nil, bundle: nil)
 
         self.messageBodyViewController =
             NewMessageBodyViewController(viewModel: viewModel.messageBodyViewModel, parentScrollView: self, viewMode: viewMode)
         self.messageBodyViewController.delegate = self
 
-        self.attachmentViewController?.delegate = self
         if viewModel.message.expirationTime != nil {
             showBanner()
         }
@@ -74,6 +70,10 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
             customView.showHideHistoryButtonContainer.isHidden = !hasStrippedVersion
             customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
+        }
+        viewModel.messageHadChanged = { [weak self] in
+            guard let self = self else { return }
+            self.embedAttachmentViewIfNeeded()
         }
 
         addObservations()
@@ -264,12 +264,18 @@ class SingleMessageContentViewController: UIViewController {
         precondition(messageBodyViewController != nil)
         embed(messageBodyViewController, inside: customView.messageBodyContainer)
         embed(headerViewController, inside: customView.messageHeaderContainer.contentContainer)
-
-        if let attachmentViewController = self.attachmentViewController {
-            embed(attachmentViewController, inside: customView.attachmentContainer)
-        }
-
+        embedAttachmentViewIfNeeded()
         embedHeaderController()
+    }
+
+    private func embedAttachmentViewIfNeeded() {
+        guard self.attachmentViewController == nil else { return }
+        if viewModel.attachmentViewModel.numberOfAttachments != 0 {
+            let attachmentVC = AttachmentViewController(viewModel: viewModel.attachmentViewModel)
+            attachmentVC.delegate = self
+            embed(attachmentVC, inside: customView.attachmentContainer)
+            attachmentViewController = attachmentVC
+        }
     }
 
     private var headerAnimationOn = true

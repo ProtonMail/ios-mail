@@ -53,6 +53,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     let coreDataService: CoreDataService
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let cacheService: CacheService
+    let messageDecrypter: MessageDecrypterProtocol
     
     weak var viewModeDataSource: ViewModeDataSource?
     
@@ -69,6 +70,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
         self.lastUpdatedStore = lastUpdatedStore
         self.parent = user
         self.cacheService = cacheService
+        self.messageDecrypter = MessageDecrypter(userDataSource: user)
         
         setupNotifications()
         self.queueManager = queueManager

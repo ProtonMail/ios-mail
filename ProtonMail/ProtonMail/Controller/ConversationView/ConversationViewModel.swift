@@ -170,7 +170,7 @@ class ConversationViewModel {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
-        guard let body = try? messageService.decryptBodyIfNeeded(message: message) else {
+        guard let body = try? messageService.messageDecrypter.decrypt(message: message) else {
             return nil
         }
         return try? self.writeToTemporaryUrl(body, filename: filename)

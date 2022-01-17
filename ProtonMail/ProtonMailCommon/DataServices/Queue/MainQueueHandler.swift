@@ -602,8 +602,7 @@ extension MainQueueHandler {
                     att.keyPacket = newKeyPack
                     att.keyChanged = true
                 }
-                guard let decryptedBody = try self.messageDataService
-                        .decryptBodyIfNeeded(message: message) else {
+                guard let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message) else {
                             // error: object is not a Message
                             completion?(nil, nil, NSError.badParameter("decrypted body"))
                             return

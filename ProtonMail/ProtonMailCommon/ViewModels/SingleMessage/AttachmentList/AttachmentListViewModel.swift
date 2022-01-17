@@ -78,8 +78,8 @@ class AttachmentListViewModel {
             // two attachment types. inline and normal att in core data
             // inline att doesn't need to decrypt and it saved in cache temporarily when decrypting the message
             // in this case just try to open it directly
-            if let url = attachmentInfo.localUrl,
-               let id = attachmentInfo.att?.attachmentID {
+            if let url = attachmentInfo.localUrl {
+                let id = attachmentInfo.id ?? ""
                 self.attachmentDownloaded?(id, url)
             }
             return
@@ -136,11 +136,11 @@ class AttachmentListViewModel {
     }
 
     func getAttachment(id: String) -> (AttachmentInfo, IndexPath)? {
-        if let index = normalAttachments.firstIndex(where: { $0.att?.attachmentID == id }) {
+        if let index = normalAttachments.firstIndex(where: { $0.id == id }) {
             let attachment = normalAttachments[index]
             let path = IndexPath(row: index, section: 0)
             return (attachment, path)
-        } else if let index = inlineAttachments.firstIndex(where: { $0.att?.attachmentID == id }) {
+        } else if let index = inlineAttachments.firstIndex(where: { $0.id == id }) {
             let attachment = inlineAttachments[index]
             let path = IndexPath(row: index, section: 1)
             return (attachment, path)
@@ -207,6 +207,10 @@ class AttachmentListViewModel {
 private extension AttachmentInfo {
 
     func isInline(inlineCIDS: [String]?) -> Bool {
+        if let mime = self as? MimeAttachment {
+            return mime.isInline
+        }
+
         guard let attachment = att else { return false }
         if let inlineCIDS = inlineCIDS {
             guard let contentID = attachment.contentID() else { return false }

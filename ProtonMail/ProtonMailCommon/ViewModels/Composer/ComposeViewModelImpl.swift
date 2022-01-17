@@ -145,7 +145,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     fatalError("This should not happened.")
                 }
                 
-                self.message = messageService.copyMessage(message: msgToCopy, copyAtts: action == ComposeMessageAction.forward, context: self.composerContext!)
+                self.message = messageService.messageDecrypter.copy(message: msgToCopy, copyAttachments: action == ComposeMessageAction.forward, context: self.composerContext!)
                 self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     self.message?.action = action.rawValue as NSNumber?
@@ -712,7 +712,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             var body = ""
             var css: String?
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
                 css = CSSMagic.generateCSSForDarkMode(htmlString: body)
             } catch {
                 body = self.message!.bodyToHtml()
@@ -722,7 +722,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             var body = ""
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
             } catch {
                 body = self.message!.bodyToHtml()
             }
@@ -772,7 +772,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             var body = ""
             
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
             } catch {
                 body = self.message!.bodyToHtml()
             }

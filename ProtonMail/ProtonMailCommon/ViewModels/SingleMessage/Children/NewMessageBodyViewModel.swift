@@ -284,7 +284,7 @@ class NewMessageBodyViewModel {
         }
 
         do {
-            let decryptedMessage = try messageDataProcessor.decryptBodyIfNeeded(message: message)
+            let decryptedMessage = try messageDataProcessor.messageDecrypter.decrypt(message: message)
             if decryptedMessage != nil {
                 self.delegate?.hideDecryptionErrorBanner()
             }

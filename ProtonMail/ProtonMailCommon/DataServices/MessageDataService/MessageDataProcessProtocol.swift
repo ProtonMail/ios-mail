@@ -18,6 +18,6 @@
 import Foundation
 
 protocol MessageDataProcessProtocol: AnyObject {
-    func decryptBodyIfNeeded(message: Message) throws -> String?
+    var messageDecrypter: MessageDecrypterProtocol { get }
     func base64AttachmentData(att: Attachment, _ complete : @escaping MessageDataService.base64AttachmentDataComplete)
 }
