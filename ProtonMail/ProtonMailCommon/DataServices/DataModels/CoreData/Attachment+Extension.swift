@@ -337,11 +337,7 @@ extension UIImage: AttachmentConvertible {
                         .filter { !$0.inline() }
                     message.numAttachments = NSNumber(value: attachments.count)
                     
-                    var error: NSError? = nil
-                    error = context.saveUpstreamIfNeeded()
-                    if error != nil {
-                        PMLog.D("toAttachment () with error: \(String(describing: error))")
-                    }
+                    _ = context.saveUpstreamIfNeeded()
                     seal.fulfill(attachment)
                 }
             }
@@ -385,11 +381,7 @@ extension Data: AttachmentConvertible {
                     .filter { !$0.inline() }
                 message.numAttachments = NSNumber(value: attachments.count)
                 
-                var error: NSError? = nil
-                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
-                }
+                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }
@@ -425,11 +417,7 @@ extension URL: AttachmentConvertible {
                     .filter { !$0.inline() }
                 message.numAttachments = NSNumber(value: attachments.count)
                 
-                var error: NSError? = nil
-                error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" toAttachment () with error: \(String(describing: error))")
-                }
+                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }

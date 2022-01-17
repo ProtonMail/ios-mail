@@ -83,12 +83,12 @@ extension Email {
     }
 
     func log() {
-        PMLog.D("EmailID: \(self.emailID)")
-        PMLog.D("ContactID: \(self.contactID)")
-        PMLog.D("Email: \(self.email)")
-        PMLog.D("Name: \(self.name)")
-        PMLog.D("Order: \(self.order)")
-        PMLog.D("Type: \(self.type)")
+        print("EmailID: \(self.emailID)")
+        print("ContactID: \(self.contactID)")
+        print("Email: \(self.email)")
+        print("Name: \(self.name)")
+        print("Order: \(self.order)")
+        print("Type: \(self.type)")
     }
     
     func emailType() -> String {
