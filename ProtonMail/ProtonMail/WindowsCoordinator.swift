@@ -210,6 +210,10 @@ class WindowsCoordinator: CoordinatorNew {
             _ = usersManager.clean()
             self.go(dest: .signInWindow(.form))
         } else {
+            // To register again in case the registration on app launch didn't go through because the app was locked
+            let pushService : PushNotificationService = sharedServices.get()
+            UNUserNotificationCenter.current().delegate = pushService
+            pushService.registerForRemoteNotifications()
             self.go(dest: .appWindow)
         }
     }

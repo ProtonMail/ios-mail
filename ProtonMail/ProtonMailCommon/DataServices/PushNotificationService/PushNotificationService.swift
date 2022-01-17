@@ -130,16 +130,25 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         let settingsToUnreport = self.currentSubscriptions.settings().subtracting(Set(settingsWeNeedToHave))
         self.currentSubscriptions.outdate(settingsToUnreport)
         
-        let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter { $0.state == .reported && !settingsToUnreport.contains($0.settings) }
-        var settingsToReport = Set(settingsWeNeedToHave).subtracting(Set(subscriptionsToKeep.map { $0.settings}))
+        let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter {
+            $0.state == .reported && !settingsToUnreport.contains($0.settings)
+        }
+        var settingsToReport = Set(settingsWeNeedToHave)
         settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
-            var newSettings = settings
-            do {
-                try newSettings.generateEncryptionKit()
-            } catch let error {
-                assert(false, "failed to generate enryption kit: \(error)")
+            // Always report all settings to make sure we don't miss any
+            // Those already reported will just be overriden, others will be registered
+            if let alreadyReportedSetting = subscriptionsToKeep.first(where: { $0.settings == settings }),
+               alreadyReportedSetting.settings.encryptionKit != nil {
+                return alreadyReportedSetting.settings
+            } else {
+                var newSettings = settings
+                do {
+                    try newSettings.generateEncryptionKit()
+                } catch let error {
+                    assert(false, "failed to generate enryption kit: \(error)")
+                }
+                return newSettings
             }
-            return newSettings
         })
         
         let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
@@ -176,16 +185,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     // unregister on BE and validate local values
     internal func unreportOutdated() {
         self.currentSubscriptions.outdatedSettings.forEach { settings in
-            let completion: CompletionBlock = { _, _, error in
-                guard error == nil ||               // no errors
-                    error?.code == 11211 ||         // "Device does not exist"
-                    error?.code == 11200 else       // "Invalid device token"
-                {
-                    return
-                }
-                self.currentSubscriptions.removed(settings)
-            }
-            self.deviceRegistrator.deviceUnregister(settings, completion: completion)
+            self.currentSubscriptions.removed(settings)
         }
     }
     
