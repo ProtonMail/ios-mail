@@ -2157,21 +2157,21 @@ extension EncryptedSearchService {
     }
     
     @available(iOS 12, *)
-    func checkIfNetworkAvailable() -> Bool {
-        // Check if network monitoring is enabled - otherwise enable it
-        if self.networkMonitor == nil {
-            self.registerForNetworkChangeNotifications()
-        }
+    func checkIfNetworkAvailable() {
+        // Run on a separate thread so that UI is not blocked
+        DispatchQueue.global(qos: .userInitiated).async {
+            // Check if network monitoring is enabled - otherwise enable it
+            if self.networkMonitor == nil {
+                self.registerForNetworkChangeNotifications()
+            }
 
-        // Check current network path
-        if let networkPath = self.networkMonitor?.currentPath {
-            self.responseToNetworkChanges(path: networkPath)
-            return true
+            // Check current network path
+            if let networkPath = self.networkMonitor?.currentPath {
+                self.responseToNetworkChanges(path: networkPath)
+            } else {
+                print("ES-NETWORK: Error when determining network status!")
+            }
         }
-
-        // Error - cannot determine current network state
-        print("ES-NETWORK: Error when determining network status!")
-        return false
     }
 
     /*@objc private func responseToNetworkChanges(_ notification: Notification) {

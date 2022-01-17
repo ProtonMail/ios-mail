@@ -312,6 +312,92 @@ extension BannerView: UIGestureRecognizerDelegate {
         }
     }
     
+    func displayBanner(on baseView: UIView) {
+        self.superView = baseView
+
+        // sizing
+        let xPadding: CGFloat = 16.0
+        let yPadding: CGFloat = 12.0
+        let space: CGFloat = 2 * 8.0
+        let bannerWidth: CGFloat = baseView.bounds.width - 2 * xPadding
+        let horizontalStackWidth: CGFloat = bannerWidth - 20 - 20
+        let verticalStackWidth: CGFloat = horizontalStackWidth - 41 - 8
+        let textViewWidht = verticalStackWidth - 20
+        if self.appearance == .esBlack {
+            self.addIcon()
+        }
+
+        var buttonHeight = secondButton.frame.height
+        if !secondButton.isHidden {
+            buttonHeight = buttonHeight + space
+        }
+
+        var bannerHeight: CGFloat = 0.0
+        if self.appearance == .esGray {
+            self.messageTextview.font = self.appearance?.fontSize
+            self.messageTextview.textColor = self.appearance?.textColor
+            bannerHeight = 92.0//self.messageTextview.bounds.height + (2 * 16.0)    //TODO banner height wrong when more than one line
+        } else if self.appearance == .esBlack {
+            self.messageTextview.font = self.appearance?.fontSize
+            self.messageTextview.textColor = self.appearance?.textColor
+            bannerHeight = 72.0//self.messageTextview.bounds.height + (2 * 16.0)
+        } else {
+            let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
+            bannerHeight = sizeOfText.height + buttonHeight + yPadding
+        }
+
+        let size = CGSize(width: bannerWidth, height: bannerHeight)
+        self.frame = CGRect(origin: .zero, size: size)
+        self.center = CGPoint(x: (baseView.bounds.width / 2), y: self.offset)
+
+        // Set some constraints
+        if self.appearance == .esGray {
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -48),
+                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+            ])
+
+            // Add dismiss icon + callback
+            if let image = UIImage(named: "mail_label_cross_icon") {
+                let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                let imageView = UIImageView(image: tintableImage)
+                imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+                imageView.tintColor = ColorProvider.IconWeak
+                imageView.isUserInteractionEnabled = true
+                let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismiss))
+                imageView.addGestureRecognizer(tapRecognizer)
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                self.addSubview(imageView)
+                NSLayoutConstraint.activate([
+                    imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 34),
+                    imageView.leadingAnchor.constraint(equalTo: self.messageTextview.trailingAnchor, constant: 8),
+                    imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+                    imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -34)
+                ])
+            }
+        } else if self.appearance == .esBlack {
+            // Set constraints for the text
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
+                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+            ])
+            // Set constraints for icon
+            self.icon?.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.icon!.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
+                self.icon!.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+                self.icon!.trailingAnchor.constraint(equalTo: self.messageTextview.leadingAnchor, constant: -8),
+                self.icon!.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24)
+            ])
+        }
+    }
+    
     @objc func remove(animated: Bool) {
         self.invalidateTimer()
         self.springBehavior = nil
