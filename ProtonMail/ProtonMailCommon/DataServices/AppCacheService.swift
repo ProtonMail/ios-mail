@@ -75,13 +75,5 @@ class AppCacheService: Service {
         UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
         UserDefaults.standard.setValue(PMNLibVersion.getLibVersion(), forKey: Constants.SettingsBundleKeys.libVersion)
     }
-    
-    func restoreCacheAfterAuthorized() {
-        
-    }
-    
-    func logout() {
-        
-    }
 }
 

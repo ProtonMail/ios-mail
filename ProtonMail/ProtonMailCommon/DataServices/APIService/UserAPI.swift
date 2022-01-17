@@ -30,33 +30,8 @@ typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
 typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (NSError?) -> Void
 
-
-//Users API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_users.md
 struct UsersAPI {
-    //
     static let path : String = "/users"
-    
-    /// Check if username already taken [GET]
-    static let v_check_is_user_exist : Int = 3
-    
-    /// Check if direct user signups are enabled [GET]
-    static let v_get_user_direct : Int = 3
-    
-    /// Get user's info [GET]
-    static let v_get_userinfo : Int = 3
-    
-    /// Get options for human verification [GET]
-    static let v_get_human_verify_options : Int = 3
-    
-    /// Verify user is human [POST]
-    static let v_verify_human : Int = 3
-    
-    /// Create user [POST]
-    static let v_create_user : Int = 3
-    
-    /// Send a verification code [POST]
-    static let v_send_verification_code : Int = 3
 }
 
 ///Get user info  --- GetUserInfoResponse

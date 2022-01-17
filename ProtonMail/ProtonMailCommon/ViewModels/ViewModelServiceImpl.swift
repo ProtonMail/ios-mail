@@ -22,18 +22,12 @@
 
 import Foundation
 
-
-//TODO:: move this to coordinator.
-//keep this unique
+// needs refactor while dealing with Contact views
 let sharedVMService: ViewModelServiceImpl = ViewModelServiceImpl(coreDataService: sharedServices.get(by: CoreDataService.self))
-//keep this unique
+
 class ViewModelServiceImpl {
     private let coreDataService: CoreDataService
     private var activeViewControllerNew : ViewModelProtocolBase?
-    
-    private func setup(composer vmp: ViewModelProtocolBase) {
-        self.activeViewControllerNew = vmp
-    }
     
     init(coreDataService: CoreDataService) {
         self.coreDataService = coreDataService
@@ -51,16 +45,7 @@ class ViewModelServiceImpl {
             }
         }
     }
-        
-    // msg details
-    func messageDetails(fromList vmp: ViewModelProtocolBase) {
-        activeViewControllerNew = vmp
-    }
-    
-    func messageDetails(fromPush vmp: ViewModelProtocolBase) {
-        activeViewControllerNew = vmp
-    }
-    
+
     func mailbox(fromMenu vmp : ViewModelProtocolBase) {
         if let oldVC = activeViewControllerNew {
             oldVC.inactiveViewModel()
@@ -68,11 +53,6 @@ class ViewModelServiceImpl {
         activeViewControllerNew = vmp
     }
     
-    func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
-        if let oldVC = activeViewControllerNew {
-            oldVC.inactiveViewModel()
-        }
-    }
     //contacts
     func contactsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
@@ -171,28 +151,4 @@ class ViewModelServiceImpl {
                                                               contactService: user.contactService,
                                                               refreshHandler: refreshHandler))
     }
-    
-    //TODO::fixme
-    func cleanLegacy() {
-        //get current cache version
-        guard let currentVersion = UserDefaultsSaver<Int>(key: AppCache.Key.cacheVersion).get() else {
-            return
-        }
-        if currentVersion > 0 && currentVersion < 98 {
-            CoreDataService.shared.cleanLegacy()//clean core data
-            
-            //get default sharedbased
-            let oldDefault = UserDefaults.standard
-            
-            //keychain part
-            oldDefault.removeObject(forKey: "keychainStoreKey")
-            KeychainWrapper.keychain.remove(forKey: "keychainStoreKey")
-            
-            oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
-            KeychainWrapper.keychain.remove(forKey: "UserTempCachedStatusKey")
-            
-            oldDefault.synchronize()
-        }
-    }
-    
 }

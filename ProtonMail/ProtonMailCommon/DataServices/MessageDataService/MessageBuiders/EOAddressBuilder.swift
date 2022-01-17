@@ -19,6 +19,7 @@ import AwaitKit
 import OpenPGP
 import PromiseKit
 import ProtonCore_Services
+import ProtonCore_APIClient
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {
@@ -56,7 +57,7 @@ class EOAddressBuilder: PackageBuilder {
 
             // start build auth package
             let authModuls: AuthModulusResponse = try `await`(
-                PMAPIService.shared.run(route: AuthModulusRequest(authCredential: nil))
+                PMAPIService.shared.run(route: AuthAPI.Router.modulus)
             )
             guard let modulsId = authModuls.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
