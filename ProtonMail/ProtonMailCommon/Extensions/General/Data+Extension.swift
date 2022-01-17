@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Data {
-    
+
     func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""
@@ -33,9 +32,7 @@ extension Data {
         }
         return tokenString
     }
-    
-    
-    
+
     func encodeBase64() -> String {
         return self.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }

@@ -20,21 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Bundle {
-    
+
     /// Returns the app version in a nice to read format
     var appVersion: String {
         return "\(majorVersion) (\(buildVersion))"
     }
-    
+
     /// Returns the build version of the app.
     var buildVersion: String {
         return infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
     }
-    
+
     /// Returns the major version of the app.
     var majorVersion: String {
         return infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"

@@ -435,7 +435,7 @@ class EmailHeaderView: UIView, AccessibleView {
         
         let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let isToday = Calendar.current.isDateInToday(self.date)
-        let dateOrTimeString = isToday ? self.date.string(format: timeFormat) : self.date.string(format: "MMM d")
+        let dateOrTimeString = isToday ? self.date.formattedWith(timeFormat): self.date.formattedWith("MMM d")
         self.emailShortTime.text = String(format: isToday  ? LocalString._composer_forward_header_at : LocalString._composer_forward_header_on , dateOrTimeString)
         let date = self.date.formattedWith("E, MMM d, yyyy")
         let detailedDate = String(format: LocalString._composer_forward_header_on_detail, date, self.date.formattedWith(timeFormat))
@@ -615,7 +615,7 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailShortTime = UILabel()
         self.emailShortTime.font = Fonts.h6.medium
         self.emailShortTime.numberOfLines = 1
-        self.emailShortTime.text = "at \(self.date.string(format: self.k12HourMinuteFormat))".lowercased()
+        self.emailShortTime.text = "at \(self.date.formattedWith(self.k12HourMinuteFormat)))".lowercased()
         self.emailShortTime.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailShortTime.sizeToFit()
         self.emailHeaderView.addSubview(emailShortTime)

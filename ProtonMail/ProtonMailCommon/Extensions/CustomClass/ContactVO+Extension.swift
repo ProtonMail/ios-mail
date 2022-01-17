@@ -25,7 +25,7 @@ import Foundation
 import ProtonCore_DataModel
 
 extension ContactVO {
-    
+
     /// ContactVO extension for check is contactVO contained by a array of Address
     ///
     /// - Parameter addresses: addresses check addresses
@@ -33,11 +33,18 @@ extension ContactVO {
     func isDuplicated(_ addresses : [Address]) -> Bool {
         return addresses.contains(where: { $0.email.lowercased() == self.email.lowercased() })
     }
-    
+
     /**
      Checks if the current ContactVO is in the address list
     */
     func isDuplicatedWithContacts(_ addresses : [ContactPickerModelProtocol]) -> Bool {
         return addresses.contains(where: { ($0 as? ContactVO)?.email.lowercased() == self.email.lowercased() })
+    }
+
+    func getName(in userContacts: [ContactVO]) -> String? {
+        if let userContact = userContacts.first(where: { email == $0.email }), !userContact.name.isEmpty {
+            return userContact.name == userContact.email ? nil : userContact.name
+        }
+        return name == email ? nil : name
     }
 }

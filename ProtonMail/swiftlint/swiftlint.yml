@@ -243,6 +243,12 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/APIService/FeatureFlagsAPI/FeatureFlagsResponse.swift
   - ${PWD}/ProtonMailCommon/DataServices/InAppFeedbackStateService.swift
   - ${PWD}/ProtonMail/Utilities/Analytics.swift
+  - ${PWD}/ProtonMailCommon/Extensions/CustomClass/ContactVO+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Bundle+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Data+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Date+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Dictionary+JSON+Extension.swift
+  - ${PWD}/ProtonMailCommon/DataServices/APIService/UnsubscribeService.swift
 
 excluded:
   - ${PWD}/Pods

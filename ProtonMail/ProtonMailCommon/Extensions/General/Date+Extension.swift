@@ -1,9 +1,9 @@
 //
-//  Date+CountExpirationTime.swift
-//  ProtonMail
+//  Data+Extension.swift
+//  ProtonMail - Created on 4/30/15.
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2019 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -22,6 +22,24 @@
 
 import Foundation
 
+extension Date {
+
+    // you can create a read-only computed property to return just the nanoseconds as Int
+    var nanosecond: Int {
+        return (Calendar.current as NSCalendar).components(.nanosecond,  from: self).nanosecond!
+    }
+
+    // or an extension function to format your date
+    func formattedWith(_ format: String, timeZone: TimeZone = .autoupdatingCurrent)-> String {
+        let formatter = DateFormatter()
+        //formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)  // you can set GMT time
+        formatter.timeZone = timeZone        // or as local time
+        formatter.dateFormat = format
+        return formatter.string(from: self)
+    }
+}
+
+// MARK: Count expiration time
 extension Date {
 
     static func getReferenceDate(processInfo: SystemUpTimeProtocol?,

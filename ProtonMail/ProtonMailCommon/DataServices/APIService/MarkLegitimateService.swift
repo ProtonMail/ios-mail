@@ -37,10 +37,10 @@ class MarkLegitimateService {
     }
 
     func markAsLegitimate(messageId: String) {
-        _ = apiService.exec(route: MarkLegitimate(messageId: messageId))
-            .done { [weak self, labelId] _ in
-                self?.eventsService.fetchEvents(labelID: labelId)
-            }
+        let request = MarkLegitimate(messageId: messageId),
+        _ = apiService.exec(route: request) { [weak self, labelId] _, _ in
+            self?.eventsService.fetchEvents(labelID: labelId)
+        }
     }
 
 }
