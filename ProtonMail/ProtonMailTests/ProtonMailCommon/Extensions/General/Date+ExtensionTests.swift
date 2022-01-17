@@ -18,7 +18,7 @@
 import XCTest
 @testable import ProtonMail
 
-class Date_ExtensionTests: XCTestCase {
+final class Date_ExtensionTests: XCTestCase {
 
     var reachabilityStub: ReachabilityStub!
 
@@ -162,5 +162,16 @@ class Date_ExtensionTests: XCTestCase {
         let time = Date(timeIntervalSince1970: Double(interval) + 86500.0)
         let result = time.countExpirationTime(processInfo: processInfo, reachability: self.reachabilityStub)
         XCTAssertEqual(result, "1 day")
+    }
+}
+
+extension Date_ExtensionTests {
+    func testFormattedWith() {
+        let date = Date(timeIntervalSince1970: 1641979189)
+        guard let timeZone = TimeZone(secondsFromGMT: 0) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(date.formattedWith("yyyy, MM, dd, HH, mm, ss", timeZone: timeZone), "2022, 01, 12, 09, 19, 49")
     }
 }

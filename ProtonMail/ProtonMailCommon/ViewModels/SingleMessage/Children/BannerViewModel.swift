@@ -131,7 +131,7 @@ class BannerViewModel {
     private func open(url: String) {
         guard let url = URL(string: url), urlOpener.canOpenURL(url) else { return }
         urlOpener.open(url)
-        _ = unsubscribeService.markAsUnsubscribed(messageId: message.messageID)
+        unsubscribeService.markAsUnsubscribed(messageId: message.messageID, finish: {})
     }
 
     @objc
