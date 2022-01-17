@@ -48,12 +48,6 @@ class UserDataService : Service, HasLocalStorage {
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
     
     struct CoderKey {//Conflict with Key object
-        // need to remove and clean
-        static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
-        static let username                  = "usernameKeyProtectedWithMainKey"
-        
-        static let userInfo                  = "userInfoKeyProtectedWithMainKey"
-        static let twoFAStatus               = "twofaKey"
         static let userPasswordMode          = "userPasswordModeKey"
         
         static let roleSwitchCache           = "roleSwitchCache"
@@ -85,33 +79,15 @@ class UserDataService : Service, HasLocalStorage {
             SharedCacheBase.getDefault().synchronize()
         }
     }
-    
-    var showDefaultSignature : Bool {
-        get {
-            return defaultSignatureStauts
-        }
-        set {
-            defaultSignatureStauts = newValue
-        }
-    }
 
     // MARK: - Public variables
-    
-    var linkConfirmation: LinkOpeningMode {
-        return .confirmationAlert
-        //TODO:: fix me
-        //        return userInfo?.linkConfirmation ?? .confirmationAlert
-    }
 
     var isMailboxPasswordStored: Bool {
         return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
-    var isNewUser : Bool = false
-    
     var isUserCredentialStored: Bool {
         return isMailboxPasswordStored
-        //        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
     func allLoggedout() {
@@ -119,7 +95,7 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     // MARK: - methods
-    init(check : Bool = true, api: APIService) {  //Add interface for data agent //
+    init(check : Bool = true, api: APIService) {  //Add interface for data agent
         self.apiService = api
         if check {
             cleanUpIfFirstRun()
@@ -210,20 +186,6 @@ class UserDataService : Service, HasLocalStorage {
                 }
             }
         }
-    }
-    
-    enum MyErrorType : Error {
-        case SomeError
-    }
-    
-    static var authResponse: TwoFactorContext? = nil
-    
-    func clean() {
-        clearAll()
-    }
-    
-    func cleanUserInfo() {
-        
     }
     
     func cleanUp() -> Promise<Void> {
@@ -373,7 +335,7 @@ class UserDataService : Service, HasLocalStorage {
         {//async
             do {
                 //generate new pwd and verifier
-                let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
                 guard let moduls_id = authModuls.ModulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
@@ -394,11 +356,12 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
-                    let authVersion = info.Version
-                    guard let modulus = info.Modulus,
-                          let ephemeral = info.ServerEphemeral, let salt = info.Salt,
-                          let session = info.SRPSession else {
+                    
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
+                    let authVersion = info.version
+                    guard let modulus = info.modulus,
+                          let ephemeral = info.serverEphemeral, let salt = info.salt,
+                          let session = info.srpSession else {
                         throw UpdatePasswordError.invalideAuthInfo.error
                     }
 
@@ -508,7 +471,7 @@ class UserDataService : Service, HasLocalStorage {
 
                 var authPacket : PasswordAuth?
                 if buildAuth {
-                    let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthModulusRequest(authCredential: oldAuthCredential)))
+                    let authModuls: AuthModulusResponse = try `await`(self.apiService.run(route: AuthAPI.Router.modulus))
                     guard let moduls_id = authModuls.ModulusID else {
                         throw UpdatePasswordError.invalidModulusID.error
                     }
@@ -534,9 +497,9 @@ class UserDataService : Service, HasLocalStorage {
                 var forceRetryVersion = 2
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
-                    let authVersion = info.Version
-                    guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
+                    let authVersion = info.version
+                    guard let modulus = info.modulus, let ephemeral = info.serverEphemeral, let salt = info.salt, let session = info.srpSession else {
                         throw UpdatePasswordError.invalideAuthInfo.error
                     }
 
@@ -672,9 +635,9 @@ class UserDataService : Service, HasLocalStorage {
 
                 repeat {
                     // get auto info
-                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthInfoRequest(username: _username, authCredential: oldAuthCredential)))
-                    let authVersion = info.Version
-                    guard let modulus = info.Modulus, let ephemeral = info.ServerEphemeral, let salt = info.Salt, let session = info.SRPSession else {
+                    let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
+                    let authVersion = info.version
+                    guard let modulus = info.modulus, let ephemeral = info.serverEphemeral, let salt = info.salt, let session = info.srpSession else {
                         throw UpdateNotificationEmailError.invalideAuthInfo.error
                     }
 
@@ -793,24 +756,6 @@ class UserDataService : Service, HasLocalStorage {
                 completion?(.success(res))
             }
         }
-    }
-    
-    //Login callback blocks
-    typealias LoginAsk2FABlock = () -> Void
-    typealias LoginErrorBlock = (_ error: NSError) -> Void
-    typealias LoginSuccessBlock = (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void
-}
-
-
-
-
-extension AppCache {
-    static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
-        //userDataService.userInfo = userInfo
-    }
-    
-    static func inject(username: String, into userDataService: UserDataService) {
-        //        userDataService.username = username
     }
 }
 

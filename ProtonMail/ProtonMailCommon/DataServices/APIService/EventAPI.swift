@@ -24,20 +24,9 @@
 import Foundation
 import ProtonCore_Networking
 
-//Events API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_events_v3.md
 struct EventAPI {
     /// base event api path
-    static let path :String = "/events"
-    
-    static let v4Prefix: String = "/v4"
-    
-    /// get latest event id
-    static let v_get_latest_event_id : Int = 3
-    
-    /// get updated events based on latest event id
-    static let v_get_events : Int = 3
-    
+    static let path :String = "/\(Constants.App.API_PREFIXED)/events"
 }
     
 // MARK : Get messages part -- EventCheckResponse
@@ -49,14 +38,14 @@ final class EventCheckRequest: Request {
     }
     
     var path: String {
-        return EventAPI.v4Prefix + EventAPI.path + "/\(self.eventID)"
+        return EventAPI.path + "/\(self.eventID)"
     }
 }
 
 // -- EventLatestIDResponse
 final class EventLatestIDRequest : Request{
     var path: String {
-        return EventAPI.v4Prefix + EventAPI.path + "/latest"
+        return EventAPI.path + "/latest"
     }
 }
 

@@ -428,6 +428,7 @@ extension UsersManager {
             sharedUserDataService.signOut(true)
 
             userCachedStatus.signOut()
+            userCachedStatus.cleanGlobal()
             self.users.forEach { user in
                 user.userService.signOut(true)
             }

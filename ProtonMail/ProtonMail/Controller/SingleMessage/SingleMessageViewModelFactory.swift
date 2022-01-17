@@ -61,7 +61,6 @@ class SingleMessageContentViewModelFactory {
         let markLegitimateService = MarkLegitimateService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService,
             eventsService: user.eventsService
         )
         let receiptService = ReceiptService(labelID: labelId,
@@ -128,7 +127,6 @@ class SingleMessageViewModelFactory {
         let markLegitimateService = MarkLegitimateService(
             labelId: labelId,
             apiService: user.apiService,
-            messageDataService: user.messageService,
             eventsService: user.eventsService
         )
         let receiptService = ReceiptService(labelID: labelId,

@@ -189,9 +189,6 @@ extension AppDelegate: UIApplicationDelegate {
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
 
         configureAppearance()
-
-        ///TODO::fixme refactor
-        sharedVMService.cleanLegacy()
         
         //start network notifier
         sharedInternetReachability.startNotifier()

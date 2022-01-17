@@ -25,36 +25,8 @@ import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
-
-//Contact API
-//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
 struct ContactsAPI {
-    
     static let path : String = "/contacts"
-    
-    /// get contact list. no details. only name, email, labels for displaying
-    static let v_get_contacts : Int = 3
-    /// get contact email list. this is for auto complete. combine with contacts would be full information without encrypted data.
-    static let v_get_contact_emails : Int = 3
-    /// add & import contact post
-    static let v_add_contacts : Int = 3
-    /// get contact details full date clear&encrypt data
-    static let v_get_details : Int = 3
-    /// update contact put
-    static let v_update_contact : Int = 3
-    /// delete contact put
-    static let v_delete_contacts : Int = 3
-    
-    /// group
-    /// label an array of emails to a certain contact group
-    static let v_label_an_array_of_contact_emails: Int = 3
-    
-    /// unlabel an array of emails from a certain contact group
-    static let v_unlabel_an_array_of_contact_emails: Int = 3
-    
-    /// export
-    
-    /// clear contacts
 }
 
 // MARK : Get contacts part -- ContactsResponse
@@ -72,7 +44,6 @@ class ContactsRequest : Request {
     }
 }
 
-//
 class ContactsResponse : Response {
     var total : Int = -1
     var contacts : [[String : Any]] = []
