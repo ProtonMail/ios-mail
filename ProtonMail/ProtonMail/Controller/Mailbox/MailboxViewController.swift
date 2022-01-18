@@ -29,6 +29,7 @@ import ProtonCore_UIFoundations
 import SkeletonView
 import SwipyCell
 import UIKit
+import class ProtonCore_Services.APIErrorCode
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
     

@@ -245,9 +245,13 @@ included:
   - ${PWD}/ProtonMail/Utilities/Analytics.swift
   - ${PWD}/ProtonMailCommon/Extensions/CustomClass/ContactVO+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/Bundle+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Collection+SafeElement.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/Data+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/Date+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/Dictionary+JSON+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Int+extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/Strint+Extension.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/String+Values.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/UnsubscribeService.swift
 
 excluded:

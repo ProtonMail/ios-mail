@@ -67,6 +67,12 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/UpdatePrivateKeyRequestTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/CustomClass/ContactVOTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Dictionary+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Int+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/String+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Collection+ExtensionTests.swift
+
 
 excluded:
   - ${PWD}/Pods
