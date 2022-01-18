@@ -24,8 +24,23 @@
 import XCTest
 @testable import ProtonMail
 
-class String_ExtensionTests: XCTestCase {
-    
+final class String_ExtensionTests: XCTestCase {
+
+    func testHasRe() {
+        XCTAssertTrue("Re: Test mail".hasRe())
+        XCTAssertFalse("Test mail".hasRe())
+    }
+
+    func testHasFw() {
+        XCTAssertTrue("Fw: Test mail".hasFw())
+        XCTAssertFalse("Test mail".hasFw())
+    }
+
+    func testHasFwd() {
+        XCTAssertTrue("Fwd: Test mail".hasFwd())
+        XCTAssertFalse("Test mail".hasFwd())
+    }
+
     func testValidEmailAddresses() {
         XCTAssertTrue("jovan@a.org".isValidEmail())
         XCTAssertTrue("jovan@a.co.il".isValidEmail())
@@ -55,7 +70,7 @@ class String_ExtensionTests: XCTestCase {
         XCTAssertTrue("example-indeed@strange-example.com".isValidEmail())
         XCTAssertTrue("example@s.example".isValidEmail())
     }
-    
+
     /// some addresses are valid in RFC, but it is ok we don't pass it they are too strange
     func testStrangeEmailAddresses() {
         //The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.
@@ -81,7 +96,7 @@ class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("#!$%&'*+-/=?^_`{}|~@example.org".isValidEmail())
         XCTAssertFalse("\"()<>[]:,;@\\\\\\\"!#$%&'-/=?^_`{}| ~.a\"@example.org".isValidEmail())
     }
-    
+
     //List of Invalid Email Addresses
     func testInvalidEmailAddresses() {
         XCTAssertFalse("jovan@a".isValidEmail())
@@ -125,6 +140,42 @@ class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("just”not”right@example.com".isValidEmail())
         XCTAssertFalse("this\\ is\"really\"not\\allowed@example.com".isValidEmail())
     }
+
+    func testTrim() {
+        XCTAssertEqual("  abc ".trim(), "abc")
+        XCTAssertEqual("　　 abc 　　".trim(), "abc")
+    }
+
+    func testLn2Br() {
+        XCTAssertEqual("a\r\nbc\n".ln2br(), "a<br />bc<br />")
+        XCTAssertEqual("abc".ln2br(), "abc")
+    }
+
+    func testRmln() {
+        XCTAssertEqual("a\nb".rmln(), "ab")
+        XCTAssertEqual(#"a\b"#.rmln(), #"a\b"#)
+    }
+
+    func testlr2lrln() {
+        XCTAssertEqual("\r\n".lr2lrln(), "\r\n")
+        XCTAssertEqual("\r".lr2lrln(), "\r\n")
+        XCTAssertEqual("\r\t".lr2lrln(), "\r\n\t")
+    }
+
+    func testDecodeHTML() {
+        XCTAssertEqual("abc".decodeHtml(), "abc")
+        XCTAssertEqual("&amp;&quot;&#039;&#39;&lt;&gt;".decodeHtml(), "&\"''<>")
+    }
+
+    func testEncodeHTML() {
+        XCTAssertEqual("abc".encodeHtml(), "abc")
+        XCTAssertEqual("&\"''<><br />".encodeHtml(), "&amp;&quot;&#039;&#039;&lt;&gt;<br />")
+    }
+
+    func testPreg_match() {
+        XCTAssertFalse("abc".preg_match("ccc"))
+        XCTAssertTrue("abccdew".preg_match("cc"))
+    }
     
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
@@ -151,6 +202,45 @@ class String_ExtensionTests: XCTestCase {
         XCTAssertTrue(testBackground1.hasImage())
     }
 
+    func testRandomString() {
+        XCTAssertEqual(String.randomString(3).count, 3)
+        XCTAssertTrue(String.randomString(0).isEmpty)
+    }
+
+    func testEncodeBase64() {
+        XCTAssertEqual("This is a sample string".encodeBase64(),
+                       "VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=")
+        XCTAssertEqual("Welcome to protonmail".encodeBase64(),
+                       "V2VsY29tZSB0byBwcm90b25tYWls")
+    }
+
+    func testDecodeBase64() {
+        XCTAssertEqual("VGhpcyBpcyBhIHNhbXBsZSBzdHJpbmc=".decodeBase64(),
+                       "This is a sample string")
+        XCTAssertEqual("V2VsY29tZSB0byBwcm90b25tYWls".decodeBase64(),
+                       "Welcome to protonmail")
+    }
+
+    func testParseObject() {
+        XCTAssertEqual("".parseObject(), [:])
+        let dict = "{\"dev\":\"Dev\",\"name\":\"Tester\"}".parseObject()
+        XCTAssertEqual(dict["dev"], "Dev")
+        XCTAssertEqual(dict["name"], "Tester")
+
+        let dict2 = "{\"age\":100,\"name\":\"Tester\"}".parseObject()
+        XCTAssertEqual(dict2, [:])
+    }
+
+    func testToDictionary() {
+        XCTAssertNil("".toDictionary())
+        guard let dict = "{\"age\":100,\"name\":\"Tester\"}".toDictionary() else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(dict["name"] as? String, "Tester")
+        XCTAssertEqual(dict["age"] as? Int, 100)
+    }
+
     func testCommaSeparatedListShouldJoinWithComma() {
         XCTAssertEqual(["foo", "bar"].asCommaSeparatedList(trailingSpace: false), "foo,bar")
     }
@@ -168,3 +258,77 @@ class String_ExtensionTests: XCTestCase {
     }
 }
 
+extension String_ExtensionTests {
+    func testSubscript() {
+        let str = "abcd"
+        let character: Character = str[0]
+        XCTAssertEqual(character, "a" as Character)
+        let string: String = str[1]
+        XCTAssertEqual(string, "b")
+    }
+
+    func testGetDisplayAddress() {
+        let data = """
+        [
+          {"Name": "Tester"},
+          {"Address": "zzz@test.com"},
+          {"Name": "Hi", "Address": "abc@test.com"}
+        ]
+        """
+        let ans1 = [
+            "Tester &lt;<a href=\"mailto:\" class=\"\"></a>&gt;",
+            " &lt;<a href=\"mailto:zzz@test.com\" class=\"\">zzz@test.com</a>&gt;",
+            "Hi &lt;<a href=\"mailto:abc@test.com\" class=\"\">abc@test.com</a>&gt;"
+        ]
+        let result1 = data.formatJsonContact(true)
+        for ans in ans1 {
+            XCTAssertTrue(result1.preg_match(ans))
+        }
+
+        let ans2 = [
+            "Tester&lt;&gt;",
+            "&lt;zzz@test.com&gt;",
+            "Hi&lt;abc@test.com&gt;"
+        ]
+        let result2 = data.formatJsonContact(false)
+        for ans in ans2 {
+            XCTAssertTrue(result2.preg_match(ans))
+        }
+    }
+
+    func testToContacts() {
+        let data = """
+        [
+          {"Name": "Tester"},
+          {"Address": "zzz@test.com"},
+          {"Name": "Hi", "Address": "abc@test.com"}
+        ]
+        """
+        let contacts = data.toContacts()
+        for contact in contacts {
+            if contact.name == "Tester" {
+                XCTAssertEqual(contact.email, "")
+            } else if contact.email == "zzz@test.com" {
+                XCTAssertEqual(contact.name, "")
+            } else {
+                XCTAssertEqual(contact.name, "Hi")
+                XCTAssertEqual(contact.email, "abc@test.com")
+            }
+        }
+    }
+
+    func testToContact() {
+        var data = "{\"Name\": \"Tester\"}"
+        XCTAssertNil(data.toContact())
+
+        data = "{\"Address\": \"zzz@test.com\"}"
+        var contact = data.toContact()
+        XCTAssertEqual(contact?.name, "")
+        XCTAssertEqual(contact?.email, "zzz@test.com")
+
+        data = "{\"Name\": \"Hi\", \"Address\": \"abc@test.com\"}"
+        contact = data.toContact()
+        XCTAssertEqual(contact?.name, "Hi")
+        XCTAssertEqual(contact?.email, "abc@test.com")
+    }
+}

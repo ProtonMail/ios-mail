@@ -24,15 +24,9 @@
 import Foundation
 
 extension Int {
-    //TODO:: the error code should be in same place, this extension could move to the error code class
-    /// check if response code is 5003
-    var forceUpgrade : Bool {
-        get {
-            return self == 5003
-        }
-    }
-
     var toByteCount: String {
+        // The default countStyle is file
+        // 1000 bytes are shown as 1 KB
         let byteCountFormatter = ByteCountFormatter()
         return byteCountFormatter.string(fromByteCount: Int64(self))
     }

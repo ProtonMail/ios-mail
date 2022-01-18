@@ -24,6 +24,7 @@ import MBProgressHUD
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import UIKit
+import class ProtonCore_Services.APIErrorCode
 
 class ChangePasswordViewController: UIViewController {
 

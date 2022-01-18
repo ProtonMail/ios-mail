@@ -156,7 +156,7 @@ extension MessageDecrypter {
                 contentID = contentID.preg_replace(">", replaceto: "")
                 let type = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
                 let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
-                body = body.stringBySetupInlineImage("src=\"cid:\(contentID)\"", to: "src=\"data:\(type);\(encode),\(rawBody)\"")
+                body = body.preg_replace_none_regex("src=\"cid:\(contentID)\"", replaceto: "src=\"data:\(type);\(encode),\(rawBody)\"")
             }
 
             guard let filename = attachment.getFilename()?.clear else {

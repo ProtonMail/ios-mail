@@ -24,6 +24,7 @@ import ProtonCore_DataModel
 import ProtonCore_Login
 import ProtonCore_LoginUI
 import ProtonCore_Networking
+import class ProtonCore_Services.APIErrorCode
 
 final class SignInCoordinator: DefaultCoordinator {
 
@@ -233,8 +234,8 @@ final class SignInCoordinator: DefaultCoordinator {
     // copied from old implementation of SignInViewController to keep the error presentation untact
     private func handleRequestError(_ error: Error, wrapIn flowError: (Error) -> FlowError) {
         let nsError = error as NSError
-        let code = nsError.code
-        if !self.checkDoh(nsError, wrapIn: flowError) && !code.forceUpgrade {
+        let isForceUpdate = nsError.code == APIErrorCode.badAppVersion
+        if !self.checkDoh(nsError, wrapIn: flowError) && !isForceUpdate {
             let alertController = nsError.alertController()
             showAlertAndFinish(controller: alertController, result: .errored(flowError(error)))
         }

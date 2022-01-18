@@ -15,6 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+import class ProtonCore_Services.APIErrorCode
+
 struct TaskCompletionHelper {
     enum Constant {
         static let networkResponseErrorKey = "com.alamofire.serialization.response.error.response"
@@ -117,7 +120,7 @@ struct TaskCompletionHelper {
             } else {
                 result.action = .removeRelated
             }
-        case HTTPStatusCode.ok.rawValue where errorCode == APIErrorCode.HUMAN_VERIFICATION_REQUIRED:
+        case HTTPStatusCode.ok.rawValue where errorCode == APIErrorCode.humanVerificationRequired:
             fallthrough
         case HTTPStatusCode.ok.rawValue where errorCode > 1000:
             result.action = .removeRelated
