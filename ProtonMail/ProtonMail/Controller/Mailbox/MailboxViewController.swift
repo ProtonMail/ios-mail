@@ -134,6 +134,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
+    private var diffableDataSource: MailboxDataSource?
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -174,7 +175,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     func resetTableView() {
         self.viewModel.resetFetchedController()
         self.viewModel.setupFetchController(self, isUnread: self.unreadFilterButton.isSelected)
-        self.tableView.reloadData()
+        self.reloadTableViewDataSource(animate: false)
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -225,6 +226,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.addSubViews()
+        if #available(iOS 13, *) {
+            self.loadDiffableDataSource()
+        } else {
+            self.tableView.dataSource = self
+        }
 
         self.updateNavigationController(listEditing)
         
@@ -305,9 +311,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             if self.viewModel.isDrafts() {
                 // updated draft should either be deleted or moved to top, so all the rows in between should be moved 1 position down
                 let rowsToMove = (0...selectedItem.row).map{ IndexPath(row: $0, section: 0) }
-                self.tableView.reloadRows(at: rowsToMove, with: .top)
+                self.refreshCells(at: rowsToMove, animation: .top)
             } else {
-                self.tableView.reloadRows(at: [selectedItem], with: .fade)
+                self.refreshCells(at: [selectedItem], animation: .fade)
                 self.tableView.deselectRow(at: selectedItem, animated: true)
             }
         }
@@ -374,6 +380,38 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
     
+    @available(iOS 13.0, *)
+    private func loadDiffableDataSource() {
+        let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath) -> UITableViewCell in
+            let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+            
+            if self?.shouldAnimateSkeletonLoading == true {
+                cell.showAnimatedGradientSkeleton()
+                cell.backgroundColor = ColorProvider.BackgroundNorm
+            } else {
+                self?.configure(cell: cell, indexPath: indexPath)
+            }
+            return cell
+        }
+        switch viewModel.locationViewMode {
+        case .singleMessage:
+            self.diffableDataSource = MailboxDiffableDataSource<Message>(viewModel: viewModel,
+                                                                         tableView: self.tableView,
+                                                                         shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
+                                                                         cellProvider: { tableView, indexPath, _ in
+                cellConfigurator(tableView, indexPath)
+            })
+        case .conversation:
+            self.diffableDataSource = MailboxDiffableDataSource<Conversation>(viewModel: viewModel,
+                                                                              tableView: self.tableView,
+                                                                              shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
+                                                                              cellProvider: { tableView, indexPath, _ in
+                cellConfigurator(tableView, indexPath)
+            })
+        }
+    }
+
     private func addSubViews() {
         self.navigationTitleLabel.backgroundColor = UIColor.clear
         self.navigationTitleLabel.font = Fonts.h3.semiBold
@@ -392,7 +430,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.view.backgroundColor = ColorProvider.BackgroundNorm
 
         self.tableView.addSubview(self.refreshControl)
-        self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.noSeparatorsBelowFooter()
         
@@ -551,7 +588,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.setupFetchController(self, isUnread: false)
         }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
-        self.tableView.reloadData()
+        self.reloadTableViewDataSource(animate: false)
         self.updateUnreadButton()
         self.showNoResultLabel()
     }
@@ -570,7 +607,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         viewModel.setupFetchController(self,
                                        isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-        tableView.reloadData()
+        self.reloadTableViewDataSource(animate: false)
 
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
@@ -747,7 +784,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, message: Message) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
-            self.tableView.reloadData()
+            self.reloadTableViewDataSource(animate: false)
             return
         }
 
@@ -771,7 +808,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, conversation: Conversation) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
-            self.tableView.reloadData()
+            self.reloadTableViewDataSource(animate: false)
             return
         }
 
@@ -1164,7 +1201,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.fetchingMessage = true
         self.shouldAnimateSkeletonLoading = true
         self.shouldKeepSkeletonUntilManualDismissal = true
-        self.tableView.reloadData()
+        self.reloadTableViewDataSource(animate: false)
         stopAutoFetch()
 
         viewModel.fetchDataWithReset(time: 0, cleanContact: true, removeAllDraft: false, unreadOnly: isShowingUnreadMessageOnly) { [weak self] task, res, error in
@@ -1174,7 +1211,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             delay(0.2) {
                 self?.shouldAnimateSkeletonLoading = false
                 self?.shouldKeepSkeletonUntilManualDismissal = false
-                self?.tableView.reloadData()
+                self?.reloadTableViewDataSource(animate: false)
             }
             self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             self?.startAutoFetch()
@@ -1339,7 +1376,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard listEditing else { return }
         self.listEditing = false
         if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-            self.tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
+            self.refreshCells(at: indexPathsForVisibleRows, animation: .automatic)
         }
     }
 
@@ -1625,7 +1662,7 @@ extension MailboxViewController {
         listEditing.toggle()
         updateNavigationController(listEditing)
         if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
-            tableView.reloadRows(at: indexPathsForVisibleRows, with: .automatic)
+            self.refreshCells(at: indexPathsForVisibleRows, animation: .automatic)
         }
     }
 
@@ -2093,7 +2130,7 @@ extension MailboxViewController: UITableViewDataSource {
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if controller == self.viewModel.labelFetchedResults {
-            tableView.reloadData()
+            self.reloadTableViewDataSource(animate: false)
             return
         }
         
@@ -2106,7 +2143,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
         
-        self.tableView.endUpdates()
+        if #available(iOS 13, *) { } else {
+            self.tableView.endUpdates()
+        }
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -2128,11 +2167,13 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.unreadFilterButton.titleLabel?.hideSkeleton()
             self.updateUnreadButton()
             
-            self.tableView.reloadData()
+            self.reloadTableViewDataSource(animate: false)
         }
 
         if !shouldKeepSkeletonUntilManualDismissal {
-            tableView.beginUpdates()
+            if #available(iOS 13, *) { } else {
+                self.tableView.beginUpdates()
+            }
         }
     }
 
@@ -2142,13 +2183,17 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             || shouldKeepSkeletonUntilManualDismissal {
             return
         }
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
+        if #available(iOS 13, *), diffableDataSource != nil {
+            self.reloadTableViewDataSource(animate: true)
+        } else {
+            switch(type) {
+            case .delete:
+                tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+            case .insert:
+                tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+            default:
+                return
+            }
         }
     }
 
@@ -2160,14 +2205,22 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
         switch(type) {
         case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
+            if #available(iOS 13, *), diffableDataSource != nil {
+                self.reloadTableViewDataSource(animate: true)
+            } else {
+                if let indexPath = indexPath {
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                }
             }
             popPresentedItemIfNeeded(anObject)
             hideActionBarIfNeeded(anObject)
         case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .fade)
+            if #available(iOS 13, *), diffableDataSource != nil {
+                self.reloadTableViewDataSource(animate: true)
+            } else {
+                guard let newIndexPath = newIndexPath else { return }
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
             guard self.needToShowNewMessage,
                   let newMsg = anObject as? Message,
                   let msgTime = newMsg.time, newMsg.unRead,
@@ -2176,12 +2229,20 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.newMessageCount += 1
         case .update:
             if let indexPath = indexPath {
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+                if #available(iOS 13, *), diffableDataSource != nil {
+                    self.refreshCells(at: [indexPath], animation: .none)
+                } else {
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                }
             }
         case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
+            if #available(iOS 13, *), diffableDataSource != nil {
+                self.reloadTableViewDataSource(animate: true)
+            } else {
+                if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    tableView.insertRows(at: [newIndexPath], with: .fade)
+                }
             }
         default:
             return
@@ -2441,6 +2502,40 @@ extension MailboxViewController: SwipyCellDelegate {
 
     func swipyCell(_ cell: SwipyCell, didSwipeWithPercentage percentage: CGFloat, currentState state: SwipyCellState, triggerActivated activated: Bool) {
 
+    }
+}
+
+// MARK: Data Source Refresh
+extension MailboxViewController {
+    func refreshCells(at indexPaths: [IndexPath], animation: UITableView.RowAnimation) {
+        let shouldAnimate: Bool
+        switch animation {
+        case .fade, .right, .left, .top, .bottom, .middle, .automatic:
+            shouldAnimate = true
+        case .none:
+            shouldAnimate = false
+        @unknown default:
+            shouldAnimate = true
+        }
+
+        if #available(iOS 13, *), let diffableDataSource = diffableDataSource {
+            diffableDataSource.refreshItems(at: indexPaths, animate: shouldAnimate)
+        } else {
+            self.tableView.reloadRows(at: indexPaths, with: animation)
+        }
+    }
+
+    func reloadTableViewDataSource(animate: Bool) {
+        if #available(iOS 13, *), let diffableDataSource = diffableDataSource {
+            diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
+                                              animate: animate)
+            // Using diffable data source triggers an issue that make
+            // refresh control dismiss only after a couple of seconds
+            // so we dismiss it manually
+            self.refreshControl.endRefreshing()
+        } else {
+            self.tableView.reloadData()
+        }
     }
 }
 
