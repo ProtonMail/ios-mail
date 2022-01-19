@@ -197,7 +197,7 @@ class ReportBugsViewController: ProtonMailViewController {
                 guard !self.checkDoh(error), !error.isBadVersionError else {
                     return
                 }
-                let alert = error.alertController(LocalString._offline_bug_report)
+                let alert = error.alertController(title: LocalString._offline_bug_report)
                 alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {

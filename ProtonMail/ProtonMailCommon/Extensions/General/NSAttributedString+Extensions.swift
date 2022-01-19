@@ -1,9 +1,9 @@
 //
-//  NSMutableAttributedString+Extension.swift
-//  ProtonMail - Created on 2018/10/22.
+//  NSAttributedString+Extensions.swift
+//  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -18,11 +18,19 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Foundations
+import UIKit
 import ProtonCore_UIFoundations
 
+
 extension NSAttributedString {
+
+    static var empty: NSAttributedString {
+        .init(string: "")
+    }
+
     /**
      - parameters:
      - text: original string

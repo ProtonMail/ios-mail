@@ -28,7 +28,7 @@ extension NSError {
     
     static var isAlertShown = false
     
-    public class func alertMessageSentToast() ->Void {
+    class func alertMessageSentToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -40,9 +40,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 1)
     }
-    
-    
-    public func alertSentErrorToast() ->Void {
+
+    func alertSentErrorToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -54,9 +53,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 3)
     }
-    
-    
-    public class func alertLocalCacheErrorToast() ->Void {
+
+    class func alertLocalCacheErrorToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -68,22 +66,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 2)
     }
-    
-    
-    public class func alertBadTokenToast() ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.label.text = LocalString._general_alert_title
-        hud.detailsLabel.text = LocalString._general_invalid_access_token
-        hud.removeFromSuperViewOnHide = true
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 3)
-    }
-    
-    public class func alertBadToken() {
+
+    class func alertBadToken() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
             guard let window = UIApplication.shared.keyWindow, !NSError.isAlertShown else {
                 return
@@ -99,8 +83,8 @@ extension NSError {
             window.topmostViewController()?.present(alertVC, animated: true, completion: nil)
         }
     }
-    
-    public class func alertUpdatedToast() ->Void {
+
+    class func alertUpdatedToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }

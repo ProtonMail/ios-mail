@@ -32,22 +32,15 @@ extension MBProgressHUD {
     }
 }
 
-extension MBProgressHUD
-{
-    static func alertToast(errorString: String) -> Void {
-        guard let window = UIApplication.shared.keyWindow else {
-            return
+extension MBProgressHUD {
+    static func alert(errorString: String, at view: UIView? = nil) {
+        var view = view
+        if view == nil,
+           let window = UIApplication.shared.keyWindow {
+            view = window
         }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.label.text = LocalString._general_alert_title
-        hud.detailsLabel.text = errorString
-        hud.removeFromSuperViewOnHide = true
-        hud.hide(animated: true, afterDelay: 3)
-    }
-    
-    static func alert(at view: UIView, errorString: String) -> Void {
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        guard let _view = view else { return }
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: _view, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = errorString

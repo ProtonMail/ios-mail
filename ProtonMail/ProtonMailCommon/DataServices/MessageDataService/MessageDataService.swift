@@ -891,7 +891,8 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                                                           NSNumber(false))
                 if let labels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
                     labels.forEach { label in
-                        if label.conversation != nil {
+                        let conversation: Conversation? = label.conversation
+                        if conversation != nil {
                             context.delete(label.conversation)
                         }
                         context.delete(label)

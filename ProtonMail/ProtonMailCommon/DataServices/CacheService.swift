@@ -259,7 +259,8 @@ class CacheService: Service {
             }
             if let contextLabels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
                 contextLabels.forEach { label in
-                    if label.conversation != nil {
+                    let conversation: Conversation? = label.conversation
+                    if conversation != nil {
                         label.conversation.isSoftDeleted = false
                     }
                     context.delete(label)

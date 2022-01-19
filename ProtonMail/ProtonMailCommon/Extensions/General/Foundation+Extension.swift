@@ -23,17 +23,12 @@
 
 import Foundation
 
-public func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @escaping ()->()) {
+func dispatch_after_delay(_ delay: TimeInterval, queue: DispatchQueue, block: @escaping ()->()) {
     let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     queue.asyncAfter(deadline: time, execute: block)
 }
 
-////Export doesn't catch from here, so disabled
-//func NSLocalizedString(_ key: String) -> String {
-//    return NSLocalizedString(key, comment: "")
-//}
-
-public func delay(_ delay:Double, closure:@escaping ()->()) {
+func delay(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(
         deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }

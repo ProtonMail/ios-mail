@@ -562,7 +562,7 @@ extension SearchViewController {
             )
             coordinator.start()
         }.catch { error in
-            error.alertToast()
+            error.alert(at: nil)
         }.finally { [weak self] in
             guard let self = self else { return }
             self.updateTapped(status: false)

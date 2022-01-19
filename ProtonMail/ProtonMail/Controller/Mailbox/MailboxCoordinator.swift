@@ -295,22 +295,24 @@ extension MailboxCoordinator {
 
     private func navigateToComposer(nextViewController next: ComposeContainerViewController) {
         let user = self.viewModel.user
+        let coreDataService = self.services.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(msg: nil,
                                                     action: .newDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataContextProvider: self.services.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: coreDataService)
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
     }
 
     private func navigateToCompose(message: Message, nextViewController next: ComposeContainerViewController) {
         let user = self.viewModel.user
+        let coreDataService = self.services.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(msg: message,
                                                     action: .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataContextProvider: self.services.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: coreDataService)
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
     }

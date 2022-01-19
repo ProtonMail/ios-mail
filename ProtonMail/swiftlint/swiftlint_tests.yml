@@ -72,6 +72,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Int+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/String+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Collection+ExtensionTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/NSError+ExtensionTests.swift
 
 
 excluded:

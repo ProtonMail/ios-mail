@@ -26,13 +26,15 @@ extension Date {
 
     // you can create a read-only computed property to return just the nanoseconds as Int
     var nanosecond: Int {
-        return (Calendar.current as NSCalendar).components(.nanosecond,  from: self).nanosecond!
+        let calendar = (Calendar.current as NSCalendar)
+        let component = calendar.components(.nanosecond, from: self)
+        let seconds = component.nanosecond
+        return seconds ?? -1
     }
 
     // or an extension function to format your date
-    func formattedWith(_ format: String, timeZone: TimeZone = .autoupdatingCurrent)-> String {
+    func formattedWith(_ format: String, timeZone: TimeZone = .autoupdatingCurrent) -> String {
         let formatter = DateFormatter()
-        //formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)  // you can set GMT time
         formatter.timeZone = timeZone        // or as local time
         formatter.dateFormat = format
         return formatter.string(from: self)

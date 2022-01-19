@@ -20,64 +20,56 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Services
 
 extension NSError {
-    
-    convenience init(domain: String, code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) {
-        var userInfo = [NSLocalizedDescriptionKey : localizedDescription]
-        
+
+    convenience init(domain: String,
+                     code: Int,
+                     localizedDescription: String,
+                     localizedFailureReason: String? = nil,
+                     localizedRecoverySuggestion: String? = nil) {
+        var userInfo = [NSLocalizedDescriptionKey: localizedDescription]
+
         if let localizedFailureReason = localizedFailureReason {
             userInfo[NSLocalizedFailureReasonErrorKey] = localizedFailureReason
         }
-        
+
         if let localizedRecoverySuggestion = localizedRecoverySuggestion {
             userInfo[NSLocalizedRecoverySuggestionErrorKey] = localizedRecoverySuggestion
         }
-        
+
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
-    
-    class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
-        return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
+
+    class func protonMailError(_ code: Int,
+                               localizedDescription: String,
+                               localizedFailureReason: String? = nil,
+                               localizedRecoverySuggestion: String? = nil) -> NSError {
+        return NSError(domain: protonMailErrorDomain(),
+                       code: code,
+                       localizedDescription: localizedDescription,
+                       localizedFailureReason: localizedFailureReason,
+                       localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
-    
+
     class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
         var domain = Bundle.main.bundleIdentifier ?? "ch.protonmail"
-        
+
         if let subdomain = subdomain {
             domain += ".\(subdomain)"
         }
         return domain
     }
- 
-    func getCode() -> Int {
-        var defaultCode : Int = code;
-        if defaultCode == Int.max {
-            if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
-                defaultCode = detail.statusCode
-            }
-        }
-        return defaultCode
-    }
-    
-    class func unknowError() -> NSError {
-        return apiServiceError(
-            code: -1,
-            localizedDescription: LocalString._unknow_error,
-            localizedFailureReason: LocalString._unknow_error)
-    }
-    
+
     func isInternetError() -> Bool {
         var isInternetIssue = false
-        if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
+        if self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
         } else {
-            //                        if(error?.code == -1001) {
-            //                            // request timed out
-            //                        }
-            if self.code == -1009 || self.code == -1004 || self.code == -1001 { //internet issue
+            if self.code == -1_009 ||
+                self.code == -1_004 ||
+                self.code == -1_001 {
                 isInternetIssue = true
             }
         }
@@ -85,15 +77,13 @@ extension NSError {
     }
 
     var isBadVersionError: Bool {
-        
-//        return self.code == PMCommon.APIErrorCode.badAppVersion || self.code == PMCommon.APIErrorCode.badApiVersion
-        // FIXME: These two error codes are badAppVersion and badApiVersion
+        // These two error codes are badAppVersion and badApiVersion
         // But the ProtonCore doesn't have it
         // it should use library constant after library update
-        return self.code == 5003 || self.code == 5005
+        return self.code == 5_003 || self.code == 5_005
     }
 
     var isStorageExceeded: Bool {
-        return self.code == 2011
+        return self.code == 2_011
     }
 }

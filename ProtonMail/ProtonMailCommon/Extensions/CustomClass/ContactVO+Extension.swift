@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 
@@ -30,14 +29,14 @@ extension ContactVO {
     ///
     /// - Parameter addresses: addresses check addresses
     /// - Returns: true | false
-    func isDuplicated(_ addresses : [Address]) -> Bool {
+    func isDuplicated(_ addresses: [Address]) -> Bool {
         return addresses.contains(where: { $0.email.lowercased() == self.email.lowercased() })
     }
 
     /**
      Checks if the current ContactVO is in the address list
     */
-    func isDuplicatedWithContacts(_ addresses : [ContactPickerModelProtocol]) -> Bool {
+    func isDuplicatedWithContacts(_ addresses: [ContactPickerModelProtocol]) -> Bool {
         return addresses.contains(where: { ($0 as? ContactVO)?.email.lowercased() == self.email.lowercased() })
     }
 

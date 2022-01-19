@@ -18,8 +18,8 @@
 import AwaitKit
 import OpenPGP
 import PromiseKit
-import ProtonCore_Services
 import ProtonCore_APIClient
+import ProtonCore_Services
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {

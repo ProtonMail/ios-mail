@@ -32,7 +32,7 @@ class MenuViewModelTests: XCTestCase {
         try super.setUpWithError()
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
-        dohMock = try DohMock()
+        dohMock = DohMock()
         usersManagerMock = UsersManager(doh: dohMock, delegate: nil)
         apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)

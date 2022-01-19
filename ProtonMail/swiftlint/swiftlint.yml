@@ -252,6 +252,7 @@ included:
   - ${PWD}/ProtonMailCommon/Extensions/General/Int+extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/Strint+Extension.swift
   - ${PWD}/ProtonMailCommon/Extensions/General/String+Values.swift
+  - ${PWD}/ProtonMailCommon/Extensions/General/NSError+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/UnsubscribeService.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/MailboxDiffableDataSource.swift
 

@@ -1,9 +1,9 @@
 //
-//  NSAttributedString+Extensions.swift
-//  ProtonMail
+//  Error+Extension.swift
+//  ProtonMail - Created on 2018/10/23.
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2019 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -18,12 +18,14 @@
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
+//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-extension NSAttributedString {
+import Foundation
+import MBProgressHUD
 
-    static var empty: NSAttributedString {
-        .init(string: "")
+extension Error {
+    func alert(at view: UIView?) ->Void {
+        guard !(self as NSError).isBadVersionError else { return }
+        MBProgressHUD.alert(errorString: localizedDescription, at: view)
     }
-
 }
