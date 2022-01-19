@@ -582,10 +582,14 @@ extension EncryptedSearchService {
                             let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
                     case .update:
+                        /*print("ES-DEBUG: Update messages in search index")
+                        print("ES-DEBUG: number of message in index: \(EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID))")
                         self.updateMessageMetadataInSearchIndex(message, action)
                         if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
                             let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
+                        print("ES-DEBUG - after update: number of message in index: \(EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID))")*/
+                        break
                     default:
                         return
                 }
@@ -1593,7 +1597,7 @@ extension EncryptedSearchService {
                 }
             }
 
-            //visualize intemediate results
+            // Visualize intermediate results
             self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
             
             let endBatchSearch: Double = CFAbsoluteTimeGetCurrent()
@@ -1646,10 +1650,10 @@ extension EncryptedSearchService {
                     self.slowSearchTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reactToSlowSearch), userInfo: nil, repeats: false)
                 }
             }
-            
-            //visualize intemediate results
+
+            // Visualize intermediate results
             self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
-            
+
             let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Cache batch \(batchCount) search: \(endCacheSearch-startCacheSearch) seconds, batchSize: \(batchSize)")
             batchCount += 1
