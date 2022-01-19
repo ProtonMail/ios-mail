@@ -23,9 +23,9 @@
 import Foundation
 import CoreServices
 
-internal let DEFAULT_MIME_TYPE = "application/octet-stream"
+private let DEFAULT_MIME_TYPE = "application/octet-stream"
 
-internal let mimeTypes = [
+private let mimeTypes = [
     "html": "text/html",
     "htm": "text/html",
     "shtml": "text/html",
@@ -131,16 +131,7 @@ internal let mimeTypes = [
     "avi": "video/x-msvideo"
 ]
 
-public func mimeTypeForUTI(_ UTI: String) -> String {
-   // UTTypeCopyPreferredTagWithClass("public.jpeg", kUTTagClassMIMEType).takeRetainedValue()
-    let cfMimeType = UTTypeCopyPreferredTagWithClass(UTI as CFString, kUTTagClassMIMEType)?.takeRetainedValue()
-    if let mimeType = cfMimeType as String? {
-        return mimeType
-    }
-    return "application/octet-stream"
-}
-
-internal func MimeType(_ ext: String?) -> String {
+func MimeType(_ ext: String?) -> String {
     if let _ext = ext, mimeTypes.contains(where: { $0.0 == _ext.lowercased() }) {
         return mimeTypes[_ext.lowercased()]!
     }
@@ -148,29 +139,23 @@ internal func MimeType(_ ext: String?) -> String {
 }
 
 extension URL {
-    public func mimeType() -> String {
+    func mimeType() -> String {
         return MimeType(self.pathExtension)
     }
 }
 
 
 extension NSString {
-    public func mimeType() -> String {
+    func mimeType() -> String {
         return MimeType(self.pathExtension)
     }
 }
 
 extension String {
-    public func mimeType() -> String {
+    func mimeType() -> String {
         return (self as NSString).mimeType()
     }
-    
-    var ext : String {
-        get {
-            return (self as NSString).pathExtension
-        }
-    }
-    
+
     var clear : String {
         get {
             var invalidCharacters = CharacterSet(charactersIn: ":/")

@@ -24,11 +24,11 @@
 import Foundation
 
 extension FileManager {
-    public var appGroupsDirectoryURL: URL! {
+    var appGroupsDirectoryURL: URL! {
         return self.containerURL(forSecurityApplicationGroupIdentifier: Constants.App.APP_GROUP)
     }
-    
-    public var applicationSupportDirectoryURL: URL {
+
+    var applicationSupportDirectoryURL: URL {
         let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask) 
         let applicationSupportDirectoryURL = urls.first!
         //TODO:: need to handle the ! when empty
@@ -40,21 +40,17 @@ extension FileManager {
         }
         return applicationSupportDirectoryURL
     }
-    
-    public var cachesDirectoryURL: URL {
+
+    var cachesDirectoryURL: URL {
         let urls = self.urls(for: .cachesDirectory, in: .userDomainMask) 
         return urls.first!
     }
-    
-    public var temporaryDirectoryUrl: URL {
-        if #available(iOS 10.0, *) {
-            return FileManager.default.temporaryDirectory
-        } else {
-            return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        }
+
+    var temporaryDirectoryUrl: URL {
+        FileManager.default.temporaryDirectory
     }
-    
-    public var appGroupsTempDirectoryURL: URL {
+
+    var appGroupsTempDirectoryURL: URL {
         var tempUrl = self.appGroupsDirectoryURL.appendingPathComponent("tmp", isDirectory: true)
         if !FileManager.default.fileExists(atPath: tempUrl.path) {
             do {
@@ -65,12 +61,11 @@ extension FileManager {
         }
         return tempUrl
     }
-    
-    public func createTempURL(forCopyOfFileNamed name: String) throws -> URL {
+
+    func createTempURL(forCopyOfFileNamed name: String) throws -> URL {
         let subUrl = self.appGroupsTempDirectoryURL.appendingPathComponent(ProcessInfo.processInfo.globallyUniqueString, isDirectory: true)
         try FileManager.default.createDirectory(at: subUrl, withIntermediateDirectories: true, attributes: nil)
         
         return subUrl.appendingPathComponent(name, isDirectory: false)
     }
-    
 }

@@ -20,14 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import MBProgressHUD
 
-
 extension NSError {
 
-    public func alertController() -> UIAlertController {
+    func alertController(title: String? = nil) -> UIAlertController {
         var message = localizedFailureReason
         
         if localizedRecoverySuggestion != nil {
@@ -39,35 +37,21 @@ extension NSError {
             
             message = message! + localizedRecoverySuggestion!
         }
-        return UIAlertController(title: localizedDescription, message: message, preferredStyle: .alert)
+        let _title = title ?? localizedDescription
+        return UIAlertController(title: _title, message: localizedDescription, preferredStyle: .alert)
+
     }
-    
-    public func alertController(_ title : String) -> UIAlertController {
-        var message = localizedFailureReason
-        
-        if localizedRecoverySuggestion != nil {
-            if message != nil {
-                message = message! + "\n\n"
-            } else {
-                message = ""
-            }
-            
-            message = message! + localizedRecoverySuggestion!
-        }
-        return UIAlertController(title: title, message: localizedDescription, preferredStyle: .alert)
-    }
-    
-    
-    public func alertToast() ->Void {
+
+    func alertToast() {
         let message = localizedFailureReason ?? localizedDescription
-        MBProgressHUD.alertToast(errorString: message)
+        MBProgressHUD.alert(errorString: message)
     }
-    
-    public func alert(at view: UIView) ->Void {
-        MBProgressHUD.alert(at: view, errorString: localizedDescription)
+
+    func alert(at view: UIView) {
+        MBProgressHUD.alert(errorString: localizedDescription, at: view)
     }
-    
-    public func alertErrorToast() ->Void {
+
+    func alertErrorToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -78,9 +62,8 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
-    
-    
-    public func alertHumanCheckErrorToast() ->Void {
+
+    func alertHumanCheckErrorToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -92,25 +75,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 3)
     }
-    
-    public class func alertMessageSendingToast() ->Void {
-        LocalString._messages_sending_message.alertToastBottom()
-    }
-    
-    public class func sendingToast(at view: UIView) ->Void {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._messages_sending_message
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 1)
-    }
-    
-    public class func alertMessageSentErrorToast() ->Void {
+
+    class func alertMessageSentErrorToast() {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -122,8 +88,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 2)
     }
-    
-    public class func alertMessageSentError(details : String) -> Void {
+
+    class func alertMessageSentError(details : String) {
         guard let window : UIWindow = UIApplication.shared.keyWindow else {
             return
         }
@@ -135,9 +101,8 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 2)
     }
-    
-    
-    public class func alertSavingDraftError(details : String) -> Void {
+
+    class func alertSavingDraftError(details : String) {
         details.alertToast()
     }
 

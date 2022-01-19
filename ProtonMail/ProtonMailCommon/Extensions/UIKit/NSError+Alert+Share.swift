@@ -20,9 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-
 
 extension NSError {
     static var errorOccuredNotification: NSNotification.Name {
@@ -32,48 +30,39 @@ extension NSError {
         return NSNotification.Name("NSErrorNoError")
     }
     
-    public class func alertMessageSentToast() ->Void {
+    class func alertMessageSentToast() {
         NotificationCenter.default.post(name: NSError.noErrorNotification, object: nil, userInfo: ["text": LocalString._message_sent_ok_desc])
     }
-    
-    public func alertSentErrorToast() ->Void {
+
+    func alertSentErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"])
     }
-    
-    public class func alertLocalCacheErrorToast() ->Void {
+
+    class func alertLocalCacheErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._message_draft_cache_is_broken])
     }
-    
-    public class func alertBadTokenToast() ->Void {
+
+    class func alertBadToken() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
     }
-    
-    public class func alertBadToken() {
-        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._general_invalid_access_token])
-    }
-    
-    public class func alertUpdatedToast() ->Void {
+
+    class func alertUpdatedToast() {
 
     }
-    
-    public func alertErrorToast() ->Void {
+
+    func alertErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")])
     }
-    
-    public class func alertMessageSentErrorToast() ->Void {
+
+    class func alertMessageSentErrorToast() {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again])
     }
-    
-    public class func alertMessageSentError(details : String) -> Void {
+
+    class func alertMessageSentError(details : String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details])
     }
-    
-    public class func alertSavingDraftError(details : String) -> Void {
+
+    class func alertSavingDraftError(details : String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": details])
-    }
-    
-    
-    public class func alertMessageSendingToast() ->Void {
-        
     }
 }

@@ -229,11 +229,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             return
         }
 
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(msg: nil,
                                                     action: .newDraft,
                                                     msgService: user.messageService,
                                                     user: user,
-                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
+                                                    coreDataContextProvider: coreDataService)
 
         mailToData.to.forEach { recipient in
             viewModel.addToContacts(ContactVO(name: recipient, email: recipient))

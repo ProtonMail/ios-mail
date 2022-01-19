@@ -20,31 +20,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonMailAnalytics
 import UIKit
 
 class Analytics {
     static var shared = Analytics()
-    
+
     enum ENV: String {
-        case production = "production"
-        case enterprise = "enterprise"
+        case production, enterprise
     }
-    
+
     private(set) var isEnabled = false
-    
+
     private static var sentryEndpoint: String {
         return "https://cb78ae0c2ede43539c8ea95653847634@api.protonmail.ch/core/v4/reports/sentry/13"
     }
-    
+
     private var analytics: ProtonMailAnalyticsProtocol?
-    
+
     init(analytics: ProtonMailAnalyticsProtocol = ProtonMailAnalytics(endPoint: Analytics.sentryEndpoint)) {
         self.analytics = analytics
     }
-    
+
     func setup(isInDebug: Bool, isProduction: Bool) {
         if isInDebug {
             isEnabled = false
@@ -58,7 +56,7 @@ class Analytics {
             isEnabled = true
         }
     }
-    
+
     func debug(message: ProtonMailAnalytics.Events,
                extra: [String: Any],
                file: String = #file,
@@ -75,7 +73,7 @@ class Analytics {
                          line: line,
                          colum: column)
     }
-    
+
     func error(message: ProtonMailAnalytics.Events,
                error: Error,
                extra: [String: Any] = [:],

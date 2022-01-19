@@ -38,12 +38,12 @@ extension Dictionary where Key == String, Value == Any {
 
     static func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
         var result = lhs
-        rhs.forEach{ result[$0] = $1 }
+        rhs.forEach { result[$0] = $1 }
         return result
     }
 }
 
-extension Array where Iterator.Element == [String: Any]  {
+extension Array where Iterator.Element == [String: Any] {
     /**
      base class for convert anyobject to a json string
      
@@ -53,7 +53,8 @@ extension Array where Iterator.Element == [String: Any]  {
      :returns: String value
      */
     func json(prettyPrinted: Bool = false) -> String {
-        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted: JSONSerialization.WritingOptions()
+        let defaultOptions = JSONSerialization.WritingOptions()
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted: defaultOptions
         if JSONSerialization.isValidJSONObject(self) {
             do {
                 let data = try JSONSerialization
@@ -66,5 +67,3 @@ extension Array where Iterator.Element == [String: Any]  {
         return ""
     }
 }
-
-

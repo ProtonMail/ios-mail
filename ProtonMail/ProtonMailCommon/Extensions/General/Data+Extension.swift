@@ -27,8 +27,8 @@ extension Data {
     func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""
-        for i in 0 ..< self.count {
-            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        for idx in 0 ..< self.count {
+            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[idx]])
         }
         return tokenString
     }
