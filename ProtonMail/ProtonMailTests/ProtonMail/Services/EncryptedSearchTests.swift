@@ -183,7 +183,7 @@ class EncryptedSearchTests: XCTestCase {
 
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = true
-        sut(true, self.testUserID, nil)
+        sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
@@ -194,7 +194,7 @@ class EncryptedSearchTests: XCTestCase {
 
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = true
-        sut(true, self.testUserID, nil)
+        sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
@@ -205,7 +205,7 @@ class EncryptedSearchTests: XCTestCase {
 
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToLowStorage = true
-        sut(true, self.testUserID, nil)
+        sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
@@ -216,7 +216,7 @@ class EncryptedSearchTests: XCTestCase {
 
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = true
-        sut(true, self.testUserID, nil)
+        sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
@@ -227,7 +227,7 @@ class EncryptedSearchTests: XCTestCase {
 
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = true
-        sut(true, self.testUserID, nil)
+        sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
@@ -261,16 +261,18 @@ class EncryptedSearchTests: XCTestCase {
         }
     }
 
-    func testProcessEventsAfterIndexingNoEvents() throws {
+    // Private function
+    /* func testProcessEventsAfterIndexingNoEvents() throws {
         let sut = EncryptedSearchService.shared.processEventsAfterIndexing
         
         // No events while indexing
         sut(){}
         let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
         XCTAssertEqual(numberOfMessagesInSearchIndex, 2)
-    }
+    } */
 
-    func testProcessEventsAfterIndexingInsertEvent() throws {
+    // Private function
+    /* func testProcessEventsAfterIndexingInsertEvent() throws {
         let sut = EncryptedSearchService.shared.processEventsAfterIndexing
 
         // Add an insert event while indexing
@@ -290,7 +292,7 @@ class EncryptedSearchTests: XCTestCase {
             let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
             XCTAssertEqual(numberOfMessagesInSearchIndex, 5)
         }
-    }
+    } */
 
     func testInsertSingleMessageToSearchIndex() throws {
         let sut = EncryptedSearchService.shared.insertSingleMessageToSearchIndex
