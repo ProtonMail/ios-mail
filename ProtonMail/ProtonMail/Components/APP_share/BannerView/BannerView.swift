@@ -77,7 +77,7 @@ class BannerView: PMView {
             case .red: return .red
             case .purple: return ColorProvider.BrandNorm
             case .gray: return .lightGray
-            case .esBlack: return UIColor(RRGGBB: UInt(0x25272C))
+            case .esBlack: return UIColor.dynamic(light: UIColor(RRGGBB: UInt(0x25272C)), dark: ColorProvider.BackgroundNorm)
             case .esGray: return ColorProvider.BackgroundSecondary
             }
         }
@@ -555,7 +555,7 @@ extension BannerView {
             let tintableImage = image.withRenderingMode(.alwaysTemplate)
             self.icon = UIImageView(image: tintableImage)
             self.icon!.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-            self.icon!.tintColor = ColorProvider.IconInverted
+            self.icon!.tintColor = UIColor.dynamic(light: ColorProvider.IconInverted, dark: UIColor(RRGGBB: UInt(0xFFFFFF)))
             self.addSubview(self.icon!)
         }
     }
