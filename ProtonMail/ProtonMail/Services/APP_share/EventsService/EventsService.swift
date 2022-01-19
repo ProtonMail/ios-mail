@@ -351,7 +351,11 @@ extension EventsService {
                                 if UserInfo.isEncryptedSearchEnabled {
                                     // Delete message from Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
-                                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+                                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                                        let uid: String? = users.firstUser?.userInfo.userId
+                                        if let userID = uid {
+                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message, userID: userID, completionHandler: {})
+                                        }
                                     }
                                 }
 
@@ -421,14 +425,24 @@ extension EventsService {
                                 if UserInfo.isEncryptedSearchEnabled {
                                     // Insert message into Encrypted Search Index
                                     if userCachedStatus.isEncryptedSearchOn {
-                                        if msg.Action == IncrementalUpdateType.insert {
-                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
-                                        } else if msg.Action == IncrementalUpdateType.update_draft {
-                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
-                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
-                                        } else if msg.Action == IncrementalUpdateType.update_flags {
-                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
-                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
+                                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                                        let uid: String? = users.firstUser?.userInfo.userId
+                                        if let userID = uid {
+                                            if msg.Action == IncrementalUpdateType.insert {
+                                                EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                            } else if msg.Action == IncrementalUpdateType.update_draft {
+                                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: messageObject, userID: userID) {
+                                                    // Wait until delete is done - then insert updated message
+                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                                }
+                                            } else if msg.Action == IncrementalUpdateType.update_flags {
+                                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: messageObject, userID: userID) {
+                                                    // Wait until delete is done - then insert updated message
+                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                                }
+                                            }
+                                        } else {
+                                            print("Error: cannot process event - user unknown!")
                                         }
                                     }
                                 }
