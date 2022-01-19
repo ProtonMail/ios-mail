@@ -556,45 +556,36 @@ extension EncryptedSearchService {
         var action: NSFetchedResultsChangeType? = nil
         var message: Message? = nil
     }
-    
-    func updateSearchIndex(_ action: NSFetchedResultsChangeType, _ message: Message?) {
+
+    func updateSearchIndex(action: NSFetchedResultsChangeType, message: Message?, userID: String, completionHandler: @escaping () -> Void) {
         if self.state == .downloading || self.state == .paused || self.state == .background || self.state == .backgroundStopped {
             let messageAction: MessageAction = MessageAction(action: action, message: message)
             self.eventsWhileIndexing!.append(messageAction)
+            completionHandler()
         } else {
-            let users: UsersManager = sharedServices.get(by: UsersManager.self)
-            let uid: String? = users.firstUser?.userInfo.userId
-            if let userID = uid {
-                switch action {
-                    case .delete:
-                        self.updateMessageMetadataInSearchIndex(message, action)
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+            switch action {
+                case .delete, .move:
+                    self.updateMessageMetadataInSearchIndex(action: action, message: message, userID: userID) {
+                        // Update cache if existing
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
                             let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
-                    case .insert:
-                        self.insertSingleMessageToSearchIndex(message)  // update search index db
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
+                        completionHandler()
+                    }
+                case .insert:
+                    self.insertSingleMessageToSearchIndex(message: message, userID: userID) {
+                        // Update cache if existing
+                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
                             let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
                         }
-                    case .move:
-                        self.updateMessageMetadataInSearchIndex(message, action)
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
-                        }
-                    case .update:
-                        /*print("ES-DEBUG: Update messages in search index")
-                        print("ES-DEBUG: number of message in index: \(EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID))")
-                        self.updateMessageMetadataInSearchIndex(message, action)
-                        if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // update cache if existing
-                            let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: message)
-                        }
-                        print("ES-DEBUG - after update: number of message in index: \(EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID))")*/
-                        break
-                    default:
-                        return
-                }
-            } else {
-                print("Error when updating search index: User unknown!")
+                        completionHandler()
+                    }
+            case .update:
+                completionHandler()
+                break
+            default:
+                completionHandler()
+                return
             }
         }
     }
@@ -608,74 +599,72 @@ extension EncryptedSearchService {
             self.viewModel?.indexStatus = self.state.rawValue
             print("ENCRYPTEDSEARCH-STATE: refresh")
 
-            let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
-            self.updateSearchIndex(messageAction.action!, messageAction.message)
-            self.processEventsAfterIndexing() {
-                print("All events processed that have been accumulated during indexing...")
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            let userID: String? = usersManager.firstUser?.userInfo.userId
+            if let userID = userID {
+                let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
+                self.updateSearchIndex(action: messageAction.action!, message: messageAction.message, userID: userID, completionHandler: {})
+                self.processEventsAfterIndexing() {
+                    print("All events processed that have been accumulated during indexing...")
 
-                // Set state to complete when finished
-                self.state = .complete
-                self.viewModel?.indexStatus = self.state.rawValue
-                print("ENCRYPTEDSEARCH-STATE: complete 7")
+                    // Set state to complete when finished
+                    self.state = .complete
+                    self.viewModel?.indexStatus = self.state.rawValue
+                    print("ENCRYPTEDSEARCH-STATE: complete 7")
 
-                // Update UI
-                self.updateUIIndexingComplete()
+                    // Update UI
+                    self.updateUIIndexingComplete()
+                }
             }
         }
     }
     
-    func insertSingleMessageToSearchIndex(_ message: Message?) {
+    func insertSingleMessageToSearchIndex(message: Message?, userID: String, completionHandler: @escaping () -> Void) {
         guard let messageToInsert = message else {
+            completionHandler()
             return
         }
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-        let uid: String? = users.firstUser?.userInfo.userId
-        if let userID = uid {
-            //just insert a new message if the search index exists for the user - otherwise it needs to be build first
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-                let esMessage:ESMessage? = self.convertMessageToESMessage(for: messageToInsert)
-                self.fetchMessageDetailForMessage(userID: userID, message: esMessage!) { [weak self] (error, messageWithDetails) in
-                    if error == nil {
-                        self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID) {
-                            self?.processedMessages += 1
-                            self?.lastMessageTimeIndexed = Int((messageWithDetails!.Time))
-                            //print("Sucessfully inserted new message \(message!.messageID) in search index")
-                        }
-                    } else {
-                        print("Error when fetching for message details...")
+        // Just insert a new message if the search index exists for the user - otherwise it needs to be build first
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+            let esMessage:ESMessage? = self.convertMessageToESMessage(for: messageToInsert)
+            self.fetchMessageDetailForMessage(userID: userID, message: esMessage!) { [weak self] (error, messageWithDetails) in
+                if error == nil {
+                    self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID) {
+                        self?.processedMessages += 1
+                        self?.lastMessageTimeIndexed = Int((messageWithDetails!.Time))
+                        completionHandler()
                     }
+                } else {
+                    print("Error: Cannot fetch message details for message.")
+                    completionHandler()
                 }
-            } else {
-                print("No search index found for user: \(userID)")
             }
         } else {
-            print("Error when inserting single message to search index. User unknown!")
+            print("Error: No search index found for user: \(userID)")
+            completionHandler()
         }
     }
-    
-    func deleteMessageFromSearchIndex(_ message: Message?) {
+
+    func deleteMessageFromSearchIndex(message: Message?, userID: String, completionHandler: @escaping () -> Void) {
         guard let messageToDelete = message else {
+            completionHandler()
             return
         }
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-        let uid: String? = users.firstUser?.userInfo.userId
-        if let userID = uid {
-            //just delete a message if the search index exists for the user - otherwise it needs to be build first
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-                _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
-            } else {
-                print("No search index found for user: \(userID)")
-            }
-            
-            if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){ // delete message from cache if cache is built
+
+        // Just delete a message if the search index exists for the user - otherwise it needs to be build first
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+            let _ = EncryptedSearchIndexService.shared.removeEntryFromSearchIndex(user: userID, message: messageToDelete.messageID)
+            // delete message from cache if cache is built
+            if EncryptedSearchCacheService.shared.isCacheBuilt(userID: userID){
                 let _ = EncryptedSearchCacheService.shared.deleteCachedMessage(userID: userID, messageID: messageToDelete.messageID)
             }
-            
+            completionHandler()
         } else {
-            print("Error when deleting message from search index. User unknown!")
+            print("Error: No search index found for user: \(userID)")
+            completionHandler()
         }
     }
-    
+
     func deleteSearchIndex(userID: String){
         // Update state
         self.state = .disabled
@@ -757,25 +746,25 @@ extension EncryptedSearchService {
             print("Error when deleting the search index!")
         }
     }
-    
-    private func updateMessageMetadataInSearchIndex(_ message: Message?, _ action: NSFetchedResultsChangeType) {
+
+    private func updateMessageMetadataInSearchIndex(action: NSFetchedResultsChangeType, message: Message?, userID: String, completionHandler: @escaping () -> Void) {
         guard let messageToUpdate = message else {
+            completionHandler()
             return
         }
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
-        let uid: String? = users.firstUser?.userInfo.userId
-        if let userID = uid {
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID){
-                self.deleteMessageFromSearchIndex(messageToUpdate)
-                self.insertSingleMessageToSearchIndex(messageToUpdate)
-            } else {
-                print("No search index found for user: \(userID)")
+        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID){
+            self.deleteMessageFromSearchIndex(message: messageToUpdate, userID: userID) {
+                // Wait until delete is done - then insert updated message
+                self.insertSingleMessageToSearchIndex(message: messageToUpdate, userID: userID) {
+                    completionHandler()
+                }
             }
         } else {
-            print("Error when updating the search index. User unknown!")
+            print("Error: No search index found for user: \(userID)")
+            completionHandler()
         }
     }
-    
+
     private func updateCurrentUserIfNeeded() -> String? {
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         let user: UserManager? = usersManager.firstUser

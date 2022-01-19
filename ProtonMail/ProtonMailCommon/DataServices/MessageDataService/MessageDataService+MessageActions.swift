@@ -102,8 +102,12 @@ extension MessageDataService {
             //Delete from encrypted search index
             if userCachedStatus.isEncryptedSearchOn {
                 if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
-                    for message in messages {
-                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+                    let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                    let uid: String? = users.firstUser?.userInfo.userId
+                    if let userID = uid {
+                        for message in messages {
+                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message, userID: userID, completionHandler: {})
+                        }
                     }
                 }
             }
