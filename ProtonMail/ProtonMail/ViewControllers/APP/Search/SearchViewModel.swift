@@ -684,12 +684,23 @@ extension SearchViewModel {
             let messagesInContext = messageBoxes
                 .compactMap { context.object(with: $0.objectID) as? Message }
                 .filter { $0.managedObjectContext != nil }
-            if currentPage > 0 {
+            /*if currentPage > 0 {
                 self?.messages.append(contentsOf: messagesInContext)
             } else {
                 self?.messages = messagesInContext
-            }
+            }*/
+            self?.sortAndUniquifyMessageArray(messagesToInsert: messagesInContext)
             self?.updateFetchController()
+        }
+    }
+    
+    private func sortAndUniquifyMessageArray(messagesToInsert: [Message]) {
+        var messagesToSort: [Message] = self.messages
+        messagesToSort.append(contentsOf: messagesToInsert)
+        let uniqueMessagesSet = Set(messagesToSort)
+        // sort messages if new one's have been added
+        if uniqueMessagesSet.count > self.messages.count {
+            self.messages = uniqueMessagesSet.sorted { $0.time! > $1.time! }
         }
     }
 }
