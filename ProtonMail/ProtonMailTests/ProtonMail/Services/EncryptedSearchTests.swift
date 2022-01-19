@@ -162,7 +162,14 @@ class EncryptedSearchTests: XCTestCase {
     func testPauseIndexingByUser() throws {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingByUser
 
+        // set some values to default
+        EncryptedSearchService.shared.numPauses = 0
+        EncryptedSearchService.shared.indexBuildingInProgress = false
+
         sut(true, self.testUserID)
+        // Wait for 2 seconds - as pausing is async
+        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 2.0)
+
         XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numPauses, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
