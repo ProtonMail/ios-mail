@@ -80,7 +80,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         // If the state cannot be load from cache - try to figure it out
         if EncryptedSearchService.shared.state == .undetermined {
             // Determine current encrypted search state
-            EncryptedSearchService.shared.determineEncryptedSearchState()
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                EncryptedSearchService.shared.determineEncryptedSearchState(userID: userID)
+            } else {
+                print("ERROR when determining Encrypted Search state. User unknown!")
+            }
 
             // If we cannot determine the state - disable encrypted search
             if EncryptedSearchService.shared.state == .undetermined {
@@ -260,17 +265,15 @@ extension SettingsEncryptedSearchViewController {
                         if EncryptedSearchService.shared.state == .refresh {
                             // Pause indexing
                             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            let userID: String? = usersManager.firstUser?.userInfo.userId
-                            if let userID = userID {
+                            if let userID = usersManager.firstUser?.userInfo.userId {
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
                             } else {
-                                print("Error when pause indexing. User unknown!")
+                                print("Error when pausing indexing. User unknown!")
                             }
                         }
                         if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
                             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            let userID: String? = usersManager.firstUser?.userInfo.userId
-                            if let userID = userID {
+                            if let userID = usersManager.firstUser?.userInfo.userId {
                                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
                             } else {
                                 print("Error when deleting the search index. User unknown!")
@@ -468,8 +471,7 @@ extension SettingsEncryptedSearchViewController {
                             }
                             // Resume indexing
                             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            let userID: String? = usersManager.firstUser?.userInfo.userId
-                            if let userID = userID {
+                            if let userID = usersManager.firstUser?.userInfo.userId {
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: false, userID: userID)
                             } else {
                                 print("Error when resume indexing. User unknown!")
@@ -489,8 +491,7 @@ extension SettingsEncryptedSearchViewController {
 
                             // Pause indexing
                             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                            let userID: String? = usersManager.firstUser?.userInfo.userId
-                            if let userID = userID {
+                            if let userID = usersManager.firstUser?.userInfo.userId {
                                 EncryptedSearchService.shared.pauseAndResumeIndexingByUser(isPause: true, userID: userID)
                             } else {
                                 print("Error when pause indexing. User unknown!")
@@ -588,7 +589,12 @@ extension SettingsEncryptedSearchViewController {
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
             // Start building the search index
-            EncryptedSearchService.shared.buildSearchIndex(self.viewModel)
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                EncryptedSearchService.shared.buildSearchIndex(userID: userID, viewModel: self.viewModel)
+            } else {
+                print("ERROR when building the search index. User unknown!")
+            }
 
             // Update UI
             self.hideSections = false
