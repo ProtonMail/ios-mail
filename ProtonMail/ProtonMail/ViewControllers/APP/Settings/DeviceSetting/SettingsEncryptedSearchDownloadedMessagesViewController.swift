@@ -208,10 +208,15 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     let displayValue: Float = sliderStepsDisplay[newIndex]
 
                     self.viewModel.storageLimit = Int64(displayValue)
-                    
+
                     // Resize search index
-                    EncryptedSearchService.shared.resizeSearchIndex(expectedSize: self.viewModel.storageLimit)
-                    
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = usersManager.firstUser?.userInfo.userId {
+                        EncryptedSearchService.shared.resizeSearchIndex(expectedSize: self.viewModel.storageLimit, userID: userID)
+                    } else {
+                        print("ERROR when resizing the search index. User unknown!")
+                    }
+
                     sliderCell.bottomLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: Int64(displayValue))
 
                     // Update storageusage row with storage limit
@@ -279,8 +284,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete, style: UIAlertAction.Style.destructive){ (action:UIAlertAction!) in
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String? = usersManager.firstUser?.userInfo.userId
-            if let userID = userID {
+            if let userID = usersManager.firstUser?.userInfo.userId {
                 EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
             } else {
                 print("Error when deleting the search index. User unknown!")
