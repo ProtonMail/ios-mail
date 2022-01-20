@@ -20,7 +20,7 @@ public class EncryptedSearchIndexService {
         databaseSchema = DatabaseEntries()
         searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
         fileByteCountFormatter = ByteCountFormatter()
-        fileByteCountFormatter?.allowedUnits = .useAll//[.useMB]
+        fileByteCountFormatter?.allowedUnits = .useAll
         fileByteCountFormatter?.countStyle = .file
         fileByteCountFormatter?.includesUnit = true
         fileByteCountFormatter?.isAdaptive = true
@@ -102,9 +102,9 @@ extension EncryptedSearchIndexService {
         do {
             try handleToSQliteDB.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
-                t.column(self.databaseSchema.messageID, primaryKey: true)  //TODO set default value
+                t.column(self.databaseSchema.messageID, primaryKey: true)
                 t.column(self.databaseSchema.time, defaultValue: 0)
-                t.column(self.databaseSchema.labelIDs)    //TODO set default value
+                t.column(self.databaseSchema.labelIDs)
                 t.column(self.databaseSchema.isStarred, defaultValue: nil)
                 t.column(self.databaseSchema.unread, defaultValue: false)
                 t.column(self.databaseSchema.location, defaultValue: -1)
@@ -142,7 +142,7 @@ extension EncryptedSearchIndexService {
             let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
             rowID = try handleToSQLiteDB?.run(filter.delete())
         } catch {
-            print("deleting messages from search index failed: \(error)")
+            print("Error: deleting messages from search index failed: \(error)")
         }
         return rowID
     }
@@ -322,20 +322,6 @@ extension EncryptedSearchIndexService {
 
         return (sizeOfIndex, size)
     }
-
-    /*func getFreeDiskSpace() -> (asInt64: Int64?, asString: String) {
-        var size: String = ""
-        var freeSpace: Int64? = nil
-        do {
-            let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            freeSpace = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value
-            size = (self.fileByteCountFormatter?.string(fromByteCount: freeSpace!))!
-        } catch {
-            print("error \(error)")
-        }
-
-        return (freeSpace, size)
-    }*/
 
     func getOldestMessageInSearchIndex(for userID: String) -> String {
         let time: Expression<CLong> = self.databaseSchema.time
