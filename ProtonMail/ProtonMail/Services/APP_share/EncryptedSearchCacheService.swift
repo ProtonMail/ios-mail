@@ -19,17 +19,17 @@ import Foundation
 import Crypto
 
 public class EncryptedSearchCacheService {
-    //instance of Singleton
+    // Instance of Singleton
     static let shared = EncryptedSearchCacheService()
-    
-    //set initializer to private - Singleton
+
+    // Set initializer to private - Singleton
     private init() {
         let maxMemory: Double = EncryptedSearchService.shared.getTotalAvailableMemory()
         self.maxCacheSize = Int64((maxMemory * self.searchCacheHeapPercent))
         self.batchSize = Int64((maxMemory * self.searchCacheHeapPercent) / self.searchMsgSize)
         self.cache = EncryptedsearchCache(self.maxCacheSize)
     }
-    
+
     internal let searchCacheHeapPercent: Double = 0.2 // Percentage of heap that can be used by the cache
     internal let searchBatchHeapPercent: Double = 0.1 // Percentage of heap that can be used to load messages from the index
     internal let searchMsgSize: Double = 14000 // An estimation of how many bytes take a search message in memory
@@ -41,7 +41,7 @@ public class EncryptedSearchCacheService {
 
 extension EncryptedSearchCacheService {
     func buildCacheForUser(userId: String, dbParams: EncryptedsearchDBParams, cipher: EncryptedsearchAESGCMCipher) -> EncryptedsearchCache {
-        //If cache is not build or we have a new user
+        // If cache is not build or we have a new user
         if currentUserID != userId || !(self.cache?.isBuilt())! {
             self.cache?.deleteAll()
             do {
@@ -109,7 +109,6 @@ extension EncryptedSearchCacheService {
                 print("Error cache is nil!")
             }
         } else {
-            // print("Error no cache for user \(userID) found!")
             return false
         }
         return false
@@ -209,8 +208,7 @@ extension EncryptedSearchCacheService {
 
             let emailContent: String = EmailparserExtractData(body, true)
             let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: esMessage, cleanedBody: emailContent, userID: userID)
-            
-            //1. create decryptedMessageContent
+
             let sender: EncryptedsearchRecipient? = EncryptedsearchRecipient(esMessage.Sender.Name, email: esMessage.Sender.Address)
             let toList: EncryptedsearchRecipientList = EncryptedsearchRecipientList()
             esMessage.ToList.forEach { s in
