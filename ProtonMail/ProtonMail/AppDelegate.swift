@@ -346,7 +346,10 @@ extension AppDelegate: UIApplicationDelegate {
         if UserInfo.isEncryptedSearchEnabled {
             // Extend background time when encrypted search is enabled
             if userCachedStatus.isEncryptedSearchOn {
-                EncryptedSearchService.shared.continueIndexingInBackground()
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    EncryptedSearchService.shared.continueIndexingInBackground(userID: userID)
+                }
             }
         }
         

@@ -99,15 +99,16 @@ extension MessageDataService {
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         
         if UserInfo.isEncryptedSearchEnabled {
-            //Delete from encrypted search index
+            // Delete from encrypted search index
             if userCachedStatus.isEncryptedSearchOn {
-                if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
-                    let users: UsersManager = sharedServices.get(by: UsersManager.self)
-                    let uid: String? = users.firstUser?.userInfo.userId
-                    if let userID = uid {
-                        for message in messages {
-                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message, userID: userID, completionHandler: {})
-                        }
+                let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                let uid: String? = users.firstUser?.userInfo.userId
+                if let userID = uid {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                            for message in messages {
+                                EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: message, userID: userID, completionHandler: {})
+                            }
                     }
                 }
             }

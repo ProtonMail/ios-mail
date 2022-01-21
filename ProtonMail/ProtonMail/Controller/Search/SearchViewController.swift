@@ -144,10 +144,13 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
                 self.searchBar.textField.becomeFirstResponder()
             }
             if self.searchInfoBanner != nil {
-                // Only show the banner while downloading/paused/refreshed
-                if EncryptedSearchService.shared.state == .partial || EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .undetermined {
-                    UIView.performWithoutAnimation {
-                        self.removeSearchInfoBanner()
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.partial, .complete, .disabled, .undetermined]
+                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        UIView.performWithoutAnimation {
+                            self.removeSearchInfoBanner()
+                        }
                     }
                 }
             }
@@ -260,54 +263,57 @@ extension SearchViewController {
     internal func showSearchInfoBanner() {
         var text: String = ""
         var link: String = ""
-        let state = EncryptedSearchService.shared.state
-        switch state {
-        case .downloading, .paused, .refresh:
-            text = LocalString._encrypted_search_info_search_downloading
-            link = LocalString._encrypted_search_info_search_downloading_link
-            break
-        case .complete, .undetermined, .background, .backgroundStopped, .partial, .lowstorage, .disabled:
-            return
-        }
-
-        DispatchQueue.main.async {
-            let dismissActionCallback: BannerView.dismissActionBlock? = {
-                self.searchInfoActivityIndicator?.stopAnimating()
+        
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            let state = EncryptedSearchService.shared.getESState(userID: userID)
+            switch state {
+            case .downloading, .paused, .refresh:
+                text = LocalString._encrypted_search_info_search_downloading
+                link = LocalString._encrypted_search_info_search_downloading_link
+                break
+            case .complete, .undetermined, .background, .backgroundStopped, .partial, .lowstorage, .disabled:
+                return
             }
-            let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
-                switch state {
-                case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial:
-                    break
-                case .downloading, .paused, .refresh:
-                    let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-                    let vc = SettingsEncryptedSearchViewController()
-                    vc.set(viewModel: vm)
-                    //vc.set(coordinator: self.coordinator!)    //TODO where to get the coordinator from?
-                    self.show(vc, sender: self)
-                    break
+
+            DispatchQueue.main.async {
+                let dismissActionCallback: BannerView.dismissActionBlock? = {
+                    self.searchInfoActivityIndicator?.stopAnimating()
                 }
-            }
-            self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
-            self.view.addSubview(self.searchInfoBanner!)
-            self.searchInfoBanner!.drop(on: self.view, from: .top)
+                let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
+                    switch state {
+                    case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial:
+                        break
+                    case .downloading, .paused, .refresh:
+                        let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+                        let vc = SettingsEncryptedSearchViewController()
+                        vc.set(viewModel: vm)
+                        self.show(vc, sender: self)
+                        break
+                    }
+                }
+                self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
+                self.view.addSubview(self.searchInfoBanner!)
+                self.searchInfoBanner!.drop(on: self.view, from: .top)
 
-            // Show spinner
-            if #available(iOS 13.0, *) {
-                self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .medium)
-            } else {
-                self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .white)
+                // Show spinner
+                if #available(iOS 13.0, *) {
+                    self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .medium)
+                } else {
+                    self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .white)
+                }
+                self.searchInfoActivityIndicator?.startAnimating()
+                self.searchInfoActivityIndicator?.hidesWhenStopped = true
+                self.searchInfoActivityIndicator?.translatesAutoresizingMaskIntoConstraints = false
+                self.view.addSubview(self.searchInfoActivityIndicator!)
+                NSLayoutConstraint.activate([
+                    self.searchInfoActivityIndicator!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                    self.searchInfoActivityIndicator!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+                ])
             }
-            self.searchInfoActivityIndicator?.startAnimating()
-            self.searchInfoActivityIndicator?.hidesWhenStopped = true
-            self.searchInfoActivityIndicator?.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(self.searchInfoActivityIndicator!)
-            NSLayoutConstraint.activate([
-                self.searchInfoActivityIndicator!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.searchInfoActivityIndicator!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            ])
         }
     }
-    
+
     internal func removeSearchInfoBanner() {
         self.searchInfoBanner?.remove(animated: false)
         self.searchInfoBanner = nil
@@ -926,8 +932,12 @@ extension SearchViewController: UITextFieldDelegate {
         if UserInfo.isEncryptedSearchEnabled {
             // If Encrypted search is on, display a notification if the index is still being built
             if userCachedStatus.isEncryptedSearchOn {
-                if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
-                    self.showSearchInfoBanner()    // display only when ES is on
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        self.showSearchInfoBanner()    // display only when ES is on
+                    }
                 }
             }
         }
