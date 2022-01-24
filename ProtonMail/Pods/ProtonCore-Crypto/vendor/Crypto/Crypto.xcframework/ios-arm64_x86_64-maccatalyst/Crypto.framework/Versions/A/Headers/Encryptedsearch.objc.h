@@ -174,9 +174,9 @@ or overwrites if one with the same id is cached.
 /**
  * NewEncryptedMessageContent creates a new encrypted content object.
  */
-- (nullable instancetype)init:(NSData* _Nullable)ivValue ciphertextValue:(NSData* _Nullable)ciphertextValue;
-@property (nonatomic) NSData* _Nullable iv;
-@property (nonatomic) NSData* _Nullable ciphertext;
+- (nullable instancetype)init:(NSString* _Nullable)ivBase64 ciphertextBase64:(NSString* _Nullable)ciphertextBase64;
+@property (nonatomic) NSString* _Nonnull iv;
+@property (nonatomic) NSString* _Nonnull ciphertext;
 @end
 
 /**
@@ -383,7 +383,7 @@ FOUNDATION_EXPORT EncryptedsearchDecryptedMessageContent* _Nullable Encryptedsea
 /**
  * NewEncryptedMessageContent creates a new encrypted content object.
  */
-FOUNDATION_EXPORT EncryptedsearchEncryptedMessageContent* _Nullable EncryptedsearchNewEncryptedMessageContent(NSData* _Nullable ivValue, NSData* _Nullable ciphertextValue);
+FOUNDATION_EXPORT EncryptedsearchEncryptedMessageContent* _Nullable EncryptedsearchNewEncryptedMessageContent(NSString* _Nullable ivBase64, NSString* _Nullable ciphertextBase64);
 
 /**
  * NewIndex creates a new index.
