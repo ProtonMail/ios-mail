@@ -43,8 +43,10 @@ struct Constants {
          
         
         // live api
+        static let domain: String = "protonmail.com"
         static let URL_HOST : String = "api.protonmail.ch"
         static let API_PATH : String = ""
+//        static let domain = "proton.black"
 //        static let URL_HOST : String = "proton.black"
 //        static let API_PATH : String = "/api"
         static let DOH_ENABLE : Bool = true
@@ -79,6 +81,9 @@ struct Constants {
                 #endif
             }
         }
+
+        static var humanVerifyHost = "https://verify.\(Constants.App.domain)"
+        static var accountHost = "https://account.\(Constants.App.domain)"
     }
     
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
