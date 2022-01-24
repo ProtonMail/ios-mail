@@ -47,11 +47,6 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if self.viewModel.isEncryptedSearch {
-            self.hideSections = false
-        } else {
-            self.hideSections = true
-        }
 
         self.updateTitle()
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
@@ -69,6 +64,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                self.hideSections = true
+            } else {
+                self.hideSections = false
+            }
+
             setupEstimatedTimeUpdateObserver(userID: userID)
             setupProgressUpdateObserver(userID: userID)
             setupProgressedMessagesObserver(userID: userID)
@@ -119,12 +120,14 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // If encrypted search is switched on
-        if self.viewModel.isEncryptedSearch {
-            self.hideSections = false
 
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                self.hideSections = true
+            } else {
+                self.hideSections = false
+
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.background, .backgroundStopped]
                 // Set state correctly form BG to foreground
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
@@ -142,9 +145,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                     }
                 }
             }
-        } else {    // If encrypted search is off
-            self.hideSections = true
         }
+
         self.tableView.reloadData()
     }
 

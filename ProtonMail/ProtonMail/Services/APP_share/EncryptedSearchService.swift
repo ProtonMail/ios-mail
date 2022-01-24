@@ -74,11 +74,6 @@ public class EncryptedSearchService {
         case background = 8     // Indicates that the index is currently build in the background
         case backgroundStopped = 9  // Indicates that the index building has been paused while building in the background
     }
-    struct ESState {
-        var indexingState: EncryptedSearchIndexState = .undetermined
-        var userID: String = ""
-    }
-    var state: ESState = ESState(indexingState: .undetermined, userID: "")
 
     // User dependent variables
     internal var user: UserManager!
@@ -184,8 +179,6 @@ extension EncryptedSearchService {
                         }
                     }
                 }
-                //TODO refresh?
-                //self.state = .refresh
             }
         }
     }
@@ -415,17 +408,12 @@ extension EncryptedSearchService {
             self.updateUIIndexingComplete()
 
             // TODO set state according to user
-            let stateBeforeRefreshing: EncryptedSearchIndexState = self.state.indexingState
+            let stateBeforeRefreshing: EncryptedSearchIndexState = self.getESState(userID: userID)
             // Process events that have been accumulated during indexing
             self.processEventsAfterIndexing(userID: userID) {
                 // Set state when finished
-                self.state.indexingState = stateBeforeRefreshing
-                self.viewModel?.indexStatus = self.state.indexingState.rawValue
-                if self.getESState(userID: userID) == .complete {
-                    print("ENCRYPTEDSEARCH-STATE: complete 6")
-                } else {
-                    print("ENCRYPTEDSEARCH-STATE: partial 6")
-                }
+                self.setESState(userID: userID, indexingState: stateBeforeRefreshing)
+                self.viewModel?.indexStatus = self.getESState(userID: userID).rawValue
 
                 // Invalidate timer on same thread as it has been created
                 DispatchQueue.main.async {
@@ -1740,16 +1728,31 @@ extension EncryptedSearchService {
 
     // MARK: - Helper Functions
     func setESState(userID: String, indexingState: EncryptedSearchIndexState) {
-        self.state.userID = userID
-        self.state.indexingState = indexingState
-        // set state in viewmodel - will update user cached state
         self.viewModel?.indexStatus = indexingState.rawValue
-        print("ENCRYPTEDSEARCH-STATE: \(self.state)")
+        print("ENCRYPTEDSEARCH-STATE: \(indexingState)")
+
+        // TODO check for nil
+
+        let stateValue: String = userID + "-" + String(indexingState.rawValue)
+        let stateKey: String = "ES-INDEXSTATE-" + userID
+
+        KeychainWrapper.keychain.set(stateValue, forKey: stateKey)
     }
 
     func getESState(userID: String) -> EncryptedSearchIndexState {
-        // Load state from userCache
-        return EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? .undetermined
+        // TODO check userID for correct format?
+
+        let stateKey: String = "ES-INDEXSTATE-" + userID
+        var indexingState: EncryptedSearchIndexState = .undetermined
+        if let stateValue = KeychainWrapper.keychain.string(forKey: stateKey) {
+            let index = stateValue.index(stateValue.endIndex, offsetBy: -1)
+            let state: String = String(stateValue.suffix(from: index))
+            indexingState = EncryptedSearchIndexState(rawValue: Int(state) ?? 0) ?? .undetermined
+        } else {
+            print("Error: no ES state found for userID: \(userID)")
+            indexingState = .disabled
+        }
+        return indexingState
     }
 
     // Called to slow down indexing - so that a user can normally use the app
@@ -1886,7 +1889,7 @@ extension EncryptedSearchService {
             self.checkIfStorageLimitIsExceeded()
 
             // print state for debugging
-            print("ES-DEBUG: \(self.state)")
+            print("ES-DEBUG: \(self.getESState(userID: userID))")
         }
     }
 
