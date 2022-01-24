@@ -5,10 +5,10 @@
 "CFBundleName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
-"NSAppleMusicUsageDescription" = "Απαιτείται για τη επισύναψη πολυμέσων στο E-mail.";
+"NSAppleMusicUsageDescription" = "Απαιτείται για επισύναψη πολυμέσων στο μήνυμα.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Απαιτείται για τη επισύναψη φωτογραφιών στο E-mail.";
+"NSCameraUsageDescription" = "Απαιτείται για επισύναψη φωτογραφιών στο μήνυμα.";
 
 /* Privacy - Contacts Usage Description */
 "NSContactsUsageDescription" = "Χρησιμοποιείται για πρόσβαση σε διευθύνσεις email, για επαφές που είναι αποθηκευμένες στη συσκευή, ώστε να μπορούν να χρησιμοποιηθούν κατά τη σύνταξη ενός μηνύματος ή κατά τη μη αυτόματη μεταφόρτωση των επαφών της συσκευής στο λογαριασμό σας. Τα στοιχεία επικοινωνίας δεν μεταφορτώνονται στους διακομιστές μας χωρίς να υπάρχει ρητή ενέργεια.";
@@ -17,8 +17,8 @@
 "NSFaceIDUsageDescription" = "Επιτρέπει το ξεκλείδωμα της εφαρμογής σας γρήγορα και διασφαλισμένα.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Απαιτείται για την αποθήκευση συνημμένων εικόνων στη βιβλιοθήκη φωτογραφιών.";
+"NSPhotoLibraryAddUsageDescription" = "Απαιτείται για αποθήκευση συνημμένων εικόνων στη βιβλιοθήκη φωτογραφιών.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Απαιτείται για τη επισύναψη φωτογραφιών στο E-mail.";
+"NSPhotoLibraryUsageDescription" = "Απαιτείται για επισύναψη φωτογραφιών στο μήνυμα.";
 

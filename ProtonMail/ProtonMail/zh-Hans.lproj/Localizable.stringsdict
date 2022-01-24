@@ -90,6 +90,34 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>您确认要永久删除此会话%#@conversation@吗？</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 条会话</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>您确认要永久删除此消息%#@message@吗？</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d 封邮件</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
@@ -141,10 +169,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d 条会话</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ 已加标签</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -155,10 +183,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d 封邮件</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ 已加标签</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -169,10 +197,10 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d 条会话</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ 已移至 %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -186,7 +214,7 @@
 			<string>%d 封邮件</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ 已移至 %@</string>
 	</dict>
 </dict>
 </plist>

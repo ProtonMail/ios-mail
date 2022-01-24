@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Wird abgebrochen";
 
+/* Warning message */
+"Cannot empty folder right now." = "Leeren des Ordners ist derzeit nicht möglich.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Der Anhang konnte nicht entschlüsselt werden.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Stadt";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Lokalen Zwischenspeicher leeren";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Verfassen";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Nachricht verfassen";
 
 /* Title */
 "Compose to" = "Nachricht an";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Kategorie entfernen";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Spam-Ordner leeren";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Papierkorb leeren";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Themengruppen aktivieren";
@@ -2327,7 +2351,7 @@
 "Set" = "Festgelegen";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Legen Sie ein Passwort zum Verschlüsseln dieser Nachricht für nicht-ProtonMail-Nutzer fest";
+"Set a password to encrypt this message for non-ProtonMail users." = "Lege ein Passwort zum Verschlüsseln dieser Nachricht für nicht-ProtonMail-Benutzer fest.";
 
 /* Title */
 "Set Password" = "Passwort festlegen";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Willkommen bei ProtonMail!";
-
-/* Description */
-"What people see in the \"From\" field." = "Was anderen im Feld „Von” angezeigt wird.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Wenn Sie eine E-Mail senden, ist dies der Name, der im Feld „Absender” angezeigt wird.";

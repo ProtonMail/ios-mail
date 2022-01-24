@@ -20,7 +20,7 @@
 "*OPTIONAL" = "*ΠΡΟΑΙΡΕΤΙΚΟ";
 
 /* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/χρήστης";
+"/user" = "/χρήστη";
 
 /* Service plan capability */
 "%@ storage capacity" = "%@ χωρητικότητα αποθήκευσης";
@@ -93,7 +93,7 @@
 
 /* *
  *  LabelTableViewCell */
-"A message cannot have more than 5 labels" = "Ένα μήνυμα δεν μπορεί να έχει άνω των 5 ετικετών";
+"A message cannot have more than 5 labels" = "Το μήνυμα δεν μπορεί να έχει περισσότερες από 5 ετικέτες";
 
 /* "Alert" = "Alert"; */
 "A new version of ProtonMail app is available, please update to latest version." = "Μια νέα έκδοση της εφαρμογής ProtonMail είναι διαθέσιμη, ενημερώστε στην τελευταία έκδοση.";
@@ -141,7 +141,7 @@
 "Add birthday" = "Προσθήκη γενεθλίων";
 
 /* Contacts add new contact */
-"Add Contact" = "Προσθήκη επαφής";
+"Add Contact" = "Προσθήκη Επαφής";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Προσθήκη επαφών";
@@ -150,7 +150,7 @@
 "Add custom label" = "Προσθήκη προσαρμοσμένης ετικέτας";
 
 /* Action */
-"Add Folder" = "Προσθήκη φακέλου";
+"Add Folder" = "Προσθήκη Φακέλου";
 
 /* new contacts add Gender */
 "Add gender" = "Προσθήκη φύλου";
@@ -338,7 +338,7 @@
 "attachment" = "συνημμένο";
 
 /* No comment provided by engineer. */
-"Attachment" = "Συνημμένη";
+"Attachment" = "Συνημμένο";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Αποτυχία επισύναψης";
@@ -443,7 +443,7 @@
 "Can take several minutes to setup." = "Μπορεί να χρειαστούν αρκετά λεπτά για να πραγματοποιηθεί η ρύθμιση.";
 
 /* Error */
-"Can't copy the file" = "Αδύνατη η αντιγραφή του αρχείου";
+"Can't copy the file" = "Αδυναμία αντιγραφής του αρχείου";
 
 /* update password error */
 "Can't create a SRP Client" = "Αδυναμία δημιουργίας Πελάτη SRP";
@@ -462,10 +462,10 @@
 
 /* *
  *  MessageViewController */
-"Can't download message body, please try again." = "Δεν είναι δυνατή η λήψη του body των μηνυμάτων, παρακαλώ δοκιμάστε ξανά.";
+"Can't download message body, please try again." = "Αδυναμία λήψης του σώματος του μηνύματος, παρακαλούμε δοκιμάστε ξανά.";
 
 /* Error */
-"Can't download message body. Please try again." = "Δεν είναι δυνατή η λήψη του body των μηνυμάτων, παρακαλώ δοκιμάστε ξανά.";
+"Can't download message body. Please try again." = "Αδυναμία λήψης του σώματος του μηνύματος. Παρακαλούμε δοκιμάστε ξανά.";
 
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
 "Can't fetch contact groups" = "Αδυναμία λήψης ομάδων επαφών";
@@ -512,6 +512,9 @@
 
 /* Title */
 "Cancelling" = "Γίνεται Ακύρωση";
+
+/* Warning message */
+"Cannot empty folder right now." = "Cannot empty folder right now.";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του συνημμένου.";
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Πόλη";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Καθαρισμός τοπικής προσωρινής μνήμης";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Σύνταξη";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Compose message";
 
 /* Title */
 "Compose to" = "Σύνθεση σε";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Κενή Ετικέτα";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Empty Spam";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Empty Trash";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Ενεργοποίηση συνομιλιών";
@@ -3030,9 +3054,6 @@
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Καλώς ήρθατε στο ProtonMail";
 
-/* Description */
-"What people see in the \"From\" field." = "Τι βλέπουν οι υπόλοιποι στο πεδίο \"Από\".";
-
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Όταν στέλνετε ένα μήνυμα ηλεκτρονικού ταχυδρομείου, αυτό είναι το όνομα που εμφανίζεται στο πεδίο αποστολέα.";
 
@@ -3043,7 +3064,7 @@
 "Work" = "Εργασία";
 
 /* title */
-"Wrong verification code" = "Λάθος κωδικός επαλήθευσης";
+"Wrong verification code" = "Λανθασμένος κωδικός επαλήθευσης";
 
 /* Title */
 "wrote:" = "έγραψε:";

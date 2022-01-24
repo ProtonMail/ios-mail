@@ -126,6 +126,46 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Вы уверены, что хотите навсегда удалить %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d цепочки писем</string>
+			<key>many</key>
+			<string>%d цепочек писем</string>
+			<key>one</key>
+			<string>%d цепочка писем</string>
+			<key>other</key>
+			<string>%d цепочек писем</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Вы уверены, что хотите навсегда удалить %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d сообщения</string>
+			<key>many</key>
+			<string>%d сообщений</string>
+			<key>one</key>
+			<string>%d сообщение</string>
+			<key>other</key>
+			<string>%d сообщений</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>

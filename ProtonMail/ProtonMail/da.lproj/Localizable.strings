@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Annullerer";
 
+/* Warning message */
+"Cannot empty folder right now." = "Kan ikke tømme mappe lige nu.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Kan ikke dekryptere denne vedhæftning.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "By";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Ryd lokal cache";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Skriv";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Skriv besked";
 
 /* Title */
 "Compose to" = "Skriv til";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Tøm etiket";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Tøm spam";
+
+/* Alert title */
+"Empty spam folder" = "Tøm spammappe";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Tøm papirkurv";
+
+/* Alert title */
+"Empty trash folder" = "Tøm papirkurvsmappe";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Aktivér samtaler";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Velkommen til ProtonMail!";
-
-/* Description */
-"What people see in the \"From\" field." = "Hvad folk ser i feltet \"Fra\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Når du afsender en e-mail, er dette dét navn, der vises i afsenderfeltet.";

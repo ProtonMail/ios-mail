@@ -114,6 +114,42 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Sunteți sigur că doriți să ștergeți definitiv %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d conversații</string>
+			<key>one</key>
+			<string>%d conversație</string>
+			<key>other</key>
+			<string>%d de conversații</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Sunteți sigur că doriți să ștergeți definitiv %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d mesaje</string>
+			<key>one</key>
+			<string>%d mesaj</string>
+			<key>other</key>
+			<string>%d de mesaje</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>

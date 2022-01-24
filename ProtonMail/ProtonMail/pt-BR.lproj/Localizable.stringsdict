@@ -102,6 +102,38 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Tem certeza que deseja excluir permanentemente %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d conversa</string>
+			<key>other</key>
+			<string>%d conversas</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Tem certeza que deseja excluir permanentemente %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d mensagem</string>
+			<key>other</key>
+			<string>%d mensagens</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>
@@ -159,12 +191,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversa</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversas</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ marcada</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -180,7 +212,7 @@
 			<string>%d mensagens</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ marcada</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -191,9 +223,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d conversa</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d conversas</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ movida para %@</string>

@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Отменяется";
 
+/* Warning message */
+"Cannot empty folder right now." = "В данный момент папка не может быть очищена.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Невозможно расшифровать это вложение.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Город";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Очистить кэш на устройстве";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Новое письмо";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Написать сообщение";
 
 /* Title */
 "Compose to" = "Написать письмо";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Очистить ярлык";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Очистить Спам";
+
+/* Alert title */
+"Empty spam folder" = "Очистить папку Спам";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Очистить корзину";
+
+/* Alert title */
+"Empty trash folder" = "Очистить папку Корзина";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Включить цепочки писем";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Добро пожаловать в ProtonMail";
-
-/* Description */
-"What people see in the \"From\" field." = "То, что люди видят в поле \"От\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Когда вы отправляете письмо, указанное имя будет отображено в графе отправителя.";

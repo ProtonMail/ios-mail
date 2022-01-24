@@ -365,7 +365,7 @@
 "Authentication Failed Wrong username or password" = "Помилка автентифікації: неправильне ім'я користувача або пароль.";
 
 /* Error */
-"Authentication failed. Please try to sign in again." = "Авторизація не вдалася. Спробуйте увійти знову.";
+"Authentication failed. Please try to sign in again." = "Авторизація не вдалася. Будь ласка, спробуйте увійти знову.";
 
 /* Description */
 "Authentication token is not accessible because the app is locked" = "Токен автентифікації недоступний, тому що програма замкнена";
@@ -407,7 +407,7 @@
 "Bad response" = "Неправильна відповідь";
 
 /* Title */
-"Bcc" = "ПК";
+"Bcc" = "Прихована копія";
 
 /* message Bcc: feild */
 "Bcc:" = "Прихована копія:";
@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Скасування";
 
+/* Warning message */
+"Cannot empty folder right now." = "Зараз неможливо спорожнити теку.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Не вдається розшифрувати це вкладення.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Місто";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Очистити локальний кеш";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Написати";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Написати повідомлення";
 
 /* Title */
 "Compose to" = "Написати";
@@ -984,6 +996,18 @@
 /* it is an option to empty the label */
 "Empty Label" = "Очистити мітку";
 
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Спорожнити спам";
+
+/* Alert title */
+"Empty spam folder" = "Спорожнити теку спаму";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Спорожнити смітник";
+
+/* Alert title */
+"Empty trash folder" = "Спорожнити теку смітника";
+
 /* No comment provided by engineer. */
 "Enable conversations" = "Увімкнути розмови";
 
@@ -1057,7 +1081,7 @@
 "End-to-End Encryption" = "Наскрізне шифрування";
 
 /* Onboarding content */
-"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Оцініть переваги наскрізного шифрування навіть з контактами, які не користуються Proton. Запросіть їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наскрізне шифрування навіть з контактами, які не користуються Proton. Запросіть їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -1484,7 +1508,7 @@
 "Load images" = "Завантажити зображення";
 
 /* Action */
-"Load remote content" = "Звантажити зовнішній вміст";
+"Load remote content" = "Завантажувати зовнішній вміст";
 
 /* (No Comment) */
 "Loading..." = "Завантаження...";
@@ -1939,13 +1963,13 @@
 "Photo Library" = "Галерея фотографій";
 
 /* device settings auto lock type title */
-"PIN" = "ПІН";
+"PIN" = "PIN";
 
 /* The protection title of PIN code protection */
-"PIN code" = "ПІН-код";
+"PIN code" = "PIN-код";
 
 /* Description */
-"PIN code can't be empty." = "ПІН не може бути порожнім.";
+"PIN code can't be empty." = "PIN-код не може бути порожнім.";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Тарифні плани можна змінювати у вебверсії.";
@@ -2153,7 +2177,7 @@
 "Recovery Email Warning" = "Попередження щодо резервної е-пошти";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Відновлення активовано";
+"Recovery enabled" = "Відновлення доступу активовано";
 
 /* No comment provided by engineer. */
 "Reload" = "Перезавантажити";
@@ -2177,7 +2201,7 @@
 "Remove Star" = "Прибрати зірочку";
 
 /* The button to enable label list reorder */
-"Reorder" = "Повторне замовлення";
+"Reorder" = "Впорядкувати";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Повторити";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Вітаємо в ProtonMail";
-
-/* Description */
-"What people see in the \"From\" field." = "Що люди бачать у полі \"Від\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Коли ви надсилаєте лист, це ім'я з'являється в полі відправника.";

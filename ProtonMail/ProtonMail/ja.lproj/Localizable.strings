@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "キャンセル中";
 
+/* Warning message */
+"Cannot empty folder right now." = "Cannot empty folder right now.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "この添付ファイルを復号できません。";
 
@@ -572,7 +575,7 @@
 "Check Again" = "もう一度確認";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "ProtonStatus で私たちのシステムの状況をご確認ください。";
+"Check Proton Status for our system status." = "Proton Status でシステム状況を確認してください。";
 
 /* "Username" */
 "Checking ...." = "確認中...";
@@ -585,6 +588,12 @@
 
 /* contact placeholder */
 "City" = "市町村";
+
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
 
 /* cell title in device setting */
 "Clear local cache" = "ローカルキャッシュのクリア";
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "新規作成";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Compose message";
 
 /* Title */
 "Compose to" = "新規作成";
@@ -984,6 +996,18 @@
 /* it is an option to empty the label */
 "Empty Label" = "ラベルを空にする";
 
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Empty Spam";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Empty Trash";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
+
 /* No comment provided by engineer. */
 "Enable conversations" = "会話を有効にする";
 
@@ -1322,7 +1346,7 @@
 "Importing Contacts" = "連絡先をインポートしています";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Proton のサイトがブロックされている場合、この設定により、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。サービスへの接続の信頼性向上の観点から、私たちはこの設定を有効にしておくことをお勧めします。[より詳しく]";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Proton のサイトがブロックされている場合、この設定により、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。サービスへの接続の信頼性向上の観点から、この設定を有効にしておくことをお勧めします。[より詳しく]";
 
 /* network troubleshot cell title
    The footer of alternative routing setting */
@@ -2083,7 +2107,7 @@
 "ProtonMail encrypted emails" = "ProtonMail暗号化メール";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMailは現在オフラインです。現在の状態については私たちのtwitterを参照してください: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail は現在利用できません。現在の状態については Twitter を参照してください: https://twitter.com/protonmail";
 
 /* Title */
 "ProtonMail is currently offline…" = "ProtonMail は現在障害発生中です…";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "ProtonMail へようこそ";
-
-/* Description */
-"What people see in the \"From\" field." = "差出人欄に表示される方";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "メールを送信した際に、差出人欄に表示される名前です。";

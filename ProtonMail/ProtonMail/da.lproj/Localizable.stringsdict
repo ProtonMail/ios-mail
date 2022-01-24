@@ -102,6 +102,38 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
 	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Er du sikker på, at du vil slette %#@conversation@ permanent?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d samtale</string>
+			<key>other</key>
+			<string>%d samtaler</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Er du sikker på, at du vil slette %#@message@ permanent?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%d besked</string>
+			<key>other</key>
+			<string>%d beskeder</string>
+		</dict>
+	</dict>
 	<key>general_conversation</key>
 	<dict>
 		<key>CONVERSATION</key>

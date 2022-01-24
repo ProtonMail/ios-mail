@@ -85,10 +85,38 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>other</key>
-			<string>Diperbarui %d menit lalu</string>
+			<string>Diperbarui %d menit yang lalu</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
+	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Apakah Anda yakin untuk menghapus %#@conversation@ secara permanen?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d percakapan</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Apakah Anda yakin untuk menghapus %#@message@ secara permanen?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%d pesan</string>
+		</dict>
 	</dict>
 	<key>general_conversation</key>
 	<dict>
