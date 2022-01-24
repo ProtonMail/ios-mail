@@ -36,11 +36,11 @@ class DoHMail : DoH, ServerConfig {
     
     var captchaHost = Constants.App.captchaHost()
 
-    var humanVerificationV3Host = "https://verify.protonmail.com"
+    var humanVerificationV3Host = Constants.App.humanVerifyHost
 
-    var accountHost = "https://account.protonmail.com"
+    var accountHost = Constants.App.accountHost
 
-    var signupDomain = "protonmail.com"
+    var signupDomain = Constants.App.domain
 
     var debugMode: Bool = false
     
