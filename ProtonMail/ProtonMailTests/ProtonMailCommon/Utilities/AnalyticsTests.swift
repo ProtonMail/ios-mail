@@ -34,12 +34,12 @@ class AnalyticsTests: XCTestCase {
         sut = nil
         analyticsMock = nil
     }
-    
+
     func testSetup_inDebug() {
         sut.setup(isInDebug: true, isProduction: true)
         XCTAssertFalse(sut.isEnabled)
     }
-    
+
     func testSetup_notInDebug_isProduction() throws {
         sut.setup(isInDebug: false, isProduction: true)
         XCTAssertTrue(sut.isEnabled)
@@ -47,7 +47,7 @@ class AnalyticsTests: XCTestCase {
         let isDebug = try XCTUnwrap(analyticsMock.debug)
         XCTAssertFalse(isDebug)
     }
-    
+
     func testSetup_notInDebug_isEnterprise() throws {
         sut.setup(isInDebug: false, isProduction: false)
         XCTAssertTrue(sut.isEnabled)
@@ -55,10 +55,10 @@ class AnalyticsTests: XCTestCase {
         let isDebug = try XCTUnwrap(analyticsMock.debug)
         XCTAssertFalse(isDebug)
     }
-    
+
     func testSendDebugMessage() {
         sut.setup(isInDebug: false, isProduction: true)
-        
+
         let testExtra: [String: Any] = ["Test": 1]
         sut.debug(message: .authError,
                   extra: testExtra,
@@ -73,7 +73,7 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(analyticsMock.debugLine, 998)
         XCTAssertEqual(analyticsMock.debugColum, 123)
     }
-    
+
     func testSendDebugMessage_notEnable() {
         let testExtra: [String: Any] = ["Test": 1]
         sut.debug(message: .authError,
@@ -89,10 +89,10 @@ class AnalyticsTests: XCTestCase {
         XCTAssertNil(analyticsMock.debugLine)
         XCTAssertNil(analyticsMock.debugColum)
     }
-    
+
     func testSendErrorMessage() {
         sut.setup(isInDebug: false, isProduction: true)
-        
+
         let testExtra: [String: Any] = ["Test": 1]
         let testError = NSError.lockError()
         sut.error(message: .decryptedMessageBodyFailed,
@@ -102,7 +102,7 @@ class AnalyticsTests: XCTestCase {
                   function: "function1",
                   line: 986,
                   column: 123)
-        
+
         XCTAssertEqual(analyticsMock.errorEvent, .decryptedMessageBodyFailed)
         XCTAssertNotNil(analyticsMock.errorError)
         XCTAssertNotNil(analyticsMock.errorExtra)
@@ -111,7 +111,7 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(analyticsMock.errorLine, 986)
         XCTAssertEqual(analyticsMock.errorColum, 123)
     }
-    
+
     func testSendErrorMessage_notEnable() {
         let testExtra: [String: Any] = ["Test": 1]
         let testError = NSError.lockError()
@@ -122,7 +122,7 @@ class AnalyticsTests: XCTestCase {
                   function: "function1",
                   line: 986,
                   column: 123)
-        
+
         XCTAssertNil(analyticsMock.errorEvent)
         XCTAssertNil(analyticsMock.errorError)
         XCTAssertNil(analyticsMock.errorExtra)
