@@ -108,22 +108,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupProgressBar()
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
-
-        if UserInfo.isEncryptedSearchEnabled {
-            // show pop up to turn ES on - only once per user
-            print("DEBUG: viewdidload: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
-            print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-            if userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false && userCachedStatus.isEncryptedSearchOn == false {
-                if self.popupView == nil {  // Show popup if it is not already shown
-                    print("DEBUG show popup")
-                    self.showPopUpToEnableEncryptedSearch()
-                }
-                //self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown = true
-                self.viewModel.disableEncryptedSearchPopup()    // set isEncryptedSearchAvailablePopupAlreadyShown to true in the function as the view model is a private set
-                print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-                print("DEBUG: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,17 +116,21 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.tableView.reloadData()
 
         if UserInfo.isEncryptedSearchEnabled {
-            // Remove pop up when indexing is in progress
-            print("DEBUG: viewwillappear: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
-            print("DEBUG: viewillappear searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-            if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
-                print("DEBUG remove popup!")
+            // If encrypted search is not enabled - show a popup that it is available - if it hasn't been shown already
+            if userCachedStatus.isEncryptedSearchOn == false && userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false {
+                if self.popupView == nil {  // Show popup if it is not already shown
+                    self.showPopUpToEnableEncryptedSearch()
+                }
+                userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown = true
+            } else if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
                 self.popupView?.remove()
                 // remove gray view
                 self.grayedOutView?.removeFromSuperview()
                 // show keyboard again
                 self.searchBar.textField.becomeFirstResponder()
             }
+
+            // remove search info banner if encrypted search is disabled or complete
             if self.searchInfoBanner != nil {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 if let userID = usersManager.firstUser?.userInfo.userId {

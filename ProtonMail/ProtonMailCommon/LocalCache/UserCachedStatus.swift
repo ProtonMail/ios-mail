@@ -28,7 +28,7 @@ let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol, EncryptedSearchDownloadedMessagesCacheProtocol, SearchCacheProtocol {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, EncryptedSearchCacheProtocol, EncryptedSearchDownloadedMessagesCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -232,7 +232,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     
     var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
         get {
-            if getShared().object(forKey: Key.encryptedSearchStatus) == nil {
+            if getShared().object(forKey: Key.encryptedSearchAvailabelShowPopupFlag) == nil {
                 return false
             }
             return getShared().bool(forKey: Key.encryptedSearchAvailabelShowPopupFlag)
