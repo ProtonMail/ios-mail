@@ -26,7 +26,7 @@ import ProtonCore_Networking
 
 struct EventAPI {
     /// base event api path
-    static let path :String = "/\(Constants.App.API_PREFIXED)/events"
+    static let path :String = "/events"
 }
     
 // MARK : Get messages part -- EventCheckResponse
