@@ -231,6 +231,9 @@ extension Response {
 
     func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type) -> (Bool, T?) {
         do {
+            if case Optional<Void>.none = response {
+                throw RequestErrors.defaultPlanDecode.toResponseError(updating: error)
+            }
             let data = try JSONSerialization.data(withJSONObject: response, options: [])
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)

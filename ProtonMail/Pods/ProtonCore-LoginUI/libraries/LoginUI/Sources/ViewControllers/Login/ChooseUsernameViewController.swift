@@ -90,7 +90,7 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
             }
 
             switch error {
-            case let .generic(message: message, _):
+            case let .generic(message: message, _, _):
                 if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                     self.showError(message: message)
                 }

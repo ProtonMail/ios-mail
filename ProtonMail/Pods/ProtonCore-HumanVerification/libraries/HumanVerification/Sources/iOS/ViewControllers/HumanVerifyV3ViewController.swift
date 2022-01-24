@@ -179,12 +179,6 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
         decisionHandler(.allow)
     }
 
-    func webView(_ webview: WKWebView, didFinish nav: WKNavigation!) {
-        enableUserInteraction(for: webView)
-        webView.isHidden = false
-        activityIndicator?.stopAnimating()
-    }
-
     func webView(_ webview: WKWebView, didCommit nav: WKNavigation!) {
         enableUserInteraction(for: webView)
         activityIndicator?.startAnimating()
@@ -199,9 +193,7 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
     }
     
     private func handleFailedRequest(_ webview: WKWebView, _ error: Error) {
-        enableUserInteraction(for: webView)
-        webView.isHidden = false
-        activityIndicator?.stopAnimating()
+        hideActivityIndicator()
         guard let loadingUrl = lastLoadingURL else { return }
         viewModel.shouldRetryFailedLoading(host: loadingUrl, error: error) { [weak self] in
             if $0 {
@@ -210,6 +202,12 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
                 // present error, CP-3101
             }
         }
+    }
+
+    private func hideActivityIndicator() {
+        enableUserInteraction(for: webView)
+        webView.isHidden = false
+        activityIndicator?.stopAnimating()
     }
 
     private func enableUserInteraction(for webView: WKWebView) {
@@ -261,8 +259,9 @@ extension HumanVerifyV3ViewController: WKScriptMessageHandler {
         }, arrivedMessage: { type in
             switch type {
             case .loaded:
-                // TODO: Implementation needed
-                break
+                DispatchQueue.main.async { [weak self] in
+                    self?.hideActivityIndicator()
+                }
             case .close:
                 DispatchQueue.main.async { [weak self] in
                     self?.delegate?.didEditEmailAddress()

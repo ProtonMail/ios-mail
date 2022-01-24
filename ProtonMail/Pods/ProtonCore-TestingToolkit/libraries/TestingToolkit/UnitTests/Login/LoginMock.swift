@@ -57,7 +57,7 @@ public class LoginMock: Login {
 
     public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
 
@@ -69,19 +69,19 @@ public class LoginMock: Login {
 
     public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
 
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
 
     public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
 
@@ -91,7 +91,7 @@ public class LoginMock: Login {
 
     public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
     
@@ -111,13 +111,13 @@ public class LoginMock: Login {
     
     public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
     
     public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "", code: 0)))
+            completion(.failure(.generic(message: "", code: 0, originalError: LoginError.invalidState)))
         }
     }
     

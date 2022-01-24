@@ -25,7 +25,7 @@ import ProtonCore_Networking
 extension LoginError {
     public var description: String {
         switch self {
-        case let .generic(message: message, _):
+        case let .generic(message: message, _, _):
             return message
         case let .invalidCredentials(message: message):
             return message
@@ -60,9 +60,13 @@ public extension AuthErrors {
                     ? .invalid2FACode(message: responseError.localizedDescription)
                     : .invalidCredentials(message: responseError.localizedDescription)
             }
-            return .generic(message: responseError.networkResponseMessageForTheUser, code: codeInNetworking)
+            return .generic(message: responseError.networkResponseMessageForTheUser,
+                            code: codeInNetworking,
+                            originalError: responseError)
         default:
-            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
+            return .generic(message: userFacingMessageInNetworking,
+                            code: codeInNetworking,
+                            originalError: self)
         }
     }
 
@@ -71,7 +75,7 @@ public extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 12106:
             return .notAvailable(message: localizedDescription)
         default:
-            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
         }
     }
 
@@ -80,11 +84,11 @@ public extension AuthErrors {
         case .networkingError(let responseError) where responseError.responseCode == 2011:
             return .alreadySet(message: localizedDescription)
         default:
-            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
+            return .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
         }
     }
 
     func asCreateAddressKeysError() -> CreateAddressKeysError {
-        .generic(message: userFacingMessageInNetworking, code: codeInNetworking)
+        .generic(message: userFacingMessageInNetworking, code: codeInNetworking, originalError: self)
     }
 }

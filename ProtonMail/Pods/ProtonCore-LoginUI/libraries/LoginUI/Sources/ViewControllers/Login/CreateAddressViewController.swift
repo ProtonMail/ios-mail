@@ -99,7 +99,9 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
         viewModel.error.bind { [weak self] messageWithCode in
             guard let self = self else { return }
             if self.customErrorPresenter?.willPresentError(
-                error: CreateAddressError.generic(message: messageWithCode.0, code: messageWithCode.1),
+                error: CreateAddressError.generic(message: messageWithCode.0,
+                                                  code: messageWithCode.1,
+                                                  originalError: messageWithCode.2),
                 from: self
             ) == true { } else {
                 self.showError(message: messageWithCode.0)

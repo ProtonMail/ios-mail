@@ -96,7 +96,8 @@ final class GetSubscriptionResponse: Response {
         let cycle = response["Cycle"] as? Int
         let amount = response["Amount"] as? Int
         let currency = response["Currency"] as? String
-        let (plansParsed, plans) = decodeResponse(response["Plans"] as Any, to: [Plan].self)
+        guard let plansResponse = response["Plans"] else { return false }
+        let (plansParsed, plans) = decodeResponse(plansResponse, to: [Plan].self)
         guard plansParsed else { return false }
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))

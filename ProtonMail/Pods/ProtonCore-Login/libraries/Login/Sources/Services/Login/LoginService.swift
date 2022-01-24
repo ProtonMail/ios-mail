@@ -92,7 +92,8 @@ public final class LoginService: Login {
             switch result {
             case .failure(let error):
                 completion(.failure(LoginError.generic(message: error.networkResponseMessageForTheUser,
-                                                       code: error.bestShotAtReasonableErrorCode)))
+                                                       code: error.bestShotAtReasonableErrorCode,
+                                                       originalError: error)))
             case .success(let response):
                 completion(.success(response.domains))
             }

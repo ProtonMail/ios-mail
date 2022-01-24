@@ -501,7 +501,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 }
             } else if error.code == SKError.unknown.rawValue {
                 getErrorCompletion(for: cacheKey) {
-                    $0?(Errors.unknown(code: error.code))
+                    $0?(Errors.unknown(code: error.code, originalError: error))
                     self.refreshHandler?()
                 }
             } else {

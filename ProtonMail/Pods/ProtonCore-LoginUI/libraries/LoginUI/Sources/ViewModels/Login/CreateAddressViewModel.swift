@@ -33,7 +33,7 @@ final class CreateAddressViewModel {
     }
     let recoveryEmail: String
     let isLoading = Observable<Bool>(false)
-    let error = Publisher<(String, Int)>()
+    let error = Publisher<(String, Int, Error)>()
     let finished = Publisher<LoginData>()
 
     private let login: Login
@@ -69,7 +69,7 @@ final class CreateAddressViewModel {
             case .failure(let error):
                 PMLog.debug("User account doesn't have keys and we cannot create one")
                 self?.isLoading.value = false
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
             case .success(let user):
                 // we update the user so that we know about the newly created keys
                 self?.user = user
@@ -85,7 +85,7 @@ final class CreateAddressViewModel {
                             self?.createAddress()
                         case .generic:
                             self?.isLoading.value = false
-                            self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                            self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                         }
                     }
                 }
@@ -108,10 +108,10 @@ final class CreateAddressViewModel {
                 case let .cannotCreateInternalAddress(address):
                     PMLog.debug("Address cannot be created. Already existing address: \(String(describing: address))")
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 case .generic:
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 }
             }
         }
@@ -131,7 +131,7 @@ final class CreateAddressViewModel {
                     self?.finishFlow()
                 case .generic:
                     self?.isLoading.value = false
-                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 }
             }
         }
@@ -150,7 +150,7 @@ final class CreateAddressViewModel {
                     self?.finished.publish(data)
                 }
             case let .failure(error):
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin))
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 self?.isLoading.value = false
             }
         }

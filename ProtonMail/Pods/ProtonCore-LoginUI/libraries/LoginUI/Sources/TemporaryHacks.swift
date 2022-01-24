@@ -1,8 +1,8 @@
 //
 //  TemporaryHacks.swift
-//  ProtonCore-Payments - Created on 11/08/2021.
+//  ProtonCore-LoginUI - Created on 17/01/2022.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2022 Proton Technologies AG
 //
 //  This file is part of Proton Technologies AG and ProtonCore.
 //
@@ -23,14 +23,14 @@
 
 public enum TemporaryHacks {
     // Can be used only for core example app internal tests
-    public static var testCardForPayments: [String: String]?
+    public static var signupMode: SignupMode?
 }
 
 #else
 
 public enum TemporaryHacks {
     // Can be used only for core example app internal tests
-    public static var testCardForPayments: [String: String]? { nil }
+    public static var signupMode: SignupMode? { nil }
 }
 
 #endif

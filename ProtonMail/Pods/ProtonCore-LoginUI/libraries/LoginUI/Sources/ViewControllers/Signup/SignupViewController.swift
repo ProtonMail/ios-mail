@@ -188,7 +188,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         if signupAccountType == .internal {
             checkUsername(userName: self.currentlyUsedTextField.value)
         } else {
-            if TemporaryHacks.isV3 {
+            if ProtonCore_HumanVerification.TemporaryHacks.isV3 {
                 checkEmail(email: self.currentlyUsedTextField.value)
             } else {
                 requestValidationToken(email: self.currentlyUsedTextField.value)
@@ -262,7 +262,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 switch error {
-                case .generic(let message, _):
+                case .generic(let message, _, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
@@ -285,7 +285,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 switch error {
-                case .generic(let message, _):
+                case .generic(let message, _, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }

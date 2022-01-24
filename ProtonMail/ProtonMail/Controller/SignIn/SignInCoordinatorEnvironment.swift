@@ -69,7 +69,12 @@ extension SignInCoordinatorEnvironment {
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                         .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, signupMode, signupPasswordRestrictions, isCloseButtonAvailable in
-            let signup: SignupAvailability = .available(parameters: .init(mode: signupMode, passwordRestrictions: .atLeastEightCharactersLong, summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))))
+            let signup: SignupAvailability = .available(parameters: .init(
+                // the ability to change signup mode is temporarily disabled
+//                mode: signupMode,
+                passwordRestrictions: .atLeastEightCharactersLong,
+                summaryScreenVariant: SummaryScreenVariant.screenVariant(.mail(SummaryStartButtonText("Start using Proton Mail")))
+            ))
             let payment: PaymentsAvailability
             if UIApplication.isTestflightBeta {
                 payment = .notAvailable

@@ -42,7 +42,7 @@ final class TokenRequest: BaseApiRequest<TokenResponse> {
 
     override var parameters: [String: Any]? {
         let paymentDict: [String: Any]
-        if let card = TemporaryHacks.testCardForPayments {
+        if let card = ProtonCore_Payments.TemporaryHacks.testCardForPayments {
             paymentDict = [
                 "Type": "card",
                 "Details": card

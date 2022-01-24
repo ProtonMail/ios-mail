@@ -35,7 +35,7 @@ public enum StoreKitManagerErrors: LocalizedError, Equatable {
     case wrongTokenStatus(PaymentToken.Status)
     case cancelled
     case notAllowed
-    case unknown(code: Int)
+    case unknown(code: Int, originalError: NSError)
     case appIsLocked                            // (mail only)
     case pleaseSignIn                           // (mail only)
     

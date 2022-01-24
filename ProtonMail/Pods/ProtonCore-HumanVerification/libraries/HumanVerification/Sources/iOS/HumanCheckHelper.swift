@@ -74,7 +74,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     }
     
     private func startMenuCoordinator(methods: [VerifyMethod], startToken: String?, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        if TemporaryHacks.isV3 {
+        if ProtonCore_HumanVerification.TemporaryHacks.isV3 {
             prepareV3Coordinator(methods: methods, startToken: startToken, currentURL: currentURL)
         } else {
             // filter only methods allowed by HV v2
