@@ -202,7 +202,7 @@ class EncryptedSearchTests: XCTestCase {
         // Test interruption low battery
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = true
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.state, EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
         XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
         XCTAssertFalse(EncryptedSearchService.shared.indexBuildingInProgress)
     }
@@ -484,7 +484,7 @@ class EncryptedSearchTests: XCTestCase {
         let sut = EncryptedSearchService.shared.speedUpIndexing
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         EncryptedSearchService.shared.indexBuildingInProgress = true
-        EncryptedSearchService.shared.slowDownIndexing()    // first slow it down
+        EncryptedSearchService.shared.slowDownIndexing(userID: self.testUserID)    // first slow it down
         sut(self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
     }

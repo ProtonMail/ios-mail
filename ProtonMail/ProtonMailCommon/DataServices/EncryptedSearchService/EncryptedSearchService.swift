@@ -1228,11 +1228,10 @@ extension EncryptedSearchService {
         let time: Int = Int(message.Time)
         let order: Int = message.Order
 
-        let iv: Data = (encryptedContent?.iv)!.base64EncodedData()
-        let ciphertext:Data = (encryptedContent?.ciphertext)!.base64EncodedData()
-        let encryptedContentSize: Int = ciphertext.count
+        let ciphertext: String? = encryptedContent?.ciphertext
+        let encryptedContentSize: Int = ciphertext?.count ?? 0
 
-        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: decryptionFailed, decryptionFailed: decryptionFailed, encryptionIV: iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: decryptionFailed, decryptionFailed: decryptionFailed, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
     }
 
     // MARK: - Search Functions
