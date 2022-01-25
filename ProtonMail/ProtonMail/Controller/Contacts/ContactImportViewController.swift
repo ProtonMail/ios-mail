@@ -25,6 +25,7 @@ import UIKit
 import Contacts
 import CoreData
 import OpenPGP
+import ProtonCore_DataModel
 
 protocol ContactImportVCDelegate {
     func cancel()
@@ -43,6 +44,7 @@ class ContactImportViewController: UIViewController {
     private var cancelled : Bool = false
     private var showedCancel : Bool = false
     private var finished : Bool = false
+    private var appleContactParser: AppleContactParserProtocol?
 
     var reloadAllContact: (() -> Void)?
     
@@ -74,6 +76,8 @@ class ContactImportViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.appleContactParser = AppleContactParser(delegate: self,
+                                                     coreDataService: sharedServices.get(by: CoreDataService.self))
         progressView.progress = 0.0
         titleLabel.text = LocalString._contacts_import_title
         
@@ -107,7 +111,7 @@ class ContactImportViewController: UIViewController {
                                                 style: .destructive, handler: { (action) -> Void in
             self.showedCancel = false
             self.cancelled = true
-                                                    self.user.contactService.cancelImportTask()
+            self.appleContactParser?.cancelImportTask()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: {(action) -> Void in
             self.showedCancel = false
@@ -161,35 +165,56 @@ class ContactImportViewController: UIViewController {
     lazy var contacts: [CNContact] = sharedServices.get(by: AddressBookService.self).getAllContacts()
     
     internal func retrieveContactsWithStore(store: CNContactStore) {
-        guard case let mailboxPassword = self.user.mailboxPassword,
-              let userkey = self.user.userInfo.firstUserKey() else
-        {
-            NSError.lockError().alertToast()
-            return
-        }
-        let existed = (fetchedResultsController?.fetchedObjects as? [Contact]) ?? []
-        
-        self.user.contactService.queueImport(contacts: self.contacts, existedContact: existed, userKey: userkey, mailboxPassword: mailboxPassword, progress: { [weak self] progress, message in
-            DispatchQueue.main.async {
-                if let progress = progress {
-                    self?.progressView.setProgress(progress, animated: false)
-                }
-                if let message = message {
-                    self?.messageLabel.text = message
-                }
-            }
-        }, dismiss: { [weak self] error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.messageLabel.text = error.localizedDescription
-                }
-                self?.dismiss()
-            }
-        }, disableCancel: { [weak self] in
-            DispatchQueue.main.async {
-                self?.cancelButton.isEnabled = false
-            }
-        })
+        self.appleContactParser?.queueImport(contacts: self.contacts)
     }
     
+}
+
+extension ContactImportViewController: AppleContactParserDelegate {
+    func update(progress: Double) {
+        DispatchQueue.main.async {
+            self.progressView.progress = Float(progress)
+        }
+    }
+    
+    func update(message: String) {
+        DispatchQueue.main.async {
+            self.messageLabel.text = message
+        }
+    }
+
+    func showParser(error: String) {
+        DispatchQueue.main.async {
+            error.alertToastBottom()
+        }
+    }
+    
+    func dismissImportPopup() {
+        DispatchQueue.main.async {
+            self.dismiss()
+        }
+    }
+    
+    func disableCancel() {
+        DispatchQueue.main.async {
+            self.cancelButton.isEnabled = false
+        }
+    }
+    
+    func updateUserData() -> (userKey: Key, passphrase: String, existedContactIDs: [String])? {
+        guard let userKey = self.user.userInfo.firstUserKey() else { return nil }
+        let passphrase = self.user.mailboxPassword
+        let existed = (fetchedResultsController?.fetchedObjects as? [Contact]) ?? []
+
+        return (userKey: userKey,
+                passphrase: passphrase,
+                existedContactIDs: existed.map { $0.uuid })
+    }
+
+    func scheduleUpload(data: AppleContactParsedResult) {
+        let error = self.user.contactService.queueAddContact(cardDatas: data.cardDatas,
+                                                             name: data.name,
+                                                             emails: data.definedMails)
+        error?.localizedFailureReason?.alertToastBottom()
+    }
 }

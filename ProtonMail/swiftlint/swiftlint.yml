@@ -255,6 +255,7 @@ included:
   - ${PWD}/ProtonMailCommon/Extensions/General/NSError+Extension.swift
   - ${PWD}/ProtonMailCommon/DataServices/APIService/UnsubscribeService.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/MailboxDiffableDataSource.swift
+  - ${PWD}/ProtonMailCommon/DataServices/ContactService/AppleContactParser.swift
 
 excluded:
   - ${PWD}/Pods
