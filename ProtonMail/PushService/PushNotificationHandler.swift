@@ -49,6 +49,7 @@ final class PushNotificationHandler {
         userCachedStatus.hasMessageFromNotification = true
 
         guard let encryptionKit = encryptionKitProvider.encryptionKit(forSession: UID) else {
+            SharedUserDefaults().setNeedsToRegisterAgain(for: UID)
             #if Enterprise
             bestContent.body = "no encryption kit for UID"
             #endif

@@ -47,7 +47,8 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     private let signInProvider: SignInProvider
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
-    
+    private let sharedUserDefaults = SharedUserDefaults()
+
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
     
     init(service: MessageDataService? = nil,
@@ -119,7 +120,25 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             self.didUnlock()    // cuz encryption kit generation can take significant time
         }
     }
-    
+
+    private func generateEncryptionKit(for settings: PushNotificationService.SubscriptionSettings) -> SubscriptionSettings {
+        var newSettings = settings
+        do {
+            try newSettings.generateEncryptionKit()
+        } catch let error {
+            assert(false, "failed to generate enryption kit: \(error)")
+        }
+        return newSettings
+
+    }
+
+    private func finalizeReporting(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
+        let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
+        self.currentSubscriptions.insert(subcriptionsBeforeReport)
+        self.report(settingsToReport)
+        self.unreportOutdated()
+    }
+
     private func didUnlock() {
         guard case let sessionIDs = self.sessionIDProvider.sessionIDs, let deviceToken = self.latestDeviceToken else {
             return
@@ -134,27 +153,25 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             $0.state == .reported && !settingsToUnreport.contains($0.settings)
         }
         var settingsToReport = Set(settingsWeNeedToHave)
+
         settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
             // Always report all settings to make sure we don't miss any
             // Those already reported will just be overriden, others will be registered
-            if let alreadyReportedSetting = subscriptionsToKeep.first(where: { $0.settings == settings }),
-               alreadyReportedSetting.settings.encryptionKit != nil {
-                return alreadyReportedSetting.settings
+            if sharedUserDefaults.shouldRegisterAgain(for: settings.UID) {
+                sharedUserDefaults.didRegister(for: settings.UID)
+                // Regenerate a key pair if the extension failed to decrypt notification payload
+                return generateEncryptionKit(for: settings)
             } else {
-                var newSettings = settings
-                do {
-                    try newSettings.generateEncryptionKit()
-                } catch let error {
-                    assert(false, "failed to generate enryption kit: \(error)")
+                if let alreadyReportedSetting = subscriptionsToKeep.first(where: { $0.settings == settings }),
+                   alreadyReportedSetting.settings.encryptionKit != nil {
+                    return alreadyReportedSetting.settings
+                } else {
+                    return generateEncryptionKit(for: settings)
                 }
-                return newSettings
             }
         })
-        
-        let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
-        self.currentSubscriptions.insert(subcriptionsBeforeReport)
-        self.report(settingsToReport)
-        self.unreportOutdated()
+
+        finalizeReporting(settingsToReport: settingsToReport)
     }
     
     @objc private func didSignOut() {
