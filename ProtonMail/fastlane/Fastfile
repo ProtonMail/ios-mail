@@ -261,13 +261,21 @@ platform :ios do
     )
 
     slather(build_directory: "../test_output/",
-    scheme: "ProtonMailTests",
-    workspace: "Protonmail.xcworkspace",
-    proj: "Protonmail.xcodeproj",
-    output_directory: "../test_output/slatherOutput", 
-    cobertura_xml: true,
-    simple_output: true,
-    ignore: ["Pods/*", "Frameworks/*"]
+      scheme: "ProtonMailTests",
+      workspace: "Protonmail.xcworkspace",
+      proj: "Protonmail.xcodeproj",
+      output_directory: "../test_output/slatherOutput", 
+      cobertura_xml: true,
+      simple_output: false,
+      ignore: ["Pods/*", "Frameworks/*"]
+    )
+
+    slather(build_directory: "../test_output/",
+      scheme: "ProtonMailTests",
+      workspace: "Protonmail.xcworkspace",
+      proj: "Protonmail.xcodeproj",
+      simple_output: true,
+      ignore: ["Pods/*", "Frameworks/*"]
     )
   end
 
