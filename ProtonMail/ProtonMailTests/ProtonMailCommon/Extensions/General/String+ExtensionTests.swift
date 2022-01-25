@@ -73,31 +73,31 @@ final class String_ExtensionTests: XCTestCase {
 
     /// some addresses are valid in RFC, but it is ok we don't pass it they are too strange
     func testStrangeEmailAddresses() {
-        //The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.
+        // The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.
         XCTAssertFalse("foo@[123.456.789.123]".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("foo.\"bar\"@baz.com".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("\"foo.(),:;<>[]\".FOO.\"foo@\\ \"FOO\".foo\"@baz.qux.com".isValidEmail())
-        //Address is valid for SMTP but has unusual elements
+        // Address is valid for SMTP but has unusual elements
         XCTAssertFalse("\" \"@baz.com".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("foo.\"bar\\ qux\"@baz.com".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("foo.bar.\"bux\".bar.com@baz.com".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("much.\"more\\ unusual\"@example.com".isValidEmail())
-        //Address contains deprecated elements but may still be valid in restricted contexts
+        // Address contains deprecated elements but may still be valid in restricted contexts
         XCTAssertFalse("very.unusual.\"@\".unusual.com@example.com".isValidEmail())
-        //Address is valid for SMTP but has unusual elements
+        // Address is valid for SMTP but has unusual elements
         XCTAssertFalse("\"very.(),:;<>[]\\\".VERY.\\\"very@\\\\ \\\"very\\\".unusual\"@strange.example.com".isValidEmail())
-        //Address is valid for SMTP but has unusual elements
+        // Address is valid for SMTP but has unusual elements
         XCTAssertFalse("admin@mailserver1".isValidEmail())
         XCTAssertFalse("#!$%&'*+-/=?^_`{}|~@example.org".isValidEmail())
         XCTAssertFalse("\"()<>[]:,;@\\\\\\\"!#$%&'-/=?^_`{}| ~.a\"@example.org".isValidEmail())
     }
 
-    //List of Invalid Email Addresses
+    // List of Invalid Email Addresses
     func testInvalidEmailAddresses() {
         XCTAssertFalse("jovan@a".isValidEmail())
         XCTAssertFalse("@jovan".isValidEmail())
@@ -119,7 +119,7 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("email@example..com".isValidEmail())
         XCTAssertFalse("Abc..123@example.com".isValidEmail())
         XCTAssertFalse("foo.bar@baz.com.".isValidEmail())
-        
+
         XCTAssertFalse("a\"b(c)d,e:f;g<h>I[j\\k]l@baz.com".isValidEmail())
         XCTAssertFalse("foo bar@baz.com".isValidEmail())
         XCTAssertFalse("foo@baz.com-".isValidEmail())
@@ -176,7 +176,7 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("abc".preg_match("ccc"))
         XCTAssertTrue("abccdew".preg_match("cc"))
     }
-    
+
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
         XCTAssertFalse(testSrc1.hasImage())
@@ -234,7 +234,7 @@ final class String_ExtensionTests: XCTestCase {
     func testToDictionary() {
         XCTAssertNil("".toDictionary())
         guard let dict = "{\"age\":100,\"name\":\"Tester\"}".toDictionary() else {
-            XCTFail()
+            XCTFail("Shouldn't be nil")
             return
         }
         XCTAssertEqual(dict["name"] as? String, "Tester")

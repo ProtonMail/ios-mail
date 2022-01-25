@@ -20,11 +20,11 @@ import XCTest
 
 final class Dictionary_ExtensionTests: XCTestCase {
     func testToString() {
-        let dict = ["name": "Tester", "age": 100] as [String : Any]
+        let dict = ["name": "Tester", "age": 100] as [String: Any]
         let possible1 = ["{\"age\":100,\"name\":\"Tester\"}",
                          "{\"name\":\"Tester\",\"age\":100}"]
         XCTAssertTrue(possible1.contains(dict.toString()!))
-        
+
         let invalid: [String: Any] = ["a": UIView()]
         XCTAssertNil(invalid.toString())
     }
