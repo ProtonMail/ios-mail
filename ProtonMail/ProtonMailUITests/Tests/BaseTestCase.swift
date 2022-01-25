@@ -27,6 +27,7 @@ class BaseTestCase: XCTestCase {
         continueAfterFailure = false
         app.launchArguments = launchArguments
         app.launchArguments.append("-disableAnimations")
+        app.launchArguments.append("-skipTour")
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
         } else if forceUpgradeStubs {
