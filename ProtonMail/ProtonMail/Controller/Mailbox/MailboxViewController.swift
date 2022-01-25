@@ -234,6 +234,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         self.updateNavigationController(listEditing)
         
+        #if DEBUG
+        if CommandLine.arguments.contains("-skipTour") {
+            userCachedStatus.resetTourValue()
+        }
+        #endif
         if !userCachedStatus.isTourOk() {
             userCachedStatus.resetTourValue()
             self.coordinator?.go(to: .onboarding)
