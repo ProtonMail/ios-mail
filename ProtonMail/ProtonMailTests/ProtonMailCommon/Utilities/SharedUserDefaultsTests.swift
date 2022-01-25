@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 
-final class UserDefaultsPersistenceMock: TimestampPushPersistable {
+final class UserDefaultsPersistenceMock: TimestampPushPersistable, RegistrationRequiredPersistable {
     var dict: [String: Any] = [:]
 
     func set(_ value: Any?, forKey defaultName: String) {
@@ -27,6 +27,10 @@ final class UserDefaultsPersistenceMock: TimestampPushPersistable {
 
     func string(forKey defaultName: String) -> String? {
         dict[defaultName] as? String
+    }
+
+    func array(forKey defaultName: String) -> [Any]? {
+        dict[defaultName] as? [Any]
     }
 }
 
@@ -37,7 +41,7 @@ class SharedUserDefaultsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistenceMock = UserDefaultsPersistenceMock()
-        sut = SharedUserDefaults(timestampPushPersistable: persistenceMock)
+        sut = SharedUserDefaults(timestampPushPersistable: persistenceMock, registrationRequiredPersistable: persistenceMock)
     }
 
     override func tearDown() {
@@ -57,5 +61,23 @@ class SharedUserDefaultsTests: XCTestCase {
 
     func testEmptyShouldReturnUndefined() {
         XCTAssertEqual(sut.lastReceivedPushTimestamp, "Undefined")
+    }
+
+    func testSettingShouldDefaultToFalseForAnyUID() {
+        XCTAssertFalse(sut.shouldRegisterAgain(for: "dummy"))
+    }
+
+    func testSettingShouldSaveUIDToRegisterAgain() {
+        let expectedUID = String.randomString(8)
+        sut.setNeedsToRegisterAgain(for: expectedUID)
+        XCTAssertTrue(sut.shouldRegisterAgain(for: expectedUID))
+    }
+
+    func testSettingShouldRemoveUID() {
+        let expectedUID = String.randomString(8)
+        sut.setNeedsToRegisterAgain(for: expectedUID)
+        XCTAssertTrue(sut.shouldRegisterAgain(for: expectedUID))
+        sut.didRegister(for: expectedUID)
+        XCTAssertFalse(sut.shouldRegisterAgain(for: expectedUID))
     }
 }

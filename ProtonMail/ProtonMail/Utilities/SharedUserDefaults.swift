@@ -22,7 +22,34 @@ protocol TimestampPushPersistable {
     func string(forKey defaultName: String) -> String?
 }
 
+protocol RegistrationRequiredPersistable {
+    func set(_ value: Any?, forKey defaultName: String)
+    func add(_ value: String, forKey defaultName: String)
+    func remove(_ value: String, forKey defaultName: String)
+    func array(forKey defaultName: String) -> [Any]?
+}
+
+extension RegistrationRequiredPersistable {
+    func remove(_ value: String, forKey defaultName: String) {
+        guard var currentArray = array(forKey: defaultName) as? [String] else {
+            return
+        }
+        currentArray.removeAll(where: { $0 == value })
+        self.set(currentArray, forKey: defaultName)
+    }
+
+    func add(_ value: String, forKey defaultName: String) {
+        if var currentArray = array(forKey: defaultName) as? [String] {
+            currentArray.append(value)
+            self.set(currentArray, forKey: defaultName)
+        } else {
+            self.set([value], forKey: defaultName)
+        }
+    }
+}
+
 extension UserDefaults: TimestampPushPersistable {}
+extension UserDefaults: RegistrationRequiredPersistable {}
 
 struct SharedUserDefaults {
 
@@ -34,12 +61,16 @@ struct SharedUserDefaults {
 
     private enum Key: String {
         case lastReceivedPushTimestamp
+        case shouldRegisterAgain
     }
 
     private let timestampPushPersistable: TimestampPushPersistable?
+    private let registrationRequiredPersistable: RegistrationRequiredPersistable?
 
-    init(timestampPushPersistable: TimestampPushPersistable? = appGroupUserDefaults) {
+    init(timestampPushPersistable: TimestampPushPersistable? = appGroupUserDefaults,
+         registrationRequiredPersistable: RegistrationRequiredPersistable? = appGroupUserDefaults) {
         self.timestampPushPersistable = timestampPushPersistable
+        self.registrationRequiredPersistable = registrationRequiredPersistable
     }
 
     func setLastReceivedPush(at timestamp: TimeInterval) {
@@ -49,5 +80,21 @@ struct SharedUserDefaults {
 
     var lastReceivedPushTimestamp: String {
         timestampPushPersistable?.string(forKey: Key.lastReceivedPushTimestamp.rawValue) ?? "Undefined"
+    }
+
+    func setNeedsToRegisterAgain(for UID: String) {
+        registrationRequiredPersistable?.add(UID, forKey: Key.shouldRegisterAgain.rawValue)
+    }
+
+    func shouldRegisterAgain(for UID: String) -> Bool {
+        guard let UIDs = registrationRequiredPersistable?
+                .array(forKey: Key.shouldRegisterAgain.rawValue) as? [String] else {
+            return false
+        }
+        return UIDs.contains(UID)
+    }
+
+    func didRegister(for UID: String) {
+        registrationRequiredPersistable?.remove(UID, forKey: Key.shouldRegisterAgain.rawValue)
     }
 }
