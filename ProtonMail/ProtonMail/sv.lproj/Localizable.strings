@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Avbryter";
 
+/* Warning message */
+"Cannot empty folder right now." = "Kan inte tömma mapp just nu.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Kan inte avkryptera denna bilaga.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Stad";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Rensa lokal cache";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Skriv";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Skriv meddelande";
 
 /* Title */
 "Compose to" = "Compose to";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Töm etikett";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Töm skräppost";
+
+/* Alert title */
+"Empty spam folder" = "Töm skräppost-mappen";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Töm papperskorg";
+
+/* Alert title */
+"Empty trash folder" = "Töm papperskorgen";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Aktivera konversationer";
@@ -2282,7 +2306,7 @@
 "Send Verification Code" = "Skicka verifieringskod";
 
 /* No comment provided by engineer. */
-"Sender details" = "Sender details";
+"Sender details" = "Avsändardetaljer";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Sender Verification Failed";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Välkommen till ProtonMail";
-
-/* Description */
-"What people see in the \"From\" field." = "What people see in the \"From\" field.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "När du skickar ett e-postmeddelande är det detta namn som visas i avsändarfältet.";

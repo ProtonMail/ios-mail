@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Cancelando";
 
+/* Warning message */
+"Cannot empty folder right now." = "Não é possível esvaziar a pasta agora.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Não foi possível descriptografar este anexo.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Cidade";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Limpar o cache local";
 
@@ -605,10 +614,10 @@
 "Closing" = "Fechando";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "Recolher pasta";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "Recolher mensagem";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Escrever";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Escrever mensagem";
 
 /* Title */
 "Compose to" = "Escrever para";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Limpar marcador";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Esvaziar spam";
+
+/* Alert title */
+"Empty spam folder" = "Esvaziar pasta de spam";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Esvaziar lixeira";
+
+/* Alert title */
+"Empty trash folder" = "Esvaziar lixeira";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Habilitar conversas";
@@ -2023,10 +2047,10 @@
 "Please upgrade to a paid plan to use more than 3 labels" = "Por favor atualize para um plano pago para usar mais de 3 rótulos";
 
 /* Content of storage full alert */
-"Please upgrade your plan" = "Please upgrade your plan";
+"Please upgrade your plan" = "Por favor, atualize seu plano";
 
 /* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+"Please upgrade your plan to continue to send and receive emails." = "Por favor, atualize seu plano para continuar a enviar e receber emails.";
 
 /* Description */
 "Please use ProtonMail App sign-in first." = "Por favor, primeiro Conecte-se no ProtonMail.";
@@ -2529,7 +2553,7 @@
 "Switch selection mode" = "Alternar modo de seleção";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "Alternar para filtro de não lido";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Alterado para a conta \"%@\"";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Bem-vindo ao ProtonMail!";
-
-/* Description */
-"What people see in the \"From\" field." = "O que as pessoas vêem no campo \"De\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quando você enviar um e-mail, este é o nome que aparecerá no campo do remetente.";

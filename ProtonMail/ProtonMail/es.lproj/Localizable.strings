@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Cancelando";
 
+/* Warning message */
+"Cannot empty folder right now." = "No se puede vaciar la carpeta en este momento.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "No se puede descifrar este archivo adjunto.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Ciudad";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "advertencia_de_conversación_limpia";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "aviso_de_limpieza";
+
 /* cell title in device setting */
 "Clear local cache" = "Borrar caché local";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Redactar";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Redactar el mensaje";
 
 /* Title */
 "Compose to" = "Redactar a";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Vaciar etiqueta";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Spam vacío";
+
+/* Alert title */
+"Empty spam folder" = "Carpeta de spam vacía";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Papelera vacía";
+
+/* Alert title */
+"Empty trash folder" = "Carpeta de la papelera vacía";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Habilitar conversaciones";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Bienvenido/a a ProtonMail";
-
-/* Description */
-"What people see in the \"From\" field." = "Lo que la gente ve en el campo \"De\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Cuando envías un correo, este es el nombre que aparecerá en el campo del remitente.";

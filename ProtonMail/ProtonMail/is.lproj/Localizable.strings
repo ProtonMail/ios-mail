@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Hætti við";
 
+/* Warning message */
+"Cannot empty folder right now." = "Cannot empty folder right now.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Borg/Sveitarfélag";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Clear local cache";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Semja skilaboð";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Compose message";
 
 /* Title */
 "Compose to" = "Semja til";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Tóm merking";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Empty Spam";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Empty Trash";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Enable conversations";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Velkomin í ProtonMail!";
-
-/* Description */
-"What people see in the \"From\" field." = "Það sem fólk sér í \"Frá\" reitnum.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Þegar þú sendir tölvupóst, þá er þetta nafnið sem birtist í reitnum fyrir sendanda.";

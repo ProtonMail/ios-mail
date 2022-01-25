@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Ruší se";
 
+/* Warning message */
+"Cannot empty folder right now." = "Nyní nelze složku vyprázdnit.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Tuto přílohu nelze dešifrovat.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Město";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Vymazat lokální mezipaměť";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Nová zpráva";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Napsat zprávu";
 
 /* Title */
 "Compose to" = "Napsat zprávu";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Vyprázdnit štítek";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Vyprázdnit složku Nevyžádané";
+
+/* Alert title */
+"Empty spam folder" = "Vysypat složku Nevyžádané";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Vysypat koš";
+
+/* Alert title */
+"Empty trash folder" = "Vysypat koš";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Povolit konverzaci";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Vítejte na ProtonMail!";
-
-/* Description */
-"What people see in the \"From\" field." = "Co lidé vidí v poli \"Od\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Toto je jméno, které se zobrazí v poli \"Odesílatel\" při odeslání e-mailu.";

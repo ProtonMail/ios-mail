@@ -123,7 +123,7 @@
 "Account settings" = "帳號設定";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
+"Action reverted" = "動作已復原";
 
 /* (No Comment) */
 "Add" = "新增";
@@ -230,7 +230,7 @@
 "Also Archive" = "同時封存";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Also archive?";
+"Also archive?" = "同時封存?";
 
 /* Description */
 "Also used to reset a forgotten password." = "並用於重置密碼。";
@@ -239,10 +239,10 @@
 "Alternative routing" = "替代路由";
 
 /* The title of always off option in dark mode setting */
-"Always off" = "Always off";
+"Always off" = "保持關閉";
 
 /* The title of always on option in dark mode setting */
-"Always on" = "Always on";
+"Always on" = "保持開啟";
 
 /* agree check box middle word */
 "and" = "和";
@@ -386,7 +386,7 @@
 "Auto-load embedded images" = "自動載入內嵌圖片";
 
 /* Example feedback */
-"Awful" = "Awful";
+"Awful" = "糟透了";
 
 /* top left back button */
 "Back" = "返回";
@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "正在取消";
 
+/* Warning message */
+"Cannot empty folder right now." = "目前無法清空資料夾。";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "無法解密這個附件。";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "城市";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "清除本地快取";
 
@@ -605,10 +614,10 @@
 "Closing" = "關閉";
 
 /* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Collapse folder";
+"Collapse folder" = "收合資料夾";
 
 /* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Collapse message";
+"Collapse message" = "收合郵件";
 
 /* cell title in device settings
    The title of combined contact in settings */
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "撰寫";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "撰寫郵件";
 
 /* Title */
 "Compose to" = "撰寫到";
@@ -744,7 +756,7 @@
 "Cut" = "剪下";
 
 /* cell title in app setting */
-"Dark mode" = "Dark mode";
+"Dark mode" = "深色模式";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -984,6 +996,18 @@
 /* it is an option to empty the label */
 "Empty Label" = "清空標籤";
 
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "清空垃圾郵件";
+
+/* Alert title */
+"Empty spam folder" = "清空垃圾郵件資料夾";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "清空「垃圾桶」";
+
+/* Alert title */
+"Empty trash folder" = "清空垃圾桶資料夾";
+
 /* No comment provided by engineer. */
 "Enable conversations" = "啟用會話";
 
@@ -1108,7 +1132,7 @@
 "Every time enter app" = "每次進入 App 時";
 
 /* The title of voice over action of expanding the folder */
-"Expand folder" = "Expand folder";
+"Expand folder" = "展開資料夾";
 
 /* alert title */
 "Expiration not supported" = "不支援到期日";
@@ -1160,7 +1184,7 @@
 "Folders" = "資料夾";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "跟隨裝置的設定";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "適合想免費享受安全通訊的個人";
@@ -1592,7 +1616,7 @@
 "Message headers" = "郵件標頭";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Message moved to trash";
+"Message moved to trash" = "郵件已移至垃圾桶";
 
 /* Placeholder */
 "Message Password" = "郵件訊息密碼";
@@ -2104,7 +2128,7 @@
 "ProtonVPN included" = "包括 ProtonVPN";
 
 /* Title of menu action to trigger feedback view */
-"Provide feedback" = "Provide feedback";
+"Provide feedback" = "提供意見回饋";
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
@@ -2267,7 +2291,7 @@
 "Send anyway" = "仍然傳送";
 
 /* Title of button to send feedback */
-"Send feedback" = "Send feedback";
+"Send feedback" = "傳送意見回饋";
 
 /* when subject not empty */
 "Send message without subject?" = "是否傳送沒有主旨的信件？";
@@ -2550,7 +2574,7 @@
 "Tap send anyway to send without expiration to these recipients" = "點擊發送，即使在沒有使用限時功能的情況下也直接寄給這些收件人。";
 
 /* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+"Tell us about your experience. (Optional)" = "告訴我們關於您的使用經驗。（選填）";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "暫時停用或移除防毒軟體。";
@@ -2562,7 +2586,7 @@
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "我們已將您回報的 bug 加進追中系統中，感謝您的回報。";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Thank you for your feedback!";
+"Thank you for your feedback!" = "感謝您的回饋！";
 
 /* Error message */
 "The 2 passwords are not matching" = "兩組密碼並不匹配";
@@ -2656,7 +2680,7 @@
 "The user is already logged in" = "該使用者已登入。";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "使用者名稱已被使用。";
 
 /* title */
 "The verification email invalid" = "驗證電子郵件無效";
@@ -2745,7 +2769,7 @@
 "To" = "收件人";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "To prevent abuse of ProtonMail,\n we need to verify that you are human.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "為避免 ProtonMail 被濫用，\n我們需要驗證您是真人。";
 
 /* (No Comment) */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail";
@@ -3030,14 +3054,11 @@
 /* (No Comment) */
 "Welcome to ProtonMail!" = "歡迎使用ProtonMail!";
 
-/* Description */
-"What people see in the \"From\" field." = "人們在 \"來自\" 領域看到的。";
-
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "當你寄送郵件時，這個名稱將做為發件人欄位的名稱。";
 
 /* Example feedback */
-"Wonderful" = "Wonderful";
+"Wonderful" = "太棒了";
 
 /* default vcard types */
 "Work" = "公司";
@@ -3138,7 +3159,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 ProtonVPN （或其他VPN）或 Tor 存取 Proton。";
 
 /* Title of user feedback view */
-"Your feedback" = "Your feedback";
+"Your feedback" = "您的意見回饋";
 
 /* The section title of folder manager table */
 "Your folders" = "您的資料夾";
@@ -3154,7 +3175,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "新的加密電子郵件帳戶已經設置完成，您可以開始收發加密訊息。";
 
 /* view top title */
-"Your new secure email\n account is ready." = "Your new secure email\n account is ready.";
+"Your new secure email\n account is ready." = "您新的安全電子郵件\n帳號已準備就緒。";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "您的計畫當前處於啟用狀態直到";

@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "Megszakítás";
 
+/* Warning message */
+"Cannot empty folder right now." = "Cannot empty folder right now.";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Melléklet visszafejtése sikertelen.";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "Település";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "clean_message_warning";
+
 /* cell title in device setting */
 "Clear local cache" = "Ürítés";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "Levélírás";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Compose message";
 
 /* Title */
 "Compose to" = "Levélírás neki";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "Címke kiürítése";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Empty Spam";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Empty Trash";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Enable conversations";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Üdvözöljük a ProtonMailnél";
-
-/* Description */
-"What people see in the \"From\" field." = "Ez fog megjelenni a címzetteknél a \"Feladó\" sorában.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "E-mail küldésekor, ez a név fog megjelenni feladóként.";

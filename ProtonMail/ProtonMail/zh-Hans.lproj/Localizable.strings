@@ -80,7 +80,7 @@
 "<no object>" = "<无对象>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1则消息被移动到存储文件夹";
+"1 Message moved to archive" = "1 封邮件已存档";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 则消息已移至垃圾邮件箱";
@@ -123,7 +123,7 @@
 "Account settings" = "账户设置";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
+"Action reverted" = "操作已撤销";
 
 /* (No Comment) */
 "Add" = "新建";
@@ -295,13 +295,13 @@
 /* mail location desc
    menu title
    The title of the archive action in action sheet */
-"Archive" = "归档";
+"Archive" = "存档";
 
 /* mail location title */
-"ARCHIVE" = "归档";
+"ARCHIVE" = "存档";
 
 /* Description */
-"Archived" = "已归档";
+"Archived" = "已存档";
 
 /* Message of message permanent deletion alert, plural */
 "Are you sure you want to delete permanently these %d messages?" = "您确定要永久删除这 %d 封邮件吗？";
@@ -513,6 +513,9 @@
 /* Title */
 "Cancelling" = "正在取消";
 
+/* Warning message */
+"Cannot empty folder right now." = "当前无法清空文件夹。";
+
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "此附件无法解密。";
 
@@ -586,6 +589,12 @@
 /* contact placeholder */
 "City" = "城市";
 
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "clean_conversation_warning";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "消息删除警告";
+
 /* cell title in device setting */
 "Clear local cache" = "清除本地缓存";
 
@@ -617,6 +626,9 @@
 /* *
  *  Composer Email view controller */
 "Compose" = "写邮件";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "撰写邮件";
 
 /* Title */
 "Compose to" = "写邮件";
@@ -983,6 +995,18 @@
 
 /* it is an option to empty the label */
 "Empty Label" = "删除所有带此标签的邮件";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "清空垃圾邮件";
+
+/* Alert title */
+"Empty spam folder" = "清空垃圾邮件文件夹";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "清空废件箱";
+
+/* Alert title */
+"Empty trash folder" = "清空废件箱";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "启用会话";
@@ -1592,7 +1616,7 @@
 "Message headers" = "邮件头";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Message moved to trash";
+"Message moved to trash" = "邮件已移至废件箱";
 
 /* Placeholder */
 "Message Password" = "邮件密码";
@@ -1647,10 +1671,10 @@
 "Move to All Mail" = "移动到所有邮件";
 
 /* Action title of move to archive */
-"Move to archive" = "移至归档";
+"Move to archive" = "存档";
 
 /* move action */
-"Move to Archive" = "移动到归档";
+"Move to Archive" = "存档";
 
 /* move action */
 "Move to Draft" = "移动到草稿";
@@ -2270,7 +2294,7 @@
 "Send feedback" = "提交反馈";
 
 /* when subject not empty */
-"Send message without subject?" = "发送没有主题的邮件吗？";
+"Send message without subject?" = "确定要发送无主题的邮件吗？";
 
 /* Title */
 "Send plain but stored encrypted" = "纯文本发送但加密存储";
@@ -3029,9 +3053,6 @@
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "欢迎使用 ProtonMail！";
-
-/* Description */
-"What people see in the \"From\" field." = "用于填写“发件人”一栏。";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "当你发送邮件时，这个名称将作为发件人的名称。";
