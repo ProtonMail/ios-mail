@@ -64,48 +64,25 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-                self.hideSections = true
-            } else {
-                self.hideSections = false
-            }
-
+            // Set up observers
             setupEstimatedTimeUpdateObserver(userID: userID)
             setupProgressUpdateObserver(userID: userID)
             setupProgressedMessagesObserver(userID: userID)
             setupIndexingFinishedObserver(userID: userID)
             setupIndexingInterruptionObservers()
 
-            // Load ES state from user cache
-            EncryptedSearchService.shared.setESState(userID: userID, indexingState: EncryptedSearchService.EncryptedSearchIndexState(rawValue: userCachedStatus.indexStatus) ?? EncryptedSearchService.EncryptedSearchIndexState.undetermined)
-
-            // If the state cannot be load from cache - try to figure it out
-            if EncryptedSearchService.shared.getESState(userID: userID) == .undetermined {
-                // Determine current encrypted search state
-                EncryptedSearchService.shared.determineEncryptedSearchState(userID: userID)
-
-                // If we cannot determine the state - disable encrypted search
-                if EncryptedSearchService.shared.getESState(userID: userID) == .undetermined {
-                    EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
-                }
+            if userCachedStatus.isEncryptedSearchOn == false {
+                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
             }
 
-            // Speed up indexing when on this view
-            EncryptedSearchService.shared.speedUpIndexing(userID: userID)
-
-            // Update viewModel in EncryptedSearchService Singleton
-            EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
-
-            // Automatically restart indexing when previous state was downloading
-            if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
-                EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-            }
-
-            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
-            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                self.showInfoBanner()
+            if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+                self.hideSections = true
+            } else {
+                self.hideSections = false
             }
         }
+
+        self.tableView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -123,26 +100,48 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
+            // Set up observers
+            setupEstimatedTimeUpdateObserver(userID: userID)
+            setupProgressUpdateObserver(userID: userID)
+            setupProgressedMessagesObserver(userID: userID)
+            setupIndexingFinishedObserver(userID: userID)
+            setupIndexingInterruptionObservers()
+
+            if userCachedStatus.isEncryptedSearchOn == false {
+                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+            }
+
             if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
                 self.hideSections = true
             } else {
                 self.hideSections = false
 
-                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.background, .backgroundStopped]
+                // Speed up indexing when on this view
+                EncryptedSearchService.shared.speedUpIndexing(userID: userID)
+
+                // Update viewModel in EncryptedSearchService Singleton
+                EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
+
+                let expectedESStatesBackground: [EncryptedSearchService.EncryptedSearchIndexState] = [.background, .backgroundStopped]
                 // Set state correctly form BG to foreground
-                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                if expectedESStatesBackground.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                     EncryptedSearchService.shared.setESState(userID: userID, indexingState: .downloading)
                 }
 
-                let expectedESStatesNetwork: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
-                // Check network status - when downloading/paused/refresh
-                if expectedESStatesNetwork.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                // Automatically restart indexing when previous state was downloading
+                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                    EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                }
+
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                     if #available(iOS 12, *) {
                         print("ES-NETWORK viewwillappear - check network state")
                         EncryptedSearchService.shared.checkIfNetworkAvailable()
                     } else {
                         // Fallback on earlier versions
                     }
+                    self.showInfoBanner()
                 }
             }
         }
@@ -267,7 +266,7 @@ extension SettingsEncryptedSearchViewController {
                     self.viewModel.isEncryptedSearch = !status
 
                     // If cell is active -> start building a search index
-                    if self.viewModel.isEncryptedSearch {
+                    if userCachedStatus.isEncryptedSearchOn == true {
                         self.showAlertContentSearchEnabled()
                     } else {
                         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
@@ -580,6 +579,9 @@ extension SettingsEncryptedSearchViewController {
             self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+            // Update viewModel in EncryptedSearchService Singleton
+            EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
+
             // Start building the search index
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {

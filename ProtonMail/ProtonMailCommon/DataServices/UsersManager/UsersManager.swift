@@ -383,8 +383,10 @@ extension UsersManager {
             if UserInfo.isEncryptedSearchEnabled {
                 // If Encrypted Search is currently indexing - clean up and disable
                 if userCachedStatus.isEncryptedSearchOn {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .background, .backgroundStopped]
-                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userToDelete.userinfo.userId)) {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                    [.downloading, .paused, .background, .backgroundStopped]
+                    if expectedESStates.contains(
+                        EncryptedSearchService.shared.getESState(userID: userToDelete.userinfo.userId)) {
                         EncryptedSearchService.shared.deleteSearchIndex(userID: userToDelete.userinfo.userId)
                     }
                 }
