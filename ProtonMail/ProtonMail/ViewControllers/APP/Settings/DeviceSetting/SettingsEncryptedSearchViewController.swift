@@ -127,13 +127,21 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                 }
 
                 // Automatically restart indexing when previous state was downloading
-                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                /*if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                     // TODO check if downloading is already in progress
                     EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-                }
+                }*/ // TODO
 
+                // Restore last status from usercache, show infobanner
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    // Estimate indexing time
+                    let result = EncryptedSearchService.shared.estimateIndexingTime()
+                    self.viewModel.estimatedTimeRemaining.value = result.estimatedTime
+                    self.viewModel.progressedMessages.value = userCachedStatus.encryptedSearchProcessedMessages
+                    self.viewModel.currentProgress.value = result.currentProgress
+
+                    // Show info banner
                     self.showInfoBanner()
                 }
             }
