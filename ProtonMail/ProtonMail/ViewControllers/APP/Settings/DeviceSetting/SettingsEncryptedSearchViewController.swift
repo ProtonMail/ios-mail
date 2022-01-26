@@ -94,10 +94,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        print("ES-TEST: view will appear")
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            print("ES-TEST: view will appear: state: \(EncryptedSearchService.shared.getESState(userID: userID))")
 
             if userCachedStatus.isEncryptedSearchOn == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
@@ -127,10 +125,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                 }
 
                 // Automatically restart indexing when previous state was downloading
-                /*if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
-                    // TODO check if downloading is already in progress
-                    EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-                }*/ // TODO LIBES-145?
+                if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                    // check if downloading is already in progress
+                    if EncryptedSearchService.shared.isIndexingInProgress(userID: userID) == false {
+                        EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
+                    }
+                }
 
                 // Restore last status from usercache, show infobanner
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
