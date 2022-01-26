@@ -45,6 +45,7 @@ class VerifyCodeViewController: BaseUIViewController, AccessibleView {
     weak var delegate: VerifyCodeViewControllerDelegate?
     var viewModel: VerifyCheckViewModel!
     var verifyViewModel: VerifyViewModel!
+    var viewTitle: String?
 
     // MARK: - View controller life cycle
 
@@ -98,7 +99,7 @@ class VerifyCodeViewController: BaseUIViewController, AccessibleView {
     private func configureUI() {
         backBarbuttonItem.tintColor = ColorProvider.IconNorm
         view.backgroundColor = ColorProvider.BackgroundNorm
-        title = CoreString._hv_title
+        title = viewTitle ?? CoreString._hv_title
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: CoreString._hv_help_button, style: .done, target: self, action: #selector(helpButtonTapped))
         navigationItem.rightBarButtonItem?.tintColor = ColorProvider.BrandNorm
         topTitleLabel.text = viewModel.getTitle()

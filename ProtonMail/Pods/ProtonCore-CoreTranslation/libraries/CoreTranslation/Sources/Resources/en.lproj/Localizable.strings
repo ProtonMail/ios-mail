@@ -186,6 +186,8 @@
 "Delete account" = "Delete account";
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
 "Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"A networking error has occured" = "A networking error has occured";
+"Close" = "Close";
 
 /*
  *  Account Manager
@@ -268,8 +270,8 @@
 "Current plan" = "Current plan";
 "Subscription" = "Subscription";
 "Upgrade your plan" = "Upgrade your plan";
-"Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@." = "Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@.";
-"Manage your subscription at %@." = "Manage your subscription at %@.";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
 "Select" = "Select";
 "Upgrade" = "Upgrade";
 "Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";

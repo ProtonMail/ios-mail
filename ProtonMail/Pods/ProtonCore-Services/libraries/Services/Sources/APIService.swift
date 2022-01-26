@@ -217,7 +217,7 @@ public enum HumanVerifyFinishReason {
 }
 
 public protocol HumanVerifyDelegate: AnyObject {
-    func onHumanVerify(methods: [VerifyMethod], startToken: String?, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
+    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
     func getSupportURL() -> URL
 }
 

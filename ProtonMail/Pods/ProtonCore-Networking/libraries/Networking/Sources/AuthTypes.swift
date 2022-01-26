@@ -337,17 +337,27 @@ public typealias SendVerificationCodeBlock = (Bool, ResponseError?, Verification
 public typealias SendResultCodeBlock = (Bool, ResponseError?) -> Void
 public typealias VerificationCodeBlockFinish = () -> Void
 
-public class HumanVerificationResponse: Response {
+public struct HumanVerifyParameters {
     public var methods: [VerifyMethod] = []
     public var startToken: String?
+    public var title: String?
+    
+    public init(methods: [VerifyMethod] = [], startToken: String? = nil, title: String? = nil) {
+        self.methods = methods
+        self.startToken = startToken
+        self.title = title
+    }
+}
+
+public class HumanVerificationResponse: Response {
+    public var parameters = HumanVerifyParameters()
 
     override public func ParseResponse(_ response: [String: Any]) -> Bool {
         if let details = response["Details"] as? [String: Any] {
-            if let hvToken = details["HumanVerificationToken"] as? String {
-                startToken = hvToken
-            }
+            parameters.startToken = details["HumanVerificationToken"] as? String
+            parameters.title = details["Title"] as? String
             if let methods = details["HumanVerificationMethods"] as? [String] {
-                self.methods = methods.map { VerifyMethod(string: $0) }
+                parameters.methods = methods.map { VerifyMethod(string: $0) }
             }
         }
         return true

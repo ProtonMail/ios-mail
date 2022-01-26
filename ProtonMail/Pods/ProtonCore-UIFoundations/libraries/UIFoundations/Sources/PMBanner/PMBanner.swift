@@ -36,6 +36,7 @@ public class PMBanner: UIView, AccessibleView {
     private let style: PMBannerStyleProtocol
     private let dismissDuration: TimeInterval
     private var iconButton: UIImage?
+    private var bannerHandler: ((PMBanner) -> Void)?
     private var iconButtonHandler: ((PMBanner) -> Void)?
     private var textButton: String?
     private var textButtonHandler: ((PMBanner) -> Void)?
@@ -62,8 +63,9 @@ public class PMBanner: UIView, AccessibleView {
     public convenience init(message: String,
                             style: PMBannerStyleProtocol,
                             icon: UIImage? = nil,
-                            dismissDuration: TimeInterval = 4) {
-        self.init(style: style, message: message, dismissDuration: dismissDuration, icon: icon)
+                            dismissDuration: TimeInterval = 4,
+                            bannerHandler: ((PMBanner) -> Void)? = nil) {
+        self.init(style: style, message: message, dismissDuration: dismissDuration, icon: icon, bannerHandler: bannerHandler)
     }
 
     /// Initialize `PMBanner`
@@ -75,15 +77,17 @@ public class PMBanner: UIView, AccessibleView {
     public convenience init(message: NSAttributedString,
                             style: PMBannerStyleProtocol,
                             icon: UIImage? = nil,
-                            dismissDuration: TimeInterval = 4) {
-        self.init(style: style, message: nil, dismissDuration: dismissDuration, attributedString: message, icon: icon)
+                            dismissDuration: TimeInterval = 4,
+                            bannerHandler: ((PMBanner) -> Void)? = nil) {
+        self.init(style: style, message: nil, dismissDuration: dismissDuration, attributedString: message, icon: icon, bannerHandler: bannerHandler)
     }
 
     private init(style: PMBannerStyleProtocol,
                  message: String?,
                  dismissDuration: TimeInterval = 4,
                  attributedString: NSAttributedString? = nil,
-                 icon: UIImage? = nil) {
+                 icon: UIImage? = nil,
+                 bannerHandler: ((PMBanner) -> Void)?) {
         self.style = style
         self.dismissDuration = dismissDuration
         self.message = message
@@ -92,6 +96,8 @@ public class PMBanner: UIView, AccessibleView {
         super.init(frame: .zero)
         self.backgroundColor = style.bannerColor
         self.roundCorner(style.borderRadius)
+        self.bannerHandler = bannerHandler
+        self.setupTapGesture()
         self.setupPanGesture()
         generateAccessibilityIdentifiers()
     }
@@ -208,6 +214,7 @@ extension PMBanner {
         let textBtn = self.setup(textButton, handler: textButtonHandler)
         let textView = self.createMessage(message: message, attributedString: attributedString)
         self.textView = textView
+        self.textView?.isUserInteractionEnabled = false
         self.setupConstraintFor(textView, by: imgView, iconBtn, textBtn)
     }
 
@@ -235,13 +242,19 @@ extension PMBanner {
         self.iconButtonHandler = handler
         let btn = UIButton()
         btn.setImage(icon, for: .normal)
-        btn.backgroundColor = self.style.assistBgColor
         btn.tintColor = self.style.assistTextColor
         btn.roundCorner(ICON_SIZE / 2)
         btn.setSizeContraint(height: ICON_SIZE, width: ICON_SIZE)
         self.addSubview(btn)
+        var buttonYPosConstraint: NSLayoutConstraint
+        switch style.buttonVAlignment {
+        case .center:
+            buttonYPosConstraint = btn.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        case .bottom:
+            buttonYPosConstraint = btn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1 * BORDER_PADDING)
+        }
         NSLayoutConstraint.activate([
-            btn.topAnchor.constraint(equalTo: self.topAnchor, constant: BORDER_PADDING),
+            buttonYPosConstraint,
             btn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1 * BORDER_PADDING)
         ])
 
@@ -290,6 +303,12 @@ extension PMBanner {
         return btn
     }
 
+    /// Add tap gesture of `PMBanner`
+    private func setupTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickBanner))
+        self.addGestureRecognizer(tap)
+    }
+    
     /// Add pan gesture of `PMBanner`
     private func setupPanGesture() {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.bannerPan))
@@ -456,6 +475,10 @@ extension PMBanner {
 
 // MARK: Action
 extension PMBanner {
+    @objc private func clickBanner() {
+        self.bannerHandler?(self)
+    }
+    
     @objc private func clickIconButton() {
         self.iconButtonHandler?(self)
     }
@@ -465,7 +488,7 @@ extension PMBanner {
     }
 
     @objc private func bannerPan(ges: UIPanGestureRecognizer) {
-        if style.lockSwipeWhenButton, textButton != nil { return }
+        if style.lockSwipeWhenButton, (textButton != nil || iconButton != nil) { return }
         switch ges.state {
         case .began:
             self.invalidateTimer()

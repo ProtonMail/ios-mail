@@ -12,6 +12,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>for %d month</string>
+			<key>other</key>
+			<string>for %d months</string>
 		</dict>
 	</dict>
 	<key>for %d years</key>
@@ -24,6 +28,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>for %d year</string>
+			<key>other</key>
+			<string>for %d years</string>
 		</dict>
 	</dict>
 	<key>%d users</key>
@@ -36,6 +44,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d user</string>
+			<key>other</key>
+			<string>%d users</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -48,6 +60,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d email address</string>
+			<key>other</key>
+			<string>%d email addresses</string>
 		</dict>
 	</dict>
 	<key>%d email addresses / user</key>
@@ -60,6 +76,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d email address / user</string>
+			<key>other</key>
+			<string>%d email addresses / user</string>
 		</dict>
 	</dict>
 	<key>%d calendars</key>
@@ -72,6 +92,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d calendar</string>
+			<key>other</key>
+			<string>%d calendars</string>
 		</dict>
 	</dict>
 	<key>%d folders / labels</key>
@@ -84,6 +108,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d folder / label</string>
+			<key>other</key>
+			<string>%d folders / labels</string>
 		</dict>
 	</dict>
 	<key>%d countries</key>
@@ -96,6 +124,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d country</string>
+			<key>other</key>
+			<string>%d countries</string>
 		</dict>
 	</dict>
 	<key>%d calendars / user</key>
@@ -108,6 +140,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d calendar / user</string>
+			<key>other</key>
+			<string>%d calendars / user</string>
 		</dict>
 	</dict>
 	<key>%d connections</key>
@@ -120,6 +156,26 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d connection</string>
+			<key>other</key>
+			<string>%d connections</string>
+		</dict>
+	</dict>
+	<key>%d VPN connections</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d VPN connection</string>
+			<key>other</key>
+			<string>%d VPN connections</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections</key>
@@ -132,6 +188,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d high-speed VPN connection</string>
+			<key>other</key>
+			<string>%d high-speed VPN connections</string>
 		</dict>
 	</dict>
 	<key>%d high-speed VPN connections / user</key>
@@ -144,6 +204,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d high-speed VPN connection / user</string>
+			<key>other</key>
+			<string>%d high-speed VPN connections / user</string>
 		</dict>
 	</dict>
 	<key>%d custom domains</key>
@@ -156,6 +220,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d custom domain</string>
+			<key>other</key>
+			<string>%d custom domains</string>
 		</dict>
 	</dict>
 	<key>%d addresses &amp; calendars</key>
@@ -168,6 +236,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d address &amp; calendar</string>
+			<key>other</key>
+			<string>%d addresses &amp; calendars</string>
 		</dict>
 	</dict>
 </dict>

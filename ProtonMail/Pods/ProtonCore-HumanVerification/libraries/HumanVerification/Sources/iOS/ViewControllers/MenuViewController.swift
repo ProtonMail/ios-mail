@@ -44,6 +44,7 @@ public class MenuViewController: UIViewController, AccessibleView {
 
     weak var delegate: MenuViewControllerDelegate?
     var viewModel: MenuViewModel!
+    var viewTitle: String?
     var capchaViewController: RecaptchaViewController?
     var emailViewController: EmailVerifyViewController?
     var smsViewController: PhoneVerifyViewController?
@@ -85,7 +86,7 @@ public class MenuViewController: UIViewController, AccessibleView {
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
         view.backgroundColor = ColorProvider.BackgroundNorm
-        self.title = CoreString._hv_title
+        self.title = viewTitle ?? CoreString._hv_title
         updateTitleAttributes()
         helpBarButtonItem.title = CoreString._hv_help_button
         helpBarButtonItem.tintColor = ColorProvider.BrandNorm

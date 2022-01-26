@@ -33,6 +33,7 @@ class HumanCheckV3Coordinator {
     private let apiService: APIService
     private let clientApp: ClientApp
     private var destination: String = ""
+    private var title: String?
 
     /// View controllers
     private let rootViewController: UIViewController?
@@ -49,20 +50,21 @@ class HumanCheckV3Coordinator {
 
     // MARK: - Public methods
 
-    init(rootViewController: UIViewController?, isModalPresentation: Bool = true, apiService: APIService, methods: [VerifyMethod], startToken: String?, clientApp: ClientApp) {
+    init(rootViewController: UIViewController?, isModalPresentation: Bool = true, apiService: APIService, parameters: HumanVerifyParameters, clientApp: ClientApp) {
         self.rootViewController = rootViewController
         self.isModalPresentation = isModalPresentation
         self.apiService = apiService
         self.clientApp = clientApp
+        self.title = parameters.title
         
-        self.humanVerifyV3ViewModel = HumanVerifyV3ViewModel(api: apiService, startToken: startToken, methods: methods, clientApp: clientApp)
+        self.humanVerifyV3ViewModel = HumanVerifyV3ViewModel(api: apiService, startToken: parameters.startToken, methods: parameters.methods, clientApp: clientApp)
         self.humanVerifyV3ViewModel.onVerificationCodeBlock = { [weak self] verificationCodeBlock in
             guard let self = self else { return }
             self.delegate?.verificationCode(tokenType: self.humanVerifyV3ViewModel.getToken(), verificationCodeBlock: verificationCodeBlock)
         }
         
         if NSClassFromString("XCTest") == nil {
-            if methods.count == 0 {
+            if parameters.methods.count == 0 {
                 self.initialHelpViewController = getHelpViewController
             } else {
                 instantiateViewController()
@@ -77,10 +79,11 @@ class HumanCheckV3Coordinator {
     // MARK: - Private methods
     
     private func instantiateViewController() {
-        self.initialViewController = instatntiateVC(method: HumanVerifyV3ViewController.self, identifier: "HumanVerifyV3ViewController")
-        self.initialViewController?.viewModel = self.humanVerifyV3ViewModel
-        self.initialViewController?.delegate = self
-        self.initialViewController?.isModalPresentation = isModalPresentation
+        initialViewController = instatntiateVC(method: HumanVerifyV3ViewController.self, identifier: "HumanVerifyV3ViewController")
+        initialViewController?.viewModel = humanVerifyV3ViewModel
+        initialViewController?.delegate = self
+        initialViewController?.isModalPresentation = isModalPresentation
+        initialViewController?.viewTitle = title
     }
 
     private func showHumanVerification() {
@@ -138,6 +141,7 @@ extension HumanCheckV3Coordinator: HumanVerifyV3ViewControllerDelegate {
     }
     
     func willReopenViewController() {
+        close()
         instantiateViewController()
         showHumanVerification()
     }
@@ -147,10 +151,13 @@ extension HumanCheckV3Coordinator: HumanVerifyV3ViewControllerDelegate {
         delegate?.close()
     }
     
-    func didEditEmailAddress() {
+    func didDismissWithError(code: Int, description: String) {
         close()
-        // generate close with internal error to detect outside HV mechanism
-        delegate?.closeWithError(code: APIErrorCode.humanVerificationEditEmail, description: "Human Verification edit email address")
+        delegate?.closeWithError(code: code, description: description)
+    }
+    
+    func emailAddressAlreadyTakenWithError(code: Int, description: String) {
+        delegate?.closeWithError(code: code, description: description)
     }
     
     func didShowHelpViewController() {

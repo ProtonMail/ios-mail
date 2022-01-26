@@ -41,9 +41,6 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     private let clientApp: ClientApp
     private let shownPlanNames: ListOfShownPlanNames
     private let updateCredits: Bool
-    private let protonLinkHostString = "protonmail.com"
-    private let vpnLinkHostString = "protonvpn.com"
-    private let linkSchemeString = "https"
 
     // MARK: Public properties
     
@@ -105,25 +102,6 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
             fetchPlansToPresent(withCurrentPlan: true, backendFetch: backendFetch, completionHandler: completionHandler)
         case .update:
             fetchPlansToPresent(withCurrentPlan: false, backendFetch: backendFetch, completionHandler: completionHandler)
-        }
-    }
-    
-    var linkString: String {
-        switch clientApp {
-        case .mail: return protonLinkHostString
-        case .vpn: return vpnLinkHostString
-        case .drive, .calendar, .other:
-            // right now we return protonmail link, but this might change once they're out of beta
-            return protonLinkHostString
-        }
-    }
-    
-    func openLink() {
-        var components = URLComponents()
-        components.scheme = linkSchemeString
-        components.host = linkString
-        if let url = components.url {
-            UIApplication.openURLIfPossible(url)
         }
     }
     

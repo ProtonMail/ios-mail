@@ -32,6 +32,7 @@ protocol SignupViewControllerDelegate: AnyObject {
     func validatedEmail(email: String, signupAccountType: SignupAccountType)
     func signupCloseButtonPressed()
     func signinButtonPressed()
+    func hvEmailAlreadyExists(email: String)
 }
 
 enum SignupAccountType {
@@ -285,8 +286,10 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 switch error {
-                case .generic(let message, _, _):
-                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                case .generic(let message, let code, _):
+                    if code == APIErrorCode.humanVerificationAddressAlreadyTaken {
+                        self.delegate?.hvEmailAlreadyExists(email: email)
+                    } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
                 case .notAvailable(let message):

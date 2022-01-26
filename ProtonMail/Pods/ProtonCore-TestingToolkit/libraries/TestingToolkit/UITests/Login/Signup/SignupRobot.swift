@@ -100,9 +100,9 @@ public final class SignupRobot: CoreElements {
         return T()
     }
     
-    public func nextButtonTapToOwnershipHV() -> SignupHumanVerificationV3Robot.HV3OrCompletionRobot {
+    public func nextButtonTapToOwnershipHV() -> SignupHumanVerificationV3Robot {
         button(nextButtonId).tap()
-        return SignupHumanVerificationV3Robot().verify.isHumanVerificationRequired()
+        return SignupHumanVerificationV3Robot()
     }
     
     public func signinButtonTap() -> LoginRobot {

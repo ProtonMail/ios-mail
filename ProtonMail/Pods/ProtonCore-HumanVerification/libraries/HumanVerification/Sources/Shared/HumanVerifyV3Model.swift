@@ -48,6 +48,7 @@ enum MessageType: String, Codable {
     case resize = "RESIZE"
     case close = "CLOSE"
     case loaded = "LOADED"
+    case error = "ERROR"
 }
 
 struct MessageSuccess: Codable {
@@ -77,4 +78,15 @@ struct MessageResize: Codable {
 
 struct PayloadResize: Codable {
     let height: Float
+}
+
+struct MessageError: Codable {
+    let type: MessageType
+    let payload: PayloadError
+}
+
+struct PayloadError: Codable {
+    let code: Int?
+    let message: String?
+    let status: Int?
 }

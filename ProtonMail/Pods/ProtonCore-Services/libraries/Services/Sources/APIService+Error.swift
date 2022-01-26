@@ -68,6 +68,7 @@ public class APIErrorCode {
     public static let invalidVerificationCode = 12087
     public static let tooManyVerificationCodes = 12214
     public static let tooManyFailedVerificationAttempts = 85131
+    public static let humanVerificationAddressAlreadyTaken = 2001
     public static let tls = 3500
     
     public static let humanVerificationEditEmail = 9100 // internal error

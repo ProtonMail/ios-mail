@@ -47,7 +47,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
         self.paymentDelegate = paymentDelegate
     }
 
-    public func onHumanVerify(methods: [VerifyMethod], startToken: String?, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
+    public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         
         // check if payment token exists
         if let paymentToken = paymentDelegate?.paymentToken {
@@ -60,12 +60,12 @@ public class HumanCheckHelper: HumanVerifyDelegate {
                     verificationFinishBlock?()
                 } else {
                     // if request still has an error, start human verification UI
-                    self.startMenuCoordinator(methods: methods, startToken: startToken, currentURL: currentURL, completion: completion)
+                    self.startMenuCoordinator(parameters: parameters, currentURL: currentURL, completion: completion)
                 }
             }))
         } else {
             // start human verification UI
-            startMenuCoordinator(methods: methods, startToken: startToken, currentURL: currentURL, completion: completion)
+            startMenuCoordinator(parameters: parameters, currentURL: currentURL, completion: completion)
         }
     }
 
@@ -73,33 +73,34 @@ public class HumanCheckHelper: HumanVerifyDelegate {
         return supportURL
     }
     
-    private func startMenuCoordinator(methods: [VerifyMethod], startToken: String?, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
+    private func startMenuCoordinator(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         if ProtonCore_HumanVerification.TemporaryHacks.isV3 {
-            prepareV3Coordinator(methods: methods, startToken: startToken, currentURL: currentURL)
+            prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
         } else {
             // filter only methods allowed by HV v2
-            let filteredMethods = methods.compactMap { VerifyMethod(predefinedString: $0.method) }
-            prepareCoordinator(methods: filteredMethods, startToken: startToken)
+            var parameters = parameters
+            parameters.methods = parameters.methods.compactMap { VerifyMethod(predefinedString: $0.method) }
+            prepareCoordinator(parameters: parameters)
         }
         responseDelegate?.onHumanVerifyStart()
         verificationCompletion = completion
     }
     
-    private func prepareCoordinator(methods: [VerifyMethod], startToken: String?) {
+    private func prepareCoordinator(parameters: HumanVerifyParameters) {
         DispatchQueue.main.async {
-            self.coordinator = HumanCheckMenuCoordinator(rootViewController: self.rootViewController, apiService: self.apiService, methods: methods, startToken: startToken, clientApp: self.clientApp)
+            self.coordinator = HumanCheckMenuCoordinator(rootViewController: self.rootViewController, apiService: self.apiService, parameters: parameters, clientApp: self.clientApp)
             self.coordinator?.delegate = self
             self.coordinator?.start()
         }
     }
     
-    private func prepareV3Coordinator(methods: [VerifyMethod], startToken: String?, currentURL: URL?) {
+    private func prepareV3Coordinator(parameters: HumanVerifyParameters, currentURL: URL?) {
         var isModalPresentation = true
         if nonModalUrls?.first(where: { $0 == currentURL }) != nil {
             isModalPresentation = false
         }
         DispatchQueue.main.async {
-            self.coordinatorV3 = HumanCheckV3Coordinator(rootViewController: self.rootViewController, isModalPresentation: isModalPresentation, apiService: self.apiService, methods: methods, startToken: startToken, clientApp: self.clientApp)
+            self.coordinatorV3 = HumanCheckV3Coordinator(rootViewController: self.rootViewController, isModalPresentation: isModalPresentation, apiService: self.apiService, parameters: parameters, clientApp: self.clientApp)
             self.coordinatorV3?.delegate = self
             self.coordinatorV3?.start()
         }

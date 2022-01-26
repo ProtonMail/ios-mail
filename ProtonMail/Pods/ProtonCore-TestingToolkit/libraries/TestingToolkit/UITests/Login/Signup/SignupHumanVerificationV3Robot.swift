@@ -35,6 +35,10 @@ private let sendCodeButtonLabel = CoreString._hv_email_verification_button
 private let verifyCodeTextField = "VerifyCodeViewController.verifyCodeTextFieldView.textField"
 private let verifyCodeButtonLabel = CoreString._hv_verification_verify_button
 private let verifyEmailButtonLabel = "Verify email"
+private let didntReceiveCodeButtonLabel = "Didn't receive the code?"
+private let editEmailAddressButtonLabel = "Edit email address"
+private let requestNewCodeButtonLabel = "Request new code"
+private let resendCodeLabel = "Code sent to %@"
 
 public final class SignupHumanVerificationV3Robot: CoreElements {
     public enum HV3OrCompletionRobot {
@@ -53,20 +57,13 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
                     .verify.completeScreenIsShown(robot: T.self)
             }
         }
-        
-        public func handleOwnership<T: CoreElements>(code: String, to: T.Type) -> T {
-            switch self {
-            case .humanVerification(let hvRobot):
-                return hvRobot
-                    .verify.humanVerificationScreenIsShown()
-                    .performOwnershipEmailVerificationV3(code: code, to: T.self)
-            case .complete:
-                return T()
-            }
-        }
     }
     
     public let verify = Verify()
+    
+    public func resendDialogDisplay(email: String) -> SignupHumanVerificationV3Robot {
+        return verify.resendEmailDialogShown(email: email)
+    }
     
     public final class Verify: CoreElements {
         @discardableResult
@@ -79,6 +76,12 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
             let staticText = XCUIApplication().staticTexts[titleName]
             Wait(time: 10.0).forElement(staticText)
             return staticText.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
+        }
+        
+        public func resendEmailDialogShown(email: String) -> SignupHumanVerificationV3Robot {
+            let messageName = String(format: resendCodeLabel, email)
+            staticText(messageName).wait().checkExists()
+            return SignupHumanVerificationV3Robot()
         }
     }
     
@@ -115,6 +118,21 @@ public final class SignupHumanVerificationV3Robot: CoreElements {
     
     public func verifyEmailButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
         button(verifyEmailButtonLabel).wait(time: 30).tap()
+        return Robot()
+    }
+    
+    public func didntReceiveCodeButton() -> SignupHumanVerificationV3Robot {
+        button(didntReceiveCodeButtonLabel).wait(time: 30).tap()
+        return SignupHumanVerificationV3Robot()
+    }
+    
+    public func editEmailAddressButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(editEmailAddressButtonLabel).wait(time: 30).tap()
+        return Robot()
+    }
+    
+    public func requestNewCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(requestNewCodeButtonLabel).wait(time: 30).tap()
         return Robot()
     }
     

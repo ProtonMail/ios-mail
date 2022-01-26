@@ -26,6 +26,7 @@ import ProtonCore_Doh
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_CoreTranslation
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
@@ -109,15 +110,10 @@ class HumanVerifyV3ViewModel {
         return TokenType(verifyMethod: tokenMethod, token: token)
     }
     
-    enum ArrivedMessageType {
-        case loaded
-        case close
-    }
-    
     func interpretMessage(message: WKScriptMessage,
                           notificationMessage: ((NotificationType, String) -> Void)? = nil,
-                          arrivedMessage: ((ArrivedMessageType) -> Void)? = nil,
-                          errorHandler: ((ResponseError) -> Void)? = nil,
+                          loadedMessage: (() -> Void)? = nil,
+                          errorHandler: ((ResponseError, Bool) -> Void)? = nil,
                           completeHandler: ((VerifyMethod) -> Void)) {
         guard message.name == scriptName,
               let string = message.body as? String,
@@ -128,7 +124,7 @@ class HumanVerifyV3ViewModel {
         processMessage(type: messageType,
                        json: json,
                        notificationMessage: notificationMessage,
-                       arrivedMessage: arrivedMessage,
+                       loadedMessage: loadedMessage,
                        errorHandler: errorHandler,
                        completeHandler: completeHandler)
     }
@@ -137,8 +133,8 @@ class HumanVerifyV3ViewModel {
     private func processMessage(type: MessageType,
                                 json: [String: Any],
                                 notificationMessage: ((NotificationType, String) -> Void)?,
-                                arrivedMessage: ((ArrivedMessageType) -> Void)?,
-                                errorHandler: ((ResponseError) -> Void)?,
+                                loadedMessage: (() -> Void)?,
+                                errorHandler: ((ResponseError, Bool) -> Void)?,
                                 completeHandler: ((VerifyMethod) -> Void)) {
         switch type {
         case .human_verification_success:
@@ -149,7 +145,7 @@ class HumanVerifyV3ViewModel {
                 if res {
                     verificationCodeBlockFinish?()
                 } else if let responseError = responseError {
-                    errorHandler?(responseError)
+                    errorHandler?(responseError, true)
                 }
             }
             // messageSuccess is emitted by the Web core with validated verification code, then it's possible to send completeHandler to close HV UI
@@ -161,9 +157,15 @@ class HumanVerifyV3ViewModel {
             else { return }
             notificationMessage?(messageNotification.payload.type, messageNotification.payload.text)
         case .loaded:
-            arrivedMessage?(.loaded)
+            loadedMessage?()
         case .close:
-            arrivedMessage?(.close)
+            let responseError = ResponseError(httpCode: nil, responseCode: APIErrorCode.humanVerificationEditEmail, userFacingMessage: "Human Verification edit email address", underlyingError: nil)
+            errorHandler?(responseError, true)
+        case .error:
+            guard let messageError: MessageError = decode(json: json) else { return }
+            let message = messageError.payload.message ?? CoreString._ad_delete_network_error
+            let responseError = ResponseError(httpCode: nil, responseCode: messageError.payload.code, userFacingMessage: message, underlyingError: nil)
+            errorHandler?(responseError, false)
         case .resize:
             break
         }

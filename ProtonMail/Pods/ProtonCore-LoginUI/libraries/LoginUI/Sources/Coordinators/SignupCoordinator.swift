@@ -397,6 +397,11 @@ extension SignupCoordinator: SignupViewControllerDelegate {
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: nil, navigationViewController: navigationController)
     }
+    
+    func hvEmailAlreadyExists(email: String) {
+        guard let navigationController = navigationController else { return }
+        delegate?.userSelectedSignin(email: email, navigationViewController: navigationController)
+    }
 
     private func updateAccountType(accountType: AccountType) {
         // changing accountType to intenal, or external is causing key generation on login part. To avoid that we need to skip this when accountType is username

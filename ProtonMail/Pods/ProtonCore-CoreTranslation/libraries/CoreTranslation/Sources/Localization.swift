@@ -372,6 +372,10 @@ public class LocalizedString {
     public lazy var _ad_delete_account_message = NSLocalizedString("This will permanently delete your account and all of its data. You will not be able to reactivate this account.", bundle: Common.bundle, comment: "Delete account explaination under button")
     
     public lazy var _ad_delete_account_success = NSLocalizedString("Account deleted.\nLogging out...", bundle: Common.bundle, comment: "Delete account success")
+    
+    public lazy var _ad_delete_network_error = NSLocalizedString("A networking error has occured", bundle: Common.bundle, comment: "A generic error message when we have no better message from the backend")
+    
+    public lazy var _ad_delete_close_button = NSLocalizedString("Close", bundle: Common.bundle, comment: "Button title shown when a error has occured, causes the screen to close")
 
     /// Account switcher
 
@@ -591,10 +595,10 @@ public class LocalizedString {
     public lazy var _pu_upgrade_plan_title = NSLocalizedString("Upgrade your plan", bundle: Common.bundle, comment: "Plan selection title")
     
     /// Plan footer description
-    public lazy var _pu_plan_footer_desc = NSLocalizedString("Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@.", bundle: Common.bundle, comment: "Plan footer description")
+    public lazy var _pu_plan_footer_desc = NSLocalizedString("Only annual subscriptions without auto-renewal are available inside the mobile app.", bundle: Common.bundle, comment: "Plan footer description")
 
     /// Plan footer description purchased
-    public lazy var _pu_plan_footer_desc_purchased = NSLocalizedString("Manage your subscription at %@.", bundle: Common.bundle, comment: "Plan footer purchased description")
+    public lazy var _pu_plan_footer_desc_purchased = NSLocalizedString("You cannot manage subscriptions inside the mobile application.", bundle: Common.bundle, comment: "Plan footer purchased description")
     
     /// Select plan button
     public lazy var _pu_select_plan_button = NSLocalizedString("Select", bundle: Common.bundle, comment: "Select plan button")
