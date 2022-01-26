@@ -1701,6 +1701,19 @@ extension EncryptedSearchService {
         return indexingState
     }
 
+    func isIndexingInProgress(userID: String) -> Bool {
+        // Check state
+        let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh, .paused]
+        if expectedESStates.contains(self.getESState(userID: userID)) {
+            // check if there are some operations scheduled
+            if self.messageIndexingQueue.operationCount > 0 || self.downloadPageQueue.operationCount > 0 {
+                return true
+            }
+        }
+
+        return false
+    }
+
     // Called to slow down indexing - so that a user can normally use the app
     func slowDownIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
