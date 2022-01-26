@@ -66,8 +66,6 @@ class EncryptedSearchTests: XCTestCase {
         }
 
         // Reset some values in EncryptedSearchService Singleton
-        EncryptedSearchService.shared.numInterruptions = 0
-        EncryptedSearchService.shared.numPauses = 0
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = false
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = false
         EncryptedSearchService.shared.pauseIndexingDueToLowStorage = false
@@ -152,15 +150,11 @@ class EncryptedSearchTests: XCTestCase {
     func testPauseIndexingByUser() throws {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingByUser
 
-        // set some values to default
-        EncryptedSearchService.shared.numPauses = 0
-
         sut(true, self.testUserID)
         // Wait for 2 seconds - as pausing is async
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 2.0)
 
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numPauses, 1)
     }
 
     /* func testResumeIndexingByUser() throws {
@@ -179,7 +173,6 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
     }
 
     func testPauseIndexingDueToOverheating() throws {
@@ -189,7 +182,6 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
     }
 
     func testPauseIndexingDueToLowStorage() throws {
@@ -199,7 +191,6 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToLowStorage = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
     }
 
     func testPauseIndexingDueToWiFiNotDetected() throws {
@@ -209,7 +200,6 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
     }
 
     func testPauseIndexingDueToNetworkConnectivityIssues() throws {
@@ -219,7 +209,6 @@ class EncryptedSearchTests: XCTestCase {
         EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = true
         sut(true, self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
-        XCTAssertEqual(EncryptedSearchService.shared.numInterruptions, 1)
     }
 
     // Backend returns 401 - unautorized access for test user account when fetching a message

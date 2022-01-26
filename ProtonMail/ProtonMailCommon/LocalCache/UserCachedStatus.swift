@@ -106,7 +106,18 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let realAttachments = "realAttachments"
 
         // Encrypted search user dependent variables
-        static let encryptedSearchTotalMessage = "encrypted_search_total_messages"
+        static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
+        static let encryptedSearchLastMessageTimeIndexed = "encrypted_search_last_message_time_indexed"
+        static let encryptedSearchProcessedMessages = "encrypted_search_processed_messages"
+        static let encryptedSearchPreviousProcessedMessages = "encrypted_search_previous_processed_messages"
+
+        // Encrypted search user dependent variables for metrics
+        static let encryptedSearchNumberOfPauses = "encrypted_search_number_of_pauses"
+        static let encryptedSearchNumberOfInterruptions = "encrypted_search_number_of_interruptions"
+        static let encryptedSearchIsInitialIndexingTimeEstimate = "encrypted_search_is_initial_indexing_time_estimate"
+        static let encryptedSearchInitialIndexingTimeEstimate = "encrypted_search_initial_indexing_time_estimate"
+        static let encryptedSearchIndexingStartTime = "encrypted_search_indexing_start_time"
+        static let encryptedSearchIsExternalRefreshed = "encrypted_search_is_external_refreshed"
     }
     
     var keymakerRandomkey: String? {
@@ -861,13 +872,121 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 extension UserCachedStatus {
     var encryptedSearchTotalMessages: Int {
         get {
-            if getShared().object(forKey: Key.encryptedSearchTotalMessage) == nil {
+            if getShared().object(forKey: Key.encryptedSearchTotalMessages) == nil {
                 return 0
             }
-            return getShared().integer(forKey: Key.encryptedSearchTotalMessage)
+            return getShared().integer(forKey: Key.encryptedSearchTotalMessages)
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchTotalMessage)
+            setValue(newValue, forKey: Key.encryptedSearchTotalMessages)
+        }
+    }
+
+    var encryptedSearchLastMessageTimeIndexed: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchLastMessageTimeIndexed) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchLastMessageTimeIndexed)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchLastMessageTimeIndexed)
+        }
+    }
+
+    var encryptedSearchProcessedMessages: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchProcessedMessages) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchProcessedMessages)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchProcessedMessages)
+        }
+    }
+
+    var encryptedSearchPreviousProcessedMessages: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchPreviousProcessedMessages) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchPreviousProcessedMessages)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchPreviousProcessedMessages)
+        }
+    }
+
+    var encryptedSearchNumberOfPauses: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchNumberOfPauses) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchNumberOfPauses)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchNumberOfPauses)
+        }
+    }
+
+    var encryptedSearchNumberOfInterruptions: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchNumberOfInterruptions) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchNumberOfInterruptions)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchNumberOfInterruptions)
+        }
+    }
+
+    var encryptedSearchIsInitialIndexingTimeEstimate: Bool {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate) == nil {
+                return true
+            }
+            return getShared().bool(forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchIsInitialIndexingTimeEstimate)
+        }
+    }
+
+    var encryptedSearchInitialIndexingTimeEstimate: Int {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchInitialIndexingTimeEstimate) == nil {
+                return 0
+            }
+            return getShared().integer(forKey: Key.encryptedSearchInitialIndexingTimeEstimate)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchInitialIndexingTimeEstimate)
+        }
+    }
+
+    var encryptedSearchIndexingStartTime: Double {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchIndexingStartTime) == nil {
+                return CFAbsoluteTimeGetCurrent()
+            }
+            return getShared().double(forKey: Key.encryptedSearchIndexingStartTime)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchIndexingStartTime)
+        }
+    }
+
+    var encryptedSearchIsExternalRefreshed: Bool {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchIsExternalRefreshed) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.encryptedSearchIsExternalRefreshed)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchIsExternalRefreshed)
         }
     }
 }
