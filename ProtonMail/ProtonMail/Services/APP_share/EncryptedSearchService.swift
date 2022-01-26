@@ -1774,7 +1774,7 @@ extension EncryptedSearchService {
         }
     }
 
-    private func estimateIndexingTime() -> (estimatedTime: String?, time: Double, currentProgress: Int){
+    public func estimateIndexingTime() -> (estimatedTime: String?, time: Double, currentProgress: Int){
         var estimatedTime: Double = 0
         var currentProgress: Int = 0
         let currentTime: Double = CFAbsoluteTimeGetCurrent()
