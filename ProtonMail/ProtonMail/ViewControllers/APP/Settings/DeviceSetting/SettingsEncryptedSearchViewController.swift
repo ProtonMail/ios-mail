@@ -130,7 +130,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
                 /*if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                     // TODO check if downloading is already in progress
                     EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
-                }*/ // TODO
+                }*/ // TODO LIBES-145?
 
                 // Restore last status from usercache, show infobanner
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
@@ -446,7 +446,8 @@ extension SettingsEncryptedSearchViewController {
 
                         // Set text for message count label
                         var messageCountText: String = ""
-                        if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused]
+                        if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                             progressBarButtonCell.messageCountLabel.isHidden = false
                             messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(userCachedStatus.encryptedSearchTotalMessages)
                         } else {
