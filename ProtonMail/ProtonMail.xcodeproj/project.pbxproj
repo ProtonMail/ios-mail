@@ -1190,6 +1190,7 @@
 		6C8F221D32F547143769F4A67FEBF8D5 /* ConversationsDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086FCA03DFA46EF6C5031EE894555820 /* ConversationsDelete.swift */; };
 		6CAB9C3A5404D9B91EB3080D2D67C42E /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC2B725796C2CBA37D7BE01F113D078 /* EventsService.swift */; };
 		6CAE9C263565C8898E8D19795D1A0CF2 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BECF6CC675316E756D9E4A84E1F571 /* UILabel+Extension.swift */; };
+		6CAF1A4025163205B4F81D47F8990AED /* FetchMessagesByIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC8D4A8A9272FE785054B9FA34A0833 /* FetchMessagesByIDTests.swift */; };
 		6CDC28BE9C192ECDEF5599121171D853 /* ContactAddEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726BA305A27A1391F0D599859BDEAA77 /* ContactAddEmailCell.swift */; };
 		6D2BA4092AD8AB3694A8B35E97790697 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2B30596AAF8E074761BB843DB404ED /* FileManager+Extension.swift */; };
 		6D3EA429B5E5C2AD4A088AA5F90EBD4A /* PinCodeConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7773A350F932EF067B9B2751938C7629 /* PinCodeConfirmationViewController.xib */; };
@@ -4113,6 +4114,7 @@
 		EC7675B70FB25523778C6D0AA2BBC0D9 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		EC832EB315A0F149AAE961BBD4700703 /* MailboxViewModel+ActionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailboxViewModel+ActionTypes.swift"; sourceTree = "<group>"; };
 		EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationsAPI.swift; sourceTree = "<group>"; };
+		ECC8D4A8A9272FE785054B9FA34A0833 /* FetchMessagesByIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FetchMessagesByIDTests.swift; path = DataServices/CacheService/FetchMessagesByIDTests.swift; sourceTree = "<group>"; };
 		ED4AF35529FF1DDD5608E76CE2E3885C /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED78C01F88A8284ED26390870AC4716E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDA55AD9ECACD406A8CEE5F40D66001B /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4573,6 +4575,7 @@
 				2A6230EB4B5041165D8D2CDC2C726622 /* Operators */,
 				480F273763648FD7698B2501262450D4 /* Utilities */,
 				E66FBCA901B160366EEE7396742BF201 /* ViewModels */,
+				ECC8D4A8A9272FE785054B9FA34A0833 /* FetchMessagesByIDTests.swift */,
 			);
 			path = ProtonMailCommon;
 			sourceTree = "<group>";
@@ -8958,6 +8961,7 @@
 				6E2309586760D827888204F209BE963D /* FeatureFlagsDownloadServiceTests.swift in Sources */,
 				258DAF81E61976DC6F879E9C57D5D7B3 /* FeatureFlagsRequestTests.swift in Sources */,
 				0AC3B02E269D9BCB6899F0DB2A8B7DF1 /* FeatureFlagsResponseTests.swift in Sources */,
+				6CAF1A4025163205B4F81D47F8990AED /* FetchMessagesByIDTests.swift in Sources */,
 				5596C7C489978B93CD9731D1450787CA /* GoOpenPGPTests.swift in Sources */,
 				C1B0D0FAFBDE3FE6D1FAEA8177A00B2C /* InAppFeedbackPromptSchedulerTests.swift in Sources */,
 				48882E83D8C00C5B959D85A57A703519 /* InAppFeedbackStateServiceTests.swift in Sources */,
