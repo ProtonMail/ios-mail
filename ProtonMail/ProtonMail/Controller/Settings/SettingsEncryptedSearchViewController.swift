@@ -96,9 +96,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-
             if userCachedStatus.isEncryptedSearchOn == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+                self.viewModel.isEncryptedSearch = false
             }
 
             if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
@@ -261,10 +261,9 @@ extension SettingsEncryptedSearchViewController {
         case .encryptedSearch:
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
             if let switchCell = cell as? SwitchTableViewCell {
-                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.isEncryptedSearch) {
+                switchCell.configCell(eSection.title, bottomLine: "", status: userCachedStatus.isEncryptedSearchOn) {
                     _, _, _ in
-                    let status = self.viewModel.isEncryptedSearch
-                    self.viewModel.isEncryptedSearch = !status
+                    userCachedStatus.isEncryptedSearchOn.toggle()
 
                     // If cell is active -> start building a search index
                     if userCachedStatus.isEncryptedSearchOn == true {
@@ -300,9 +299,8 @@ extension SettingsEncryptedSearchViewController {
         case .downloadViaMobileData:
             let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
             if let switchCell = cell as? SwitchTableViewCell {
-                switchCell.configCell(eSection.title, bottomLine: "", status: viewModel.downloadViaMobileData) { _, _, _ in
-                    let status = self.viewModel.downloadViaMobileData
-                    self.viewModel.downloadViaMobileData = !status
+                switchCell.configCell(eSection.title, bottomLine: "", status: userCachedStatus.downloadViaMobileData) { _, _, _ in
+                    userCachedStatus.downloadViaMobileData.toggle()
 
                     // Update UI
                     DispatchQueue.main.async {
