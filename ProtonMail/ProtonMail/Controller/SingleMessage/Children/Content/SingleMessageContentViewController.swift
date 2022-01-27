@@ -68,7 +68,6 @@ class SingleMessageContentViewController: UIViewController {
         customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
         viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
-            customView.showHideHistoryButtonContainer.isHidden = !hasStrippedVersion
             customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
         }
         viewModel.messageHadChanged = { [weak self] in
