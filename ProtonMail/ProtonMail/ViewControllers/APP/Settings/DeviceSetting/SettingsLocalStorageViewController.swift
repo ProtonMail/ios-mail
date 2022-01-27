@@ -44,6 +44,9 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+
+        setupAttachmentsDeletionObserver()
+        setupCachedDataDeletionObserver()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,11 +145,18 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button, for: UIControl.State.normal)
-                let cachedData: String = "" // This should be the size of the messages in core data
+                let cachedData: String = EncryptedSearchService.shared.getSizeOfCachedData().asString
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_cached_data_text)
                 localStorageCell.configCell(eSection.title, infoText, cachedData){
-                    //TODO implement button action
-                    print("Button pressed in cached data")
+                    EncryptedSearchService.shared.deleteCachedData(localStorageViewModel: self.viewModel)
+
+                    // Update UI
+                    DispatchQueue.main.async {
+                        let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
+                        UIView.performWithoutAnimation {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
+                    }
                 }
             }
             return cell
@@ -154,12 +164,19 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_attachments_button, for: UIControl.State.normal)
-                let attachments: String = ""// This should be the size of the attachments of the emails
+                let attachments: String = EncryptedSearchService.shared.calculateSizeOfAttachments().asString
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_attachments_text, attributes: attr)
                 localStorageCell.configCell(eSection.title, infoText, attachments){
-                    //TODO implement button action
-                    print("Button pressed in attachments")
+                    EncryptedSearchService.shared.deleteAttachments(localStorageViewModel: self.viewModel)
+
+                    // Update UI
+                    DispatchQueue.main.async {
+                        let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                        UIView.performWithoutAnimation {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
+                    }
                 }
             }
             return cell
@@ -238,6 +255,30 @@ extension SettingsLocalStorageViewController {
             vc.set(viewModel: vm)
             show(vc, sender: self)
             break
+        }
+    }
+
+    func setupAttachmentsDeletionObserver() {
+        self.viewModel.areAttachmentsDeleted.bind {
+            (_) in
+            DispatchQueue.main.async {
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
+                }
+            }
+        }
+    }
+
+    func setupCachedDataDeletionObserver() {
+        self.viewModel.isCachedDataDeleted.bind {
+            (_) in
+            DispatchQueue.main.async {
+                let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [path], with: .none)
+                }
+            }
         }
     }
 }

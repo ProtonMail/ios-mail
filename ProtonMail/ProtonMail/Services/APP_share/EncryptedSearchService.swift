@@ -2094,6 +2094,76 @@ extension EncryptedSearchService {
         return availableMemory
     }
 
+    #if !APP_EXTENSION
+    public func getSizeOfCachedData() -> (asInt64: Int64?, asString: String) {
+        var sizeOfCachedData: Int64 = 0
+        do {
+            let data: Data = try Data(contentsOf: CoreDataStore.dbUrl)
+            sizeOfCachedData = Int64(data.count)
+        } catch let error {
+            print("Error when calculating size of cached data: \(error.localizedDescription)")
+        }
+        return (sizeOfCachedData, ByteCountFormatter.string(fromByteCount: sizeOfCachedData, countStyle: ByteCountFormatter.CountStyle.file))
+    }
+    #endif
+
+    #if !APP_EXTENSION
+    func deleteCachedData(localStorageViewModel: SettingsLocalStorageViewModel) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
+                localStorageViewModel.isCachedDataDeleted.value = true
+            } catch let error {
+                print("Error when deleting cached data: \(error.localizedDescription)")
+            }
+        }
+    }
+    #endif
+
+    #if !APP_EXTENSION
+    public func calculateSizeOfAttachments() -> (asInt64: Int64?, asString: String) {
+        let pathToAttachmentsFolder: String = FileManager.default.temporaryDirectory.path + "/attachments"
+        var sizeOfAttachments: Int64 = 0
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: pathToAttachmentsFolder)
+            for content in contents {
+                do {
+                    let fullContentPath = pathToAttachmentsFolder + "/" + content
+                    let fileAttributes = try FileManager.default.attributesOfItem(atPath: fullContentPath)
+                    sizeOfAttachments += fileAttributes[FileAttributeKey.size] as? Int64 ?? 0
+                } catch _ {
+                    continue
+                }
+            }
+        } catch let error {
+            print("Error when calculating size of attachments: \(error.localizedDescription)")
+        }
+        return (sizeOfAttachments, ByteCountFormatter.string(fromByteCount: sizeOfAttachments, countStyle: ByteCountFormatter.CountStyle.file))
+    }
+    #endif
+
+    #if !APP_EXTENSION
+    func deleteAttachments(localStorageViewModel: SettingsLocalStorageViewModel) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let pathToAttachmentsFolder: String = FileManager.default.temporaryDirectory.path + "/attachments"
+            do {
+                let contents = try FileManager.default.contentsOfDirectory(atPath: pathToAttachmentsFolder)
+                for content in contents {
+                    do {
+                        let fullContentPath = pathToAttachmentsFolder + "/" + content
+                        try FileManager.default.removeItem(atPath: fullContentPath)
+                        localStorageViewModel.areAttachmentsDeleted.value = true
+                    } catch _ {
+                        continue
+                    }
+                }
+            } catch let error {
+                print("Error when deleting attachments: \(error.localizedDescription)")
+            }
+        }
+    }
+    #endif
+
     private func updateUIWithIndexingStatus(userID: String) {
         DispatchQueue.main.async {
             if self.pauseIndexingDueToNetworkConnectivityIssues {
