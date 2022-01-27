@@ -33,8 +33,7 @@ class SettingsLocalStorageViewModel {
                 return LocalString._settings_title_of_downloaded_messages_local_storage
             }
         }
-        
-        
+
         var foot: String {
             switch self {
             case .cachedData:
@@ -46,8 +45,14 @@ class SettingsLocalStorageViewModel {
             }
         }
     }
-    
-    init(){}
-    
+
+    init(){
+        self.areAttachmentsDeleted.value = false
+        self.isCachedDataDeleted.value = false
+    }
+
     var sections: [SettingsSection] = [.cachedData, .attachments, .downloadedMessages]
+
+    var areAttachmentsDeleted = Bindable<Bool>()
+    var isCachedDataDeleted = Bindable<Bool>()
 }
