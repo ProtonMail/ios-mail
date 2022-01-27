@@ -84,6 +84,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // Disable table selection to prevent multiple viewcontrollers loaded
+        self.tableView.allowsSelection = false
+
         // slow down indexing when moving somewhere else in the app
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
@@ -93,6 +96,9 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        // Enable table selection
+        self.tableView.allowsSelection = true
 
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {

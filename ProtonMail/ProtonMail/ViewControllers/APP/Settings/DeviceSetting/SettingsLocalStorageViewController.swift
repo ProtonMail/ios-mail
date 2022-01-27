@@ -46,6 +46,20 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         self.tableView.rowHeight = UITableView.automaticDimension
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Disable table selection to prevent multiple viewcontrollers loaded
+        self.tableView.allowsSelection = false
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Enable table selection
+        self.tableView.allowsSelection = true
+    }
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
