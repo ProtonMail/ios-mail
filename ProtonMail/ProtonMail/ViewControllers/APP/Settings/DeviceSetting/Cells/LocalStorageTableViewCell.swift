@@ -65,6 +65,7 @@ import UIKit
         self.button.tintColor = ColorProvider.InteractionWeak
         self.button.backgroundColor = ColorProvider.InteractionWeak
         self.button.layer.cornerRadius = 8
+        self.button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         self.button.sizeToFit()
         self.button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
