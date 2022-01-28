@@ -177,6 +177,12 @@ extension EncryptedSearchService {
 
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
+            // If a user has 0 messages, we can simply finish and return
+            if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                self.setESState(userID: userID, indexingState: .complete)
+                self.cleanUpAfterIndexing(userID: userID)
+                return
+            }
 
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             if numberOfMessageInIndex == 0 {
