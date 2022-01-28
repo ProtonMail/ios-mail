@@ -52,9 +52,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel = viewModel
     }
 
-    lazy var replacingEmails: [Email] = { [unowned self] in
-        viewModel.allEmails()
-    }()
+    lazy var replacingEmails: [Email] = viewModel.allEmails()
 
     lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
         viewModel.groupContacts
@@ -1059,6 +1057,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.refreshControl.endRefreshing()
             return
         }
+        self.replacingEmails = self.viewModel.allEmails()
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()

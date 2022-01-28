@@ -165,11 +165,19 @@ extension Message {
         }
 
         // will this be deadly slow?
-        guard let email = replacingEmails.first(where: { $0.email == sender.email }) else {
+        let mails = replacingEmails.filter({ $0.email == sender.email })
+            .sorted { mail1, mail2 in
+                guard let time1 = mail1.contact.createTime,
+                      let time2 = mail2.contact.createTime else {
+                          return true
+                      }
+                return time1 < time2
+            }
+        if mails.isEmpty {
             return sender.name.isEmpty ? sender.email : sender.name
         }
-        let contact = email.contact
-        return contact.name.isEmpty ? email.name: contact.name
+        let contact = mails[0].contact
+        return contact.name.isEmpty ? mails[0].name: contact.name
     }
 
     // Although the time complexity of high order function is O(N)
