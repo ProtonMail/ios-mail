@@ -121,7 +121,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encryptedSearchIndexingStartTime = "encrypted_search_indexing_start_time"
         static let encryptedSearchIsExternalRefreshed = "encrypted_search_is_external_refreshed"
     }
-    
+
     var keymakerRandomkey: String? {
         get {
             return KeychainWrapper.keychain.string(forKey: Key.randomPinForProtection)
