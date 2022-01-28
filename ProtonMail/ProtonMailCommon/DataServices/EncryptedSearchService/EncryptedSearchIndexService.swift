@@ -42,10 +42,6 @@ public class EncryptedSearchIndexService {
 
 extension EncryptedSearchIndexService {
     func connectToSearchIndex(for userID: String) -> Connection? {
-        if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return nil
-        }
-
         if self.checkIfSearchIndexExists(for: userID) {
             if let connection = self.databaseConnections[userID] {
                 return connection
