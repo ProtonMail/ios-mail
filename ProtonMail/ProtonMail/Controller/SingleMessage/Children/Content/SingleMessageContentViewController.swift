@@ -368,6 +368,11 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
         }
     }
 
+    func openFullCryptoPage() {
+        guard let url = self.viewModel.getCypherURL() else { return }
+        navigationAction(.viewCypher(url: url))
+    }
+
     private func showUnsupportAlert(url: URL) {
         let message = LocalString._unsupported_url
         let open = LocalString._general_open_button

@@ -674,6 +674,8 @@ private extension ConversationViewController {
         case .forward(let messageId):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             coordinator.handle(navigationAction: .forward(message: message))
+        case .viewCypher(url: let url):
+            coordinator.handle(navigationAction: .viewCypher(url: url))
         default:
             break
         }

@@ -21,4 +21,8 @@ extension String {
     static var webSupportFormLink: String {
         return "https://protonmail.com/support-form"
     }
+
+    static var fullDecryptionFailedViewLink: String {
+        return "https://protonmail.local/decryption-failed-detail"
+    }
 }

@@ -9,6 +9,7 @@ enum ConversationNavigationAction {
     case attachmentList(message: Message, inlineCIDs: [String]?)
     case viewHeaders(url: URL)
     case viewHTML(url: URL)
+    case viewCypher(url: URL)
     case url(url: URL)
     case inAppSafari(url: URL)
     case addNewLabel

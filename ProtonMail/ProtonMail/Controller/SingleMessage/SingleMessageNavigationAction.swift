@@ -34,6 +34,7 @@ enum SingleMessageNavigationAction: Equatable {
     case mailToUrl(url: URL)
     case addNewFolder
     case addNewLabel
+    case viewCypher(url: URL)
     case more(messageId: String)
 }
 

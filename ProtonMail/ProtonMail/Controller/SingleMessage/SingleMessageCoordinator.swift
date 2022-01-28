@@ -96,6 +96,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             presentCreateFolder(type: .label)
         case .more:
             viewController?.moreButtonTapped()
+        case .viewCypher(url: let url):
+            presentQuickLookView(url: url, subType: .cypher)
         }
     }
 

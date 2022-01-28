@@ -58,6 +58,7 @@ class Crypto {
         case verificationFailed
         case decryptionFromTokenFailed
         case unexpectedNil
+        case decryptionFailed
     }
 
     private enum Algo : String {
