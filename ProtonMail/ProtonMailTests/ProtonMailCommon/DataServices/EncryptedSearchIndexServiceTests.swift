@@ -35,6 +35,7 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         self.testSearchIndexDBName = "encryptedSearchIndex_test.sqlite3"
         let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
         let pathToTestDB: String = pathToDocumentsDirectory + self.testSearchIndexDBName
+
         // Connect to test database.
         self.connection = try Connection(pathToTestDB)
         // Create the table
@@ -93,23 +94,18 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
     func testConnectToSearchIndex() throws {
         let sut = EncryptedSearchIndexService.shared.connectToSearchIndex
         var result: Connection? = sut(self.testUserID)
-        XCTAssertEqual(result!.description, self.connection.description)
+        XCTAssertEqual(result?.description, self.connection.description)
 
-        var resultSecond: Connection? = sut(self.testUserID)
-        XCTAssertEqual(result!.description, resultSecond!.description)
-
-        //close connection
+        // close connection
         sqlite3_close(result?.handle)
         result = nil
-        sqlite3_close(resultSecond?.handle)
-        resultSecond = nil
     }
 
     func testCreateSearchIndexTable() throws {
         let sut = EncryptedSearchIndexService.shared.createSearchIndexTable
         sut(self.connection)
 
-        //check if table exists
+        // check if table exists
         let result: Bool = (try self.connection.scalar("SELECT EXISTS(SELECT name FROM sqlite_master WHERE name = ?)", EncryptedSearchIndexService.DatabaseConstants.Table_Searchable_Messages) as! Int64) > 0
         XCTAssertEqual(result, true)
     }
