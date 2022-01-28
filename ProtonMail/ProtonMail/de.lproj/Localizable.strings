@@ -1,5 +1,5 @@
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "Am EEE, dd.MMM.yyyy um %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Am' E, d.MMMyyyy 'um' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
