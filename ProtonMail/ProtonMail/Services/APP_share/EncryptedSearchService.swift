@@ -118,6 +118,8 @@ public class EncryptedSearchService {
     // Independent variables
     let timeFormatter = DateComponentsFormatter()
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    var encryptedSearchBGProcessingTaskRegistered: Bool = false
+    var encryptedSearchBGAppRefreshTaskRegistered: Bool = false
 }
 
 extension EncryptedSearchService {
@@ -1482,21 +1484,29 @@ extension EncryptedSearchService {
     @available(iOS 13.0, *)
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     func registerBGProcessingTask() {
-        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding", using: nil) { bgTask in
+        self.encryptedSearchBGProcessingTaskRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding", using: nil) { bgTask in
             self.bgProcessingTask(task: bgTask as! BGProcessingTask)
         }
-        if !registeredSuccessful {
+        if !self.encryptedSearchBGProcessingTaskRegistered {
             print("Error when registering background processing task!")
         }
     }
 
     @available(iOS 13.0, *)
     private func cancelBGProcessingTask() {
+        guard self.encryptedSearchBGProcessingTaskRegistered else {
+            return
+        }
+
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
     }
 
     @available(iOS 13.0, *)
     private func scheduleNewBGProcessingTask() {
+        guard self.encryptedSearchBGProcessingTaskRegistered else {
+            return
+        }
+
         let request = BGProcessingTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_indexbuilding")
         request.requiresNetworkConnectivity = true
 
@@ -1552,21 +1562,29 @@ extension EncryptedSearchService {
     @available(iOS 13.0, *)
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     func registerBGAppRefreshTask() {
-        let registeredSuccessful = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh", using: nil) { bgTask in
+        self.encryptedSearchBGAppRefreshTaskRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh", using: nil) { bgTask in
             self.appRefreshTask(task: bgTask as! BGAppRefreshTask)
         }
-        if !registeredSuccessful {
+        if !self.encryptedSearchBGAppRefreshTaskRegistered {
             print("Error when registering background app refresh task!")
         }
     }
 
     @available(iOS 13.0, *)
     private func cancelBGAppRefreshTask() {
+        guard self.encryptedSearchBGAppRefreshTaskRegistered else {
+            return
+        }
+
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
     }
 
     @available(iOS 13.0, *)
-    private func scheduleNewAppRefreshTask(){
+    private func scheduleNewAppRefreshTask() {
+        guard self.encryptedSearchBGAppRefreshTaskRegistered else {
+            return
+        }
+
         let request = BGAppRefreshTaskRequest(identifier: "ch.protonmail.protonmail.encryptedsearch_apprefresh")
 
         do {
