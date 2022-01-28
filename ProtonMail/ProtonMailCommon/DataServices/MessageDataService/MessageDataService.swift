@@ -1582,7 +1582,9 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
             }
             
             let completionBlock: CompletionBlock = { task, dict, error in
-                _ = self.labelDataService.fetchV4Labels().done { (_) in
+                _ = self.labelDataService.fetchV4Labels().then({
+                    self.contactDataService.cleanUp()
+                }).done({
                     self.contactDataService.fetchContacts { (_, error) in
                         if error == nil {
                             _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
@@ -1594,7 +1596,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                             }
                         }
                     }
-                }
+                })
             }
             
             self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
