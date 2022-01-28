@@ -36,14 +36,22 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         super.viewDidLoad()
 
         self.updateTitle()
-
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(LocalStorageTableViewCell.self)
 
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            if userCachedStatus.isEncryptedSearchOn == false {
+                EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
+            }
+        }
 
         setupAttachmentsDeletionObserver()
         setupCachedDataDeletionObserver()
@@ -59,8 +67,19 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Enable table selection
-        self.tableView.allowsSelection = true
+        // Enable table selection - only when state is not undetermined or disabled
+        if userCachedStatus.isEncryptedSearchOn {
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    self.tableView.allowsSelection = true
+                }
+            }
+        }
+
+        // reload table if view appears
+        self.tableView.reloadData()
     }
 
     func getCoordinator() -> CoordinatorNew? {
@@ -159,6 +178,7 @@ extension SettingsLocalStorageViewController {
                     }
                 }
             }
+            cell.selectionStyle = .none
             return cell
         case .attachments:
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
@@ -179,6 +199,7 @@ extension SettingsLocalStorageViewController {
                     }
                 }
             }
+            cell.selectionStyle = .none
             return cell
         case .downloadedMessages:
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
@@ -207,9 +228,18 @@ extension SettingsLocalStorageViewController {
                     infoText.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.InteractionNorm, range: nsRange)
                 }
 
+                // Config cell
                 localStorageCell.configCell(eSection.title, infoText, downloadedMessages){}
-                localStorageCell.accessoryType = .disclosureIndicator
+
+                // Add chevron when state is not undetermined or disabled
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        localStorageCell.accessoryType = .disclosureIndicator
+                    }
+                }
             }
+            cell.selectionStyle = .none
             return cell
         }
     }
@@ -250,10 +280,18 @@ extension SettingsLocalStorageViewController {
         case .cachedData, .attachments:
             break
         case .downloadedMessages:
-            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
-            let vc = SettingsEncryptedSearchViewController()
-            vc.set(viewModel: vm)
-            show(vc, sender: self)
+            if userCachedStatus.isEncryptedSearchOn {
+                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                if let userID = usersManager.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial, .downloading, .paused, .background, .refresh, .backgroundStopped, .lowstorage]
+                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+                        vc.set(viewModel: vm)
+                        show(vc, sender: self)
+                    }
+                }
+            }
             break
         }
     }
