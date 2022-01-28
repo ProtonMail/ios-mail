@@ -337,10 +337,15 @@ extension SettingsEncryptedSearchViewController {
                         spinnerCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, LocalString._settings_encrypted_search_refresh_index)
                     }
                     return cell
-                } else if EncryptedSearchService.shared.getESState(userID: userID) == .complete {
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .complete || EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                     // index building completely finished
                     let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                     if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                        // If the user has 0 messages - don't show oldest message
+                        if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                            threeLineCell.middleLabel.isHidden = true
+                        }
+
                         // Create attributed string for oldest message in search index
                         let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
@@ -362,9 +367,14 @@ extension SettingsEncryptedSearchViewController {
                         threeLineCell.accessoryType = .disclosureIndicator
                     }
                     return cell
-                } else if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
                     let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                     if let threeLineCell = cell as? ThreeLinesTableViewCell {
+                        // If the user has 0 messages - don't show oldest message
+                        if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                            threeLineCell.middleLabel.isHidden = true
+                        }
+
                         // Create attributed string for oldest message in search index
                         let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString

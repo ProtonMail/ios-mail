@@ -147,43 +147,58 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
             if let threeLineCell = cell as? ThreeLinesTableViewCell {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                let userID: String = (usersManager.firstUser?.userInfo.userId)!
+                if let userID: String = usersManager.firstUser?.userInfo.userId {
 
-                if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
-                    // Create attributed string for oldest message in search index
-                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
-                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
-                    let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
-                    oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
+                    // If the user has 0 messages - don't show oldest message
+                    if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                        threeLineCell.middleLabel.isHidden = true
+                    }
 
-                    // Create icon
-                    let image: UIImage = UIImage(named: "ic-exclamation-circle")!
-                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    threeLineCell.icon.tintColor = ColorProvider.NotificationError
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                        // Create attributed string for oldest message in search index
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                        let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
+                        oldestMessageAttributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeOldestMessage)
 
-                    // Create attributed string for download status
-                    let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_partial_downloaded)
-                    let rangeDownloadStatus = NSRange(location: 0, length: LocalString._settings_message_history_status_partial_downloaded.count)
-                    downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeDownloadStatus)
+                        // Create icon
+                        let image: UIImage = UIImage(named: "ic-exclamation-circle")!
+                        let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationError
 
-                    // Config cell
-                    threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
-                } else {
-                    // Create attributed string for oldest message in search index
-                    let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
-                    let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
-                    let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
+                        // Create attributed string for download status
+                        let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
+                        let rangeDownloadStatus = NSRange(location: 0, length: LocalString._settings_message_history_status_low_storage.count)
+                        downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeDownloadStatus)
 
-                    // Create icon
-                    let image: UIImage = UIImage(named: "contact_groups_check")!
-                    let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                    threeLineCell.icon.tintColor = ColorProvider.NotificationSuccess
+                        // Config cell
+                        threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
+                    } else {
+                        // Create attributed string for oldest message in search index
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
+                        let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
 
-                    let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_all_downloaded)
+                        // Create icon
+                        let image: UIImage = UIImage(named: "contact_groups_check")!
+                        let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationSuccess
 
-                    // Config cell
-                    threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
+                        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                        var downloadStatus = NSMutableAttributedString(string: "")
+                        let numberOfMessagesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                        if userCachedStatus.encryptedSearchTotalMessages == 0 {
+                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_no_messages)
+                        } else if userCachedStatus.encryptedSearchTotalMessages == numberOfMessagesInSearchIndex || expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_all_downloaded)
+                        } else {
+                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_download_in_progress)
+                        }
+
+                        // Config cell
+                        threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
+                    }
                 }
             }
             return cell
