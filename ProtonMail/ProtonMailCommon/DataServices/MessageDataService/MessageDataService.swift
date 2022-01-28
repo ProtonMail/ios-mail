@@ -467,31 +467,32 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     ///
     /// - Parameter messages: Message
     private func fetchMetadata(with messageIDs : [String]) {
-        if messageIDs.count > 0 {
-            self.queueManager?.queue {
-                let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    if var messagesArray = responseDict?["Messages"] as? [[String : Any]] {
-                        for (index, _) in messagesArray.enumerated() {
-                            messagesArray[index]["UserID"] = self.userID
-                        }
-                        let context = self.coreDataService.operationContext
-                        self.coreDataService.enqueue(context: context) { (context) in
-                            do {
-                                if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-                                    for message in messages {
-                                        message.messageStatus = 1
-                                    }
-                                    _ = context.saveUpstreamIfNeeded()
+        guard !messageIDs.isEmpty else {
+            return
+        }
+        self.queueManager?.queue {
+            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                if var messagesArray = responseDict?["Messages"] as? [[String : Any]] {
+                    for (index, _) in messagesArray.enumerated() {
+                        messagesArray[index]["UserID"] = self.userID
+                    }
+                    let context = self.coreDataService.operationContext
+                    self.coreDataService.enqueue(context: context) { (context) in
+                        do {
+                            if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
+                                for message in messages {
+                                    message.messageStatus = 1
                                 }
-                            } catch {
+                                _ = context.saveUpstreamIfNeeded()
                             }
+                        } catch {
                         }
                     }
                 }
-                
-                let request = FetchMessagesByID(msgIDs: messageIDs)
-                self.apiService.GET(request, completion: completionWrapper)
             }
+
+            let request = FetchMessagesByID(msgIDs: messageIDs)
+            self.apiService.GET(request, completion: completionWrapper)
         }
     }
     

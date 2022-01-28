@@ -67,28 +67,20 @@ final class MessageCount : Request {
     }
 }
 
-final class FetchMessagesByID : Request {
-    let msgIDs : [String]
+final class FetchMessagesByID: Request {
+    let msgIDs: [String]
+
     init(msgIDs: [String]) {
         self.msgIDs = msgIDs
     }
-    
-    internal func buildURL () -> String {
-        var out = ""
-        for msgID in self.msgIDs {
-            if !out.isEmpty {
-                out = out + "&"
-            }
-            out = out + "ID[]=\(msgID)"
-        }
-        if !out.isEmpty {
-            out = "?" + out
-        }
+
+    var parameters: [String : Any]? {
+        let out: [String : Any] = ["ID": msgIDs]
         return out
     }
     
     var path: String {
-        return MessageAPI.path + self.buildURL()
+        return MessageAPI.path
     }
 }
 
