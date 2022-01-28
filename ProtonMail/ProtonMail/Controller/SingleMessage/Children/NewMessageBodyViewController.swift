@@ -106,7 +106,8 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-        } else if viewModel.internetStatusProvider.currentStatus == .NotReachable {
+        } else if viewModel.internetStatusProvider.currentStatus == .NotReachable &&
+                    !viewModel.message.isDetailDownloaded {
             prepareReloadView()
         } else {
             placeholder = true
@@ -122,6 +123,7 @@ class NewMessageBodyViewController: UIViewController {
         textAttribute[.foregroundColor] = ColorProvider.TextInverted
         self.customView.addReloadView()
 
+        self.heightConstraint?.isActive = false
         let heightConstraint = view.heightAnchor.constraint(equalToConstant: 300)
         heightConstraint.priority = .init(999.0)
         [heightConstraint].activate()
@@ -131,6 +133,7 @@ class NewMessageBodyViewController: UIViewController {
     func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
         view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
 
+        self.heightConstraint?.isActive = false
         let heightConstraint = view.heightAnchor.constraint(equalToConstant: 50)
         heightConstraint.priority = .init(999.0)
         [heightConstraint].activate()
