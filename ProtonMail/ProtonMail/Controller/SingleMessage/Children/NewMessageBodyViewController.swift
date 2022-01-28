@@ -30,6 +30,7 @@ import WebKit
 protocol NewMessageBodyViewControllerDelegate: AnyObject {
     func openUrl(_ url: URL)
     func openMailUrl(_ mailUrl: URL)
+    func openFullCryptoPage()
     func updateContentBanner(shouldShowRemoteContentBanner: Bool,
                              shouldShowEmbeddedContentBanner: Bool)
     func showDecryptionErrorBanner()
@@ -106,6 +107,11 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
+
+            self.loader.observeHeight { [weak self] height in
+                self?.updateViewHeight(to: height)
+                self?.viewModel.recalculateCellHeight?(true)
+            }
         } else if viewModel.internetStatusProvider.currentStatus == .NotReachable &&
                     !viewModel.message.isDetailDownloaded {
             prepareReloadView()
@@ -208,7 +214,7 @@ class NewMessageBodyViewController: UIViewController {
         if webView.isLoading {
             updatesTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
-                self?.viewModel.recalculateCellHeight?(false)
+                self?.viewModel.recalculateCellHeight?(true)
             })
         } else {
             updatesTimer?.invalidate()
@@ -382,15 +388,19 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
             decisionHandler(.cancel)
 
         case .linkActivated where navigationAction.request.url != nil:
-            if let url = navigationAction.request.url {
-                self.validateNotPhishing(url) { [weak self] allowedToOpen in
-                    guard let self = self else { return }
-                    if allowedToOpen {
-                        self.delegate?.openUrl(url)
-                    }
+            defer { decisionHandler(.cancel) }
+            guard let url = navigationAction.request.url else { return }
+            if url.absoluteString == String.fullDecryptionFailedViewLink {
+                self.delegate?.openFullCryptoPage()
+                return
+            }
+
+            self.validateNotPhishing(url) { [weak self] allowedToOpen in
+                guard let self = self else { return }
+                if allowedToOpen {
+                    self.delegate?.openUrl(url)
                 }
             }
-            decisionHandler(.cancel)
         default:
             decisionHandler(.allow)
         }

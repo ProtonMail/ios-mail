@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
-
 import Foundation
 import ProtonCore_UIFoundations
 import WebKit
@@ -40,6 +39,7 @@ import WebKit
 ///
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
+    private var heightChanged: ((CGFloat) -> ())?
     
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
@@ -106,6 +106,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             self.prepareRendering(contents, into: webView.configuration)
             webView.load(request)
         }
+    }
+
+    func observeHeight(_ callBack: @escaping ((CGFloat) -> ())) {
+        self.heightChanged = callBack
     }
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
@@ -185,7 +189,17 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         } else {
             ratio = 1;
         };
-        window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+        let body = document.body;
+        let height = ratio * document.body.scrollHeight;
+        var refHeight = height;
+        var tag = 1;
+        if (body.children.length > 1) {
+            let last = body.children[body.children.length - 1];
+            let bottom = last.getBoundingClientRect().bottom;
+            refHeight = bottom * ratio;
+        }
+        
+        window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
 """
 
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -206,6 +220,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
         if let height = dict["height"] as? Double {
             self.renderedContents.height = CGFloat(height)
+            let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
+            let res = refHeight > 0 ? refHeight: CGFloat(height)
+            self.heightChanged?(res)
         }
     }
     

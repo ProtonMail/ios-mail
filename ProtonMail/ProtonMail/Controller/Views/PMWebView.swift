@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import WebKit
 
-class  PMWebView: WKWebView, AccessibleView {
-    
+class PMWebView: WKWebView, AccessibleView {
+
     override var canBecomeFirstResponder : Bool {
         return true
     }
-    
+
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         if action == #selector(selectAll(_:)) {
             return true

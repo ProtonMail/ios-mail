@@ -68,6 +68,10 @@ struct BodyParts {
     }
 }
 
+private enum EmbeddedDownloadStatus {
+    case none, downloading, finish
+}
+
 class NewMessageBodyViewModel {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
@@ -75,12 +79,17 @@ class NewMessageBodyViewModel {
     private(set) var message: Message
     private let messageDataProcessor: MessageDataProcessProtocol
     let userAddressUpdater: UserAddressUpdaterProtocol
+    // [cid, base64String]
+    private var embeddedBase64: [String: String] = [:]
+    private var embeddedStatus = EmbeddedDownloadStatus.none
     var hasStrippedVersionObserver: ((Bool) -> Void)?
     private(set) var hasStrippedVersion: Bool = false
     private(set) var bodyParts: BodyParts? {
         didSet {
-            hasStrippedVersion = bodyParts?.fullBody != bodyParts?.strippedBody
-            hasStrippedVersionObserver?(hasStrippedVersion)
+            DispatchQueue.main.async {
+                self.hasStrippedVersion = self.bodyParts?.fullBody != self.bodyParts?.strippedBody
+                self.hasStrippedVersionObserver?(self.hasStrippedVersion)
+            }
         }
     }
     private var shouldHoldReloading = false
@@ -116,6 +125,12 @@ class NewMessageBodyViewModel {
             }
         }
     }
+    /// Queue to update embedded image data
+    private lazy var replacementQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     private(set) var contents: WebContents? {
         didSet {
@@ -228,28 +243,45 @@ class NewMessageBodyViewModel {
             bodyParts = BodyParts(originalBody: decryptedBody)
 
             checkBannerStatus(decryptedBody)
-
-            if embeddedContentPolicy == .allowed {
-                showEmbedImage(message, body: decryptedBody) { [weak self] in
-                    guard let self = self else { return }
-                    self.contents = WebContents(
-                        body: self.bodyParts?.body(for: self.displayMode) ?? "",
-                        remoteContentMode: remoteContentMode,
-                        renderStyle: self.currentMessageRenderStyle,
-                        supplementCSS: self.bodyParts?.darkModeCSS
-                    )
-                }
-                return false
-            } else {
-                self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
+            guard embeddedContentPolicy == .allowed else {
+                let body = self.bodyParts?.body(for: displayMode) ?? ""
+                self.contents = WebContents(body: body,
                                             remoteContentMode: remoteContentMode,
                                             renderStyle: self.currentMessageRenderStyle,
-                                            supplementCSS: self.bodyParts?.darkModeCSS
-                )
+                                            supplementCSS: self.bodyParts?.darkModeCSS)
+                return true
             }
+
+            guard self.embeddedStatus == .finish else {
+                let body = self.bodyParts?.body(for: displayMode) ?? ""
+                self.contents = WebContents(body: body,
+                                            remoteContentMode: remoteContentMode,
+                                            renderStyle: self.currentMessageRenderStyle,
+                                            supplementCSS: self.bodyParts?.darkModeCSS)
+                DispatchQueue.global().async {
+                    self.downloadEmbedImage(message, body: decryptedBody)
+                }
+                return true
+            }
+            DispatchQueue.global().async {
+                self.showEmbeddedImages(decryptedBody: decryptedBody)
+            }
+            return false
         } else if !message.body.isEmpty {
+            var rawBody = message.body
+            // If the string length is over 60k
+            // The webview performance becomes bad
+            // Cypher means nothing to human, 30k is enough
+            let limit = 30_000
+            if rawBody.count >= limit {
+                let button = "<a href=\"\(String.fullDecryptionFailedViewLink)\">\(LocalString._show_full_message)</a>"
+                let index = rawBody.index(rawBody.startIndex, offsetBy: limit)
+                rawBody = String(rawBody[rawBody.startIndex..<index]) + button
+                rawBody = "<div>\(rawBody)</div>"
+            }
             // If the detail hasn't download, don't show encrypted body to user
-            bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? message.bodyToHtml(): .empty)
+            bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? rawBody: .empty)
+
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                         remoteContentMode: remoteContentMode)
         }
@@ -301,59 +333,65 @@ class NewMessageBodyViewModel {
         }
     }
 
-    private func showEmbedImage(_ message: Message, body: String, completion: (() -> Void)?) {
-        guard message.isDetailDownloaded,
-            let allAttachments = message.attachments.allObjects as? [Attachment],
-            case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
-            !atts.isEmpty else {
-            if self.bodyParts?.originalBody != body {
-                self.bodyParts = BodyParts(originalBody: body)
-            }
-            completion?()
-            return
-        }
+    private func downloadEmbedImage(_ message: Message, body: String) {
+        guard self.embeddedStatus == .none,
+              message.isDetailDownloaded,
+              let allAttachments = message.attachments.allObjects as? [Attachment],
+              case let inlines = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
+              !inlines.isEmpty else {
+                  if self.bodyParts?.originalBody != body {
+                      self.bodyParts = BodyParts(originalBody: body)
+                  }
+                  return
+              }
+        self.embeddedStatus = .downloading
+        let group = DispatchGroup()
+        let queue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
+        let stringsQueue = DispatchQueue(label: "StringsQueue")
 
-        let checkCount = atts.count
-        let group: DispatchGroup = DispatchGroup()
-        let queue: DispatchQueue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
-        let stringsQueue: DispatchQueue = DispatchQueue(label: "StringsQueue")
-
-        var strings: [String: String] = [:]
-        for att in atts {
+        for inline in inlines {
             group.enter()
             let work = DispatchWorkItem {
-                self.messageDataProcessor.base64AttachmentData(att: att) { based64String in
-                    if !based64String.isEmpty, let contentID = att.contentID() {
-                        stringsQueue.sync {
-                            strings["cid:\(contentID)"] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
-                        }
+                self.messageDataProcessor.base64AttachmentData(att: inline) { based64String in
+                    defer { group.leave() }
+                    guard !based64String.isEmpty,
+                          let contentID = inline.contentID() else { return }
+                    stringsQueue.sync {
+                        let value = "src=\"data:\(inline.mimeType);base64,\(based64String)\""
+                        self.embeddedBase64["src=\"cid:\(contentID)\""] = value
                     }
-                    group.leave()
                 }
             }
             queue.async(group: group, execute: work)
         }
 
-        group.notify(queue: .main) {
-            defer {
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
-                    completion?()
+        group.notify(queue: .global()) {
+            self.embeddedStatus = .finish
+            self.showEmbeddedImages(decryptedBody: body)
+        }
+    }
+
+    private func showEmbeddedImages(decryptedBody: String) {
+        self.replacementQueue.addOperation {
+            guard self.embeddedStatus == .finish else { return }
+            var updatedBody = decryptedBody
+            let displayBody = self.bodyParts?.fullBody
+            for (cid, base64) in self.embeddedBase64 {
+                if let token = updatedBody.range(of: cid) {
+                    updatedBody.replaceSubrange(token, with: base64)
+                }
+                if displayBody?.range(of: cid) == nil {
+                    return
                 }
             }
-            if checkCount == strings.count {
-                var updatedBody = body
-                for (cid, base64) in strings {
-                    let key = "src=\"\(cid)\""
-                    if let token = updatedBody.range(of: key) {
-                        let newValue = base64 + "contentID=\"\(cid)\""
-                        updatedBody.replaceSubrange(token, with: newValue)
-                    }
-                }
-
-                self.bodyParts = BodyParts(originalBody: updatedBody)
-            } else {
-                if self.bodyParts?.originalBody != body {
-                    self.bodyParts = BodyParts(originalBody: body)
+            self.bodyParts = BodyParts(originalBody: updatedBody)
+            delay(0.2) {
+                if let mode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) {
+                    let body = self.bodyParts?.body(for: self.displayMode) ?? ""
+                    self.contents = WebContents(body: body,
+                                                remoteContentMode: mode,
+                                                renderStyle: self.currentMessageRenderStyle,
+                                                supplementCSS: self.bodyParts?.darkModeCSS)
                 }
             }
         }

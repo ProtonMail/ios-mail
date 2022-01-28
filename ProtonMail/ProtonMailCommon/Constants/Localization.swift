@@ -1197,6 +1197,7 @@ class LocalizedString {
 
     /// "HTML"
     lazy var _message_html = NSLocalizedString("HTML", comment: "Title of the view showing the message HTML source")
+    lazy var _message_body = NSLocalizedString("Message body", comment: "Title of the view showing the message body")
 
     /// "Confirm phishing report"
     lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")
@@ -2226,4 +2227,5 @@ class LocalizedString {
     lazy var _cannot_empty_folder_now = NSLocalizedString("Cannot empty folder right now.", comment: "Warning message")
     lazy var _clean_message_warning = NSLocalizedString("clean_message_warning", comment: "Warning message when users try to empty messages in the folder")
     lazy var _clean_conversation_warning = NSLocalizedString("clean_conversation_warning", comment: "Warning message when users try to empty conversations in the folder")
+    lazy var _show_full_message = NSLocalizedString("…[Show full message]", comment: "Button title to show full encrypted message body when decryption failed")
 }

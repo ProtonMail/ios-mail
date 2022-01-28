@@ -42,6 +42,7 @@ protocol WebContentsSecureLoader {
     var renderedContents: RenderedContents { get }
     func load(contents: WebContents, in webView: WKWebView)
     func inject(into config: WKWebViewConfiguration)
+    func observeHeight(_ callBack: @escaping ((CGFloat) -> ()))
 }
 extension WebContentsSecureLoader {
     static var domPurifyConfiguration: String {

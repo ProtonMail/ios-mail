@@ -27,6 +27,7 @@ class PlainTextViewerViewController: UIViewController {
     enum ViewerSubType {
         case headers
         case html
+        case cypher
         
         var title: String {
             switch self {
@@ -34,6 +35,8 @@ class PlainTextViewerViewController: UIViewController {
                 return LocalString._message_headers
             case .html:
                 return LocalString._message_html
+            case .cypher:
+                return LocalString._message_body
             }
         }
     }

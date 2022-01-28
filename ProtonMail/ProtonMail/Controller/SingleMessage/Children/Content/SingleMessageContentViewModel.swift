@@ -146,6 +146,19 @@ class SingleMessageContentViewModel {
         messageService.mark(messages: [message], labelID: context.labelId, unRead: false)
     }
 
+    func getCypherURL() -> URL? {
+        let filename = UUID().uuidString
+        return try? self.writeToTemporaryUrl(message.body, filename: filename)
+    }
+
+    private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
+        let tempFileUri = FileManager.default.temporaryDirectoryUrl
+            .appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+        try? FileManager.default.removeItem(at: tempFileUri)
+        try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
+        return tempFileUri
+    }
+
     private func createExpandedHeaderViewModel() {
         let newVM = ExpandedHeaderViewModel(labelId: context.labelId,
                                             message: message,

@@ -88,6 +88,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             presentQuickLookView(url: url, subType: .headers)
         case .viewHTML(url: let url):
             presentQuickLookView(url: url, subType: .html)
+        case .viewCypher(url: let url):
+            presentQuickLookView(url: url, subType: .cypher)
         case .addNewFolder:
             presentCreateFolder(type: .folder)
         case .addNewLabel:

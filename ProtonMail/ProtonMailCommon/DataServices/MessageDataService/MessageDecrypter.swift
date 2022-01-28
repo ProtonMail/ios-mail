@@ -46,8 +46,8 @@ final class MessageDecrypter: MessageDecrypterProtocol {
                                               privateKeys: dataSource.userPrivateKeys,
                                               passphrase: passphrase,
                                               newScheme: dataSource.newSchema) else {
-            return message.body
-        }
+                  throw Crypto.CryptoError.decryptionFailed
+              }
 
         if message.isPgpMime || message.isSignedMime {
             let result = self.postProcessMIME(body: body)
