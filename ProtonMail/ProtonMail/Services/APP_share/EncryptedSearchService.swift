@@ -2224,5 +2224,6 @@ extension EncryptedSearchService {
 
     func updateProgressedMessagesUI() {
         self.viewModel?.progressedMessages.value = userCachedStatus.encryptedSearchProcessedMessages
+        self.viewModel?.currentProgress.value = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
     }
 }
