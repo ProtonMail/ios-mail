@@ -73,6 +73,7 @@ import UIKit
         self.pauseButton.tintColor = ColorProvider.InteractionWeak
         self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
+        self.pauseButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         self.pauseButton.sizeToFit()
         self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
