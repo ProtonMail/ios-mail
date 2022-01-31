@@ -65,7 +65,8 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         rightArrowImage.image = nil
         rightArrowImage.isHidden = false
         stackView.distribution = .equalSpacing
-        stackViewTrailingConstraintWithIconView.priority = .required
+        // Because switching from required (>=1000) to non required (<1000) or vice versa causes a crash on iOS 12
+        stackViewTrailingConstraintWithIconView.priority = .init(999)
         stackViewTrailingConstraintWithContainer.priority = .defaultLow
     }
 
@@ -91,7 +92,8 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         if imageType == .none {
             self.rightArrowImage.isHidden = true
             stackViewTrailingConstraintWithIconView.priority = .defaultLow
-            stackViewTrailingConstraintWithContainer.priority = .required
+            // Because switching from required (>=1000) to non required (<1000) or vice versa causes a crash on iOS 12
+            stackViewTrailingConstraintWithContainer.priority = .init(999)
         } else {
             self.rightArrowImage.image = imageType.image
         }
