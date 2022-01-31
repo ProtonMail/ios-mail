@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +20,7 @@
                         <rect key="frame" x="16" y="0.0" width="376" height="50"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="g5P-sJ-gAR">
-                                <rect key="frame" x="0.0" y="0.0" width="188" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -51,7 +51,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="Xal-YH-iKr" secondAttribute="trailing" id="Yn5-39-AKq"/>
                     <constraint firstAttribute="trailing" secondItem="oQp-1S-XHl" secondAttribute="trailing" priority="750" constant="16" id="gqX-vk-3Zt"/>
                     <constraint firstItem="Xal-YH-iKr" firstAttribute="centerY" secondItem="oQp-1S-XHl" secondAttribute="centerY" id="koO-aI-MwE"/>
-                    <constraint firstItem="Xal-YH-iKr" firstAttribute="leading" secondItem="oQp-1S-XHl" secondAttribute="trailing" constant="8" id="qvl-5f-vQ6"/>
+                    <constraint firstItem="Xal-YH-iKr" firstAttribute="leading" secondItem="oQp-1S-XHl" secondAttribute="trailing" priority="999" constant="8" id="qvl-5f-vQ6"/>
                     <constraint firstItem="oQp-1S-XHl" firstAttribute="centerY" secondItem="ZEz-em-u1D" secondAttribute="centerY" id="v1g-Qi-MDb"/>
                 </constraints>
             </tableViewCellContentView>
