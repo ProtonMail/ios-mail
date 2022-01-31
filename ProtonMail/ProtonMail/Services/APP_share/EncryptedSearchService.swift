@@ -224,9 +224,13 @@ extension EncryptedSearchService {
 
         // Set processed message to the number of entries in the search index
         userCachedStatus.encryptedSearchProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-
+        userCachedStatus.encryptedSearchPreviousProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
         // Update last indexed message with the newest message in search index
         userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+
+        // reset counter to stabilize indexing estimate
+        self.estimateIndexTimeRounds = 0
+        self.viewModel?.estimatedTimeRemaining.value = nil
 
         // Restart index building timers
         DispatchQueue.main.async {
@@ -393,7 +397,6 @@ extension EncryptedSearchService {
             // Check if any of the flags is set to true
             if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
                 self.setESState(userID: userID, indexingState: .paused)
-
                 return
             }
             self.setESState(userID: userID, indexingState: .downloading)
@@ -1855,7 +1858,15 @@ extension EncryptedSearchService {
                     if result.currentProgress != 0 {
                         self.viewModel?.currentProgress.value = result.currentProgress
                     }
-                    if self.estimateIndexTimeRounds >= 3 {   // Just show an time estimate after a few rounds (to have a more stable estimate)
+
+                    // Just show an time estimate after a few rounds (to have a more stable estimate)
+                    var waitRoundsBeforeShowingTimeEstimate: Int = 3
+                    if userCachedStatus.encryptedSearchTotalMessages > 50_000 {
+                        waitRoundsBeforeShowingTimeEstimate = 5
+                    } else {
+                        waitRoundsBeforeShowingTimeEstimate = 3
+                    }
+                    if self.estimateIndexTimeRounds >= waitRoundsBeforeShowingTimeEstimate {
                         self.viewModel?.estimatedTimeRemaining.value = result.estimatedTime
                     } else {
                         self.estimateIndexTimeRounds += 1
