@@ -45,6 +45,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
     @IBOutlet private var removeLabel: UILabel!
     @IBOutlet private var removeViewbottom: NSLayoutConstraint!
     @IBOutlet private var scrollViewBottom: NSLayoutConstraint!
+    @IBOutlet private weak var scrollView: UIScrollView!
 
     private weak var delegate: ComposePasswordDelegate?
     private var encryptionPassword: String = ""
@@ -75,6 +76,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
         NotificationCenter.default.addKeyboardObserver(self)
         self.setup()
         generateAccessibilityIdentifiers()
+        initializeHideKeyboard()
     }
 
     @IBAction private func clickApplyButton(_ sender: Any) {
@@ -234,18 +236,61 @@ extension ComposePasswordVC {
 
 extension ComposePasswordVC: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        self.scrollViewBottom.constant = 0
+        scrollView.contentInset.bottom = 0
+        scrollView.scrollIndicatorInsets.bottom = 0
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
-        let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
-        guard let keyboardFrame = value  as? NSValue else {
-            return
+        if let scrollView = self.scrollView,
+           let userInfo = notification.userInfo,
+           let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey],
+           let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey],
+           let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
+
+            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
+            let keyboardOverlap = max((findEditingView()?.frame.maxY ?? 0.0) - endRect.origin.y, 0)
+
+            scrollView.contentInset.bottom = endRect.height
+            scrollView.scrollIndicatorInsets.bottom = endRect.height
+            if keyboardOverlap > 0 {
+                scrollView.setContentOffset(CGPoint(x: 0, y: keyboardOverlap), animated: true)
+            }
+
+            let duration = (durationValue as AnyObject).doubleValue
+            let options = UIView.AnimationOptions(rawValue: UInt((curveValue as AnyObject).integerValue << 16))
+            UIView.animate(withDuration: duration ?? 0.0,
+                           delay: 0,
+                           options: options,
+                           animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
         }
-        let cardModalPadding: CGFloat = 20
-        self.scrollViewBottom.constant = keyboardFrame.cgRectValue.height - cardModalPadding
-        let removePadding = 0 - self.removeView.frame.size.height
-        self.removeViewbottom.constant = self.removeView.isHidden ? removePadding: 0
+    }
+
+    func findEditingView() -> UIView? {
+        if passwordText.isFirstResponder {
+            return passwordText
+        } else if confirmText.isFirstResponder {
+            return confirmText
+        } else if passwordHintText.isFirstResponder {
+            // return the parent view of hint view
+            return passwordHintView
+        } else {
+            return nil
+        }
+    }
+
+    private func initializeHideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissMyKeyboard))
+
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc
+    private func dismissMyKeyboard() {
+        view.endEditing(true)
     }
 }
 
