@@ -313,8 +313,12 @@ extension SettingsEncryptedSearchViewController {
                         let pathDownloadViaMobileData: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadViaMobileData.rawValue)
                         let pathDownloadedMessages: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
                         UIView.performWithoutAnimation {
-                            self.tableView.reloadRows(at: [pathDownloadViaMobileData], with: .none)
-                            self.tableView.reloadRows(at: [pathDownloadedMessages], with: .none)
+                            if self.tableView.hasRowAtIndexPath(indexPath: pathDownloadViaMobileData) {
+                                self.tableView.reloadRows(at: [pathDownloadViaMobileData], with: .none)
+                            }
+                            if self.tableView.hasRowAtIndexPath(indexPath: pathDownloadedMessages) {
+                                self.tableView.reloadRows(at: [pathDownloadedMessages], with: .none)
+                            }
                         }
                     }
 
@@ -477,7 +481,9 @@ extension SettingsEncryptedSearchViewController {
                                 DispatchQueue.main.async {
                                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
                                     UIView.performWithoutAnimation {
-                                        self.tableView.reloadRows(at: [path], with: .none)
+                                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                                            self.tableView.reloadRows(at: [path], with: .none)
+                                        }
                                     }
                                 }
                                 // Resume indexing
@@ -490,7 +496,9 @@ extension SettingsEncryptedSearchViewController {
                                 DispatchQueue.main.async {
                                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
                                     UIView.performWithoutAnimation {
-                                        self.tableView.reloadRows(at: [path], with: .none)
+                                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                                            self.tableView.reloadRows(at: [path], with: .none)
+                                        }
                                     }
                                 }
 
@@ -618,7 +626,7 @@ extension SettingsEncryptedSearchViewController {
         setupProgressUpdateObserver(userID: userID)
         setupProgressedMessagesObserver(userID: userID)
         setupIndexingFinishedObserver(userID: userID)
-        setupIndexingInterruptionObservers()
+        setupIndexingInterruptionObservers(userID: userID)
     }
 
     func setupEstimatedTimeUpdateObserver(userID: String) {
@@ -628,7 +636,9 @@ extension SettingsEncryptedSearchViewController {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
                     UIView.performWithoutAnimation {
-                        self.tableView.reloadRows(at: [path], with: .none)
+                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
                     }
                 }
             }
@@ -642,7 +652,9 @@ extension SettingsEncryptedSearchViewController {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
                     UIView.performWithoutAnimation {
-                        self.tableView.reloadRows(at: [path], with: .none)
+                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
                     }
                 }
             }
@@ -656,21 +668,28 @@ extension SettingsEncryptedSearchViewController {
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
                     UIView.performWithoutAnimation {
-                        self.tableView.reloadRows(at: [path], with: .none)
+                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
                     }
                 }
             }
         }
     }
 
-    func setupIndexingInterruptionObservers() {
+    func setupIndexingInterruptionObservers(userID: String) {
         self.viewModel.interruptStatus.bind {
             (_) in
-            DispatchQueue.main.async {
-                let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .lowstorage, .paused, .refresh, .background, .backgroundStopped]
+            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                DispatchQueue.main.async {
+                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
 
-                UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
+                    UIView.performWithoutAnimation {
+                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
+                    }
                 }
             }
         }
@@ -705,5 +724,11 @@ extension SettingsEncryptedSearchViewController {
 
         self.view.addSubview(self.banner)
         self.banner.displayBanner(on: self.view)
+    }
+}
+
+extension UITableView {
+    func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
+        return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
     }
 }
