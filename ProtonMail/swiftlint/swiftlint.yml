@@ -256,6 +256,8 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/APIService/UnsubscribeService.swift
   - ${PWD}/ProtonMail/Controller/Mailbox/MailboxDiffableDataSource.swift
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/AppleContactParser.swift
+  - ${PWD}/ProtonMailCommon/ViewModels/Settings/SettingsConversationViewModel.swift
+  - ${PWD}/ProtonMailCommon/DataServices/ConversationStateService/UpdateViewModeService.swift
 
 excluded:
   - ${PWD}/Pods

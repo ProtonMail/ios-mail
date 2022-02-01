@@ -133,6 +133,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
+    private var isDiffableDataSourceEnabled: Bool = false
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -195,6 +196,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
+        self.isDiffableDataSourceEnabled = UserInfo.isDiffableDataSourceEnabled
         self.viewModel.viewModeIsChanged = { [weak self] in
             self?.handleViewModeIsChanged()
         }
@@ -224,7 +226,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.addSubViews()
-        if #available(iOS 13, *) {
+        if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
             self.loadDiffableDataSource()
         } else {
             self.tableView.dataSource = self
@@ -610,6 +612,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         viewModel.setupFetchController(self,
                                        isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
+        if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
+            self.loadDiffableDataSource()
+        }
         self.reloadTableViewDataSource(animate: false)
 
         if viewModel.countOfFetchedObjects == 0 {
@@ -2147,7 +2152,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
         
-        if #available(iOS 13, *) { } else {
+        if !self.isDiffableDataSourceEnabled {
             self.tableView.endUpdates()
         }
         if self.refreshControl.isRefreshing {
@@ -2175,7 +2180,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
 
         if !shouldKeepSkeletonUntilManualDismissal {
-            if #available(iOS 13, *) { } else {
+            if !self.isDiffableDataSourceEnabled {
                 self.tableView.beginUpdates()
             }
         }
@@ -2187,7 +2192,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             || shouldKeepSkeletonUntilManualDismissal {
             return
         }
-        if #available(iOS 13, *), diffableDataSource != nil {
+        if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
             self.reloadTableViewDataSource(animate: true)
         } else {
             switch(type) {
@@ -2209,7 +2214,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
         switch(type) {
         case .delete:
-            if #available(iOS 13, *), diffableDataSource != nil {
+            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
                 self.reloadTableViewDataSource(animate: true)
             } else {
                 if let indexPath = indexPath {
@@ -2219,7 +2224,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             popPresentedItemIfNeeded(anObject)
             hideActionBarIfNeeded(anObject)
         case .insert:
-            if #available(iOS 13, *), diffableDataSource != nil {
+            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
                 self.reloadTableViewDataSource(animate: true)
             } else {
                 guard let newIndexPath = newIndexPath else { return }
@@ -2233,14 +2238,14 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.newMessageCount += 1
         case .update:
             if let indexPath = indexPath {
-                if #available(iOS 13, *), diffableDataSource != nil {
+                if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
                     self.refreshCells(at: [indexPath], animation: .none)
                 } else {
                     self.tableView.reloadRows(at: [indexPath], with: .none)
                 }
             }
         case .move:
-            if #available(iOS 13, *), diffableDataSource != nil {
+            if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
                 self.reloadTableViewDataSource(animate: true)
             } else {
                 if let indexPath = indexPath, let newIndexPath = newIndexPath {
@@ -2522,7 +2527,7 @@ extension MailboxViewController {
             shouldAnimate = true
         }
 
-        if #available(iOS 13, *), let diffableDataSource = diffableDataSource {
+        if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
             diffableDataSource.refreshItems(at: indexPaths, animate: shouldAnimate)
         } else {
             self.tableView.reloadRows(at: indexPaths, with: animation)
@@ -2530,7 +2535,7 @@ extension MailboxViewController {
     }
 
     func reloadTableViewDataSource(animate: Bool) {
-        if #available(iOS 13, *), let diffableDataSource = diffableDataSource {
+        if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
             diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
                                               animate: animate)
             // Using diffable data source triggers an issue that make

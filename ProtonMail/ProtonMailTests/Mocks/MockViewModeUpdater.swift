@@ -19,12 +19,9 @@ import Foundation
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-class MockConversationStateProvider: ConversationStateProviderProtocol {
-    
-    var viewMode: ViewMode = .singleMessage
-
-    @FuncStub(MockConversationStateProvider.add) var callAdd
-    func add(delegate: ConversationStateServiceDelegate) {
-        callAdd(delegate)
+class MockViewModeUpdater: ViewModeUpdater {
+    @FuncStub(MockViewModeUpdater.update) var callUpdate
+    func update(viewMode: ViewMode, completion: ((Result<ViewMode?, Error>) -> Void)?) {
+        callUpdate(viewMode, completion)
     }
 }

@@ -198,7 +198,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         guard let user = users.firstUser else { return }
         let viewModel = SettingsConversationViewModel(
             conversationStateService: user.conversationStateService,
-            updateViewModeService: UpdateViewModeService(apiService: user.apiService)
+            updateViewModeService: UpdateViewModeService(apiService: user.apiService),
+            eventService: user.eventsService
         )
         let viewController = SettingsConversationViewController(viewModel: viewModel)
         self.viewController?.navigationController?.pushViewController(viewController, animated: true)

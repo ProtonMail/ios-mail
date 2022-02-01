@@ -270,6 +270,7 @@
 		18D337EE4E9982D8792E8AC98A534966 /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */; };
 		18F7DCB1DAFD214B9A110038925FA666 /* ConversationViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30334D1ECA310223332428728842F766 /* ConversationViewHeaderCell.swift */; };
 		19087E831C489097C11F42F6D0A5B33B /* ConversationNavigationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E44646B92711706B6A99B21FB46DFD /* ConversationNavigationViewPresenter.swift */; };
+		194B9D94140D2F7F8260C3F5F85B9FF9 /* MockViewModeUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9710B08D77872EF602954CE02F9862 /* MockViewModeUpdater.swift */; };
 		197941A2171B6C3EAE798D1F23B0690F /* LabelCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291EEC992FB64F74DD4BEFD2247EBE3F /* LabelCount.swift */; };
 		19BC0877EFBC7090B03600D4815D726A /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		19CE991C4761B1A2B1FDBFF97FF0F284 /* UIBarButtonItem+swizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DF1055A0686A23D574580CC9E30B4 /* UIBarButtonItem+swizzle.swift */; };
@@ -730,6 +731,7 @@
 		428824C6AF92A37CAD290FCE69EA12BE /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		42D4788766FEB7FD2B5291E9563DA6E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		42D4DAE004910F7A8927506837A889C4 /* ProtonMailAnalytics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 95A26E3507A56AA8B440117865204D08 /* ProtonMailAnalytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		42D91BA2CCDCE3C8D0E1E9C89EE81747 /* SettingsConversationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA074715BD3A320CF51EE128DBF850E /* SettingsConversationViewModelTests.swift */; };
 		42E7055EACD375278977F65F91462172 /* ComposerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C1946BA979546D095A6A81201E2CB8 /* ComposerNavigationController.swift */; };
 		42EF01D55E24BA4B874239A5FAB6BE90 /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */; };
 		42FCF693FC7FF58C3581A53B4532A745 /* ConversationCount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACCEBDF98162878365E6883D89C6F4A /* ConversationCount+Extension.swift */; };
@@ -3414,6 +3416,7 @@
 		5F184F5E623173C0B5F53ED9D924E549 /* SettingsLockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLockViewModel.swift; sourceTree = "<group>"; };
 		5F921C9918B518B23D3AFA6E47844069 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
 		5F9653AABE5BF72BCB0D55E916660539 /* ContactGroupSubSelectionActionSheetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionActionSheetPresenter.swift; sourceTree = "<group>"; };
+		5F9710B08D77872EF602954CE02F9862 /* MockViewModeUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewModeUpdater.swift; sourceTree = "<group>"; };
 		5FBB1DF2E92DB1E862ED28D2B2D1C837 /* DoHMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoHMail.swift; sourceTree = "<group>"; };
 		5FC55DF7360A22206C0BDCD14A8A7865 /* MailboxDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxDiffableDataSource.swift; sourceTree = "<group>"; };
 		60123DC6E6DE7C17586D63BE324DD6DD /* SettingsGesturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGesturesViewController.swift; sourceTree = "<group>"; };
@@ -3806,6 +3809,7 @@
 		AB2BEC3D5DC3BC2DD693667BFFFB8A96 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AB513DF5433EEDA2409F48ABCB426310 /* InternetConnectionStatusProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionStatusProviderTests.swift; sourceTree = "<group>"; };
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		ABA074715BD3A320CF51EE128DBF850E /* SettingsConversationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsConversationViewModelTests.swift; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABC1C0BA1C5E2E6343CF4512A318E8B8 /* AccountSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsTests.swift; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
@@ -6237,6 +6241,7 @@
 				12B920017EEB98C9FD9569E8B5B3B03D /* MockProtonMailAnalytics.swift */,
 				D160E225B6D3B4ABDE0EC8D4E3CA95C8 /* MockPushNotificationService.swift */,
 				BA2CE38D76CFB682CFC1607938540EF8 /* MockQueueHandler.swift */,
+				5F9710B08D77872EF602954CE02F9862 /* MockViewModeUpdater.swift */,
 				507AA17837159F4A244E1A2CE681E734 /* NewMessageBodyViewModelDelegateMock.swift */,
 				74E2DFFF7AD6BDBE5F3A8DB622D90874 /* SystemUpTimeMock.swift */,
 				ACAAC52A508F45B42274C36434138C7E /* UndoActionHandlerBaseMock.swift */,
@@ -7048,6 +7053,7 @@
 				9A585DF4905C63E026F4166ED0B43439 /* Mailbox */,
 				56606368C7BF1BDB901665A9E3ADC53D /* MenuViewModelTests.swift */,
 				53B64E33ADE9894FD27AA9E7607FA548 /* SettingsCombineContactViewModelTests.swift */,
+				ABA074715BD3A320CF51EE128DBF850E /* SettingsConversationViewModelTests.swift */,
 				85ADF776F24452D383EFA105ADABC939 /* SettingsDarkModeViewModelTests.swift */,
 				20DF535AF8FF4831EAB96E3725E06896 /* SettingsGestureViewModelTests.swift */,
 				93EF77BF0DE545D5091C8A9DAEC7EF5F /* SettingsLockViewModelTests.swift */,
@@ -9001,6 +9007,7 @@
 				7EE6C9A416D1913E42D85BE0E98192B8 /* MockProtonMailAnalytics.swift in Sources */,
 				575ED8BBED90E3D1E37C944DCACCA02E /* MockPushNotificationService.swift in Sources */,
 				3A7A0B8EB1BEB5E8600400F8B84DE918 /* MockQueueHandler.swift in Sources */,
+				194B9D94140D2F7F8260C3F5F85B9FF9 /* MockViewModeUpdater.swift in Sources */,
 				662AE3F2C79766DA1D07A88D1C5099B1 /* NSError+ExtensionTests.swift in Sources */,
 				86B05933FC6D2926171937AA97EB7FF5 /* NewMessageBodyViewModelDelegateMock.swift in Sources */,
 				3DB5B2499F6C2C6637AC7DC82DCB307E /* NewMessageBodyViewModelTests.swift in Sources */,
@@ -9023,6 +9030,7 @@
 				681C8F7FE23D00D5345842F061D69238 /* ResourceLoader.swift in Sources */,
 				BB66D5EFFCAE9C966ACFCA4ED513C75F /* SaverTests.swift in Sources */,
 				38B1E1F1E017EC2C5652ADB43B8AF1A5 /* SettingsCombineContactViewModelTests.swift in Sources */,
+				42D91BA2CCDCE3C8D0E1E9C89EE81747 /* SettingsConversationViewModelTests.swift in Sources */,
 				ACF04BAA09EC7C6EE1A48A2EF4B9BE12 /* SettingsDarkModeViewModelTests.swift in Sources */,
 				A95B845781843AC03B18C015C3F956E1 /* SettingsGestureViewModelTests.swift in Sources */,
 				5796D7484F8DF0721FC7F8376DC5429C /* SettingsLockViewModelTests.swift in Sources */,
