@@ -238,21 +238,12 @@ extension EncryptedSearchIndexService {
         return true
     }
 
-    func resizeSearchIndex(userID: String, expectedSize: Int64) -> Bool {
+    func shrinkSearchIndex(userID: String, expectedSize: Int64) -> Bool {
         if userCachedStatus.isEncryptedSearchOn == false || EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
             return false
         }
 
-        // check if search index exists for user
-        if self.checkIfSearchIndexExists(for: userID) == false {
-            return false
-        }
-
-        // check if size is already smaller
         let sizeOfSearchIndex = self.getSizeOfSearchIndex(for: userID).asInt64!
-        if sizeOfSearchIndex < expectedSize {
-            return false
-        }
         print("size of search index: \(sizeOfSearchIndex)")
 
         let handleToDB: Connection? = self.connectToSearchIndex(for: userID)

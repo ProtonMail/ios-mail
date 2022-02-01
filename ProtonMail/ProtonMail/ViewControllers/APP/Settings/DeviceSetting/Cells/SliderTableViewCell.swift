@@ -25,10 +25,10 @@ import UIKit
 
     typealias sliderActionBlock = (Float) -> Void
     var callback: sliderActionBlock?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +40,7 @@ import UIKit
             self.topLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
             self.topLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -89.3)
         ])
-        
+
         self.bottomLabel.textColor = ColorProvider.TextWeak
         self.bottomLabel.font = UIFont.systemFont(ofSize: 13)
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,7 @@ import UIKit
             self.bottomLabel.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
             self.bottomLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
-        
+
         self.slider.translatesAutoresizingMaskIntoConstraints = false
         self.slider.minimumTrackTintColor = ColorProvider.BrandNorm
         NSLayoutConstraint.activate([
@@ -62,20 +62,19 @@ import UIKit
             self.slider.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
     }
-    
+
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var slider: UISlider!
-    
+
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         self.callback?(sender.value)
     }
-    
-    func configCell(_ topLine: String, _ bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: sliderActionBlock?) {
+
+    func configCell(topLine: String, bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: sliderActionBlock?) {
         topLabel.text = topLine
         bottomLabel.text = bottomLine
 
-        print("value of slider: \(self.slider.value)")
         self.slider.setValue(currentSliderValue, animated: false)
         self.slider.minimumValue = sliderMinValue
         self.slider.maximumValue = sliderMaxValue

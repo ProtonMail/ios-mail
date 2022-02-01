@@ -21,19 +21,19 @@ import UIKit
 class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel: SettingsEncryptedSearchDownloadedMessagesViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
-    
+
     private lazy var fileByteCountFormatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
-        formatter.allowedUnits = .useAll//[.useMB, .useGB]
+        formatter.allowedUnits = .useAll
         formatter.countStyle = .file
         formatter.includesUnit = true
         formatter.isAdaptive = true
         return formatter
     }()
-    
+
     struct Key  {
         static let cellHeightMessageHistoryComplete: CGFloat = 108.0
-        static let cellHeightMessageHistoryPartial: CGFloat = 128.0
+        static let cellHeightMessageHistoryLowStorage: CGFloat = 128.0
         static let cellHeightStorageLimit: CGFloat = 116.0
         static let cellHeightStorageUsage: CGFloat = 96.0
         static let footerHeight: CGFloat = 70.0
@@ -57,8 +57,8 @@ class SettingsEncryptedSearchDownloadedMessagesViewController: ProtonMailTableVi
         self.tableView.sectionFooterHeight = Key.footerHeight
         self.tableView.estimatedRowHeight = Key.cellHeightMessageHistoryComplete
         self.tableView.rowHeight = UITableView.automaticDimension
-        
-        self.tableView.allowsSelection = false  //disable rows to be clickable
+
+        self.tableView.allowsSelection = false  // disable rows to be clickable
     }
 
     func getCoordinator() -> CoordinatorNew? {
@@ -126,12 +126,12 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         switch eSection {
         case .messageHistory:
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            let userID: String = (usersManager.firstUser?.userInfo.userId)!
-            if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
-                return Key.cellHeightMessageHistoryPartial
-            } else {
-                return Key.cellHeightMessageHistoryComplete
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                    return Key.cellHeightMessageHistoryLowStorage
+                }
             }
+            return Key.cellHeightMessageHistoryComplete
         case .storageLimit:
             return Key.cellHeightStorageLimit
         case .storageUsage:
@@ -206,41 +206,44 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
             if let sliderCell = cell as? SliderTableViewCell {
                 let sliderSteps: [Float] = [0,1,2,3,4,5]
-                let sliderStepsDisplay: [Float] = [200_000_000, 400_000_000, 600_000_000, 800_000_000, 1_000_000_000, 1_200_000_000]
+                let sliderStepsDisplay: [Float] = [200_000_000, 400_000_000, 600_000_000, 800_000_000, 1_000_000_000, -1]
 
-                let storageLimit: String = self.fileByteCountFormatter.string(fromByteCount: self.viewModel.storageLimit)
-                let bottomLine: String = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + storageLimit
+                var bottomLine: String = ""
+                if userCachedStatus.storageLimit == -1 {
+                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
+                } else {
+                    bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
+                }
 
-                let index: Int = sliderStepsDisplay.firstIndex(of: Float(self.viewModel.storageLimit)) ?? 2
-                //print("index: \(index), limit: \(self.viewModel.storageLimit)")
+                let index: Int = sliderStepsDisplay.firstIndex(of: Float(userCachedStatus.storageLimit)) ?? 2
                 let currentSliderValue: Float = sliderSteps[index]
-                sliderCell.slider.value = currentSliderValue //initialize here?
-                //print("current slider value: \(currentSliderValue)")
-                sliderCell.configCell(eSection.title, bottomLine, currentSliderValue: currentSliderValue, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
+                sliderCell.slider.value = currentSliderValue
+
+                sliderCell.configCell(topLine: eSection.title, bottomLine: bottomLine, currentSliderValue: currentSliderValue, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
 
                     let newIndex: Int = Int((newSliderValue).rounded())
-                    sliderCell.slider.setValue(Float(newIndex), animated: false)  //snap to increments
-                    
-                    let actualValue:Float = sliderSteps[newIndex]
-                    let displayValue: Float = sliderStepsDisplay[newIndex]
+                    sliderCell.slider.setValue(Float(newIndex), animated: false)  // snap to increments
 
-                    self.viewModel.storageLimit = Int64(displayValue)
+                    let displayValue: Float = sliderStepsDisplay[newIndex]
+                    userCachedStatus.storageLimit = Int64(displayValue)
 
                     // Resize search index
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     if let userID = usersManager.firstUser?.userInfo.userId {
-                        EncryptedSearchService.shared.resizeSearchIndex(expectedSize: self.viewModel.storageLimit, userID: userID)
+                        EncryptedSearchService.shared.resizeSearchIndex(expectedSize: userCachedStatus.storageLimit, userID: userID)
                     } else {
                         print("ERROR when resizing the search index. User unknown!")
                     }
 
-                    sliderCell.bottomLabel.text = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: Int64(displayValue))
-
                     // Update storageusage row with storage limit
-                    let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
+                    let pathStorageLimit: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageLimit.rawValue)
+                    let pathStorageUsage: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
                     UIView.performWithoutAnimation {
-                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
-                            self.tableView.reloadRows(at: [path], with: .none)
+                        if self.tableView.hasRowAtIndexPath(indexPath: pathStorageLimit) {
+                            self.tableView.reloadRows(at: [pathStorageLimit], with: .none)
+                        }
+                        if self.tableView.hasRowAtIndexPath(indexPath: pathStorageUsage) {
+                            self.tableView.reloadRows(at: [pathStorageUsage], with: .none)
                         }
                     }
                 }
@@ -256,7 +259,12 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     sizeOfIndex = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
                 }
 
-                let storageLimit: String = self.fileByteCountFormatter.string(fromByteCount: self.viewModel.storageLimit)
+                var storageLimit: String = ""
+                if userCachedStatus.storageLimit == -1 {
+                    storageLimit = LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
+                } else {
+                    storageLimit = self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
+                }
                 let bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
 
                 buttonCell.configCell(eSection.title, bottomLine, LocalString._encrypted_search_downloaded_messages_storage_used_button_title){
