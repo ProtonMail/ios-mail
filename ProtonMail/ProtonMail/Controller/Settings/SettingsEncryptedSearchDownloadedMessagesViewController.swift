@@ -239,7 +239,9 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     // Update storageusage row with storage limit
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)
                     UIView.performWithoutAnimation {
-                        self.tableView.reloadRows(at: [path], with: .none)
+                        if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                            self.tableView.reloadRows(at: [path], with: .none)
+                        }
                     }
                 }
             }
