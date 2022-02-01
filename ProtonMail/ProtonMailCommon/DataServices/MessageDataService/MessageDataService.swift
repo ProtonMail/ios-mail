@@ -236,7 +236,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                 }
 
                 self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: unreadOnly, queued: queued, completion: completionWrapper) {
-                    self.cleanMessage(removeAllDraft: removeAllDraft).then { (_) -> Promise<Void> in
+                    self.cleanMessage(removeAllDraft: removeAllDraft, cleanBadgeAndNotifications: false).then { (_) -> Promise<Void> in
                         self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
                         self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
                         if cleanContact {
@@ -844,7 +844,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
      4. use wraped manully.
      */
     func cleanUp() -> Promise<Void> {
-        return self.cleanMessage().done { (_) in
+        return self.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
             self.lastUpdatedStore.clear()
             self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
             self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
@@ -876,7 +876,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
         }
     }
     
-    func cleanMessage(removeAllDraft: Bool = true) -> Promise<Void> {
+    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
             self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
                 if #available(iOS 12, *) {
@@ -908,7 +908,9 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
 
                 _ = context.saveUpstreamIfNeeded()
 
-                UIApplication.setBadge(badge: 0)
+                if cleanBadgeAndNotifications {
+                    UIApplication.setBadge(badge: 0)
+                }
                 seal.fulfill_()
             }
         }
@@ -1600,7 +1602,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
             }
             
             self.fetchMessages(byLabel: Message.Location.inbox.rawValue, time: 0, forceClean: false, isUnread: false, completion: completionBlock) {
-                self.cleanMessage().then { _ -> Promise<Void> in
+                self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
                     return self.contactDataService.cleanUp()
                 }.cauterize()
             }

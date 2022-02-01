@@ -465,8 +465,9 @@ extension MenuViewModel {
                 for item in tmp {
                     item.unread = labelUnreadDict[item.location.labelID] ?? 0
                 }
-                let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] ?? 0
-                UIApplication.setBadge(badge: unreadOfInbox)
+                if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
+                    UIApplication.setBadge(badge: unreadOfInbox)
+                }
                 seal.fulfill_()
             }).cauterize()
         }

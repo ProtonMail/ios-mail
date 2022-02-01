@@ -175,7 +175,7 @@ extension EventsService {
                             completion?(task, responseDict, error)
                         }
                         self.userManager.conversationService.cleanAll()
-                        self.userManager.messageService.cleanMessage().then {
+                        self.userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false).then {
                             return self.userManager.contactService.cleanUp()
                         }.ensure {
                             switch self.userManager.getCurrentViewMode() {
