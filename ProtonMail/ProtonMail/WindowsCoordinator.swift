@@ -105,7 +105,9 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    init(services: ServiceFactory, darkModeCache: DarkModeCacheProtocol) {
+    init(services: ServiceFactory,
+         darkModeCache: DarkModeCacheProtocol
+    ) {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
@@ -222,15 +224,15 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = services.get()
         let queueManager: QueueManager = services.get()
         
-        if let user = usersManager.getUser(bySessionID: uid) {
+        if let user = usersManager.getUser(bySessionID: uid),
+           !usersManager.loggingOutUserIDs.contains(user.userinfo.userId) {
             let shouldShowBadTokenAlert = usersManager.count == 1
 
             queueManager.unregisterHandler(user.mainQueueHandler)
-            usersManager.logout(user: user, shouldShowAccountSwitchAlert: true).done { [weak self] (_) in
+            usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
-                
                 guard let appWindow = self.appWindow else {return}
-                
+
                 if usersManager.hasUsers() {
                     appWindow.enumerateViewControllerHierarchy { controller, stop in
                         if let menu = controller as? MenuViewController {
@@ -240,11 +242,13 @@ class WindowsCoordinator: CoordinatorNew {
                         }
                     }
                 }
-            }.done { (_) in
                 if shouldShowBadTokenAlert {
                     NSError.alertBadToken()
                 }
-            }.cauterize()
+
+                let handler = LocalNotificationService(userID: user.userinfo.userId)
+                handler.showSessionRevokeNotification(email: user.defaultEmail)
+            }
         }
     }
     

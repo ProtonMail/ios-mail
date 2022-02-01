@@ -60,13 +60,14 @@ class UserManager : Service, HasLocalStorage {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.eventsService.stop()
+            self.localNotificationService.cleanUp()
+
             var wait = Promise<Void>()
             let promises = [
                 self.messageService.cleanUp(),
                 self.labelService.cleanUp(),
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
-                self.localNotificationService.cleanUp(),
                 self.userService.cleanUp(),
                 lastUpdatedStore.cleanUp(userId: self.userinfo.userId),
             ]
@@ -91,13 +92,14 @@ class UserManager : Service, HasLocalStorage {
     }
     
     static func cleanUpAll() -> Promise<Void> {
+        LocalNotificationService.cleanUpAll()
+
         var wait = Promise<Void>()
         let promises = [
             MessageDataService.cleanUpAll(),
             LabelsDataService.cleanUpAll(),
             ContactDataService.cleanUpAll(),
             ContactGroupsDataService.cleanUpAll(),
-            LocalNotificationService.cleanUpAll(),
             UserDataService.cleanUpAll(),
             LastUpdatedStore.cleanUpAll()
         ]

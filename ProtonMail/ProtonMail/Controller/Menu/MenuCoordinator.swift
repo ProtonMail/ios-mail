@@ -191,8 +191,7 @@ extension MenuCoordinator {
              "Subscription":
             return MenuLabel(location: .subscription)
         case "toBugPop": return MenuLabel(location: .bugs)
-        case "toAccountManager": return MenuLabel(location: .customize("toAccountManager"))
-        case "toAddAccountSegue": return MenuLabel(location: .customize("toAddAccountSegue"))
+        case "toAccountManager": return MenuLabel(location: .accountManger)
         case .skeletonTemplate: return MenuLabel(location: .customize(.skeletonTemplate))
         default: return nil
         }

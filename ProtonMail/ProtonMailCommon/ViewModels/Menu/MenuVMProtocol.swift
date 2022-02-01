@@ -41,7 +41,7 @@ protocol MenuVMProtocol: AnyObject {
     func clickCollapsedArrow(labelID: String)
     func isCurrentUserHasQueuedMessage() -> Bool
     func removeAllQueuedMessageOfCurrentUser()
-    func signOut(userID: String) -> Promise<Void>
+    func signOut(userID: String, completion: (() -> Void)?)
     func removeDisconnectAccount(userID: String)
     func subscriptionUnavailable()
     func highlight(label: MenuLabel)

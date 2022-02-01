@@ -19,26 +19,46 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import UserNotifications
-import PromiseKit
 
-class LocalNotificationService: Service, HasLocalStorage {
+protocol LocalNotificationHandler {
+    func scheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
+    func unscheduleMessageSendingFailedNotification(_ details: LocalNotificationService.MessageSendingDetails)
+    func rescheduleMessage(oldID: String,
+                           details: LocalNotificationService.MessageSendingDetails,
+                           completion: (() -> Void)?)
+    func showSessionRevokeNotification(email: String)
+}
+
+protocol NotificationHandler {
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String])
+    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void)
+    func getDeliveredNotifications(completionHandler: @escaping ([UNNotification]) -> Void)
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String])
+}
+
+extension UNUserNotificationCenter: NotificationHandler {}
+
+class LocalNotificationService: LocalNotificationHandler, Service {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
+        case sessionRevoked = "LocalNotificationService.Categories.sessionRevoked"
     }
+
     struct MessageSendingDetails {
         var messageID: String
         var error: String = LocalString._message_not_sent_message
         var timeInterval: TimeInterval = 3 * 60
         var subtitle: String
-        
+
         init(messageID: String, subtitle: String = "") {
             self.messageID = messageID
             self.subtitle = subtitle
         }
+
         init(messageID: String, error: String, timeInterval: TimeInterval, subtitle: String) {
             self.messageID = messageID
             self.error = error
@@ -46,12 +66,15 @@ class LocalNotificationService: Service, HasLocalStorage {
             self.subtitle = subtitle
         }
     }
-    
+
     private var userID: String
-    init(userID: String) {
+    let notificationHandler: NotificationHandler
+
+    init(userID: String, notificationHandler: NotificationHandler = UNUserNotificationCenter.current()) {
         self.userID = userID
+        self.notificationHandler = notificationHandler
     }
-    
+
     func scheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
         let content = UNMutableNotificationContent()
         content.title = "⚠️ " + LocalString._message_not_sent_title
@@ -60,44 +83,59 @@ class LocalNotificationService: Service, HasLocalStorage {
         content.categoryIdentifier = Categories.failedToSend.rawValue
         content.userInfo = ["message_id": details.messageID,
                             "category": Categories.failedToSend.rawValue]
-        
+
         let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: details.messageID, content: content, trigger: timeout)
-        
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+
+        notificationHandler.add(request, withCompletionHandler: nil)
     }
-    
+
     func unscheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [details.messageID])
+        notificationHandler.removePendingNotificationRequests(withIdentifiers: [details.messageID])
     }
-    
-    func rescheduleMessage(oldID: String, details: MessageSendingDetails) {
-        let center = UNUserNotificationCenter.current()
-        center.getPendingNotificationRequests { [weak self](requests) in
-            guard let _ = requests.first(where: {$0.identifier == oldID}) else {return}
+
+    func rescheduleMessage(oldID: String, details: MessageSendingDetails, completion: (() -> Void)? = nil) {
+        notificationHandler.getPendingNotificationRequests { [weak self] requests in
+            guard requests.contains(where: { $0.identifier == oldID }) else { return }
             self?.unscheduleMessageSendingFailedNotification(.init(messageID: oldID))
             self?.scheduleMessageSendingFailedNotification(details)
+            completion?()
         }
     }
-    
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            let center = UNUserNotificationCenter.current()
-            center.getPendingNotificationRequests { all in
-                let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
-                center.removePendingNotificationRequests(withIdentifiers: belongToUser)
-            }
-            center.getDeliveredNotifications() { all in
-                let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
-                center.removeDeliveredNotifications(withIdentifiers: belongToUser)
-            }
-            seal.fulfill_()
+
+    func showSessionRevokeNotification(email: String) {
+        let content = UNMutableNotificationContent()
+        content.title = String(format: LocalString._token_revoke_noti_title, email)
+        content.body = LocalString._token_revoke_noti_body
+        content.userInfo = ["category": Categories.sessionRevoked.rawValue]
+
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+        notificationHandler.add(request, withCompletionHandler: nil)
+    }
+
+    func cleanUp(completion: (() -> Void)? = nil) {
+        let group = DispatchGroup()
+        group.enter()
+        notificationHandler.getPendingNotificationRequests { all in
+            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }
+                .map { $0.identifier }
+            self.notificationHandler.removePendingNotificationRequests(withIdentifiers: belongToUser)
+            group.leave()
+        }
+        group.enter()
+        notificationHandler.getDeliveredNotifications { all in
+            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }
+                .map { $0.request.identifier }
+            self.notificationHandler.removeDeliveredNotifications(withIdentifiers: belongToUser)
+            group.leave()
+        }
+        group.notify(queue: .main) {
+            completion?()
         }
     }
-    
-    static func cleanUpAll() -> Promise<Void> {
+
+    static func cleanUpAll() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        return Promise()
     }
 }

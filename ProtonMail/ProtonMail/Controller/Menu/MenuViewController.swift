@@ -194,7 +194,7 @@ extension MenuViewController {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            self.viewModel.signOut(userID: self.viewModel.currentUser?.userinfo.userId ?? "").cauterize()
+            self.viewModel.signOut(userID: self.viewModel.currentUser?.userinfo.userId ?? "", completion: nil)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
@@ -530,7 +530,7 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func signoutAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        _ = self.viewModel.signOut(userID: userID).done { [weak self] _ in
+        self.viewModel.signOut(userID: userID) { [weak self] in
             guard let _self = self else {return}
             let list = _self.viewModel.getAccountList()
             viewModel.updateAccountList(list: list)
@@ -538,7 +538,7 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func removeAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        _ = self.viewModel.signOut(userID: userID).done { [weak self] _ in
+        self.viewModel.signOut(userID: userID) { [weak self] in
             guard let _self = self else {return}
             _self.viewModel.removeDisconnectAccount(userID: userID)
             let list = _self.viewModel.getAccountList()
