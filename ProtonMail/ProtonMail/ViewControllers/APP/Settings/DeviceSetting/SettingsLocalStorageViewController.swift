@@ -173,7 +173,9 @@ extension SettingsLocalStorageViewController {
                     DispatchQueue.main.async {
                         let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
                         UIView.performWithoutAnimation {
-                            self.tableView.reloadRows(at: [path], with: .none)
+                            if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                                self.tableView.reloadRows(at: [path], with: .none)
+                            }
                         }
                     }
                 }
@@ -194,7 +196,9 @@ extension SettingsLocalStorageViewController {
                     DispatchQueue.main.async {
                         let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                         UIView.performWithoutAnimation {
-                            self.tableView.reloadRows(at: [path], with: .none)
+                            if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                                self.tableView.reloadRows(at: [path], with: .none)
+                            }
                         }
                     }
                 }
@@ -302,7 +306,9 @@ extension SettingsLocalStorageViewController {
             DispatchQueue.main.async {
                 let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.attachments.rawValue)
                 UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
+                    if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
                 }
             }
         }
@@ -314,7 +320,9 @@ extension SettingsLocalStorageViewController {
             DispatchQueue.main.async {
                 let path: IndexPath = IndexPath.init(row: 0, section: SettingsLocalStorageViewModel.SettingsSection.cachedData.rawValue)
                 UIView.performWithoutAnimation {
-                    self.tableView.reloadRows(at: [path], with: .none)
+                    if self.tableView.hasRowAtIndexPath(indexPath: path) {
+                        self.tableView.reloadRows(at: [path], with: .none)
+                    }
                 }
             }
         }
