@@ -73,8 +73,9 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/String+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/Collection+ExtensionTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/Extensions/General/NSError+ExtensionTests.swift
-
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/ContactService/AppleContactParserTest.swift
+  - ${PWD}/ProtonMailTests/Mocks/MockViewModeUpdater.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/SettingsConversationViewModelTests.swift
 
 excluded:
   - ${PWD}/Pods

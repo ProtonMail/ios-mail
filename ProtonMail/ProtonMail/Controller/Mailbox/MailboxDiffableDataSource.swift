@@ -47,19 +47,13 @@ final class MailboxDiffableDataSource<MailboxItem: Hashable>: MailboxDataSource 
             case .singleMessage:
                 for indexPath in indexPaths {
                     if let message = viewModel.item(index: indexPath) as? MailboxItem {
-                        // Only reload item if we must animate (deletion, move), or it doesn't exist (insertion)
-                        if animate || self.snapshot.sectionIdentifier(containingItem: message) == nil {
-                            itemsToReload.append(message)
-                        }
+                        itemsToReload.append(message)
                     }
                 }
             case .conversation:
                 for indexPath in indexPaths {
                     if let conversation = viewModel.itemOfConversation(index: indexPath) as? MailboxItem {
-                        // Only reload item if we must animate (deletion, move), or it doesn't exist (insertion)
-                        if animate || self.snapshot.sectionIdentifier(containingItem: conversation) == nil {
-                            itemsToReload.append(conversation)
-                        }
+                        itemsToReload.append(conversation)
                     }
                 }
             }
