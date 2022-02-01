@@ -94,6 +94,9 @@ class UsersManager: Service {
 
     let internetConnectionStatusProvider: InternetConnectionStatusProvider
 
+    // Used to check if the account is already being deleted.
+    private(set) var loggingOutUserIDs: Set<String> = Set()
+
     init(doh: DoH & ServerConfig,
          delegate: UsersManagerDelegate?,
          internetConnectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider()) {
@@ -362,18 +365,19 @@ extension UsersManager: UserManagerSave {
 extension UsersManager {
     func launchCleanUpIfNeeded() {}
 
-    func logout(user: UserManager, shouldShowAccountSwitchAlert: Bool = false) -> Promise<Void> {
+    func logout(user: UserManager,
+                shouldShowAccountSwitchAlert: Bool = false,
+                completion: (() -> Void)?) {
         var isPrimaryAccountLogout = false
-        return user.cleanUp().then { _ -> Promise<Void> in
+        loggingOutUserIDs.insert(user.userinfo.userId)
+        user.cleanUp().ensure {
+            defer {
+                self.loggingOutUserIDs.remove(user.userinfo.userId)
+            }
             guard let userToDelete = self.users.first(where: { $0.userinfo.userId == user.userinfo.userId }) else {
-                if !self.disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
-                    let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
-                                                            defaultEmail: user.defaultEmail,
-                                                            userID: user.userinfo.userId)
-                    self.disconnectedUsers.insert(logoutUser, at: 0)
-                    self.save()
-                }
-                return Promise()
+                self.addDisconnectedUserIfNeeded(user: user)
+                completion?()
+                return
             }
 
             if let primary = self.users.first, primary.isMatch(sessionID: userToDelete.auth.sessionID) {
@@ -384,18 +388,31 @@ extension UsersManager {
             }
 
             if self.users.isEmpty {
-                return self.clean()
+                _ = self.clean().cauterize()
             } else if shouldShowAccountSwitchAlert {
                 String(format: LocalString._signout_account_switched_when_token_revoked,
                        arguments: [userToDelete.defaultEmail,
                                    self.users.first?.defaultEmail ?? ""]).alertToast()
             }
-            return Promise()
-        }.done {
+
             if isPrimaryAccountLogout {
                 NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
+            completion?()
+        }.cauterize()
+    }
+
+    @discardableResult
+    func addDisconnectedUserIfNeeded(user: UserManager) -> Bool {
+        if !self.disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
+            let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,
+                                                    defaultEmail: user.defaultEmail,
+                                                    userID: user.userinfo.userId)
+            self.disconnectedUsers.insert(logoutUser, at: 0)
+            self.save()
+            return true
         }
+        return false
     }
 
     func remove(user: UserManager) {
@@ -476,10 +493,6 @@ extension UsersManager {
 
     func loggedIn() {
         KeychainWrapper.keychain.set("LoggedIn", forKey: CoderKey.atLeastOneLoggedIn)
-    }
-
-    func loggedOutAll() -> Promise<Void> {
-        return when(fulfilled: self.users.map { self.logout(user: $0) })
     }
 }
 

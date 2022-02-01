@@ -26,6 +26,7 @@ import UIKit
 import UserNotifications
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_Common
 
 public class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
 
@@ -243,6 +244,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
             let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else
         {
+            handleLocalNoification(userInfo)
             completionHandler()
             return
         }
@@ -256,6 +258,8 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             }
 
             switch userInfo["category"] as? String {
+            case .some(LocalNotificationService.Categories.sessionRevoked.rawValue):
+                break
             case .some(LocalNotificationService.Categories.failedToSend.rawValue):
                 let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
                 link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
@@ -272,6 +276,17 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
             completionHandler()
+        }
+    }
+
+    private func handleLocalNoification(_ userInfo: [AnyHashable: Any]) {
+        switch userInfo["category"] as? String {
+        case .some(LocalNotificationService.Categories.sessionRevoked.rawValue):
+            let link = DeepLink("toAccountManager", sender: nil)
+            NotificationCenter.default.post(name: .switchView, object: link)
+            break
+        default:
+            break
         }
     }
     

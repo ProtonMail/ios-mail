@@ -189,11 +189,12 @@ extension MenuViewModel: MenuVMProtocol {
         self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
     }
     
-    func signOut(userID: String) -> Promise<Void> {
+    func signOut(userID: String, completion: (() -> Void)?) {
         guard let user = self.usersManager.getUser(byUserId: userID) else {
-            return Promise()
+            completion?()
+            return
         }
-        return self.usersManager.logout(user: user)
+        self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
     
     func removeDisconnectAccount(userID: String) {

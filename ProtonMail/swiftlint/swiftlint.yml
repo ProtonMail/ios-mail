@@ -258,6 +258,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/ContactService/AppleContactParser.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Settings/SettingsConversationViewModel.swift
   - ${PWD}/ProtonMailCommon/DataServices/ConversationStateService/UpdateViewModeService.swift
+  - ${PWD}/ProtonMailCommon/DataServices/LocalNotificationService.swift
 
 excluded:
   - ${PWD}/Pods

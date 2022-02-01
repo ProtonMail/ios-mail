@@ -93,7 +93,7 @@ class SignInManager: Service {
 
             guard userInfo.delinquent < 3 else {
                 self.queueManager.unregisterHandler(user.mainQueueHandler)
-                _ = self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false).ensure {
+                self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
                     onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 }
                 return

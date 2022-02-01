@@ -258,6 +258,33 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(sut.users[0].userinfo, user2.userinfo)
     }
 
+    func testLogoutUser_primaryUser() {
+        let user1 = createUserManagerMock(userID: "1", isPaid: false)
+        sut.add(newUser: user1)
+        XCTAssertEqual(sut.users.count, 1)
+        let expectation1 = expectation(description: "Closure is called")
+        expectation(forNotification: .didPrimaryAccountLogout, object: nil, handler: nil)
+
+        sut.logout(user: user1) {
+            XCTAssertTrue(self.sut.users.isEmpty)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testLogoutUser_userNotInUsersManager_addedToDisconnectedUser() {
+        let user1 = createUserManagerMock(userID: "1", isPaid: false)
+        XCTAssertTrue(sut.users.isEmpty)
+        let expectation1 = expectation(description: "Closure is called")
+
+        sut.logout(user: user1) {
+            XCTAssertTrue(self.sut.users.isEmpty)
+            XCTAssertEqual(self.sut.disconnectedUsers.count, 1)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     private func createUserManagerMock(userID: String, isPaid: Bool) -> UserManager {
         let userInfo = UserInfo(maxSpace: nil,
                                  usedSpace: nil,
