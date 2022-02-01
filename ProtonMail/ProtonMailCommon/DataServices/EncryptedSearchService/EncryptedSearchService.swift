@@ -129,14 +129,32 @@ extension EncryptedSearchService {
     }
 
     func resizeSearchIndex(expectedSize: Int64, userID: String) -> Void {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let success: Bool = EncryptedSearchIndexService.shared.resizeSearchIndex(userID: userID, expectedSize: expectedSize)
-            if success == false {
-                self.setESState(userID: userID, indexingState: .complete)
-            } else {
-                self.setESState(userID: userID, indexingState: .partial)
+        guard EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) else {
+            print("Search index for user \(userID) does not exist. No need to resize.")
+            return
+        }
 
-                userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+        let sizeOfSearchIndex: Int64 = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64!
+        if sizeOfSearchIndex < userCachedStatus.storageLimit {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.getTotalMessages(userID: userID) {
+                    let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                    if numberOfMessageInSearchIndex < userCachedStatus.encryptedSearchTotalMessages {
+                        self.restartIndexBuilding(userID: userID)
+                    } else {
+                        print("No new messages on the server. No need to resize!")
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let success: Bool = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: expectedSize)
+                if success == false {
+                    self.setESState(userID: userID, indexingState: .complete)
+                } else {
+                    self.setESState(userID: userID, indexingState: .partial)
+                    userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+                }
             }
         }
     }
@@ -1797,6 +1815,11 @@ extension EncryptedSearchService {
         // Check if indexing is in progress
         let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
         if expectedESStates.contains(self.getESState(userID: userID)) {
+            return
+        }
+
+        // Check if storage limit is unlimited
+        if userCachedStatus.storageLimit == -1 {
             return
         }
 

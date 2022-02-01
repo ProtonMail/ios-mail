@@ -2046,6 +2046,7 @@ class LocalizedString {
     lazy var _encrypted_search_downloaded_messages_oldest_message = NSLocalizedString("Oldest message: ", comment: "The text for determining the oldest message in the encrypted search index")
     lazy var _encrypted_search_downloaded_messages_storage_used = NSLocalizedString("Storage used: ", comment: "The text for determining the size of the encrypted search index")
     lazy var _encrypted_search_downloaded_messages_storage_limit_selection = NSLocalizedString("Current selection: ", comment: "The text for current selection of the storage limit of encrypted search")
+    lazy var _encrypted_search_downloaded_messages_storage_limit_no_limit = NSLocalizedString("Unlimited", comment: "The text for current selection of the storage limit of encrypted search when there is no limit.")
     lazy var _encrypted_search_downloaded_messages_storage_used_combiner = NSLocalizedString(" of ", comment: "The text combining size of index and storage limit")
     lazy var _encrypted_search_downloaded_messages_storage_used_button_title = NSLocalizedString("Clear", comment: "The title of the button to clear the search index")
     
