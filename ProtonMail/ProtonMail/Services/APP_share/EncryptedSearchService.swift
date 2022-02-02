@@ -1719,10 +1719,8 @@ extension EncryptedSearchService {
 
     // MARK: - Helper Functions
     func setESState(userID: String, indexingState: EncryptedSearchIndexState) {
-        self.viewModel?.indexStatus = indexingState.rawValue
+        userCachedStatus.indexStatus = indexingState.rawValue
         print("ENCRYPTEDSEARCH-STATE: \(indexingState)")
-
-        // TODO check for nil
 
         let stateValue: String = userID + "-" + String(indexingState.rawValue)
         let stateKey: String = "ES-INDEXSTATE-" + userID
@@ -1731,8 +1729,6 @@ extension EncryptedSearchService {
     }
 
     func getESState(userID: String) -> EncryptedSearchIndexState {
-        // TODO check userID for correct format?
-
         let stateKey: String = "ES-INDEXSTATE-" + userID
         var indexingState: EncryptedSearchIndexState = .undetermined
         if let stateValue = KeychainWrapper.keychain.string(forKey: stateKey) {
