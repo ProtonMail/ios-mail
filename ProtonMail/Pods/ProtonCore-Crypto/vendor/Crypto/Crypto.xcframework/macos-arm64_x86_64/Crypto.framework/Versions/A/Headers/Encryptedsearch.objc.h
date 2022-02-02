@@ -154,13 +154,14 @@ or overwrites if one with the same id is cached.
 /**
  * NewDecryptedMessageContent creates a new decrypted message content.
  */
-- (nullable instancetype)init:(NSString* _Nullable)subjectValue senderValue:(EncryptedsearchRecipient* _Nullable)senderValue bodyValue:(NSString* _Nullable)bodyValue toListValue:(EncryptedsearchRecipientList* _Nullable)toListValue ccListValue:(EncryptedsearchRecipientList* _Nullable)ccListValue bccListValue:(EncryptedsearchRecipientList* _Nullable)bccListValue;
+- (nullable instancetype)init:(NSString* _Nullable)subjectValue senderValue:(EncryptedsearchRecipient* _Nullable)senderValue bodyValue:(NSString* _Nullable)bodyValue toListValue:(EncryptedsearchRecipientList* _Nullable)toListValue ccListValue:(EncryptedsearchRecipientList* _Nullable)ccListValue bccListValue:(EncryptedsearchRecipientList* _Nullable)bccListValue addressID:(NSString* _Nullable)addressID;
 @property (nonatomic) NSString* _Nonnull subject;
 @property (nonatomic) EncryptedsearchRecipient* _Nullable sender;
 @property (nonatomic) NSString* _Nonnull body;
 @property (nonatomic) EncryptedsearchRecipientList* _Nullable toList;
 @property (nonatomic) EncryptedsearchRecipientList* _Nullable ccList;
 @property (nonatomic) EncryptedsearchRecipientList* _Nullable bccList;
+@property (nonatomic) NSString* _Nonnull addressID;
 @end
 
 /**
@@ -378,7 +379,7 @@ FOUNDATION_EXPORT EncryptedsearchDBParams* _Nullable EncryptedsearchNewDBParams(
 /**
  * NewDecryptedMessageContent creates a new decrypted message content.
  */
-FOUNDATION_EXPORT EncryptedsearchDecryptedMessageContent* _Nullable EncryptedsearchNewDecryptedMessageContent(NSString* _Nullable subjectValue, EncryptedsearchRecipient* _Nullable senderValue, NSString* _Nullable bodyValue, EncryptedsearchRecipientList* _Nullable toListValue, EncryptedsearchRecipientList* _Nullable ccListValue, EncryptedsearchRecipientList* _Nullable bccListValue);
+FOUNDATION_EXPORT EncryptedsearchDecryptedMessageContent* _Nullable EncryptedsearchNewDecryptedMessageContent(NSString* _Nullable subjectValue, EncryptedsearchRecipient* _Nullable senderValue, NSString* _Nullable bodyValue, EncryptedsearchRecipientList* _Nullable toListValue, EncryptedsearchRecipientList* _Nullable ccListValue, EncryptedsearchRecipientList* _Nullable bccListValue, NSString* _Nullable addressID);
 
 /**
  * NewEncryptedMessageContent creates a new encrypted content object.
