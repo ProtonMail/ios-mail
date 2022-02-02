@@ -221,16 +221,20 @@ extension SettingsLocalStorageViewController {
                     }
                 }
 
-                let seeDetails = LocalString._settings_local_storage_downloaded_messages_text_link
-                let full = String.localizedStringWithFormat(LocalString._settings_local_storage_downloaded_messages_text, seeDetails)
+                // Add attributed string
+                let full = String.localizedStringWithFormat(LocalString._settings_local_storage_downloaded_messages_text, LocalString._settings_local_storage_downloaded_messages_text_link)
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
-
                 let infoText = NSMutableAttributedString(string: full, attributes: attr)
-
-                if let subrange = full.range(of: seeDetails){
+                if let subrange = full.range(of: LocalString._settings_local_storage_downloaded_messages_text_link) {
                     let nsRange = NSRange(subrange, in: full)
                     infoText.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.InteractionNorm, range: nsRange)
                 }
+
+                // Add tap recognizer for see details string
+                let tap = UITapGestureRecognizer(target: self, action: #selector(tapAttributedStringHandler(_:)))
+                tap.delegate = self
+                localStorageCell.middleLabel.isUserInteractionEnabled = true
+                localStorageCell.middleLabel.addGestureRecognizer(tap)
 
                 // Config cell
                 localStorageCell.configCell(eSection.title, infoText, downloadedMessages){}
@@ -325,6 +329,38 @@ extension SettingsLocalStorageViewController {
                     }
                 }
             }
+        }
+    }
+}
+
+extension SettingsLocalStorageViewController: UIGestureRecognizerDelegate {
+    @objc func tapAttributedStringHandler(_ sender: UITapGestureRecognizer) {
+        let label = sender.view as! UILabel
+        let layoutManager: NSLayoutManager = NSLayoutManager()
+        let textContainer: NSTextContainer = NSTextContainer(size: .zero)
+        let textStorage: NSTextStorage = NSTextStorage(attributedString: label.attributedText!)
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+
+        // configure textcontainer
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = label.lineBreakMode
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        textContainer.size = label.bounds.size
+
+        // Find tapped character location
+        let locationOfTouchInLabel = sender.location(in: label)
+        let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInLabel, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+
+        // Range
+        let text = label.attributedText!.string
+        let subrange = text.range(of: LocalString._settings_local_storage_downloaded_messages_text_link)
+        let range = NSRange(subrange!, in: text)
+        if range.contains(indexOfCharacter) {
+            let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
+            let vc = SettingsEncryptedSearchViewController()
+            vc.set(viewModel: vm)
+            show(vc, sender: self)
         }
     }
 }
