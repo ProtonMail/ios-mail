@@ -125,6 +125,21 @@ class UsersManager: Service {
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
+
+        // If any encrypted search indexing process is still running from the previous user - stop and delete index
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                if let userID = self.firstUser?.userInfo.userId {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
+                    [.downloading, .paused, .background, .backgroundStopped]
+                    if expectedESStates.contains(
+                        EncryptedSearchService.shared.getESState(userID: userID)) {
+                        EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                    }
+                }
+            }
+        }
+
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         self.add(newUser: newUser)
     }
