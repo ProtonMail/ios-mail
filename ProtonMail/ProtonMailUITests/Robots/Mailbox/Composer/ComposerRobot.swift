@@ -230,8 +230,7 @@ class ComposerRobot: CoreElements {
     
     func changeFromAddressTo(_ email: String) -> ComposerRobot {
         button(id.fromPickerButtonIdentifier).tap()
-        button(email).waitForEnabled().waitForHittable()
-        button(email).tap()
+        button(email).waitForHittable().tap()
         return ComposerRobot()
     }
     

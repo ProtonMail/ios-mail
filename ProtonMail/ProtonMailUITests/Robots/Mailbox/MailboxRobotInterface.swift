@@ -15,7 +15,7 @@ fileprivate struct id {
     static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
     static let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
-    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "MailboxViewController.NewMailboxMessageCell.\(subject)" }
+    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
     static let mailboxMessageTitleIdentifier = "mailboxMessageCell.titleLabel"
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
@@ -32,7 +32,6 @@ class MailboxRobotInterface: CoreElements {
     required init() {
         super.init()
         if XCUIApplication().exists {
-            closeTourIfShown()
             table(id.mailboxTableViewIdentifier).firstMatch().wait(time: 15)
         }
     }
@@ -126,7 +125,7 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().checkExists()
+        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().checkExists()
     }
     
     func messageIsEmpty() {

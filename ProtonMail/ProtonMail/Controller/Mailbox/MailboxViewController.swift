@@ -707,6 +707,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             configureSwipeAction(mailboxCell, indexPath: indexPath, conversation: conversation)
         }
+        #if DEBUG
+            mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
+        #endif
         let accessibilityAction =
             UIAccessibilityCustomAction(name: LocalString._accessibility_list_view_custom_action_of_switch_editing_mode,
                                         target: self,
