@@ -20,6 +20,7 @@ import BackgroundTasks
 import ProtonCore_Services
 import ProtonCore_DataModel
 import UIKit
+import SwiftUI
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -1343,21 +1344,35 @@ extension EncryptedSearchService {
                     group.enter()
                     let result: EncryptedsearchSearchResult? = searchResults.get(index)
                     let id: String = (result?.message!.id_)!
+                    print("ES-TEST: message: \(id) found. Preparing to display...")
                     self.getMessage(messageID: id) { message in
                         if message == nil {
-                            self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
-                                if error != nil {
-                                    print("Error when fetching message from server: \(String(describing: error))")
-                                    // TODO build message from preview
-                                    group.leave()
-                                } else {
-                                    self?.getMessage(messageID: id) { msg in
-                                        messages.append(msg!)
+                            print("ES-TEST: message \(id) not found in local cache. Load from server...")
+                            // Check if internet is available
+                            if self.isInternetConnection() {
+                                // Fetch missing messages from server
+                                self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
+                                    if error != nil {
+                                        print("Error when fetching message from server: \(String(describing: error))")
                                         group.leave()
+                                    } else {
+                                        print("ES-TEST: no error when fetching - fetch details locally")
+                                        self?.getMessage(messageID: id) { msg in
+                                            messages.append(msg!)
+                                            group.leave()
+                                        }
                                     }
                                 }
+                            } else {
+                                // No internet connection available - build message from encrypted search index
+                                let userID: String = ""
+                                let messageFromSearchIndex: Message = self.createMessageFromPreview(userID: userID, searchResult: result)
+                                print("ES-TEST: message \(id) constructed from search index: \(messageFromSearchIndex.messageID)")
+                                messages.append(messageFromSearchIndex)
+                                group.leave()
                             }
                         } else {
+                            print("ES-TEST: message \(id) found in local cache: \(message?.messageID)")
                             messages.append(message!)
                             group.leave()
                         }
@@ -1369,6 +1384,53 @@ extension EncryptedSearchService {
                 }
             }
         }
+    }
+    
+    // Should also work with iOS 11?
+    private func isInternetConnection() -> Bool {
+        guard let reachability = Reachability.forInternetConnection() else {
+            return false
+        }
+        if reachability.currentReachabilityStatus() == .NotReachable {
+            return false
+        }
+        return true
+    }
+    
+    private func createMessageFromPreview(userID: String, searchResult: EncryptedsearchSearchResult?) -> Message {
+        let msg: EncryptedsearchMessage = searchResult!.message!
+        
+        let order: Int = 0
+        let conversationID: String = ""
+        let subject: String = msg.decryptedContent?.subject ?? ""
+        let type: Int = 0
+        
+        let recipient: EncryptedsearchRecipient? = msg.decryptedContent?.sender
+        let senderAddress: String = recipient?.email ?? ""
+        let senderName: String = recipient?.name ?? ""
+        let sender: ESSender = ESSender(Name: senderName, Address: senderAddress)
+        
+        let toList: [ESSender?] = []
+        let ccList: [ESSender?] = []
+        let bccList: [ESSender?] = []
+        let size: Int = 0
+        let isEncrypted: Int = 0
+        let expirationTime: Date? = nil
+        let isReplied: Int = 0
+        let isRepliedAll: Int = 0
+        let isForwarded: Int = 0
+        let spamScore: Int? = nil
+        let addressID: String? = nil
+        let numAttachments: Int = 0
+        let flags: Int = 0
+        let labelIDs: Set<String> = Set(msg.labelIds.components(separatedBy: ";"))
+        let externalID: String? = nil
+        let header: String? = nil
+        let mimeType: String? = nil
+
+        let esMessage: ESMessage = ESMessage(id: msg.id_, order: order, conversationID: conversationID, subject: subject, unread: msg.unread ? 1:0, type: type, senderAddress: senderAddress, senderName: senderName, sender: sender, toList: toList, ccList: ccList, bccList: bccList, time: Double(msg.time), size: size, isEncrypted: isEncrypted, expirationTime: expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: spamScore, addressID: addressID, numAttachments: numAttachments, flags: flags, labelIDs: labelIDs, externalID: externalID, body: searchResult?.getBodyPreview(), header: header, mimeType: mimeType, userID: userID)
+
+        return esMessage.toMessage()
     }
 
     #if !APP_EXTENSION
