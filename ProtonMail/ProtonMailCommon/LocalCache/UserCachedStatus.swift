@@ -105,7 +105,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
         static let encryptedSearchStatus = "encrypted_search_status_flag"
-        static let encryptedSearchAvailabelShowPopupFlag = "encrypted_search_availabel_show_popup_flag"
+        static let encryptedSearchAvailableShowPopupFlag = "encrypted_search_available_show_popup_flag"
 
         // Encrypted search user dependent variables
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
@@ -921,9 +921,9 @@ extension UserCachedStatus {
             #if !APP_EXTENSION
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                key = userID + "_" + Key.encryptedSearchAvailabelShowPopupFlag
+                key = userID + "_" + Key.encryptedSearchAvailableShowPopupFlag
             } else {
-                key = Key.encryptedSearchAvailabelShowPopupFlag
+                key = Key.encryptedSearchAvailableShowPopupFlag
             }
             #endif
             if getShared()?.object(forKey: key) == nil {
@@ -936,9 +936,9 @@ extension UserCachedStatus {
             #if !APP_EXTENSION
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                key = userID + "_" + Key.encryptedSearchAvailabelShowPopupFlag
+                key = userID + "_" + Key.encryptedSearchAvailableShowPopupFlag
             } else {
-                key = Key.encryptedSearchAvailabelShowPopupFlag
+                key = Key.encryptedSearchAvailableShowPopupFlag
             }
             #endif
             setValue(newValue, forKey: key)
