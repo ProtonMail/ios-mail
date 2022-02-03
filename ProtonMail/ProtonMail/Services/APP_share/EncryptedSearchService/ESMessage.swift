@@ -20,6 +20,7 @@ import CryptoKit
 
 import ProtonCore_Services
 import ProtonCore_DataModel
+import CoreData
 
 
 struct ESSender: Codable {
@@ -274,5 +275,59 @@ public class ESMessage: Codable {
             }
         }
         return nil
+    }
+}
+
+extension ESMessage {
+    func toMessage() -> Message {
+        let context = CoreDataService.shared.mainContext
+        let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
+        
+        // Add attributes of all neccessary fields
+        //message.bccList = self.BCCList    TODO
+        message.body = self.Body ?? ""
+        //message.ccList = self.CCList TODO
+        //message.expirationOffset = TODO
+        //message.flags = self.Flags TODO
+        message.isDetailDownloaded = self.isDetailsDownloaded ?? false
+        message.messageID = self.ID
+        //message.messageStatus =
+        //message.messageType = self.`Type`
+        //message.numAttachments = self.NumAttachments
+        //message.passwordEncryptedBody
+        //message.password
+        //message.passwordHint
+        //message.size = self.Size
+        //message.spamScore = self.SpamScore ?? 0
+        //message.title = self.tit
+        //message.toList = self.ToList
+        //message.unRead = self.Unread
+        //message.userID = self.
+        //message.isSending =
+        message.conversationID = self.ConversationID
+        //message.attachments =
+        //message.labels = self.LabelIDs
+        //message.order = self.Order
+
+        // Optional fields
+        // message.action
+        // message.addressID
+        // message.nextAddressID
+        // message.cachedPassphraseRaw
+        // message.cachedPrivateKeysRaw
+        // message.cachedAuthCredentialRaw
+        // message.cachedAddressRaw
+        // message.expirationTime
+        // message.header
+        // message.lastModified
+        // message.mimeType
+        // message.originalMessageID
+        // message.originalTime
+        // message.replyTos
+        // message.sender
+        // message.time
+        // message.unsubscribeMethods
+        
+        return message
     }
 }
