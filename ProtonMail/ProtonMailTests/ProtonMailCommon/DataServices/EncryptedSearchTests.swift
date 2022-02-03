@@ -97,8 +97,8 @@ class EncryptedSearchTests: XCTestCase {
         let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
         let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessageSecond, cleanedBody: "hello2", userID: self.testUserID)
-        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessage, encryptedContent, false)
-        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(testUserID, testMessageSecond, encryptedContent2, false)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessage, encryptedContent: encryptedContent)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessageSecond, encryptedContent: encryptedContent2)
     }
 
     private func setupCoreData() throws {
@@ -435,11 +435,42 @@ class EncryptedSearchTests: XCTestCase {
     } */
 
     func testAddMessageKewordsToSearchIndex() throws {
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         let sut = EncryptedSearchService.shared.addMessageKewordsToSearchIndex
-        let testMessage: ESMessage = ESMessage(id: "uniqueID3", order: 3, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637058776, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello", header: "", mimeType: "", userID: self.testUserID)
-        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
-        sut(self.testUserID, testMessage, encryptedContent, false)
-        
+        let testMessage: ESMessage = ESMessage(id: "uniqueID3",
+                                               order: 3,
+                                               conversationID: "",
+                                               subject: "subject",
+                                               unread: 1,
+                                               type: 1,
+                                               senderAddress: "sender",
+                                               senderName: "sender",
+                                               sender: ESSender(Name: "sender", Address: "address"),
+                                               toList: [],
+                                               ccList: [],
+                                               bccList: [],
+                                               time: 1637058776,
+                                               size: 5,
+                                               isEncrypted: 1,
+                                               expirationTime: Date(),
+                                               isReplied: 0,
+                                               isRepliedAll: 0,
+                                               isForwarded: 0,
+                                               spamScore: 0,
+                                               addressID: "",
+                                               numAttachments: 0,
+                                               flags: 0,
+                                               labelIDs: ["5", "1"],
+                                               externalID: "",
+                                               body: "hello",
+                                               header: "",
+                                               mimeType: "",
+                                               userID: self.testUserID)
+        let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage,
+                                                                                                                             cleanedBody: "hello",
+                                                                                                                             userID: self.testUserID)
+        sut(self.testUserID, testMessage, encryptedContent)
+
         let numberOfEntries = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
         XCTAssertEqual(numberOfEntries, 3)
     }

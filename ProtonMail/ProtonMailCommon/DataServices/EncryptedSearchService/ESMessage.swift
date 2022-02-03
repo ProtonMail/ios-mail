@@ -29,15 +29,15 @@ struct ESSender: Codable {
 }
 
 public class ESMessage: Codable {
-    //variables that are fetched with getMessage
+    // variables that are fetched with getMessage
     public var ID: String = ""
     public var Order: Int
     public var ConversationID: String
     public var Subject: String
     public var Unread: Int
-    public var `Type`: Int    //messagetype
-    public var SenderAddress: String //TODO
-    public var SenderName: String   //TODO
+    public var `Type`: Int
+    public var SenderAddress: String
+    public var SenderName: String
     var Sender: ESSender
     //public var replyTo: String  //not existing
     //public var replyTos: String //TODO
@@ -52,23 +52,23 @@ public class ESMessage: Codable {
     public var IsRepliedAll: Int
     public var IsForwarded: Int
     public var SpamScore: Int?
-    public var AddressID: String?   //needed for decryption
+    public var AddressID: String?
     public var NumAttachments: Int
     public var Flags: Int
     public var LabelIDs: Set<String>
     public var ExternalID: String?
-    //public var unsubscribeMethods: String?
+    // public var unsubscribeMethods: String?
     
-    //variables that are fetched with getMessageDetails
-    //public var attachments: Set<Any>
+    // variables that are fetched with getMessageDetails
+    // public var attachments: Set<Any>
     public var Body: String?
     public var Header: String?
     public var MIMEType: String?
-    //public var ParsedHeaders: String? //String or class?
+    // public var ParsedHeaders: String? //String or class?
     public var UserID: String?
 
-    //local variables
-    public var Starred: Bool? = false
+    // local variables
+    public var isStarred: Bool = false
     public var isDetailsDownloaded: Bool? = false
     //var tempAtts: [AttachmentInline]? = nil
     

@@ -140,7 +140,7 @@ or overwrites if one with the same id is cached.
 /**
  * NewDBParams Creates a new object with the database parameters.
  */
-- (nullable instancetype)init:(NSString* _Nullable)file table:(NSString* _Nullable)table id_:(NSString* _Nullable)id_ time:(NSString* _Nullable)time location:(NSString* _Nullable)location read:(NSString* _Nullable)read starred:(NSString* _Nullable)starred labels:(NSString* _Nullable)labels initVector:(NSString* _Nullable)initVector content:(NSString* _Nullable)content contentFile:(NSString* _Nullable)contentFile;
+- (nullable instancetype)init:(NSString* _Nullable)file table:(NSString* _Nullable)table id_:(NSString* _Nullable)id_ time:(NSString* _Nullable)time order:(NSString* _Nullable)order labels:(NSString* _Nullable)labels initVector:(NSString* _Nullable)initVector content:(NSString* _Nullable)content contentFile:(NSString* _Nullable)contentFile;
 @end
 
 /**
@@ -154,7 +154,7 @@ or overwrites if one with the same id is cached.
 /**
  * NewDecryptedMessageContent creates a new decrypted message content.
  */
-- (nullable instancetype)init:(NSString* _Nullable)subjectValue senderValue:(EncryptedsearchRecipient* _Nullable)senderValue bodyValue:(NSString* _Nullable)bodyValue toListValue:(EncryptedsearchRecipientList* _Nullable)toListValue ccListValue:(EncryptedsearchRecipientList* _Nullable)ccListValue bccListValue:(EncryptedsearchRecipientList* _Nullable)bccListValue addressID:(NSString* _Nullable)addressID;
+- (nullable instancetype)init:(NSString* _Nullable)subjectValue senderValue:(EncryptedsearchRecipient* _Nullable)senderValue bodyValue:(NSString* _Nullable)bodyValue toListValue:(EncryptedsearchRecipientList* _Nullable)toListValue ccListValue:(EncryptedsearchRecipientList* _Nullable)ccListValue bccListValue:(EncryptedsearchRecipientList* _Nullable)bccListValue addressID:(NSString* _Nullable)addressID conversationID:(NSString* _Nullable)conversationID flags:(int64_t)flags unread:(BOOL)unread isStarred:(BOOL)isStarred isReplied:(BOOL)isReplied isRepliedAll:(BOOL)isRepliedAll isForwarded:(BOOL)isForwarded numAttachments:(long)numAttachments expirationTime:(int64_t)expirationTime;
 @property (nonatomic) NSString* _Nonnull subject;
 @property (nonatomic) EncryptedsearchRecipient* _Nullable sender;
 @property (nonatomic) NSString* _Nonnull body;
@@ -162,6 +162,15 @@ or overwrites if one with the same id is cached.
 @property (nonatomic) EncryptedsearchRecipientList* _Nullable ccList;
 @property (nonatomic) EncryptedsearchRecipientList* _Nullable bccList;
 @property (nonatomic) NSString* _Nonnull addressID;
+@property (nonatomic) NSString* _Nonnull conversationID;
+@property (nonatomic) int64_t flags;
+@property (nonatomic) BOOL unread;
+@property (nonatomic) BOOL isStarred;
+@property (nonatomic) BOOL isReplied;
+@property (nonatomic) BOOL isRepliedAll;
+@property (nonatomic) BOOL isForwarded;
+@property (nonatomic) long numAttachments;
+@property (nonatomic) int64_t expirationTime;
 @end
 
 /**
@@ -209,12 +218,10 @@ that supports caching and searching the indexed message.
 /**
  * NewMessage creates a new message.
  */
-- (nullable instancetype)init:(NSString* _Nullable)idValue timeValue:(int64_t)timeValue locationValue:(int64_t)locationValue unreadValue:(BOOL)unreadValue isStarredValue:(BOOL)isStarredValue labelidsValue:(NSString* _Nullable)labelidsValue encryptedValue:(EncryptedsearchEncryptedMessageContent* _Nullable)encryptedValue decryptedValue:(EncryptedsearchDecryptedMessageContent* _Nullable)decryptedValue;
+- (nullable instancetype)init:(NSString* _Nullable)idValue timeValue:(int64_t)timeValue orderValue:(int64_t)orderValue labelidsValue:(NSString* _Nullable)labelidsValue encryptedValue:(EncryptedsearchEncryptedMessageContent* _Nullable)encryptedValue decryptedValue:(EncryptedsearchDecryptedMessageContent* _Nullable)decryptedValue;
 @property (nonatomic) NSString* _Nonnull id_;
 @property (nonatomic) int64_t time;
-@property (nonatomic) int64_t location;
-@property (nonatomic) BOOL unread;
-@property (nonatomic) BOOL isStarred;
+@property (nonatomic) int64_t order;
 @property (nonatomic) NSString* _Nonnull labelIds;
 @property (nonatomic) EncryptedsearchEncryptedMessageContent* _Nullable encryptedContent;
 @property (nonatomic) EncryptedsearchDecryptedMessageContent* _Nullable decryptedContent;
@@ -374,12 +381,12 @@ FOUNDATION_EXPORT EncryptedsearchCache* _Nullable EncryptedsearchNewCache(int64_
 /**
  * NewDBParams Creates a new object with the database parameters.
  */
-FOUNDATION_EXPORT EncryptedsearchDBParams* _Nullable EncryptedsearchNewDBParams(NSString* _Nullable file, NSString* _Nullable table, NSString* _Nullable id_, NSString* _Nullable time, NSString* _Nullable location, NSString* _Nullable read, NSString* _Nullable starred, NSString* _Nullable labels, NSString* _Nullable initVector, NSString* _Nullable content, NSString* _Nullable contentFile);
+FOUNDATION_EXPORT EncryptedsearchDBParams* _Nullable EncryptedsearchNewDBParams(NSString* _Nullable file, NSString* _Nullable table, NSString* _Nullable id_, NSString* _Nullable time, NSString* _Nullable order, NSString* _Nullable labels, NSString* _Nullable initVector, NSString* _Nullable content, NSString* _Nullable contentFile);
 
 /**
  * NewDecryptedMessageContent creates a new decrypted message content.
  */
-FOUNDATION_EXPORT EncryptedsearchDecryptedMessageContent* _Nullable EncryptedsearchNewDecryptedMessageContent(NSString* _Nullable subjectValue, EncryptedsearchRecipient* _Nullable senderValue, NSString* _Nullable bodyValue, EncryptedsearchRecipientList* _Nullable toListValue, EncryptedsearchRecipientList* _Nullable ccListValue, EncryptedsearchRecipientList* _Nullable bccListValue, NSString* _Nullable addressID);
+FOUNDATION_EXPORT EncryptedsearchDecryptedMessageContent* _Nullable EncryptedsearchNewDecryptedMessageContent(NSString* _Nullable subjectValue, EncryptedsearchRecipient* _Nullable senderValue, NSString* _Nullable bodyValue, EncryptedsearchRecipientList* _Nullable toListValue, EncryptedsearchRecipientList* _Nullable ccListValue, EncryptedsearchRecipientList* _Nullable bccListValue, NSString* _Nullable addressID, NSString* _Nullable conversationID, int64_t flags, BOOL unread, BOOL isStarred, BOOL isReplied, BOOL isRepliedAll, BOOL isForwarded, long numAttachments, int64_t expirationTime);
 
 /**
  * NewEncryptedMessageContent creates a new encrypted content object.
@@ -394,7 +401,7 @@ FOUNDATION_EXPORT EncryptedsearchIndex* _Nullable EncryptedsearchNewIndex(Encryp
 /**
  * NewMessage creates a new message.
  */
-FOUNDATION_EXPORT EncryptedsearchMessage* _Nullable EncryptedsearchNewMessage(NSString* _Nullable idValue, int64_t timeValue, int64_t locationValue, BOOL unreadValue, BOOL isStarredValue, NSString* _Nullable labelidsValue, EncryptedsearchEncryptedMessageContent* _Nullable encryptedValue, EncryptedsearchDecryptedMessageContent* _Nullable decryptedValue);
+FOUNDATION_EXPORT EncryptedsearchMessage* _Nullable EncryptedsearchNewMessage(NSString* _Nullable idValue, int64_t timeValue, int64_t orderValue, NSString* _Nullable labelidsValue, EncryptedsearchEncryptedMessageContent* _Nullable encryptedValue, EncryptedsearchDecryptedMessageContent* _Nullable decryptedValue);
 
 /**
  * NewRecipient creates a new recipient.

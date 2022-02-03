@@ -36,13 +36,31 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let pathToDocumentsDirectory: String = ((FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))[0]).absoluteString
         let pathToTestDB: String = pathToDocumentsDirectory + self.testSearchIndexDBName
 
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .complete)
+
         // Connect to test database.
         self.connection = try Connection(pathToTestDB)
         // Create the table
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
         // Add one entry in the table
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedString(), encryptedContent: Data("content".utf8).base64EncodedString(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedString().count)
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedString(), encryptedContent: Data("content".utf8).base64EncodedString(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedString().count)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: self.testUserID,
+                                                                        messageID: self.testMessageID,
+                                                                        time: 1637058775,
+                                                                        order: 1,
+                                                                        labelIDs: ["5", "1"],
+                                                                        encryptionIV: Data("iv".utf8).base64EncodedString(),
+                                                                        encryptedContent: Data("content".utf8).base64EncodedString(),
+                                                                        encryptedContentFile: "linktofile",
+                                                                        encryptedContentSize: Data("content".utf8).base64EncodedString().count)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: self.testUserID,
+                                                                        messageID: "uniqueID2",
+                                                                        time: 1637141557,
+                                                                        order: 2,
+                                                                        labelIDs: ["5", "1"],
+                                                                        encryptionIV: Data("iv".utf8).base64EncodedString(),
+                                                                        encryptedContent: Data("content".utf8).base64EncodedString(),
+                                                                        encryptedContentFile: "linktofile",
+                                                                        encryptedContentSize: Data("content".utf8).base64EncodedString().count)
     }
 
     override func tearDownWithError() throws {
@@ -151,22 +169,26 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
     } */
 
     func testAddNewEntryToSearchIndex() throws {
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .complete)
         let sut = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex
         let messageID: String = "testMessage"
         let time: Int = 1637058775
         let labelIDs: Set<String> = ["5", "1"]
-        let isStarred: Bool = true
-        let unread: Bool = true
-        let location: Int = 1
         let order: Int = 1
-        let hasBody: Bool = true
-        let decryptionFailed: Bool = false
         let encryptionIV: String = Data("iv".utf8).base64EncodedString()
         let encryptedContent: String = Data("content".utf8).base64EncodedString()
         let encryptedContentFile: String = "test"
         let encryptedContentSize: Int = encryptedContent.count
 
-        let result: Int64? = sut(self.testUserID, messageID, time, labelIDs, isStarred, unread, location, order, hasBody, decryptionFailed, encryptionIV, encryptedContent, encryptedContentFile, encryptedContentSize)
+        let result: Int64? = sut(self.testUserID,
+                                 messageID,
+                                 time,
+                                 order,
+                                 labelIDs,
+                                 encryptionIV,
+                                 encryptedContent,
+                                 encryptedContentFile,
+                                 encryptedContentSize)
 
         XCTAssertEqual(result, 3)   // There are already 2 entries in the db, therefore this should be entry number 3.
     }
