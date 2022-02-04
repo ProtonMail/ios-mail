@@ -206,6 +206,10 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
 
     func testGetNumberOfCachedMessages() throws {
         let sut = EncryptedSearchCacheService.shared.getNumberOfCachedMessages
+
+        // Wait until cache is built
+        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 4.0)
+
         let result: Int = sut(self.testUserID)
         XCTAssertEqual(result, 2)   // There should be 2 messages in the cache
     }
