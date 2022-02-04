@@ -383,7 +383,6 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertEqual(result.Header, message.header)
         XCTAssertEqual(result.MIMEType, message.mimeType)
         XCTAssertEqual(result.UserID, message.userID)
-        XCTAssertEqual(result.Starred, message.starred)
         XCTAssertEqual(result.isDetailsDownloaded, message.isDetailDownloaded)
         /*XCTAssertEqual(result.Order, message.order)
         XCTAssertEqual(result.Order, message.order)

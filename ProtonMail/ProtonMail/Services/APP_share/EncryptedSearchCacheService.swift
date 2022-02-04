@@ -236,7 +236,7 @@ extension EncryptedSearchCacheService {
                                                                                                                              esMessage.ConversationID,
                                                                                                                              Int64(esMessage.Flags),
                                                                                                                              esMessage.Unread == 1,
-                                                                                                                             esMessage.isStarred,
+                                                                                                                             esMessage.isStarred ?? false,
                                                                                                                              esMessage.IsReplied == 1,
                                                                                                                              esMessage.IsRepliedAll == 1,
                                                                                                                              esMessage.IsForwarded == 1,
