@@ -723,7 +723,7 @@ extension EncryptedSearchService {
         let isEncrypted: Int = message.isE2E ? 1 : 0
 
         let newESMessage = ESMessage(id: message.messageID, order: Int(truncating: message.order), conversationID: message.conversationID, subject: message.subject, unread: unread, type: Int(truncating: message.messageType), senderAddress: senderAddress, senderName: senderName, sender: sender!, toList: toList, ccList: ccList, bccList: bccList, time: time, size: Int(truncating: message.size), isEncrypted: isEncrypted, expirationTime: message.expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: Int(truncating: message.spamScore), addressID: message.addressID, numAttachments: Int(truncating: message.numAttachments), flags: Int(truncating: message.flags), labelIDs: labelIDs, externalID: externalID, body: message.body, header: message.header, mimeType: message.mimeType, userID: message.userID)
-        newESMessage.Starred = message.starred
+        newESMessage.isStarred = message.starred
         return newESMessage
     }
 
@@ -776,7 +776,7 @@ extension EncryptedSearchService {
             let message: ESMessage? = try self.jsonStringToESMessage(jsonData: jsonData)
 
             message?.isDetailsDownloaded = true
-            message?.Starred = false
+            message?.isStarred = false
 
             completion?(nil, message)
         } catch {
@@ -1146,8 +1146,6 @@ extension EncryptedSearchService {
             let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
             bccList.add(r)
         }
-        let isStarred: Bool = false // TODO
-        let expirationTime: Int64 = 0 // TODO
         let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject,
                                                                                                                          sender,
                                                                                                                          cleanedBody,
@@ -1158,12 +1156,12 @@ extension EncryptedSearchService {
                                                                                                                          message.ConversationID,
                                                                                                                          Int64(message.Flags),
                                                                                                                          message.Unread == 1,
-                                                                                                                         isStarred,
+                                                                                                                         message.isStarred ?? false,
                                                                                                                          message.IsReplied == 1,
                                                                                                                          message.IsRepliedAll == 1,
                                                                                                                          message.IsForwarded == 1,
                                                                                                                          message.NumAttachments,
-                                                                                                                         expirationTime)
+                                                                                                                         Int64(message.ExpirationTime?.timeIntervalSince1970 ?? 0))
 
         let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
         var encryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil
@@ -1263,7 +1261,7 @@ extension EncryptedSearchService {
         }
 
         // Do cache search first
-        self.numberOfResultsFoundByCachedSearch += self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page)
+        self.numberOfResultsFoundByCachedSearch += self.doCachedSearch(searcher: searcher, cache: cache!, searchState: &self.searchState, searchViewModel: searchViewModel, page: page, userID: userID)
         print("Results found by cache search: ", self.numberOfResultsFoundByCachedSearch)
 
         // Do index search next - unless search is already completed
@@ -1334,7 +1332,7 @@ extension EncryptedSearchService {
         return cache
     }
 
-    private func extractSearchResults(searchResults: EncryptedsearchResultList, page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
+    private func extractSearchResults(userID: String, searchResults: EncryptedsearchResultList, page: Int, completionHandler: @escaping ([Message]?) -> Void) -> Void {
         if searchResults.length() == 0 {
             completionHandler([])
         } else {
@@ -1355,19 +1353,18 @@ extension EncryptedSearchService {
                     group.enter()
                     let result: EncryptedsearchSearchResult? = searchResults.get(index)
                     let id: String = (result?.message!.id_)!
-                    print("ES-TEST: message: \(id) found. Preparing to display...")
                     self.getMessage(messageID: id) { message in
                         if message == nil {
-                            print("ES-TEST: message \(id) not found in local cache. Load from server...")
                             // Check if internet is available
                             if self.isInternetConnection() {
                                 // Fetch missing messages from server
                                 self.fetchSingleMessageFromServer(byMessageID: id) { [weak self] (error) in
                                     if error != nil {
-                                        print("Error when fetching message from server: \(String(describing: error))")
+                                        print("Error when fetching message details from server. Create message from search index.")
+                                        let messageFromSearchIndex: Message? = self?.createMessageFromPreview(userID: userID, searchResult: result)
+                                        messages.append(messageFromSearchIndex!)
                                         group.leave()
                                     } else {
-                                        print("ES-TEST: no error when fetching - fetch details locally")
                                         self?.getMessage(messageID: id) { msg in
                                             messages.append(msg!)
                                             group.leave()
@@ -1376,14 +1373,11 @@ extension EncryptedSearchService {
                                 }
                             } else {
                                 // No internet connection available - build message from encrypted search index
-                                let userID: String = ""
                                 let messageFromSearchIndex: Message = self.createMessageFromPreview(userID: userID, searchResult: result)
-                                print("ES-TEST: message \(id) constructed from search index: \(messageFromSearchIndex.messageID)")
                                 messages.append(messageFromSearchIndex)
                                 group.leave()
                             }
                         } else {
-                            print("ES-TEST: message \(id) found in local cache: \(String(describing: message?.messageID))")
                             messages.append(message!)
                             group.leave()
                         }
@@ -1396,7 +1390,7 @@ extension EncryptedSearchService {
             }
         }
     }
-    
+
     // Should also work with iOS 11?
     private func isInternetConnection() -> Bool {
         guard let reachability = Reachability.forInternetConnection() else {
@@ -1407,43 +1401,75 @@ extension EncryptedSearchService {
         }
         return true
     }
-    
+
     private func createMessageFromPreview(userID: String, searchResult: EncryptedsearchSearchResult?) -> Message {
         let msg: EncryptedsearchMessage = searchResult!.message!
-        
-        let order: Int = 0
-        let conversationID: String = ""
-        let subject: String = msg.decryptedContent?.subject ?? ""
+
         let type: Int = 0
-        
         let recipient: EncryptedsearchRecipient? = msg.decryptedContent?.sender
         let senderAddress: String = recipient?.email ?? ""
         let senderName: String = recipient?.name ?? ""
         let sender: ESSender = ESSender(Name: senderName, Address: senderAddress)
-        
-        let toList: [ESSender?] = []
-        let ccList: [ESSender?] = []
-        let bccList: [ESSender?] = []
-        let size: Int = 0
-        let isEncrypted: Int = 0
-        let expirationTime: Date? = nil
-        let isReplied: Int = 0
-        let isRepliedAll: Int = 0
-        let isForwarded: Int = 0
+
+        let toList: [ESSender?] = self.recipientListToESSenderArray(recipientList: msg.decryptedContent?.toList)
+        let ccList: [ESSender?] = self.recipientListToESSenderArray(recipientList: msg.decryptedContent?.ccList)
+        let bccList: [ESSender?] = self.recipientListToESSenderArray(recipientList: msg.decryptedContent?.bccList)
+
+        let size: Int = (searchResult?.getBodyPreview() ?? "").utf8.count
+        let isEncrypted: Int = 1
         let spamScore: Int? = nil
-        let addressID: String? = nil
-        let numAttachments: Int = 0
-        let flags: Int = 0
-        let labelIDs: Set<String> = Set(msg.labelIds.components(separatedBy: ";"))
         let externalID: String? = nil
         let header: String? = nil
         let mimeType: String? = nil
 
-        let unread: Int = msg.decryptedContent!.unread ? 1:0
-
-        let esMessage: ESMessage = ESMessage(id: msg.id_, order: order, conversationID: conversationID, subject: subject, unread: unread, type: type, senderAddress: senderAddress, senderName: senderName, sender: sender, toList: toList, ccList: ccList, bccList: bccList, time: Double(msg.time), size: size, isEncrypted: isEncrypted, expirationTime: expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: spamScore, addressID: addressID, numAttachments: numAttachments, flags: flags, labelIDs: labelIDs, externalID: externalID, body: searchResult?.getBodyPreview(), header: header, mimeType: mimeType, userID: userID)
+        let esMessage: ESMessage = ESMessage(id: msg.id_,
+                                             order: Int(truncatingIfNeeded: msg.order),
+                                             conversationID: msg.decryptedContent?.conversationID ?? "",
+                                             subject: msg.decryptedContent?.subject ?? "",
+                                             unread: msg.decryptedContent!.unread ? 1:0,
+                                             type: type,
+                                             senderAddress: senderAddress,
+                                             senderName: senderName,
+                                             sender: sender,
+                                             toList: toList,
+                                             ccList: ccList,
+                                             bccList: bccList,
+                                             time: Double(msg.time),
+                                             size: size,
+                                             isEncrypted: isEncrypted,
+                                             expirationTime: Date(timeIntervalSince1970: Double(msg.decryptedContent?.expirationTime ?? 0)),
+                                             isReplied: msg.decryptedContent!.isReplied ? 1:0,
+                                             isRepliedAll: msg.decryptedContent!.isRepliedAll ? 1:0,
+                                             isForwarded: msg.decryptedContent!.isForwarded ? 1:0,
+                                             spamScore: spamScore,
+                                             addressID: msg.decryptedContent?.addressID,
+                                             numAttachments: msg.decryptedContent?.numAttachments ?? 0,
+                                             flags: Int(truncatingIfNeeded: msg.decryptedContent?.flags ?? 0),
+                                             labelIDs: Set(msg.labelIds.components(separatedBy: ";")),
+                                             externalID: externalID,
+                                             body: searchResult?.getBodyPreview(),
+                                             header: header,
+                                             mimeType: mimeType,
+                                             userID: userID)
+        esMessage.isStarred = msg.decryptedContent?.isStarred ?? false
+        esMessage.isDetailsDownloaded = true
 
         return esMessage.toMessage()
+    }
+
+    private func recipientListToESSenderArray(recipientList: EncryptedsearchRecipientList?) -> [ESSender?] {
+        guard let recipientList = recipientList else {
+            return []
+        }
+
+        var senderArray: [ESSender?] = []
+        for index in 0...recipientList.length() {
+            let recipient: EncryptedsearchRecipient? = recipientList.get(index)
+            if let recipient = recipient {
+                senderArray.append(ESSender(Name: recipient.name, Address: recipient.email))
+            }
+        }
+        return senderArray
     }
 
     #if !APP_EXTENSION
@@ -1485,7 +1511,7 @@ extension EncryptedSearchService {
             }
 
             // Visualize intermediate results
-            self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
+            self.publishIntermediateResults(userID: userID, searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
 
             let endBatchSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Batch \(batchCount) search. time: \(endBatchSearch-startBatchSearch), with batchsize: \(batchSize)")
@@ -1512,7 +1538,7 @@ extension EncryptedSearchService {
     }
 
     #if !APP_EXTENSION
-    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int) -> Int {
+    private func doCachedSearch(searcher: EncryptedsearchSimpleSearcher, cache: EncryptedsearchCache, searchState: inout EncryptedsearchSearchState?, searchViewModel: SearchViewModel, page: Int, userID: String) -> Int {
         var found: Int = 0
         let batchSize: Int = Int(EncryptedSearchCacheService.shared.batchSize)
         var batchCount: Int = 0
@@ -1538,7 +1564,7 @@ extension EncryptedSearchService {
             }
 
             // Visualize intermediate results
-            self.publishIntermediateResults(searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
+            self.publishIntermediateResults(userID: userID, searchResults: newResults, searchViewModel: searchViewModel, currentPage: page)
 
             let endCacheSearch: Double = CFAbsoluteTimeGetCurrent()
             print("Cache batch \(batchCount) search: \(endCacheSearch-startCacheSearch) seconds, batchSize: \(batchSize)")
@@ -1549,8 +1575,8 @@ extension EncryptedSearchService {
     #endif
 
     #if !APP_EXTENSION
-    private func publishIntermediateResults(searchResults: EncryptedsearchResultList?, searchViewModel: SearchViewModel, currentPage: Int){
-        self.extractSearchResults(searchResults: searchResults!, page: currentPage) { messageBatch in
+    private func publishIntermediateResults(userID: String, searchResults: EncryptedsearchResultList?, searchViewModel: SearchViewModel, currentPage: Int){
+        self.extractSearchResults(userID: userID, searchResults: searchResults!, page: currentPage) { messageBatch in
             let messages: [Message.ObjectIDContainer]? = messageBatch!.map(ObjectBox.init)
             searchViewModel.displayIntermediateSearchResults(messageBoxes: messages, currentPage: currentPage)
         }
