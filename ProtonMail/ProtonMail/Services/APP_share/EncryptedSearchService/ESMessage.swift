@@ -39,8 +39,8 @@ public class ESMessage: Codable {
     public var SenderAddress: String
     public var SenderName: String
     var Sender: ESSender
-    //public var replyTo: String  //not existing
-    //public var replyTos: String //TODO
+    //public var replyTo: String
+    //public var replyTos: String
     var ToList: [ESSender?] = []
     var CCList: [ESSender?] = []
     var BCCList: [ESSender?] = []
@@ -58,20 +58,20 @@ public class ESMessage: Codable {
     public var LabelIDs: Set<String>
     public var ExternalID: String?
     // public var unsubscribeMethods: String?
-    
+
     // variables that are fetched with getMessageDetails
     // public var attachments: Set<Any>
     public var Body: String?
     public var Header: String?
     public var MIMEType: String?
-    // public var ParsedHeaders: String? //String or class?
+    // public var ParsedHeaders: String?
     public var UserID: String?
 
     // local variables
-    public var isStarred: Bool = false
+    public var isStarred: Bool? = false
     public var isDetailsDownloaded: Bool? = false
     //var tempAtts: [AttachmentInline]? = nil
-    
+
     init(id: String, order: Int, conversationID: String, subject: String, unread: Int, type: Int, senderAddress: String, senderName: String, sender: ESSender, toList: [ESSender?], ccList: [ESSender?], bccList: [ESSender?], time: Double, size: Int, isEncrypted: Int, expirationTime: Date?, isReplied: Int, isRepliedAll: Int, isForwarded: Int, spamScore: Int?, addressID: String?, numAttachments: Int, flags: Int, labelIDs: Set<String>, externalID: String?, body: String?, header: String?, mimeType: String?, userID: String) {
         self.ID = id
         self.Order = order
@@ -282,32 +282,34 @@ extension ESMessage {
     func toMessage() -> Message {
         let context = CoreDataService.shared.mainContext
         let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
-        
+
         // Add attributes of all neccessary fields
-        //message.bccList = self.BCCList    TODO
+        message.bccList = self.ESSenderArrayToJsonString(senderArray: self.BCCList)
         message.body = self.Body ?? ""
-        //message.ccList = self.CCList TODO
-        //message.expirationOffset = TODO
-        //message.flags = self.Flags TODO
+        message.ccList = self.ESSenderArrayToJsonString(senderArray: self.CCList)
+        //message.expirationOffset
+        message.flags = NSNumber(value: self.Flags)
         message.isDetailDownloaded = self.isDetailsDownloaded ?? false
         message.messageID = self.ID
-        //message.messageStatus =
-        //message.messageType = self.`Type`
-        //message.numAttachments = self.NumAttachments
+        //message.messageStatus
+        message.messageType = NSNumber(value: self.`Type`)
+        message.numAttachments = NSNumber(value: self.NumAttachments)
         //message.passwordEncryptedBody
         //message.password
         //message.passwordHint
-        //message.size = self.Size
-        //message.spamScore = self.SpamScore ?? 0
-        //message.title = self.tit
-        //message.toList = self.ToList
-        //message.unRead = self.Unread
-        //message.userID = self.
-        //message.isSending =
+        message.size = NSNumber(value: self.Size)
+        message.spamScore = NSNumber(value: self.SpamScore ?? 0)
+        message.title = self.Subject
+        message.toList = self.ESSenderArrayToJsonString(senderArray: self.ToList)
+        message.unRead = self.Unread != 0
+        message.userID = self.UserID ?? ""
+        //message.isSending
         message.conversationID = self.ConversationID
-        //message.attachments =
-        //message.labels = self.LabelIDs
-        //message.order = self.Order
+        //message.attachments
+        let labels = NSSet()
+        labels.addingObjects(from: self.LabelIDs)
+        message.labels = labels
+        message.order = NSNumber(value: self.Order)
 
         // Optional fields
         // message.action
@@ -317,17 +319,43 @@ extension ESMessage {
         // message.cachedPrivateKeysRaw
         // message.cachedAuthCredentialRaw
         // message.cachedAddressRaw
-        // message.expirationTime
+        // message.expirationTime = self.ExpirationTime // TODO
         // message.header
         // message.lastModified
         // message.mimeType
         // message.originalMessageID
         // message.originalTime
-        // message.replyTos
-        // message.sender
-        // message.time
+        // message.replyTos = self.ESSenderArrayToJsonString(senderArray: [self.Sender])
+        message.sender = self.ESSenderToJSONString(sender: self.Sender)
+        message.time = Date(timeIntervalSince1970: self.Time)
         // message.unsubscribeMethods
-        
+
         return message
+    }
+
+    private func ESSenderArrayToJsonString(senderArray: [ESSender?]) -> String {
+        guard senderArray.isEmpty == false else {
+            return ""
+        }
+
+        var jsonString: String = "["
+        senderArray.forEach { sender in
+            let senderString: String = (self.ESSenderToJSONString(sender: sender!) ?? "") + ", "
+            jsonString.append(senderString)
+        }
+        jsonString.append("]")
+        return jsonString
+    }
+
+    private func ESSenderToJSONString(sender: ESSender) -> String? {
+        let encoder = JSONEncoder()
+        var jsonString: String? = ""
+        do {
+            let data = try encoder.encode(sender)
+            jsonString = String(data: data, encoding: .utf8)
+        } catch {
+            print("Error when encoding ESSender to json string: \(error)")
+        }
+        return jsonString
     }
 }
