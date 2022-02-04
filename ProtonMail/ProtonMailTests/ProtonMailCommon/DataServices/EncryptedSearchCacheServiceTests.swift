@@ -192,7 +192,7 @@ class EncryptedSearchCacheServiceTests: XCTestCase {
         let cipher = EncryptedsearchAESGCMCipher(testKey!)
         _ = EncryptedSearchCacheService.shared.buildCacheForUser(userId: self.testUserID, dbParams: dbParams, cipher: cipher!)
         // Wait until cache is built
-        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 2.0)
+        _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 4.0)
 
         let resultTrue: Bool = sut(self.testUserID)
         XCTAssertTrue(resultTrue)
