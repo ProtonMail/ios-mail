@@ -27,11 +27,7 @@ extension UserInfo {
         if CommandLine.arguments.contains("-disableAnimations") {
             return false
         }
-#if DEBUG
         return true
-#else
-        return false
-#endif
     }
 
     static var isDarkModeEnable: Bool {
