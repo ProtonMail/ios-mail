@@ -59,6 +59,7 @@ public class EncryptedSearchService {
             }
         } else {
             // Use Reachability for iOS 11
+            //self.registerForNetworkChangeNotificationsAllIOS()
         }
     }
 
@@ -81,6 +82,7 @@ public class EncryptedSearchService {
     internal var slowDownIndexBuilding: Bool = false
     @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
+    //internal lazy var networkMonitorAllIOS: InternetConnectionStatusProvider? = nil
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
@@ -1391,17 +1393,6 @@ extension EncryptedSearchService {
         }
     }
 
-    // Should also work with iOS 11?
-    private func isInternetConnection() -> Bool {
-        guard let reachability = Reachability.forInternetConnection() else {
-            return false
-        }
-        if reachability.currentReachabilityStatus() == .NotReachable {
-            return false
-        }
-        return true
-    }
-
     private func createMessageFromPreview(userID: String, searchResult: EncryptedsearchSearchResult?) -> Message {
         let msg: EncryptedsearchMessage = searchResult!.message!
 
@@ -2037,16 +2028,29 @@ extension EncryptedSearchService {
         let networkMonitoringQueue = DispatchQueue(label: "NetworkMonitor")
         self.networkMonitor?.start(queue: networkMonitoringQueue)
         print("ES-NETWORK: monitoring enabled")
-
-        //self.reachability = try! Reachability()
-        /*let reachability = Reachability()!
-        NotificationCenter.default.addObserver(self, selector: #selector(responseToNetworkChanges(_:)), name: NSNotification.Name.reachabilityChanged, object: self.reachability)
-        do {
-            try self.reachability?.startNotifier()
-        } catch {
-            print("Error when starting network monitoring notifier: \(error)")
-        }*/
     }
+
+    /*private func registerForNetworkChangeNotificationsAllIOS() {
+        if self.networkMonitorAllIOS == nil {
+            self.networkMonitorAllIOS = InternetConnectionStatusProvider()
+        }
+        print("ES-NETWORK: start network monitoring")
+        self.networkMonitorAllIOS?.getConnectionStatuses { [weak self] status in
+            if status.isConnected {
+                print("ES-NETWORK: internet connection available")
+                if self?.networkMonitorAllIOS?.currentStatus == .ReachableViaWiFi {
+                    print("ES-NETWORK: wifi available")
+                }
+            } else {
+                print("ES-NETWORK: no internet connection")
+            }
+        }
+    }
+    
+    private func unregisterForNetworkChangeNotificationsAllIOS() {
+        print("ES-NETWORK: stop network monitoring")
+        self.networkMonitorAllIOS?.stopInternetConnectionStatusObservation()
+    }*/
 
     @available(iOS 12, *)
     private func unRegisterForNetworkChangeNotifications() {
@@ -2144,6 +2148,16 @@ extension EncryptedSearchService {
                 print("ES-NETWORK: Error when determining network status!")
             }
         }
+    }
+
+    private func isInternetConnection() -> Bool {
+        guard let reachability = Reachability.forInternetConnection() else {
+            return false
+        }
+        if reachability.currentReachabilityStatus() == .NotReachable {
+            return false
+        }
+        return true
     }
 
     @objc private func responseToLowPowerMode(_ notification: Notification) {
