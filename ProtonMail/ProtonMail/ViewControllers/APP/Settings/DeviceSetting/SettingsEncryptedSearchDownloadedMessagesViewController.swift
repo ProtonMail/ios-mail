@@ -230,7 +230,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     // Resize search index
                     let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                     if let userID = usersManager.firstUser?.userInfo.userId {
-                        EncryptedSearchService.shared.resizeSearchIndex(expectedSize: userCachedStatus.storageLimit, userID: userID)
+                        EncryptedSearchService.shared.resizeSearchIndex(userID: userID)
                     } else {
                         print("ERROR when resizing the search index. User unknown!")
                     }
