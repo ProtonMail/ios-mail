@@ -78,6 +78,7 @@ public class EncryptedSearchService {
     }
 
     // Device dependent variables
+    internal var slowDownIndexBuilding: Bool = false
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
@@ -371,6 +372,7 @@ extension EncryptedSearchService {
             self.viewModel?.currentProgress.value = 100
             self.viewModel?.estimatedTimeRemaining.value = nil
             self.estimateIndexTimeRounds = 0
+            self.slowDownIndexBuilding = false
 
             // Unregister network monitoring
             if #available(iOS 12, *) {
@@ -626,10 +628,10 @@ extension EncryptedSearchService {
             self.pauseIndexingDueToLowBattery = false
             self.pauseIndexingDueToLowStorage = false
             self.estimateIndexTimeRounds = 0
+            self.slowDownIndexBuilding = false
 
             // Reset view model
             self.viewModel?.isEncryptedSearch = false
-            //self.viewModel?.indexComplete = false
             self.viewModel?.progressedMessages.value = 0
             self.viewModel?.currentProgress.value = 0
             self.viewModel?.isIndexingComplete.value = false
@@ -1882,7 +1884,16 @@ extension EncryptedSearchService {
     func slowDownIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            self.messageIndexingQueue.maxConcurrentOperationCount = 10
+            let currentCPUUsage: Double = self.getCPUUsage()
+            print("ES-DEBUG: current CPU usage -> \(currentCPUUsage)")
+            if currentCPUUsage > 50 {
+                self.messageIndexingQueue.maxConcurrentOperationCount = 3
+            } else if currentCPUUsage > 30 {
+                self.messageIndexingQueue.maxConcurrentOperationCount = 5
+            } else {
+                self.messageIndexingQueue.maxConcurrentOperationCount = 10
+            }
+            self.slowDownIndexBuilding = true
         }
     }
 
@@ -1892,6 +1903,42 @@ extension EncryptedSearchService {
         if expectedESStates.contains(self.getESState(userID: userID)) {
             self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
         }
+        self.slowDownIndexBuilding = false
+    }
+
+    private func getCPUUsage() -> Double {
+        var totalUsageOfCPU: Double = 0.0
+        var threadsList: thread_act_array_t?
+        var threadsCount = mach_msg_type_number_t(0)
+        let threadsResult = withUnsafeMutablePointer(to: &threadsList) {
+            return $0.withMemoryRebound(to: thread_act_array_t?.self, capacity: 1) {
+                task_threads(mach_task_self_, $0, &threadsCount)
+            }
+        }
+        
+        if threadsResult == KERN_SUCCESS, let threadsList = threadsList {
+            for index in 0..<threadsCount {
+                var threadInfo = thread_basic_info()
+                var threadInfoCount = mach_msg_type_number_t(THREAD_INFO_MAX)
+                let infoResult = withUnsafeMutablePointer(to: &threadInfo) {
+                    $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                        thread_info(threadsList[Int(index)], thread_flavor_t(THREAD_BASIC_INFO), $0, &threadInfoCount)
+                    }
+                }
+                
+                guard infoResult == KERN_SUCCESS else {
+                    break
+                }
+                
+                let threadBasicInfo = threadInfo as thread_basic_info
+                if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
+                    totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0))
+                }
+            }
+        }
+        
+        vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: threadsList)), vm_size_t(Int(threadsCount) * MemoryLayout<thread_t>.stride))
+        return totalUsageOfCPU
     }
 
     private func checkIfEnoughStorage() {
@@ -2017,6 +2064,9 @@ extension EncryptedSearchService {
             // Check if there is still enought storage left
             self.checkIfEnoughStorage()
             self.checkIfStorageLimitIsExceeded()
+            if self.slowDownIndexBuilding { // Re-evaluate indexing speed while not beeing on indexing screen
+                self.slowDownIndexing(userID: userID)
+            }
 
             // print state for debugging
             print("ES-DEBUG: \(self.getESState(userID: userID))")
