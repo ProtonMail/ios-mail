@@ -79,7 +79,6 @@ public class EncryptedSearchService {
 
     // Device dependent variables
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
-    internal var slowDownIndexBuilding: Bool = false
     @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
     //internal lazy var networkMonitorAllIOS: InternetConnectionStatusProvider? = nil
@@ -131,32 +130,59 @@ extension EncryptedSearchService {
         self.viewModel = viewModel
     }
 
-    func resizeSearchIndex(expectedSize: Int64, userID: String) -> Void {
+    func resizeSearchIndex(userID: String) -> Void {
         guard EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) else {
             print("Search index for user \(userID) does not exist. No need to resize.")
             return
         }
 
         let sizeOfSearchIndex: Int64 = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64!
-        if sizeOfSearchIndex < userCachedStatus.storageLimit {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.getTotalMessages(userID: userID) {
-                    let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
-                    if numberOfMessageInSearchIndex < userCachedStatus.encryptedSearchTotalMessages {
-                        self.restartIndexBuilding(userID: userID)
-                    } else {
-                        print("No new messages on the server. No need to resize!")
+        if userCachedStatus.storageLimit == -1 {
+            // If indexing is currently in progress, we just change the limit, but don't need to restart indexing
+            let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
+            if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    self.getTotalMessages(userID: userID) {
+                        let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                        // Check if there a new message on the server
+                        if numberOfMessageInSearchIndex < userCachedStatus.encryptedSearchTotalMessages {
+                            self.restartIndexBuilding(userID: userID)
+                        } else {
+                            print("No new messages on the server. No need to resize!")
+                        }
                     }
                 }
             }
         } else {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let success: Bool = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: expectedSize)
-                if success == false {
-                    self.setESState(userID: userID, indexingState: .complete)
-                } else {
-                    self.setESState(userID: userID, indexingState: .partial)
-                    userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+            // Search index is larger as the limit -> shrink search index
+            if sizeOfSearchIndex > userCachedStatus.storageLimit {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let success: Bool = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: userCachedStatus.storageLimit)
+                    if success == false {
+                        self.setESState(userID: userID, indexingState: .complete)
+                    } else {
+                        self.setESState(userID: userID, indexingState: .partial)
+                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+                    }
+                }
+            }
+
+            // Search index is smaller as storage limit - check if there are some messages that we need to fetch
+            if sizeOfSearchIndex < userCachedStatus.storageLimit {
+                // If indexing is currently in progress, we just change the limit, but don't need to restart indexing
+                let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
+                if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        self.getTotalMessages(userID: userID) {
+                            let numberOfMessageInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+                            // Check if there a new message on the server
+                            if numberOfMessageInSearchIndex < userCachedStatus.encryptedSearchTotalMessages {
+                                self.restartIndexBuilding(userID: userID)
+                            } else {
+                                print("No new messages on the server. No need to resize!")
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -199,6 +225,9 @@ extension EncryptedSearchService {
         self.messageIndexingQueue.isSuspended = false
         self.downloadPageQueue.isSuspended = false
 
+        // Speed up indexing if its slowed down
+        self.speedUpIndexing(userID: userID)
+
         self.getTotalMessages(userID: userID) {
             print("Total messages: ", userCachedStatus.encryptedSearchTotalMessages)
             // If a user has 0 messages, we can simply finish and return
@@ -237,6 +266,9 @@ extension EncryptedSearchService {
         // Set indexbuilding queues suspension to false if previously suspended
         self.messageIndexingQueue.isSuspended = false
         self.downloadPageQueue.isSuspended = false
+
+        // Speed up indexing if its slowed down
+        self.speedUpIndexing(userID: userID)
 
         // Update API services to current user
         self.updateUserAndAPIServices()
@@ -586,7 +618,6 @@ extension EncryptedSearchService {
 
             // Update some variables
             self.noNewMessagesFound = 0
-            self.slowDownIndexBuilding = false
             self.eventsWhileIndexing = []
 
             self.pauseIndexingDueToNetworkConnectivityIssues = false
@@ -1851,10 +1882,7 @@ extension EncryptedSearchService {
     func slowDownIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            if self.slowDownIndexBuilding == false {
-                self.messageIndexingQueue.maxConcurrentOperationCount = 10
-                self.slowDownIndexBuilding = true
-            }
+            self.messageIndexingQueue.maxConcurrentOperationCount = 10
         }
     }
 
@@ -1862,10 +1890,7 @@ extension EncryptedSearchService {
     func speedUpIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            if self.slowDownIndexBuilding {
-                self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-                self.slowDownIndexBuilding = false
-            }
+            self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
         }
     }
 
