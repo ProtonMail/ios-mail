@@ -474,12 +474,13 @@ class EncryptedSearchTests: XCTestCase {
         XCTAssertEqual(numberOfEntries, 3)
     }
 
-    func testSlowDownIndexing() throws {
+    // Depending on CPU usage
+    /*func testSlowDownIndexing() throws {
         let sut = EncryptedSearchService.shared.slowDownIndexing
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         sut(self.testUserID)
         XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, 10)
-    }
+    }*/
 
     func testSpeedUpIndexing() throws {
         let sut = EncryptedSearchService.shared.speedUpIndexing

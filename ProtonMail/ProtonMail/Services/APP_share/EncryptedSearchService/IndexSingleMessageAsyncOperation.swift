@@ -94,7 +94,9 @@ open class IndexSingleMessageAsyncOperation: Operation {
 
     public override func cancel() {
         super.cancel()
-        self.finish()
+        if self.state == .executing {
+            self.finish()
+        }
     }
 }
 
