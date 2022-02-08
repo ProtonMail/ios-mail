@@ -45,19 +45,36 @@ protocol WebContentsSecureLoader {
     func observeHeight(_ callBack: @escaping ((CGFloat) -> ()))
 }
 extension WebContentsSecureLoader {
-    static var domPurifyConfiguration: String {
-        return """
-        {
-        ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
-        ADD_TAGS: ['proton-src', 'base'],
-        ADD_ATTR: ['target', 'proton-src'],
-        FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
-        FORBID_ATTR: ['srcset']
-        }
-        """.replacingOccurrences(of: "\n", with: "")
-    }
-    
     func eject(from config: WKWebViewConfiguration) {
         config.userContentController.removeScriptMessageHandler(forName: "loaded")
+    }
+}
+
+enum DomPurifyConfig {
+    case `default`, protonizer
+
+    var value: String {
+        switch self {
+        case .default:
+            return """
+            {
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            ADD_TAGS: ['proton-src', 'base'],
+            ADD_ATTR: ['target', 'proton-src'],
+            FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+            FORBID_ATTR: ['srcset']
+            }
+            """.replacingOccurrences(of: "\n", with: "")
+        case .protonizer:
+            return """
+            {
+            FORBID_TAGS: ['input', 'form'], // Override defaults to allow style (will be processed by juice afterward)
+            FORBID_ATTR: {},
+            ADD_ATTR: ['target', 'proton-data-src', 'proton-src', 'proton-srcset', 'proton-background', 'proton-poster', 'proton-xlink:href', 'proton-href'],
+            WHOLE_DOCUMENT: true,
+            RETURN_DOM: true
+            }
+            """
+        }
     }
 }

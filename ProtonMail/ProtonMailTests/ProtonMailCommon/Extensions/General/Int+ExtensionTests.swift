@@ -30,6 +30,6 @@ final class Int_ExtensionTests: XCTestCase {
         XCTAssertEqual(1000.toByteCount, "1 KB")
         XCTAssertEqual((1024 * 1024).toByteCount, "1 MB")
         // The accuracy is different in GB level
-        XCTAssertEqual((1024 * 1024 * 1024).toByteCount, "1.07 GB")
+        XCTAssertTrue(["1.07 GB", "1,07 GB"].contains((1024 * 1024 * 1024).toByteCount))
     }
 }

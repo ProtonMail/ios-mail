@@ -597,6 +597,26 @@ extension UserCachedStatus {
     }
 }
 
+extension UserCachedStatus: DarkModeCacheProtocol {
+    var darkModeStatus: DarkModeStatus {
+        get {
+            if getShared()?.object(forKey: Key.darkModeFlag) == nil {
+                return .followSystem
+            }
+            let raw = getShared().integer(forKey: Key.darkModeFlag)
+            if let status = DarkModeStatus(rawValue: raw) {
+                return status
+            } else {
+                getShared().removeObject(forKey: Key.darkModeFlag)
+                return .followSystem
+            }
+        }
+        set {
+            setValue(newValue.rawValue, forKey: Key.darkModeFlag)
+        }
+    }
+}
+
 #if !APP_EXTENSION
 extension UserCachedStatus: LinkOpenerCacheProtocol {
     var browser: LinkOpener {
@@ -707,26 +727,6 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
         if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
            let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
-        }
-    }
-}
-
-extension UserCachedStatus: DarkModeCacheProtocol {
-    var darkModeStatus: DarkModeStatus {
-        get {
-            if getShared()?.object(forKey: Key.darkModeFlag) == nil {
-                return .followSystem
-            }
-            let raw = getShared().integer(forKey: Key.darkModeFlag)
-            if let status = DarkModeStatus(rawValue: raw) {
-                return status
-            } else {
-                getShared().removeObject(forKey: Key.darkModeFlag)
-                return .followSystem
-            }
-        }
-        set {
-            setValue(newValue.rawValue, forKey: Key.darkModeFlag)
         }
     }
 }

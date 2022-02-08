@@ -122,12 +122,17 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             css = WebContents.css
 			if let supplementCSS = contents.supplementCSS {
 				css += supplementCSS
-			}
+            } else {
+                // means this message doesn't support dark mode style
+                css = WebContents.cssLightModeOnly
+            }
         }
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
+        let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+        let messageHead = protonizer.querySelector('head').innerHTML.trim()
         var clean0 = DOMPurify.sanitize(dirty);
-        var clean1 = DOMPurify.sanitize(clean0, \(HTTPRequestSecureLoader.domPurifyConfiguration));
+        var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
         
@@ -135,6 +140,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         style.type = 'text/css';
         style.appendChild(document.createTextNode(`\(css)`));
         document.getElementsByTagName('head')[0].appendChild(style);
+        
+        let wrapper = document.createElement('div');
+        wrapper.innerHTML = messageHead;
+        Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
         
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";

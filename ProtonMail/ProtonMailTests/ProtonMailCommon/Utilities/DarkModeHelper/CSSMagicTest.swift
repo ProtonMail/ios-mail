@@ -19,7 +19,72 @@ import SwiftSoup
 import XCTest
 @testable import ProtonMail
 
-class CSSMagicTest: XCTestCase {
+
+
+final class CSSMagicTest: XCTestCase {
+
+    func testCanSupportDarkStyle() {
+        let cache = DarkModeStatusStub()
+        var level = CSSMagic.darkStyleSupportLevel(htmlString: "",
+                                                   isNewsLetter: true,
+                                                   isPlainText: false,
+                                                   darkModeCache: cache)
+        XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
+
+        level = CSSMagic.darkStyleSupportLevel(htmlString: "",
+                                               isNewsLetter: false,
+                                               isPlainText: true,
+                                               darkModeCache: cache)
+        XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
+
+        level = CSSMagic.darkStyleSupportLevel(htmlString: "",
+                                               isNewsLetter: true,
+                                               isPlainText: true,
+                                               darkModeCache: cache)
+        XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
+
+        cache.darkModeStatus = .forceOff
+        level = CSSMagic.darkStyleSupportLevel(htmlString: "",
+                                               isNewsLetter: false,
+                                               isPlainText: false,
+                                               darkModeCache: cache)
+        XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
+
+        cache.darkModeStatus = .followSystem
+        var htmls = [
+            #"<html><head> <meta name="supported-color-schemes" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,
+            #"<html><head> <meta name="color-scheme" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,
+            "<html><head> <style>:root{color-scheme: light dark;}</style></head><body></body></html>",
+        ]
+        for html in htmls {
+            let level = CSSMagic.darkStyleSupportLevel(htmlString: html,
+                                                       isNewsLetter: false,
+                                                       isPlainText: false,
+                                                      darkModeCache: cache)
+            XCTAssertEqual(level, DarkStyleSupportLevel.nativeSupport)
+        }
+        htmls = [
+            "<html><head></head><body> <table> </table></body></html>",
+            "<html><head></head><body> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> <div> hi </div></div></div></div></div></div></div></div></div></div></div></div></div></div></body></html>"
+        ]
+        for html in htmls {
+            let level = CSSMagic.darkStyleSupportLevel(htmlString: html,
+                                                       isNewsLetter: false,
+                                                       isPlainText: false,
+                                                      darkModeCache: cache)
+            XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
+        }
+        htmls = [
+            "<html><head></head><body> <span> a</span></body></html>",
+        ]
+        for html in htmls {
+            let level = CSSMagic.darkStyleSupportLevel(htmlString: html,
+                                                       isNewsLetter: false,
+                                                       isPlainText: false,
+                                                      darkModeCache: cache)
+            XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
+        }
+    }
 
     func testGenerateCSSForDarkMode() {
         var html = ""
@@ -45,7 +110,9 @@ class CSSMagicTest: XCTestCase {
         css = CSSMagic.generateCSSForDarkMode(htmlString: html)
         XCTAssertEqual(css, "@media (prefers-color-scheme: dark) { span { background-color: hsla(210, 50%, 30%, 1.0) !important }div.a[style=\"color: white\"] { color: hsla(0, 0%, 100%, 1.0) !important } }")
     }
+}
 
+extension CSSMagicTest {
     func testParseHTML() {
         let html = """
         <html> <head></head> <body> <div class="a" style="background-color: red"> <div class="b"> <div class="c"> <span style="color: aqua">HI</span> </div></div></div></body></html>
@@ -531,5 +598,15 @@ extension CSSMagicTest {
 
         let nodes = body.flatChildNodes()
         XCTAssertEqual(nodes.count, 4)
+    }
+
+    func testGetMaxDepth() throws {
+        let html = "<html><head></head><body> <div> <div> <div> hi </div></div></div><div> hi </div></body></html>"
+        let document = try SwiftSoup.parse(html)
+        guard let body = document.body() else {
+            XCTFail("Should have body")
+            return
+        }
+        XCTAssertEqual(body.getMaxDepth(), 5)
     }
 }

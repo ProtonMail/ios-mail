@@ -33,6 +33,7 @@ body {
     padding: 1rem;
     /* outside of tables we force wrap long text */
     word-break: break-word;
+    background-color: white;
 }
 
 table * {

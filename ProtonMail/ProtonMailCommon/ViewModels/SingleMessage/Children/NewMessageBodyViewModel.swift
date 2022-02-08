@@ -49,11 +49,21 @@ struct BodyParts {
     let originalBody: String
     let strippedBody: String
     let fullBody: String
-    let darkModeCSS: String
+    let darkModeCSS: String?
 
-    init(originalBody: String) {
+    init(originalBody: String, isNewsLetter: Bool, isPlainText: Bool) {
         self.originalBody = originalBody
-        self.darkModeCSS = CSSMagic.generateCSSForDarkMode(htmlString: originalBody)
+        let level = CSSMagic.darkStyleSupportLevel(htmlString: originalBody,
+                                                   isNewsLetter: isNewsLetter,
+                                                   isPlainText: isPlainText)
+        switch level {
+        case .protonSupport:
+            self.darkModeCSS = CSSMagic.generateCSSForDarkMode(htmlString: originalBody)
+        case .notSupport:
+            self.darkModeCSS = nil
+        case .nativeSupport:
+            self.darkModeCSS = ""
+        }
         self.strippedBody = originalBody.body(strippedFromQuotes: true)
         self.fullBody = originalBody.body(strippedFromQuotes: false)
     }
@@ -203,7 +213,11 @@ class NewMessageBodyViewModel {
         self.userAddressUpdater = userAddressUpdater
         self.internetStatusProvider = internetStatusProvider
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
-        self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
+        if message.isPlainText {
+            self.currentMessageRenderStyle = .dark
+        } else {
+            self.currentMessageRenderStyle = message.isNewsLetter ? .lightOnly : .dark
+        }
         self.linkConfirmation = linkConfirmation
 
         remoteContentPolicy = shouldAutoLoadRemoteImages ?
@@ -240,7 +254,7 @@ class NewMessageBodyViewModel {
         }
         if let decryptedBody = decryptBody(from: message) {
             isBodyDecryptable = true
-            bodyParts = BodyParts(originalBody: decryptedBody)
+            bodyParts = BodyParts(originalBody: decryptedBody, isNewsLetter: message.isNewsLetter, isPlainText: message.isPlainText)
 
             checkBannerStatus(decryptedBody)
             guard embeddedContentPolicy == .allowed else {
@@ -280,8 +294,10 @@ class NewMessageBodyViewModel {
                 rawBody = "<div>\(rawBody)</div>"
             }
             // If the detail hasn't download, don't show encrypted body to user
-            bodyParts = BodyParts(originalBody: message.isDetailDownloaded ? rawBody: .empty)
-
+            let originalBody = message.isDetailDownloaded ? message.bodyToHtml(): .empty
+            bodyParts = BodyParts(originalBody: originalBody,
+                                  isNewsLetter: message.isNewsLetter,
+                                  isPlainText: message.isPlainText)
             self.contents = WebContents(body: self.bodyParts?.body(for: displayMode) ?? "",
                                         remoteContentMode: remoteContentMode)
         }
@@ -340,7 +356,9 @@ class NewMessageBodyViewModel {
               case let inlines = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
               !inlines.isEmpty else {
                   if self.bodyParts?.originalBody != body {
-                      self.bodyParts = BodyParts(originalBody: body)
+                      self.bodyParts = BodyParts(originalBody: body,
+                                                 isNewsLetter: message.isNewsLetter,
+                                                 isPlainText: message.isPlainText)
                   }
                   return
               }
@@ -372,8 +390,9 @@ class NewMessageBodyViewModel {
     }
 
     private func showEmbeddedImages(decryptedBody: String) {
-        self.replacementQueue.addOperation {
-            guard self.embeddedStatus == .finish else { return }
+        self.replacementQueue.addOperation { [weak self] in
+            guard let self = self,
+                  self.embeddedStatus == .finish else { return }
             var updatedBody = decryptedBody
             let displayBody = self.bodyParts?.fullBody
             for (cid, base64) in self.embeddedBase64 {
@@ -384,7 +403,9 @@ class NewMessageBodyViewModel {
                     return
                 }
             }
-            self.bodyParts = BodyParts(originalBody: updatedBody)
+            self.bodyParts = BodyParts(originalBody: updatedBody,
+                                       isNewsLetter: self.message.isNewsLetter,
+                                       isPlainText: self.message.isPlainText)
             delay(0.2) {
                 if let mode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) {
                     let body = self.bodyParts?.body(for: self.displayMode) ?? ""

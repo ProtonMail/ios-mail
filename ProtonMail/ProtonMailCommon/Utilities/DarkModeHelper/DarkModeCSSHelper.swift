@@ -26,6 +26,15 @@ private enum CSSKeys: String {
     case target, id, `class`
 }
 
+enum DarkStyleSupportLevel {
+    /// Need to generate the supplement css to support dark mode
+    case protonSupport
+    case notSupport
+    /// The message support dark mode by itself
+    /// Don't need to generate the supplement css for dark mode
+    case nativeSupport
+}
+
 struct HSLA {
     /// hue, [0, 360]
     let h: Int
@@ -205,6 +214,57 @@ struct CSSMagic {
         return false
     }
 
+    static func darkStyleSupportLevel(htmlString: String,
+                                      isNewsLetter: Bool,
+                                      isPlainText: Bool,
+                                      darkModeCache: DarkModeCacheProtocol = userCachedStatus) -> DarkStyleSupportLevel {
+        if darkModeCache.darkModeStatus == .forceOff {
+            return .notSupport
+        }
+
+        if isPlainText {
+            return .protonSupport
+        }
+
+        if isNewsLetter {
+            return .notSupport
+        }
+
+        guard let document = CSSMagic.parse(htmlString: htmlString) else {
+            return .notSupport
+        }
+        // If the meta tag color-scheme is present, we assume that the email supports dark mode
+        if let meta = try? document.select(#"meta[name="color-scheme"]"#),
+           let content = try? meta.attr("content"),
+           content.contains(check: "dark") {
+            return .nativeSupport
+        }
+        // If the meta tag supported-color-schemes is present, we assume that the email supports dark mode
+        if let meta = try? document.select(#"meta[name="supported-color-schemes"]"#),
+           let content = try? meta.attr("content"),
+           content.contains(check: "dark") {
+            return .nativeSupport
+        }
+        // If the media query prefers-color-scheme is present, we assume that the email supports dark mode
+        if let style = try? document.select("style"),
+           let content = try? style.html(),
+           content.contains(check: "color-scheme") {
+            return .nativeSupport
+        }
+        // If the message contains a table, we assume that the message content is complex and not supporting dark mode
+        if let table = try? document.body()?.select("table"),
+           let content = try? table.outerHtml(),
+           !content.isEmpty {
+            return .notSupport
+        }
+        // If the HTML content is deep, we assume that the message content is complex and not supporting dark mode
+        if let maxDepth = document.body()?.getMaxDepth(),
+           maxDepth > 15 {
+            return .notSupport
+        }
+        return .protonSupport
+    }
+
     /// Generate css for dark mode
     /// - Parameter htmlString: Message html string
     /// - Returns: CSS needs to be overridden
@@ -224,7 +284,10 @@ struct CSSMagic {
         if css.isEmpty { return "" }
         return "@media (prefers-color-scheme: dark) { \(css) }" 
     }
+}
 
+// MARK: Private functions
+extension CSSMagic {
     static func parse(htmlString: String) -> Document? {
         do {
             let fullHTMLDocument = try SwiftSoup.parse(htmlString)
@@ -644,7 +707,7 @@ extension CSSMagic {
     }
 }
 
-extension SwiftSoup.Element {
+extension SwiftSoup.Node {
     func flatChildNodes() -> [SwiftSoup.Element] {
         var result: [SwiftSoup.Node] = []
         result.append(self)
@@ -656,5 +719,16 @@ extension SwiftSoup.Element {
             childNodes.append(contentsOf: subNodes)
         }
         return result.compactMap({ $0 as? Element })
+    }
+
+    func getMaxDepth() -> Int {
+        var maxDepth = 0
+        for node in self.getChildNodes() {
+            let depth = node.getMaxDepth()
+            if depth > maxDepth {
+                maxDepth = depth
+            }
+        }
+        return maxDepth + 1
     }
 }
