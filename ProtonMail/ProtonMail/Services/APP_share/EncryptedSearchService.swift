@@ -92,17 +92,8 @@ public class EncryptedSearchService {
     internal var estimateIndexTimeRounds: Int = 0
     var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
     internal var eventsWhileIndexing: [MessageAction]? = []
-    lazy var messageIndexingQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "Message Indexing Queue"
-        return queue
-    }()
-    lazy var downloadPageQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "Download Page Queue"
-        queue.maxConcurrentOperationCount = 1   // Download 1 page at a time
-        return queue
-    }()
+    internal var messageIndexingQueue: OperationQueue? = nil
+    internal var downloadPageQueue: OperationQueue? = nil
 
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -222,9 +213,8 @@ extension EncryptedSearchService {
             self.indexBuildingTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.updateRemainingIndexingTime), userInfo: nil, repeats: true)
         }
 
-        // Set indexbuilding queues suspension to false if previously suspended
-        self.messageIndexingQueue.isSuspended = false
-        self.downloadPageQueue.isSuspended = false
+        // Initialize Operation Queues for indexing
+        self.initializeOperationQueues()
 
         // Speed up indexing if its slowed down
         self.speedUpIndexing(userID: userID)
@@ -264,9 +254,8 @@ extension EncryptedSearchService {
         // Set the state to downloading
         self.setESState(userID: userID, indexingState: .downloading)
 
-        // Set indexbuilding queues suspension to false if previously suspended
-        self.messageIndexingQueue.isSuspended = false
-        self.downloadPageQueue.isSuspended = false
+        // Initialize Operation Queues for indexing
+        self.initializeOperationQueues()
 
         // Speed up indexing if its slowed down
         self.speedUpIndexing(userID: userID)
@@ -320,9 +309,8 @@ extension EncryptedSearchService {
         // Set the state to refresh
         self.setESState(userID: userID, indexingState: .refresh)
 
-        // Set indexbuilding queues suspension to false if previously suspended
-        self.messageIndexingQueue.isSuspended = false
-        self.downloadPageQueue.isSuspended = false
+        // Initialize Operation Queues for indexing
+        self.initializeOperationQueues()
 
         // Update the UI with refresh state
         self.updateUIWithIndexingStatus(userID: userID)
@@ -466,13 +454,12 @@ extension EncryptedSearchService {
     private func pauseAndResumeIndexing(userID: String) {
         if self.getESState(userID: userID) == .paused {
             print("Pause indexing!")
-            self.downloadPageQueue.cancelAllOperations()
-            self.messageIndexingQueue.cancelAllOperations()
-
-            self.cleanUpAfterIndexing(userID: userID)
-            // In case of an interrupt - update UI
-            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
-                self.updateUIWithIndexingStatus(userID: userID)
+            self.deleteAndClearOperationQueues() {
+                self.cleanUpAfterIndexing(userID: userID)
+                // In case of an interrupt - update UI
+                if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
+                    self.updateUIWithIndexingStatus(userID: userID)
+                }
             }
         } else {
             print("Resume indexing...")
@@ -593,84 +580,76 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .disabled)
 
             // Cancle any running indexing process
-            self.downloadPageQueue.isSuspended = true
-            self.downloadPageQueue.cancelAllOperations()
-            // Wait until all operations are finished then continue
-            self.downloadPageQueue.waitUntilAllOperationsAreFinished()
+            self.deleteAndClearOperationQueues(){
+                // update user cached status
+                userCachedStatus.isEncryptedSearchOn = false
+                userCachedStatus.encryptedSearchTotalMessages = 0
+                userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchProcessedMessages = 0
+                userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+                userCachedStatus.encryptedSearchNumberOfPauses = 0
+                userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
-            self.messageIndexingQueue.isSuspended = true
-            self.messageIndexingQueue.cancelAllOperations()
-            // Wait until all operations are finished then continue
-            self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
+                // Just delete the search index if it exists
+                var isIndexSuccessfullyDelete: Bool = false
+                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+                    isIndexSuccessfullyDelete = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
+                }
 
-            // update user cached status
-            userCachedStatus.isEncryptedSearchOn = false
-            userCachedStatus.encryptedSearchTotalMessages = 0
-            userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
-            userCachedStatus.encryptedSearchProcessedMessages = 0
-            userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
-            userCachedStatus.encryptedSearchNumberOfPauses = 0
-            userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+                // Update some variables
+                self.noNewMessagesFound = 0
+                self.eventsWhileIndexing = []
 
-            // Just delete the search index if it exists
-            var isIndexSuccessfullyDelete: Bool = false
-            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-                isIndexSuccessfullyDelete = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
-            }
+                self.pauseIndexingDueToNetworkConnectivityIssues = false
+                self.pauseIndexingDueToWiFiNotDetected = false
+                self.pauseIndexingDueToOverheating = false
+                self.pauseIndexingDueToLowBattery = false
+                self.pauseIndexingDueToLowStorage = false
+                self.estimateIndexTimeRounds = 0
+                self.slowDownIndexBuilding = false
 
-            // Update some variables
-            self.noNewMessagesFound = 0
-            self.eventsWhileIndexing = []
+                // Reset view model
+                self.viewModel?.isEncryptedSearch = false
+                self.viewModel?.progressedMessages.value = 0
+                self.viewModel?.currentProgress.value = 0
+                self.viewModel?.isIndexingComplete.value = false
+                self.viewModel?.interruptStatus.value = nil
+                self.viewModel?.interruptAdvice.value = nil
+                self.viewModel?.estimatedTimeRemaining.value = nil
+                self.viewModel = nil
+                #if !APP_EXTENSION
+                    self.searchViewModel = nil
+                #endif
 
-            self.pauseIndexingDueToNetworkConnectivityIssues = false
-            self.pauseIndexingDueToWiFiNotDetected = false
-            self.pauseIndexingDueToOverheating = false
-            self.pauseIndexingDueToLowBattery = false
-            self.pauseIndexingDueToLowStorage = false
-            self.estimateIndexTimeRounds = 0
-            self.slowDownIndexBuilding = false
+                // Invalidate timer on same thread as it has been created
+                DispatchQueue.main.async {
+                    self.indexBuildingTimer?.invalidate()
+                }
 
-            // Reset view model
-            self.viewModel?.isEncryptedSearch = false
-            self.viewModel?.progressedMessages.value = 0
-            self.viewModel?.currentProgress.value = 0
-            self.viewModel?.isIndexingComplete.value = false
-            self.viewModel?.interruptStatus.value = nil
-            self.viewModel?.interruptAdvice.value = nil
-            self.viewModel?.estimatedTimeRemaining.value = nil
-            self.viewModel = nil
-            #if !APP_EXTENSION
-                self.searchViewModel = nil
-            #endif
+                // Stop background tasks
+                #if !APP_EXTENSION
+                    self.endBackgroundTask()
+                #endif
+                if #available(iOS 13.0, *) {
+                    self.cancelBGProcessingTask()
+                    self.cancelBGAppRefreshTask()
+                }
 
-            // Invalidate timer on same thread as it has been created
-            DispatchQueue.main.async {
-                self.indexBuildingTimer?.invalidate()
-            }
+                // Unregister network monitoring
+                if #available(iOS 12, *) {
+                    self.unRegisterForNetworkChangeNotifications()
+                } else {
+                    // Fallback on earlier versions
+                }
 
-            // Stop background tasks
-            #if !APP_EXTENSION
-                self.endBackgroundTask()
-            #endif
-            if #available(iOS 13.0, *) {
-                self.cancelBGProcessingTask()
-                self.cancelBGAppRefreshTask()
-            }
+                // Update UI
+                self.updateUIWithIndexingStatus(userID: userID)
 
-            // Unregister network monitoring
-            if #available(iOS 12, *) {
-                self.unRegisterForNetworkChangeNotifications()
-            } else {
-                // Fallback on earlier versions
-            }
-
-            // Update UI
-            self.updateUIWithIndexingStatus(userID: userID)
-
-            if isIndexSuccessfullyDelete {
-                print("Search index for user \(userID) sucessfully deleted!")
-            } else {
-                print("Error when deleting the search index!")
+                if isIndexSuccessfullyDelete {
+                    print("Search index for user \(userID) sucessfully deleted!")
+                } else {
+                    print("Error when deleting the search index!")
+                }
             }
         }
     }
@@ -957,38 +936,50 @@ extension EncryptedSearchService {
         }
     }
 
-    private func downloadPage(userID: String, completionHandler: @escaping () -> Void){
+    private func downloadPage(userID: String, completionHandler: @escaping () -> Void) {
         // Start a new thread to download page
         DispatchQueue.global(qos: .userInitiated).async {
-            var op: Operation? = DownloadPageAsyncOperation(userID: userID)
-            self.downloadPageQueue.addOperation(op!)
-            self.downloadPageQueue.waitUntilAllOperationsAreFinished()
-            // Cleanup
-            self.downloadPageQueue.cancelAllOperations()
-            op = nil
+            var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID)
+            if let operation = processPageOperation {
+                if let downloadPageQueue = self.downloadPageQueue {
+                    downloadPageQueue.addOperation(operation)
+                    downloadPageQueue.waitUntilAllOperationsAreFinished()
+                } else {
+                    print("Error - download page queue is nil")
+                }
+            }
+            processPageOperation = nil
             completionHandler()
         }
     }
 
     func processPageOneByOne(forBatch messages: [ESMessage]?, userID: String, completionHandler: @escaping () -> Void) -> Void {
-        guard messages!.count > 0 else {
+        if let messages = messages {
+            // If there are no messages to process, return
+            guard messages.count > 0 else {
+                completionHandler()
+                return
+            }
+
+            // Start a new thread to process the page
+            DispatchQueue.global(qos: .userInitiated).async {
+                if let messageIndexingQueue = self.messageIndexingQueue {
+                    for m in messages {
+                        var processMessageOperation: Operation? = IndexSingleMessageAsyncOperation(m, userID)
+                        if let operation = processMessageOperation {
+                            messageIndexingQueue.addOperation(operation)
+                        }
+                        processMessageOperation = nil    // Clean up
+                    }
+                    messageIndexingQueue.waitUntilAllOperationsAreFinished()
+                } else {
+                    print("Error - message indexing queue is nil")
+                }
+                completionHandler()
+            }
+        } else {
             completionHandler()
             return
-        }
-
-        // Start a new thread to process the page
-        DispatchQueue.global(qos: .userInitiated).async {
-            for m in messages! {
-                autoreleasepool {
-                    var op: Operation? = IndexSingleMessageAsyncOperation(m, userID)
-                    self.messageIndexingQueue.addOperation(op!)
-                    op = nil    // Clean up
-                }
-            }
-            self.messageIndexingQueue.waitUntilAllOperationsAreFinished()
-            // Clean up
-            self.messageIndexingQueue.cancelAllOperations()
-            completionHandler()
         }
     }
 
@@ -1867,13 +1858,40 @@ extension EncryptedSearchService {
         return indexingState
     }
 
+    private func initializeOperationQueues() {
+        self.messageIndexingQueue = OperationQueue()
+        self.messageIndexingQueue?.name = "Message Indexing Queue"
+        self.messageIndexingQueue?.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+
+        self.downloadPageQueue = OperationQueue()
+        self.downloadPageQueue?.name = "Download Page Queue"
+        self.downloadPageQueue?.maxConcurrentOperationCount = 1 // Download 1 page at a time
+    }
+
+    private func deleteAndClearOperationQueues(completion: (() -> Void)?) {
+        self.downloadPageQueue?.isSuspended = true
+        self.downloadPageQueue?.cancelAllOperations()
+        // Wait until all operations are finished then continue
+        self.downloadPageQueue?.waitUntilAllOperationsAreFinished()
+        self.downloadPageQueue = nil
+
+        self.messageIndexingQueue?.isSuspended = true
+        self.messageIndexingQueue?.cancelAllOperations()
+        // Wait until all operations are finished then continue
+        self.messageIndexingQueue?.waitUntilAllOperationsAreFinished()
+        self.messageIndexingQueue = nil
+        completion?()
+    }
+
     func isIndexingInProgress(userID: String) -> Bool {
         // Check state
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh, .paused]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             // check if there are some operations scheduled
-            if self.messageIndexingQueue.operationCount > 0 || self.downloadPageQueue.operationCount > 0 {
-                return true
+            if let messageIndexingQueue = self.messageIndexingQueue, let downloadPageQueue = self.downloadPageQueue {
+                if messageIndexingQueue.operationCount > 0 || downloadPageQueue.operationCount > 0 {
+                    return true
+                }
             }
         }
 
@@ -1887,11 +1905,11 @@ extension EncryptedSearchService {
             let currentCPUUsage: Double = self.getCPUUsage()
             print("ES-DEBUG: current CPU usage -> \(currentCPUUsage)")
             if currentCPUUsage > 50 {
-                self.messageIndexingQueue.maxConcurrentOperationCount = 3
+                self.messageIndexingQueue?.maxConcurrentOperationCount = 3
             } else if currentCPUUsage > 30 {
-                self.messageIndexingQueue.maxConcurrentOperationCount = 5
+                self.messageIndexingQueue?.maxConcurrentOperationCount = 5
             } else {
-                self.messageIndexingQueue.maxConcurrentOperationCount = 10
+                self.messageIndexingQueue?.maxConcurrentOperationCount = 10
             }
             self.slowDownIndexBuilding = true
         }
@@ -1901,7 +1919,7 @@ extension EncryptedSearchService {
     func speedUpIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+            self.messageIndexingQueue?.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
         }
         self.slowDownIndexBuilding = false
     }
@@ -1985,15 +2003,17 @@ extension EncryptedSearchService {
 
         let sizeOfSearchIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
         if sizeOfSearchIndex! > userCachedStatus.storageLimit {
-            // Cancle any running indexing process
-            self.downloadPageQueue.cancelAllOperations()
-            self.messageIndexingQueue.cancelAllOperations()
+            // Run on seperate thread to prevent the app from being unresponsive
+            DispatchQueue.global(qos: .userInitiated).async {
+                // Cancle any running indexing process
+                self.deleteAndClearOperationQueues() {
+                    // Set state to partial
+                    self.setESState(userID: userID, indexingState: .partial)
 
-            // Set state to partial
-            self.setESState(userID: userID, indexingState: .partial)
-
-            // clean up indexing
-            self.cleanUpAfterIndexing(userID: userID)
+                    // clean up indexing
+                    self.cleanUpAfterIndexing(userID: userID)
+                }
+            }
         }
     }
 
@@ -2057,7 +2077,7 @@ extension EncryptedSearchService {
                     }
                     print("Remaining indexing time (seconds): \(String(describing: result.time))")
                     print("Current progress: \(result.currentProgress)")
-                    print("Indexing rate: \(self.messageIndexingQueue.maxConcurrentOperationCount)")
+                    print("Indexing rate: \(String(describing: self.messageIndexingQueue?.maxConcurrentOperationCount))")
                 }
             }
 
