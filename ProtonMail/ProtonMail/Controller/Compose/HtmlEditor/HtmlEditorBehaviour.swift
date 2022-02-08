@@ -236,7 +236,7 @@ class HtmlEditorBehaviour: NSObject {
                 return Promise()
             }
         }.then { () -> Promise<Void> in
-            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(HTTPRequestSecureLoader.domPurifyConfiguration));")
+            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.default.value));")
         }.then { (_) -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { (width) -> Promise<Void> in
@@ -258,7 +258,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTTPRequestSecureLoader.domPurifyConfiguration));").catch { _ in
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(DomPurifyConfig.default.value));").catch { _ in
         }
     }
     

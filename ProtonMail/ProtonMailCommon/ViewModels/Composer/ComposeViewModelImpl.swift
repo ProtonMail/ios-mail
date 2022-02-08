@@ -713,7 +713,9 @@ class ComposeViewModelImpl : ComposeViewModel {
             var css: String?
             do {
                 body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
-                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                    css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                }
             } catch {
                 body = self.message!.bodyToHtml()
             }
@@ -745,7 +747,10 @@ class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            let css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            var css: String?
+            if CSSMagic.darkStyleSupportLevel(htmlString: result, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            }
             return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
             let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
@@ -792,7 +797,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            let css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            var css: String?
+            if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            }
             return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
