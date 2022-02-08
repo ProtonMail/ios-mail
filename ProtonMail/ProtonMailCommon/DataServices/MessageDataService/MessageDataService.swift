@@ -878,7 +878,8 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
     
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         return Promise { seal in
-            self.coreDataService.enqueue(context: self.coreDataService.operationContext) { (context) in
+            let context = self.coreDataService.operationContext
+            context.perform {
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
@@ -891,22 +892,21 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                                                           ContextLabel.Attributes.isSoftDeleted,
                                                           NSNumber(false))
                 if let labels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
-                    labels.forEach { label in
-                        let conversation: Conversation? = label.conversation
-                        if conversation != nil {
-                            context.delete(label.conversation)
-                        }
-                        context.delete(label)
-                    }
+                    labels.forEach{ context.delete($0) }
                 }
-                
-//                let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-//                conversationFetch.predicate = NSPredicate(format: "%K == %@", Conversation.Attributes.userID, self.userID)
-//                if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
-//                    conversations.forEach{ context.delete($0) }
-//                }
+
+                let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
+                conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
+                                                          Conversation.Attributes.userID,
+                                                          self.userID,
+                                                          Conversation.Attributes.isSoftDeleted,
+                                                          NSNumber(false))
+                if let conversations = try? context.fetch(conversationFetch) as? [Conversation] {
+                    conversations.forEach{ context.delete($0) }
+                }
 
                 _ = context.saveUpstreamIfNeeded()
+                context.refreshAllObjects()
 
                 if cleanBadgeAndNotifications {
                     UIApplication.setBadge(badge: 0)
