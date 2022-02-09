@@ -241,9 +241,9 @@ extension EncryptedSearchCacheService {
                                                                                                                              esMessage.IsRepliedAll == 1,
                                                                                                                              esMessage.IsForwarded == 1,
                                                                                                                              esMessage.NumAttachments,
-                                                                                                                             Int64(esMessage.ExpirationTime!.timeIntervalSince1970))
+                                                                                                                             Int64(esMessage.ExpirationTime?.timeIntervalSince1970 ?? 0))
 
-            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time!.timeIntervalSince1970), orderValue: Int64(truncating: msg.order), labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
+            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time?.timeIntervalSince1970 ?? 0), orderValue: Int64(truncating: msg.order), labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
         }
         return nil
     }
