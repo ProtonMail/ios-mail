@@ -231,6 +231,14 @@ extension EncryptedSearchService {
             let numberOfMessageInIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             if numberOfMessageInIndex == 0 {
                 print("ES-DEBUG: Build search index completely new")
+
+                // Reset some values
+                userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchProcessedMessages = 0
+                userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
+                userCachedStatus.encryptedSearchNumberOfPauses = 0
+                userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+
                 // If there are no message in the search index - build completely new
                 DispatchQueue.global(qos: .userInitiated).async {
                     self.downloadAndProcessPage(userID: userID){ [weak self] in
@@ -575,81 +583,82 @@ extension EncryptedSearchService {
 
     func deleteSearchIndex(userID: String) {
         // Run on a seperate thread to avoid blocking the main thread
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .userInteractive).async {
             // Update state
             self.setESState(userID: userID, indexingState: .disabled)
+            userCachedStatus.isEncryptedSearchOn = false
 
             // Cancle any running indexing process
-            self.deleteAndClearOperationQueues(){
+            self.deleteAndClearOperationQueues() {
                 // update user cached status
-                userCachedStatus.isEncryptedSearchOn = false
                 userCachedStatus.encryptedSearchTotalMessages = 0
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
                 userCachedStatus.encryptedSearchProcessedMessages = 0
                 userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
-                userCachedStatus.encryptedSearchNumberOfPauses = 0
-                userCachedStatus.encryptedSearchNumberOfInterruptions = 0
+            }
 
-                // Just delete the search index if it exists
-                var isIndexSuccessfullyDelete: Bool = false
-                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
-                    isIndexSuccessfullyDelete = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
-                }
+            userCachedStatus.encryptedSearchNumberOfPauses = 0
+            userCachedStatus.encryptedSearchNumberOfInterruptions = 0
 
-                // Update some variables
-                self.noNewMessagesFound = 0
-                self.eventsWhileIndexing = []
+            // Just delete the search index if it exists
+            var isIndexSuccessfullyDelete: Bool = false
+            if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
+                isIndexSuccessfullyDelete = EncryptedSearchIndexService.shared.deleteSearchIndex(for: userID)
+            }
 
-                self.pauseIndexingDueToNetworkConnectivityIssues = false
-                self.pauseIndexingDueToWiFiNotDetected = false
-                self.pauseIndexingDueToOverheating = false
-                self.pauseIndexingDueToLowBattery = false
-                self.pauseIndexingDueToLowStorage = false
-                self.estimateIndexTimeRounds = 0
-                self.slowDownIndexBuilding = false
+            // Update some variables
+            self.noNewMessagesFound = 0
+            self.eventsWhileIndexing = []
 
-                // Reset view model
-                self.viewModel?.isEncryptedSearch = false
-                self.viewModel?.progressedMessages.value = 0
-                self.viewModel?.currentProgress.value = 0
-                self.viewModel?.isIndexingComplete.value = false
-                self.viewModel?.interruptStatus.value = nil
-                self.viewModel?.interruptAdvice.value = nil
-                self.viewModel?.estimatedTimeRemaining.value = nil
-                self.viewModel = nil
-                #if !APP_EXTENSION
-                    self.searchViewModel = nil
-                #endif
+            self.pauseIndexingDueToNetworkConnectivityIssues = false
+            self.pauseIndexingDueToWiFiNotDetected = false
+            self.pauseIndexingDueToOverheating = false
+            self.pauseIndexingDueToLowBattery = false
+            self.pauseIndexingDueToLowStorage = false
+            self.estimateIndexTimeRounds = 0
+            self.slowDownIndexBuilding = false
 
-                // Invalidate timer on same thread as it has been created
-                DispatchQueue.main.async {
-                    self.indexBuildingTimer?.invalidate()
-                }
+            // Reset view model
+            self.viewModel?.isEncryptedSearch = false
+            self.viewModel?.progressedMessages.value = 0
+            self.viewModel?.currentProgress.value = 0
+            self.viewModel?.isIndexingComplete.value = false
+            self.viewModel?.interruptStatus.value = nil
+            self.viewModel?.interruptAdvice.value = nil
+            self.viewModel?.estimatedTimeRemaining.value = nil
+            self.viewModel = nil
+            #if !APP_EXTENSION
+                self.searchViewModel = nil
+            #endif
 
-                // Stop background tasks
-                #if !APP_EXTENSION
-                    self.endBackgroundTask()
-                #endif
-                if #available(iOS 13.0, *) {
-                    self.cancelBGProcessingTask()
-                    self.cancelBGAppRefreshTask()
-                }
+            // Invalidate timer on same thread as it has been created
+            DispatchQueue.main.async {
+                self.indexBuildingTimer?.invalidate()
+            }
 
-                // Unregister network monitoring
-                if #available(iOS 12, *) {
-                    self.unRegisterForNetworkChangeNotifications()
-                } else {
-                    // Fallback on earlier versions
-                }
+            // Stop background tasks
+            #if !APP_EXTENSION
+                self.endBackgroundTask()
+            #endif
+            if #available(iOS 13.0, *) {
+                self.cancelBGProcessingTask()
+                self.cancelBGAppRefreshTask()
+            }
 
-                // Update UI
-                self.updateUIWithIndexingStatus(userID: userID)
+            // Unregister network monitoring
+            if #available(iOS 12, *) {
+                self.unRegisterForNetworkChangeNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
 
-                if isIndexSuccessfullyDelete {
-                    print("Search index for user \(userID) sucessfully deleted!")
-                } else {
-                    print("Error when deleting the search index!")
-                }
+            // Update UI
+            self.updateUIWithIndexingStatus(userID: userID)
+
+            if isIndexSuccessfullyDelete {
+                print("Search index for user \(userID) sucessfully deleted!")
+            } else {
+                print("Error when deleting the search index!")
             }
         }
     }
@@ -1869,17 +1878,16 @@ extension EncryptedSearchService {
     }
 
     private func deleteAndClearOperationQueues(completion: (() -> Void)?) {
+        // Suspend message queues to stop processing tasks
         self.downloadPageQueue?.isSuspended = true
+        self.messageIndexingQueue?.isSuspended = true
+
         self.downloadPageQueue?.cancelAllOperations()
-        // Wait until all operations are finished then continue
-        self.downloadPageQueue?.waitUntilAllOperationsAreFinished()
         self.downloadPageQueue = nil
 
-        self.messageIndexingQueue?.isSuspended = true
         self.messageIndexingQueue?.cancelAllOperations()
-        // Wait until all operations are finished then continue
-        self.messageIndexingQueue?.waitUntilAllOperationsAreFinished()
         self.messageIndexingQueue = nil
+
         completion?()
     }
 
