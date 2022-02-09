@@ -1183,6 +1183,7 @@
 		6B83402A5AE4ADCF885F31E0C53A59D1 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */; };
 		6B98C8A97FBE9BC84B3700AB5ED6BD5E /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499999580B77BFB0F2290C522EBB8A46 /* Data+Extension.swift */; };
 		6BB287F191C039D4C2B112CCD8BCF5B6 /* ConversationFeatureFlagResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4683A4A3B8080FF07F179AF8D8BFE75F /* ConversationFeatureFlagResponseTests.swift */; };
+		6BC3B06576AED881D8D881E201C5E5B9 /* EventsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3DF0DA0E733040FCA1A88C3446B7A0 /* EventsServiceTests.swift */; };
 		6BD8EC1000DF442DB8B0F69D3B1CB072 /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		6BE3174840623F711663226DCFCF5C14 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
 		6BE5516201B68C822B2F0E335B68D4A9 /* PushDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A5315E8AAC10AE56FAFE5792A028E4 /* PushDataTests.swift */; };
@@ -3888,6 +3889,7 @@
 		BDE76D9AEB99664451656CD5E519FC81 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		BDEFE765B129002D038F135133AB7242 /* CacheServiceTests+UnreadCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CacheServiceTests+UnreadCounter.swift"; sourceTree = "<group>"; };
 		BE33338562E664D5FA911E596B71F0C4 /* SwipeActionCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionCacheProtocol.swift; sourceTree = "<group>"; };
+		BE3DF0DA0E733040FCA1A88C3446B7A0 /* EventsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventsServiceTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/CacheService/EventsServiceTests.swift; sourceTree = SOURCE_ROOT; };
 		BF4EFAD3914CECAEACD64A81A54B0C40 /* LinkOpeningValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkOpeningValidator.swift; sourceTree = "<group>"; };
 		BFADEBFA682BD03DA8922D26C3D7C317 /* InAppFeedbackActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppFeedbackActionSheetView.swift; sourceTree = "<group>"; };
 		BFB4C4DF9DD2ADD58D87E2891CBE59CD /* MIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
@@ -4903,6 +4905,7 @@
 			isa = PBXGroup;
 			children = (
 				D698D44A31346764A1CB452EA685B1BA /* EventsServiceHelperTest.swift */,
+				BE3DF0DA0E733040FCA1A88C3446B7A0 /* EventsServiceTests.swift */,
 				1A52A2DB7E76BFFE9483994A49E58B6A /* MessageEventTest.swift */,
 			);
 			path = EventsService;
@@ -8969,6 +8972,7 @@
 				2AF249C4708F487188BA5100C2BF6E92 /* EventTestData.swift in Sources */,
 				D2466917F1F84D1E3CF6B3EC95CD2AFA /* EventsServiceHelperTest.swift in Sources */,
 				F4A480B8A7379F303B88721D48D0D30A /* EventsServiceMock.swift in Sources */,
+				6BC3B06576AED881D8D881E201C5E5B9 /* EventsServiceTests.swift in Sources */,
 				D2B1643218CB0A918211267471547142 /* FeatureFlagTestData.swift in Sources */,
 				6E2309586760D827888204F209BE963D /* FeatureFlagsDownloadServiceTests.swift in Sources */,
 				258DAF81E61976DC6F879E9C57D5D7B3 /* FeatureFlagsRequestTests.swift in Sources */,
