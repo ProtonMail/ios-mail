@@ -675,7 +675,8 @@ extension EventsService {
                                 do {
                                     if var new_or_update_label = label.label {
                                         new_or_update_label["UserID"] = self.userManager.userInfo.userId
-                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
+                                        let result = EventsService.removeConflictV3FieldOfLabelEvent(event: new_or_update_label)
+                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: result, in: context)
                                     }
                                 } catch {
                                 }
@@ -822,4 +823,14 @@ extension EventsService {
         }
         self.userManager?.update(usedSpace: usedSpace)
     }
+
+    // The "Type" and "Order" fields from the event API is using the different definition with the v4 Label API.
+    // Remove it since it will break the display in the Menu.
+    static func removeConflictV3FieldOfLabelEvent(event: [String: Any]) -> [String: Any] {
+        var copy = event
+        copy.removeValue(forKey: "Type")
+        copy.removeValue(forKey: "Order")
+        return copy
+    }
+    
 }

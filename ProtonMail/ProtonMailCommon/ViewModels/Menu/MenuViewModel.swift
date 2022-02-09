@@ -525,26 +525,28 @@ extension MenuViewModel {
     
     // Get the indexPaths should be Expanded / collapsed by the given label
     private func handleMenuExpandEvent(label: MenuLabel) {
-        let row = self.getFolderItemRow(by: label.location.labelID, source: self.folderItems)
-        guard row != nil else {return}
-        
+        guard let row = self.getFolderItemRow(by: label.location.labelID, source: self.folderItems),
+              let sectionOfFolder = sections.firstIndex(of: .folders) else {
+            return
+        }
+
         var num = 0
         var queue = label.subLabels
         while queue.count > 0 {
             let item = queue.remove(at: 0)
             num += 1
-            guard item.expanded else {continue}
-            item.subLabels.forEach { (label) in
+            guard item.expanded else { continue }
+            item.subLabels.forEach { label in
                 queue.insert(label, at: 0)
             }
         }
-        guard num > 0 else {return}
+        guard num > 0 else { return }
         var arr = [IndexPath]()
         for idx in 1...num {
-            arr.append(IndexPath(row: row!+idx, section: 1))
+            arr.append(IndexPath(row: row + idx, section: sectionOfFolder))
         }
         
-        let updateRow = IndexPath(row: row!, section: 1)
+        let updateRow = IndexPath(row: row, section: sectionOfFolder)
         var insertRows: [IndexPath] = []
         var deleteRows: [IndexPath] = []
         if label.expanded {
