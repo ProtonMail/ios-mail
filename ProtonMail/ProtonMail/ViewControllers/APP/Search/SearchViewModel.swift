@@ -154,20 +154,15 @@ extension SearchViewModel: SearchVMProtocol {
                     expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                     if fromStart {
                         EncryptedSearchService.shared.isSearching = true
-                        EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch = 0
-                        EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch = 0
+                        EncryptedSearchService.shared.numberOfResultsFoundBySearch = 0
                         // Clear previous search state whenever a new search is initiated
                         EncryptedSearchService.shared.clearSearchState()
                     } else {
                         if let searchState = EncryptedSearchService.shared.searchState {
                             if searchState.isComplete {
-                                let resultsFound: Int = EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch + EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch
-                                let numberOfPages: Int = Int(ceil(Double(resultsFound/EncryptedSearchService.shared.searchResultPageSize)))
-                                print("ES: searchedcount: \(resultsFound)")
-                                print("ES: page to load: \(pageToLoad), number of pages: \(numberOfPages)")
+                                let numberOfPages: Int = Int(ceil(Double(EncryptedSearchService.shared.numberOfResultsFoundBySearch/EncryptedSearchService.shared.searchResultPageSize)))
                                 if pageToLoad > numberOfPages {
                                     print("ES searching complete - no need to fetch futher data.")
-                                    print("Number of message in messages array: \(self.messages.count)")
                                     return
                                 }
                             }
@@ -676,7 +671,7 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 }
 
 extension SearchViewModel {
-    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?, currentPage: Int){
+    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?, currentPage: Int) {
         guard let messageBoxes = messageBoxes else {
             print("search error!")
             if currentPage == 0 {
@@ -687,7 +682,6 @@ extension SearchViewModel {
         DispatchQueue.main.async {
             self.uiDelegate?.activityIndicator(isAnimating: false)
             self.uiDelegate?.stopSearchInfoActivityIndicator()
-            //self?.uiDelegate?.reloadTable()
         }
 
         self.currentPage = currentPage
