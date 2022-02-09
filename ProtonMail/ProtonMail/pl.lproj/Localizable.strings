@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Pokaż pełną wiadomość]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "EE, d MMM yyyy %@";
 
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Zablokuj aplikację";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Zaloguj się ponownie, aby otrzymywać powiadomienia";
+
 /* comment */
 "Log out" = "Wyloguj";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Wylogowano z konta %@";
 
 /* error title */
 "Logs" = "Logi";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Wiadomość %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Treść wiadomości";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Wiadomość nie może zostać wysłana. Co najmniej jeden adres e-mail lub domena odbiorcy nie istnieje lub jest nieprawidłowo sformatowana.";

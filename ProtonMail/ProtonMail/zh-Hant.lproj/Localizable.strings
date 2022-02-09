@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Show full message]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
 
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "鎖定應用程式";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "再次登錄以持續接收更新";
+
 /* comment */
 "Log out" = "登出";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "已從 %@ 登出";
 
 /* error title */
 "Logs" = "日誌";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "郵件訊息 %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Message body";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電子郵件地址/網域不存在或格式不良。";

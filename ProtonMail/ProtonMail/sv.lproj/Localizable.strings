@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Show full message]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
 
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Lås appen";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
+
 /* comment */
 "Log out" = "Logga ut";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Logged out of %@";
 
 /* error title */
 "Logs" = "Loggar";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Meddelande %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Message body";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän existerar inte eller är felaktigt formaterad.";
@@ -2134,7 +2146,7 @@
 "Proxy/Firewall interference" = "Proxy-/brandväggstörningar";
 
 /* (No Comment) */
-"Quick swipe actions" = "Quick Swipe actions";
+"Quick swipe actions" = "Snabba svepåtgärder";
 
 /* Title */
 "Rate & Review" = "Betygsätt och recensera";
@@ -2143,7 +2155,7 @@
 "Re-authenticate" = "Re-authenticate";
 
 /* set PIN title */
-"Re-Enter your PIN" = "Re-Enter your PIN";
+"Re-Enter your PIN" = "Ange din PIN-kod igen";
 
 /* abbreviation of reply: */
 "Re:" = "Sv:";
@@ -2460,7 +2472,7 @@
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
-"Star" = "Star";
+"Star" = "Stjärnmärk";
 
 /* Title */
 "Star/unstar" = "Star/unstar";
@@ -2659,7 +2671,7 @@
 "The PIN codes must match!" = "PIN-koderna måste matcha!";
 
 /* update password error */
-"The private key update failed." = "The private key update failed.";
+"The private key update failed." = "Uppdatering av privat nyckel misslyckades.";
 
 /* Title */
 "The request timed out." = "The request timed out.";
@@ -2926,10 +2938,10 @@
 "Unread" = "Oläst";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Unstar";
+"Unstar" = "Ta bort stjärnmärkning";
 
 /* No comment provided by engineer. */
-"Unsubscribe" = "Unsubscribe";
+"Unsubscribe" = "Avsluta prenumeration";
 
 /* Error message */
 "Unsupported file type" = "Filtyp som inte stöds";
@@ -2995,7 +3007,7 @@
 "Verification error" = "Verifieringsfel";
 
 /* error details */
-"Verification of this content’s signature failed" = "Verification of this content’s signature failed";
+"Verification of this content’s signature failed" = "Verifiering av detta innehållets signatur misslyckades";
 
 /* (No Comment) */
 "Version %@ %@" = "Version %@ %@";
@@ -3037,7 +3049,7 @@
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We recommend setting up a password instead, or disabling PGP for the following recipients:";
 
 /* text field notes */
-"We will send a verification code to the cell phone above." = "We will send a verification code to the cell phone above.";
+"We will send a verification code to the cell phone above." = "Vi kommer skicka en verifieringskod till mobiltelefonen ovan.";
 
 /* email field notes */
 "We will send a verification code to the email address above." = "Vi kommer skicka en verifieringskod till e-postadressen ovan.";

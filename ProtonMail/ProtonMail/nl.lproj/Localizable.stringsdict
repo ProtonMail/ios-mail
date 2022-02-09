@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@conversation@?</string>
+		<string>Weet u zeker dat u %#@conversation@ permanent wil verwijderen?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -113,15 +113,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d gesprek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d gesprekken</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>Are you sure you want to permanently delete %#@message@?</string>
+		<string>Weet u zeker dat u %#@message@ permanent wil verwijderen?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -129,9 +129,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d bericht</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d berichten</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>
@@ -191,12 +191,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d gesprek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d gesprekken</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ gelabeld</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -207,12 +207,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d bericht</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d berichten</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ gelabeld</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -223,12 +223,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d gesprek</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d gesprekken</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@ verplaatst naar %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -239,12 +239,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d bericht</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d berichten</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@ verplaatst naar %@</string>
 	</dict>
 </dict>
 </plist>

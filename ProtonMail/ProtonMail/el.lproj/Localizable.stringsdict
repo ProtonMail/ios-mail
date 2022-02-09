@@ -113,9 +113,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d συνομιλία</string>
 			<key>other</key>
-			<string>%d conversations</string>
+			<string>%d συνομιλίες</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
@@ -129,9 +129,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d μήνυμα</string>
 			<key>other</key>
-			<string>%d messages</string>
+			<string>%d μηνύματα</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>

@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Vis fuld besked]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'På' E, d MMM, yyyy 'kl.' %@";
 
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Lås app'en";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Log ind igen for at fortsat at modtage opdateringer";
+
 /* comment */
 "Log out" = "Log ud";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Logget ud af %@";
 
 /* error title */
 "Logs" = "Logger";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Besked %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Beskedindhold";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Besked kunne ikke sendes. Mindst én modtager e-mailadresse/domæne findes ikke eller er fejlagtigt formateret.";

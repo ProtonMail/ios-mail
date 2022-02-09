@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Εμφάνιση πλήρους μηνύματος]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Στις' E, MMM d, yyyy 'στις' %@";
 
@@ -195,7 +198,7 @@
 "Add photo" = "Προσθήκη φωτογραφίας";
 
 /* mark message star */
-"Add Star" = "Προσθήκη αστεριού";
+"Add Star" = "Προσθήκη Αστεριού";
 
 /* new contacts add Title */
 "Add title" = "Προσθέστε τίτλο";
@@ -514,7 +517,7 @@
 "Cancelling" = "Γίνεται Ακύρωση";
 
 /* Warning message */
-"Cannot empty folder right now." = "Cannot empty folder right now.";
+"Cannot empty folder right now." = "Αδυναμία αδειάσματος φακέλου επί του παρόντος.";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Δεν είναι δυνατή η αποκρυπτογράφηση αυτού του συνημμένου.";
@@ -628,10 +631,10 @@
 "Compose" = "Σύνταξη";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Compose message";
+"Compose message" = "Σύνταξη μηνύματος";
 
 /* Title */
-"Compose to" = "Σύνθεση σε";
+"Compose to" = "Σύνταξη προς";
 
 /* *
  *  MenuViewController */
@@ -997,16 +1000,16 @@
 "Empty Label" = "Κενή Ετικέτα";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Empty Spam";
+"Empty Spam" = "Άδειασμα Ενοχλητικών";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "Άδειασμα φακέλου ανεπιθύμητων";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Empty Trash";
+"Empty Trash" = "Άδειασμα Διαγραμμένων";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "Άδειασμα φακέλου διαγραμμένων";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Ενεργοποίηση συνομιλιών";
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Κλείδωμα εφαρμογής";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Εισέλθετε ξανά για να συνεχίσετε να λαμβάνετε ενημερώσεις";
+
 /* comment */
 "Log out" = "Αποσύνδεση";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Έχετε εξέλθει από το %@";
 
 /* error title */
 "Logs" = "Αρχεία καταγραφής";
@@ -1573,7 +1582,7 @@
 "Manage Labels/Folders" = "Διαχείριση Ετικετών/Φακέλων";
 
 /* No comment provided by engineer. */
-"Mark as legitimate" = "Σημείωση ως νόμιμου";
+"Mark as legitimate" = "Σήμανση ως αποδεκτό";
 
 /* The title of the read action in action sheet */
 "Mark as read" = "Σήμανση ως διαβασμένο";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Μήνυμα %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Σώμα μηνύματος";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Δεν ήταν δυνατή η αποστολή μηνύματος. Τουλάχιστον μία διεύθυνση email παραλήπτη/domain δεν υπάρχει ή δεν έχει μορφοποιηθεί σωστά.";
@@ -2221,7 +2233,7 @@
 "Reply all" = "Απάντηση σε όλους";
 
 /* composer view model impl */
-"Reply message" = "Απάντηση μηνύματος";
+"Reply message" = "Μήνυμα απάντησης";
 
 /* (No Comment) */
 "ReplyAll" = "Απάντηση σε όλους";

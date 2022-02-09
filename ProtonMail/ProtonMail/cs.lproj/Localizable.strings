@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Zobrazit celou zprávu]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'at' %@";
 
@@ -111,7 +114,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Z důvodů neplacení je přístup k tomuto účtu zakázán. Prosím přihlašte se prostřednictvím protonmail.com a uhraďte nezaplacenou fakturu.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Z důvodů neplacení je přístup k tomuto účtu zakázán.\n\nPro další informace navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši sbírku znalostí.</a>";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Přístup k tomuto účtu je znemožněn z důvodu nezaplacení.\n Pro více informací prosím navštivte <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naši znalostní bázi.</a>";
 
 /* Account manager title */
 "Account" = "Účet";
@@ -362,7 +365,7 @@
 "Authentication failed" = "Ověření se nezdařilo";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Ověření se nezdařilo: nesprávné uživatelské jméno nebo heslo";
+"Authentication Failed Wrong username or password" = "Ověření se nezdařilo: nesprávné uživatelské jméno nebo heslo.";
 
 /* Error */
 "Authentication failed. Please try to sign in again." = "Ověřování se nezdařilo. Zkuste se přihlásit znovu.";
@@ -766,7 +769,7 @@
 
 /* days
    Title */
-"days" = "dny";
+"days" = "Dní";
 
 /* Title */
 "Debug" = "Ladění";
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Zamknout aplikaci";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Chcete-li nadále dostávat aktualizace, znovu se přihlašte";
+
 /* comment */
 "Log out" = "Odhlásit se";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Odhlášen z %@";
 
 /* error title */
 "Logs" = "Logy";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Zpráva %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Tělo zprávy";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zprávu se nepodařilo odeslat. Nejméně jedna e-mailová adresa/doména příjemce neexistuje nebo je špatně naformátovaná.";
@@ -1721,7 +1733,7 @@
 "Neat and tidy" = "Upravený a organizovaný";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "POTŘEBUJETE ÚČET? REGISTRUJTE SE.";
+"NEED AN ACCOUNT? SIGN UP." = "Zaregistrujte se zdarma";
 
 /* section title 
    The title of alternative routing settings */
@@ -2607,7 +2619,7 @@
 "The draft cache is broken. Please try again." = "Chyba v mezipaměti konceptu. Zkuste to prosím znovu.";
 
 /* error when sending the message */
-"The draft format incorrectly sending failed!" = "Nesprávný formát návrhu. Odesílání selhalo!";
+"The draft format incorrectly sending failed!" = "Odeslání se nezdařilo. Došlo k chybě ve formátu konceptu.";
 
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "Následující soubory se nepodařilo připojit:";
@@ -2890,7 +2902,7 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Nelze odeslat e-mail";
+"Unable to send the email" = "E-mail nelze odeslat.";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Nezveřejnění příjemci";
@@ -2971,10 +2983,10 @@
 "Use folder colors" = "Použít barvy složek";
 
 /* error when user already exist */
-"User already exist!" = "Uživatel již existuje!";
+"User already exist!" = "Uživatelské jméno je již použito";
 
 /* (No Comment) */
-"User is available!" = "Uživatel je k dispozici!";
+"User is available!" = "Uživatelské jméno je k dispozici";
 
 /* title */
 "User name exist" = "Uživatelské jméno již existuje";
@@ -3052,7 +3064,7 @@
 "week" = "týden";
 
 /* (No Comment) */
-"Welcome to ProtonMail!" = "Vítejte na ProtonMail!";
+"Welcome to ProtonMail!" = "Vítejte v ProtonMail";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Toto je jméno, které se zobrazí v poli \"Odesílatel\" při odeslání e-mailu.";

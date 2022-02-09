@@ -27,9 +27,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Güvenli veri kesilene kadar %d deneme hakkı kaldı!</string>
+			<string>%d deneme sonra güvenli veriler silinecek!</string>
 			<key>other</key>
-			<string>Güvenli veri kesilene kadar %d deneme hakkı kaldı!</string>
+			<string>%d deneme sonra güvenli veriler silinecek!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -81,9 +81,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d daha</string>
+			<string>%d kişi daha</string>
 			<key>other</key>
-			<string>%d daha</string>
+			<string>%d kişi daha</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@conversation@ görüşmesini kalıcı olarak silmek istediğinize emin misiniz?</string>
+		<string>%#@conversation@ yazışmasını kalıcı olarak silmek istediğinize emin misiniz?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -113,9 +113,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation</string>
+			<string>%d yazışma</string>
 			<key>other</key>
-			<string>%d adet görüşme</string>
+			<string>%d yazışma</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
@@ -129,9 +129,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message</string>
+			<string>%d ileti</string>
 			<key>other</key>
-			<string>%d adet ileti</string>
+			<string>%d ileti</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>
@@ -143,9 +143,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u konuşma</string>
+			<string>%u yazışma</string>
 			<key>other</key>
-			<string>%u konuşma</string>
+			<string>%u yazışma</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -191,12 +191,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d konuşma</string>
+			<string>%d yazışma</string>
 			<key>other</key>
-			<string>%d konuşma</string>
+			<string>%d yazışma</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ labeled</string>
+		<string>%#@Conversation@ etiketlendi</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -212,7 +212,7 @@
 			<string>%d ileti</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ labeled</string>
+		<string>%#@Message@ etiketlendi</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -223,12 +223,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d konuşma</string>
+			<string>%d yazışma</string>
 			<key>other</key>
-			<string>%d konuşma</string>
+			<string>%d yazışma</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ moved to %@</string>
+		<string>%#@Conversation@, %@ içine taşındı</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -244,7 +244,7 @@
 			<string>%d ileti</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ moved to %@</string>
+		<string>%#@MSG@, %@ içine taşındı</string>
 	</dict>
 </dict>
 </plist>

@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Toon volledig bericht]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Op EE, MMM d, jjjjj om %@";
 
@@ -80,10 +83,10 @@
 "<no object>" = "<geen object>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Message moved to archive";
+"1 Message moved to archive" = "1 Bericht verplaatst naar archief";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 Message moved to spam";
+"1 Message moved to spam" = "1 Bericht verplaatst naar spam";
 
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "2FA is mislukt. Probeer opnieuw aan te melden.";
@@ -123,7 +126,7 @@
 "Account settings" = "Accountinstellingen";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Action reverted";
+"Action reverted" = "Actie ongedaan gemaakt";
 
 /* (No Comment) */
 "Add" = "Toevoegen";
@@ -514,7 +517,7 @@
 "Cancelling" = "Annuleren";
 
 /* Warning message */
-"Cannot empty folder right now." = "Cannot empty folder right now.";
+"Cannot empty folder right now." = "Kan de map momenteel niet leegmaken.";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Kan deze bijlage niet decoderen.";
@@ -628,7 +631,7 @@
 "Compose" = "Opstellen";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Compose message";
+"Compose message" = "Bericht opstellen";
 
 /* Title */
 "Compose to" = "Opstellen aan";
@@ -997,16 +1000,16 @@
 "Empty Label" = "Label legen";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Empty Spam";
+"Empty Spam" = "Spam leegmaken";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "Map spam leegmaken";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Empty Trash";
+"Empty Trash" = "Prullenbak leegmaken";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "Map prullenbak leegmaken";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Gesprekken inschakelen";
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "App vergrendelen";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Meld opnieuw aan om updates blijven ontvangen";
+
 /* comment */
 "Log out" = "Afmelden";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Afgemeld van %@";
 
 /* error title */
 "Logs" = "Logs";
@@ -1596,6 +1605,9 @@
 /* Message with title */
 "Message %@" = "Bericht %@";
 
+/* Title of the view showing the message body */
+"Message body" = "Berichtinhoud";
+
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
 
@@ -1616,7 +1628,7 @@
 "Message headers" = "Berichtkoppen";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Message moved to trash";
+"Message moved to trash" = "Bericht verplaatst naar prullenbak";
 
 /* Placeholder */
 "Message Password" = "Wachtwoord van bericht";
@@ -2680,7 +2692,7 @@
 "The user is already logged in" = "De gebruiker is al ingelogd";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "De gebruikersnaam is reeds in gebruik.";
 
 /* title */
 "The verification email invalid" = "Ongeldig verificatie e-mailadres";
@@ -2711,7 +2723,7 @@
 "This contact belongs to your Address Book." = "Deze contactpersoon behoort toe tot uw adresboek.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "Dit gesprek bevat niet-verwijderde berichten.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
@@ -2720,7 +2732,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!";
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk wordt deze gespoofed of onjuist doorgestuurd!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig te zijn van een ProtonMail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
@@ -3010,10 +3022,10 @@
 "View HTML" = "Bekijk HTML";
 
 /* The title of the view message in dark mode action in action sheet */
-"View message in Dark mode" = "View message in Dark mode";
+"View message in Dark mode" = "Bericht bekijken in Donkere modus";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "View message in Light mode";
+"View message in Light mode" = "Bericht bekijken in Lichte modus";
 
 /* Title */
 "Warning" = "Waarschuwing";
