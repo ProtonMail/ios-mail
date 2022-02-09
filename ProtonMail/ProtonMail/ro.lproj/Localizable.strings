@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "...[Afișați mesajul complet]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'la' %@";
 
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Blocare aplicație";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Conectați-vă din nou pentru a continua să primiți actualizări";
+
 /* comment */
 "Log out" = "Deconectare";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Deconectat de la %@";
 
 /* error title */
 "Logs" = "Jurnale";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Mesaj %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Textul mesajului";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";

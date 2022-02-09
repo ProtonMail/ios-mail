@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Mostra messaggio completo]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Il' E, MMM gg, aaaa 'alle' %@";
 
@@ -1256,7 +1259,7 @@
 "Go to drafts" = "Vai alle bozze";
 
 /* Action */
-"Go to inbox" = "Va' alla posta in arrivo";
+"Go to inbox" = "Vai alla posta in arrivo";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Vai alle impostazioni";
@@ -1448,7 +1451,7 @@
 
 /* *
  *  MoreOptionsView */
-"Label as..." = "Etichettare come...";
+"Label as..." = "Etichetta come...";
 
 /* The title of the label as action in action sheet
    Title */
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Blocca l'app";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Accedi di nuovo per continuare a ricevere gli aggiornamenti";
+
 /* comment */
 "Log out" = "Esci";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Disconnesso da %@";
 
 /* error title */
 "Logs" = "Registri";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Messaggio %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Corpo del messaggio";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Il messaggio non può essere inviato. Almeno un indirizzo email/dominio del destinatario non esiste o è formattato male.";

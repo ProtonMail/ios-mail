@@ -1,3 +1,6 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Tampilkan isi pesan selengkapnya]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'Pada' E, d MMM yyyy 'pukul' %@";
 
@@ -317,7 +320,7 @@
 "Are you sure you want to sign out?" = "Apakah Anda yakin ingin keluar?";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Apakan anda yakin? Tindakan ini tidak bisa dibatalkan.";
+"Are you sure? This can't be undone." = "Apakah Anda yakin? Tindakan ini tidak dapat diurungkan.";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Pukul %@";
@@ -383,7 +386,7 @@
 "Auto show remote content" = "Tampilkan remote content secara otomatis";
 
 /* settings general section title */
-"Auto-load embedded images" = "Muat gambar tertanam secara otomatis";
+"Auto-load embedded images" = "Muat gambar-gambar yang tersemat secara otomatis";
 
 /* Example feedback */
 "Awful" = "Mengecewakan";
@@ -437,7 +440,7 @@
 "By using ProtonMail, you agree to our %@ and %@." = "Dengan menggunakan ProtonMail, Anda setuju dengan %1$@ dan %2$@ kami.";
 
 /* Call the contact (button title text) */
-"Call contact" = "Panggil kontak";
+"Call contact" = "Hubungi kontak";
 
 /* key size note part 2 */
 "Can take several minutes to setup." = "Pengaturan memerlukan waktu beberapa menit.";
@@ -572,7 +575,7 @@
 "Change single password" = "Ubah lata sandi tunggal";
 
 /* Action */
-"Check Again" = "Periksa Lagi";
+"Check Again" = "Periksa Kembali";
 
 /* network troubleshot cell title */
 "Check Proton Status for our system status." = "Memeriksa Proton status untuk status sistem kami.";
@@ -1499,7 +1502,7 @@
 "Limit reached" = "Batas tercapai";
 
 /* Service plan capability */
-"Limited to 150 messages sent/day" = "Dibatasi hingga 150 pesan terkirim/hari";
+"Limited to 150 messages sent/day" = "Terbatas pada 150 pesan terkirim/hari";
 
 /* No comment provided by engineer. */
 "Load content" = "Muat konten";
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "Kunci Aplikasi";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Harap masuk kembali untuk dapat menerima pembaruan";
+
 /* comment */
 "Log out" = "Keluar";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Anda telah keluar dari %@";
 
 /* error title */
 "Logs" = "Log";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Pesan %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Badan pesan";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat email penerima yang hendak dituju tidak ada atau tidak tertulis dengan benar.";
@@ -1761,7 +1773,7 @@
 "Next" = "Selanjutnya";
 
 /* contacts talbe cell Nickname title */
-"Nickname" = "Nama panggilan";
+"Nickname" = "Nama Panggilan";
 
 /* Title */
 "No connectivity detected…" = "Konektivitas tidak terdeteksi…";
@@ -1803,7 +1815,7 @@
 "Not Now" = "Tidak Sekarang";
 
 /* No comment provided by engineer. */
-"Not set" = "Tidak diatur";
+"Not set" = "Belum ditentukan";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Catatan: Nama pengguna juga merupakan alamat ProtonMail Anda.";
@@ -1846,7 +1858,7 @@
 "Off" = "Nonaktif";
 
 /* Title of the alert when the device is offline */
-"Offline" = "Luring";
+"Offline" = "Offline";
 
 /* *
  *  ReportBugsViewController */
@@ -2104,13 +2116,13 @@
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail tidak menjual iklan atau menyalahgunakan privasi Anda. Dukungan Anda sangat penting untuk menjaga agar ProtonMail tetap berjalan. Anda dapat meningkatkan akun ke akun berbayar atau menyumbang untuk mendukung ProtonMail.";
 
 /* Title */
-"ProtonMail encrypted emails" = "Surel terenkripsi ProtonMail";
+"ProtonMail encrypted emails" = "Email terenkripsi ProtonMail";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail sedang luring, kunjungi Twitter kami untuk melihat status saat ini: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail saat ini sedang offline. Kunjungi Twitter kami untuk melihat status saat ini: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline…" = "ProtonMail sedang luring…";
+"ProtonMail is currently offline…" = "ProtonMail sedang offline…";
 
 /* The message about the app is not having the permission to access photo library */
 "ProtonMail needs photo library access in your device settings." = "ProtonMail perlu mengakses album foto di ponsel Anda.";
@@ -2729,10 +2741,10 @@
 "This folder is empty" = "Folder ini kosong";
 
 /* No comment provided by engineer. */
-"This message contains embedded images." = "Pesan ini mengandung gambar yang disematkan.";
+"This message contains embedded images." = "Pesan ini mengandung gambar-gambar yang tersemat.";
 
 /* No comment provided by engineer. */
-"This message contains remote content and embedded images" = "Pesan ini mengandung konten daring dan gambar bawaan";
+"This message contains remote content and embedded images" = "Pesan ini mengandung remote content dan gambar-gambar yang tersemat";
 
 /* No comment provided by engineer. */
 "This message contains remote content." = "Pesan ini mengandung remote content.";
@@ -2862,7 +2874,7 @@
 "Unable to decrypt message." = "Tidak dapat mendekripsi pesan.";
 
 /* Description */
-"Unable to edit this message offline" = "Tidak dapat menyunting pesan ini secara luring";
+"Unable to edit this message offline" = "Tidak dapat menyunting pesan ini secara offline";
 
 /* Description */
 "Unable to generate hashed password!" = "Tidak dapat menghasilkan sandi hash!";
@@ -2914,7 +2926,7 @@
 "Unkonw Version" = "Versi tidak diketahui";
 
 /* Service plan capability; */
-"Unlimited messages sent/day" = "Pesan terkirim/hari tidak dibatasi";
+"Unlimited messages sent/day" = "Tanpa batas pesan yang dapat dikirim per harinya";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Membuka kunci diperlukan";

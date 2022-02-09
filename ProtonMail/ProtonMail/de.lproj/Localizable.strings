@@ -1,5 +1,8 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Vollständige Nachricht anzeigen]";
+
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'Am' E, d.MMMyyyy 'um' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'Am' EEE, dd.MMM.yyyy 'um' %@";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
@@ -1000,13 +1003,13 @@
 "Empty Spam" = "Spam-Ordner leeren";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "Spam Ordner leeren";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Papierkorb leeren";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "Papierkorb leeren";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Themengruppen aktivieren";
@@ -1532,8 +1535,14 @@
 /* menu title */
 "Lock The App" = "App sperren";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Melde dich erneut an, um weiterhin Aktualisierungen zu erhalten";
+
 /* comment */
 "Log out" = "Abmelden";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Abgemeldet von %@";
 
 /* error title */
 "Logs" = "Protokolle";
@@ -1595,6 +1604,9 @@
 
 /* Message with title */
 "Message %@" = "Nachricht %@";
+
+/* Title of the view showing the message body */
+"Message body" = "Nachrichtentext";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Nachricht konnte nicht gesendet werden. Mindestens eine Empfänger-E-Mail-Adresse/-Domain existiert nicht oder enthält Fehler in der Formatierung.";
