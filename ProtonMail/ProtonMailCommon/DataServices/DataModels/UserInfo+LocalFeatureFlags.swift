@@ -41,4 +41,8 @@ extension UserInfo {
             return false
         }
     }
+
+    static var isEncryptedSearchEnabled: Bool {
+        return true
+    }
 }

@@ -121,6 +121,7 @@ protocol SettingsAccountViewModel : AnyObject {
     var accountItems: [AccountItem] { get set }
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
+    var mailboxItemsESdisabled: [MailboxItem] {get set}
     
     var setting_swipe_action_items : [SwipeActionItems] { get set}
     var setting_swipe_actions : [MessageSwipeAction] { get set }
@@ -147,6 +148,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
     var mailboxItems :  [MailboxItem] = [.privacy, .search, .localStorage, .labels, .folders]
+    var mailboxItemsESdisabled :  [MailboxItem] = [.privacy, .labels, .folders]
 
     var setting_swipe_action_items : [SwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,

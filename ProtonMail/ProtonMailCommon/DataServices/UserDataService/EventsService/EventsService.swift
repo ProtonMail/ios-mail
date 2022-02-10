@@ -25,6 +25,7 @@ import Foundation
 import Groot
 import PromiseKit
 import ProtonCore_Services
+import ProtonCore_DataModel
 import EllipticCurveKeyPair
 
 enum EventsFetchingStatus {
@@ -326,9 +327,11 @@ extension EventsService {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                // Delete message from Encrypted Search Index
-                                if userCachedStatus.isEncryptedSearchOn {
-                                    EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+                                if UserInfo.isEncryptedSearchEnabled {
+                                    // Delete message from Encrypted Search Index
+                                    if userCachedStatus.isEncryptedSearchOn {
+                                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(message)
+                                    }
                                 }
 
                                 let labelObjs = message.mutableSetValue(forKey: "labels")
@@ -413,16 +416,18 @@ extension EventsService {
                                     }
                                 }
                                 
-                                // Insert message into Encrypted Search Index
-                                if userCachedStatus.isEncryptedSearchOn {
-                                    if msg.Action == IncrementalUpdateType.insert {
-                                        EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
-                                    } else if msg.Action == IncrementalUpdateType.update_draft {
-                                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
-                                        EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
-                                    } else if msg.Action == IncrementalUpdateType.update_flags {
-                                        EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
-                                        EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
+                                if UserInfo.isEncryptedSearchEnabled {
+                                    // Insert message into Encrypted Search Index
+                                    if userCachedStatus.isEncryptedSearchOn {
+                                        if msg.Action == IncrementalUpdateType.insert {
+                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
+                                        } else if msg.Action == IncrementalUpdateType.update_draft {
+                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
+                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
+                                        } else if msg.Action == IncrementalUpdateType.update_flags {
+                                            EncryptedSearchService.shared.deleteMessageFromSearchIndex(messageObject)
+                                            EncryptedSearchService.shared.insertSingleMessageToSearchIndex(messageObject)
+                                        }
                                     }
                                 }
                             } else {

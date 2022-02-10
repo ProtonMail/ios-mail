@@ -24,6 +24,7 @@ import UIKit
 import CoreData
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
@@ -108,18 +109,20 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
 
-        // show pop up to turn ES on - only once per user
-        print("DEBUG: viewdidload: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
-        print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-        if userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false && userCachedStatus.isEncryptedSearchOn == false {
-            if self.popupView == nil {  // Show popup if it is not already shown
-                print("DEBUG show popup")
-                self.showPopUpToEnableEncryptedSearch()
-            }
-            //self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown = true
-            self.viewModel.disableEncryptedSearchPopup()    // set isEncryptedSearchAvailablePopupAlreadyShown to true in the function as the view model is a private set
+        if UserInfo.isEncryptedSearchEnabled {
+            // show pop up to turn ES on - only once per user
+            print("DEBUG: viewdidload: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
             print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-            print("DEBUG: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
+            if userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false && userCachedStatus.isEncryptedSearchOn == false {
+                if self.popupView == nil {  // Show popup if it is not already shown
+                    print("DEBUG show popup")
+                    self.showPopUpToEnableEncryptedSearch()
+                }
+                //self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown = true
+                self.viewModel.disableEncryptedSearchPopup()    // set isEncryptedSearchAvailablePopupAlreadyShown to true in the function as the view model is a private set
+                print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
+                print("DEBUG: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
+            }
         }
     }
     
@@ -127,22 +130,25 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
-        // Remove pop up when indexing is in progress
-        print("DEBUG: viewwillappear: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
-        print("DEBUG: viewillappear searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
-        if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
-            print("DEBUG remove popup!")
-            self.popupView?.remove()
-            // remove gray view
-            self.grayedOutView?.removeFromSuperview()
-            // show keyboard again
-            self.searchBar.textField.becomeFirstResponder()
-        }
-        if self.searchInfoBanner != nil {
-            // Only show the banner while downloading/paused/refreshed
-            if EncryptedSearchService.shared.state == .partial || EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .undetermined {
-                UIView.performWithoutAnimation {
-                    self.removeSearchInfoBanner()
+
+        if UserInfo.isEncryptedSearchEnabled {
+            // Remove pop up when indexing is in progress
+            print("DEBUG: viewwillappear: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
+            print("DEBUG: viewillappear searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
+            if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
+                print("DEBUG remove popup!")
+                self.popupView?.remove()
+                // remove gray view
+                self.grayedOutView?.removeFromSuperview()
+                // show keyboard again
+                self.searchBar.textField.becomeFirstResponder()
+            }
+            if self.searchInfoBanner != nil {
+                // Only show the banner while downloading/paused/refreshed
+                if EncryptedSearchService.shared.state == .partial || EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .undetermined {
+                    UIView.performWithoutAnimation {
+                        self.removeSearchInfoBanner()
+                    }
                 }
             }
         }
@@ -917,10 +923,12 @@ extension SearchViewController: UITextFieldDelegate {
         guard self.query.count > 0 else {
             return true
         }
-        // If Encrypted search is on, display a notification if the index is still being built
-        if userCachedStatus.isEncryptedSearchOn {
-            if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
-                self.showSearchInfoBanner()    // display only when ES is on
+        if UserInfo.isEncryptedSearchEnabled {
+            // If Encrypted search is on, display a notification if the index is still being built
+            if userCachedStatus.isEncryptedSearchOn {
+                if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
+                    self.showSearchInfoBanner()    // display only when ES is on
+                }
             }
         }
         self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: false)
