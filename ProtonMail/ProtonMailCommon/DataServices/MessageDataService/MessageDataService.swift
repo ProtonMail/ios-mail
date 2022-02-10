@@ -978,17 +978,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
         }
     }
     
-    func search(_ query: String, page: Int, completion comp: (([Message.ObjectIDContainer]?, NSError?) -> Void)?){
-        if userCachedStatus.isEncryptedSearchOn {
-            //if yes, do encrypted search
-            EncryptedSearchService.shared.search(query, page: page, completion: comp)
-        } else {
-            //if no, do normal serverside search
-            searchOnServer(query, page: page, completion: comp)
-        }
-    }
-    
-    func searchOnServer(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
+    func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
         let completionWrapper: CompletionBlock = {task, response, error in
             if error != nil {
                 completion?(nil, error)
