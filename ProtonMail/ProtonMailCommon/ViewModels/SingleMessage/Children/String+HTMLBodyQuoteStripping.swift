@@ -41,6 +41,7 @@ extension String {
         do {
             let strippedHTML: String
             let fullHTMLDocument = try SwiftSoup.parse(self)
+            fullHTMLDocument.outputSettings().prettyPrint(pretty: false)
             guard strippedFromQuotes else {
                 return try fullHTMLDocument.html()
             }
