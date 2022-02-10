@@ -832,8 +832,8 @@
 		4AE404B53FE11F65FFAE78DE30019BC8 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */; };
 		4AF6842C45124CD104510C38CECD06BE /* ConversationFeatureFlagResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948FBA20F8408491BEF3F6D34C8ABD7B /* ConversationFeatureFlagResponse.swift */; };
 		4B101F682A604A73EAA6DC271014C959 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */; };
-		4B2752C4CBD7F19C91947A532ED66E9A /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8363DC0FB989B8F7B7C94A4067F23 /* Date+Extension.swift */; };
 		4B19D66CA0F242DBAD786F0A8DD059BB /* EncryptedSearchCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA346F47B1BA35A6AFABC8166354C421 /* EncryptedSearchCacheProtocol.swift */; };
+		4B2752C4CBD7F19C91947A532ED66E9A /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8363DC0FB989B8F7B7C94A4067F23 /* Date+Extension.swift */; };
 		4B31C227E31B7D0D10C6ACC26DCC5544 /* PushNotificationServiceSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37148171E21C75FFBFE2661ED75A49AE /* PushNotificationServiceSubscription.swift */; };
 		4B3F1D950BCB084965D8D940F9F72E30 /* SettingsButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76E763D6752356D4A0F1D4A054FD4380 /* SettingsButtonCell.xib */; };
 		4B5D34A0E01C18D3D8400E54D47C4089 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
@@ -3025,8 +3025,8 @@
 		0EA8363DC0FB989B8F7B7C94A4067F23 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0ECAB64D2CA1AB2B51678DB3F24A3ADD /* ReplyToMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMessageTests.swift; sourceTree = "<group>"; };
 		0EEC3EB6DD0C3614AC0E29D68D39E17E /* UserInfo+OrganizationRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+OrganizationRole.swift"; sourceTree = "<group>"; };
-		0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
 		0EF6695B1231F66CAA04AF4E615FACE2 /* EncryptedSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchService.swift; sourceTree = "<group>"; };
+		0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
 		0F8BD185916A4E7409E9A7577C583B20 /* ConversationViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewHeaderView.swift; sourceTree = "<group>"; };
 		0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerView.xib; sourceTree = "<group>"; };
 		0FD181607E4B75DC93BB39F02255F5D6 /* RemoteAndEmbeddedBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAndEmbeddedBannerView.swift; sourceTree = "<group>"; };
@@ -8446,6 +8446,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
@@ -8495,6 +8496,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
@@ -8591,6 +8593,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
@@ -8639,6 +8642,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
@@ -8697,6 +8701,7 @@
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuSwift/SideMenuSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
@@ -8746,6 +8751,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Utilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",

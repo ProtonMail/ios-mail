@@ -53,16 +53,17 @@ extension XCUIElement {
     * Returns child element that matches given locator.
     */
     func child(_ childElement: UiElement) -> XCUIElement {
+        let parent = childElement.parentElement!
         let type = childElement.getType()
 
         if childElement.getIdentifier() != nil {
-            return self.children(matching: type).element(matching: type, identifier: childElement.getIdentifier())
+            return parent.children(matching: type).element(matching: type, identifier: childElement.getIdentifier())
         } else if childElement.getPredicate() != nil {
-            return self.children(matching: type).element(matching: childElement.getPredicate()!)
+            return parent.children(matching: type).element(matching: childElement.getPredicate()!)
         } else if childElement.getIndex() != nil {
-            return self.children(matching: type).element(boundBy: childElement.getIndex()!)
+            return parent.children(matching: type).element(boundBy: childElement.getIndex()!)
         } else {
-            return self.children(matching: type).element
+            return parent.children(matching: type).element
         }
     }
 
@@ -70,16 +71,17 @@ extension XCUIElement {
     * Returns child element that matches given locator.
     */
     func descendant(_ descendantElement: UiElement) -> XCUIElement {
+        let ancestor = descendantElement.ancestorElement!
         let type = descendantElement.getType()
 
         if descendantElement.getIdentifier() != nil {
-            return self.descendants(matching: type).element(matching: type, identifier: descendantElement.getIdentifier())
+            return ancestor.descendants(matching: type).element(matching: type, identifier: descendantElement.getIdentifier())
         } else if descendantElement.getPredicate() != nil {
-            return self.descendants(matching: type).element(matching: descendantElement.getPredicate()!)
+            return ancestor.descendants(matching: type).element(matching: descendantElement.getPredicate()!)
         } else if descendantElement.getIndex() != nil {
-            return self.descendants(matching: type).element(boundBy: descendantElement.getIndex()!)
+            return ancestor.descendants(matching: type).element(boundBy: descendantElement.getIndex()!)
         } else {
-            return self.descendants(matching: type).element
+            return ancestor.descendants(matching: type).element
         }
     }
 }

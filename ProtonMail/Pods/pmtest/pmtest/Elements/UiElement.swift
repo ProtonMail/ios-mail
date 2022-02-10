@@ -36,24 +36,20 @@ import XCTest
 // swiftlint:disable type_body_length
 open class UiElement {
 
-    init(_ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ query: XCUIElementQuery) {
         self.uiElementQuery = query
-        self.elementType = elementType
     }
 
-    init(_ identifier: String, _ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ identifier: String, _ query: XCUIElementQuery) {
         self.uiElementQuery = query
         self.identifier = identifier
-        self.elementType = elementType
     }
 
-    init(_ predicate: NSPredicate, _ query: XCUIElementQuery, _ elementType: XCUIElement.ElementType) {
+    init(_ predicate: NSPredicate, _ query: XCUIElementQuery) {
         self.uiElementQuery = query
         self.predicate = predicate
-        self.elementType = elementType
     }
 
-    private var elementType: XCUIElement.ElementType
     internal var uiElementQuery: XCUIElementQuery?
     internal var ancestorElement: XCUIElement?
     internal var parentElement: XCUIElement?
@@ -80,7 +76,7 @@ open class UiElement {
     private var shouldWaitForExistance = true
 
     internal func getType() -> XCUIElement.ElementType {
-        return elementType
+        return self.uiElement()!.elementType
     }
 
     internal func setType(_ elementQuery: XCUIElementQuery) -> UiElement {
@@ -267,15 +263,6 @@ open class UiElement {
         uiElement()!.doubleTap()
         return self
     }
-    
-    @discardableResult
-    public func multiTap(_ count: Int) -> UiElement {
-        let element = uiElement()!
-        for _ in 0...count {
-            element.tap()
-        }
-        return self
-    }
 
     @discardableResult
     public func forceTap() -> UiElement {
@@ -285,7 +272,7 @@ open class UiElement {
 
     @discardableResult
     public func longPress(_ timeInterval: TimeInterval = 2) -> UiElement {
-        uiElement()!.coordinate(withNormalizedOffset: .zero).press(forDuration: timeInterval)
+        uiElement()!.press(forDuration: timeInterval)
         return self
     }
 
@@ -436,7 +423,6 @@ open class UiElement {
         return self
     }
 
-    @discardableResult
     public func onDescendant(_ descendantElement: UiElement) -> UiElement {
         self.descendantElement = descendantElement
         return self
@@ -457,7 +443,6 @@ open class UiElement {
 
     @discardableResult
     public func checkDoesNotExist() -> UiElement {
-        shouldWaitForExistance = false
         XCTAssertFalse(uiElement()!.exists, "Expected element \(uiElement().debugDescription) to not exist but it exists.", file: #file, line: #line)
         return self
     }
@@ -570,7 +555,6 @@ open class UiElement {
 
     @discardableResult
     public func waitUntilGone(time: TimeInterval = 10.0) -> UiElement {
-        shouldWaitForExistance = false
         Wait(time: time).forElementToDisappear(uiElement()!)
         return self
     }
@@ -647,7 +631,7 @@ open class UiElement {
         if index != nil {
             /// Locate  XCUIElementQuery based on its index.
             locatedElement = uiElementQuery!.element(boundBy: index!)
-        } else {
+        } else {//if identifier == nil && predicate == nil && index == nil {
             /// Return matched element of given type.
             if shouldUseFirstMatch {
                 locatedElement = uiElementQuery!.element.firstMatch
@@ -658,10 +642,16 @@ open class UiElement {
         
         if childElement != nil {
             /// Return child element based on UiElement instance provided.
-            locatedElement = locatedElement?.child(childElement!)
+            childElement?.parentElement = locatedElement
         } else if descendantElement != nil {
             /// Return descendant element based on UiElement instance provided.
-            locatedElement = locatedElement?.descendant(descendantElement!)
+            descendantElement?.ancestorElement = locatedElement
+        }
+        
+        if parentElement != nil {
+            locatedElement = parentElement!.child(self)
+        } else if ancestorElement != nil {
+            locatedElement = ancestorElement!.descendant(self)
         }
 
         if shouldWaitForExistance {
