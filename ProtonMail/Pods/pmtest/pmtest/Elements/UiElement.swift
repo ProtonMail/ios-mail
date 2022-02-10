@@ -267,6 +267,15 @@ open class UiElement {
         uiElement()!.doubleTap()
         return self
     }
+    
+    @discardableResult
+    public func multiTap(_ count: Int) -> UiElement {
+        let element = uiElement()!
+        for _ in 0...count {
+            element.tap()
+        }
+        return self
+    }
 
     @discardableResult
     public func forceTap() -> UiElement {
