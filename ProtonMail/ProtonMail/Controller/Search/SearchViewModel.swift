@@ -134,36 +134,42 @@ extension SearchViewModel: SearchVMProtocol {
         self.fetchController?.delegate = nil
         self.fetchController = nil
     }
-    
+
     func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool = false) {
         if fromStart {
             self.messages = []
         }
-        
+
         // Set query and page to load
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
 
         // Prepare search for encrypted search
         if UserInfo.isEncryptedSearchEnabled {
-            if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
-                if fromStart {
-                    EncryptedSearchService.shared.isSearching = true
-                    EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch = 0
-                    EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch = 0
-                    // Clear previous search state whenever a new search is initiated
-                    EncryptedSearchService.shared.clearSearchState()
-                } else {
-                    if let searchState = EncryptedSearchService.shared.searchState {
-                        if searchState.isComplete {
-                            let resultsFound: Int = EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch + EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch
-                            let numberOfPages: Int = Int(ceil(Double(resultsFound/EncryptedSearchService.shared.searchResultPageSize)))
-                            print("ES: searchedcount: \(resultsFound)")
-                            print("ES: page to load: \(pageToLoad), number of pages: \(numberOfPages)")
-                            if pageToLoad > numberOfPages {
-                                print("ES searching complete - no need to fetch futher data.")
-                                print("Number of message in messages array: \(self.messages.count)")
-                                return
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+                if userCachedStatus.isEncryptedSearchOn &&
+                    forceSearchOnServer == false &&
+                    expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                    if fromStart {
+                        EncryptedSearchService.shared.isSearching = true
+                        EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch = 0
+                        EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch = 0
+                        // Clear previous search state whenever a new search is initiated
+                        EncryptedSearchService.shared.clearSearchState()
+                    } else {
+                        if let searchState = EncryptedSearchService.shared.searchState {
+                            if searchState.isComplete {
+                                let resultsFound: Int = EncryptedSearchService.shared.numberOfResultsFoundByIndexSearch + EncryptedSearchService.shared.numberOfResultsFoundByCachedSearch
+                                let numberOfPages: Int = Int(ceil(Double(resultsFound/EncryptedSearchService.shared.searchResultPageSize)))
+                                print("ES: searchedcount: \(resultsFound)")
+                                print("ES: page to load: \(pageToLoad), number of pages: \(numberOfPages)")
+                                if pageToLoad > numberOfPages {
+                                    print("ES searching complete - no need to fetch futher data.")
+                                    print("Number of message in messages array: \(self.messages.count)")
+                                    return
+                                }
                             }
                         }
                     }
@@ -172,49 +178,60 @@ extension SearchViewModel: SearchVMProtocol {
         }
         self.uiDelegate?.activityIndicator(isAnimating: true)
 
-        if UserInfo.isEncryptedSearchEnabled && userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                EncryptedSearchService.shared.search(userID: userID, query: query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
-                    guard error == nil else {
-                        PMLog.D(" search error: \(String(describing: error))")
-                        return
-                    }
-
-                    // Update activity indicator and resultsnotfound label only if there are 0 results
-                    if EncryptedSearchService.shared.isSearching == false && numberOfResults == 0 {
-                        DispatchQueue.main.async {
-                            self?.uiDelegate?.activityIndicator(isAnimating: false)
-                            self?.uiDelegate?.reloadTable()
-                        }
-                    }
-                }
+        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+        if let userID = usersManager.firstUser?.userInfo.userId {
+            let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .partial]
+            if UserInfo.isEncryptedSearchEnabled &&
+                userCachedStatus.isEncryptedSearchOn &&
+                forceSearchOnServer == false &&
+                expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                self.doContentSearch(userID: userID, query: query, pageToLoad: pageToLoad)
             } else {
-                print("Error when searching the encrypted search index. User unknown!")
+                self.doServerSearch(pageToLoad: pageToLoad)
             }
         } else {
-            let service = user.messageService
-            service.search(query, page: pageToLoad) { [weak self] messageBoxes, error in
+            self.doServerSearch(pageToLoad: pageToLoad)
+        }
+    }
+
+    private func doContentSearch(userID: String, query: String, pageToLoad: Int) {
+        EncryptedSearchService.shared.search(userID: userID, query: query, page: pageToLoad, searchViewModel: self) { [weak self] (error, numberOfResults) in
+            guard error == nil else {
+                PMLog.D(" search error: \(String(describing: error))")
+                return
+            }
+
+            // Update activity indicator and resultsnotfound label only if there are 0 results
+            if EncryptedSearchService.shared.isSearching == false && numberOfResults == 0 {
                 DispatchQueue.main.async {
                     self?.uiDelegate?.activityIndicator(isAnimating: false)
+                    self?.uiDelegate?.reloadTable()
                 }
-                guard error == nil,
-                      let self = self,
-                      let messageBoxes = messageBoxes else {
-                    PMLog.D(" search error: \(String(describing: error))")
+            }
+        }
+    }
 
-                    if pageToLoad == 0 {
-                        self?.fetchLocalObjects()
-                    }
-                    return
+    private func doServerSearch(pageToLoad: Int) {
+        let service = user.messageService
+        service.search(query, page: pageToLoad) { [weak self] messageBoxes, error in
+            DispatchQueue.main.async {
+                self?.uiDelegate?.activityIndicator(isAnimating: false)
+            }
+            guard error == nil,
+                  let self = self,
+                  let messageBoxes = messageBoxes else {
+                PMLog.D(" search error: \(String(describing: error))")
+
+                if pageToLoad == 0 {
+                    self?.fetchLocalObjects()
                 }
-                self.currentPage = pageToLoad
+                return
+            }
+            self.currentPage = pageToLoad
 
-                if messageBoxes.isEmpty {
-                    if pageToLoad == 0 {
-                        self.messages = []
-                    }
-                    return
+            if messageBoxes.isEmpty {
+                if pageToLoad == 0 {
+                    self.messages = []
                 }
                 return
             }
