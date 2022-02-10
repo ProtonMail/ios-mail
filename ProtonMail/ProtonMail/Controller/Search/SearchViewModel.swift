@@ -128,24 +128,41 @@ extension SearchViewModel: SearchVMProtocol {
         
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
-        let service = user.messageService
-        service.search(query, page: pageToLoad) { [weak self] messageBoxes, error in
-            DispatchQueue.main.async {
-                self?.uiDelegate?.activityIndicator(isAnimating: false)
-            }
-            guard error == nil,
-                  let self = self,
-                  let messageBoxes = messageBoxes else {
-                if pageToLoad == 0 {
-                    self?.fetchLocalObjects()
+        
+        if userCachedStatus.isEncryptedSearchOn {
+            EncryptedSearchService.shared.search(query, page: pageToLoad, searchViewModel: self) { [weak self] error in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.activityIndicator(isAnimating: false)
                 }
-                return
+                guard error == nil else {
+                    PMLog.D(" search error: \(String(describing: error))")
+                    return
+                }
+                //self.currentPage = pageToLoad
             }
-            self.currentPage = pageToLoad
+        } else {
+            let service = user.messageService
+            service.search(query, page: pageToLoad) { [weak self] messageBoxes, error in
+                DispatchQueue.main.async {
+                    self?.uiDelegate?.activityIndicator(isAnimating: false)
+                }
+                guard error == nil,
+                      let self = self,
+                      let messageBoxes = messageBoxes else {
+                    PMLog.D(" search error: \(String(describing: error))")
 
-            if messageBoxes.isEmpty {
-                if pageToLoad == 0 {
-                    self.messages = []
+                    if pageToLoad == 0 {
+                        self?.fetchLocalObjects()
+                    }
+                    return
+                }
+                self.currentPage = pageToLoad
+
+                if messageBoxes.isEmpty {
+                    if pageToLoad == 0 {
+                        self.messages = []
+                    }
+                    return
                 }
                 return
             }
@@ -594,5 +611,36 @@ extension SearchViewModel {
 extension SearchViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.uiDelegate?.reloadTable()
+    }
+}
+
+extension SearchViewModel {
+    func displayIntermediateSearchResults(messageBoxes: [Message.ObjectIDContainer]?){
+        guard let messageBoxes = messageBoxes else {
+            if self.currentPage == 0 {
+                self.fetchLocalObjects()    //Why
+            }
+            return
+        }
+        
+        if messageBoxes.isEmpty {
+            if self.currentPage == 0 {
+                self.messages = []
+            }
+            return
+        }
+        
+        let context = self.coreDataService.mainContext
+        context.perform { [weak self] in
+            let messagesInContext = messageBoxes
+                .compactMap { context.object(with: $0.objectID) as? Message }
+                .filter { $0.managedObjectContext != nil }
+            if self!.currentPage > 0 {
+                self?.messages.append(contentsOf: messagesInContext)
+            } else {
+                self?.messages = messagesInContext
+            }
+            self?.updateFetchController()
+        }
     }
 }
