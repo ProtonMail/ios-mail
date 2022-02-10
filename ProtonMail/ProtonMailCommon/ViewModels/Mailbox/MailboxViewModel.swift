@@ -543,7 +543,7 @@ class MailboxViewModel: StorageLimit {
     
     func getSearchViewModel(uiDelegate: SearchViewUIProtocol) -> SearchVMProtocol {
         SearchViewModel(user: self.user,
-                        coreDataService: self.coreDataService,
+                        coreDataContextProvider: coreDataContextProvider,
                         uiDelegate: uiDelegate)
     }
 

@@ -219,9 +219,9 @@ PODS:
   - SDWebImage (5.12.1):
     - SDWebImage/Core (= 5.12.1)
   - SDWebImage/Core (5.12.1)
-  - Sentry (4.5.0):
-    - Sentry/Core (= 4.5.0)
-  - Sentry/Core (4.5.0)
+  - Sentry (7.8.0):
+    - Sentry/Core (= 7.8.0)
+  - Sentry/Core (7.8.0)
   - SideMenuSwift (2.0.6)
   - SkeletonView (1.11.0)
   - SQLite.swift (0.12.2):
@@ -272,7 +272,7 @@ DEPENDENCIES:
   - ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire (= 3.5.0)
   - ProtonCore-TestingToolkit/UnitTests/Services/Alamofire (= 3.5.0)
   - ProtonCore-UIFoundations (= 3.5.0)
-  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.5.0`)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.8.0`)
   - SideMenuSwift (= 2.0.6)
   - SkeletonView (= 1.11.0)
   - SQLite.swift (~> 0.12.2)
@@ -339,7 +339,7 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 4.5.0
+    :tag: 7.8.0
   SwipyCell:
     :branch: main
     :git: https://github.com/xxi511/SwipyCell.git
@@ -356,7 +356,7 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/pmtestautomation.git"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 4.5.0
+    :tag: 7.8.0
   SwipyCell:
     :commit: 20626bed8f7339e5a4cb1298bfa5bafbfa167716
     :git: https://github.com/xxi511/SwipyCell.git
@@ -406,7 +406,7 @@ SPEC CHECKSUMS:
   ProtonCore-Utilities: f620d023e3c1c32463aa5d5ad493c2003420096e
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
-  Sentry: ab6c209f23700d1460691dbc90e19ed0a05d496b
+  Sentry: 9b980005a8cd62b4a985ceb431fceb7f17f7615d
   SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
   SkeletonView: cc84ce90a804dd0dd7198dd802833411c8a64eaf
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
@@ -416,6 +416,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: 3fb011102271b79f7e3742bc2cfc54bb7193ca74
 
-PODFILE CHECKSUM: 1dd1b7f38c1fe790fb14eca4a01e944e52a3c9d1
+PODFILE CHECKSUM: 20fb3d835f1002f7ff2f16cef14eafc814e8a428
 
 COCOAPODS: 1.11.2
