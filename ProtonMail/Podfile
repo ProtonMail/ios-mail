@@ -41,6 +41,7 @@ def common_pods
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
   pod 'SwiftGen', '~> 6.0'
   pod 'SwiftSoup', '~> 2.3'
+  pod 'SQLite.swift', '~> 0.12.2'
 end
 
 def pm_pods
