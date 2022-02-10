@@ -187,7 +187,6 @@
 		1087FCEE526A5E0EB527820B097225ED /* MessageDataService+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483C01F6D1C97E9AAE607E3F928C97B4 /* MessageDataService+FileManager.swift */; };
 		109713A254BDE19EC51CDD6A105D8B2F /* SettingsConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E158AC6C6DAF5008678665CB5D2DB5DB /* SettingsConversationViewModel.swift */; };
 		10A4AFB65BDE555F76C4458F7ECA5988 /* ConversationMessageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EC5E0D7F5AE6CEF2DF023228C767DE /* ConversationMessageState.swift */; };
-		10C953E2D27AC005CA3A903CDC890CFB /* MessageDataService+Decrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD03D3BAC66EADD78FC5E51272509F6 /* MessageDataService+Decrypt.swift */; };
 		10E593FD86AD02573262509E98972F96 /* FeatureFlagsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA053F517CE0617EE5F6D77637100C5C /* FeatureFlagsRequest.swift */; };
 		10F2A88FA3F35B110EEEA4F40027799F /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A3F237F354027F5849B79009233900 /* AttachmentAPI.swift */; };
 		1124D6F3746E12808C29E83AE078D3C6 /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0DEAAB391C18DAF3910013F144972 /* APIService+DefinedExtension.swift */; };
@@ -344,7 +343,6 @@
 		1EBB770BC84B7697CD50C6F5B425DE32 /* Pods_PushService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */; };
 		1ED6436CC1BBF10F1117B7CBC23BA2DD /* ComposeToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA98D696C24AFFD70FE3DFCDF04E9B67 /* ComposeToolbar.xib */; };
 		1F41471EE68B6375498F2AAD5EA910F0 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
-		1F4BAC01B00915AE36B0160EA6A98296 /* NSMutableAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904EF45ADECDB5E125026F6A85A0C571 /* NSMutableAttributedString+Extension.swift */; };
 		1F65E09308F39E8A14028833A3906F9B /* MessageDetailsContactActionSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546F3F061523D9BD5A5554102DFF3117 /* MessageDetailsContactActionSheetAction.swift */; };
 		1F7520F414D6DE1C0AD65539A836CEF6 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AADE7B350D23DF3CDCB751753F0C22 /* AuthCredential.swift */; };
 		1F7A82432384AF322FDA7AA2F20C1C2F /* ImageGalleryRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE3EF133F87BC9A64F9E46C74273EE4 /* ImageGalleryRobot.swift */; };
@@ -556,8 +554,8 @@
 		30BA8AD09CC43B01F4FB87C008777B9B /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		30D05E57904F53686BD5D97AC545E68D /* ProcessInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16937A0DBE336EE8AF21A538BD80BBDE /* ProcessInfo+Extension.swift */; };
 		30D43080D67953D8B6780CC820D4EFB2 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */; };
-		30F5E283083B1C3FAF503AFB89622A35 /* Pods_ProtonMailAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BFC92896F276D15774A4BA06267154 /* Pods_ProtonMailAnalytics.framework */; };
 		30D52670FB3C176A46B3B41191D5930F /* ESMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F97A92D0471BCA14273F788DC3F85E /* ESMessage.swift */; };
+		30F5E283083B1C3FAF503AFB89622A35 /* Pods_ProtonMailAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BFC92896F276D15774A4BA06267154 /* Pods_ProtonMailAnalytics.framework */; };
 		31055E746F6B3897D8B10844817BD676 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */; };
 		310FD86D55D644A9162BAE901587221E /* MessageDataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BC8ECA9DF75A4D4E93607F9FB2F4F8 /* MessageDataService+Error.swift */; };
 		313C91079B23477342B860D568304AFE /* Message+Var+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102AF496AB07249410599991EBB97156 /* Message+Var+Extension.swift */; };
@@ -737,7 +735,6 @@
 		400877C028F8A8D378E36B96F5751EE8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
 		401BE3761CC0DFE19C087F90C23CD51C /* StoreKitManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9231744971DE13F65777DBF713D57626 /* StoreKitManagerImpl.swift */; };
 		4029E05F23E54FD406F3C553D3506267 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9484C58CDC41A6703486AE962ACDED6 /* SettingsAccountViewController.swift */; };
-		403E168AAD99AACD28EE67AE521B2132 /* MessageDataService+Decrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD03D3BAC66EADD78FC5E51272509F6 /* MessageDataService+Decrypt.swift */; };
 		4047C576781FF4734DCD4F6E4A5C4D01 /* EncryptedSearchDownloadedMessagesCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2240E33C109510857B1C1889DE4B70A /* EncryptedSearchDownloadedMessagesCacheProtocol.swift */; };
 		404B3E2563C922BA6DEEB5573A80E799 /* UnsubscribeMailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28291BB0F938C53380657C7B936F6AEA /* UnsubscribeMailTo.swift */; };
 		4056C5DC5EB784336B70B5C5F3492AF1 /* MailListActionSheetItemViewModel+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50B139F016FF4881760DD51216378B6 /* MailListActionSheetItemViewModel+Actions.swift */; };
@@ -804,8 +801,6 @@
 		4695E81C490C43F765A82EC1F0A5205D /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802CFC07A6A34A5D00DFB1F7B580798 /* Localization.swift */; };
 		46C75C1C045B539F4BEF0E2FEF1AD534 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BE8E07473AF7C2E41B59A2900B2CE /* ContextLabel.swift */; };
 		46EB8A356624DB9F23CEF6D61FBA248E /* Pods_PushServiceDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A84AA1A4CD359F9B3AD53E56954AF524 /* Pods_PushServiceDev.framework */; };
-		46E325F51C5761092210FD4810DE3763 /* String+Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E7413BE9574B019AFC7EC85000B47A /* String+Values.swift */; };
-		46EB8A356624DB9F23CEF6D61FBA248E /* Pods_PushServiceDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A84AA1A4CD359F9B3AD53E56954AF524 /* Pods_PushServiceDev.framework */; };
 		47035CA1D94435505D9116BBB176E14E /* ExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900CCA50D8AF284583ADF71BED2798FE /* ExpirationView.swift */; };
 		4707DDC46D30856D64FED5C8B756A36C /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E1DF4B9083F68972C3AD18616B2856E /* PinCodeView.xib */; };
 		470DF515CA322B3B4EF8879BEDCB2B0A /* TextControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F2F4631792B6713DFD0DAA6E7145A2 /* TextControl.swift */; };
@@ -836,7 +831,6 @@
 		48FAFF100176A58E931A5CC26F603390 /* ConversationDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB9C874239834B5F1B59146FB97B46A /* ConversationDataService.swift */; };
 		49059738999672E3760D55D5642DF60E /* UserAddressUpdaterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7D9861C1408CEFB7275B8B4A0330EA /* UserAddressUpdaterProtocol.swift */; };
 		4916805EAB1EEB599BA792821A8D57FF /* SpinnerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F01B124778C8109E9A59244963CF42A1 /* SpinnerTableViewCell.xib */; };
-		493ADA080AD231099BD97A7736672F3B /* ContactsUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34DA3719CE54E1D0F83E517688AAE3E /* ContactsUtilsTest.swift */; };
 		493FB0EE5157E86FAC68BA6A3CABF342 /* UIEdgeInsets+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EB6B00191E0E5383A6CE540F8ED1A5 /* UIEdgeInsets+All.swift */; };
 		49469BCB497513D7A32FA70630DBBE58 /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19361A29817445049BE0E68CAEBB8D0C /* ShowImageView.xib */; };
 		4948C9FF4027DF90A5869DFAE176013F /* LabelUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687C050F04EF01856E07749C85013212 /* LabelUpdate.swift */; };
@@ -848,7 +842,6 @@
 		4A4973FFCEE0D639092DB7B865F7ABCE /* ReceiptAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2677BF1DCF4D7939BBB2CEF4EDFA8470 /* ReceiptAPI.swift */; };
 		4A5476F91FA5F32A2CA57438A7E208B2 /* ConversationTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E943BE934A4FE3F82785ABCAF0E26F47 /* ConversationTestData.swift */; };
 		4A55474881E32120AEB4C3E73C166B5F /* MockHumanCheckStatusProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2435D3464C93090F216E8AC992891B70 /* MockHumanCheckStatusProvider.swift */; };
-		4A62C1D3D12DD55081EC7DDC38EAB20D /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		4A76000C59B23D112CF837069FD40938 /* EncryptedSearchCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CA106F0FC05AFADBC8133287387688 /* EncryptedSearchCacheService.swift */; };
 		4A7B1F2D49D6066E0DC9CA2A658DE06A /* Composer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2AE92CF3E2B773E6DB01E47DE5B6983 /* Composer.storyboard */; };
 		4A8A40382CB914A5D192DE1A09265324 /* UIApplication+BadgeNumber+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = D048BEFA3121A828B12F7B23B06CCD5A /* UIApplication+BadgeNumber+Share.swift */; };
@@ -903,7 +896,6 @@
 		4EC2ED3E07E08E91A500219F4D72F1B4 /* ConversationViewItemType+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D0C8C43276908939AE7F4A6A62AFF4 /* ConversationViewItemType+Helpers.swift */; };
 		4EC6A8568F86DA279E9F15F649A6BD0F /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
 		4EDC6D2C1E79286435E16382AFE10E76 /* Message+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190312F0317DE63DCC84DCC109312811 /* Message+Helpers.swift */; };
-		4ECCDB677010A7580C68E1A9 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3DAC34562A46B33E36B1796 /* Pods_ShareDev.framework */; };
 		4EE4D447F60465357A168B814572C11F /* ConversationDataServiceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE46E55F066210E5C8F002637D4FDA1D /* ConversationDataServiceProxy.swift */; };
 		4EEA59BEEE6ED3DBB32AB34AACCC3201 /* DarkModeCSSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78139DCE2AD6F0CFB6E687C5A1972B1A /* DarkModeCSSHelper.swift */; };
 		4F37A5DD4296D0CC6E34A5A541C82B40 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B137A765D86C92D0E3B9007AE1FDE92B /* Message.swift */; };
@@ -1057,7 +1049,6 @@
 		5B9D1CDBAF945B4445602EEB7A4E6C6C /* Attachment+StrippingExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5756514E41C4809A3C2C5CE75D628 /* Attachment+StrippingExif.swift */; };
 		5BA7D194B7209D32322F79BBD1412DF3 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6D8F3AAEA3F00B15BDC137F506D95 /* ChangePasswordViewController.swift */; };
 		5BD492A760A8CA9F21784997697DE93B /* PopUpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69B6748D0A16B03C853AC7060F1646E6 /* PopUpView.xib */; };
-		5BDBA9A1FF07911B39473AC72A9313CB /* Message+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E18578CB653A258E0ACF84A8C0C74F /* Message+Helpers.swift */; };
 		5BED16182BAAB845D03D31DA9F3ADB49 /* ConversationDataService+CollectionFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B52689B554EBDBD866C8832A680C4B /* ConversationDataService+CollectionFetching.swift */; };
 		5C05D817AC96B1B10F5348F7823CBD8F /* ContactGroupDetailViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */; };
 		5C2712380BD9E0263321582C41E6922E /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
@@ -1490,13 +1481,12 @@
 		82F8372E98B8BAB74BAA02C82F6AAE32 /* HeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD3391781915BE1AE69E96A848D1C8 /* HeaderContainerView.swift */; };
 		82FF4AC0D225953BFD253816642F6209 /* RemoveLabelFromMessagesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68C6A267DBED7EFC7C991E4EEFE7B1 /* RemoveLabelFromMessagesRequest.swift */; };
 		83039E8A04B668CFAD9CCCE416BAE37A /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
-		8343047453296E548953878D059CB58D /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0829793CC58D8772051A264559A6D1 /* NSSet+Extension.swift */; };
 		8344657821E2FBC5F21CEFCD269B4C50 /* IndexSingleMessageAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEE1A76062D7953BF3453065B197422 /* IndexSingleMessageAsyncOperation.swift */; };
 		83494740B971696B49D67C11E6A566CC /* ConversationDataService+SingleItemFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B6B54DF5A1A4C4D7DB510E996CF07 /* ConversationDataService+SingleItemFetching.swift */; };
 		8363FACB9654228371401D4EE9F94299 /* ExpandedHeaderRecipientRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EAE2B13C2E682DCC41F9421A0E1832 /* ExpandedHeaderRecipientRowViewModel.swift */; };
 		836671FC8D896D546EB54D5E4EE9631B /* DarkModeCSSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78139DCE2AD6F0CFB6E687C5A1972B1A /* DarkModeCSSHelper.swift */; };
-		83BE7B0D5376F6AE989B9A99745CA676 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */; };
 		8395111344A30D1B856812AC24758E6B /* ThreeLinesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAA4D02A7ACF14F3FDDFDD2AC756B2B /* ThreeLinesTableViewCell.swift */; };
+		83BE7B0D5376F6AE989B9A99745CA676 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */; };
 		83C786224FE6C6B089ABC1DED10F18DA /* ConversationDataService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE577B2381E26429B61D67DC9255838 /* ConversationDataService+Actions.swift */; };
 		83F7F619BCD60251AEFA381A40B76F36 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
 		841C37350DE7EBA3CEB79C3F515B2DA1 /* CoreDataContextProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7A713B4B7CF594A0C98D65E6458004 /* CoreDataContextProviderProtocol.swift */; };
@@ -1786,7 +1776,6 @@
 		9FB2B7F49425717BB9D6166C5CCA7EDA /* TwoFACodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD65FC5D2C14D4424C5634F44F0E2ED /* TwoFACodeView.xib */; };
 		9FD73B446F3F0931EF91E64B20F6E5A0 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		9FEAED098D0BBEB5F102FB1C872BB502 /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1DE9C31FB59BEBDEABDC93DA9E0A71 /* TableContainerViewModel.swift */; };
-		9FEB3C9BA08AB24C6D43B9709E2CB516 /* APIService+PromiseExec.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E2C6ACE8AA00376F37453C2BC317D0 /* APIService+PromiseExec.swift */; };
 		9FEF2B476D0F70DE054A1AEC05EA2365 /* SpinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FD8D38AA4A62550BF94EA8D9AF8594 /* SpinnerTableViewCell.swift */; };
 		9FFE669CC3A217037318056D40F106D5 /* UndoTokenData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F36CD5257BA9A35DF58E352F96FA766 /* UndoTokenData.swift */; };
 		A036D95DB2F0A2013785755371700AA4 /* LabelManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FBBAF1F42FB0132D0116B4FEA3EFD2 /* LabelManagerViewController.swift */; };
@@ -1967,7 +1956,6 @@
 		AF151A52BA5DF01CF03A3E997DF3B182 /* NewMailboxMessageViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E13155FCD6C9C48B9B0FBE02282484 /* NewMailboxMessageViewStyle.swift */; };
 		AF178B5E9B00D82CA9B35A2370A127D0 /* SignInCoordinatorEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EDB4FA75B6E2C0F380D1D0F2CA5877 /* SignInCoordinatorEnvironment.swift */; };
 		AF24E53FA6F94DCAAACDDEE5363C8E8E /* APIService+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05497B2E1D416D981ADD7F738691DB07 /* APIService+Metrics.swift */; };
-		AF2C5C1A08D4E7633675175747C8A6FE /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366440FD86C2A31F36A17127B4F2D8B4 /* FileManager+Extension.swift */; };
 		AF4DC3D5A4CB8DCF3DB335DF134370A2 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 366FD930B9937DFC8E8C2224A7260FA7 /* Localizable.stringsdict */; };
 		AF5C1B8A4EA03BDE1F74A2F527E18229 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD808A722B445D2ADCD9BB0D603E6F72 /* ButtonTableViewCell.swift */; };
 		AF5F9D667D5CAEAC4452EE842978D452 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */; };
@@ -3108,9 +3096,7 @@
 		0EA8363DC0FB989B8F7B7C94A4067F23 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0ECAB64D2CA1AB2B51678DB3F24A3ADD /* ReplyToMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMessageTests.swift; sourceTree = "<group>"; };
 		0EEC3EB6DD0C3614AC0E29D68D39E17E /* UserInfo+OrganizationRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+OrganizationRole.swift"; sourceTree = "<group>"; };
-		0EF6695B1231F66CAA04AF4E615FACE2 /* EncryptedSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchService.swift; sourceTree = "<group>"; };
 		0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
-		0F21735772488502CFA6058D /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		0F8BD185916A4E7409E9A7577C583B20 /* ConversationViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewHeaderView.swift; sourceTree = "<group>"; };
 		0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerView.xib; sourceTree = "<group>"; };
 		0FD181607E4B75DC93BB39F02255F5D6 /* RemoteAndEmbeddedBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAndEmbeddedBannerView.swift; sourceTree = "<group>"; };
@@ -3192,7 +3178,6 @@
 		2021E61B58E29C596D156834A6F2BF17 /* NewOnboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOnboardView.swift; sourceTree = "<group>"; };
 		207C28C353C648762C0484F2A341BD51 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2091E1F100851764F3856F1D1310B9FE /* String+Alert+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Alert+Extension.swift"; sourceTree = "<group>"; };
-		20B43D6E02BF6ED7B347A567 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
 		20DF535AF8FF4831EAB96E3725E06896 /* SettingsGestureViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsGestureViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/SettingsGestureViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdatedStore.swift; sourceTree = "<group>"; };
 		213157ADB8747E277D04CEE4ECF33584 /* NewMailboxMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailboxMessageContentView.swift; sourceTree = "<group>"; };
@@ -3565,7 +3550,6 @@
 		618DE0AD635EEEF3CBEF32FD71F80593 /* String+Html+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Html+Ext.swift"; sourceTree = "<group>"; };
 		61A5FDC9FB61BC7E8E6E4EC33440445B /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = hu; path = ../../ProtonMail/hu.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		61F97A92D0471BCA14273F788DC3F85E /* ESMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESMessage.swift; sourceTree = "<group>"; };
-		621515B47F8160001CE952DC3956E8CE /* NSCoder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCoder+Extension.swift"; sourceTree = "<group>"; };
 		622A65528BA9E012FF502531BC70D6AF /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
 		6266C9ECD576B42AD2D1A296DEF345B3 /* PinRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinRobot.swift; sourceTree = "<group>"; };
 		630833771CB1D9A8478AD70B0723FEF8 /* MessageViewActionSheetAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewActionSheetAction.swift; sourceTree = "<group>"; };
@@ -3976,7 +3960,6 @@
 		AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessageViewActionSheetViewModelTests.swift; path = ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentRobot.swift; sourceTree = "<group>"; };
 		AFA4CD7A34F59D05E8C36D76B08B4524 /* EncryptedSearchIndexService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedSearchIndexService.swift; sourceTree = "<group>"; };
-		AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModelImpl.swift; sourceTree = "<group>"; };
 		B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
 		B04E6785F72AA267E3308DCABCAECF83 /* FeatureFlagsResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeatureFlagsResponseTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsResponseTests.swift; sourceTree = SOURCE_ROOT; };
 		B070CDFCF9E3E2A25CD4062DECEBC482 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4045,8 +4028,6 @@
 		BFC88C232E24D9F773CBEC1B4BA8AA37 /* FeatureFlagsDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsDownloadService.swift; sourceTree = "<group>"; };
 		BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataCache.swift; sourceTree = "<group>"; };
 		C03D41DDB4AFD81B82E846B14E19BA23 /* 2.0.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.8.xcdatamodel; sourceTree = "<group>"; };
-		BFF6F32752FFD667B4A7F344 /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
-		C016CA438231852C1E388B00F837CA72 /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		C08A187F9FB053026A6B33AE54034EEF /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDecryptor.swift; sourceTree = "<group>"; };
 		C0997E3D991587C293174A583ABEE1B1 /* Pods-ProtonMailUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailUITests.release.xcconfig"; path = "Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -4102,8 +4083,6 @@
 		C9DBBF8C3E33F8FE6871898C9E636C7A /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CA2DDA35F38C08EC03E10D7A03A372BE /* UserStatusInQueueProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInQueueProtocol.swift; sourceTree = "<group>"; };
 		CA36EC65E0B9D8E40B8BD182E12C9992 /* 2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.3.xcdatamodel; sourceTree = "<group>"; };
-		CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
-		CA36F62FC193FD9B79943EDBC1E64B97 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		CAE2F91A25228FAA9CA6A5DF9DE7F4B9 /* Pods-PushService.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushService.distribution.xcconfig"; path = "Target Support Files/Pods-PushService/Pods-PushService.distribution.xcconfig"; sourceTree = "<group>"; };
 		CB274E7AC7516891D1938CF3BEA40049 /* PGPMimeAddressBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPMimeAddressBuilder.swift; sourceTree = "<group>"; };
 		CBF3B98E120BE095A6776D6F6904AFCA /* RemoteContentBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteContentBannerView.swift; sourceTree = "<group>"; };
@@ -6129,10 +6108,10 @@
 				D55F10ED7D025C4831A4D264123ECE26 /* UsersManager */,
 				4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */,
 				2B62F7CBA20BFC6C1C6263A39C23CBE3 /* CoreDataStoreTest.swift */,
-				70FC2759FD850748A9264AFB4CE70EB8 /* LocalNotificationServiceTests.swift */,
 				A0ED19A198F194A5A62F0C0D1CCB1574 /* EncryptedSearchCacheServiceTests.swift */,
 				544ECFBE3CF81499F5AC2C3B70740BC1 /* EncryptedSearchIndexServiceTests.swift */,
 				0401E0BF242D9C9078D2C45EFC9964E5 /* EncryptedSearchTests.swift */,
+				70FC2759FD850748A9264AFB4CE70EB8 /* LocalNotificationServiceTests.swift */,
 				7DFBF249F3C293E82857F6EBC6C0EE12 /* MessageDataServiceTests.swift */,
 				8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */,
 				2D13A6FA3F0FDEE829964B0017371329 /* PushNotificationServiceTests.swift */,
@@ -7766,7 +7745,7 @@
 				32FD8B84ACCEDCB9E7DCC6348BF41D03 /* Embed App Extensions */,
 				6EE58F9A6C6CBD84F7F37695EBB06601 /* Embed Frameworks */,
 				DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */,
-				9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */,
+				A8295FD45B51EB00405FB2EC38DFF425 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -8510,87 +8489,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint --config ${PROJECT_DIR}/swiftlint/swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		1AA1FDEBD21E985B4F3B2ACC5BCD457A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-		3907F5AE84B000107860A68C0C875322 /* Sentry Upload */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Share-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1B1F2A5EC8751EB5CEBC8594C6762AB0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ShareDev-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3955F031BAA2D8708CB8AB79F5C10AD7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PushService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3C1715097B43678CF36F4C52208D45DD /* [CP] Check Pods Manifest.lock */ = {
-		B067CAB9F3717BF234AE571C16B79A46 /* [CP] Embed Pods Frameworks */ = {
-			);
-			name = "Sentry Upload";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "#if which sentry-cli >/dev/null; then\n#    source ~/.bashrc\n#    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#    echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
-		};
 		3955F031BAA2D8708CB8AB79F5C10AD7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8657,7 +8555,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */ = {
+		A8295FD45B51EB00405FB2EC38DFF425 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -8710,7 +8608,6 @@
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto-VPN/ProtonCore_Crypto_VPN.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -8761,7 +8658,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto_VPN.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8915,30 +8811,6 @@
 			showEnvVarsInLog = 0;
 		};
 		B7EBEAA51F130EAAA1213E69D9E40DBD /* [CP] Embed Pods Frameworks */ = {
-		2F6E38C01CF5C8AFCC149D90 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Share-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#if which sentry-cli >/dev/null; then\n#    source ~/.bashrc\n#    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n#if [ ! $? -eq 0 ]; then\n#    echo \"warning: sentry-cli - $ERROR\"\n#fi\n#else\n#    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\n#fi\n";
-		};
-		4F07EC7CC453740A66E78D0E /* [CP] Check Pods Manifest.lock */ = {
-		2832FB25E80CD97651A9325B /* [CP] Embed Pods Frameworks */ = {
-		9FFE53FEB9AD7785DB2F6CA596BE2868 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -8991,7 +8863,6 @@
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto-VPN/ProtonCore_Crypto_VPN.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -9042,7 +8913,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto_VPN.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenPGP.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9136,32 +9006,28 @@
 			shellScript = "if which sentry-cli >/dev/null; then\n    source ~/.bashrc\n    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\nfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
-		BE2F2FBD0BD0CB270A7F39B9 /* [CP] Embed Pods Frameworks */ = {
-		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"$(DERIVED_FILE_DIR)/Pods-ProtonMailTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E5854C8EE63F4B11D414DC42F312E7FD /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-		DE7C5F547BAF810BD37500B2550EA37E /* Sentry Upload */ = {
-		D62F11F7262F51076ECA0995 /* [CP] Check Pods Manifest.lock */ = {
-		CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */ = {
-		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -9177,20 +9043,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ProtonMailAnalytics-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */ = {
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ProtonMailDev-checkManifestLockResult.txt",
-				"$(DERIVED_FILE_DIR)/Pods-ProtonMailTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -9222,9 +9074,6 @@
 		F3EAD2CB32C6DEB9AD3C1954EACCC8E4 /* Sentry Upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
-		CB32097D2CA8875CFCA9EF3DE72115A3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
@@ -9240,81 +9089,6 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "if which sentry-cli >/dev/null; then\n    source ~/.bashrc\n    ERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\nfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ProtonMailDev-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FD69D6C7B0EBFBFD87338C14572B81DA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E117BBD6ECFCD59D138CE291EDC9C951 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ProtonMailTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ProtonMail-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 		F59E975ED1826A3C467D5B91AFE7EBE2 /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -9595,7 +9369,6 @@
 				92434AE3FD282B5F49C85B841C43DA41 /* APIService+DeviceExtension.swift in Sources */,
 				58CBD745E9C4790EB5A054926802A8B4 /* APIService+MessagesExtension.swift in Sources */,
 				0136A349471CBBED73D61CFD2B88B33F /* APIService+Metrics.swift in Sources */,
-				9FEB3C9BA08AB24C6D43B9709E2CB516 /* APIService+PromiseExec.swift in Sources */,
 				6E8064B073D96A0A2069E5F0D2D9549B /* APIService+ResponseTransformer.swift in Sources */,
 				A5D7F8C7DC7B1E6D612512DF56FFE65F /* APIService.swift in Sources */,
 				852C81FAB24147A8C7BB8E379737174B /* APIServiceDefined.swift in Sources */,
@@ -9645,7 +9418,6 @@
 				C20BF095CA8F428C09C5B7A930302D70 /* BugDataService.swift in Sources */,
 				2E8A6D86BB25BCAAADFA5C7DF612335C /* BugReportCache.swift in Sources */,
 				232D9C8506AD14E94B037514F214850C /* Bundle+Extension.swift in Sources */,
-				68C25E1C898A4451569D245FFE658FD5 /* Bundle+Extension.swift in Sources */,
 				6D9DD712A0EDADE8DCB3928041B0D5B7 /* ButtonTableViewCell.swift in Sources */,
 				04829A25350241840B90AC02F1B95294 /* CacheService.swift in Sources */,
 				9CEE379D2972180C86BA507E0CF028C9 /* CalendarIntervalRule.swift in Sources */,
@@ -10112,9 +9884,7 @@
 				CEA6598FF82E6C4F187808993ED46D29 /* PopUpView.swift in Sources */,
 				353D3CA72E2F83D1E1FBE50302E49ECE /* PreAddress+MessageDataServiceTypes.swift in Sources */,
 				30D05E57904F53686BD5D97AC545E68D /* ProcessInfo+Extension.swift in Sources */,
-				482FB484E7D7A4F17F316EA943266485 /* ProcessInfo+Extension.swift in Sources */,
 				249D81CF8F75F241435BEC6B47983F71 /* ProgressBarButtonTableViewCell.swift in Sources */,
-				B308F25B64E576D18A105960C0D06D45 /* Promise+BrokenPromise.swift in Sources */,
 				146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */,
 				3F25D02E596C1D6CF978943860299041 /* ProtonMailAddresses.swift in Sources */,
@@ -10269,9 +10039,8 @@
 				C4DFC0800A4D5B5E716643E30EC324E5 /* TextControl.swift in Sources */,
 				280DA4DC24D40FB932883B121080DED9 /* TextInsetTextField.swift in Sources */,
 				F83121E28738AA2D99ABFD04336A1736 /* Threading.swift in Sources */,
-				0F341626A7E45194E491054828B3019A /* TimeInterval+Extension.swift in Sources */,
 				520EF75C9788F4FED219BCDF6F3CC262 /* ThreeLinesTableViewCell.swift in Sources */,
-				36E35A37054A6EF2FBAD7128B8C30129 /* TimeInterval+Extension.swift in Sources */,
+				0F341626A7E45194E491054828B3019A /* TimeInterval+Extension.swift in Sources */,
 				737373550739D495B9B4DAEE9D45FA79 /* TouchID+Helper.swift in Sources */,
 				CD9ACDC3388E8B358D12006582596586 /* TrustKitWrapper.swift in Sources */,
 				2A2694C1FF72FCD2E97F186917FAD911 /* TwoFACodeView.swift in Sources */,
@@ -10373,7 +10142,6 @@
 				AAF8D279B28A78DDCED30DE38D1D5518 /* APIService+DeviceExtension.swift in Sources */,
 				FB24CE996E3ED63609A72333269B9977 /* APIService+MessagesExtension.swift in Sources */,
 				73EDFFF5AB514DD6E04F28EF26FEA16D /* APIService+Metrics.swift in Sources */,
-				C46DE9B2672EBC7186EF42BFA2143F7F /* APIService+PromiseExec.swift in Sources */,
 				2A6ECD3F1F3C850A643DFE838E7C6C41 /* APIService+ResponseTransformer.swift in Sources */,
 				EE929D9A66FC3CCE296CD5240C7DAC44 /* APIService.swift in Sources */,
 				716C13816A0AD342FFC08FEB4679B9E2 /* APIServiceDefined.swift in Sources */,
@@ -10423,7 +10191,6 @@
 				B0731B55D2F4ED66AC4B0BA1466499CE /* BugDataService.swift in Sources */,
 				EDB1EC9148B94A061143545276A4B35F /* BugReportCache.swift in Sources */,
 				CD0F8C1367A069FC4D3C655B1F641467 /* Bundle+Extension.swift in Sources */,
-				35B7338B40EDB3BDF20536EDD3772AB3 /* Bundle+Extension.swift in Sources */,
 				AF5C1B8A4EA03BDE1F74A2F527E18229 /* ButtonTableViewCell.swift in Sources */,
 				F75B3E8BF2EC6BC90F6A2477A12BD95E /* CacheService.swift in Sources */,
 				A7D4EF076B21C0F2FBD8DD1398A8582E /* CalendarIntervalRule.swift in Sources */,
@@ -10889,9 +10656,7 @@
 				673A86E392B5803B5AFE7B01C33AD400 /* PopUpView.swift in Sources */,
 				F8153E79225C8C79253E176E51581639 /* PreAddress+MessageDataServiceTypes.swift in Sources */,
 				DCF8A78AC618E46290EF99B4BC2A8C4F /* ProcessInfo+Extension.swift in Sources */,
-				6821AE689BD5ADC7AA11B90C0B12A07A /* ProcessInfo+Extension.swift in Sources */,
 				78C3FC1AF5550F05E696C46D1F441049 /* ProgressBarButtonTableViewCell.swift in Sources */,
-				6B16E91928840A54BABC891C57795D09 /* Promise+BrokenPromise.swift in Sources */,
 				D0901BBAEB31D2C8C2CE6407C90217BC /* ProtonMail-Bridging-Header.cpp in Sources */,
 				2C2CA18744D9A99D3E99CB6D77227E54 /* ProtonMailAddresses.swift in Sources */,
 				62AA2B38B172FE096BC01DC4ED264BE6 /* ProtonMailViewController.swift in Sources */,
@@ -11045,9 +10810,8 @@
 				470DF515CA322B3B4EF8879BEDCB2B0A /* TextControl.swift in Sources */,
 				E7CBD73204DBDE75603A0F77DFA70A1B /* TextInsetTextField.swift in Sources */,
 				058FF386E01C1E062856F0A1B3F3BD42 /* Threading.swift in Sources */,
-				9429D58ABD3F0443953F09AB4DE8D244 /* TimeInterval+Extension.swift in Sources */,
 				8395111344A30D1B856812AC24758E6B /* ThreeLinesTableViewCell.swift in Sources */,
-				647DBC8CA02C88C60B4D571EE52DC940 /* TimeInterval+Extension.swift in Sources */,
+				9429D58ABD3F0443953F09AB4DE8D244 /* TimeInterval+Extension.swift in Sources */,
 				906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */,
 				563699092D664FFFB3D72EE94672B1CE /* TrustKitWrapper.swift in Sources */,
 				6F8CD847738C7080FA6492559908750D /* TwoFACodeView.swift in Sources */,
@@ -11671,7 +11435,6 @@
 				1CD22D56BD03F904999CD5020296C976 /* ContactTypeAddCustomCell.swift in Sources */,
 				315D4DED546B4B384FCAB9BCFC16BC90 /* ContactUpgradeCellDelegate.swift in Sources */,
 				F97660AC3B07C5D84B54C654BC34AF10 /* ContactVO+Extension.swift in Sources */,
-				676DF650D1EF869785997153601FDA55 /* ContactVO+Extension.swift in Sources */,
 				8C9D38F7ABCDA3254D21A2D759884909 /* ContactVO.swift in Sources */,
 				FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */,
 				359D16B44AEA3CDDC4BDAED3121F88E7 /* ContactsDefined.swift in Sources */,
