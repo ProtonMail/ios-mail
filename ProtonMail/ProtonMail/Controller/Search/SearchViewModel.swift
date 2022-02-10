@@ -30,12 +30,13 @@ protocol SearchVMProtocol {
 
     func viewDidLoad()
     func cleanLocalIndex()
-    func fetchRemoteData(query: String, fromStart: Bool)
+    func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: Message,
                             completeHandler: @escaping ((NSError?) -> Void))
     func getComposeViewModel(message: Message) -> ContainableComposeViewModel
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel
+    func cleanExistingSearchResults()
 
     // Select / action bar / action sheet related
     // TODO: The logic is quite similar what we did in mailBoxVC, try to share the logic
@@ -94,9 +95,15 @@ final class SearchViewModel: NSObject {
     }
     var selectedConversations: [Conversation] { [] }
     
-    init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol,
-         uiDelegate: SearchViewUIProtocol) {
+    var slowSearch: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.uiDelegate?.showSlowSearchBanner()
+            }
+        }
+    }
+    
+    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.uiDelegate = uiDelegate
@@ -120,7 +127,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.fetchController = nil
     }
     
-    func fetchRemoteData(query: String, fromStart: Bool) {
+    func fetchRemoteData(query: String, fromStart: Bool, forceSearchOnServer: Bool = false) {
         if fromStart {
             self.messages = []
         }
@@ -129,7 +136,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         
-        if userCachedStatus.isEncryptedSearchOn {
+        if userCachedStatus.isEncryptedSearchOn && forceSearchOnServer == false {
             if fromStart {
                 EncryptedSearchService.shared.isSearching = true
                 // Clear previous search state whenever a new search is initiated
@@ -247,6 +254,10 @@ extension SearchViewModel: SearchVMProtocol {
             messageCount: 0,
             folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
         )
+    }
+
+    func cleanExistingSearchResults() {
+        self.messages.removeAll()
     }
 
     // MARK: Action bar / sheet related

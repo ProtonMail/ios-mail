@@ -444,6 +444,8 @@ extension BannerView {
         var url: URL? = nil
         if link == LocalString._encrypted_search_info_search_downloading_link {
             url = URL(string: "downloading://")
+        } else if link == LocalString._encrypted_search_banner_slow_search_link {
+            url = URL(string: "slowsearch://")
         } else {
             url = URL(string: link)
         }

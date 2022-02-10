@@ -33,6 +33,7 @@ protocol SearchViewUIProtocol: UIViewController {
     func activityIndicator(isAnimating: Bool)
     func reloadTable()
     func reloadRows(rows: [IndexPath])
+    func showSlowSearchBanner()
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
@@ -43,6 +44,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet var noResultLabel: UILabel!
     private let searchBar = SearchBarView()
     private var searchInfoBanner: BannerView? = nil
+    private var slowSearchBanner: BannerView? = nil
     private var searchInfoActivityIndicator: UIActivityIndicatorView? = nil
     private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
@@ -261,7 +263,6 @@ extension SearchViewController {
             ])
         }
     }
-    
 }
 
 // MARK: Actions
@@ -755,6 +756,22 @@ extension SearchViewController: SearchViewUIProtocol {
         self.tableView.reloadRows(at: rows, with: .automatic)
         self.tableView.endUpdates()
     }
+
+    func showSlowSearchBanner() {
+        DispatchQueue.main.async {
+            let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
+                // Dismiss banner
+                self.slowSearchBanner?.remove(animated: true)
+                // Clear existing search results
+                self.viewModel.cleanExistingSearchResults()
+                // Run search on server
+                self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: true)
+            }
+            self.slowSearchBanner = BannerView(appearance: .esGray, message: LocalString._encrypted_search_banner_slow_search, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: LocalString._encrypted_search_banner_slow_search_link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: nil)
+            self.view.addSubview(self.slowSearchBanner!)
+            self.slowSearchBanner!.drop(on: self.view, from: .top)
+        }
+    }
 }
 
 // MARK: - UITableView
@@ -848,7 +865,7 @@ extension SearchViewController: UITextFieldDelegate {
         if userCachedStatus.isEncryptedSearchOn {
             self.showSearchInfoBanner()    // display only when ES is on
         }
-        self.viewModel.fetchRemoteData(query: self.query, fromStart: true)
+        self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: false)
         self.cancelEditingMode()
         return true
     }
