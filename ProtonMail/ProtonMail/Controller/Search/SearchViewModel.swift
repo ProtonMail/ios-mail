@@ -27,6 +27,7 @@ protocol SearchVMProtocol {
     var selectedMessages: [Message] { get }
     var labelID: String { get }
     var viewMode: ViewMode { get }
+    var isEncryptedSearchAvailablePopupAlreadyShown: Bool { get }
 
     func viewDidLoad()
     func cleanLocalIndex()
@@ -37,6 +38,7 @@ protocol SearchVMProtocol {
     func getComposeViewModel(message: Message) -> ContainableComposeViewModel
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel
     func cleanExistingSearchResults()
+    func disableEncryptedSearchPopup()
 
     // Select / action bar / action sheet related
     // TODO: The logic is quite similar what we did in mailBoxVC, try to share the logic
@@ -110,10 +112,13 @@ final class SearchViewModel: NSObject {
         }
     }
     
-    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol) {
+    private var searchCache: SearchCacheProtocol
+    
+    init(user: UserManager, coreDataService: CoreDataService, uiDelegate: SearchViewUIProtocol, searchCache: SearchCacheProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.uiDelegate = uiDelegate
+        self.searchCache = searchCache
     }
 }
 
@@ -385,6 +390,17 @@ extension SearchViewModel: SearchVMProtocol {
             }
         }
         
+    }
+
+    var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
+        get {
+            return searchCache.isEncryptedSearchAvailablePopupAlreadyShown
+        }
+    }
+
+    func disableEncryptedSearchPopup() {
+        self.searchCache.isEncryptedSearchAvailablePopupAlreadyShown = true
+        print("DEBUG -> viewmodel es shown? -> \(self.isEncryptedSearchAvailablePopupAlreadyShown)")
     }
 }
 

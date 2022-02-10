@@ -108,11 +108,18 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
 
-        // show pop up to turn ES on
-        if userCachedStatus.isEncryptedSearchOn == false {
+        // show pop up to turn ES on - only once per user
+        print("DEBUG: viewdidload: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
+        print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
+        if userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == false && userCachedStatus.isEncryptedSearchOn == false {
             if self.popupView == nil {  // Show popup if it is not already shown
+                print("DEBUG show popup")
                 self.showPopUpToEnableEncryptedSearch()
             }
+            //self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown = true
+            self.viewModel.disableEncryptedSearchPopup()    // set isEncryptedSearchAvailablePopupAlreadyShown to true in the function as the view model is a private set
+            print("DEBUG: viewdidload searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
+            print("DEBUG: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
         }
     }
     
@@ -121,7 +128,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
         // Remove pop up when indexing is in progress
-        if userCachedStatus.isEncryptedSearchOn == true {
+        print("DEBUG: viewwillappear: es on:\(userCachedStatus.isEncryptedSearchOn), popup shown: \(userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown)")
+        print("DEBUG: viewillappear searchcache: \(self.viewModel.isEncryptedSearchAvailablePopupAlreadyShown)")
+        if userCachedStatus.isEncryptedSearchOn == true || userCachedStatus.isEncryptedSearchAvailablePopupAlreadyShown == true {
+            print("DEBUG remove popup!")
             self.popupView?.remove()
             // remove gray view
             self.grayedOutView?.removeFromSuperview()
