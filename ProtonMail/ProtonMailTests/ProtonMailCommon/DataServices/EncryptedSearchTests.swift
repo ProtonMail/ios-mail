@@ -475,19 +475,23 @@ class EncryptedSearchTests: XCTestCase {
     }
 
     // Depending on CPU usage
-    /*func testSlowDownIndexing() throws {
+    func testSlowDownIndexing() throws {
         let sut = EncryptedSearchService.shared.slowDownIndexing
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         sut(self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, 10)
-    }*/
+        if let indexingQueue = EncryptedSearchService.shared.messageIndexingQueue {
+            XCTAssertNotEqual(indexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
+        }
+    }
 
     func testSpeedUpIndexing() throws {
         let sut = EncryptedSearchService.shared.speedUpIndexing
         EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: .downloading)
         EncryptedSearchService.shared.slowDownIndexing(userID: self.testUserID)    // first slow it down
         sut(self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.messageIndexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
+        if let indexingQueue = EncryptedSearchService.shared.messageIndexingQueue {
+            XCTAssertEqual(indexingQueue.maxConcurrentOperationCount, OperationQueue.defaultMaxConcurrentOperationCount)
+        }
     }
 
     // Test with some UI tests
