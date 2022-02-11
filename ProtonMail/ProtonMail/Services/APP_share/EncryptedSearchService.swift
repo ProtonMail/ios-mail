@@ -708,7 +708,7 @@ extension EncryptedSearchService {
     func convertMessageToESMessage(for message: Message) -> ESMessage {
         let decoder = JSONDecoder()
 
-        let jsonSenderData: Data = Data(message.sender!.utf8)
+        let jsonSenderData: Data = Data(message.sender?.utf8 ?? "".utf8)
         var sender: ESSender? = ESSender(Name: "", Address: "")
         do {
             sender = try decoder.decode(ESSender.self, from: jsonSenderData)
@@ -1437,7 +1437,11 @@ extension EncryptedSearchService {
                                     group.leave()
                                 } else {
                                     self?.getMessage(messageID: id) { msg in
-                                        messages.append(msg!)
+                                        if let msg = msg {
+                                            messages.append(msg)
+                                        } else {
+                                            print("Error when fetching message from coredata. Message nil.")
+                                        }
                                         group.leave()
                                     }
                                 }
