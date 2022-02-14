@@ -27,7 +27,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiServiceMock = APIServiceMock()
-        sut = FeatureFlagsDownloadService(apiService: apiServiceMock)
+        sut = FeatureFlagsDownloadService(apiService: apiServiceMock, sessionID: "")
     }
 
     override func tearDown() {

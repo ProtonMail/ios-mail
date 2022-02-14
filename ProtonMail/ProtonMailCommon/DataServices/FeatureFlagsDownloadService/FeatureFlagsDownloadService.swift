@@ -20,6 +20,7 @@ import ProtonCore_Services
 enum FeatureFlagKey: String, CaseIterable {
     case threading = "ThreadingIOS"
     case inAppFeedback = "InAppFeedbackIOS"
+    case realNumAttachments = "RealNumAttachments"
 }
 
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
@@ -42,6 +43,7 @@ protocol FeatureFlagsDownloadServiceProtocol {
 class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
     private let apiService: APIService
+    private let sessionID: String
     private let subscribersTable: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     var subscribers: [FeatureFlagsSubscribeProtocol] {
         subscribersTable.allObjects.compactMap { $0 as? FeatureFlagsSubscribeProtocol }
@@ -49,8 +51,9 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private(set) var cachedFeatureFlags: [String: Any] = [:]
     private(set) var lastFetchingTime: Date?
 
-    init(apiService: APIService) {
+    init(apiService: APIService, sessionID: String) {
         self.apiService = apiService
+        self.sessionID = sessionID
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -81,6 +84,9 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             if !response.result.isEmpty {
                 self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }
+                if let realAttachment = response.result[FeatureFlagKey.realNumAttachments.rawValue] as? Bool {
+                    userCachedStatus.set(realAttachments: realAttachment, sessionID: self.sessionID)
+                }
             }
             completion?(.success(response))
         }
