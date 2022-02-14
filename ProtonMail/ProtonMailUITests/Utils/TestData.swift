@@ -29,5 +29,4 @@ class TestData {
     
     let editedPassword = "P@ssw0rd!"
     let editedPasswordHint = "ProtonMail"
-    static var wasTourClosed = false
 }

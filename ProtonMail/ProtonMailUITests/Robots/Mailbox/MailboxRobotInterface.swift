@@ -105,18 +105,6 @@ class MailboxRobotInterface: CoreElements {
         cell().byIndex(position).longPress()
         return SelectionStateRobotInterface()
     }
-    
-    private func closeTourIfShown() {
-        let skipButton = button(id.skipOnboardingButtonLabel).firstMatch()
-        if !TestData.wasTourClosed {
-            if skipButton.wait().exists() {
-                skipButton.tap()
-                TestData.wasTourClosed = true
-            } else {
-                TestData.wasTourClosed = true
-            }
-        }
-    }
 }
 
 /**
