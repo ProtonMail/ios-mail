@@ -332,11 +332,16 @@ extension UIImage: AttachmentConvertible {
 
                     attachment.message = message
 
-                    let attachments = message.attachments
-                        .compactMap({ $0 as? Attachment })
-                        .filter { !$0.inline() }
-                    message.numAttachments = NSNumber(value: attachments.count)
-                    
+                    if userCachedStatus.realAttachments {
+                        let attachments = message.attachments
+                            .compactMap({ $0 as? Attachment })
+                            .filter { !$0.inline() }
+                        message.numAttachments = NSNumber(value: attachments.count)
+                    } else {
+                        let number = message.numAttachments.int32Value
+                        let newNum = number > 0 ? number + 1 : 1
+                        message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
+                    }
                     _ = context.saveUpstreamIfNeeded()
                     seal.fulfill(attachment)
                 }
@@ -371,17 +376,22 @@ extension Data: AttachmentConvertible {
                 attachment.isTemp = false
                 attachment.keyPacket = ""
                 try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
-                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
+                attachment.message = message
 
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                
-                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if userCachedStatus.realAttachments {
+                    let attachments = message.attachments
+                        .compactMap({ $0 as? Attachment })
+                        .filter { !$0.inline() }
+                    message.numAttachments = NSNumber(value: attachments.count)
+                } else {
+                    let number = message.numAttachments.int32Value
+                    let newNum = number > 0 ? number + 1 : 1
+                    message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
+                }
+                _ = context.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }
@@ -407,17 +417,22 @@ extension URL: AttachmentConvertible {
                 attachment.isTemp = false
                 attachment.keyPacket = ""
                 attachment.localURL = stripMetadata ? self.strippingExif() : self
-                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
+                attachment.message = message
 
-                let attachments = message.attachments
-                    .compactMap({ $0 as? Attachment })
-                    .filter { !$0.inline() }
-                message.numAttachments = NSNumber(value: attachments.count)
-                
-                _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if userCachedStatus.realAttachments {
+                    let attachments = message.attachments
+                        .compactMap({ $0 as? Attachment })
+                        .filter { !$0.inline() }
+                    message.numAttachments = NSNumber(value: attachments.count)
+                } else {
+                    let number = message.numAttachments.int32Value
+                    let newNum = number > 0 ? number + 1 : 1
+                    message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
+                }
+                _ = context.saveUpstreamIfNeeded()
                 seal.fulfill(attachment)
             }
         }

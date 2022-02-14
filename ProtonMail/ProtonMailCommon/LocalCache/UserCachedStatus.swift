@@ -98,6 +98,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
+        static let realAttachments = "realAttachments"
     }
     
     var keymakerRandomkey: String? {
@@ -208,7 +209,33 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             setValue(newValue, forKey: Key.showServerNoticesNextTime)
         }
     }
-    
+
+    var realAttachments: Bool {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
+           let sessionID = self.primaryUserSessionId,
+           let flag = dict[sessionID] {
+            return flag
+        } else {
+            return false
+        }
+    }
+
+    func set(realAttachments: Bool, sessionID: String) {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           var dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            dict[sessionID] = realAttachments
+            let jsonString = dict.json()
+            setValue(jsonString, forKey: Key.realAttachments)
+        } else {
+            let dict: [String: Any] = [sessionID: realAttachments]
+            let jsonString = dict.json()
+            setValue(jsonString, forKey: Key.realAttachments)
+        }
+    }
+
     func isSplashOk() -> Bool {
         let splashVersion = getShared().int(forKey: Key.lastSplashViersion)
         return splashVersion == Constants.App.SplashVersion

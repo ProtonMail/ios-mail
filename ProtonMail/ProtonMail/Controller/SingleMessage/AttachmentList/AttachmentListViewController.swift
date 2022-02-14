@@ -33,6 +33,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     private var isInternetBannerPresented = false
     private var previewer: QuickViewViewController?
     private var lastClickAttachmentID: String?
+    private var realAttachment: Bool { userCachedStatus.realAttachments }
 
     // Used in Quick Look dataSource
     private var tempClearFileURL: URL?
@@ -66,7 +67,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(AttachmentListTableViewCell.self)
         tableView.rowHeight = 72.0
 
-        var titleToAdd = "\(viewModel.normalAttachments.count) "
+        var titleToAdd = realAttachment ? "\(viewModel.normalAttachments.count) ": "\(viewModel.attachmentCount) "
         titleToAdd += viewModel.attachmentCount > 1 ?
             LocalString._attachments_list_title :
             LocalString._one_attachment_list_title
@@ -111,17 +112,36 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return realAttachment ? 1: viewModel.attachmentSections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.normalAttachments.count
+        if realAttachment {
+            return viewModel.normalAttachments.count
+        }
+        switch viewModel.attachmentSections[section] {
+        case .normal:
+            return viewModel.normalAttachments.count
+        case .inline:
+            return viewModel.inlineAttachments.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentListTableViewCell.CellID, for: indexPath)
         if let cellToConfig = cell as? AttachmentListTableViewCell {
-            let attachment = viewModel.normalAttachments[indexPath.row]
+            let attachment: AttachmentInfo
+            if realAttachment {
+                attachment = viewModel.normalAttachments[indexPath.row]
+            } else {
+                let sectionItem = viewModel.attachmentSections[indexPath.section]
+                switch sectionItem {
+                case .inline:
+                    attachment = viewModel.inlineAttachments[indexPath.row]
+                case .normal:
+                    attachment = viewModel.normalAttachments[indexPath.row]
+                }
+            }
 
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
@@ -141,6 +161,17 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
         return cell
     }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            let sectionItem = viewModel.attachmentSections[section]
+            guard !viewModel.isEmpty(section: sectionItem) else { return nil }
+            return PMHeaderView(title: sectionItem.actionTitle,
+                                fontSize: 15,
+                                titleColor: ColorProvider.TextWeak,
+                                titleLeft: 16,
+                                titleBottom: 8,
+                                background: ColorProvider.BackgroundNorm)
+        }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         viewModel.isEmpty(section: viewModel.attachmentSections[section]) ? 0 : 52
