@@ -43,13 +43,23 @@ class AttachmentViewModel {
     }
 
     init (attachments: [AttachmentInfo]) {
-        self.attachments = attachments.filter { $0.isInline == false }
+        if userCachedStatus.realAttachments {
+            self.attachments = attachments.filter { ($0.att?.inline() ?? false) == false }
+        } else {
+            self.attachments = attachments
+        }
     }
 
     func messageHasChanged(message: Message) {
-        let files: [AttachmentInfo] = message.attachments
-            .compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
-        self.attachments = files.filter { $0.isInline == false }
+        if userCachedStatus.realAttachments {
+            let files: [AttachmentInfo] = message.attachments
+                .compactMap { $0 as? Attachment }
+                .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+            self.attachments = files.filter { $0.att?.inline() == false }
+        } else {
+            self.attachments = message.attachments
+                .compactMap { $0 as? Attachment }
+                .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+        }
     }
 }

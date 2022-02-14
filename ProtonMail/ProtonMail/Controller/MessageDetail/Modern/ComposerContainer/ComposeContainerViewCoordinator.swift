@@ -108,22 +108,19 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     func createAttachmentView(childViewModel: ContainableComposeViewModel) -> ComposerAttachmentVC {
-        
-        #if APP_EXTENSION
-        let cachedMessage = childViewModel.message
+
+        // Mainly for inline attachment update
+        // The inline attachment comes from `htmlEditor` and `ComposeViewController` can't access `ComposeContainerViewCoordinator`
         self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
             self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
-                guard change.oldValue?.count != change.newValue?.count,
-                      let attachments = cachedMessage?.attachments.allObjects as? [Attachment] else {
-                    return
-                }
-                attachments.forEach { attachment in
-                    self?.addAttachment(attachment, shouldUpload: false)
-                }
+                let attachments = message.attachments.allObjects.compactMap { $0 as? Attachment }
+                self?.setAttachments(attachments, shouldUpload: false)
+                #if APP_EXTENSION
                 self?.controller.getSharedFiles()
+                #endif
             }
         }
-        #endif
+       
 
         let attachments = childViewModel.getAttachments() ?? []
         let dataService: CoreDataService = self.services.get(by: CoreDataService.self)
@@ -207,6 +204,30 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         _ = self.editor.attachments(pickup: attachment).done { [weak self] in
             let number = self?.attachmentView?.attachmentCount ?? 0
             self?.controller.updateAttachmentCount(number: number)
+        }
+    }
+
+    func setAttachments(_ attachments: [Attachment], shouldUpload: Bool = true) {
+        guard let message = self.editor.viewModel.message,
+              let context = message.managedObjectContext else { return }
+        context.performAndWait {
+            attachments.forEach { $0.message = message }
+            _ = context.saveUpstreamIfNeeded()
+        }
+        guard let component = self.attachmentView else { return }
+        component.set(attachments: attachments) { [weak self] in
+            DispatchQueue.main.async {
+                let number = component.attachmentCount
+                self?.controller.updateAttachmentCount(number: number)
+            }
+        }
+        
+        guard shouldUpload else { return }
+        attachments.forEach { [weak self] attachment in
+            _ = self?.editor.attachments(pickup: attachment).done { [weak self] in
+                let number = self?.attachmentView?.attachmentCount ?? 0
+                self?.controller.updateAttachmentCount(number: number)
+            }
         }
     }
 }

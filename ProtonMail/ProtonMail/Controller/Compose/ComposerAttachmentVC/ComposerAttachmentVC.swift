@@ -83,8 +83,9 @@ final class ComposerAttachmentVC: UIViewController {
                 }
             }
         }
+        let realAttachments = userCachedStatus.realAttachments
         self.datas = attachments
-            .filter({ $0.inline() == false })
+            .filter({ $0.inline() == false || !realAttachments })
             .map { AttachInfo(attachment: $0) }
         self.delegate = delegate
     }
@@ -150,16 +151,39 @@ final class ComposerAttachmentVC: UIViewController {
         self.queue.addOperation { [weak self] in
             guard let self = self else { return }
             let existedID = self.datas.map { $0.objectID }
+            let realAttachments = userCachedStatus.realAttachments
             let attachments = attachments
                 .filter { !existedID.contains($0.objectID.uriRepresentation().absoluteString) &&
                     !$0.isSoftDeleted &&
-                    $0.inline() == false
+                    ($0.inline() == false || !realAttachments)
                 }
 
             // swiftlint:disable:next todo
             // FIXME: insert function for better UX
             // the insert function could break in the concurrency
             self.datas += attachments.map { AttachInfo(attachment: $0) }
+            completeHandler?()
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+                self.updateTableViewHeight()
+                self.isUploading?(!self.datas.areUploaded)
+            }
+        }
+    }
+
+    func set(attachments: [Attachment], completeHandler: (() -> Void)? = nil) {
+        self.queue.addOperation { [weak self] in
+            guard let self = self else { return }
+            let realAttachments = userCachedStatus.realAttachments
+            let attachments = attachments
+                .filter { !$0.isSoftDeleted &&
+                    ($0.inline() == false || !realAttachments)
+                }
+
+            // swiftlint:disable:next todo
+            // FIXME: insert function for better UX
+            // the insert function could break in the concurrency
+            self.datas = attachments.map { AttachInfo(attachment: $0) }
             completeHandler?()
             DispatchQueue.main.async {
                 self.tableView?.reloadData()

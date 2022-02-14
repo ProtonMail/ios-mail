@@ -232,7 +232,7 @@ class UserManager : Service, HasLocalStorage {
     }()
 
 	public lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
-        let service = FeatureFlagsDownloadService(apiService: self.apiService)
+        let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.auth.sessionID)
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)
         service.getFeatureFlags(completion: nil)

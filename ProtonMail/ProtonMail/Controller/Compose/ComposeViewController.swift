@@ -608,7 +608,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
         
         // decrement number of attachments in message manually
-        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted && !$0.inline() }).count {
+        let realAttachments = userCachedStatus.realAttachments
+        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ attach in
+            if attach.isSoftDeleted {
+                return false
+            } else if realAttachments {
+                return !attach.inline()
+            }
+            return true
+        }).count {
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.composerContext?.performAndWait {
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
@@ -916,7 +924,15 @@ extension ComposeViewController {
                 return self.viewModel.deleteAtt(attachment)
             }.ensure {
                 // decrement number of attachments in message manually
-                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ !$0.isSoftDeleted && !$0.inline() }).count {
+                let realAttachments = userCachedStatus.realAttachments
+                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ attach in
+                    if attach.isSoftDeleted {
+                        return false
+                    } else if realAttachments {
+                        return !attach.inline()
+                    }
+                    return true
+                }).count {
                     self.viewModel.composerContext?.performAndWait {
                         self.viewModel.message?.numAttachments = NSNumber(value: number)
                         _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
