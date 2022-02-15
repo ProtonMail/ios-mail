@@ -95,6 +95,7 @@ class SingleMessageContentViewController: UIViewController {
 
     private func setUpFooterButtons() {
         if !viewModel.message.isHavingMoreThanOneContact {
+            customView.footerButtons.stackView.distribution = .fillEqually
             customView.footerButtons.replyAllButton.removeFromSuperview()
         } else {
             customView.footerButtons.replyAllButton.tap = { [weak self] in

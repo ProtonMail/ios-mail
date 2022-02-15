@@ -41,7 +41,7 @@ private enum SubviewsFactory {
 
     static var stackView: UIStackView {
         let view = UIStackView()
-        view.distribution = .fillEqually
+        view.distribution = .fillProportionally
         view.axis = .horizontal
         view.spacing = 8
         return view

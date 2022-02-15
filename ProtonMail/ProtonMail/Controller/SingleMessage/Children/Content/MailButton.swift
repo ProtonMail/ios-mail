@@ -57,8 +57,8 @@ class MailButton: UIControl {
         [
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
             containerView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 15),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -15),
+            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 6),
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -6),
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 24.0)
