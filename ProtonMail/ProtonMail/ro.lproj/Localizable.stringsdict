@@ -127,7 +127,7 @@
 			<key>few</key>
 			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversație</string>
+			<string>O conversație</string>
 			<key>other</key>
 			<string>%d de conversații</string>
 		</dict>
@@ -145,7 +145,7 @@
 			<key>few</key>
 			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d mesaj</string>
+			<string>Un mesaj</string>
 			<key>other</key>
 			<string>%d de mesaje</string>
 		</dict>
@@ -215,12 +215,12 @@
 			<key>few</key>
 			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversație</string>
+			<string>O conversație</string>
 			<key>other</key>
-			<string>%d conversații</string>
+			<string>%d de conversații</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ etichetat</string>
+		<string>%#@Conversation@ a fost etichetată</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -233,12 +233,12 @@
 			<key>few</key>
 			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d mesaj</string>
+			<string>Un mesaj</string>
 			<key>other</key>
 			<string>%d de mesaje</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ etichetat</string>
+		<string>%#@Message@ a fost etichetat</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -251,12 +251,12 @@
 			<key>few</key>
 			<string>%d conversații</string>
 			<key>one</key>
-			<string>%d conversație</string>
+			<string>O conversație</string>
 			<key>other</key>
 			<string>%d de conversații</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ a fost mutată la %@</string>
+		<string>%#@Conversation@ a fost mutată în %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -269,12 +269,12 @@
 			<key>few</key>
 			<string>%d mesaje</string>
 			<key>one</key>
-			<string>%d mesaj</string>
+			<string>Un mesaj</string>
 			<key>other</key>
 			<string>%d de mesaje</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ a fost mutată la %@</string>
+		<string>%#@MSG@ a fost mutat în %@</string>
 	</dict>
 </dict>
 </plist>

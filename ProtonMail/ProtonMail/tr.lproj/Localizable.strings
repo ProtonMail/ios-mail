@@ -350,7 +350,7 @@
 "Attachment imported" = "Ek dosya içe aktarıldı";
 
 /* Alert title */
-"Attachment limit" = "Ek dosya sınırı";
+"Attachment limit" = "Ek dosya sınırlaması";
 
 /* No comment provided by engineer. */
 "attachments" = "ek dosyalar";
@@ -1526,7 +1526,7 @@
 "Local Cache Management" = "Yerel ön bellek yönetimi";
 
 /* cell title in device settings */
-"Local storage limit" = "Yerel depolama alanı sınırı";
+"Local storage limit" = "Yerel depolama alanı sınırlaması";
 
 /* *
  *  file string type */

@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "...[Afișați mesajul complet]";
+"…[Show full message]" = "...[Afișare mesaj complet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'la' %@";
@@ -83,10 +83,10 @@
 "<no object>" = "<lipsă obiect>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Mesaj mutat în arhivă";
+"1 Message moved to archive" = "Un mesaj a fost mutat în «Arhivă»";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 Mesaj mutat în spam";
+"1 Message moved to spam" = "Un mesaj a fost mutat în «Nedorite»";
 
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "Autentificarea cu doi factori a eșuat. Mai încercați.";
@@ -126,7 +126,7 @@
 "Account settings" = "Setări cont";
 
 /* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "Acțiune anulată";
+"Action reverted" = "Acțiune inversată";
 
 /* (No Comment) */
 "Add" = "Adăugare";
@@ -1000,16 +1000,16 @@
 "Empty Label" = "Eliminare etichetă";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Goliți Spam-ul";
+"Empty Spam" = "Golire «Nedorite»";
 
 /* Alert title */
-"Empty spam folder" = "Goliți dosarul de spam";
+"Empty spam folder" = "Golire folder «Nedorite»";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Golire gunoi";
+"Empty Trash" = "Golire «Gunoi»";
 
 /* Alert title */
-"Empty trash folder" = "Goliți folderul de gunoi";
+"Empty trash folder" = "Golire folder «Gunoi»";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Activare conversații";
@@ -1606,7 +1606,7 @@
 "Message %@" = "Mesaj %@";
 
 /* Title of the view showing the message body */
-"Message body" = "Textul mesajului";
+"Message body" = "Conținut mesaj";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
@@ -1628,7 +1628,7 @@
 "Message headers" = "Antete mesaj";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Mutare mesaj în «Gunoi»";
+"Message moved to trash" = "Mesaj mutat în «Gunoi»";
 
 /* Placeholder */
 "Message Password" = "Parolă mesaj";
@@ -3022,10 +3022,10 @@
 "View HTML" = "Afișare HTML";
 
 /* The title of the view message in dark mode action in action sheet */
-"View message in Dark mode" = "Vizualizați mesajul în modul întunecat";
+"View message in Dark mode" = "Vizualizare mesaj în mod întunecat";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "Vizualizați mesajul în modul luminos";
+"View message in Light mode" = "Vizualizare mesaj în mod deschis";
 
 /* Title */
 "Warning" = "Avertizare";
