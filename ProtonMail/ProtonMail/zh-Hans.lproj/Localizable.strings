@@ -1536,13 +1536,13 @@
 "Lock The App" = "锁定应用";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
+"Log in again to keep receiving updates" = "重新登录即可继续接收邮件提醒";
 
 /* comment */
 "Log out" = "退出";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logged out of %@";
+"Logged out of %@" = "%@ 账户已退出登录";
 
 /* error title */
 "Logs" = "日志";

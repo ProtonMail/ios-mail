@@ -10,8 +10,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d attempt remaining</string>
 			<key>other</key>
-			<string>残り %d 回試すことができます</string>
+			<string>%d attempts remaining</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -24,8 +26,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d attempt remaining until secure data wipe!</string>
 			<key>other</key>
-			<string>%d 回間違えるとデータが削除されます!</string>
+			<string>%d attempts remaining until secure data wipe!</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -38,8 +42,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d day</string>
 			<key>other</key>
-			<string>%d 日</string>
+			<string>%d days</string>
 			<key>zero</key>
 			<string>%d day</string>
 		</dict>
@@ -54,8 +60,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d hour</string>
 			<key>other</key>
-			<string>%d 時間</string>
+			<string>%d hours</string>
 			<key>zero</key>
 			<string>%d hour</string>
 		</dict>
@@ -72,8 +80,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d other</string>
 			<key>other</key>
-			<string>他 %d</string>
+			<string>%d others</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -84,8 +94,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>Updated %d min ago</string>
 			<key>other</key>
-			<string>%d 分前に更新</string>
+			<string>Updated %d mins ago</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -100,8 +112,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d conversation</string>
 			<key>other</key>
-			<string>%d 件の会話</string>
+			<string>%d conversations</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
@@ -114,8 +128,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d message</string>
 			<key>other</key>
-			<string>%d 件のメッセージ</string>
+			<string>%d messages</string>
 		</dict>
 	</dict>
 	<key>general_conversation</key>
@@ -126,8 +142,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%u conversation</string>
 			<key>other</key>
-			<string>%u 件の会話</string>
+			<string>%u conversations</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@CONVERSATION@</string>
@@ -142,8 +160,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%u message</string>
 			<key>other</key>
-			<string>%u 件のメッセージ</string>
+			<string>%u messages</string>
 		</dict>
 	</dict>
 	<key>minute</key>
@@ -154,8 +174,10 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
+			<key>one</key>
+			<string>%d min</string>
 			<key>other</key>
-			<string>%d 分</string>
+			<string>%d mins</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
@@ -168,11 +190,13 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d conversation</string>
 			<key>other</key>
-			<string>%d 件の会話</string>
+			<string>%d conversations</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ にラベルをつけました</string>
+		<string>%#@Conversation@ labeled</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -182,11 +206,13 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d message</string>
 			<key>other</key>
-			<string>%d 件のメッセージ</string>
+			<string>%d messages</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@ にラベルをつけました</string>
+		<string>%#@Message@ labeled</string>
 	</dict>
 	<key>swipe_to_move_conversation_title</key>
 	<dict>
@@ -196,11 +222,13 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d conversation</string>
 			<key>other</key>
-			<string>%d 件の会話</string>
+			<string>%d conversations</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ を %@ に移動しました</string>
+		<string>%#@Conversation@ moved to %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>
@@ -210,11 +238,13 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
+			<key>one</key>
+			<string>%d message</string>
 			<key>other</key>
-			<string>%d 件のメッセージ</string>
+			<string>%d messages</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@ を %@ に移動しました</string>
+		<string>%#@MSG@ moved to %@</string>
 	</dict>
 </dict>
 </plist>

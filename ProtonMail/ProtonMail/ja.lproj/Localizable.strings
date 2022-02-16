@@ -1000,16 +1000,16 @@
 "Empty Label" = "ラベルを空にする";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Empty Spam";
+"Empty Spam" = "迷惑メールを空にする";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "迷惑メールフォルダーを空にする";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Empty Trash";
+"Empty Trash" = "ごみ箱を空にする";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "ごみ箱フォルダーを空にする";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "会話を有効にする";

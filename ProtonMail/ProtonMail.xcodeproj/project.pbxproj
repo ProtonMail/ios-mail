@@ -3911,6 +3911,9 @@
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		C3A86E81FC1EB1180CFA9F18CB7DE806 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
+		C3E91B6127BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C3E91B6227BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C3E91B6327BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-US"; path = "../en-US.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		C41BFF3EFB3A927144347B5CDBE36752 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProvider.swift; sourceTree = "<group>"; };
@@ -7846,6 +7849,7 @@
 				ru,
 				uk,
 				el,
+				"en-US",
 			);
 			mainGroup = C17EB90EF5076A849C4E2A0A715035BA;
 			productRefGroup = 7828F3448BB043564580FD2E6E5D5A54 /* Products */;
@@ -11577,6 +11581,7 @@
 				DBDD1707D9714BF6526B34EF40D2A812 /* uk */,
 				8386FECF18884638287496DF015DBF6A /* zh-Hans */,
 				3DE4E5F927C84D91C86831B9243C1FC5 /* zh-Hant */,
+				C3E91B6127BA37F000C2B9ED /* en-US */,
 			);
 			name = InfoPlist.strings;
 			path = ProtonMail;
@@ -11612,6 +11617,7 @@
 				362CEF383ACFCF86812592605B2F3116 /* uk */,
 				57295F845FB5B0093197283C600A53DB /* zh-Hans */,
 				8802431355F983D5DD64869A9DA00F43 /* zh-Hant */,
+				C3E91B6327BA37F000C2B9ED /* en-US */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -11646,6 +11652,7 @@
 				3B402218BE33D7472F069518E76A588D /* uk */,
 				22BE4DDF6BEBE920C194F8D16190C4ED /* zh-Hans */,
 				24E1D28A547F3242E0E2A8E25EA470E7 /* zh-Hant */,
+				C3E91B6227BA37F000C2B9ED /* en-US */,
 			);
 			name = Localizable.strings;
 			path = ProtonMail;

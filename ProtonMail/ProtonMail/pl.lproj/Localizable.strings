@@ -781,7 +781,7 @@
 "DECRYPT MAILBOX" = "ODSZYFRUJ SKRZYNKĘ POCZTOWĄ";
 
 /* Description */
-"Decrypt token failed. Please try again." = "Odszyfrowywanie tokena nie powiodło się. Spróbuj ponownie.";
+"Decrypt token failed. Please try again." = "Odszyfrowanie tokena nie powiodło się. Spróbuj ponownie.";
 
 /* error title */
 "Decryption error" = "Błąd odszyfrowywania";
