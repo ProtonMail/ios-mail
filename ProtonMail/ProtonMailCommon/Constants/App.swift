@@ -68,7 +68,11 @@ struct Constants {
         }
          
         static func captchaHost() -> String {
-            return API_HOST_URL
+            if URL_HOST.starts(with: "api.") {
+                return "https://\(URL_HOST)"
+            } else {
+                return "https://api.\(URL_HOST)"
+            }
         }
         
         //app share group
