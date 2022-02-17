@@ -2198,7 +2198,6 @@ extension EncryptedSearchService {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.day, .hour, .minute]
         formatter.unitsStyle = .full    // spells out units
-        formatter.collapsesLargestUnit = true
         formatter.includesTimeRemainingPhrase = true    // adds remaining in the end
         formatter.zeroFormattingBehavior = .dropLeading // drops leading units that are zero
 
