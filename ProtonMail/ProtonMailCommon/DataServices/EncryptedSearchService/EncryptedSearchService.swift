@@ -21,6 +21,7 @@ import ProtonCore_Services
 import ProtonCore_DataModel
 import UIKit
 import SwiftUI
+import ProtonCore_UIFoundations
 
 extension Array {
     func chunks(_ chunkSize: Int) -> [[Element]] {
@@ -106,6 +107,7 @@ public class EncryptedSearchService {
     //internal var numberOfResultsFoundByCachedSearch: Int = 0
     //internal var numberOfResultsFoundByIndexSearch: Int = 0
     internal var numberOfResultsFoundBySearch: Int = 0
+    internal var searchQuery: String = ""
 
     // Independent variables
     let timeFormatter = DateComponentsFormatter()
@@ -1289,6 +1291,9 @@ extension EncryptedSearchService {
         if query == "" {
             completion?(nil, nil) // There are no results for an empty search query
         }
+
+        // Save query - needed for highlighting
+        self.searchQuery = query
 
         // Update API services to current user
         self.updateUserAndAPIServices()
@@ -2529,5 +2534,160 @@ extension EncryptedSearchService {
     func updateProgressedMessagesUI() {
         self.viewModel?.progressedMessages.value = userCachedStatus.encryptedSearchProcessedMessages
         self.viewModel?.currentProgress.value = Int(ceil((Double(userCachedStatus.encryptedSearchProcessedMessages)/Double(userCachedStatus.encryptedSearchTotalMessages))*100))
+    }
+
+    func highlightKeyWords(bodyAsHtml: String) -> String {
+        // check if there are any keywords
+        if self.searchQuery == "" {
+            return bodyAsHtml
+        }
+
+        // Split search query in list
+        let keywords: [String] = self.searchQuery.components(separatedBy: " ")
+        guard !keywords.isEmpty else {
+            return bodyAsHtml
+        }
+
+        var htmlWithHighlightedKeywords = bodyAsHtml
+        do {
+            let doc: Document = try SwiftSoup.parse(htmlWithHighlightedKeywords)
+            if let body = doc.body() {
+                try self.highlightSearchKeyWordsInHtml(parentNode: body, keyWords: keywords)
+            }
+            htmlWithHighlightedKeywords = try doc.html()
+            // fix bug with newlines and whitespaces added
+            htmlWithHighlightedKeywords = self.makeHighlightingPartOneLine(htmlString: htmlWithHighlightedKeywords)
+        } catch {
+            print("Error when parsing the Html DOM tree for highlighting keywords")
+        }
+
+        return htmlWithHighlightedKeywords
+    }
+
+    private func makeHighlightingPartOneLine(htmlString: String) -> String {
+        // Find mark tag
+        let indicesBeginTag = htmlString.indices(of: "<mark>")
+        let indicesEndTag = htmlString.indices(of: "</mark>")
+
+        // Check if there are mark tags in the htmlstring
+        guard indicesBeginTag.isEmpty == false else {
+            return htmlString
+        }
+
+        var htmlStringOneLine = htmlString
+        for offset in 0...(indicesBeginTag.count-1) {
+            let startIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesBeginTag[offset])
+            let endIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesEndTag[offset]+"</mark>".count)
+
+            let begin = String(htmlStringOneLine[..<startIndex])
+            var replace = String(htmlStringOneLine[startIndex..<endIndex])
+            let end = String(htmlStringOneLine[endIndex...])
+
+            replace = replace.components(separatedBy: .whitespacesAndNewlines).joined()
+            htmlStringOneLine = begin + replace + end
+        }
+
+        return htmlStringOneLine
+    }
+
+    private func highlightSearchKeyWordsInHtml(parentNode: Element?, keyWords: [String]) throws {
+        guard let parentNode = parentNode else {
+            return
+        }
+
+        for node in parentNode.getChildNodes() {
+            if let textNode = node as? TextNode {
+                if textNode.isBlank() {
+                    continue
+                }
+                if let newelement = try self.applyMarkUp(textNode: textNode, keywords: keyWords) {
+                    try node.replaceWith(newelement as Node)
+                }
+            } else {
+                try self.highlightSearchKeyWordsInHtml(parentNode: node as? Element, keyWords: keyWords)
+            }
+        }
+    }
+
+    private func applyMarkUp(textNode: TextNode, keywords: [String]) throws -> Element? {
+        let text: String = textNode.getWholeText().precomposedStringWithCanonicalMapping
+        let positions = self.findKeywordsPositions(text: text, keywords: keywords)
+
+        if !positions.isEmpty {
+            var span: Element = Element(Tag("span"), "")
+            var lastIndex: Int = 0
+            for position in positions {
+                span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: position.0), ""))
+                var markNode: Element = Element(Tag("mark"), "")
+                markNode = try markNode.appendChild(TextNode(self.substring(value: text, from: position.0, to: position.1), ""))
+                span = try span.appendChild(markNode)
+                lastIndex = position.1
+            }
+            if lastIndex < text.count {
+                span = try span.appendChild(TextNode(self.substring(value: text, from: lastIndex, to: text.count), ""))
+            }
+            return span
+        }
+        return nil
+    }
+
+    private func substring(value: String, from: Int, to: Int) -> String {
+        let start = value.index(value.startIndex, offsetBy: from)
+        let end = value.index(value.startIndex, offsetBy: to)
+        return String(value[start..<end])
+    }
+
+    private func removeDiacritics(text: String) -> String {
+        // normalize Form D
+        return text.decomposedStringWithCanonicalMapping.preg_replace_none_regex("\\p{Mn}", replaceto: "")
+    }
+
+    private func findKeywordsPositions(text: String, keywords: [String]) -> [(Int, Int)] {
+        var positions = [(Int, Int)]()
+        let cleanedText: String = self.removeDiacritics(text: text)
+        for keyword in keywords {
+            let indices = cleanedText.indices(of: keyword)
+            if !indices.isEmpty {
+                for index in indices {
+                    positions.append((index, index + keyword.count))
+                }
+            }
+        }
+        return positions
+    }
+
+    // TODO
+    /* func highlightKeywordsInString(value: String, keywords: [String], shiftToKeyword: Bool = false) -> String {
+        //var keywordsPositions = //self.find
+        //var spanned =     // String normalize
+        var color = ColorProvider.BrandLighten20
+        
+        for (keywordStart, keywordEnd) in keywords {
+            
+        }
+        
+        // We shift the string to make the keyword appear
+        //var firstKeywordStart =
+    } */
+}
+
+extension String {
+    func indices(of occurrence: String) -> [Int] {
+        var indices = [Int]()
+        var position = startIndex
+        while let range = range(of: occurrence, range: position..<endIndex) {
+            let i = distance(from: startIndex,
+                             to: range.lowerBound)
+            indices.append(i)
+            let offset = occurrence.distance(from: occurrence.startIndex,
+                                             to: occurrence.endIndex) - 1
+            guard let after = index(range.lowerBound,
+                                    offsetBy: offset,
+                                    limitedBy: endIndex) else {
+                                        break
+            }
+            position = index(after: after)
+        }
+        return indices
     }
 }
