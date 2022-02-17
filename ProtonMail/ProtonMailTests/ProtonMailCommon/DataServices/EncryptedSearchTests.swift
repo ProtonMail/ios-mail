@@ -845,4 +845,42 @@ class EncryptedSearchTests: XCTestCase {
     /* func testUpdateUIIndexingComplete() throws {
         //TODO
     } */
+
+    func testHighlightKeyWords() throws {
+        let sut = EncryptedSearchService.shared.highlightKeyWords
+        EncryptedSearchService.shared.searchQuery = "custom folders"
+        let html = """
+<html>
+ <head></head>
+ <body>
+  <p>Hello,</p>
+  <p>You have 1 new message(s) in your inbox and custom folders.</p>
+  <p>Please log in at <a href="https://mail.protonmail.com">https://mail.protonmail.com</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
+  <p>Best regards,</p>
+  <p>The ProtonMail Team</p>
+ </body>
+</html>
+"""
+        var result = sut(html)
+        var expectedResult: String = """
+<html>
+ <head></head>
+ <body>
+  <p>Hello,</p>
+  <p>
+   <span>
+    You have 1 new message(s) in your inbox and
+    <mark>custom</mark>
+    <mark>
+    folders</mark>.</span></p>
+  <p>Please log in at <a href="https://mail.protonmail.com">https://mail.protonmail.com</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
+  <p>Best regards,</p>
+  <p>The ProtonMail Team</p>
+ </body>
+</html>
+"""
+        result = result.components(separatedBy: .whitespacesAndNewlines).joined()
+        expectedResult = expectedResult.components(separatedBy: .whitespacesAndNewlines).joined()
+        XCTAssertEqual(result, expectedResult)
+    }
 }
