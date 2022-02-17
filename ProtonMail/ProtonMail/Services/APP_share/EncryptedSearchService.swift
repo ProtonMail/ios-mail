@@ -107,7 +107,7 @@ public class EncryptedSearchService {
     //internal var numberOfResultsFoundByCachedSearch: Int = 0
     //internal var numberOfResultsFoundByIndexSearch: Int = 0
     internal var numberOfResultsFoundBySearch: Int = 0
-    internal var searchQuery: String = ""
+    internal var searchQuery: [String] = []
 
     // Independent variables
     let timeFormatter = DateComponentsFormatter()
@@ -1293,7 +1293,7 @@ extension EncryptedSearchService {
         }
 
         // Save query - needed for highlighting
-        self.searchQuery = query
+        self.searchQuery = self.processSearchKeywords(query: query)
 
         // Update API services to current user
         self.updateUserAndAPIServices()
@@ -1315,7 +1315,7 @@ extension EncryptedSearchService {
         }
 
         // Initialize searcher, cipher
-        let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query: query)
+        let searcher: EncryptedsearchSimpleSearcher = self.getSearcher(query: self.searchQuery)
         let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
         guard let cipher = cipher else {
             print("Error when searching: cipher for search index is nil.")
@@ -1375,6 +1375,35 @@ extension EncryptedSearchService {
     }
     #endif
 
+    private func processSearchKeywords(query: String) -> [String] {
+        let trimmedLowerCase = query.trim().localizedLowercase
+        let correctQuotes: String = self.findAndReplaceDoubleQuotes(query: trimmedLowerCase)
+        let keywords: [String] = self.extractKeywords(query: correctQuotes)
+        return keywords
+    }
+
+    private func extractKeywords(query: String) -> [String] {
+        guard query.contains(check: "\"") else {
+            return query.components(separatedBy: " ")
+        }
+
+        var keywords: [String] = query.components(separatedBy: "\"")
+        keywords.forEach { keyword in
+            if keyword == "" {  // remove keyword if its empty
+                if let index = keywords.firstIndex(of: keyword) {
+                    keywords.remove(at: index)
+                }
+            }
+        }
+        return keywords
+    }
+
+    private func findAndReplaceDoubleQuotes(query: String) -> String {
+        var queryNormalQuotes = query.replacingOccurrences(of: "\u{201C}", with: "\"")  // left double quotes
+        queryNormalQuotes = queryNormalQuotes.replacingOccurrences(of: "\u{201D}", with: "\"") // right double quotes
+        return queryNormalQuotes
+    }
+
     #if !APP_EXTENSION
     @objc private func reactToSlowSearch() -> Void {
         self.searchViewModel?.slowSearch = true
@@ -1395,19 +1424,18 @@ extension EncryptedSearchService {
         self.searchState = nil
     }
 
-    private func getSearcher(query: String) -> EncryptedsearchSimpleSearcher {
+    private func getSearcher(query: [String]) -> EncryptedsearchSimpleSearcher {
         let contextSize: CLong = 100 // The max size of the content showed in the preview
-        let keywords: EncryptedsearchStringList? = self.createEncryptedSearchStringList(query: query)   // Split query into individual keywords
+        let keywords: EncryptedsearchStringList? = self.createEncryptedSearchStringList(query: query)
         return EncryptedsearchSimpleSearcher(keywords, contextSize: contextSize)!
     }
 
-    private func createEncryptedSearchStringList(query: String) -> EncryptedsearchStringList {
+    private func createEncryptedSearchStringList(query: [String]) -> EncryptedsearchStringList? {
         let result: EncryptedsearchStringList? = EncryptedsearchStringList()
-        let searchQueryArray: [String] = query.components(separatedBy: " ")
-        searchQueryArray.forEach { q in
+        query.forEach { q in
             result?.add(q)
         }
-        return result!
+        return result
     }
 
     private func getCache(cipher: EncryptedsearchAESGCMCipher, userID: String) -> EncryptedsearchCache {
@@ -2538,13 +2566,7 @@ extension EncryptedSearchService {
 
     func highlightKeyWords(bodyAsHtml: String) -> String {
         // check if there are any keywords
-        if self.searchQuery == "" {
-            return bodyAsHtml
-        }
-
-        // Split search query in list
-        let keywords: [String] = self.searchQuery.components(separatedBy: " ")
-        guard !keywords.isEmpty else {
+        guard !self.searchQuery.isEmpty else {
             return bodyAsHtml
         }
 
@@ -2552,7 +2574,7 @@ extension EncryptedSearchService {
         do {
             let doc: Document = try SwiftSoup.parse(htmlWithHighlightedKeywords)
             if let body = doc.body() {
-                try self.highlightSearchKeyWordsInHtml(parentNode: body, keyWords: keywords)
+                try self.highlightSearchKeyWordsInHtml(parentNode: body, keyWords: self.searchQuery)
             }
             htmlWithHighlightedKeywords = try doc.html()
             // fix bug with newlines and whitespaces added
