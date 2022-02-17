@@ -848,7 +848,7 @@ class EncryptedSearchTests: XCTestCase {
 
     func testHighlightKeyWords() throws {
         let sut = EncryptedSearchService.shared.highlightKeyWords
-        EncryptedSearchService.shared.searchQuery = "custom folders"
+        EncryptedSearchService.shared.searchQuery = ["custom", "folders"]
         let html = """
 <html>
  <head></head>
