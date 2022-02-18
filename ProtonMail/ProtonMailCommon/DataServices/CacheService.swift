@@ -66,6 +66,7 @@ class CacheService: Service {
                 if lid == Message.Location.trash.rawValue {
                     self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: true)
                     msgToUpdate.unRead = false
+                    PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
                 }
                 if lid == Message.Location.spam.rawValue {
                     self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: false)
@@ -146,6 +147,9 @@ class CacheService: Service {
 
             msgToUpdate.unRead = unRead
 
+            if unRead == false {
+                PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
+            }
             if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
                 conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID)
             }

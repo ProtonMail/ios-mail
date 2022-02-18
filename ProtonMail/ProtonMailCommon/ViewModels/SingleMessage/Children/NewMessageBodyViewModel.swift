@@ -254,7 +254,9 @@ class NewMessageBodyViewModel {
         }
         if let decryptedBody = decryptBody(from: message) {
             isBodyDecryptable = true
-            bodyParts = BodyParts(originalBody: decryptedBody, isNewsLetter: message.isNewsLetter, isPlainText: message.isPlainText)
+            bodyParts = BodyParts(originalBody: decryptedBody,
+                                  isNewsLetter: message.isNewsLetter,
+                                  isPlainText: message.isPlainText)
 
             checkBannerStatus(decryptedBody)
             guard embeddedContentPolicy == .allowed else {
@@ -272,14 +274,10 @@ class NewMessageBodyViewModel {
                                             remoteContentMode: remoteContentMode,
                                             renderStyle: self.currentMessageRenderStyle,
                                             supplementCSS: self.bodyParts?.darkModeCSS)
-                DispatchQueue.global().async {
-                    self.downloadEmbedImage(message, body: decryptedBody)
-                }
+                DispatchQueue.global().async { self.downloadEmbedImage(message, body: decryptedBody) }
                 return true
             }
-            DispatchQueue.global().async {
-                self.showEmbeddedImages(decryptedBody: decryptedBody)
-            }
+            DispatchQueue.global().async { self.showEmbeddedImages(decryptedBody: decryptedBody) }
             return false
         } else if !message.body.isEmpty {
             var rawBody = message.body
@@ -318,7 +316,9 @@ class NewMessageBodyViewModel {
             self?.delegate?.updateBannerStatus()
         }
     }
+}
 
+extension NewMessageBodyViewModel {
     private func decryptBody(from message: Message) -> String? {
         let expiration = message.expirationTime
         let referenceDate = Date.getReferenceDate(processInfo: userCachedStatus)
@@ -417,6 +417,7 @@ class NewMessageBodyViewModel {
             }
         }
     }
+
 }
 
 struct BannerHelper {

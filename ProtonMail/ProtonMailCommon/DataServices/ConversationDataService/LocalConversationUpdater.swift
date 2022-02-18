@@ -103,8 +103,7 @@ final class LocalConversationUpdater {
                                                                                  context: context)
                 }
 
-                if let removed = labelToRemove,
-                   !removed.isEmpty,
+                if let removed = labelToRemove, !removed.isEmpty,
                    !untouchedLocations.map(\.rawValue).contains(removed) {
                     let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
                         conversation.isUnread(labelID: removed)
@@ -122,6 +121,7 @@ final class LocalConversationUpdater {
                     // When we trash the conversation, make all unread messsages as read.
                     if added == Message.Location.trash.rawValue {
                         messages?.forEach { $0.unRead = false }
+                        PushUpdater().remove(notificationIdentifiers: messages?.compactMap({ $0.notificationId }))
                         conversation.labels
                             .compactMap({ $0 as? ContextLabel })
                             .filter({ $0.unreadCount != NSNumber(value: 0) })

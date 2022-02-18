@@ -22,7 +22,7 @@ class AnalyticsTests: XCTestCase {
 
     var sut: Analytics!
     var analyticsMock: MockProtonMailAnalytics!
-    
+
     override func setUp() {
         super.setUp()
         analyticsMock = MockProtonMailAnalytics(endPoint: "entryPoint")

@@ -612,6 +612,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage, context: context)
                                 }
                                 newMessage.unRead = false
+                                PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
                                 DispatchQueue.main.async {
                                     completion(task, response, Message.ObjectIDContainer(newMessage), error)
@@ -715,6 +716,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                                     }
                                     if messageOut.unRead == true {
                                         messageOut.unRead = false
+                                        PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
                                         self.cacheService.updateCounterSync(markUnRead: false, on: messageOut, context: context)
                                     }
                                     let tmpError = context.saveUpstreamIfNeeded()
@@ -1371,6 +1373,7 @@ class MessageDataService : Service, HasLocalStorage, MessageDataProcessProtocol 
                             newMessage.messageStatus = 1
                             newMessage.isDetailDownloaded = true
                             newMessage.unRead = false
+                            PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
                         } else {
                             assert(false, "Failed to parse response Message")
                         }
