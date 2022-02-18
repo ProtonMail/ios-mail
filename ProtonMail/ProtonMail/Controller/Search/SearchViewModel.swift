@@ -75,14 +75,6 @@ final class SearchViewModel: NSObject {
     private var fetchController: NSFetchedResultsController<NSFetchRequestResult>?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
-    private var localObjectsIndexingObserver: NSKeyValueObservation? {
-        didSet {
-            DispatchQueue.main.async { [weak self] in
-                let isHidden = self?.localObjectsIndexingObserver == nil
-                self?.uiDelegate?.setupProgressBar(isHidden: isHidden)
-            }
-        }
-    }
     private var dbContents: Array<LocalObjectsIndexRow> = []
     private var currentPage = 0
     private var query = ""
@@ -590,7 +582,6 @@ extension SearchViewModel {
                                           Message.Attributes.toList]
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
             self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
-            self?.localObjectsIndexingObserver = nil
             completion()
         })
         
@@ -604,12 +595,6 @@ extension SearchViewModel {
             }
             
             self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.uiDelegate?.update(progress: completionRate)
-                }
-            })
         }
     }
     
