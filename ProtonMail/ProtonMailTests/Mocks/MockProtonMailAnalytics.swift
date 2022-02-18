@@ -22,14 +22,14 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     let endPoint: String
     var environment: String?
     var debug: Bool?
-    
+
     var debugEvent: ProtonMailAnalytics.Events?
     var debugExtra: [String: Any]?
     var debugFile: String?
     var debugFunction: String?
     var debugLine: Int?
     var debugColum: Int?
-    
+
     var errorEvent: ProtonMailAnalytics.Events?
     var errorError: Error?
     var errorExtra: [String: Any]?
@@ -37,18 +37,18 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     var errorFunction: String?
     var errorLine: Int?
     var errorColum: Int?
-    
+
     required init(endPoint: String) {
         self.endPoint = endPoint
     }
-    
+
     func setup(environment: String?, debug: Bool) {
         self.environment = environment
         self.debug = debug
     }
-    
+
     func debug(event: ProtonMailAnalytics.Events,
-               extra: [String : Any],
+               extra: [String: Any],
                file: String,
                function: String,
                line: Int,
@@ -60,10 +60,10 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.debugLine = line
         self.debugColum = colum
     }
-    
+
     func error(event: ProtonMailAnalytics.Events,
                error: Error,
-               extra: [String : Any],
+               extra: [String: Any],
                file: String,
                function: String,
                line: Int,
@@ -76,6 +76,4 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.errorLine = line
         self.errorColum = colum
     }
-    
-    
 }

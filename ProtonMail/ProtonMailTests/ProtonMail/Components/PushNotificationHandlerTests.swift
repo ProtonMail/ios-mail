@@ -105,7 +105,7 @@ final class PushNotificationHandlerTests: XCTestCase {
     }
 }
 
-final class MockDataTask: URLSessionDataTask {
+private final class MockDataTask: URLSessionDataTask {
     var completionHandler: (Data?, URLResponse?, Error?) -> Void
     init(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         self.completionHandler = completionHandler
@@ -118,7 +118,7 @@ final class MockDataTask: URLSessionDataTask {
     }
 }
 
-class URLSessionMock: URLSessionProtocol {
+private class URLSessionMock: URLSessionProtocol {
     var dataTaskCallCount = 0
     var dataTaskArgsRequest: [URLRequest] = []
     func dataTask(with request: URLRequest,

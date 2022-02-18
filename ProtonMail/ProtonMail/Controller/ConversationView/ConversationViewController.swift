@@ -652,18 +652,7 @@ private extension ConversationViewController {
             coordinator.handle(navigationAction: .attachmentList(message: message, inlineCIDs: cids))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
-                let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
-                let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
-                    .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
-                let bodyViewModel = viewModel?.messageViewModel?.state
-                    .expandedViewModel?.messageContent
-                    .messageBodyViewModel
-                let renderStyle = bodyViewModel?.currentMessageRenderStyle ?? .dark
-                let shouldDisplayRenderModeOptions = bodyViewModel?.shouldDisplayRenderModeOptions ?? false
-                presentActionSheet(for: message,
-                                   isBodyDecrpytable: isBodyDecryptable,
-                                   messageRenderStyle: renderStyle,
-                                   shouldShowRenderModeOption: shouldDisplayRenderModeOptions)
+                handleMoreAction(messageId: messageId, message: message)
             }
         case .url(let url):
             coordinator.handle(navigationAction: .url(url: url))
@@ -679,6 +668,21 @@ private extension ConversationViewController {
         default:
             break
         }
+    }
+
+    private func handleMoreAction(messageId: String, message: Message) {
+        let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
+        let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
+            .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
+        let bodyViewModel = viewModel?.messageViewModel?.state
+            .expandedViewModel?.messageContent
+            .messageBodyViewModel
+        let renderStyle = bodyViewModel?.currentMessageRenderStyle ?? .dark
+        let shouldDisplayRenderModeOptions = bodyViewModel?.shouldDisplayRenderModeOptions ?? false
+        presentActionSheet(for: message,
+                           isBodyDecrpytable: isBodyDecryptable,
+                           messageRenderStyle: renderStyle,
+                           shouldShowRenderModeOption: shouldDisplayRenderModeOptions)
     }
 }
 

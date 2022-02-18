@@ -127,7 +127,7 @@ class LocalNotificationServiceTests: XCTestCase {
         }
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.cleanUp() {
+        sut.cleanUp {
             XCTAssertTrue(self.notificationHandlerMock.callGetPendingReqs.wasCalledExactlyOnce)
             XCTAssertTrue(self.notificationHandlerMock.callRemovePendingNoti.wasCalledExactlyOnce)
             XCTAssertTrue(self.notificationHandlerMock.callGetDelivered.wasCalledExactlyOnce)

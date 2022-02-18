@@ -280,6 +280,7 @@ extension Conversation {
             for message in messages {
                 guard message.unRead == true else { continue }
                 message.unRead = false
+                PushUpdater().remove(notificationIdentifiers: [message.notificationId])
                 guard let messageLabels = message.labels.allObjects as? [Label] else { continue }
                 let changed = messageLabels.map { $0.labelID }
                 for id in changed {

@@ -66,72 +66,72 @@ final class ParserDelegate: NSObject, AppleContactParserDelegate {
 }
 
 final class AppleContactParserTest: XCTestCase {
-    private var mockDelegate: ParserDelegate!
+    private var mockDel: ParserDelegate!
     private var coreDataService: CoreDataService!
     private var parser: AppleContactParser!
     private var dismissObserver: NSKeyValueObservation?
 
     override func setUpWithError() throws {
-        self.mockDelegate = ParserDelegate()
+        self.mockDel = ParserDelegate()
         self.coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
-        self.parser = AppleContactParser(delegate: mockDelegate,
+        self.parser = AppleContactParser(delegate: mockDel,
                                          coreDataService: coreDataService)
     }
 
     override func tearDownWithError() throws {
-        self.mockDelegate = nil
+        self.mockDel = nil
         self.coreDataService = nil
         self.parser = nil
     }
 
     func testQueueImport_emptyContacts() {
         self.parser.queueImport(contacts: [])
-        XCTAssertEqual(self.mockDelegate.progresses.count, 1)
-        XCTAssertEqual(self.mockDelegate.progresses.first, 100.0)
-        XCTAssertEqual(self.mockDelegate.messages.first, LocalString._contacts_all_imported)
-        XCTAssertEqual(self.mockDelegate.shouldDismissImportPopup, true)
+        XCTAssertEqual(self.mockDel.progresses.count, 1)
+        XCTAssertEqual(self.mockDel.progresses.first, 100.0)
+        XCTAssertEqual(self.mockDel.messages.first, LocalString._contacts_all_imported)
+        XCTAssertEqual(self.mockDel.shouldDismissImportPopup, true)
     }
 
     func testQueueImport_oneExisted() {
         let randomData = self.generateRandomData(num: 1)
         let contacts = self.generateContact(by: randomData)
         let existed = contacts.first?.identifier ?? ""
-        self.mockDelegate.addExisted(id: existed)
+        self.mockDel.addExisted(id: existed)
         self.parser.queueImport(contacts: contacts)
 
         let finish = expectation(description: "contacts import done")
-        self.dismissObserver = self.mockDelegate.observe(\.shouldDismissImportPopup, options: [.new]) { child, change in
+        self.dismissObserver = self.mockDel.observe(\.shouldDismissImportPopup, options: [.new]) { _, change in
             guard let newValue = change.newValue else { return }
             if newValue {
                 finish.fulfill()
             }
         }
         wait(for: [finish], timeout: 5.0)
-        XCTAssertEqual(self.mockDelegate.uploaded.count, 0)
-        XCTAssertEqual(self.mockDelegate.progresses.count, 1)
+        XCTAssertEqual(self.mockDel.uploaded.count, 0)
+        XCTAssertEqual(self.mockDel.progresses.count, 1)
     }
 
     func testQueueImport() {
         let randomData = self.generateRandomData(num: 3)
         let contacts = self.generateContact(by: randomData)
         let existed = contacts.first?.identifier ?? ""
-        self.mockDelegate.addExisted(id: existed)
+        self.mockDel.addExisted(id: existed)
         self.parser.queueImport(contacts: contacts)
 
         let finish = expectation(description: "contacts import done")
-        self.dismissObserver = self.mockDelegate.observe(\.shouldDismissImportPopup, options: [.new]) { child, change in
+        self.dismissObserver = self.mockDel.observe(\.shouldDismissImportPopup, options: [.new]) { _, change in
             guard let newValue = change.newValue else { return }
             if newValue {
                 finish.fulfill()
             }
         }
         wait(for: [finish], timeout: 5.0)
-        XCTAssertEqual(self.mockDelegate.uploaded.count, 2)
+        XCTAssertEqual(self.mockDel.uploaded.count, 2)
         // 0, 0.33, 0.66,     0, 0.5
         // encryption         schedule upload
-        XCTAssertEqual(self.mockDelegate.progresses.count, 5)
+        XCTAssertEqual(self.mockDel.progresses.count, 5)
 
-        let uploaded = self.mockDelegate.uploaded
+        let uploaded = self.mockDel.uploaded
         for i in 0..<uploaded.count {
             let result = uploaded[i]
             let data = randomData[i+1]
@@ -140,7 +140,7 @@ final class AppleContactParserTest: XCTestCase {
 
             let mail = data["mailAddress"] ?? ""
             XCTAssertEqual(result.definedMails.first?.newEmail, mail)
-            XCTAssertEqual(self.mockDelegate.messages[i], "Encrypting contacts...\(i + 1)")
+            XCTAssertEqual(self.mockDel.messages[i], "Encrypting contacts...\(i + 1)")
         }
     }
 }
@@ -161,13 +161,13 @@ extension AppleContactParserTest {
 
             let mail = data["mailAddress"] ?? ""
             XCTAssertEqual(result.definedMails.first?.newEmail, mail)
-            XCTAssertEqual(self.mockDelegate.messages[i], "Encrypting contacts...\(i + 1)")
+            XCTAssertEqual(self.mockDel.messages[i], "Encrypting contacts...\(i + 1)")
         }
     }
 
     func testParseFormattedName() {
         guard var vCard = PMNIVCard.createInstance() else {
-            XCTFail()
+            XCTFail("Failed")
             return
         }
         let caseUnknown = self.parser.parseFormattedName(from: vCard)
@@ -175,7 +175,7 @@ extension AppleContactParserTest {
         XCTAssertEqual(caseUnknown?.1, LocalString._general_unknown_title)
 
         guard let formattedNameEmpty = PMNIFormattedName.createInstance(String.empty) else {
-            XCTFail()
+            XCTFail("Failed")
             return
         }
         vCard = PMNIVCard.createInstance()!
@@ -186,7 +186,7 @@ extension AppleContactParserTest {
 
         let name = "Sheldon Cooper"
         guard let formattedName = PMNIFormattedName.createInstance("  \(name)     ") else {
-            XCTFail()
+            XCTFail("Failed")
             return
         }
         vCard = PMNIVCard.createInstance()!
@@ -229,10 +229,10 @@ extension AppleContactParserTest {
         }
         XCTAssertEqual(results.count, total)
         self.parser.upload(parsedResults: results)
-        XCTAssertTrue(self.mockDelegate.shouldDismissImportPopup)
-        let progresses = self.mockDelegate.progresses
+        XCTAssertTrue(self.mockDel.shouldDismissImportPopup)
+        let progresses = self.mockDel.progresses
         XCTAssertEqual(progresses.count, total)
-        let uploaded = self.mockDelegate.uploaded
+        let uploaded = self.mockDel.uploaded
         XCTAssertEqual(uploaded.count, total)
         XCTAssertEqual(uploaded[0].name, "name_0")
         XCTAssertEqual(uploaded.last?.name, "name_\(total - 1)")
@@ -242,7 +242,7 @@ extension AppleContactParserTest {
 extension AppleContactParserTest {
     func testUpdateProgressByTotalAndCurrent() {
         self.parser.updateProgress(total: 10, current: 3)
-        let progresses = self.mockDelegate.progresses
+        let progresses = self.mockDel.progresses
         XCTAssertEqual(progresses.count, 1)
         XCTAssertEqual(progresses[0], 0.3)
     }
