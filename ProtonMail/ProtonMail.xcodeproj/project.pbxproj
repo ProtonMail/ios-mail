@@ -34,6 +34,7 @@
 		0260BCCDEB635330FED6E4F04E3BCCED /* ConversationUnlabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB514EFE08596FCA7AC7842EBB328A23 /* ConversationUnlabel.swift */; };
 		02AA234908EE873C5A93B4E8ACD34CA7 /* SwipeActionCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33338562E664D5FA911E596B71F0C4 /* SwipeActionCacheProtocol.swift */; };
 		02B03825FAFD269F921623742562B44B /* RemoteAndEmbeddedBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD181607E4B75DC93BB39F02255F5D6 /* RemoteAndEmbeddedBannerView.swift */; };
+		02BFDC37A50F978EAFB2D8CBBE7C8535 /* MailboxCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6B45782FA921A276C9446921889EF7 /* MailboxCoordinatorTests.swift */; };
 		02DA160EE8AC95AFC9E241D1AEE189E8 /* InAppFeedbackStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A699A4E228459EF62FB3E4ADE88D93D1 /* InAppFeedbackStateService.swift */; };
 		02F412A2A429476D1C447EE3539DEBE1 /* MailboxViewController+BuildMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709AA3550A9F3421B299A9A6DC439685 /* MailboxViewController+BuildMessageViewModel.swift */; };
 		02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
@@ -1978,6 +1979,7 @@
 		B66CF6287FB1A4BB4D3FBB1D6D686FDA /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */; };
 		B6BCE32BABD42823FD9F23247891C2C3 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		B6DC90BCC0E6A2FD2E33AC10687A726D /* AttachmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7D4CE87A107E1A78DFD4EABB388329 /* AttachmentViewController.swift */; };
+		B6E7EDB220F93597FC03A5A72DDA8E1F /* MockMailBoxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5641A391045CAA7E94DAD4BCE9DCD4 /* MockMailBoxViewModel.swift */; };
 		B6F07EED67866C6F4CB3F4E79F51DDCD /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
 		B72CF473FC3C5AA6ECCBFF484BA4EBE3 /* ProtonMailAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFCC6EE1C9134369A39E8F4D76EA3B6 /* ProtonMailAnalytics.swift */; };
 		B73507C9A290D482ACB730A0804A1ADD /* PushUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B74F3D46984E6F2E75AA5F7F5DA032 /* PushUpdater.swift */; };
@@ -3342,6 +3344,7 @@
 		4D1B4B8E9032F22D92781239A1FD4024 /* BugDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugDataServiceTests.swift; sourceTree = "<group>"; };
 		4D2E78DBFCB20CF085CF81D7290D9587 /* HeaderedPrintRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderedPrintRenderer.swift; sourceTree = "<group>"; };
 		4D3719085F278C51B2B1D58303FCF558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4D5641A391045CAA7E94DAD4BCE9DCD4 /* MockMailBoxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMailBoxViewModel.swift; sourceTree = "<group>"; };
 		4DE2104E284998D2F3ACE1FC54CC1E61 /* PMDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMDateFormatter.swift; sourceTree = "<group>"; };
 		4E13278C3E4E144BB6A2D94AFA8596AC /* UpdateViewModeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateViewModeResponse.swift; sourceTree = "<group>"; };
 		4E4C0C20AA4E9E6F3D808B07AFBBFE67 /* Test Second Encoding.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Test Second Encoding.bundle"; sourceTree = "<group>"; };
@@ -3901,6 +3904,7 @@
 		BCB11391232D854A0B26C6A4FAEC5848 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = da; path = ../../ProtonMail/da.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BD07200A5B2025A1A0842FF853355DC4 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		BD2B30596AAF8E074761BB843DB404ED /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		BD6B45782FA921A276C9446921889EF7 /* MailboxCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MailboxCoordinatorTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MailboxCoordinatorTests.swift; sourceTree = SOURCE_ROOT; };
 		BD6CC24C55EF2592858651EC0B76C7DC /* PinCodeSetupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodeSetupCoordinator.swift; sourceTree = "<group>"; };
 		BD7172825915E9D32EB8B24F78F70667 /* DataService+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataService+Error.swift"; sourceTree = "<group>"; };
 		BD844432E7428B17D6FA2D53A82737AA /* ContactEditEmailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditEmailCell.swift; sourceTree = "<group>"; };
@@ -5216,6 +5220,14 @@
 			path = WebContentsSecureLoader;
 			sourceTree = "<group>";
 		};
+		4CC200DD2B011ADFE28EB47A2315E0F0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4D5641A391045CAA7E94DAD4BCE9DCD4 /* MockMailBoxViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		4CC968F55A02B93A48846C46E1E8DD80 /* ConversationAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -5291,6 +5303,7 @@
 			children = (
 				5665876375D3C99E412C84C8A9BB0E7A /* Components */,
 				E1651AE2B8EE9AB5BB9021B46B586ADC /* Controller */,
+				BD6B45782FA921A276C9446921889EF7 /* MailboxCoordinatorTests.swift */,
 			);
 			path = ProtonMail;
 			sourceTree = "<group>";
@@ -6262,6 +6275,7 @@
 		A23ADD77BDDB16F22BA6D5993AFDC03A /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				4CC200DD2B011ADFE28EB47A2315E0F0 /* ViewModels */,
 				6B26083840963C1BFCC96ED3670C2E48 /* ContactParserResultViewMock.swift */,
 				32335B18BAA38F4892AAA1199BEBE4B8 /* EventsServiceMock.swift */,
 				960AD2416CFCCBE5371794FB40AF6A1D /* MessageDataProcessMock.swift */,
@@ -9017,6 +9031,7 @@
 				957E6A2BB85FE7990095075A3465D5ED /* LocalNotificationServiceTests.swift in Sources */,
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
 				29504ABEBB462D52F171A52608A92CD7 /* MailListActionSheetItemViewModel_ActionsTests.swift in Sources */,
+				02BFDC37A50F978EAFB2D8CBBE7C8535 /* MailboxCoordinatorTests.swift in Sources */,
 				38F7AD6F3338B69988FEDB4A482189B8 /* MailboxViewModelTests.swift in Sources */,
 				94C6F6FF22C6E01F99BD8C405F6BFDEF /* MenuLabelTests.swift in Sources */,
 				2AC8B6C8CFFF2677B76923532476DD7A /* MenuViewControllerUnitTest.swift in Sources */,
@@ -9042,6 +9057,7 @@
 				24649254927D5FC8C5FC66D75B2A5D3A /* MockDiskSaver.swift in Sources */,
 				4A55474881E32120AEB4C3E73C166B5F /* MockHumanCheckStatusProvider.swift in Sources */,
 				7A5A4DCB3F06824FD01C01F0A19A64A8 /* MockLastUpdatedStore.swift in Sources */,
+				B6E7EDB220F93597FC03A5A72DDA8E1F /* MockMailBoxViewModel.swift in Sources */,
 				E962383A765CCB6330CFA84A5FBBB81B /* MockNotificationHandler.swift in Sources */,
 				7EE6C9A416D1913E42D85BE0E98192B8 /* MockProtonMailAnalytics.swift in Sources */,
 				575ED8BBED90E3D1E37C944DCACCA02E /* MockPushNotificationService.swift in Sources */,
