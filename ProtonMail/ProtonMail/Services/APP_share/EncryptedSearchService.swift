@@ -2601,15 +2601,16 @@ extension EncryptedSearchService {
 
         var htmlStringOneLine = htmlString
         for offset in 0...(indicesBeginTag.count-1) {
-            let startIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesBeginTag[offset])
-            let endIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesEndTag[offset]+"</mark>".count)
+            if let startIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesBeginTag[offset], limitedBy: htmlStringOneLine.endIndex) {
+                if let endIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesEndTag[offset]+"</mark>".count, limitedBy: htmlStringOneLine.endIndex) {
+                    let begin = String(htmlStringOneLine[..<startIndex])
+                    var replace = String(htmlStringOneLine[startIndex..<endIndex])
+                    let end = String(htmlStringOneLine[endIndex...])
 
-            let begin = String(htmlStringOneLine[..<startIndex])
-            var replace = String(htmlStringOneLine[startIndex..<endIndex])
-            let end = String(htmlStringOneLine[endIndex...])
-
-            replace = replace.components(separatedBy: .whitespacesAndNewlines).joined()
-            htmlStringOneLine = begin + replace + end
+                    replace = replace.components(separatedBy: .whitespacesAndNewlines).joined()
+                    htmlStringOneLine = begin + replace + end
+                }
+            }
         }
 
         return htmlStringOneLine
@@ -2659,6 +2660,9 @@ extension EncryptedSearchService {
     private func substring(value: String, from: Int, to: Int) -> String {
         let start = value.index(value.startIndex, offsetBy: from)
         let end = value.index(value.startIndex, offsetBy: to)
+        guard end >= start else {
+            return value
+        }
         return String(value[start..<end])
     }
 
