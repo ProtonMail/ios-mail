@@ -1699,19 +1699,19 @@ extension EncryptedSearchService {
     //pre-ios 13 background tasks
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     public func continueIndexingInBackground(userID: String) {
+        print("ES extend indexing in background")
         self.speedUpIndexing(userID: userID)
-        self.backgroundTask = UIApplication.shared.beginBackgroundTask(){ [weak self] in
-            self?.endBackgroundTask()
-        }
+        self.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            self.endBackgroundTask()
+        })
     }
 
     //pre-ios 13 background tasks
     @available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE")
     public func endBackgroundTask() {
-        if self.backgroundTask != .invalid {
-            UIApplication.shared.endBackgroundTask(self.backgroundTask)
-            self.backgroundTask = .invalid
-        }
+        print("ES end extended indexing as time runs out")
+        UIApplication.shared.endBackgroundTask(self.backgroundTask)
+        self.backgroundTask = .invalid
     }
 
     // BG Processing Task functions
