@@ -95,6 +95,8 @@ public class EncryptedSearchService {
     internal var eventsWhileIndexing: [MessageAction]? = []
     internal var messageIndexingQueue: OperationQueue? = nil
     internal var downloadPageQueue: OperationQueue? = nil
+    internal var pageSize: Int = 150    // default = maximum page size
+    internal var indexingSpeed: Int = OperationQueue.defaultMaxConcurrentOperationCount // default = maximum operation count
 
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -839,7 +841,7 @@ extension EncryptedSearchService {
     }
 
     public func fetchMessages(userID: String, byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
-        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: 150)
+        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: self.pageSize)
         self.apiService?.GET(request, priority: "u=7"){ [weak self] (task, responseDict, error) in
             if error != nil {
                 DispatchQueue.main.async {
@@ -954,6 +956,9 @@ extension EncryptedSearchService {
             var processPageOperation: Operation? = DownloadPageAsyncOperation(userID: userID)
             if let operation = processPageOperation {
                 if let downloadPageQueue = self.downloadPageQueue {
+                    // Adapt indexing speed due to RAM usage
+                    self.adaptIndexingSpeed()
+                    downloadPageQueue.maxConcurrentOperationCount = self.downloadPageQueue?.maxConcurrentOperationCount ?? 1
                     downloadPageQueue.addOperation(operation)
                     downloadPageQueue.waitUntilAllOperationsAreFinished()
                 } else {
@@ -979,6 +984,7 @@ extension EncryptedSearchService {
                     for m in messages {
                         var processMessageOperation: Operation? = IndexSingleMessageAsyncOperation(m, userID)
                         if let operation = processMessageOperation {
+                            messageIndexingQueue.maxConcurrentOperationCount = self.indexingSpeed
                             messageIndexingQueue.addOperation(operation)
                         }
                         processMessageOperation = nil    // Clean up
@@ -1889,7 +1895,7 @@ extension EncryptedSearchService {
     private func initializeOperationQueues() {
         self.messageIndexingQueue = OperationQueue()
         self.messageIndexingQueue?.name = "Message Indexing Queue"
-        self.messageIndexingQueue?.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+        self.messageIndexingQueue?.maxConcurrentOperationCount = self.indexingSpeed
 
         self.downloadPageQueue = OperationQueue()
         self.downloadPageQueue?.name = "Download Page Queue"
@@ -1946,7 +1952,7 @@ extension EncryptedSearchService {
     func speedUpIndexing(userID: String) {
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            self.messageIndexingQueue?.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+            self.messageIndexingQueue?.maxConcurrentOperationCount = self.indexingSpeed
         }
         self.slowDownIndexBuilding = false
     }
@@ -2019,41 +2025,6 @@ extension EncryptedSearchService {
             }
         }
         return senderArray
-    }
-
-    private func getCPUUsage() -> Double {
-        var totalUsageOfCPU: Double = 0.0
-        var threadsList: thread_act_array_t?
-        var threadsCount = mach_msg_type_number_t(0)
-        let threadsResult = withUnsafeMutablePointer(to: &threadsList) {
-            return $0.withMemoryRebound(to: thread_act_array_t?.self, capacity: 1) {
-                task_threads(mach_task_self_, $0, &threadsCount)
-            }
-        }
-        
-        if threadsResult == KERN_SUCCESS, let threadsList = threadsList {
-            for index in 0..<threadsCount {
-                var threadInfo = thread_basic_info()
-                var threadInfoCount = mach_msg_type_number_t(THREAD_INFO_MAX)
-                let infoResult = withUnsafeMutablePointer(to: &threadInfo) {
-                    $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                        thread_info(threadsList[Int(index)], thread_flavor_t(THREAD_BASIC_INFO), $0, &threadInfoCount)
-                    }
-                }
-                
-                guard infoResult == KERN_SUCCESS else {
-                    break
-                }
-                
-                let threadBasicInfo = threadInfo as thread_basic_info
-                if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
-                    totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0))
-                }
-            }
-        }
-        
-        vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: threadsList)), vm_size_t(Int(threadsCount) * MemoryLayout<thread_t>.stride))
-        return totalUsageOfCPU
     }
 
     private func checkIfEnoughStorage() {
@@ -2184,6 +2155,9 @@ extension EncryptedSearchService {
             if self.slowDownIndexBuilding { // Re-evaluate indexing speed while not beeing on indexing screen
                 self.slowDownIndexing(userID: userID)
             }
+
+            // Adapt indexing speed due to RAM usage
+            self.adaptIndexingSpeed()
 
             // print state for debugging
             print("ES-DEBUG: \(self.getESState(userID: userID))")
@@ -2419,39 +2393,6 @@ extension EncryptedSearchService {
         @unknown default:
             break
         }
-    }
-
-    // Code from here: https://stackoverflow.com/a/64738201
-    func getTotalAvailableMemory() -> Double {
-        var taskInfo = task_vm_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
-        let _ = withUnsafeMutablePointer(to: &taskInfo) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
-                }
-        }
-        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        return Double(totalMb)
-    }
-
-    //Code from here: https://stackoverflow.com/a/64738201
-    private func getCurrentlyAvailableAppMemory() -> Double {
-        var taskInfo = task_vm_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
-        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
-                }
-        }
-        let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
-        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
-        var availableMemory: Double = 0
-        if result != KERN_SUCCESS {
-            availableMemory = Double(totalMb)
-        } else {
-            availableMemory = Double(totalMb - usedMb)
-        }
-        return availableMemory
     }
 
     #if !APP_EXTENSION
@@ -2690,6 +2631,115 @@ extension EncryptedSearchService {
         // We shift the string to make the keyword appear
         //var firstKeywordStart =
     } */
+
+    private func adaptIndexingSpeed() {
+        // Run on separate thread to avoid blocking the main thread
+        //DispatchQueue.global(qos: .userInteractive).async {
+            // get memory usage
+            let memoryUsage: Int = self.getMemoryUsage()
+            // get cpu usage
+            //let cpuUsage: Double = self.getCPUUsage()
+
+            print("ES-TEST: --------")
+            //print("Total Device Memory: \(totalDeviceMemory) (MB), current available Memory: \(currentAvailableMemory) (MB), used memory: \(usedMemory) (MB)")
+            print("Memory usage: \(memoryUsage)")
+            //print("CPU usage: \(cpuUsage)")
+            //print("ES-TEST: --------")
+
+            if memoryUsage > 40 {
+                self.indexingSpeed = 1
+                self.pageSize = 25
+            } else if memoryUsage > 30 {
+                self.indexingSpeed = 5
+                self.pageSize = 25
+            } else if memoryUsage > 20 {
+                self.indexingSpeed = 10
+                self.pageSize = 100
+            } else {
+                self.indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount
+                self.pageSize = 150
+            }
+
+            // Update indexing queues
+            self.messageIndexingQueue?.maxConcurrentOperationCount = self.indexingSpeed
+        //}
+    }
+
+    private func getMemoryUsage() -> Int {
+        let currentAvailableMemory = self.getCurrentlyAvailableAppMemory() / 1024.0 / 1024.0
+        let totalDeviceMemory = self.getTotalAvailableMemory() / 1024.0 / 1024.0
+        let usedMemory: Double = totalDeviceMemory - currentAvailableMemory    // in MB
+        return Int((usedMemory/totalDeviceMemory) * 100)
+    }
+
+    // Returns the total available memory on device
+    func getTotalAvailableMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let _ = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        return Double(totalMb)
+    }
+
+    // returns the currently available app memory
+    private func getCurrentlyAvailableAppMemory() -> Double {
+        var taskInfo = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+        let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+        }
+        let usedMb = Float(taskInfo.phys_footprint)// / 1048576.0
+        let totalMb = Float(ProcessInfo.processInfo.physicalMemory)// / 1048576.0
+        var availableMemory: Double = 0
+        if result != KERN_SUCCESS {
+            availableMemory = Double(totalMb)
+        } else {
+            availableMemory = Double(totalMb - usedMb)
+        }
+        return availableMemory
+    }
+
+    // Returns the actual CPU usage in percent
+    private func getCPUUsage() -> Double {
+        var totalUsageOfCPU: Double = 0.0
+        var threadsList: thread_act_array_t?
+        var threadsCount = mach_msg_type_number_t(0)
+        let threadsResult = withUnsafeMutablePointer(to: &threadsList) {
+            return $0.withMemoryRebound(to: thread_act_array_t?.self, capacity: 1) {
+                task_threads(mach_task_self_, $0, &threadsCount)
+            }
+        }
+        
+        if threadsResult == KERN_SUCCESS, let threadsList = threadsList {
+            for index in 0..<threadsCount {
+                var threadInfo = thread_basic_info()
+                var threadInfoCount = mach_msg_type_number_t(THREAD_INFO_MAX)
+                let infoResult = withUnsafeMutablePointer(to: &threadInfo) {
+                    $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                        thread_info(threadsList[Int(index)], thread_flavor_t(THREAD_BASIC_INFO), $0, &threadInfoCount)
+                    }
+                }
+                
+                guard infoResult == KERN_SUCCESS else {
+                    break
+                }
+                
+                let threadBasicInfo = threadInfo as thread_basic_info
+                if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
+                    totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0))
+                }
+            }
+        }
+        
+        vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: threadsList)), vm_size_t(Int(threadsCount) * MemoryLayout<thread_t>.stride))
+        return totalUsageOfCPU
+    }
 }
 
 extension String {
