@@ -323,7 +323,12 @@ extension MenuCoordinator {
         default: return
         }
         
-        let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController, nav: navigation, viewController: vc, viewModel: viewModel, services: self.services)
+        let mailbox = MailboxCoordinator(sideMenu: self.viewController?.sideMenuController,
+                                         nav: navigation,
+                                         viewController: vc,
+                                         viewModel: viewModel,
+                                         services: self.services,
+                                         contextProvider: coreDataService)
         mailbox.start()
         if let deeplink = deepLink {
             mailbox.follow(deeplink)
