@@ -225,10 +225,8 @@ html_editor.editor.addEventListener("keydown", function(key) {
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function() {
     var range = window.getSelection().getRangeAt(0);
-    if (html_editor.caret != range.endContainer.nextElementSibling) {
-        range.collapse(false);
-        range.insertNode(html_editor.caret);
-    }
+    range.collapse(false);
+    range.insertNode(html_editor.caret);
 
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
     var rect = html_editor.caret.getBoundingClientRect();
