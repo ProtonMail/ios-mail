@@ -17,7 +17,7 @@
 "NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Required for saving image attachments to photo library.";
+"NSPhotoLibraryAddUsageDescription" = "Krävs för att spara bildbilagor till fotobiblioteket.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Krävs för att bifoga foton till e-postmeddelandet.";
