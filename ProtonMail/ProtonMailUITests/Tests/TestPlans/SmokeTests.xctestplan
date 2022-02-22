@@ -35,7 +35,7 @@
         "SearchTests\/testSearchFromInboxBySubject()",
         "SendNewMessageTests\/testSendMessageToInternalContact()",
         "SpamTests\/testSwipeToSpamMessage()",
-        "TrashTests\/testDeleteSingleMessageFromLongClick()"
+        "TrashTests\/testDeleteMessageFromDetailPage()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

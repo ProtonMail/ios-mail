@@ -24,6 +24,18 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class PinCodeSetUpViewController: ProtonMailViewController {
+    private enum Error {
+        case pinTooShort
+        case pinTooLong
+
+        var errorMessage: String {
+            switch self {
+            case .pinTooShort: return LocalString._pin_code_setup1_textfield_pin_too_short
+            case .pinTooLong: return LocalString._pin_code_setup1_textfield_pin_too_long
+            }
+        }
+    }
+
     @IBOutlet private weak var passwordTextField: PMTextField!
     @IBOutlet private weak var nextButton: ProtonButton!
 
@@ -38,6 +50,7 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         
         view.backgroundColor = ColorProvider.BackgroundNorm
 
+        passwordTextField.delegate = self
         passwordTextField.isPassword = true
         passwordTextField.title = LocalString._pin_code_setup1_textfield_title
         passwordTextField.allowOnlyNumbers = true
@@ -58,23 +71,48 @@ class PinCodeSetUpViewController: ProtonMailViewController {
     }
 
     @IBAction func nextButtonClicked(_ sender: Any) {
-        passwordTextField.isError = false
-        passwordTextField.errorMessage = nil
-
-        let password = passwordTextField.value
-        let isPassswordValid = password.count >= 4 && password.count <= 21
-        guard isPassswordValid else {
-            passwordTextField.isError = true
-            passwordTextField.errorMessage = LocalString._pin_code_setup1_textfield_invalid_password
-            return
-        }
-        _ = viewModel?.setCode(passwordTextField.value)
+        hideError()
         
-        coordinator?.go(to: .step2)
+        let password = passwordTextField.value
+        var error: PinCodeSetUpViewController.Error? = nil
+        if password.count < 4 {
+            error = password.count < 4 ? .pinTooShort : nil
+        } else if password.count > 21 {
+            error = .pinTooLong
+        }
+
+        if let validationError = error {
+            showError(error: validationError)
+        } else {
+            _ = viewModel?.setCode(passwordTextField.value)
+            coordinator?.go(to: .step2)
+        }
     }
 
     @objc
     private func dismissView() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    
+    private func showError(error: PinCodeSetUpViewController.Error) {
+        passwordTextField.isError = true
+        passwordTextField.errorMessage = error.errorMessage
+    }
+    
+    private func hideError() {
+        passwordTextField.isError = false
+        passwordTextField.errorMessage = nil
+    }
+}
+
+extension PinCodeSetUpViewController: PMTextFieldDelegate {
+    func didEndEditing(textField: PMTextField) {}
+    
+    func didChangeValue(_ textField: PMTextField, value: String) {
+        hideError()
+    }
+    
+    func textFieldShouldReturn(_ textField: PMTextField) -> Bool { true }
+    
+    func didBeginEditing(textField: PMTextField) {}
 }
