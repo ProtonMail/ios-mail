@@ -611,6 +611,7 @@ extension EncryptedSearchService {
         // Just insert a new message if the search index exists for the user - otherwise it needs to be build first
         if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID) {
             let esMessage:ESMessage? = self.convertMessageToESMessage(for: messageToInsert)
+            self.updateUserAndAPIServices() // ensure that the current user's API service is used for the requests
             self.fetchMessageDetailForMessage(userID: userID, message: esMessage!) { [weak self] (error, messageWithDetails) in
                 if error == nil {
                     self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID) {
@@ -878,6 +879,7 @@ extension EncryptedSearchService {
     }
 
     private func fetchSingleMessageFromServer(byMessageID messageID: String, completionHandler: ((Error?) -> Void)?) -> Void {
+        self.updateUserAndAPIServices() // ensure that the current user's API service is used for the requests
         let request = FetchMessagesByID(msgIDs: [messageID])
         self.apiService?.GET(request) { [weak self] (task, responseDict, error) in
             if error != nil {
