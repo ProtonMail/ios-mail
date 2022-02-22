@@ -759,6 +759,7 @@ extension EncryptedSearchService {
 
     // Checks the total number of messages on the backend
     func getTotalMessages(userID: String, completionHandler: @escaping () -> Void) -> Void {
+        self.updateUserAndAPIServices()     // ensure that the current user's API service is used for the requests
         let request = FetchMessagesByLabel(labelID: Message.Location.allmail.rawValue, endTime: 0, isUnread: false)
         self.apiService?.GET(request){ (_, responseDict, error) in
             if error != nil {
