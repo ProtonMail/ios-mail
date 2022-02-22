@@ -1606,7 +1606,7 @@
 "Message %@" = "Mensagem %@";
 
 /* Title of the view showing the message body */
-"Message body" = "Message body";
+"Message body" = "Corpo da mensagem";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "A mensagem não pôde ser enviada. Pelo menos um endereço/domínio do destinatário não existe ou está mal formatado.";

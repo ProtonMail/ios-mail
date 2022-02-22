@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[顯示完整郵件]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "於 E, MMM d, yyyy 時間 %@";
@@ -74,7 +74,7 @@
 "%i email addresses" = "%i 個電子郵件地址";
 
 /* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ 拖放到這裡來新增附件";
+"+ Drop here to add as attachment" = "+ 拖至此處以新增附件";
 
 /* alert body for how many extra mail addresses, e.g. +3 others */
 "+%d others" = "+%d 組其它電郵位址";
@@ -83,10 +83,10 @@
 "<no object>" = "<無物件>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 Message moved to archive";
+"1 Message moved to archive" = "一封郵件已移至「封存」";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 Message moved to spam";
+"1 Message moved to spam" = "一封郵件已移至「垃圾桶」";
 
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "2FA 驗證失敗。請嘗試重新登入。";
@@ -111,16 +111,16 @@
 "A sub-folder with this name already exists in the destination folder" = "以此為名的子資料夾已在目標資料夾中存在";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "本帳號因有未付款項而被停用，請登入 https://protonmail.com 進行付款。";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "本帳戶因有未付款項而被停用，請登入 https://protonmail.com 進行付款。";
 
 /* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "由於帳單未付，無法訪問此帳戶。\n\n請訪問 <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">我們的知識庫</a> 瞭解更多資訊。";
 
 /* Account manager title */
-"Account" = "帳號";
+"Account" = "帳戶";
 
 /* title */
-"Account password invalid" = "帳號密碼無效";
+"Account password invalid" = "帳戶密碼無效";
 
 /* section title in settings */
 "Account settings" = "帳號設定";
@@ -132,7 +132,7 @@
 "Add" = "新增";
 
 /* menu title */
-"Add accounts" = "新增帳號";
+"Add accounts" = "新增帳戶";
 
 /* new contacts add Anniversary */
 "Add anniversary" = "新增紀念日";
@@ -236,7 +236,7 @@
 "Also archive?" = "同時封存?";
 
 /* Description */
-"Also used to reset a forgotten password." = "並用於重置密碼。";
+"Also used to reset a forgotten password." = "亦用以重設密碼。";
 
 /* cell title in app settings */
 "Alternative routing" = "替代路由";
@@ -332,7 +332,7 @@
 "At least one email address in the group could not be found." = "該群組之中有至少一個電子郵件地址找不到。";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "至少有一個收件人電子郵件地址格式不正確，請仔細檢查。";
+"At least one recipient email address is improperly formatted, please double check them." = "至少有一個收件人電子郵件地址格式不正確，請重新檢查。";
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "至少一個收件人的電子郵件地址/網域不存在或格式錯誤。 郵件已移至草稿。";
@@ -548,10 +548,10 @@
 
 /* settings general section title
    title */
-"Change password" = "更改密碼";
+"Change password" = "變更密碼";
 
 /* title */
-"Change Password" = "更改密碼";
+"Change Password" = "變更密碼";
 
 /* (No Comment) */
 "Change Pin" = "變更 Pin 碼";
@@ -578,16 +578,16 @@
 "Check Again" = "再次檢查";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "在「Proton 狀態」中確認我們的系統狀態。";
+"Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
 
 /* "Username" */
-"Checking ...." = "正在檢查 ‧‧‧‧";
+"Checking ...." = "正在檢查...";
 
 /* loading message */
 "Checking…" = "正在檢查……";
 
 /* place holder */
-"Choose a Password" = "設置一個密碼";
+"Choose a Password" = "請設置一個密碼";
 
 /* contact placeholder */
 "City" = "城市";
@@ -614,7 +614,7 @@
 "close tour" = "結束引導";
 
 /* the message will show when closing a draft from the share extension */
-"Closing" = "關閉";
+"Closing" = "正在關閉";
 
 /* The title of voice over action of collapsing the folder */
 "Collapse folder" = "收合資料夾";
@@ -644,7 +644,7 @@
 "Confirm Mailbox Password" = "確認郵箱密碼";
 
 /* Title */
-"Confirm new mailbox password" = "確認新的郵箱密碼";
+"Confirm new mailbox password" = "確認新郵箱密碼";
 
 /* Placeholder */
 "Confirm new password" = "確認新密碼";
@@ -665,7 +665,7 @@
 "Congratulations!" = "恭喜！";
 
 /* Account manager title */
-"Connect Account" = "連結帳號";
+"Connect Account" = "連結帳戶";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "聯絡人已刪除，當可連線時將會同步";
@@ -677,7 +677,7 @@
 "Contact saved, will be synced when connection is available" = "聯絡人已儲存，當可連線時將會同步";
 
 /* Title */
-"Contact the ProtonMail team" = "聯繫 ProtonMail 團隊";
+"Contact the ProtonMail team" = "請聯絡 ProtonMail 團隊";
 
 /* network troubleshot cell title */
 "Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.com) 或 Twitter 聯絡我們。";
@@ -718,13 +718,13 @@
 "Create" = "建立";
 
 /* Signup top title */
-"Create a new account" = "創建一個新的帳戶";
+"Create a new account" = "創建一個新帳戶";
 
 /* Create account button */
 "Create Account" = "建立帳戶";
 
 /* title of button in account connect page */
-"Create new account" = "註冊新帳號";
+"Create new account" = "註冊新帳戶";
 
 /* error part & alert title */
 "Create user failed" = "使用者建立失敗";
@@ -973,7 +973,7 @@
 "Email address" = "電子郵件地址";
 
 /* alert title */
-"Email address invalid" = "無效的電子郵件地址";
+"Email address invalid" = "電子郵件地址無效";
 
 /* The error message is shown in composer */
 "Email address is invalid" = "電子郵件地址無效";
@@ -1036,7 +1036,7 @@
 "Enable Touch ID" = "啟用 Touch ID";
 
 /* (No Comment) */
-"Enable TouchID" = "使用TouchID";
+"Enable TouchID" = "啟用 Touch Id";
 
 /* The footer shown when there is not result in the inbox */
 "Encrypted by Proton" = "經 Proton 加密";
@@ -1132,7 +1132,7 @@
 "Error sending" = "錯誤發送";
 
 /* lock app option */
-"Every time enter app" = "每次進入 App 時";
+"Every time enter app" = "每次進入應用程式時";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "展開資料夾";
@@ -1340,10 +1340,10 @@
 "Import from…" = "匯入自…";
 
 /* Downloading attachments from cloud */
-"Importing" = "重要";
+"Importing" = "正在匯入";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "正在匯入附件中，那需要一點時間";
+"Importing attachment, that can take a while" = "正在匯入附件中，可能需要一點時間";
 
 /* import contact title */
 "Importing Contacts" = "正在匯入聯絡人";
@@ -1606,7 +1606,7 @@
 "Message %@" = "郵件訊息 %@";
 
 /* Title of the view showing the message body */
-"Message body" = "Message body";
+"Message body" = "郵件內容";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電子郵件地址/網域不存在或格式不良。";
@@ -2565,7 +2565,7 @@
 "Switch selection mode" = "切換選擇模式";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Switch unread filter";
+"Switch unread filter" = "切換顯示已讀或未讀郵件";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "切換至帳號「%@」";
@@ -3022,10 +3022,10 @@
 "View HTML" = "以HTML瀏覽";
 
 /* The title of the view message in dark mode action in action sheet */
-"View message in Dark mode" = "View message in Dark mode";
+"View message in Dark mode" = "在深色模式下查看郵件";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "View message in Light mode";
+"View message in Light mode" = "在淺色模式下查看郵件";
 
 /* Title */
 "Warning" = "警告";

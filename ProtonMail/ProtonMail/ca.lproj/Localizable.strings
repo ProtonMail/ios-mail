@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[Mostra el missatge complet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
@@ -1000,16 +1000,16 @@
 "Empty Label" = "Buidar etiqueta";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Empty Spam";
+"Empty Spam" = "Buida el correu brossa";
 
 /* Alert title */
-"Empty spam folder" = "Empty spam folder";
+"Empty spam folder" = "Buida la carpeta del correu brossa";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Empty Trash";
+"Empty Trash" = "Buida la paperera";
 
 /* Alert title */
-"Empty trash folder" = "Empty trash folder";
+"Empty trash folder" = "Buida la carpeta de la paperera";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Habilitar converses";
@@ -1187,7 +1187,7 @@
 "Folders" = "Carpetes";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Follow device setting";
+"Follow device setting" = "Segueix la configuració del dispositiu";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Per persones que busquen beneficiar-se d'una comunicació segura sense cost";
@@ -1606,7 +1606,7 @@
 "Message %@" = "Missatge %@";
 
 /* Title of the view showing the message body */
-"Message body" = "Message body";
+"Message body" = "Cos del missatge";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
@@ -1628,7 +1628,7 @@
 "Message headers" = "Capçaleres del missatge";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Message moved to trash";
+"Message moved to trash" = "S'ha mogut el missatge a la paperera";
 
 /* Placeholder */
 "Message Password" = "Contrasenya del missatge";
@@ -2692,7 +2692,7 @@
 "The user is already logged in" = "Es usuari ja està identificat";
 
 /* (No Comment) */
-"The username has been taken." = "The username has been taken.";
+"The username has been taken." = "El nom d'usuari està agafat.";
 
 /* title */
 "The verification email invalid" = "Correu electrònic de verificació no vàlid";

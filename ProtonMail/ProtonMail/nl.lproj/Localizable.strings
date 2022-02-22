@@ -38,7 +38,7 @@
 "%d conversation" = "%d gesprek";
 
 /* The title of multiple selected conversations of action sheet in inbox */
-"%d conversations" = "%d conversaties";
+"%d conversations" = "%d gesprekken";
 
 /* day */
 "%d day" = "%d dag";
@@ -3097,7 +3097,7 @@
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "U staat op het punt om alle accounts te verwijderen. U zult niet langer toegang hebben vanaf dit apparaat, tenzij u ze opnieuw toevoegt.\n\nWilt u toch al uw accounts verwijderen?";
 
 /* The main title of no result message */
-"You are all caught up" = "U bent allemaal verstrikt";
+"You are all caught up" = "U heeft alles ingehaald";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "U bent niet verbonden. We kunnen de inhoud van uw bericht niet weergeven.";

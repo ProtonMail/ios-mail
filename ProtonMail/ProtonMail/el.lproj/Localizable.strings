@@ -759,7 +759,7 @@
 "Cut" = "Αποκοπή";
 
 /* cell title in app setting */
-"Dark mode" = "Σκοτεινή λειτουργία";
+"Dark mode" = "Σκούρα διαμόρφωση";
 
 /* message Date: text */
 "Date:" = "Ημερομηνία:";
@@ -781,7 +781,7 @@
 "DECRYPT MAILBOX" = "ΑΠΟΚΡΥΠΤΟΓΡΑΦΗΣΗ ΘΥΡΙΔΑΣ";
 
 /* Description */
-"Decrypt token failed. Please try again." = "Αποτυχία αποκρυπτογράφησης του διακριτικού. Παρακαλώ προσπαθήστε ξανά.";
+"Decrypt token failed. Please try again." = "Αποτυχία αποκρυπτογράφησης διακριτικού. Παρακαλούμε δοκιμάστε ξανά.";
 
 /* error title */
 "Decryption error" = "Σφάλμα κατά την αποκρυπτογράφηση";
@@ -2363,7 +2363,7 @@
 "Set" = "Ορισμός";
 
 /* Description */
-"Set a password to encrypt this message for non-ProtonMail users." = "Ορίστε έναν κωδικό πρόσβασης για την κρυπτογράφηση αυτού του μηνύματος, σε χρήστες που δεν χρησιμοποιούν το ProtonMail.";
+"Set a password to encrypt this message for non-ProtonMail users." = "Ορισμός κωδικού κρυπτογράφησης μηνύματος για χρήστες εκτός ProtonMail.";
 
 /* Title */
 "Set Password" = "Ορισμός Κωδικού Πρόσβασης";
@@ -2898,7 +2898,7 @@
 "Unable to parse the response object:\n%@" = "Αδυναμία ανάλυσης του αντικειμένου απόκρισης:\n%@";
 
 /* alert title */
-"Unable to parse token" = "Δεν είναι δυνατή η ανάλυση του διακριτικού";
+"Unable to parse token" = "Αδυναμία ανάλυσης διακριτικού";
 
 /* *
  *  MessageDataService */
@@ -3025,7 +3025,7 @@
 "View message in Dark mode" = "Προβολή μηνύματος σε Σκούρα διαμόρφωση";
 
 /* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "Προβολή μηνύματος σε Ανοιχτή διαμόρφωση";
+"View message in Light mode" = "Προβολή μηνύματος σε Φωτεινή διαμόρφωση";
 
 /* Title */
 "Warning" = "Προειδοποίηση";

@@ -631,7 +631,7 @@
 "Compose" = "Redactar";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Redactar el mensaje";
+"Compose message" = "Redactar mensaje";
 
 /* Title */
 "Compose to" = "Redactar a";
@@ -1000,16 +1000,16 @@
 "Empty Label" = "Vaciar etiqueta";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "Spam vacío";
+"Empty Spam" = "Vaciar spam";
 
 /* Alert title */
 "Empty spam folder" = "Carpeta de spam vacía";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Papelera vacía";
+"Empty Trash" = "Vaciar papelera";
 
 /* Alert title */
-"Empty trash folder" = "Carpeta de la papelera vacía";
+"Empty trash folder" = "Papelera vacía";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Habilitar conversaciones";

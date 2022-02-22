@@ -3674,6 +3674,7 @@
 		8E18D799D5B797B2EF98DBFAD0E688DA /* AppleContactParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContactParserTest.swift; sourceTree = "<group>"; };
 		8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceSubscriptionTests.swift; sourceTree = "<group>"; };
 		8E561FFC6EE3D10D991F54294F0A87E4 /* SettingsAccountCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCoordinator.swift; sourceTree = "<group>"; };
+		8E8BA8858D7D089C5633A70564A9961B /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8ECCA238C7CF05DF037DEE0C49F1E385 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		8ED74BB5412B24D36973513E2112C7A4 /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		8F0205F61E56D42F08CD8AE77850D4A6 /* ContactParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactParser.swift; sourceTree = "<group>"; };
@@ -3734,6 +3735,7 @@
 		98BD66C9EFFAF5D548DAD8881B24F620 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		98D329B904F35B11133082B8BEE4C46C /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		98E6A80C18138733FD87225E00965184 /* userKey */ = {isa = PBXFileReference; lastKnownFileType = file; path = userKey; sourceTree = "<group>"; };
+		98EABD866EED806D7007D4C5584DD05C /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-US"; path = "../en-US.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		98F6DBEFE48775817E6EBAA4BD63F9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		992C0ABB744AE5961492E220659F0425 /* ConversationExpandedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationExpandedMessageView.swift; sourceTree = "<group>"; };
 		99498D0AAFDBA306C8569EAC3640B7A8 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3825,6 +3827,7 @@
 		A952CBAC7F7843F236D028295F9BA140 /* ConversationMessagesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationMessagesProvider.swift; sourceTree = "<group>"; };
 		A97D1453C18F6E410834D38F5AAFCFC7 /* SignInCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinatorTests.swift; sourceTree = "<group>"; };
 		A9B0B4CCDF297F1A8EA1AE98741B9951 /* LabelManagerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelManagerCoordinator.swift; sourceTree = "<group>"; };
+		AA02F239AFD81B58BAE792988C6CC349 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		AA3CB5353C922CC8855F66E11B152A74 /* UndoTokenResponseProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UndoTokenResponseProtocolTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoTokenResponseProtocolTests.swift; sourceTree = SOURCE_ROOT; };
 		AA66852CB9BDBA5E864BF9166EA0EFA8 /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
@@ -3934,9 +3937,6 @@
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		C3A86E81FC1EB1180CFA9F18CB7DE806 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
-		C3E91B6127BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		C3E91B6227BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		C3E91B6327BA37F000C2B9ED /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-US"; path = "../en-US.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		C41BFF3EFB3A927144347B5CDBE36752 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProvider.swift; sourceTree = "<group>"; };
@@ -11619,6 +11619,7 @@
 				10540E9AFB359D3F20458471D5DD16FE /* de */,
 				9541C9AB55A196E76EB4A8EE72ECBDEA /* el */,
 				CEAFC4D23B2C4B8DE08F0D227F8C3505 /* en */,
+				AA02F239AFD81B58BAE792988C6CC349 /* en-US */,
 				AB275A21CF390F559BC01F46A9D5B244 /* es */,
 				276D5D0D0DF462C20A4420FB25780CE4 /* fr */,
 				035BFF9AFA90B021BE0E9EBAD1236F39 /* hr */,
@@ -11639,7 +11640,6 @@
 				DBDD1707D9714BF6526B34EF40D2A812 /* uk */,
 				8386FECF18884638287496DF015DBF6A /* zh-Hans */,
 				3DE4E5F927C84D91C86831B9243C1FC5 /* zh-Hant */,
-				C3E91B6127BA37F000C2B9ED /* en-US */,
 			);
 			name = InfoPlist.strings;
 			path = ProtonMail;
@@ -11655,6 +11655,7 @@
 				272B3A68D1124816CFCD0178DC0F8BA0 /* de */,
 				7985898EEFF038E933145945102FEA3F /* el */,
 				B764527DCF1D33D6AA5057011A5FB7C4 /* en */,
+				98EABD866EED806D7007D4C5584DD05C /* en-US */,
 				9400F1E9A1B75279FEC65CC4B9BE6DBF /* es */,
 				05C6E12206D69C69A62D8CAEBD3F22A6 /* fr */,
 				EEC434C8A7779F50FDA59B2FC5D11799 /* hr */,
@@ -11675,7 +11676,6 @@
 				362CEF383ACFCF86812592605B2F3116 /* uk */,
 				57295F845FB5B0093197283C600A53DB /* zh-Hans */,
 				8802431355F983D5DD64869A9DA00F43 /* zh-Hant */,
-				C3E91B6327BA37F000C2B9ED /* en-US */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -11690,6 +11690,7 @@
 				F9A652392048271130CA3D52CD685F9B /* de */,
 				22B381DF7A3CEDF0462F747BD355FBE9 /* el */,
 				82061900AD00D062F230AFE4937B3B1E /* en */,
+				8E8BA8858D7D089C5633A70564A9961B /* en-US */,
 				2DF961B555DF4FBC7EEB1A85C1616C4A /* es */,
 				BFB5CCCB0EA86A485AFF69337731EF2D /* fr */,
 				FB6FE969D6FCB1AE93F5B3400848BD18 /* hr */,
@@ -11710,7 +11711,6 @@
 				3B402218BE33D7472F069518E76A588D /* uk */,
 				22BE4DDF6BEBE920C194F8D16190C4ED /* zh-Hans */,
 				24E1D28A547F3242E0E2A8E25EA470E7 /* zh-Hant */,
-				C3E91B6227BA37F000C2B9ED /* en-US */,
 			);
 			name = Localizable.strings;
 			path = ProtonMail;

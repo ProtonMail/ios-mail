@@ -566,7 +566,7 @@
 "Change right swipe action" = "Sağa kaydırma işlemini değiştir";
 
 /* Title */
-"Change sender address to .." = "Gönderen adresini şuna değiştir...";
+"Change sender address to .." = "Gönderici adresini şuna değiştir...";
 
 /* change password input label */
 "Change sign-in password" = "Oturum açma parolasını değiştir";
@@ -2020,7 +2020,7 @@
 "Please provide a group name" = "Lütfen bir grup adı belirtin";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Lütfen göndereni değiştirmeden önce tüm ek dosyaları kaldırın";
+"Please remove all attachments before changing sender!" = "Lütfen göndericiyi değiştirmeden önce tüm ek dosyaları kaldırın";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Lütfen en az bir e-posta adresi seçin";
@@ -2192,7 +2192,7 @@
 "Recovery enabled" = "Kurtarma etkileştirildi";
 
 /* No comment provided by engineer. */
-"Reload" = "Yeniden yükle";
+"Reload" = "Yenile";
 
 /* Title */
 "Remind Me Later" = "Daha sonra hatırlat";
@@ -2245,7 +2245,7 @@
 "Report phishing" = "Kimlik avını bildir";
 
 /* message details-> more action-> report phishing */
-"Report Phishing" = "Kimlik avını bildir";
+"Report Phishing" = "Kimlik avı bildir";
 
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
@@ -2595,7 +2595,7 @@
 "terms and conditions" = "hüküm ve koşullar";
 
 /* (No Comment) */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata bildiriminde bulundğunuz için teşekkür ederiz. Bildiriminiz hata izleme sistemimize eklendi.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata bildiriminde bulunduğunuz için teşekkür ederiz. Bildiriminiz hata izleme sistemimize eklendi.";
 
 /* Comment in banner thanking user for providing feedback */
 "Thank you for your feedback!" = "Geri bildiriminiz için teşekkürler!";
@@ -2756,7 +2756,7 @@
 "This message is from a mailing list." = "Bu ileti bir posta listesinden gönderilmiş.";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen göründüğü gibi olduklarından emin olmak için gönderen adresi ve içeriği kontrol edin.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen göründüğü gibi olduklarından emin olmak için gönderici adresini ve ileti içeriğini kontrol edin.";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
@@ -3067,7 +3067,7 @@
 "Welcome to ProtonMail!" = "ProtonMail uygulamasına hoş geldiniz";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "Bir e-posta gönderdiğinizde, gönderen alanında bu ad görüntülenir.";
+"When you send an email, this is the name that appears in the sender field." = "Bir e-posta gönderdiğinizde, gönderici alanında bu ad görüntülenir.";
 
 /* Example feedback */
 "Wonderful" = "Harika";
@@ -3196,7 +3196,7 @@
 "Your plan will automatically renew on" = "Tarifeniz şu tarihte otomatik olarak yenilenecek";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınız ya da geçersiz kılındığı için oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da geçersiz kılındığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
 
 /* Description */
 "Your signature has been updated." = "İmzanız güncellendi.";
