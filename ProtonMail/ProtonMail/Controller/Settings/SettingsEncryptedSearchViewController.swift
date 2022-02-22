@@ -65,11 +65,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
             // Set up observers
-            setupEstimatedTimeUpdateObserver(userID: userID)
-            setupProgressUpdateObserver(userID: userID)
-            setupProgressedMessagesObserver(userID: userID)
-            setupIndexingFinishedObserver(userID: userID)
-            setupIndexingInterruptionObservers()
+            self.setupIndexingObservers(userID: userID)
 
             if userCachedStatus.isEncryptedSearchOn == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
@@ -98,14 +94,10 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        print("ES-TEST: view will appear")
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
-            // Set up observers
-            setupEstimatedTimeUpdateObserver(userID: userID)
-            setupProgressUpdateObserver(userID: userID)
-            setupProgressedMessagesObserver(userID: userID)
-            setupIndexingFinishedObserver(userID: userID)
-            setupIndexingInterruptionObservers()
+            print("ES-TEST: view will appear: state: \(EncryptedSearchService.shared.getESState(userID: userID))")
 
             if userCachedStatus.isEncryptedSearchOn == false {
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
@@ -113,11 +105,17 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
             if EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
                 self.hideSections = true
+
+                // Set up observers
+                self.setupIndexingObservers(userID: userID)
             } else {
                 self.hideSections = false
 
                 // Speed up indexing when on this view
                 EncryptedSearchService.shared.speedUpIndexing(userID: userID)
+
+                // Set up observers
+                self.setupIndexingObservers(userID: userID)
 
                 // Update viewModel in EncryptedSearchService Singleton
                 EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
@@ -130,17 +128,12 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
                 // Automatically restart indexing when previous state was downloading
                 if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
+                    // TODO check if downloading is already in progress
                     EncryptedSearchService.shared.restartIndexBuilding(userID: userID)
                 }
 
                 let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
                 if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                    if #available(iOS 12, *) {
-                        print("ES-NETWORK viewwillappear - check network state")
-                        EncryptedSearchService.shared.checkIfNetworkAvailable()
-                    } else {
-                        // Fallback on earlier versions
-                    }
                     self.showInfoBanner()
                 }
             }
@@ -447,7 +440,7 @@ extension SettingsEncryptedSearchViewController {
                         var messageCountText: String = ""
                         if EncryptedSearchService.shared.getESState(userID: userID) == .downloading {
                             progressBarButtonCell.messageCountLabel.isHidden = false
-                            messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(EncryptedSearchService.shared.totalMessages)
+                            messageCountText = LocalString._encrypted_search_message_count_prefix + String(self.viewModel.progressedMessages.value ?? 0) + LocalString._encrypted_search_message_count_combiner + String(userCachedStatus.encryptedSearchTotalMessages)
                         } else {
                             progressBarButtonCell.messageCountLabel.isHidden = true
                         }
@@ -579,9 +572,6 @@ extension SettingsEncryptedSearchViewController {
             self.tableView.reloadData()
         })
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_alert_enable_button, style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-            // Update viewModel in EncryptedSearchService Singleton
-            EncryptedSearchService.shared.updateViewModelIfNeeded(viewModel: self.viewModel)
-
             // Start building the search index
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
@@ -598,6 +588,14 @@ extension SettingsEncryptedSearchViewController {
 
         // Show alert
         self.present(alert, animated: true, completion: nil)
+    }
+
+    func setupIndexingObservers(userID: String) {
+        setupEstimatedTimeUpdateObserver(userID: userID)
+        setupProgressUpdateObserver(userID: userID)
+        setupProgressedMessagesObserver(userID: userID)
+        setupIndexingFinishedObserver(userID: userID)
+        setupIndexingInterruptionObservers()
     }
 
     func setupEstimatedTimeUpdateObserver(userID: String) {

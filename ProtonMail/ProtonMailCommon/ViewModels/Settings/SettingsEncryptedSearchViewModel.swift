@@ -28,7 +28,7 @@ class Bindable<T> {
             observer?(value)
         }
     }
-    
+
     var observer: ((T?) -> ())?
     
     func bind(observer: @escaping (T?) -> ()){
@@ -41,7 +41,7 @@ class SettingsEncryptedSearchViewModel {
         case encryptedSearch = 0
         case downloadViaMobileData = 1
         case downloadedMessages = 2
-        
+
         var title: String {
             switch self {
                 case .encryptedSearch:
@@ -52,7 +52,7 @@ class SettingsEncryptedSearchViewModel {
                     return LocalString._settings_title_of_downloaded_messages
             }
         }
-        
+
         var foot: String {
             switch self {
                 case .encryptedSearch:
@@ -64,14 +64,14 @@ class SettingsEncryptedSearchViewModel {
             }
         }
     }
-    
+
     private var encryptedSearchCache: EncryptedSearchCacheProtocol
-    
+
     init(encryptedSearchCache: EncryptedSearchCacheProtocol) {
         self.encryptedSearchCache = encryptedSearchCache
         self.currentProgress.value = 0
     }
-    
+
     var isEncryptedSearch: Bool {
         get {
             return encryptedSearchCache.isEncryptedSearchOn
@@ -80,22 +80,13 @@ class SettingsEncryptedSearchViewModel {
             encryptedSearchCache.isEncryptedSearchOn = newValue
         }
     }
-    
+
     var downloadViaMobileData: Bool {
         get {
             return encryptedSearchCache.downloadViaMobileData
         }
         set {
             encryptedSearchCache.downloadViaMobileData = newValue
-        }
-    }
-    
-    var indexComplete: Bool {
-        get {
-            return encryptedSearchCache.indexComplete
-        }
-        set {
-            encryptedSearchCache.indexComplete = newValue
         }
     }
 
