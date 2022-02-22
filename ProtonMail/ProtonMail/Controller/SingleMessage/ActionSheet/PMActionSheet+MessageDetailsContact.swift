@@ -25,7 +25,8 @@ import ProtonCore_UIFoundations
 extension PMActionSheet {
 
     static func messageDetailsContact(
-        for type: MessageDetailsContactActionSheetType,
+        for title: String,
+        subTitle: String,
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheet {
         let closeItem = PMActionSheetPlainItem(
@@ -34,8 +35,8 @@ extension PMActionSheet {
             handler: { _ in action(.close) }
         )
         let header = PMActionSheetHeaderView(
-            title: type.title,
-            subtitle: nil,
+            title: title,
+            subtitle: subTitle,
             leftItem: closeItem,
             rightItem: nil
         )
