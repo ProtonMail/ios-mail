@@ -840,9 +840,9 @@ extension UserCachedStatus {
     var storageLimit: Int64 {
         get {
             if getShared().object(forKey: Key.encryptedSearchStorageLimit) == nil {
-                return 600_000_000    // in bytes - default storage limit is 600 MB
+                return 1_000_000_000    // in bytes - default storage limit is 1000 MB
             }
-            return Int64(getShared().int(forKey: Key.encryptedSearchStorageLimit) ?? 600_000_000)
+            return Int64(getShared().int(forKey: Key.encryptedSearchStorageLimit) ?? 1_000_000_000)
         }
         set {
             setValue(newValue, forKey: Key.encryptedSearchStorageLimit)

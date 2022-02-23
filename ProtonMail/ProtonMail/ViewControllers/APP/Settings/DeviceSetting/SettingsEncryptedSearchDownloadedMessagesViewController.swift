@@ -215,7 +215,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     bottomLine = LocalString._encrypted_search_downloaded_messages_storage_limit_selection + self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
                 }
 
-                let index: Int = sliderStepsDisplay.firstIndex(of: Float(userCachedStatus.storageLimit)) ?? 2
+                let index: Int = sliderStepsDisplay.firstIndex(of: Float(userCachedStatus.storageLimit)) ?? 4
                 let currentSliderValue: Float = sliderSteps[index]
                 sliderCell.slider.value = currentSliderValue
 
