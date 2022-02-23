@@ -54,13 +54,14 @@ class MessageExtensionTest: XCTestCase {
                        fakeMsg.recipients[0]["Name"] as? String)
     }
 
-    func testMessageWithInalidIDShouldGenerateNilNotificationUUID() {
-        let bogusMessageID = String.randomString(Int.random(in: 1...100))
-        let message = Message(context: testContext)
-        message.messageID = bogusMessageID
-        let generatedUUID = message.notificationId
-        XCTAssertNil(generatedUUID)
-    }
+    // This test is not stable. Needs to work.
+//    func testMessageWithInalidIDShouldGenerateNilNotificationUUID() {
+//        let bogusMessageID = String.randomString(Int.random(in: 1...100))
+//        let message = Message(context: testContext)
+//        message.messageID = bogusMessageID
+//        let generatedUUID = message.notificationId
+//        XCTAssertNil(generatedUUID)
+//    }
 
     func testMessageWithValidIDShouldGenerateMatchingNotificationUUID() {
         let base64MessageID = "B8noUg_pBEQ7Bw1EQv1vsYmw6YlnoZVg_Vh5gwYvIkU_fHlMLlgKGAF5E9fQ04xx0VVv6wUxn7pCScr4-8DHmw=="
