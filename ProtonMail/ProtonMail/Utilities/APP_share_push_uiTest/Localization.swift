@@ -1337,7 +1337,7 @@ class LocalizedString {
     lazy var _encrypted_search_info_banner_text = NSLocalizedString("The download will stop if the ProtonMail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
     
     lazy var _encrypted_search_delete_messages_alert_title = NSLocalizedString("Delete all downloaded messages?", comment: "Title for the alert to delete all downloaded messages.")
-    lazy var _encrypted_search_delete_messages_alert_message = NSLocalizedString("'Search message content' will be disabled. It can be enabled again from settings.", comment: "Message for the alert to delete all downloaded messages.")
+    lazy var _encrypted_search_delete_messages_alert_message = NSLocalizedString("'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again.", comment: "Message for the alert to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_delete = NSLocalizedString("Delete", comment: "Title for the alert button to delete all downloaded messages.")
     lazy var _encrypted_search_delete_messages_alert_button_cancel = NSLocalizedString("Cancel", comment: "Title for the alert button to cancel delete all downloaded messages.")
     
