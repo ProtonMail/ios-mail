@@ -2109,7 +2109,7 @@ extension EncryptedSearchService {
 
         let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
         print("Current storage space: \(remainingStorageSpace)")
-        if remainingStorageSpace < 100 {    // TODO is 100 correct?
+        if remainingStorageSpace < (100_000_000)  {    // 100 MB
             self.pauseIndexingDueToLowStorage = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
         }
