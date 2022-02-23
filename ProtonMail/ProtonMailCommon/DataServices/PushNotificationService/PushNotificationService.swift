@@ -134,15 +134,24 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     }
 
     private func finalizeReporting(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
-        let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
-        self.currentSubscriptions.insert(subcriptionsBeforeReport)
-        self.report(settingsToReport)
         self.unreportOutdated()
+        let result = self.report(settingsToReport)
+
+        PushNotificationService.updateSettingsIfNeeded(reportResult: result,
+                                                       currentSubscriptions: currentSubscriptions.subscriptions) { [weak self] result in
+            self?.currentSubscriptions.update(result.0, toState: result.1)
+        }
     }
 
     private func didUnlock() {
         guard case let sessionIDs = self.sessionIDProvider.sessionIDs, let deviceToken = self.latestDeviceToken else {
             return
+        }
+
+        if self.signInProvider.isSignedIn == true {
+            if sessionIDs.isEmpty {
+                return
+            }
         }
         
         let settingsWeNeedToHave = sessionIDs.map { SubscriptionSettings(token: deviceToken, UID: $0) }
@@ -151,13 +160,14 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         self.currentSubscriptions.outdate(settingsToUnreport)
         
         let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter {
-            $0.state == .reported && !settingsToUnreport.contains($0.settings)
+            ($0.state == .reported || $0.state == .pending) &&
+            !settingsToUnreport.contains($0.settings)
         }
         var settingsToReport = Set(settingsWeNeedToHave)
 
         settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
             // Always report all settings to make sure we don't miss any
-            // Those already reported will just be overriden, others will be registered
+            // Those already reported will just be overridden, others will be registered
             if sharedUserDefaults.shouldRegisterAgain(for: settings.UID) {
                 sharedUserDefaults.didRegister(for: settings.UID)
                 // Regenerate a key pair if the extension failed to decrypt notification payload
@@ -184,20 +194,34 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     }
     
     // register on BE and validate local values
-    private func report(_ settingsToReport: Set<SubscriptionSettings>) {
+    private func report(_ settingsToReport: Set<SubscriptionSettings>) -> [SubscriptionSettings: SubscriptionState] {
+        guard !Thread.isMainThread else {
+            assertionFailure("Should not call this method on main thread.")
+            return [:]
+        }
+
+        var reportResult: [SubscriptionSettings: SubscriptionState] = [:]
+
+        let group = DispatchGroup()
         settingsToReport.forEach { settings in
+            group.enter()
             let completion: CompletionBlock = { _, _, error in
+                defer {
+                    group.leave()
+                }
                 guard error == nil else {
-                    self.currentSubscriptions.update(settings, toState: .notReported)
+                    reportResult[settings] = .notReported
                     return
                 }
-                self.currentSubscriptions.update(settings, toState: .reported)
+                reportResult[settings] = .reported
             }
-            self.currentSubscriptions.update(settings, toState: .pending)
+            reportResult[settings] = .pending
             
             let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
+        group.wait()
+        return reportResult
     }
     
     // unregister on BE and validate local values
@@ -342,6 +366,27 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
     }
 }
 
+extension PushNotificationService {
+    static func updateSettingsIfNeeded(reportResult: [PushNotificationService.SubscriptionSettings: PushNotificationService.SubscriptionState],
+                                currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings>,
+                                updateSubscriptionClosure: ((PushNotificationService.SubscriptionSettings, PushNotificationService.SubscriptionState)) -> Void) {
+
+        for result in reportResult {
+            // Check if the setting is already reported successfully before.
+            // If that's the case, ignore the result to prevent the failing result overriding the successful registration before.
+            let currentSubscription = currentSubscriptions.first(where: {$0.settings.UID == result.key.UID})
+            let isReportedBefore = currentSubscription?.state == .reported
+            let isEncryptionKitTheSame = currentSubscription?.settings.encryptionKit == result.key.encryptionKit
+
+            if isReportedBefore && isEncryptionKitTheSame {
+                continue
+            } else {
+                updateSubscriptionClosure((result.key, result.value))
+            }
+        }
+    }
+}
+
 // MARK: - Dependency Injection sugar
 
 protocol SessionIdProvider {
@@ -378,4 +423,3 @@ protocol DeviceRegistrator {
 }
 
 extension PMAPIService: DeviceRegistrator {}
-
