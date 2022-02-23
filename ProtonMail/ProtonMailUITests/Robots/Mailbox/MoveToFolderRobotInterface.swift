@@ -98,13 +98,13 @@ class MoveToFolderRobotInterface: CoreElements {
     
     @discardableResult
     func tapDoneSelectingFolderButton() -> InboxRobot {
-        button(id.doneButtonLabel).tap()
+        button(id.doneButtonLabel).waitForHittable().tap()
         return InboxRobot()
     }
     
     @discardableResult
     func tapDoneSelectingLabelButton() -> MessageRobot {
-        button(id.doneButtonLabel).tap()
+        button(id.doneButtonLabel).waitForHittable().tap()
         return MessageRobot()
     }
     
