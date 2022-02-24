@@ -18,6 +18,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private let storedSizeHelper = ConversationStoredSizeHelper()
     private var autoScrollIndexPath: IndexPath?
     private var autoScrollPosition: UITableView.ScrollPosition?
+    private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
 
     init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
         self.coordinator = coordinator
@@ -178,6 +179,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                 $0.view == view
             }
         guard let controllerToUnembed = viewController else { return }
+        cachedViewControllers[indexPath] = nil
         unembed(controllerToUnembed)
     }
 
@@ -205,6 +207,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
             return
         }
+        cachedViewControllers.removeAll()
         if messageViewModel.isDraft {
             self.update(draft: messageViewModel.message)
         } else {
@@ -238,9 +241,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
-        if #available(iOS 15.0, *) {
-            customView.tableView.isPrefetchingEnabled = false
-        }
     }
 
     required init?(coder: NSCoder) { nil }
@@ -356,7 +356,13 @@ private extension ConversationViewController {
             return cell
         case .expanded(let expandedViewModel):
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)
-            let viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
+            let viewController: ConversationExpandedMessageViewController
+            if let cachedViewController = cachedViewControllers[indexPath] {
+                viewController = cachedViewController
+            } else {
+                viewController = embedController(viewModel: expandedViewModel, in: cell, indexPath: indexPath)
+                cachedViewControllers[indexPath] = viewController
+            }
             embed(viewController, inside: cell.container)
             viewController.customView.topArrowTapAction = { [weak self] in
                 self?.cellTapped(messageId: viewModel.message.messageID)
