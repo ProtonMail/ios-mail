@@ -309,7 +309,15 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func presentActionSheet(context: MessageHeaderContactContext) {
-        let actionSheet = PMActionSheet.messageDetailsContact(for: context.type) { [weak self] action in
+        var title = context.contact.title
+        if context.type == .sender {
+            if let expandVM = self.viewModel.expandedHeaderViewModel {
+                title = expandVM.sender.string
+            } else if let nonExpandVM = self.viewModel.nonExapndedHeaderViewModel {
+                title = nonExpandVM.sender.string
+            }
+        }
+        let actionSheet = PMActionSheet.messageDetailsContact(for: title, subTitle: context.contact.subtitle) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
         }
