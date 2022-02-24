@@ -54,6 +54,7 @@ class PMView: UIView, AccessibleView {
             pmView.clipsToBounds = true;
             self.clipsToBounds = true;
             self.setup()
+            self.pmView = pmView
         }
         generateAccessibilityIdentifiers()
     }

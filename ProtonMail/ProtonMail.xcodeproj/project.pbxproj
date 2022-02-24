@@ -663,6 +663,7 @@
 		3BAF387F88AAB2575520FF5C0500A5D4 /* ShowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EDD45081E287644F5979DAD749D32C /* ShowImageView.swift */; };
 		3BBCEBFAC5A77175D4A7A79DCF61B52B /* CacheServiceTests+UnreadCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEFE765B129002D038F135133AB7242 /* CacheServiceTests+UnreadCounter.swift */; };
 		3BDF40DB15067F31901DE8AF1B4C2C93 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00345B8B27EA3497339A80F5B054645B /* Header.swift */; };
+		3BE4CAF7F61778E9D13E6DE567F4A995 /* CompactBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */; };
 		3BF34BF65B280DCB11B3696F535B2496 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9449421CDCABB3B457718D77434366A7 /* MessageAction.swift */; };
 		3BF61424D049E519A7E0A2BDF7D8A964 /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7E4D250B1A03C4E05DB97AD1A70D9F /* TrustKitWrapper.swift */; };
 		3C03004BBA830E5446666FC06B90800D /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E1656BCAC99F33671898D6E40D00B /* CoreDataService.swift */; };
@@ -774,6 +775,7 @@
 		46083404E157251093EE50B375A4F949 /* ClearAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B149D3F490ABB632620AB7CB1248 /* ClearAddressBuilder.swift */; };
 		4636B8BC852796F32AF4B62E369BA6BF /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */; };
 		465C162FFDCBE57159F0826F0C0842FE /* ContactGroupDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */; };
+		4661789CC721FF31F57C2B88B4CED655 /* CompactBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */; };
 		46788AD27915EB5EB1EC5D6F6492280C /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
 		4686CCF35DA62469FE094F82D4369378 /* ConversationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63939D3436973BD902F7A983412492F /* ConversationUnread.swift */; };
 		468D1B279F59437956E4471352894408 /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892FCF187AFEC42762863D4C7CBE7C40 /* SpamScoreWarningView.swift */; };
@@ -1077,6 +1079,7 @@
 		6124425CF97A1E4AA9BD2F02EB1D225F /* Operators+NSAttributedStirng.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BE2EA59908D48EE1D0CD047FBEE972 /* Operators+NSAttributedStirng.swift */; };
 		612989C95ECD0B8E5F52802998A42EEC /* ContactGroupEditViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911D7845E802C9F973CBA38E8E646EC5 /* ContactGroupEditViewModelImpl.swift */; };
 		61335B96C8F33EB4B56D4D459D39A01F /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
+		613699145DDB358BCA8331CD18A84C5C /* CompactBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */; };
 		613850F0B2D97E1A41550D9E2541C23E /* SpringboardShortcutsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B219CA0303E87BEBF47C7BE260F39 /* SpringboardShortcutsService.swift */; };
 		615A16F16676A04B2F893B8855924518 /* ContactGroupMutiSelectViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2AD6935E03E7F5A62A7F6A2EA6F875 /* ContactGroupMutiSelectViewModelImpl.swift */; };
 		617C0EC60482C13260B63D69E12B9DD5 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
@@ -1123,6 +1126,7 @@
 		6478D39C5EDF453E4D962179E82EF730 /* Collection+SafeElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04C3DA1A0AE2D4650C574C884F3A6F /* Collection+SafeElement.swift */; };
 		648542DAF53ADE2D886C593ACD1F9163 /* CSSMagicTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965E77DFB7926CAD58311A7FC50A8C60 /* CSSMagicTest.swift */; };
 		64AF52E9DAFC3EEE894A815B2022947F /* StorageLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DF350EE3CB54D27FD0E93BE458A8F5 /* StorageLimit.swift */; };
+		64C18422A19A6DE3C879009B237D3968 /* CompactBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */; };
 		64CF98FF12C96AD3C0DE2DCC5AEA1A93 /* LabelAsActionSheetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1914870878634B77DC85035C238DC7 /* LabelAsActionSheetPresenter.swift */; };
 		64F36DAB3148C5FD919878C3E0C9B87F /* PGPMimeAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB274E7AC7516891D1938CF3BEA40049 /* PGPMimeAddressBuilder.swift */; };
 		64F73F3E5D6B88E5B72F39AA44BC3092 /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
@@ -1442,6 +1446,7 @@
 		83494740B971696B49D67C11E6A566CC /* ConversationDataService+SingleItemFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6B6B54DF5A1A4C4D7DB510E996CF07 /* ConversationDataService+SingleItemFetching.swift */; };
 		8363FACB9654228371401D4EE9F94299 /* ExpandedHeaderRecipientRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EAE2B13C2E682DCC41F9421A0E1832 /* ExpandedHeaderRecipientRowViewModel.swift */; };
 		836671FC8D896D546EB54D5E4EE9631B /* DarkModeCSSHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78139DCE2AD6F0CFB6E687C5A1972B1A /* DarkModeCSSHelper.swift */; };
+		836950778929737EB4CB79C450378E07 /* BannerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */; };
 		83BE7B0D5376F6AE989B9A99745CA676 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77DC45BBF8A34C0525EB7CA357E5CF /* Error+Extension.swift */; };
 		83C786224FE6C6B089ABC1DED10F18DA /* ConversationDataService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE577B2381E26429B61D67DC9255838 /* ConversationDataService+Actions.swift */; };
 		83F7F619BCD60251AEFA381A40B76F36 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4EE54A268109D2981B1AF1C57F7040 /* ContactGroupsViewCell.swift */; };
@@ -3173,6 +3178,7 @@
 		2C96CE622714FAEB0A3E5DA921FA3D0F /* LocalConversationUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalConversationUpdater.swift; sourceTree = "<group>"; };
 		2CDDD7A7370D0C2BF1085CABF3EFEF56 /* HumanVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanVerificationManager.swift; sourceTree = "<group>"; };
 		2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelImpl.swift; sourceTree = "<group>"; };
+		2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BannerViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/CacheService/BannerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		2D13A6FA3F0FDEE829964B0017371329 /* PushNotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceTests.swift; sourceTree = "<group>"; };
 		2D69AF789865CD168AA4CCE87A96E367 /* MessageViewActionSheetViewModelAtomicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewActionSheetViewModelAtomicTests.swift; sourceTree = "<group>"; };
 		2D92DEE740435769B951F10DDEACF596 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
@@ -4126,6 +4132,7 @@
 		E77DE57A0B78E8BC157323518DCA084E /* ComposeContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeContainerViewController.swift; sourceTree = "<group>"; };
 		E78C71EBC2A378C586D57A973CAAEA17 /* MessageHeaderContactContextHeaderContactContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderContactContextHeaderContactContext.swift; sourceTree = "<group>"; };
 		E793AA84AFA1D3B5425C254A1B2BD8DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactBannerView.swift; sourceTree = "<group>"; };
 		E865C6674C2F8D20657331E1AC340900 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		E87101881BC1D8C883E73CFB82ED48E7 /* TableContainerViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableContainerViewCoordinator.swift; sourceTree = "<group>"; };
 		E8C884CC52AAB11AFE9096F279593946 /* ContactCombinedCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCombinedCacheProtocol.swift; sourceTree = "<group>"; };
@@ -4948,6 +4955,7 @@
 				0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */,
 				215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */,
 				7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */,
+				E82A8BAD7C86787A4866F5E2C08113B9 /* CompactBannerView.swift */,
 				0D3F8063AC2797A497E3780E5689868D /* DropLandingZone.swift */,
 				D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */,
 				C0A6A9213EBF556CB9344EDEDD80B021 /* LabelDisplayView.xib */,
@@ -7101,6 +7109,7 @@
 			children = (
 				D65ED57633F349127EA00409A0E36FDF /* Contacts */,
 				9A585DF4905C63E026F4166ED0B43439 /* Mailbox */,
+				2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */,
 				56606368C7BF1BDB901665A9E3ADC53D /* MenuViewModelTests.swift */,
 				53B64E33ADE9894FD27AA9E7607FA548 /* SettingsCombineContactViewModelTests.swift */,
 				ABA074715BD3A320CF51EE128DBF850E /* SettingsConversationViewModelTests.swift */,
@@ -8971,6 +8980,7 @@
 				3347C6DAF0E7ED2D8A49ADFFF3961810 /* BackgroundSaveTests.swift in Sources */,
 				43D50FFD657C90A1ADA128E42EEBAC5C /* BackgroundTimerTests.swift in Sources */,
 				91EA843F18C9559AC17182D1266680C5 /* BannerHelperTests.swift in Sources */,
+				836950778929737EB4CB79C450378E07 /* BannerViewModelTests.swift in Sources */,
 				9571D57E748371E70AE828122EFCF5A7 /* BioMetricStatusStub.swift in Sources */,
 				E98E3F6BFF289C253801D720FD95CE9F /* BodyString.swift in Sources */,
 				21975D8D75B56AC79FBA4ADFF0BAE4F6 /* BugDataServiceTests.swift in Sources */,
@@ -9238,6 +9248,7 @@
 				6A110B734A9595793DFBDCDF48421E53 /* ClearMimeAddressBuilder.swift in Sources */,
 				6478D39C5EDF453E4D962179E82EF730 /* Collection+SafeElement.swift in Sources */,
 				A4A5A10BA50CA491A47857763ED878D2 /* Colors.swift in Sources */,
+				64C18422A19A6DE3C879009B237D3968 /* CompactBannerView.swift in Sources */,
 				1451DB8843CB434497A0CC730C893F80 /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */,
 				1D030E948CEBA0C23E4A86989618F9DF /* ComposeContainerViewController.swift in Sources */,
 				E84CECD826C05D7F8C6378C35F9C3A67 /* ComposeContainerViewCoordinator.swift in Sources */,
@@ -9989,6 +10000,7 @@
 				05F22806840B31F31DB51329566F601B /* ClearMimeAddressBuilder.swift in Sources */,
 				28FE2018E87407605BFA1C173ADCED1B /* Collection+SafeElement.swift in Sources */,
 				D1DE1C8F121B201850D00945B4B87C17 /* Colors.swift in Sources */,
+				613699145DDB358BCA8331CD18A84C5C /* CompactBannerView.swift in Sources */,
 				D1675D9B00EBAF7515681C48A4B40926 /* Compare.swift in Sources */,
 				762BAA320C758F5832A740103E412E35 /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */,
 				BFC084CF8C0EA99784FCC09830D66580 /* ComposeContainerViewController.swift in Sources */,
@@ -10757,6 +10769,7 @@
 				8ADC942BC51D65296A54F6C6A6D2B3A1 /* ClearMimeAddressBuilder.swift in Sources */,
 				6AA4EEFF001A666819732F8CF26CD3AB /* Collection+SafeElement.swift in Sources */,
 				6D4A534E9CF9D8EACB5BC5B93223D7DF /* Colors.swift in Sources */,
+				4661789CC721FF31F57C2B88B4CED655 /* CompactBannerView.swift in Sources */,
 				636B235F96E5D2628C8DB14D172D8BD9 /* Compare.swift in Sources */,
 				F41AF64100113B9B31E0A2C998C63E4D /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */,
 				ACDD8C7C25E87BA153F67F0011F645AD /* ComposeContainerViewController.swift in Sources */,
@@ -11143,6 +11156,7 @@
 				51B37382671737B6ACF1D51F3F6A0EF1 /* ClearMimeAddressBuilder.swift in Sources */,
 				A86541762809A435259FAC8163CB811F /* Collection+SafeElement.swift in Sources */,
 				E7DD0041AAE7660B8B47401D4863F9CF /* Colors.swift in Sources */,
+				3BE4CAF7F61778E9D13E6DE567F4A995 /* CompactBannerView.swift in Sources */,
 				EE90A6AC40F9DDC748A9F9E9AC0936E2 /* Compare.swift in Sources */,
 				50A3B5581F5936A79C73AA548A514F19 /* ComposeAttachmentsAreUploadingTitleView.swift in Sources */,
 				90861CA6F7DCACD0842BCA6A185DD8FC /* ComposeContainerViewController.swift in Sources */,

@@ -402,8 +402,9 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
     func showDecryptionErrorBanner() {
         self.showBanner()
         bannerViewController?
-            .showDecryptionBanner(target: self,
-                                  action: #selector(self.tryDecryptionAgain))
+            .showDecryptionBanner { [weak self] in
+                self?.tryDecryptionAgain()
+            }
     }
 
     func hideDecryptionErrorBanner() {

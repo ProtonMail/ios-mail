@@ -37,16 +37,15 @@ class BannerViewController: UIViewController {
 
     private(set) lazy var customView = UIView()
     private(set) var containerView: UIStackView?
-    private(set) lazy var remoteContentBanner = RemoteContentBannerView()
-    private(set) lazy var embeddedImageBanner = EmbeddedImageBannerView()
-    private(set) lazy var errorBanner = ErrorBannerView()
-    private(set) lazy var expirationBanner = ExpirationBannerView()
-    private(set) lazy var remoteAndEmbeddedContentBanner = RemoteAndEmbeddedBannerView()
-    private(set) lazy var unsubscribeBanner = UnsubscribeBanner()
+    private(set) var remoteContentBanner: CompactBannerView?
+    private(set) var embeddedImageBanner: CompactBannerView?
+    private(set) var errorBanner: CompactBannerView?
+    private(set) var expirationBanner: CompactBannerView?
+    private(set) var unsubscribeBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
-    private lazy var autoReplyBanner = AutoReplyBanner()
-    private(set) lazy var receiptBanner = ReceiptBannerView()
-    private(set) lazy var decryptionErrorBanner = DecryptionErrorBannerView()
+    private(set) var autoReplyBanner: CompactBannerView?
+    private(set) var receiptBanner: CompactBannerView?
+    private(set) var decryptionErrorBanner: CompactBannerView?
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -59,7 +58,8 @@ class BannerViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.viewModel.updateExpirationTime = { [weak self] offset in
-            self?.expirationBanner.updateTitleWith(offset: offset)
+            let newTitle = BannerViewModel.calculateExpirationTitle(of: offset)
+            self?.expirationBanner?.updateTitleText(newTitle: newTitle)
         }
 
         self.viewModel.messageExpired = { [weak self] in
@@ -90,8 +90,8 @@ class BannerViewController: UIViewController {
         handleReceiptBanner()
 
         guard bannersBeforeUpdate.sortedBanners != displayedBanners.sortedBanners else { return }
-        view.alpha = 0
         viewModel.recalculateCellHeight?(false)
+        view.alpha = 0
         delay(0.5) {
             self.view.alpha = 1
         }
@@ -149,14 +149,18 @@ class BannerViewController: UIViewController {
 
     private func handleAutoReplyBanner() {
         let isAutoReplyBannerDisplayed = displayedBanners.contains(where: { $0.key == .autoReply })
-
         if !isAutoReplyBannerDisplayed && viewModel.isAutoReply {
             showAutoReplyBanner()
         }
     }
 
     private func showAutoReplyBanner() {
-        addBannerView(type: .autoReply, shouldAddContainer: true, bannerView: autoReplyBanner)
+        let banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._autoreply_compact_banner_description,
+                                       icon: Asset.lightbulb.image,
+                                       action: nil)
+        autoReplyBanner = banner
+        addBannerView(type: .autoReply, shouldAddContainer: true, bannerView: banner)
     }
 
     private func setupContainerView() {
@@ -166,7 +170,7 @@ class BannerViewController: UIViewController {
         customView.addSubview(stackView)
 
         [
-            stackView.topAnchor.constraint(equalTo: customView.topAnchor),
+            stackView.topAnchor.constraint(equalTo: customView.topAnchor, constant: 4.0),
             stackView.bottomAnchor.constraint(equalTo: customView.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: customView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
@@ -175,49 +179,61 @@ class BannerViewController: UIViewController {
     }
 
     private func showRemoteContentBanner() {
-        remoteContentBanner.loadContentButton.addTarget(self,
-                                                        action: #selector(self.loadRemoteContent),
-                                                        for: .touchUpInside)
-        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteContentBanner)
+        let banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._banner_remote_content_new_title,
+                                       icon: Asset.mailRemoteContentIcon.image,
+                                       action: { [weak self] in
+            self?.loadRemoteContent()
+        })
+        remoteContentBanner = banner
+        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: banner)
     }
 
     private func showEmbeddedImageBanner() {
-        embeddedImageBanner.loadContentButton.addTarget(self,
-                                                        action: #selector(self.loadEmbeddedImages),
-                                                        for: .touchUpInside)
-        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: embeddedImageBanner)
-    }
-
-    private func showRemoteAndEmbeddedContentBanner() {
-        remoteAndEmbeddedContentBanner.loadImagesButton.addTarget(self,
-                                                                  action: #selector(self.loadEmbeddedImageAndCheck),
-                                                                  for: .touchUpInside)
-        remoteAndEmbeddedContentBanner.loadContentButton.addTarget(self,
-                                                                   action: #selector(self.loadRemoteContentAndCheck),
-                                                                   for: .touchUpInside)
-        addBannerView(type: .remoteContent, shouldAddContainer: true, bannerView: remoteAndEmbeddedContentBanner)
+        let banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._banner_embedded_image_new_title,
+                                       icon: Asset.mailRemoteContentIcon.image) { [weak self] in
+            self?.loadEmbeddedImages()
+        }
+        embeddedImageBanner = banner
+        addBannerView(type: .embeddedContent, shouldAddContainer: true, bannerView: banner)
     }
 
     private func showExpirationBanner() {
-        let banner = self.expirationBanner
-        banner.updateTitleWith(offset: viewModel.getExpirationOffset())
-
-        addBannerView(type: .expiration, shouldAddContainer: false, bannerView: banner)
+        let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
+        let banner = CompactBannerView(appearance: .expiration,
+                                       title: title,
+                                       icon: Asset.mailHourglass.image,
+                                       action: nil)
+        expirationBanner = banner
+        addBannerView(type: .expiration, shouldAddContainer: true, bannerView: banner)
     }
 
     private func showUnsubscribeBanner() {
-        let banner = unsubscribeBanner
-        banner.unsubscribeButton.addTarget(viewModel, action: #selector(viewModel.unsubscribe), for: .touchUpInside)
+        let banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._unsubscribe_compact_banner_description,
+                                       icon: Asset.unsubscribe.image) { [weak self] in
+            self?.viewModel.unsubscribe()
+        }
+        unsubscribeBanner = banner
         addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
     }
 
     private func showReceiptBanner() {
-        let banner = receiptBanner
+        let banner: CompactBannerView
         if viewModel.hasSentReceipt {
-            banner.hasSentReceipt()
+            banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._receipt_sent,
+                                       icon: Asset.icBell.image,
+                                       action: nil)
         } else {
-            banner.sendButton.addTarget(self, action: #selector(self.sendReceipt), for: .touchUpInside)
+            banner = CompactBannerView(appearance: .normal,
+                                       title: LocalString._banner_title_send_read_receipt,
+                                       icon: Asset.icBell.image) { [weak self] in
+                self?.sendReceipt()
+            }
         }
+        receiptBanner = banner
         addBannerView(type: .sendReceipt, shouldAddContainer: true, bannerView: banner)
     }
 
@@ -228,10 +244,10 @@ class BannerViewController: UIViewController {
             let bannerContainerView = UIView()
             bannerContainerView.addSubview(bannerView)
             [
-                bannerView.topAnchor.constraint(equalTo: bannerContainerView.topAnchor, constant: 12),
-                bannerView.leadingAnchor.constraint(equalTo: bannerContainerView.leadingAnchor, constant: 12),
-                bannerView.trailingAnchor.constraint(equalTo: bannerContainerView.trailingAnchor, constant: -12),
-                bannerView.bottomAnchor.constraint(equalTo: bannerContainerView.bottomAnchor, constant: -12)
+                bannerView.topAnchor.constraint(equalTo: bannerContainerView.topAnchor, constant: 4),
+                bannerView.leadingAnchor.constraint(equalTo: bannerContainerView.leadingAnchor, constant: 8),
+                bannerView.trailingAnchor.constraint(equalTo: bannerContainerView.trailingAnchor, constant: -8),
+                bannerView.bottomAnchor.constraint(equalTo: bannerContainerView.bottomAnchor, constant: -4)
             ].activate()
             viewToAdd = bannerContainerView
         }
@@ -257,26 +273,6 @@ class BannerViewController: UIViewController {
     }
 
     @objc
-    private func loadRemoteContentAndCheck() {
-        delegate?.loadRemoteContent()
-        remoteAndEmbeddedContentBanner.loadContentButton.isEnabled = false
-        if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
-            self.hideBanner(type: .remoteContent)
-        }
-        viewModel.resetLoadedHeight?()
-    }
-
-    @objc
-    private func loadEmbeddedImageAndCheck() {
-        delegate?.loadEmbeddedImage()
-        remoteAndEmbeddedContentBanner.loadImagesButton.isEnabled = false
-        if remoteAndEmbeddedContentBanner.areBothButtonDisabled {
-            self.hideBanner(type: .remoteContent)
-        }
-        viewModel.resetLoadedHeight?()
-    }
-
-    @objc
     private func loadRemoteContent() {
         delegate?.loadRemoteContent()
         self.hideBanner(type: .remoteContent)
@@ -286,7 +282,7 @@ class BannerViewController: UIViewController {
     @objc
     private func loadEmbeddedImages() {
         delegate?.loadEmbeddedImage()
-        self.hideBanner(type: .remoteContent)
+        self.hideBanner(type: .embeddedContent)
         viewModel.resetLoadedHeight?()
     }
 
@@ -303,7 +299,8 @@ class BannerViewController: UIViewController {
             return
         }
         viewModel.sendReceipt()
-        self.receiptBanner.hasSentReceipt()
+        self.receiptBanner?.updateTitleText(newTitle: LocalString._receipt_sent)
+        self.receiptBanner?.disableTapGesture()
     }
 }
 
@@ -314,7 +311,8 @@ extension BannerViewController {
         if displayedBanners[.remoteContent]?.subviews.first as? RemoteAndEmbeddedBannerView != nil {
             return
         } else if remoteContent && embeddedImage {
-            showRemoteAndEmbeddedContentBanner()
+            showRemoteContentBanner()
+            showEmbeddedImageBanner()
         } else if remoteContent {
             showRemoteContentBanner()
         } else if embeddedImage {
@@ -326,18 +324,28 @@ extension BannerViewController {
     }
 
     func showErrorBanner(error: NSError) {
-        errorBanner.setErrorTitle(error.localizedDescription)
-        addBannerView(type: .error, shouldAddContainer: true, bannerView: errorBanner)
+        let banner = CompactBannerView(appearance: .alert,
+                                       title: error.localizedDescription,
+                                       icon: Asset.icExclamationCircleFilled.image,
+                                       action: nil)
+        errorBanner = banner
+        addBannerView(type: .error, shouldAddContainer: true, bannerView: banner)
+        viewModel.recalculateCellHeight?(false)
     }
 
-    func showDecryptionBanner(target: UIViewController, action: Selector) {
+    func showDecryptionBanner(action: @escaping () -> Void) {
         guard !displayedBanners.contains(where: { $0.key == .decryptionError }) else {
             return
         }
+        let title = "\(LocalString._decryption_error): \(LocalString._decryption_of_this_message_failed)"
+        let banner = CompactBannerView(appearance: .alert,
+                                       title: title,
+                                       icon: Asset.icExclamationCircleFilled.image,
+                                       action: action)
+        decryptionErrorBanner = banner
         addBannerView(type: .decryptionError,
                       shouldAddContainer: true,
-                      bannerView: decryptionErrorBanner)
-        decryptionErrorBanner.setUpTryAgainAction(target: target, action: action)
+                      bannerView: banner)
     }
 
     func hideDecryptionBanner() {

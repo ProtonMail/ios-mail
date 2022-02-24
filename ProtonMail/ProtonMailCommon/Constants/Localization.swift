@@ -2049,6 +2049,8 @@ class LocalizedString {
     // MARK: - Banners
 
     lazy var _banner_requested_read_receipt = NSLocalizedString("The sender has requested a read receipt.", comment: "Message of a banner which is displayed when sender request a read receipt")
+    lazy var _banner_send_read_receipt = NSLocalizedString("Send read receipt.", comment: "Message of a banner which is displayed when sender request a read receipt")
+    lazy var _banner_title_send_read_receipt = NSLocalizedString("Send read receipt", comment: "Title of the banner which is displayed when sender of the message requests a read receipt")
 
     lazy var _send_receipt = NSLocalizedString("Send receipt", comment: "A button title to send read receipt")
 
@@ -2111,6 +2113,7 @@ class LocalizedString {
     lazy var _message_body_view_reload_button_title = NSLocalizedString("Reload", comment: "")
 
     lazy var _banner_remote_content_title = NSLocalizedString("This message contains remote content.", comment: "")
+    lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
     lazy var _banner_load_remote_content = NSLocalizedString("Load content", comment: "")
     lazy var _one_attachment_list_title = NSLocalizedString("attachment", comment: "")
     lazy var _attachments_list_title = NSLocalizedString("attachments", comment: "")
@@ -2120,6 +2123,7 @@ class LocalizedString {
     lazy var _remove_attachment_warning = NSLocalizedString("Do you really want to remove this file from attachments?", comment: "")
 
     lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
+    lazy var _banner_embedded_image_new_title = NSLocalizedString("Load embedded images", comment: "The title of loading embedded image banner.")
     lazy var _banner_remote_and_embedded_title  = NSLocalizedString("This message contains remote content and embedded images", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
@@ -2160,11 +2164,13 @@ class LocalizedString {
     lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
 
     lazy var _unsubscribe_banner_description = NSLocalizedString("This message is from a mailing list.", comment: "")
+    lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
 
     lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
     lazy var _autoreply_banner_description = NSLocalizedString("This message is automatically generated as a response to a previous message.", comment: "")
+    lazy var _autoreply_compact_banner_description = NSLocalizedString("This message was automatically generated", comment: "The title of auto reply banner")
 
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")

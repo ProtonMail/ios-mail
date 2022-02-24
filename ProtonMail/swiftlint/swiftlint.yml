@@ -260,6 +260,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/ConversationStateService/UpdateViewModeService.swift
   - ${PWD}/ProtonMailCommon/DataServices/LocalNotificationService.swift
   - ${PWD}/ProtonMail/Utilities/PushUpdater.swift
+  - ${PWD}/ProtonMail/Controller/Views/CompactBannerView.swift
 
 excluded:
   - ${PWD}/Pods

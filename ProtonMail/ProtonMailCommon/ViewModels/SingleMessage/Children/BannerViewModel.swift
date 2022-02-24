@@ -142,4 +142,17 @@ class BannerViewModel {
         }
         updateExpirationTime?(offset)
     }
+
+    static func calculateExpirationTitle(of offset: Int) -> String {
+        let (day, hour, min) = durationsBySecond(seconds: offset + 60)
+        if offset <= 0 {
+            return LocalString._message_expired
+        } else {
+            return String(format: LocalString._expires_in_days_hours_mins_seconds, day, hour, min)
+        }
+    }
+
+    static func durationsBySecond(seconds: Int) -> (days: Int, hours: Int, minutes: Int) {
+        return (seconds / (24 * 3_600), (seconds % (24 * 3_600)) / 3_600, seconds % 3_600 / 60)
+    }
 }

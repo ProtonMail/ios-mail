@@ -82,6 +82,7 @@ included:
   - ${PWD}/ProtonMailTests/Mocks/ViewModels/MockMailBoxViewModel.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MailboxCoordinatorTests.swift
   - ${PWD}/ProtonMailTests/Helpers/PushNotificationServiceHelperTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/BannerViewModelTests.swift
 
 excluded:
   - ${PWD}/Pods
