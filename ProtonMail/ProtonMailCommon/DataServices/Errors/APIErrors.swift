@@ -28,6 +28,11 @@ import class ProtonCore_Services.APIErrorCode
 
 extension APIErrorCode {
     static public let forcePasswordChange = 2011
+
+    // Device token
+    static public let deviceTokenIsInvalid = 11200
+    static public let deviceTokenDoesNotExist = 11211
+
 }
 
 

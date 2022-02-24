@@ -49,6 +49,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     private let sharedUserDefaults = SharedUserDefaults()
+    private let notificationCenter: NotificationCenter
 
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
     
@@ -60,8 +61,9 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
          deviceRegistrator: DeviceRegistrator = PMAPIService.unauthorized, // unregister call is unauthorized; register call is authorized one, we will inject auth credentials into the call itself
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
-         unlockProvider: UnlockProvider = UnlockManagerProvider())
-    {
+         unlockProvider: UnlockProvider = UnlockManagerProvider(),
+         notificationCenter: NotificationCenter = NotificationCenter.default
+    ) {
         self.messageService = service
         self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
@@ -70,16 +72,13 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         self.deviceTokenSaver = deviceTokenSaver
         self.unlockProvider = unlockProvider
         self.latestDeviceToken = KeychainWrapper.keychain.string(forKey: PushNotificationDecryptor.Key.deviceToken)
+        self.notificationCenter = notificationCenter
         super.init()
         
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
         }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
@@ -106,7 +105,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             }
         }
         
-        self.unreportOutdated()
+        self.unreportOutdatedSettings()
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
@@ -134,7 +133,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     }
 
     private func finalizeReporting(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
-        self.unreportOutdated()
+        self.unreportOutdatedSettings()
         let result = self.report(settingsToReport)
 
         PushNotificationService.updateSettingsIfNeeded(reportResult: result,
@@ -190,7 +189,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             return subscription.state == .notReported ? nil : subscription.settings
         }
         self.currentSubscriptions.outdate(Set(settingsToUnreport))
-        self.unreportOutdated()
+        self.unreportOutdatedSettings()
     }
     
     // register on BE and validate local values
@@ -225,9 +224,16 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     }
     
     // unregister on BE and validate local values
-    internal func unreportOutdated() {
-        self.currentSubscriptions.outdatedSettings.forEach { settings in
-            self.currentSubscriptions.removed(settings)
+    private func unreportOutdatedSettings() {
+        currentSubscriptions.outdatedSettings.forEach { setting in
+            deviceRegistrator.deviceUnregister(setting) { [weak self] _, _, error in
+                let tokenDeleted = (error == nil)
+                let tokenUnrecognized = (error?.code == APIErrorCode.deviceTokenDoesNotExist
+                                         || error?.code == APIErrorCode.deviceTokenIsInvalid)
+                if tokenDeleted || tokenUnrecognized {
+                    self?.currentSubscriptions.removed(setting)
+                }
+            }
         }
     }
     
@@ -275,7 +281,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         
         self.launchOptions = nil
 
-        user.messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+        user.messageService.fetchNotificationMessageDetail(messageid) { [weak self] (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler()
                 return
@@ -287,7 +293,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             case .some(LocalNotificationService.Categories.failedToSend.rawValue):
                 let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
                 link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
-                NotificationCenter.default.post(name: .switchView, object: link)
+                self?.notificationCenter.post(name: .switchView, object: link)
             default:
                 let coreDataService = sharedServices.get(by: CoreDataService.self)
                 let message = Message.messageForMessageID(messageid, inManagedObjectContext: coreDataService.mainContext)
@@ -297,7 +303,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
                 let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
                 link.append(.init(name: String(describing: MailboxViewController.self), value: firstValidFolder))
                 link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageid))
-                NotificationCenter.default.post(name: .switchView, object: link)
+                self?.notificationCenter.post(name: .switchView, object: link)
             }
             completionHandler()
         }
@@ -307,7 +313,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         switch userInfo["category"] as? String {
         case .some(LocalNotificationService.Categories.sessionRevoked.rawValue):
             let link = DeepLink("toAccountManager", sender: nil)
-            NotificationCenter.default.post(name: .switchView, object: link)
+            notificationCenter.post(name: .switchView, object: link)
             break
         default:
             break

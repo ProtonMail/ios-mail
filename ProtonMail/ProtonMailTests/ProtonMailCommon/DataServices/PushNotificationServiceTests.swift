@@ -28,6 +28,121 @@ import ProtonCore_Services
 
 class PushNotificationServiceTests: XCTestCase {
     typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings
+
+    private var sut: PushNotificationService!
+
+    private let mockReportedSetting1 = PushSubscriptionSettings(token: "reported_123", UID: "reported_abc")
+    private lazy var mockSubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings(settings: mockReportedSetting1, state: .reported)
+    private lazy var mockReportedPushSettings: Set<PushNotificationService.SubscriptionWithSettings> = [mockSubscriptionWithSettings]
+
+    private let mockOutdatedSetting1 = PushSubscriptionSettings(token: "outdated_456", UID: "outdated_def")
+    private let mockOutdatedSetting2 = PushSubscriptionSettings(token: "outdated_789", UID: "outdated_ghi")
+    private lazy var mockOutdatedPushSettings: Set<PushSubscriptionSettings> = [mockOutdatedSetting1, mockOutdatedSetting2]
+
+    private let storeKey = "store-key"
+
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+    }
+
+    func testReceivedNotificationSignOut_whenThereAreNoDeviceTokensToDelete() {
+        let mockDeviceRegistrator = MockDeviceRegistrator()
+        let notificationCenter = NotificationCenter()
+
+        sut = makeSUT(mockDeviceRegistrator: mockDeviceRegistrator, notificationCenter: notificationCenter)
+        notificationCenter.post(name: .didSignOut, object: nil)
+
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.isEmpty)
+    }
+
+    func testReceivedNotificationSignOut_whenThereAreDeviceTokensToDelete_requestSucceeds() {
+        let mockDeviceRegistrator = MockDeviceRegistrator()
+        let notificationCenter = NotificationCenter()
+        let mockOutdatePushStore = StoreMock()
+
+        sut = makeSUT(
+            subscriptionSaver: mockReportedSettingsSaverForSignOutTest(),
+            outdatedSaver: mockOutdatedSettingsSaverForSignOutTest(key: storeKey, keyValueProvider: mockOutdatePushStore),
+            mockDeviceRegistrator: mockDeviceRegistrator,
+            notificationCenter: notificationCenter
+        )
+        notificationCenter.post(name: .didSignOut, object: nil)
+
+        // Requests to unregister device are executed
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockOutdatedSetting1) == true)
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockOutdatedSetting2) == true)
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockReportedSetting1) == true)
+
+        // Outdated push settings are removed from the data storage
+        let outdatePushStoreValues = try! mockOutdatePushStore.decodeData(Set<PushSubscriptionSettings>.self, forKey: storeKey)
+        XCTAssert(outdatePushStoreValues.count == 0)
+    }
+
+    func testReceivedNotificationSignOut_whenThereAreDeviceTokensToDelete_requestFails_errorDeviceUnknown() {
+        let mockDeviceRegistrator = MockDeviceRegistrator()
+        mockDeviceRegistrator.deviceUnregisterSuccess = false
+        mockDeviceRegistrator.completionError = NSError(ErrorResponse(code: APIErrorCode.deviceTokenDoesNotExist, error: "", errorDescription: ""))
+        let notificationCenter = NotificationCenter()
+        let mockOutdatePushStore = StoreMock()
+
+        sut = makeSUT(
+            subscriptionSaver: mockReportedSettingsSaverForSignOutTest(),
+            outdatedSaver: mockOutdatedSettingsSaverForSignOutTest(key: storeKey, keyValueProvider: mockOutdatePushStore),
+            mockDeviceRegistrator: mockDeviceRegistrator,
+            notificationCenter: notificationCenter
+        )
+        notificationCenter.post(name: .didSignOut, object: nil)
+
+        // Outdated push settings are deleted from the data storage
+        let outdatePushStoreValues = try! mockOutdatePushStore.decodeData(Set<PushSubscriptionSettings>.self, forKey: storeKey)
+        XCTAssert(outdatePushStoreValues.count == 0)
+    }
+
+    func testReceivedNotificationSignOut_whenThereAreDeviceTokensToDelete_requestFails_deviceTokenInvalid() {
+        let mockDeviceRegistrator = MockDeviceRegistrator()
+        mockDeviceRegistrator.deviceUnregisterSuccess = false
+        mockDeviceRegistrator.completionError = NSError(ErrorResponse(code: APIErrorCode.deviceTokenIsInvalid, error: "", errorDescription: ""))
+        let notificationCenter = NotificationCenter()
+        let mockOutdatePushStore = StoreMock()
+
+        sut = makeSUT(
+            subscriptionSaver: mockReportedSettingsSaverForSignOutTest(),
+            outdatedSaver: mockOutdatedSettingsSaverForSignOutTest(key: storeKey, keyValueProvider: mockOutdatePushStore),
+            mockDeviceRegistrator: mockDeviceRegistrator,
+            notificationCenter: notificationCenter
+        )
+        notificationCenter.post(name: .didSignOut, object: nil)
+
+        // Outdated push settings are deleted from the data storage
+        let outdatePushStoreValues = try! mockOutdatePushStore.decodeData(Set<PushSubscriptionSettings>.self, forKey: storeKey)
+        XCTAssert(outdatePushStoreValues.count == 0)
+    }
+
+    func testReceivedNotificationSignOut_whenThereAreDeviceTokensToDelete_requestFailsUnknownError() {
+        let mockDeviceRegistrator = MockDeviceRegistrator()
+        mockDeviceRegistrator.deviceUnregisterSuccess = false
+        mockDeviceRegistrator.completionError = NSError(ErrorResponse(code: 400, error: "", errorDescription: ""))
+        let notificationCenter = NotificationCenter()
+        let mockOutdatePushStore = StoreMock()
+
+        sut = makeSUT(
+            subscriptionSaver: mockReportedSettingsSaverForSignOutTest(),
+            outdatedSaver: mockOutdatedSettingsSaverForSignOutTest(key: storeKey, keyValueProvider: mockOutdatePushStore),
+            mockDeviceRegistrator: mockDeviceRegistrator,
+            notificationCenter: notificationCenter
+        )
+        notificationCenter.post(name: .didSignOut, object: nil)
+
+        // Requests to unregister device are executed
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockOutdatedSetting1) == true)
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockOutdatedSetting2) == true)
+        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.contains(mockReportedSetting1) == true)
+
+        // Outdated push settings are kept in the data storage
+        let outdatePushStoreValues = try! mockOutdatePushStore.decodeData(Set<PushSubscriptionSettings>.self, forKey: storeKey)
+        XCTAssert(outdatePushStoreValues.count == 3)
+    }
     
     func testNoneToReported() {
         let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
@@ -140,7 +255,7 @@ class PushNotificationServiceTests: XCTestCase {
             return nil // no error
         },
                           registrationDone: { expect.fulfill() },
-                          unregistrationDone: { expect.fulfill() })
+                          unregistrationDone: { } )
 
         let service = PushNotificationService.init(service: nil,
                                                    subscriptionSaver: currentSubscriptionPin,
@@ -314,6 +429,41 @@ class PushNotificationServiceTests: XCTestCase {
     }
 }
 
+extension PushNotificationServiceTests {
+
+    private func makeSUT(
+        subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = InMemorySaver(),
+        outdatedSaver: Saver<Set<SubscriptionSettings>> = InMemorySaver(),
+        mockDeviceRegistrator: MockDeviceRegistrator = MockDeviceRegistrator(),
+        notificationCenter: NotificationCenter = NotificationCenter.default
+    ) -> PushNotificationService {
+        let service = PushNotificationService(
+            service: nil,
+            subscriptionSaver: subscriptionSaver,
+            encryptionKitSaver: InMemorySaver(),
+            outdatedSaver: outdatedSaver,
+            sessionIDProvider: SessionIDMock(),
+            deviceRegistrator: mockDeviceRegistrator,
+            signInProvider: SignInMock(),
+            unlockProvider: UnlockMock(),
+            notificationCenter: notificationCenter
+        )
+        return service
+    }
+
+    private func mockOutdatedSettingsSaverForSignOutTest(key: String, keyValueProvider: KeyValueStoreProvider) -> Saver<Set<PushSubscriptionSettings>> {
+        let outdatedPushSettingsSaver: Saver<Set<PushSubscriptionSettings>> = InMemorySaver(key: storeKey, store: keyValueProvider)
+        outdatedPushSettingsSaver.set(newValue: mockOutdatedPushSettings)
+        return outdatedPushSettingsSaver
+    }
+
+    private func mockReportedSettingsSaverForSignOutTest() -> Saver<Set<SubscriptionWithSettings>> {
+        let pushSettingsSaver: Saver<Set<PushNotificationService.SubscriptionWithSettings>> = InMemorySaver()
+        pushSettingsSaver.set(newValue: mockReportedPushSettings)
+        return pushSettingsSaver
+    }
+}
+
 // MARK: - Mocks
 
 extension PushNotificationServiceTests {
@@ -321,19 +471,34 @@ extension PushNotificationServiceTests {
     typealias Completion = CompletionBlock
     
     class InMemorySaver<T: Codable>: Saver<T> {
-        convenience init() {
-            self.init(key: "", store: StoreMock())
+        
+        convenience init(store: StoreMock = StoreMock()) {
+            self.init(key: "", store: store)
         }
     }
     
     class StoreMock: KeyValueStoreProvider {
-        func int(forKey key: String) -> Int? { return nil }
-        func set(_ intValue: Int, forKey key: String) { }
-        func set(_ data: Data, forKey key: String) { }
-        func data(forKey key: String) -> Data? { return nil }
-        func remove(forKey key: String) { }
-        func bool(forKey defaultName: String) -> Bool { return false }
-        func set(_ value: Bool, forKey defaultName: String) {}
+        enum Errors: Error {
+            case noData
+        }
+        private(set) var dict = [String: Any]()
+
+        func set(_ intValue: Int, forKey key: String) { dict[key] = intValue }
+        func set(_ data: Data, forKey key: String) { dict[key] = data }
+        func set(_ value: Bool, forKey defaultName: String) { dict[defaultName] = value }
+
+        func int(forKey key: String) -> Int? { return dict[key] as? Int }
+        func bool(forKey defaultName: String) -> Bool { return dict[defaultName] as? Bool ?? false }
+        func data(forKey key: String) -> Data? { return dict[key] as? Data }
+
+        func remove(forKey key: String) { dict[key] = nil }
+
+        func decodeData<D: Decodable>(_ type: D.Type, forKey key: String) throws -> D {
+            guard let data = dict[key] as? Data else {
+                throw Errors.noData
+            }
+            return try PropertyListDecoder().decode(type, from: data)
+        }
     }
     
     private struct SessionIDMock: SessionIdProvider {
@@ -354,6 +519,25 @@ extension PushNotificationServiceTests {
         func deviceUnregister(_ settings: SubscriptionSettings, completion: @escaping Completion) {
             completion(nil, nil, self.unregistration(settings))
             unregistrationDone()
+        }
+    }
+
+    private class MockDeviceRegistrator: DeviceRegistrator {
+        private(set) var deviceTokensRegisteredCalled = [PushSubscriptionSettings]()
+        private(set) var deviceTokensUnregisteredCalled = [PushSubscriptionSettings]()
+
+        var deviceRegisterSuccess: Bool = true
+        var deviceUnregisterSuccess: Bool = true
+        var completionError: NSError?
+
+        func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?) {
+            deviceTokensRegisteredCalled.append(settings)
+            completion?(nil, nil, deviceRegisterSuccess ? nil : completionError)
+        }
+
+        func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock) {
+            deviceTokensUnregisteredCalled.append(settings)
+            completion(nil, nil, deviceUnregisterSuccess ? nil : completionError)
         }
     }
     
