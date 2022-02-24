@@ -49,6 +49,7 @@ final class PushNotificationHandler {
         userCachedStatus.hasMessageFromNotification = true
 
         guard let encryptionKit = encryptionKitProvider.encryptionKit(forSession: UID) else {
+//            encryptionKitProvider.markForUnsubscribing(uid: UID)  // Uncomment when the APN decryption bug is fixed MAILIOS-2230
             SharedUserDefaults().setNeedsToRegisterAgain(for: UID)
             #if Enterprise
             bestContent.body = "no encryption kit for UID"
