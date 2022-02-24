@@ -37,7 +37,7 @@ class SingleMessageContentView: UIView {
 
     private func setUpLayout() {
         [
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 18),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -57,12 +57,10 @@ class SingleMessageContentView: UIView {
 
 }
 
-private enum SubviewsFactory {
-
+private enum SubviewsFactory {    
     static var smallSeparatorView: UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.Shade20
         return view
     }
-
 }

@@ -79,16 +79,21 @@ class ExpandedHeaderViewController: UIViewController {
             self?.contactTapped(sheetType: .sender, contact: sender)
         }
 
+        var contactRow: ExpandedHeaderRowView?
         if let toData = viewModel.toData {
-            present(viewModel: toData)
+            contactRow = present(viewModel: toData, isToContacts: true)
         }
 
         if let ccData = viewModel.ccData {
-            present(viewModel: ccData)
+            contactRow = present(viewModel: ccData)
         }
 
         if viewModel.toData == nil && viewModel.ccData == nil {
-            present(viewModel: .undisclosedRecipients)
+            contactRow = present(viewModel: .undisclosedRecipients)
+        }
+
+        if let rowView = contactRow {
+            customView.contentStackView.setCustomSpacing(18, after: rowView)
         }
 
         !viewModel.tags.isEmpty ? presentTags() : ()
@@ -127,18 +132,20 @@ class ExpandedHeaderViewController: UIViewController {
         tagsRow.iconImageView.image = Asset.mailTagIcon.image
         let tagsView = MultiRowsTagsView()
         tagsPresneter.presentTags(tags: viewModel.tags, in: tagsView)
-        tagsRow.contentStackView.addArrangedSubview(StackViewContainer(view: tagsView, top: 3, bottom: -6))
-        customView.contentStackView.addArrangedSubview(StackViewContainer(view: tagsRow, top: 8))
+        tagsRow.contentStackView.addArrangedSubview(StackViewContainer(view: tagsView))
+        customView.contentStackView.addArrangedSubview(StackViewContainer(view: tagsRow))
     }
     
-    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel) {
+    @discardableResult
+    private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, isToContacts: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()
         row.iconImageView.isHidden = true
         row.titleLabel.attributedText = viewModel.title
         row.titleLabel.lineBreakMode = .byTruncatingTail
         row.contentStackView.spacing = 5
 
-        viewModel.recipients.map { recipient in
+        viewModel.recipients.enumerated().map { dataSet -> UIStackView in
+            let recipient = dataSet.element
             let control = TextControl()
             control.label.attributedText = recipient.name
             control.label.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -153,14 +160,20 @@ class ExpandedHeaderViewController: UIViewController {
                     self?.contactTapped(sheetType: .recipient, contact: contact)
                 }
             }
-            let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .leading, spacing: 2)
+            let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center, spacing: 4)
             stack.addArrangedSubview(control)
             stack.addArrangedSubview(addressController)
+            if dataSet.offset == 0 && isToContacts {
+                // 32 reply button + 8 * 2 spacing + 32 more button
+                stack.setCustomSpacing(80, after: addressController)
+                stack.addArrangedSubview(UIView())
+            }
             return stack
         }.forEach {
             row.contentStackView.addArrangedSubview($0)
         }
         customView.contentStackView.addArrangedSubview(row)
+        return row
     }
 
     private func contactTapped(sheetType: MessageDetailsContactActionSheetType, contact: ContactVO) {

@@ -104,7 +104,7 @@ class HeaderContainerView: UIView {
         [contentContainer.widthAnchor.constraint(equalTo: widthAnchor)].activate()
 
         [
-            replyControl.topAnchor.constraint(equalTo: topAnchor, constant: 44),
+            replyControl.topAnchor.constraint(equalTo: topAnchor, constant: 28),
             replyControl.trailingAnchor.constraint(equalTo: moreControl.leadingAnchor, constant: -8),
             replyControl.widthAnchor.constraint(equalToConstant: 32),
             replyControl.heightAnchor.constraint(equalToConstant: 32),
@@ -112,7 +112,7 @@ class HeaderContainerView: UIView {
         ].activate()
 
         [
-            moreControl.topAnchor.constraint(equalTo: topAnchor, constant: 44),
+            moreControl.topAnchor.constraint(equalTo: topAnchor, constant: 28),
             moreControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             moreControl.widthAnchor.constraint(equalToConstant: 32),
             moreControl.heightAnchor.constraint(equalToConstant: 32),
