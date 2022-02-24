@@ -57,7 +57,7 @@ class ExpandedHeaderView: UIView {
 
     private func setUpLayout() {
         [
-            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
             initialsContainer.widthAnchor.constraint(equalToConstant: 28)
@@ -71,7 +71,7 @@ class ExpandedHeaderView: UIView {
 
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
-            senderNameLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor, constant: -2),
+            senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: starImageView.leadingAnchor, constant: -8)
         ].activate()
 
@@ -98,10 +98,10 @@ class ExpandedHeaderView: UIView {
         ].activate()
 
         [
-            senderEmailControl.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
+            senderEmailControl.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 4),
             senderEmailControl.leadingAnchor.constraint(equalTo: lockContainer.trailingAnchor, constant: 4),
             senderEmailControl.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -88),
-            senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -8)
+            senderEmailControl.bottomAnchor.constraint(equalTo: contentStackView.topAnchor, constant: -5)
         ].activate()
 
         [
@@ -121,7 +121,7 @@ private enum SubviewsFactory {
     static var container: UIView {
         let view = UIView()
         view.backgroundColor = ColorProvider.InteractionWeak
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 8
         view.isUserInteractionEnabled = false
         return view
     }

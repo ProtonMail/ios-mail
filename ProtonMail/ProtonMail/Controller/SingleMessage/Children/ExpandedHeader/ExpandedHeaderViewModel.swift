@@ -31,7 +31,7 @@ class ExpandedHeaderViewModel {
     }
 
     var sender: NSAttributedString {
-        var style = FontManager.Default
+        var style = FontManager.DefaultSmallStrong
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
         return senderName.apply(style: style)
     }
@@ -39,7 +39,7 @@ class ExpandedHeaderViewModel {
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
+        return "\((message.sender?.toContact()?.email ?? ""))".apply(style: style)
     }
 
     var time: NSAttributedString {
@@ -70,7 +70,7 @@ class ExpandedHeaderViewModel {
     }
 
     var ccData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(from: message.ccList.toContacts(), title: "cc")
+        createRecipientRowViewModel(from: message.ccList.toContacts(), title: "\(LocalString._general_cc_label):")
     }
 
     var originImage: UIImage? {
@@ -135,19 +135,20 @@ class ExpandedHeaderViewModel {
         guard !contacts.isEmpty else { return nil }
         let recipients = contacts.map { recipient -> ExpandedHeaderRecipientRowViewModel in
             let email = recipient.email.isEmpty ? "" : "\(recipient.email ?? "")"
-            let emailToDisplay = email.isEmpty ? "" : "<\(email)>"
+            let emailToDisplay = email.isEmpty ? "" : "\(email)"
             let name = recipient.getName(in: userContacts) ?? email
             var addressStyle = FontManager.body3RegularInteractionNorm
             addressStyle = addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
+            let nameStyle = FontManager.body3RegularNorm.addTruncatingTail(mode: .byTruncatingTail)
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
-                name: name.apply(style: FontManager.body3RegularInteractionNorm),
+                name: name.apply(style: nameStyle),
                 address: emailToDisplay.apply(style: addressStyle),
                 contact: contact
             )
         }
         return ExpandedHeaderRecipientsRowViewModel(
-            title: title.apply(style: FontManager.body3RegularWeak),
+            title: title.apply(style: FontManager.body3RegularNorm),
             recipients: recipients
         )
     }

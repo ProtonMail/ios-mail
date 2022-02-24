@@ -36,13 +36,13 @@ class NonExpandedHeaderView: UIView {
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientLabel = UILabel()
     let tagsView = SingleRowTagsView()
-    let showDetailsButton = SubviewsFactory.showDetailButton
+    let showDetailsControl = SubviewsFactory.showDetailControl
     let starImageView = SubviewsFactory.starImageView
     private(set) lazy var lockContainer = StackViewContainer(view: lockImageControl, top: 4)
 
     private let firstLineStackView = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
-    private let detailButtonStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
+    private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
     init() {
         super.init(frame: .zero)
@@ -54,11 +54,13 @@ class NonExpandedHeaderView: UIView {
     private func addSubviews() {
         addSubview(initialsContainer)
         addSubview(contentStackView)
+        addSubview(showDetailsControl)
 
         initialsContainer.addSubview(initialsLabel)
         lockImageControl.addSubview(lockImageView)
 
         contentStackView.addArrangedSubview(firstLineStackView)
+        contentStackView.setCustomSpacing(4, after: firstLineStackView)
 
         let originContainer = StackViewContainer(view: originImageView, top: 2)
 
@@ -73,24 +75,25 @@ class NonExpandedHeaderView: UIView {
         firstLineStackView.setCustomSpacing(4, after: starImageView)
 
         contentStackView.addArrangedSubview(senderAddressStack)
+        contentStackView.setCustomSpacing(4, after: senderAddressStack)
         senderAddressStack.addArrangedSubview(lockContainer)
         senderAddressStack.addArrangedSubview(senderAddressLabel)
         senderAddressStack.addArrangedSubview(UIView(frame: .zero))
         senderAddressStack.setCustomSpacing(4, after: lockContainer)
-        // 32 reply button + 8 spacing + 32 more button
-        senderAddressStack.setCustomSpacing(72, after: senderAddressLabel)
+        // 32 reply button + 8 * 2 spacing + 32 more button
+        senderAddressStack.setCustomSpacing(80, after: senderAddressLabel)
 
-        contentStackView.addArrangedSubview(StackViewContainer(view: recipientLabel, trailing: -70))
+        recipientStack.addArrangedSubview(recipientLabel)
+        recipientStack.setCustomSpacing(80, after: recipientLabel)
+        recipientStack.addArrangedSubview(UIView())
+        contentStackView.addArrangedSubview(recipientStack)
+        contentStackView.setCustomSpacing(4, after: recipientStack)
         contentStackView.addArrangedSubview(tagsView)
-
-        contentStackView.addArrangedSubview(detailButtonStack)
-        detailButtonStack.addArrangedSubview(showDetailsButton)
-        detailButtonStack.addArrangedSubview(UIView())
     }
 
     private func setUpLayout() {
         [
-            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             initialsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             initialsContainer.trailingAnchor.constraint(equalTo: firstLineStackView.leadingAnchor, constant: -10),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
@@ -104,7 +107,7 @@ class NonExpandedHeaderView: UIView {
         ].activate()
 
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ].activate()
@@ -119,8 +122,15 @@ class NonExpandedHeaderView: UIView {
             lockContainer.widthAnchor.constraint(equalToConstant: 16)
         ].activate()
 
-        [recipientLabel.heightAnchor.constraint(equalToConstant: 20)].activate()
-
+        [
+            recipientLabel.heightAnchor.constraint(equalToConstant: 20)
+        ].activate()
+        [
+            showDetailsControl.leadingAnchor.constraint(equalTo: recipientLabel.leadingAnchor),
+            showDetailsControl.topAnchor.constraint(equalTo: recipientLabel.topAnchor),
+            showDetailsControl.trailingAnchor.constraint(equalTo: recipientLabel.trailingAnchor),
+            showDetailsControl.bottomAnchor.constraint(equalTo: recipientLabel.bottomAnchor)
+        ].activate()
         senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -165,11 +175,9 @@ private enum SubviewsFactory {
         return imageView
     }
 
-    static var showDetailButton: UIButton {
-        let button = UIButton()
-        button.setTitle(LocalString._show_details, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        return button
+    static var showDetailControl: UIControl {
+        let control = UIControl()
+        return control
     }
 
     static var timeLabel: UILabel {

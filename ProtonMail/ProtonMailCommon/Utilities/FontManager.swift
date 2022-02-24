@@ -510,11 +510,11 @@ struct FontManager {
     static let body3RegularInteractionNorm: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 14)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.2
+        paragraphStyle.lineHeightMultiple = 1.07
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
         return [
-            .kern: -0.24,
+            .kern: 0.07,
             .font: font,
             .foregroundColor: ColorProvider.InteractionNorm,
             .paragraphStyle: paragraphStyle

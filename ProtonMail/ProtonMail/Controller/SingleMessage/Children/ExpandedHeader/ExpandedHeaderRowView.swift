@@ -66,7 +66,7 @@ class ExpandedHeaderRowView: UIView {
         }
 
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)

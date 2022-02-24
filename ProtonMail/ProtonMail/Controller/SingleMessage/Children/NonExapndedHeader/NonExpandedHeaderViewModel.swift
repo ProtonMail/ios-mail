@@ -28,7 +28,7 @@ class NonExpandedHeaderViewModel {
     var reloadView: (() -> Void)?
 
     var sender: NSAttributedString {
-        var style = FontManager.Default
+        var style = FontManager.DefaultSmallStrong
         style = style.addTruncatingTail()
         return senderName.apply(style: style)
     }
@@ -36,7 +36,7 @@ class NonExpandedHeaderViewModel {
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        return "<\((message.sender?.toContact()?.email ?? ""))>".apply(style: style)
+        return "\((message.sender?.toContact()?.email ?? ""))".apply(style: style)
     }
 
     var initials: NSAttributedString {

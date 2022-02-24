@@ -7,7 +7,6 @@ class ConversationExpandedMessageView: UIView {
 
     let contentContainer = SubviewsFactory.container
     let topArrowControl = SubviewsFactory.topArrowControl
-    private let arrowImageView = SubviewsFactory.arrowImageView
 
     init() {
         super.init(frame: .zero)
@@ -20,7 +19,6 @@ class ConversationExpandedMessageView: UIView {
     private func addSubviews() {
         addSubview(contentContainer)
         addSubview(topArrowControl)
-        topArrowControl.addSubview(arrowImageView)
     }
 
     private func setUpLayout() {
@@ -28,7 +26,7 @@ class ConversationExpandedMessageView: UIView {
             topArrowControl.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             topArrowControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             topArrowControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topArrowControl.heightAnchor.constraint(equalToConstant: 64)
+            topArrowControl.heightAnchor.constraint(equalToConstant: 18)
         ].activate()
 
         [
@@ -36,11 +34,6 @@ class ConversationExpandedMessageView: UIView {
             contentContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4)
-        ].activate()
-
-        [
-            arrowImageView.topAnchor.constraint(equalTo: topArrowControl.topAnchor, constant: 4),
-            arrowImageView.centerXAnchor.constraint(equalTo: topArrowControl.centerXAnchor)
         ].activate()
     }
 
@@ -62,14 +55,6 @@ class ConversationExpandedMessageView: UIView {
 }
 
 private enum SubviewsFactory {
-
-    static var arrowImageView: UIImageView {
-        let imageView = UIImageView(frame: .zero)
-        imageView.contentMode = .scaleAspectFit
-        imageView.isUserInteractionEnabled = false
-        imageView.image = Asset.collapseArrow.image
-        return imageView
-    }
 
     static var topArrowControl: UIControl {
         let control = UIControl(frame: .zero)

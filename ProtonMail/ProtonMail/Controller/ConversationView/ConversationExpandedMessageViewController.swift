@@ -19,7 +19,6 @@ class ConversationExpandedMessageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         embedChildren()
     }
 

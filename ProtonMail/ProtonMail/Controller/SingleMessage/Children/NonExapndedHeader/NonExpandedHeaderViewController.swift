@@ -65,10 +65,9 @@ class NonExpandedHeaderViewController: UIViewController {
         }
         customView.timeLabel.attributedText = viewModel.time
         customView.recipientLabel.attributedText = viewModel.recipient
-        customView.showDetailsButton.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
-        customView.showDetailsButton.addTarget(self,
-                                               action: #selector(self.clickShowDetailsButton),
-                                               for: .touchUpInside)
+        customView.showDetailsControl.addTarget(self,
+                                                action: #selector(self.clickShowDetailsButton),
+                                                for: .touchUpInside)
         customView.starImageView.isHidden = !viewModel.message.starred
         tagsPresenter.presentTags(tags: viewModel.tags, in: customView.tagsView)
         setUpLock()
