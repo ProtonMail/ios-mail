@@ -97,8 +97,8 @@ class EncryptedSearchTests: XCTestCase {
         let testMessageSecond: ESMessage = ESMessage(id: "uniqueID2", order: 2, conversationID: "", subject: "subject", unread: 1, type: 1, senderAddress: "sender", senderName: "sender", sender: ESSender(Name: "sender", Address: "address"), toList: [], ccList: [], bccList: [], time: 1637141557, size: 5, isEncrypted: 1, expirationTime: Date(), isReplied: 0, isRepliedAll: 0, isForwarded: 0, spamScore: 0, addressID: "", numAttachments: 0, flags: 0, labelIDs: ["5", "1"], externalID: "", body: "hello2", header: "", mimeType: "", userID: self.testUserID)
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage, cleanedBody: "hello", userID: self.testUserID)
         let encryptedContent2: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessageSecond, cleanedBody: "hello2", userID: self.testUserID)
-        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessage, encryptedContent: encryptedContent)
-        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessageSecond, encryptedContent: encryptedContent2)
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessage, encryptedContent: encryptedContent, completionHandler: {})
+        EncryptedSearchService.shared.addMessageKewordsToSearchIndex(userID: testUserID, message: testMessageSecond, encryptedContent: encryptedContent2, completionHandler: {})
     }
 
     private func setupCoreData() throws {
