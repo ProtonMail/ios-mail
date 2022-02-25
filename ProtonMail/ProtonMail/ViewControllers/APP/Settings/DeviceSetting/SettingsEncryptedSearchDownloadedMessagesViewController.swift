@@ -127,7 +127,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .messageHistory:
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
+                   EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                     return Key.cellHeightMessageHistoryLowStorage
                 }
             }
@@ -154,7 +155,8 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                         threeLineCell.middleLabel.isHidden = true
                     }
 
-                    if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
+                       EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                         // Create attributed string for oldest message in search index
                         let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
