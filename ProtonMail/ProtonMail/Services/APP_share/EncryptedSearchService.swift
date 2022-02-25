@@ -474,20 +474,17 @@ extension EncryptedSearchService {
             // Update UI
             self.updateUIWithIndexingStatus(userID: userID)
 
-            let stateBeforeRefreshing: EncryptedSearchIndexState = self.getESState(userID: userID)
-            // Process events that have been accumulated during indexing
-            self.processEventsAfterIndexing(userID: userID) {
-                // Set state when finished
-                self.setESState(userID: userID, indexingState: stateBeforeRefreshing)
-                self.viewModel?.indexStatus = self.getESState(userID: userID).rawValue
+            if self.getESState(userID: userID) == .complete {
+                // Process events that have been accumulated during indexing
+                self.processEventsAfterIndexing(userID: userID) {
+                    // Invalidate timer on same thread as it has been created
+                    DispatchQueue.main.async {
+                        self.indexBuildingTimer?.invalidate()
+                    }
 
-                // Invalidate timer on same thread as it has been created
-                DispatchQueue.main.async {
-                    self.indexBuildingTimer?.invalidate()
+                    // Update UI
+                    self.updateUIWithIndexingStatus(userID: userID)
                 }
-
-                // Update UI
-                self.updateUIWithIndexingStatus(userID: userID)
             }
         } else if self.getESState(userID: userID) == .paused {
             // Invalidate timer on same thread as it has been created
@@ -589,8 +586,9 @@ extension EncryptedSearchService {
             // Set state to refresh
             self.setESState(userID: userID, indexingState: .refresh)
 
-            let messageAction: MessageAction = self.eventsWhileIndexing!.removeFirst()
-            self.updateSearchIndex(action: messageAction.action!, message: messageAction.message, userID: userID, completionHandler: {})
+            if let messageAction: MessageAction = self.eventsWhileIndexing?.removeFirst() {
+                self.updateSearchIndex(action: messageAction.action!, message: messageAction.message, userID: userID, completionHandler: {})
+            }
             self.processEventsAfterIndexing(userID: userID) {
                 print("All events processed that have been accumulated during indexing...")
 
@@ -1263,8 +1261,9 @@ extension EncryptedSearchService {
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent, userID: userID)
 
         // add message to search index db
-        self.addMessageKewordsToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent)
-        completionHandler()
+        self.addMessageKewordsToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+            completionHandler()
+        }
     }
 
     func createEncryptedContent(message: ESMessage, cleanedBody: String, userID: String) -> EncryptedsearchEncryptedMessageContent? {
@@ -1348,11 +1347,28 @@ extension EncryptedSearchService {
         }
     }
 
-    func addMessageKewordsToSearchIndex(userID: String, message: ESMessage, encryptedContent: EncryptedsearchEncryptedMessageContent?) -> Void {
+    func addMessageKewordsToSearchIndex(userID: String,
+                                        message: ESMessage,
+                                        encryptedContent: EncryptedsearchEncryptedMessageContent?,
+                                        completionHandler: @escaping () -> Void) -> Void {
+        guard self.checkIfEnoughStorage(userID: userID) else {
+            print("Error when adding message to index. Not enough storage!")
+            completionHandler()
+            return
+        }
+
+        guard !self.checkIfStorageLimitIsExceeded(userID: userID) else {
+            print("Error when adding message to index. Storage limit exceeded!")
+            completionHandler()
+            return
+        }
+
         let ciphertext: String? = encryptedContent?.ciphertext
         let encryptedContentSize: Int = ciphertext?.count ?? 0
 
         _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+
+        completionHandler()
     }
 
     // MARK: - Search Functions
@@ -2093,50 +2109,36 @@ extension EncryptedSearchService {
         return senderArray
     }
 
-    private func checkIfEnoughStorage() {
-        // Check if user is known
-        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        guard let userID = usersManager.firstUser?.userInfo.userId else {
-            print("Error when checking the storage. User unknown!")
-            return
-        }
-
+    private func checkIfEnoughStorage(userID: String) -> Bool {
         // Check if indexing is in progress
         let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            return
+            return true
         }
 
         let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
-        print("Current storage space: \(remainingStorageSpace)")
         if remainingStorageSpace < (100_000_000)  {    // 100 MB
             self.pauseIndexingDueToLowStorage = true
             self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            return false
         }
+        return true
     }
 
-    private func checkIfStorageLimitIsExceeded() {
-        // Check if user is known
-        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-        let userID: String? = usersManager.firstUser?.userInfo.userId
-        guard let userID = userID else {
-            print("Error when responding to low power mode. User unknown!")
-            return
-        }
-
+    private func checkIfStorageLimitIsExceeded(userID: String) -> Bool {
         // Check if indexing is in progress
         let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
         if expectedESStates.contains(self.getESState(userID: userID)) {
-            return
+            return false
         }
 
         // Check if storage limit is unlimited
         if userCachedStatus.storageLimit == -1 {
-            return
+            return false
         }
 
         let sizeOfSearchIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
-        if sizeOfSearchIndex! > userCachedStatus.storageLimit {
+        if sizeOfSearchIndex! > (userCachedStatus.storageLimit - 2_000) {   // stop indexing 2MB before hitting the storage limit
             // Run on seperate thread to prevent the app from being unresponsive
             DispatchQueue.global(qos: .userInitiated).async {
                 // Cancle any running indexing process
@@ -2148,7 +2150,9 @@ extension EncryptedSearchService {
                     self.cleanUpAfterIndexing(userID: userID)
                 }
             }
+            return true
         }
+        return false
     }
 
     public func estimateIndexingTime() -> (estimatedTime: String?, time: Double, currentProgress: Int){
@@ -2216,8 +2220,8 @@ extension EncryptedSearchService {
             }
 
             // Check if there is still enought storage left
-            self.checkIfEnoughStorage()
-            self.checkIfStorageLimitIsExceeded()
+            _ = self.checkIfEnoughStorage(userID: userID)
+            _ = self.checkIfStorageLimitIsExceeded(userID: userID)
             if self.slowDownIndexBuilding { // Re-evaluate indexing speed while not beeing on indexing screen
                 self.slowDownIndexing(userID: userID)
             }
