@@ -71,6 +71,15 @@ extension MailboxViewModel {
         }
     }
 
+    func allowDeleteSwipe(itemID: String, indexPath: IndexPath) -> Bool {
+        let trashID = Message.Location.trash.rawValue
+        if let message = self.item(index: indexPath) {
+            return !message.getLabelIDs().contains(trashID)
+        } else if let conversation = self.itemOfConversation(index: indexPath) {
+            return !conversation.getLabelIds().contains(trashID)
+        }
+        return false
+    }
 
     func delete(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
@@ -89,30 +98,15 @@ extension MailboxViewModel {
     }
 
     func delete(conversation: Conversation, isSwipeAction: Bool) {
-        if [
-            Message.Location.draft.rawValue,
-            Message.Location.spam.rawValue,
-            Message.Location.trash.rawValue
-        ].contains(labelID) {
-            conversationService.deleteConversations(with: [conversation.conversationID], labelID: labelID) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
-        } else if self.labelID == Message.Location.trash.rawValue {
-            return
-        } else {
-            // Empty string as source if we don't find a valid folder
-            let fLabel = conversation.firstValidFolder() ?? ""
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: fLabel,
-                                     to: Message.Location.trash.rawValue,
-                                     isSwipeAction: isSwipeAction) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
+        // Empty string as source if we don't find a valid folder
+        let fLabel = conversation.firstValidFolder() ?? ""
+        conversationService.move(conversationIDs: [conversation.conversationID],
+                                 from: fLabel,
+                                 to: Message.Location.trash.rawValue,
+                                 isSwipeAction: isSwipeAction) { [weak self] result in
+            guard let self = self else { return }
+            if let _ = try? result.get() {
+                self.eventsService.fetchEvents(labelID: self.labelId)
             }
         }
     }

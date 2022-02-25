@@ -921,9 +921,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
-        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
-            return
-        }
+        guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
+              viewModel.allowDeleteSwipe(itemID: itemID, indexPath: index) else {
+                  let cell = self.tableView.cellForRow(at: index) as? SwipyCell
+                  cell?.swipeToOrigin { }
+                  return
+              }
         viewModel.delete(index: index, isSwipeAction: isSwipeAction)
         showMessageMoved(title: LocalString._inbox_swipe_to_trash_banner_title,
                          undoActionType: .trash)
