@@ -468,7 +468,7 @@ class EncryptedSearchTests: XCTestCase {
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = EncryptedSearchService.shared.createEncryptedContent(message: testMessage,
                                                                                                                              cleanedBody: "hello",
                                                                                                                              userID: self.testUserID)
-        sut(self.testUserID, testMessage, encryptedContent)
+        sut(self.testUserID, testMessage, encryptedContent, {})
 
         let numberOfEntries = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: self.testUserID)
         XCTAssertEqual(numberOfEntries, 3)
