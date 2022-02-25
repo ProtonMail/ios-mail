@@ -341,7 +341,7 @@ extension SettingsEncryptedSearchViewController {
                         spinnerCell.configCell(LocalString._settings_title_of_downloaded_messages_progress, LocalString._settings_encrypted_search_refresh_index)
                     }
                     return cell
-                } else if EncryptedSearchService.shared.getESState(userID: userID) == .complete || EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .complete {
                     // index building completely finished
                     let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                     if let threeLineCell = cell as? ThreeLinesTableViewCell {
@@ -371,7 +371,8 @@ extension SettingsEncryptedSearchViewController {
                         threeLineCell.accessoryType = .disclosureIndicator
                     }
                     return cell
-                } else if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                } else if EncryptedSearchService.shared.getESState(userID: userID) == .partial ||
+                          EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
                     let cell = tableView.dequeueReusableCell(withIdentifier: ThreeLinesTableViewCell.CellID, for: indexPath)
                     if let threeLineCell = cell as? ThreeLinesTableViewCell {
                         // If the user has 0 messages - don't show oldest message
