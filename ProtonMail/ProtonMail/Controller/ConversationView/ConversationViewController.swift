@@ -101,13 +101,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         guard !customView.tableView.visibleCells.isEmpty,
               !viewModel.isExpandedAtLaunch else { return }
 
-        guard viewModel.messagesDataSource.count > 1 else {
-            if let targetID = self.viewModel.targetID {
-                self.cellTapped(messageId: targetID)
-            }
-            return
-        }
-
         if let row = viewModel.messagesDataSource
             .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
             viewModel.setCellIsExpandedAtLaunch()

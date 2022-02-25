@@ -44,7 +44,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        cell().byIndex(index).onChild(staticText().byIndex(0)).forceTap()
+        cell().byIndex(index).onChild(staticText().byIndex(1)).forceTap()
         return MessageRobot()
     }
     
