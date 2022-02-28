@@ -50,6 +50,7 @@ struct PushSubscriptionSettings: Hashable, Codable {
     
     #if !APP_EXTENSION
     mutating func generateEncryptionKit() throws {
+        SystemLogger.log(message: #function, redactedInfo: "uid \(UID)", category: .encryption)
         let keypair = try Crypto.generateRandomKeyPair()
         self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }

@@ -34,6 +34,9 @@ final class PushNotificationHandler {
                 encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor(),
                 contentHandler: @escaping (UNNotificationContent) -> Void) {
         (bestContent, pingBody) = prepareForHandling(session: session, request: request, contentHandler: contentHandler)
+        let deviceToken = "\(pingBody?.deviceToken ?? "")"
+        SystemLogger.log(message: #function, redactedInfo: "device token \(deviceToken)", category: .pushNotification)
+
         guard let bestContent = bestContent else { return }
 
         guard let UID = bestContent.userInfo["UID"] as? String else {
