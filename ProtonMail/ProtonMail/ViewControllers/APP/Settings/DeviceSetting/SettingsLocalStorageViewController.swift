@@ -166,8 +166,13 @@ extension SettingsLocalStorageViewController {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button, for: UIControl.State.normal)
                 let cachedData: String = EncryptedSearchService.shared.getSizeOfCachedData().asString
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_cached_data_text)
-                localStorageCell.configCell(eSection.title, infoText, cachedData){
-                    EncryptedSearchService.shared.deleteCachedData(localStorageViewModel: self.viewModel)
+                localStorageCell.configCell(eSection.title, infoText, cachedData) {
+                    let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                    if let userID = usersManager.firstUser?.userInfo.userId {
+                        EncryptedSearchService.shared.deleteCachedData(userID: userID, localStorageViewModel: self.viewModel)
+                    } else {
+                        print("Error: cannot clean cached data - user unknown")
+                    }
 
                     // Update UI
                     DispatchQueue.main.async {
