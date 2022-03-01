@@ -166,6 +166,22 @@ extension EventsService {
                     }
                 }
 
+                // Force refresh encrypted search index
+                if UserInfo.isEncryptedSearchEnabled {
+                    if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) {
+                        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+                        if let userID = users.firstUser?.userInfo.userId {
+                            print("ES-REFRESH-ALL: delete index...")
+                            // delete search index
+                            EncryptedSearchService.shared.deleteSearchIndex(userID: userID) {
+                                print("ES-REFRESH-ALL: force rebuild index...")
+                                // force rebuild
+                                EncryptedSearchService.shared.forceBuildSearchIndex(userID: userID)
+                            }
+                        }
+                    }
+                }
+
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
                     self.userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { (task, eventIDResponse) in

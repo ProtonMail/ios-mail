@@ -283,7 +283,7 @@ extension SettingsEncryptedSearchViewController {
                             }
                             let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused]
                             if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                                EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                                EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
                             }
                             EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
 

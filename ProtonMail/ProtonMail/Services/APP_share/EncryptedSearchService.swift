@@ -191,7 +191,7 @@ extension EncryptedSearchService {
     // MARK: - Index Building Functions
     // This function is called after login for small accounts (<= 150 messages)
     func forceBuildSearchIndex(userID: String) {
-        print("Encrypted Search - force build index for small accounts")
+        print("Encrypted Search - force build index")
         // Update API services to current user
         self.updateUserAndAPIServices()
 
@@ -656,7 +656,7 @@ extension EncryptedSearchService {
         }
     }
 
-    func deleteSearchIndex(userID: String) {
+    func deleteSearchIndex(userID: String, completionHandler: @escaping () -> Void) {
         // Run on a seperate thread to avoid blocking the main thread
         DispatchQueue.global(qos: .userInteractive).async {
             // Update state
@@ -735,6 +735,7 @@ extension EncryptedSearchService {
             } else {
                 print("Error when deleting the search index!")
             }
+            completionHandler()
         }
     }
 
