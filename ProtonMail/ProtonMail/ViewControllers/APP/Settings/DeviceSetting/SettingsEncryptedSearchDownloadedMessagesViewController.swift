@@ -314,7 +314,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         alert.addAction(UIAlertAction(title: LocalString._encrypted_search_delete_messages_alert_button_delete, style: UIAlertAction.Style.destructive){ (action:UIAlertAction!) in
             let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
             if let userID = usersManager.firstUser?.userInfo.userId {
-                EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
                 EncryptedSearchService.shared.setESState(userID: userID, indexingState: .disabled)
             } else {
                 print("Error when deleting the search index. User unknown!")
