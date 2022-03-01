@@ -99,6 +99,7 @@ public class EncryptedSearchService {
     internal var indexingSpeed: Int = OperationQueue.defaultMaxConcurrentOperationCount // default = maximum operation count
     internal var slowDownIndexingCounter: Int = 0
     internal var addTimeOutWhenIndexingAsMemoryExceeds: Bool = false
+    internal var deletingCacheInProgress: Bool = false
 
     #if !APP_EXTENSION
     internal var searchViewModel: SearchViewModel? = nil
@@ -548,6 +549,11 @@ extension EncryptedSearchService {
     }
 
     func updateSearchIndex(action: NSFetchedResultsChangeType, message: Message?, userID: String, completionHandler: @escaping () -> Void) {
+        guard self.deletingCacheInProgress == false else {
+            completionHandler()
+            return
+        }
+
         let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .paused, .background, .backgroundStopped]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             let messageAction: MessageAction = MessageAction(action: action, message: message)
@@ -2483,13 +2489,18 @@ extension EncryptedSearchService {
     #endif
 
     #if !APP_EXTENSION
-    func deleteCachedData(localStorageViewModel: SettingsLocalStorageViewModel) {
+    func deleteCachedData(userID: String, localStorageViewModel: SettingsLocalStorageViewModel) {
         DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
+            self.updateUserAndAPIServices()
+
+            self.deletingCacheInProgress = true
+            // Clean all cached messages
+            _ = self.messageService?.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
+                self.messageService?.lastUpdatedStore.clear()
+                self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .singleMessage)
+                self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .conversation)
                 localStorageViewModel.isCachedDataDeleted.value = true
-            } catch let error {
-                print("Error when deleting cached data: \(error.localizedDescription)")
+                self.deletingCacheInProgress = false
             }
         }
     }
