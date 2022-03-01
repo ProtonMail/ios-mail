@@ -128,7 +128,7 @@ class UsersManager: Service {
                     [.downloading, .paused, .background, .backgroundStopped]
                     if expectedESStates.contains(
                         EncryptedSearchService.shared.getESState(userID: userID)) {
-                        EncryptedSearchService.shared.deleteSearchIndex(userID: userID)
+                        EncryptedSearchService.shared.deleteSearchIndex(userID: userID, completionHandler: {})
                         userCachedStatus.isEncryptedSearchOn = false
                     }
                 }
@@ -377,7 +377,7 @@ extension UsersManager {
                 [.downloading, .paused, .background, .backgroundStopped]
                 if expectedESStates.contains(
                     EncryptedSearchService.shared.getESState(userID: user.userinfo.userId)) {
-                    EncryptedSearchService.shared.deleteSearchIndex(userID: user.userinfo.userId)
+                    EncryptedSearchService.shared.deleteSearchIndex(userID: user.userinfo.userId, completionHandler: {})
                     userCachedStatus.isEncryptedSearchOn = false
                 }
             }
