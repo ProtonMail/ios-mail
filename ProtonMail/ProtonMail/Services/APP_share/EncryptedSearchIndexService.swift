@@ -346,11 +346,11 @@ extension EncryptedSearchIndexService {
         return (sizeOfIndex, size)
     }
 
-    func getOldestMessageInSearchIndex(for userID: String) -> String {
+    func getOldestMessageInSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
-            return ""
+            return (0, "")
         }
 
         let time: Expression<CLong> = self.databaseSchema.time
@@ -366,7 +366,7 @@ extension EncryptedSearchIndexService {
         } catch {
             print("Error when querying oldest message in search index: \(error)")
         }
-        return self.timeToDateString(time: oldestMessage)
+        return (Int64(oldestMessage), self.timeToDateString(time: oldestMessage))
     }
 
     func getNewestMessageInSearchIndex(for userID: String) -> Int {
