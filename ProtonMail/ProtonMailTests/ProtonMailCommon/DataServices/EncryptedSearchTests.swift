@@ -344,7 +344,7 @@ class EncryptedSearchTests: XCTestCase {
 
     func testDeleteSearchIndex() throws {
         let sut = EncryptedSearchService.shared.deleteSearchIndex
-        sut(self.testUserID)
+        sut(self.testUserID, {})
 
         // Wait for 2 seconds - as deleting the search index is async
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for n seconds")], timeout: 2.0)

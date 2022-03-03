@@ -163,6 +163,7 @@ extension EncryptedSearchService {
                     } else {
                         self.setESState(userID: userID, indexingState: .partial)
                         userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+                        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
                     }
                 }
             }
@@ -228,6 +229,7 @@ extension EncryptedSearchService {
 
                 // Reset some values
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
                 userCachedStatus.encryptedSearchProcessedMessages = 0
                 userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
                 userCachedStatus.encryptedSearchNumberOfPauses = 0
@@ -305,6 +307,7 @@ extension EncryptedSearchService {
 
                 // Reset some values
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
                 userCachedStatus.encryptedSearchProcessedMessages = 0
                 userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
                 userCachedStatus.encryptedSearchNumberOfPauses = 0
@@ -350,6 +353,7 @@ extension EncryptedSearchService {
         userCachedStatus.encryptedSearchPreviousProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
         // Update last indexed message with the newest message in search index
         userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
 
         // reset counter to stabilize indexing estimate
         self.estimateIndexTimeRounds = 0
@@ -400,6 +404,7 @@ extension EncryptedSearchService {
 
         // Update last indexed message with the newest message in search index
         userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
+        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
 
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
@@ -623,6 +628,7 @@ extension EncryptedSearchService {
                     self?.decryptAndExtractDataSingleMessage(for: messageWithDetails!, userID: userID) {
                         userCachedStatus.encryptedSearchProcessedMessages += 1
                         userCachedStatus.encryptedSearchLastMessageTimeIndexed = Int((messageWithDetails!.Time))
+                        userCachedStatus.encryptedSearchLastMessageIDIndexed = messageWithDetails!.ID
                         completionHandler()
                     }
                 } else {
@@ -668,6 +674,7 @@ extension EncryptedSearchService {
                 // update user cached status
                 userCachedStatus.encryptedSearchTotalMessages = 0
                 userCachedStatus.encryptedSearchLastMessageTimeIndexed = 0
+                userCachedStatus.encryptedSearchLastMessageIDIndexed = nil
                 userCachedStatus.encryptedSearchProcessedMessages = 0
                 userCachedStatus.encryptedSearchPreviousProcessedMessages = 0
             }
@@ -913,8 +920,8 @@ extension EncryptedSearchService {
         }
     }
 
-    public func fetchMessages(userID: String, byLabel labelID: String, time: Int, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
-        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: self.pageSize)
+    public func fetchMessages(userID: String, byLabel labelID: String, time: Int, lastMessageID: String?, completionHandler: ((Error?, [ESMessage]?) -> Void)?) -> Void {
+        let request = FetchMessagesByLabel(labelID: labelID, endTime: time, isUnread: false, pageSize: self.pageSize, endID: lastMessageID)
         self.apiService?.GET(request, priority: "u=7"){ [weak self] (task, responseDict, error) in
             if error != nil {
                 DispatchQueue.main.async {
@@ -1383,7 +1390,10 @@ extension EncryptedSearchService {
         let ciphertext: String? = encryptedContent?.ciphertext
         let encryptedContentSize: Int = ciphertext?.count ?? 0
 
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+        let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+        if rowID == -1 {
+            print("Error: message \(message.ID) couldn't be inserted to search index.")
+        }
 
         completionHandler()
     }

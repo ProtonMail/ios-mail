@@ -114,6 +114,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         // Encrypted search user dependent variables
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
         static let encryptedSearchLastMessageTimeIndexed = "encrypted_search_last_message_time_indexed"
+        static let encryptedSearchLastMessageIDIndexed = "encrypted_search_last_message_id_indexed"
         static let encryptedSearchProcessedMessages = "encrypted_search_processed_messages"
         static let encryptedSearchPreviousProcessedMessages = "encrypted_search_previous_processed_messages"
 
@@ -963,6 +964,36 @@ extension UserCachedStatus {
                 key = userID + "_" + Key.encryptedSearchLastMessageTimeIndexed
             } else {
                 key = Key.encryptedSearchLastMessageTimeIndexed
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    var encryptedSearchLastMessageIDIndexed: String? {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchLastMessageIDIndexed
+            } else {
+                key = Key.encryptedSearchLastMessageIDIndexed
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return nil
+            }
+            return getShared().string(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchLastMessageIDIndexed
+            } else {
+                key = Key.encryptedSearchLastMessageIDIndexed
             }
             #endif
             setValue(newValue, forKey: key)
