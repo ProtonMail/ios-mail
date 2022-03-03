@@ -189,6 +189,7 @@ class DataStorageImpl: ServicePlanDataStorage {
     var paymentsBackendStatusAcceptsIAP: Bool = false
     var credits: Credits?
     var currentSubscription: Subscription?
+    var paymentMethods: [PaymentMethod]?
 }
 
 protocol PaymentErrorCapable: ErrorCapable {

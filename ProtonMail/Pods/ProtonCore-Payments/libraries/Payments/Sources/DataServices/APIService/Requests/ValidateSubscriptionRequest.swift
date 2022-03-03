@@ -54,7 +54,7 @@ final class ValidateSubscriptionResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self)
+        let (result, validation) = decodeResponse(response as Any, to: ValidateSubscription.self, errorToReturn: .validateSubscriptionDecode)
         self.validateSubscription = validation
         return result
     }

@@ -48,6 +48,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var signupAccountType: SignupAccountType!
     var showOtherAccountButton = true
     var showCloseButton = true
+    var minimumAccountType: AccountType?
     var domain: String? { didSet { configureDomainSuffix() } }
 
     // MARK: Outlets
@@ -189,7 +190,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         if signupAccountType == .internal {
             checkUsername(userName: self.currentlyUsedTextField.value)
         } else {
-            if ProtonCore_HumanVerification.TemporaryHacks.isV3 {
+            if viewModel.humanVerificationVersion == .v3 {
                 checkEmail(email: self.currentlyUsedTextField.value)
             } else {
                 requestValidationToken(email: self.currentlyUsedTextField.value)
@@ -228,6 +229,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureDomainSuffix() {
+        guard minimumAccountType != .username else { return }
         internalNameTextField.suffix = domain ?? "@\(viewModel.signUpDomain)"
     }
     

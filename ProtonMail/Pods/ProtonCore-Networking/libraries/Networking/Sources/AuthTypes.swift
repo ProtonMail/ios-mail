@@ -103,7 +103,7 @@ public final class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = salt
     }
 
-    public func udpate (password: String) {
+    public func udpate(password: String) {
         self.mailboxpassword = password
     }
 
@@ -191,6 +191,17 @@ extension AuthCredential {
                   userID: credential.userID,
                   privateKey: nil,
                   passwordKeySalt: nil)
+    }
+    
+    public func updatedKeepingKeyAndPasswordDataIntact(credential: Credential) -> AuthCredential {
+        self.sessionID = credential.UID
+        self.accessToken = credential.accessToken
+        self.refreshToken = credential.refreshToken
+        self.expiration = credential.expiration
+        self.userName = credential.userName
+        self.userID = credential.userID
+        // we deliberately not update nor nil out privateKey, passwordKeySalt and mailboxpassword here
+        return self
     }
 }
 

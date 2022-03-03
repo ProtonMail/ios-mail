@@ -32,8 +32,7 @@ final class PlanDetailView: UIView {
     @IBOutlet var mainView: UIView!
     @IBOutlet weak var iconImageView: UIImageView! {
         didSet {
-            let image = UIImage(named: "ic-check", in: PaymentsUI.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
-            iconImageView.image = image
+            iconImageView.image = IconProvider.checkmark
             iconImageView?.tintColor = ColorProvider.InteractionNorm
         }
     }
@@ -66,7 +65,10 @@ final class PlanDetailView: UIView {
         detailLabel.textColor = ColorProvider.TextNorm
     }
     
-    func configure(text: String) {
+    func configure(icon: UIImage? = nil, text: String) {
+        if let icon = icon {
+            iconImageView.image = icon
+        }
         detailLabel.text = text
     }
     

@@ -49,7 +49,7 @@ public extension LoginData {
         case .credential:
             return .credential(credential)
         case .userData(let userData):
-            return .userData(UserData(credential: AuthCredential(credential),
+            return .userData(UserData(credential: userData.credential.updatedKeepingKeyAndPasswordDataIntact(credential: credential),
                                       user: userData.user,
                                       salts: userData.salts,
                                       passphrases: userData.passphrases,

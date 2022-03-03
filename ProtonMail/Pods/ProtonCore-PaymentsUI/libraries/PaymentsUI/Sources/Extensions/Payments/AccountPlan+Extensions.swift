@@ -27,13 +27,22 @@ extension InAppPurchasePlan {
         guard let storeKitProductId = storeKitProductId,
               let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
         else { return nil }
-
+        return InAppPurchasePlan.formatPlanPrice(price: price.0, locale: price.1)
+    }
+    
+    func planLocale(from storeKitManager: StoreKitManagerProtocol) -> Locale? {
+        guard let storeKitProductId = storeKitProductId,
+              let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
+        else { return nil }
+        return price.1
+    }
+    
+    static func formatPlanPrice(price: NSDecimalNumber, locale: Locale, maximumFractionDigits: Int = 2) -> String? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.locale = price.1
-        formatter.maximumFractionDigits = 2
-
-        let total = price.0 as Decimal
+        formatter.locale = locale
+        formatter.maximumFractionDigits = maximumFractionDigits
+        let total = price as Decimal
         let priceString = formatter.string(from: total as NSNumber) ?? ""
         return priceString
     }

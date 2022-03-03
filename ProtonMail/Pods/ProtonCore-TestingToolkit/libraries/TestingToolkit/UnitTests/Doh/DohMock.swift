@@ -21,6 +21,7 @@
 
 import XCTest
 import ProtonCore_Doh
+import ProtonCore_Utilities
 
 public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
@@ -44,11 +45,20 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.clearCache) public var clearCacheStub
     public func clearCache() { clearCacheStub() }
     
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
     @FuncStub(DohInterfaceMock.clearAll) public var clearAllStub
+    @available(*, deprecated, message: "This is a deprecated API")
     public func clearAll() { clearAllStub() }
 
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
     @FuncStub(DohInterfaceMock.codeCheck, initialReturn: .crash) public var codeCheckStub
+    @available(*, deprecated, message: "This is a deprecated API")
     public func codeCheck(code: Int) -> Bool { codeCheckStub(code) }
+    
+    @FuncStub(DohInterfaceMock.errorIndicatesDoHSolvableProblem, initialReturn: .crash) public var errorIndicatesDoHSolvableProblemStub
+    public func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool {
+        errorIndicatesDoHSolvableProblemStub(error)
+    }
 
     @PropertyStub(\DohInterfaceMock.debugBlock, initialGet: .crash) public var debugBlockStub
     public var debugBlock: [String: Bool] { debugBlockStub() }
@@ -80,10 +90,14 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.getAccountHeaders, initialReturn: .crash) public var getAccountHeadersStub
     public func getAccountHeaders() -> [String: String] { getAccountHeadersStub() }
 
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
     @FuncStub(DohInterfaceMock.getHostUrl, initialReturn: .crash) public var getHostUrlStub
+    @available(*, deprecated, message: "This is a deprecated API")
     public func getHostUrl() -> String { getHostUrlStub() }
 
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
     @FuncStub(DohInterfaceMock.handleError, initialReturn: .crash) public var handleErrorStub
+    @available(*, deprecated, message: "This is a deprecated API")
     public func handleError(host: String, error: Error?) -> Bool { handleErrorStub(host, error) }
 
     @PropertyStub(\DohInterfaceMock.signupDomain, initialGet: .crash) public var signupDomainStub
@@ -101,17 +115,30 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
     public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }
     
-    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorStub
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorStub
     public func handleErrorResolvingProxyDomainIfNeeded(
-        host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
+        host: String,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
     ) {
-        handleErrorResolvingProxyDomainIfNeededWithExecutorStub(host, error, callCompletionBlockOn, completion)
+        handleErrorResolvingProxyDomainIfNeededWithExecutorStub(host, error, callCompletionBlockUsing, completion)
+    }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    public func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void) {
+        handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub(host, error, callCompletionBlockOn, completion)
     }
 }
 
 public final class DohMock: DoH, ServerConfig {
 
     public init() {}
+    
+    @FuncStub(DohMock.getCurrentlyUsedHostUrl, initialReturn: Dummy.url) public var getCurrentlyUsedHostUrlStub
+    override public func getCurrentlyUsedHostUrl() -> String { getCurrentlyUsedHostUrlStub() }
 
     @PropertyStub(\DohInterfaceMock.defaultHost, initialGet: Dummy.url) public var defaultHostStub
     public var defaultHost: String { defaultHostStub() }

@@ -267,15 +267,6 @@ open class UiElement {
         uiElement()!.doubleTap()
         return self
     }
-    
-    @discardableResult
-    public func multiTap(_ count: Int) -> UiElement {
-        let element = uiElement()!
-        for _ in 0...count {
-            element.tap()
-        }
-        return self
-    }
 
     @discardableResult
     public func forceTap() -> UiElement {
@@ -285,7 +276,7 @@ open class UiElement {
 
     @discardableResult
     public func longPress(_ timeInterval: TimeInterval = 2) -> UiElement {
-        uiElement()!.coordinate(withNormalizedOffset: .zero).press(forDuration: timeInterval)
+        uiElement()!.press(forDuration: timeInterval)
         return self
     }
 
@@ -377,7 +368,7 @@ open class UiElement {
         uiElement()!.typeText(text)
         return self
     }
-    
+
     @discardableResult
     public func forceKeyboardFocus(_ retries: Int = 5) -> UiElement {
         var count = 0
@@ -457,7 +448,6 @@ open class UiElement {
 
     @discardableResult
     public func checkDoesNotExist() -> UiElement {
-        shouldWaitForExistance = false
         XCTAssertFalse(uiElement()!.exists, "Expected element \(uiElement().debugDescription) to not exist but it exists.", file: #file, line: #line)
         return self
     }
@@ -561,7 +551,7 @@ open class UiElement {
         Wait(time: time).forElementToBeEnabled(uiElement()!)
         return self
     }
-    
+
     @discardableResult
     public func waitForFocused(time: TimeInterval = 10.0) -> UiElement {
         Wait(time: time).forHavingKeyboardFocus(uiElement()!)
@@ -579,6 +569,7 @@ open class UiElement {
      * The core function responsible for XCUIElement location logic.
      */
     // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     internal func uiElement() -> XCUIElement? {
         /// Return element instance if it was already located.
         if locatedElement != nil {
@@ -655,7 +646,6 @@ open class UiElement {
                 locatedElement = uiElementQuery!.element
             }
         }
-        
         if childElement != nil {
             /// Return child element based on UiElement instance provided.
             locatedElement = locatedElement?.child(childElement!)
@@ -670,6 +660,8 @@ open class UiElement {
             return locatedElement!
         }
     }
+    // swiftlint:enable cyclomatic_complexity
+    // swiftlint:enable function_body_length
 
     private var isVisible: Bool {
         guard uiElement()!.exists && !uiElement()!.frame.isEmpty else { return false }

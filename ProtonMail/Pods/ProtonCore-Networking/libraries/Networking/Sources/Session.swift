@@ -63,6 +63,7 @@ public func handleAuthenticationChallenge(
 }
 
 public protocol Session {
+    
     func generate(with method: HTTPMethod, urlString: String, parameters: Any?, timeout: TimeInterval?) throws -> SessionRequest
     
     func request(with request: SessionRequest, completion: @escaping ResponseCompletion) throws
@@ -132,12 +133,30 @@ extension Session {
                         signature: signature,
                         completion: completion, uploadProgress: nil)
     }
-    
 }
 
-public enum SessionFactory {
+public protocol SessionFactoryInterface {
+    func createSessionInstance(url apiHostUrl: String) -> Session
+    func createSessionRequest(parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval) -> SessionRequest
+}
+
+public final class SessionFactory: SessionFactoryInterface {
+    
+    public static let instance = SessionFactory()
+    
+    private init() {}
     
     public static func createSessionInstance(url apiHostUrl: String) -> Session {
+        instance.createSessionInstance(url: apiHostUrl)
+    }
+    
+    public static func createSessionRequest(
+        parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval
+    ) -> SessionRequest {
+        instance.createSessionRequest(parameters: parameters, urlString: urlString, method: method, timeout: timeout)
+    }
+    
+    public func createSessionInstance(url apiHostUrl: String) -> Session {
         #if canImport(Alamofire)
         AlamofireSession()
         #elseif canImport(AFNetworking)
@@ -145,7 +164,7 @@ public enum SessionFactory {
         #endif
     }
     
-    public static func createSessionRequest(
+    public func createSessionRequest(
         parameters: Any?, urlString: String, method: HTTPMethod, timeout: TimeInterval
     ) -> SessionRequest {
         #if canImport(Alamofire)

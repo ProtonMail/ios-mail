@@ -32,6 +32,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     var defaultPlanDetails: Plan? { get }
     var availablePlansDetails: [Plan] { get }
     var currentSubscription: Subscription? { get set }
+    var paymentMethods: [PaymentMethod]? { get set }
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
@@ -61,6 +62,7 @@ public protocol ServicePlanDataStorage: AnyObject {
     var defaultPlanDetails: Plan? { get set }
     var currentSubscription: Subscription? { get set }
     var credits: Credits? { get set }
+    var paymentMethods: [PaymentMethod]? { get set }
     var paymentsBackendStatusAcceptsIAP: Bool { get set }
     
     /// Informs about the result of the payments backend status call /payments/v4/status concerning IAP acceptance
@@ -86,11 +88,19 @@ public struct Credits {
     }
 }
 
+public struct PaymentMethod: Codable {
+    
+    // we don't use any properties so it's ok to leave it as simple as possible
+    public let type: String
+    
+}
+
 public protocol CurrentSubscriptionChangeDelegate: AnyObject {
     func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?)
 }
 
 final class ServicePlanDataService: ServicePlanDataServiceProtocol {
+    
     public let service: APIService
 
     private let paymentsApi: PaymentsApiProtocol
@@ -132,6 +142,10 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public var currentSubscription: Subscription? {
         willSet { localStorage.currentSubscription = newValue }
         didSet { currentSubscriptionChangeDelegate?.onCurrentSubscriptionChange(old: oldValue, new: currentSubscription) }
+    }
+    
+    public var paymentMethods: [PaymentMethod]? {
+        willSet { localStorage.paymentMethods = newValue }
     }
 
     public var credits: Credits? {
@@ -176,19 +190,19 @@ extension ServicePlanDataService {
         
         // get API atatus
         let statusApi = self.paymentsApi.statusRequest(api: self.service)
-        let statusRes = try statusApi.awaitResponse()
+        let statusRes = try statusApi.awaitResponse(responseObject: StatusResponse())
         self.paymentsBackendStatusAcceptsIAP = statusRes.isAvailable ?? false
 
         // get service plans
         let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
-        let servicePlanRes = try servicePlanApi.awaitResponse()
+        let servicePlanRes = try servicePlanApi.awaitResponse(responseObject: PlansResponse())
         self.availablePlansDetails = servicePlanRes.availableServicePlans?
-            .filter { InAppPurchasePlan.nameIsPresentInIAPIdentifierList(name: $0.name, identifiers: self.listOfIAPIdentifiers()) }
+            .filter { InAppPurchasePlan.nameAndCycleArePresentInIAPIdentifierList(name: $0.name, cycle: $0.cycle, identifiers: self.listOfIAPIdentifiers()) }
             .sorted { $0.pricing(for: String(12)) ?? 0 > $1.pricing(for: String(12)) ?? 0 }
             ?? []
 
         let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
-        let defaultServicePlanRes = try defaultServicePlanApi.awaitResponse()
+        let defaultServicePlanRes = try defaultServicePlanApi.awaitResponse(responseObject: DefaultPlanResponse())
         self.defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
     }
 
@@ -236,24 +250,33 @@ extension ServicePlanDataService {
             if updateCredits {
                 try self.updateCredits()
             }
+            
+            // we want payments module to work properly even for clients that cannot check the payment methods
+            let methodsAPI = self.paymentsApi.methodsRequest(api: self.service)
+            let methodsRes = try? methodsAPI.awaitResponse(responseObject: MethodResponse())
+            self.paymentMethods = methodsRes?.methods
+            
             let subscriptionApi = self.paymentsApi.getSubscriptionRequest(api: self.service)
-            let subscriptionRes = try subscriptionApi.awaitResponse()
+            let subscriptionRes = try subscriptionApi.awaitResponse(responseObject: GetSubscriptionResponse())
             self.currentSubscription = subscriptionRes.subscription
 
             let organizationsApi = self.paymentsApi.organizationsRequest(api: self.service)
-            let organizationsRes = try organizationsApi.awaitResponse()
+            let organizationsRes = try organizationsApi.awaitResponse(responseObject: OrganizationsResponse())
             self.currentSubscription?.organization = organizationsRes.organization
 
         } catch {
             if error.isNoSubscriptionError {
                 self.currentSubscription = .userHasNoPlanAKAFreePlan
                 self.credits = nil
+                self.paymentMethods = nil
             } else if error.accessTokenDoesNotHaveSufficientScopeToAccessResource {
                 self.currentSubscription = .userHasUnsufficientScopeToFetchSubscription
                 self.credits = nil
+                self.paymentMethods = nil
             } else {
                 self.currentSubscription = nil
                 self.credits = nil
+                self.paymentMethods = nil
                 throw error
             }
         }

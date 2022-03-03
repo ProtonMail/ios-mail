@@ -99,7 +99,8 @@ extension LoginService {
     private func fetchEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
         addresses: [Address], user: User, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void
     ) {
-        guard user.keys.isEmpty == false else {
+        let intAddresses = !addresses.filter({ $0.type != .externalAddress }).isEmpty
+        if user.keys.isEmpty == true, (intAddresses || addresses.isEmpty) {
             // automatic account migration needed: keys must be generated
             setupAccountKeysAndCreateInternalAddressIfNeeded(
                 user: user, addresses: addresses, mailboxPassword: mailboxPassword
@@ -133,9 +134,12 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .external:
-            fetchEncryptionDataEnsuringAllAddressesHaveKeys(
-                addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion
-            )
+            if addresses.filter({ $0.type != .externalAddress }).isEmpty {
+                completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: self.authManager.scopes ?? [])))))
+                return
+            } else {
+                fetchEncryptionDataEnsuringAllAddressesHaveKeys(addresses: addresses, user: user, mailboxPassword: mailboxPassword, completion: completion)
+            }
 
         case .internal:
             fetchEncryptionDataForInternalAccountRequirementPerformingAutomaticAccountMigrationIfNeeded(
@@ -305,7 +309,7 @@ extension LoginService {
             return
         }
 
-        if let address = addresses.first(where: { $0.hasKeys == 0 || $0.keys.isEmpty }) {
+        if let address = addresses.first(where: { $0.type != .externalAddress && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }

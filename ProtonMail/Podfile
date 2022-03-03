@@ -14,13 +14,13 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.6.3'
+  '3.9.0'
 end
 
 def pm_shared_pods
   pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-SRP', proton_core_version
+  pod 'ProtonCore-Hash', proton_core_version
   pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
   pod 'ProtonCore-Services', proton_core_version, :subspecs => ['AwaitKit+PromiseKit', 'Alamofire']

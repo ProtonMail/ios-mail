@@ -58,7 +58,8 @@ public final class PaymentsUI {
         self.coordinator = PaymentsUICoordinator(planService: payments.planService,
                                                  storeKitManager: payments.storeKitManager,
                                                  purchaseManager: payments.purchaseManager,
-                                                 clientApp: clientApp, shownPlanNames: shownPlanNames,
+                                                 clientApp: clientApp,
+                                                 shownPlanNames: shownPlanNames,
                                                  alertManager: paymentsUIAlertManager)
     }
     

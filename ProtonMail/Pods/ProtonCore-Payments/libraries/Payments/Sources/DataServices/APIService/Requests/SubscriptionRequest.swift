@@ -97,7 +97,7 @@ final class GetSubscriptionResponse: Response {
         let amount = response["Amount"] as? Int
         let currency = response["Currency"] as? String
         guard let plansResponse = response["Plans"] else { return false }
-        let (plansParsed, plans) = decodeResponse(plansResponse, to: [Plan].self)
+        let (plansParsed, plans) = decodeResponse(plansResponse, to: [Plan].self, errorToReturn: .subscriptionDecode)
         guard plansParsed else { return false }
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))

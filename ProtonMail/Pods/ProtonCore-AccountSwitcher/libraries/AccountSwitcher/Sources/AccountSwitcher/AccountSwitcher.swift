@@ -179,6 +179,7 @@ public final class AccountSwitcher: UIView, AccessibleView {
         self.manageView.backgroundColor = color
         self.manageAccountLabel.backgroundColor = color
         self.manageAccountLabel.textColor = ColorProvider.TextNorm
+        self.manageAccountIcon.image = IconProvider.cogWheel
         self.manageAccountIcon.backgroundColor = color
         self.manageAccountIcon.tintColor = ColorProvider.IconNorm
     }

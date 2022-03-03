@@ -36,18 +36,39 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     var coordinator: HumanCheckMenuCoordinator?
     private var coordinatorV3: HumanCheckV3Coordinator?
     private let clientApp: ClientApp
+    
+    public let version: HumanVerificationVersion
+    
+    @available(*, deprecated, message: "Please use the initializer that specifies the human verification version")
+    public convenience init(apiService: APIService,
+                            supportURL: URL? = nil,
+                            viewController: UIViewController? = nil,
+                            nonModalUrls: [URL]? = nil,
+                            clientApp: ClientApp,
+                            responseDelegate: HumanVerifyResponseDelegate? = nil,
+                            paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
+        self.init(apiService: apiService, supportURL: supportURL, viewController: viewController, nonModalUrls: nonModalUrls, clientApp: clientApp, versionToBeUsed: .v2, responseDelegate: responseDelegate, paymentDelegate: paymentDelegate)
+    }
 
-    public init(apiService: APIService, supportURL: URL? = nil, viewController: UIViewController? = nil, nonModalUrls: [URL]? = nil, clientApp: ClientApp, responseDelegate: HumanVerifyResponseDelegate? = nil, paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
+    public init(apiService: APIService,
+                supportURL: URL? = nil,
+                viewController: UIViewController? = nil,
+                nonModalUrls: [URL]? = nil,
+                clientApp: ClientApp,
+                versionToBeUsed: HumanVerificationVersion,
+                responseDelegate: HumanVerifyResponseDelegate? = nil,
+                paymentDelegate: HumanVerifyPaymentDelegate? = nil) {
         self.apiService = apiService
         self.supportURL = supportURL ?? HVCommon.defaultSupportURL(clientApp: clientApp)
         self.rootViewController = viewController
         self.nonModalUrls = nonModalUrls
         self.clientApp = clientApp
+        self.version = versionToBeUsed
         self.responseDelegate = responseDelegate
         self.paymentDelegate = paymentDelegate
     }
 
-    public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
+    public func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, error: NSError, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
         
         // check if payment token exists
         if let paymentToken = paymentDelegate?.paymentToken {
@@ -74,13 +95,14 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     }
     
     private func startMenuCoordinator(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        if ProtonCore_HumanVerification.TemporaryHacks.isV3 {
-            prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
-        } else {
+        switch version {
+        case .v2:
             // filter only methods allowed by HV v2
             var parameters = parameters
             parameters.methods = parameters.methods.compactMap { VerifyMethod(predefinedString: $0.method) }
             prepareCoordinator(parameters: parameters)
+        case .v3:
+            prepareV3Coordinator(parameters: parameters, currentURL: currentURL)
         }
         responseDelegate?.onHumanVerifyStart()
         verificationCompletion = completion

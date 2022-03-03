@@ -126,6 +126,8 @@ extension AppDelegate: APIServiceDelegate {
     }
 
     func onDohTroubleshot() { }
+
+    var additionalHeaders: [String: String]? { nil }
 }
 
 extension AppDelegate: TrustKitUIDelegate {

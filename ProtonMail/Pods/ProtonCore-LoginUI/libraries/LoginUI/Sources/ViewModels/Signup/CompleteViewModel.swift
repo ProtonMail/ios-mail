@@ -22,6 +22,7 @@
 import Foundation
 import ProtonCore_CoreTranslation
 import ProtonCore_Login
+import ProtonCore_UIFoundations
 
 enum DisplayProgressStep: Hashable {
     case createAccount
@@ -223,7 +224,9 @@ extension DisplayProgressState {
     var image: UIImage? {
         switch self {
         case .initial, .waiting: return nil
-        case .done: return UIImage(named: "ic-check", in: LoginAndSignup.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        case .done:
+            let image: UIImage = IconProvider.checkmark
+            return image.withRenderingMode(.alwaysTemplate)
         }
     }
 }

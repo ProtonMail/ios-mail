@@ -66,6 +66,29 @@ extension ProtonColor {
         UIColor(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)!
     }
 }
+
+public extension UIColor {
+    
+    internal var hsba: HSBA {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return HSBA(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    }
+    
+    var computedStrongVariant: UIColor {
+        let hsbaStrong = computeStrongVariant(from: hsba)
+        return UIColor(hue: hsbaStrong.hue, saturation: hsbaStrong.saturation, brightness: hsbaStrong.brightness, alpha: hsbaStrong.alpha)
+    }
+    
+    var computedIntenseVariant: UIColor {
+        let hsbaIntense = computeIntenseVariant(from: hsba)
+        return UIColor(hue: hsbaIntense.hue, saturation: hsbaIntense.saturation, brightness: hsbaIntense.brightness, alpha: hsbaIntense.alpha)
+    }
+}
+
 #endif
 
 #if canImport(AppKit)
@@ -94,6 +117,28 @@ extension ProtonColor {
         NSColor(named: name, bundle: PMUIFoundations.bundle)!
     }
 }
+
+public extension NSColor {
+    
+    private var hsba: HSBA {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return HSBA(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    }
+    
+    var computedStrongVariant: NSColor {
+        let hsbaStrong = computeStrongVariant(from: hsba)
+        return NSColor(hue: hsbaStrong.hue, saturation: hsbaStrong.saturation, brightness: hsbaStrong.brightness, alpha: hsbaStrong.alpha)
+    }
+    
+    var computedIntenseVariant: NSColor {
+        let hsbaIntense = computeIntenseVariant(from: hsba)
+        return NSColor(hue: hsbaIntense.hue, saturation: hsbaIntense.saturation, brightness: hsbaIntense.brightness, alpha: hsbaIntense.alpha)
+    }
+}
 #endif
 
 #if canImport(SwiftUI)
@@ -110,6 +155,23 @@ extension ColorProviderBase {
 extension ProtonColor {
     var color: Color { Color(name, bundle: PMUIFoundations.bundle) }
 }
+
+#if canImport(UIKit)
+private typealias NativeColor = UIColor
+#elseif canImport(AppKit)
+private typealias NativeColor = NSColor
+#endif
+
+@available(iOS 14.0, OSX 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension Color {
+    var computedStrongVariant: Color {
+        Color(NativeColor(self).computedStrongVariant)
+    }
+
+    var computedIntenseVariant: Color {
+        Color(NativeColor(self).computedIntenseVariant)
+    }
+}
 #endif
 
 public let ColorProvider = ColorProviderBase()
@@ -119,3 +181,56 @@ public let ColorManager = ColorProviderBase()
 
 @available(*, deprecated, renamed: "ColorProvider")
 public let UIColorManager = ColorProviderBase()
+
+struct HSBA: Equatable { let hue: CGFloat; let saturation: CGFloat; let brightness: CGFloat; let alpha: CGFloat }
+struct HSLA: Equatable { let hue: CGFloat; let saturation: CGFloat; let lightness: CGFloat; let alpha: CGFloat }
+
+func hsbaToHSLA(hsba: HSBA) -> HSLA {
+    // algorighm taken from https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_HSL
+    let lightnessHSLA = hsba.brightness * (1.0 - hsba.saturation / 2)
+    let saturationHSLA: CGFloat
+    if lightnessHSLA == 0.0 || lightnessHSLA == 1.0 {
+        saturationHSLA = 0.0
+    } else {
+        saturationHSLA = (hsba.brightness - lightnessHSLA) / min(lightnessHSLA, 1.0 - lightnessHSLA)
+    }
+    return HSLA(hue: hsba.hue, saturation: saturationHSLA, lightness: lightnessHSLA, alpha: hsba.alpha)
+}
+
+func computeStrongVariant(from hsla: HSLA) -> HSLA {
+    let hueStrong = max(hsla.hue, 0.0)
+    let lightnessStrong = max(hsla.lightness - 0.1, 0.0)
+    let saturationStrong = max(hsla.saturation - 0.05, 0.0)
+    return HSLA(hue: hueStrong, saturation: saturationStrong, lightness: lightnessStrong, alpha: hsla.alpha)
+}
+
+func computeStrongVariant(from hsba: HSBA) -> HSBA {
+    let hsla = hsbaToHSLA(hsba: hsba)
+    let hslaStrong = computeStrongVariant(from: hsla)
+    return hslaToHSBA(hsla: hslaStrong)
+}
+
+func computeIntenseVariant(from hsla: HSLA) -> HSLA {
+    let hueStrong = max(hsla.hue, 0.0)
+    let lightnessStrong = max(hsla.lightness - 0.17, 0.0)
+    let saturationStrong = max(hsla.saturation - 0.05, 0.0)
+    return HSLA(hue: hueStrong, saturation: saturationStrong, lightness: lightnessStrong, alpha: hsla.alpha)
+}
+
+func computeIntenseVariant(from hsba: HSBA) -> HSBA {
+    let hsla = hsbaToHSLA(hsba: hsba)
+    let hslaStrong = computeIntenseVariant(from: hsla)
+    return hslaToHSBA(hsla: hslaStrong)
+}
+
+func hslaToHSBA(hsla: HSLA) -> HSBA {
+    // algorighm taken from https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_HSV
+    let brightnessHSBA = hsla.lightness + hsla.saturation * min(hsla.lightness, 1.0 - hsla.lightness)
+    let saturationHSBA: CGFloat
+    if brightnessHSBA == 0.0 {
+        saturationHSBA = 0.0
+    } else {
+        saturationHSBA = 2.0 * (1.0 - hsla.lightness / brightnessHSBA)
+    }
+    return HSBA(hue: hsla.hue, saturation: saturationHSBA, brightness: brightnessHSBA, alpha: hsla.alpha)
+}

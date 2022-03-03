@@ -24,21 +24,9 @@ import AppKit.NSImage
 
 typealias ImageType = NSImage
 
-extension ImageType {
-    static func imageInHumanVerificationBundle(named resourceName: String) -> ImageType {
-        HVCommon.bundle.image(forResource: resourceName)!
-    }
-}
-
 #elseif canImport(UIKit)
 import UIKit.UIImage
 
 typealias ImageType = UIImage
-
-extension ImageType {
-    static func imageInHumanVerificationBundle(named: String) -> ImageType {
-        ImageType(named: named, in: HVCommon.bundle, compatibleWith: nil)!
-    }
-}
 
 #endif

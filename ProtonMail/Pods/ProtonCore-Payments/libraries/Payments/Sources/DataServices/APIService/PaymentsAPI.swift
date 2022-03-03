@@ -55,7 +55,7 @@ class BaseApiRequest<T: Response>: Request {
         self.api = api
     }
     
-    func awaitResponse() throws -> T {
+    func awaitResponse(responseObject: T) throws -> T {
         
         guard Thread.isMainThread == false else {
             assertionFailure("This is a blocking network request, should never be called from main thread")
@@ -67,7 +67,10 @@ class BaseApiRequest<T: Response>: Request {
         let semaphore = DispatchSemaphore(value: 0)
         
         awaitQueue.async {
-            self.api.exec(route: self, callCompletionBlockOn: awaitQueue) { (response: T) in
+            self.api.exec(route: self,
+                          responseObject: responseObject,
+                          callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)) { (response: T) in
+                
                 if let responseError = response.error {
                     result = .failure(responseError)
                 } else {
@@ -110,6 +113,7 @@ protocol PaymentsApiProtocol {
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
     func plansRequest(api: APIService) -> PlansRequest
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
+    func methodsRequest(api: APIService) -> MethodRequest
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
@@ -133,7 +137,7 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
             } else {
                 // if amountDue is not equal to amount, request credit for a full amount
                 let creditReq = creditRequest(api: api, amount: amount, paymentAction: paymentAction)
-                _ = try creditReq.awaitResponse()
+                _ = try creditReq.awaitResponse(responseObject: CreditResponse())
                 // then request subscription for amountDue = 0
                 return SubscriptionRequest(api: api, planId: planId, amount: 0, paymentAction: paymentAction)
             }
@@ -161,6 +165,10 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
 
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
         CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
+    }
+    
+    func methodsRequest(api: APIService) -> MethodRequest {
+        MethodRequest(api: api)
     }
 
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest {
@@ -229,10 +237,10 @@ extension Response {
         return Key(stringValue: uncapitalized) ?? path.last!
     }
 
-    func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type) -> (Bool, T?) {
+    func decodeResponse<T: Decodable>(_ response: Any, to _: T.Type, errorToReturn: RequestErrors) -> (Bool, T?) {
         do {
             if case Optional<Void>.none = response {
-                throw RequestErrors.defaultPlanDecode.toResponseError(updating: error)
+                throw errorToReturn.toResponseError(updating: error)
             }
             let data = try JSONSerialization.data(withJSONObject: response, options: [])
             let decoder = JSONDecoder()
@@ -240,7 +248,7 @@ extension Response {
             let object = try decoder.decode(T.self, from: data)
             return (true, object)
         } catch let decodingError {
-            error = RequestErrors.defaultPlanDecode.toResponseError(updating: error)
+            error = errorToReturn.toResponseError(updating: error)
             PMLog.debug("Failed to parse \(T.self): \(decodingError)")
             return (false, nil)
         }
@@ -250,6 +258,7 @@ extension Response {
 enum RequestErrors: LocalizedError, Equatable {
     case methodsDecode
     case subscriptionDecode
+    case organizationDecode
     case defaultPlanDecode
     case plansDecode
     case creditDecode

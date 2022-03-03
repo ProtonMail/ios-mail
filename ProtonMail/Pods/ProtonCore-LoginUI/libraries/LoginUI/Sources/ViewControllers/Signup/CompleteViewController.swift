@@ -27,6 +27,7 @@ import ProtonCore_Login
 import Lottie
 
 protocol CompleteViewControllerDelegate: AnyObject {
+    func accountCreationStart()
     func accountCreationFinish(loginData: LoginData)
     func accountCreationError(error: Error)
 }
@@ -99,6 +100,7 @@ class CompleteViewController: UIViewController, AccessibleView {
             assertionFailure("Create internal account input data missing")
             return
         }
+        delegate?.accountCreationStart()
         do {
             try viewModel?.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
                 self.unlockUI()
@@ -120,6 +122,7 @@ class CompleteViewController: UIViewController, AccessibleView {
             assertionFailure("Create external account input data missing")
             return
         }
+        delegate?.accountCreationStart()
         do {
             try viewModel?.createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
                 self.unlockUI()

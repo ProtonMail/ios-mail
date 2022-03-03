@@ -31,10 +31,21 @@ import ProtonCore_Utilities
 import TrustKit
 #endif
 
-extension APIService {
-    public func getSession() -> Session? {
-        return nil
-    }
+public protocol TrustKitProvider {
+    var noTrustKit: Bool { get }
+    var trustKit: TrustKit? { get }
+}
+
+public protocol URLCacheInterface {
+    func removeAllCachedResponses()
+}
+
+extension URLCache: URLCacheInterface {}
+
+public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
+    case instance
+    public var noTrustKit: Bool { PMAPIService.noTrustKit }
+    public var trustKit: TrustKit? { PMAPIService.trustKit }
 }
 
 // Protonmail api serivce. all the network requestion must go with this.
@@ -54,8 +65,6 @@ public class PMAPIService: APIService {
     public static var noTrustKit: Bool = false
     public static var trustKit: TrustKit?
     
-    /// synchronize locks
-    private var mutex = pthread_mutex_t()
     private let hvDispatchGroup = DispatchGroup()
     
     /// the session ID. this can be changed
@@ -80,9 +89,12 @@ public class PMAPIService: APIService {
     private var isForceUpgradeUIPresented = false
     
     var tokenExpired = false
-    let serialQueue = DispatchQueue(label: "com.proton.common")
+
+    let fetchQueue = DispatchQueue(label: "ch.proton.api.credential_fetch")
+    let tokenQueue = DispatchQueue(label: "ch.proton.api.token_management")
+
     func tokenExpire() -> Bool {
-        serialQueue.sync {
+        tokenQueue.sync {
             let ret = self.tokenExpired
             if ret == false {
                 self.tokenExpired = true
@@ -91,29 +103,29 @@ public class PMAPIService: APIService {
         }
     }
     func tokenReset() {
-        serialQueue.sync {
+        tokenQueue.sync {
             self.tokenExpired = false
         }
     }
     
     // MARK: - Internal methods
     /// by default will create a non auth api service. after calling the auth function, it will set the session. then use the delation to fetch the auth data  for this session.
-    public required init(doh: DoH & ServerConfig, sessionUID: String = "") {
-        // init lock
-        pthread_mutex_init(&mutex, nil)
-        
+    public required init(doh: DoH & ServerConfig,
+                         sessionUID: String = "",
+                         sessionFactory: SessionFactoryInterface = SessionFactory.instance,
+                         cacheToClear: URLCacheInterface = URLCache.shared,
+                         trustKitProvider: TrustKitProvider = PMAPIServiceTrustKitProviderWrapper.instance) {
         self.doh = doh
         
         self.sessionUID = sessionUID
         
         // clear all response cache
-        URLCache.shared.removeAllCachedResponses()
+        cacheToClear.removeAllCachedResponses()
         
         let apiHostUrl = self.doh.getCurrentlyUsedHostUrl()
-        self.session = SessionFactory.createSessionInstance(url: apiHostUrl)
+        self.session = sessionFactory.createSessionInstance(url: apiHostUrl)
         
-        self.session.setChallenge(noTrustKit: PMAPIService.noTrustKit,
-                                  trustKit: PMAPIService.trustKit)
+        self.session.setChallenge(noTrustKit: trustKitProvider.noTrustKit, trustKit: trustKitProvider.trustKit)
     }
     
     public func setSessionUID(uid: String) {
@@ -121,49 +133,49 @@ public class PMAPIService: APIService {
     }
     
     internal typealias AuthTokenBlock = (String?, String?, NSError?) -> Void
-    internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
-        // TODO:: fix me. this is wrong. concurruncy
-        DispatchQueue.global(qos: .default).async {
-            pthread_mutex_lock(&self.mutex)
-            guard let delegate = self.authDelegate else {
-                pthread_mutex_unlock(&self.mutex)
+    internal func fetchAuthCredentialNoSync(_ completion: @escaping AuthTokenBlock) {
+        let bg = DispatchQueue.global(qos: .default)
+        let main = DispatchQueue.main
+
+        guard let delegate = self.authDelegate else {
+            bg.async {
                 completion(nil, nil, NSError(domain: "AuthDelegate is required", code: 0, userInfo: nil))
-                return
             }
-            let authCredential = delegate.getToken(bySessionUID: self.sessionUID)
-            guard let credential = authCredential else {
-                pthread_mutex_unlock(&self.mutex)
+            return
+        }
+
+        let authCredential = delegate.getToken(bySessionUID: self.sessionUID)
+        guard let credential = authCredential else {
+            bg.async {
                 completion(nil, nil, NSError(domain: "Empty token", code: 0, userInfo: nil))
-                return
             }
-            // when local credential expired, should handle the case same as api reuqest error handling
-            guard !credential.isExpired else {
-                self.authDelegate?.onRefresh(bySessionUID: self.sessionUID) { newCredential, error in
-                    self.debugError(error)
-                    if case .networkingError(let responseError) = error,
-                       responseError.httpCode == 422 {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            // NSError.alertBadTokenToast()
-                            let sessionUID = self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID
-                            
-                            completion(newCredential?.accessToken, sessionUID, responseError.underlyingError)
-                            self.authDelegate?.onLogout(sessionUID: sessionUID)
-                            // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])error
-                        }
-                    } else if case .networkingError(let responseError) = error,
-                              let underlyingError = responseError.underlyingError,
-                              underlyingError.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        pthread_mutex_unlock(&self.mutex)
-                        DispatchQueue.main.async {
-                            // NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
-                        }
-                    } else {
-                        if let credential = newCredential {
-                            self.authDelegate?.onUpdate(auth: credential)
-                        }
-                        pthread_mutex_unlock(&self.mutex)
+            return
+        }
+
+        // when local credential expired, should handle the case same as api reuqest error handling
+        guard !credential.isExpired else {
+            self.authDelegate?.onRefresh(bySessionUID: self.sessionUID) { newCredential, error in
+                self.debugError(error)
+                if case .networkingError(let responseError) = error,
+                   responseError.httpCode == 422 {
+                    main.async {
+                        // NSError.alertBadTokenToast()
+                        let sessionUID = self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID
+
+                        completion(newCredential?.accessToken, sessionUID, responseError.underlyingError)
+                        self.authDelegate?.onLogout(sessionUID: sessionUID)
+                        // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])error
+                    }
+                } else if case .networkingError(let responseError) = error,
+                          let underlyingError = responseError.underlyingError,
+                          underlyingError.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                        // NSError.alertBadTokenToast()
+                        self.fetchAuthCredential(completion)
+                } else {
+                    if let credential = newCredential {
+                        self.authDelegate?.onUpdate(auth: credential)
+                    }
+                    bg.async {
                         self.tokenReset()
                         DispatchQueue.main.async {
                             completion(newCredential?.accessToken,
@@ -172,13 +184,29 @@ public class PMAPIService: APIService {
                         }
                     }
                 }
-                return
             }
-            
-            pthread_mutex_unlock(&self.mutex)
+            return
+        }
+
+        bg.async {
             // renew
             self.tokenReset()
             completion(credential.accessToken, self.sessionUID.isEmpty ? credential.sessionID : self.sessionUID, nil)
+        }
+    }
+
+    internal func fetchAuthCredentialSync(_ completion: @escaping AuthTokenBlock) {
+        fetchQueue.sync {
+            fetchAuthCredentialNoSync(completion)
+        }
+    }
+
+    internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
+        // This was changed to avoid use of pthread_mutex_t, since this object is passed around (and
+        // thus goes against Swift's runtime guarantees for mutexes). Code was modified to use dispatch
+        // queues instead, while mirroring the previous threading behavior.
+        DispatchQueue.global(qos: .default).async {
+            self.fetchAuthCredentialSync(completion)
         }
     }
     
@@ -187,19 +215,17 @@ public class PMAPIService: APIService {
         guard self.tokenExpire() == false else {
             return
         }
-        
-        pthread_mutex_lock(&self.mutex)
-        defer {
-            pthread_mutex_unlock(&self.mutex)
+
+        fetchQueue.sync {
+            guard let authCredential = self.authDelegate?.getToken(bySessionUID: self.sessionUID) else {
+                PMLog.debug("token is empty")
+                return
+            }
+
+            // TODO:: fix me.  to aline the auth framwork Credential object with Networking Credential object
+            authCredential.expire()
+            self.authDelegate?.onUpdate(auth: Credential( authCredential))
         }
-        guard let authCredential = self.authDelegate?.getToken(bySessionUID: self.sessionUID) else {
-            PMLog.debug("token is empty")
-            return
-        }
-        
-        // TODO:: fix me.  to aline the auth framwork Credential object with Networking Credential object
-        authCredential.expire()
-        self.authDelegate?.onUpdate(auth: Credential( authCredential))
     }
     
     public func request(method: HTTPMethod,
@@ -352,7 +378,7 @@ public class PMAPIService: APIService {
                                         // NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
                                     }
                                 }
-                            } else if responseCode == APIErrorCode.humanVerificationRequired {
+                            } else if responseCode == APIErrorCode.humanVerificationRequired, let error = error {
                                 // human verification required
                                 self.humanVerificationHandler(method: method,
                                                               path: path,
@@ -415,7 +441,13 @@ public class PMAPIService: APIService {
                         self.doh.handleErrorResolvingProxyDomainIfNeeded(
                             host: url, error: error
                         ) { shouldRetry in
-                            guard shouldRetry else { parseBlock(task, res, error); return }
+                            guard shouldRetry else {
+                                if self.doh.errorIndicatesDoHSolvableProblem(error: error) {
+                                    self.serviceDelegate?.onDohTroubleshot()
+                                }
+                                parseBlock(task, res, error)
+                                return
+                            }
                             // retry. will use the proxy domain automatically if it was successfully fetched
                             self.request(method: method,
                                          path: path,
@@ -705,9 +737,15 @@ public class PMAPIService: APIService {
                                headers: [String: Any]?,
                                userID: String?,
                                accessToken: String) throws -> SessionRequest {
-        let defaultTimeout = self.doh.status == .off ? 60.0 : 30.0
+        let defaultTimeout = doh.status == .off ? 60.0 : 30.0
         let requestTimeout = nonDefaultTimeout ?? defaultTimeout
-        let request = try self.session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+        let request = try session.generate(with: method, urlString: url, parameters: parameters, timeout: requestTimeout)
+        
+        if let additionalHeaders = serviceDelegate?.additionalHeaders {
+            additionalHeaders.forEach { header, value in
+                request.setValue(header: header, value)
+            }
+        }
        
         if let header = headers {
             for (k, v) in header {
@@ -724,20 +762,20 @@ public class PMAPIService: APIService {
         }
         
         var appversion = "iOS_\(Bundle.main.majorVersion)"
-        if let delegateAppVersion = self.serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
+        if let delegateAppVersion = serviceDelegate?.appVersion, !delegateAppVersion.isEmpty {
             appversion = delegateAppVersion
         }
         request.setValue(header: "Accept", "application/vnd.protonmail.v1+json")
         request.setValue(header: "x-pm-appversion", appversion)
         
         var locale = "en_US"
-        if let lc = self.serviceDelegate?.locale, !lc.isEmpty {
+        if let lc = serviceDelegate?.locale, !lc.isEmpty {
             locale = lc
         }
         request.setValue(header: "x-pm-locale", locale)
         
         var ua = UserAgent.default.ua
-        if let delegateAgent = self.serviceDelegate?.userAgent, !delegateAgent.isEmpty {
+        if let delegateAgent = serviceDelegate?.userAgent, !delegateAgent.isEmpty {
             ua = delegateAgent
         }
         request.setValue(header: "User-Agent", ua)
@@ -775,7 +813,7 @@ public class PMAPIService: APIService {
                                           authRetryRemains: Int = 3,
                                           customAuthCredential: AuthCredential? = nil,
                                           nonDefaultTimeout: TimeInterval?,
-                                          error: NSError?,
+                                          error: NSError,
                                           response: Any?,
                                           task: URLSessionDataTask?,
                                           responseDict: [String: Any],
@@ -831,7 +869,7 @@ public class PMAPIService: APIService {
                                             authRetryRemains: Int = 3,
                                             customAuthCredential: AuthCredential? = nil,
                                             nonDefaultTimeout: TimeInterval?,
-                                            error: NSError?,
+                                            error: NSError,
                                             response: Any?,
                                             task: URLSessionDataTask?,
                                             responseDict: [String: Any],
@@ -839,7 +877,7 @@ public class PMAPIService: APIService {
         
         // get human verification methods
         let (hvResponse, _) = Response.parseNetworkCallResults(
-            to: HumanVerificationResponse.self, response: task?.response, responseDict: responseDict, error: error
+            responseObject: HumanVerificationResponse(), originalResponse: task?.response, responseDict: responseDict, error: error
         )
         if let response = response as? [String: Any] {
             _ = hvResponse.ParseResponse(response)
@@ -855,7 +893,7 @@ public class PMAPIService: APIService {
                     url.query = nil
                     currentURL = url.url
                 }
-                self.humanDelegate?.onHumanVerify(parameters: hvResponse.parameters, currentURL: currentURL) { finishReason in
+                self.humanDelegate?.onHumanVerify(parameters: hvResponse.parameters, currentURL: currentURL, error: error) { finishReason in
                     
                     switch finishReason {
                     case .close:

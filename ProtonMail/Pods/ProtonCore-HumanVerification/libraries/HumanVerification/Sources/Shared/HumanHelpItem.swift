@@ -21,6 +21,7 @@
 
 import ProtonCore_CoreTranslation
 import enum ProtonCore_DataModel.ClientApp
+import ProtonCore_UIFoundations
 
 enum HumanHelpItem: CaseIterable {
     case requestInvite
@@ -49,9 +50,9 @@ extension HumanHelpItem {
     var image: ImageType {
         switch self {
         case .requestInvite:
-            return ImageType.imageInHumanVerificationBundle(named: "ic-check-circle")
+            return IconProvider.checkmarkCircle
         case .visitHelpCenter:
-            return ImageType.imageInHumanVerificationBundle(named: "ic-lightbulp")
+            return IconProvider.lightbulb
         }
     }
 

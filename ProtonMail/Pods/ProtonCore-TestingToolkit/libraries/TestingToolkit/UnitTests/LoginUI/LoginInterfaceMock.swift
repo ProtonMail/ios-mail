@@ -22,6 +22,7 @@
 import UIKit
 import ProtonCore_Login
 import ProtonCore_LoginUI
+import ProtonCore_Networking
 
 public class LoginInterfaceMock: LoginAndSignupInterface {
 
@@ -68,4 +69,10 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
                                                completion: @escaping (LoginResult) -> Void) -> UIViewController {
         welcomeScreenForPresentingFlowStub(welcomeScreen, username, performBeforeFlow, customErrorPresenter, completion)
     }
+
+    @FuncStub(LoginInterfaceMock.logout) public var logoutStub
+    public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
+        logoutStub(credential, completion)
+    }
+
 }

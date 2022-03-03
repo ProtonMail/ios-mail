@@ -62,9 +62,7 @@ final class TokenResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        guard let code = response["Code"] as? Int, code == 1000 else { return false }
-
-        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self)
+        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self, errorToReturn: .tokenDecode)
         self.paymentToken = token
         return result
     }

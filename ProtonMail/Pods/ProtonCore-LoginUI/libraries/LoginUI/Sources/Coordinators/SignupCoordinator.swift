@@ -27,6 +27,7 @@ import ProtonCore_UIFoundations
 import ProtonCore_Payments
 import ProtonCore_PaymentsUI
 import ProtonCore_HumanVerification
+import ProtonCore_Foundations
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -64,6 +65,7 @@ final class SignupCoordinator {
     private var performBeforeFlow: WorkBeforeFlow?
     private var customErrorPresenter: LoginErrorPresenter?
     private let externalLinks: ExternalLinks
+    private let longTermTask = LongTermTask()
     
     // Payments
     private var paymentsManager: PaymentsManager?
@@ -125,6 +127,7 @@ final class SignupCoordinator {
         }
         signupViewController.showCloseButton = isCloseButton
         signupViewController.signupAccountType = signupAccountType
+        signupViewController.minimumAccountType = container.login.minimumAccountType
 
         switch kind {
         case .unmanaged:
@@ -158,6 +161,7 @@ final class SignupCoordinator {
         let recoveryViewController = UIStoryboard.instantiate(RecoveryViewController.self)
         recoveryViewController.viewModel = container.makeRecoveryViewModel(initialCountryCode: countryPicker.getInitialCode())
         recoveryViewController.delegate = self
+        recoveryViewController.minimumAccountType = container.login.minimumAccountType
         self.recoveryViewController = recoveryViewController
         
         navigationController?.pushViewController(recoveryViewController, animated: true)
@@ -307,6 +311,7 @@ final class SignupCoordinator {
     }
     
     private func finishAccountCreation(loginData: LoginData, purchasedPlan: InAppPurchasePlan? = nil) {
+        longTermTask.inProgress = false
         DispatchQueue.main.async { [weak self] in
             guard let performBeforeFlow = self?.performBeforeFlow else {
                 self?.summarySignupFlow(data: loginData, purchasedPlan: purchasedPlan)
@@ -414,7 +419,8 @@ extension SignupCoordinator: SignupViewControllerDelegate {
 
 extension SignupCoordinator: PasswordViewControllerDelegate {
     func passwordIsShown() {
-        if ProtonCore_HumanVerification.TemporaryHacks.isV3, signupAccountType == .external {
+        
+        if container.humanVerificationVersion == .v3, signupAccountType == .external {
             // if PasswordViewController is presented we need to remove HumanVerifyV3ViewController from the navigation stack to don't allow to come back to it.
             HumanCheckHelper.removeHumanVerification(from: navigationController)
         }
@@ -472,6 +478,10 @@ extension SignupCoordinator: CountryPickerViewControllerDelegate {
 // MARK: CompleteViewControllerDelegate
 
 extension SignupCoordinator: CompleteViewControllerDelegate {
+    func accountCreationStart() {
+        longTermTask.inProgress = true
+    }
+    
     func accountCreationFinish(loginData: LoginData) {
         finalizeAccountCreation(loginData: loginData)
     }
@@ -482,6 +492,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
     
     // swiftlint:disable:next cyclomatic_complexity
     private func errorHandler(error: Error) {
+        longTermTask.inProgress = false
         if activeViewController != nil {
             navigationController?.popViewController(animated: true)
         }
