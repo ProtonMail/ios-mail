@@ -435,6 +435,10 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
             }
         }
     }
+
+    func sendDarkModeMetric(isApply: Bool) {
+        self.viewModel.sendDarkModeMetric(isApply: isApply)
+    }
 }
 
 extension SingleMessageContentViewController: AttachmentViewControllerDelegate {

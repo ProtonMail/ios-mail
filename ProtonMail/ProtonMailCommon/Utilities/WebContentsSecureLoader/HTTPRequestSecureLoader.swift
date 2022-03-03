@@ -120,7 +120,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             css = WebContents.cssLightModeOnly
         case .dark:
             css = WebContents.css
-			if let supplementCSS = contents.supplementCSS {
+			if let supplementCSS = contents.supplementCSS,
+               !supplementCSS.isEmpty {
 				css += supplementCSS
             } else {
                 // means this message doesn't support dark mode style

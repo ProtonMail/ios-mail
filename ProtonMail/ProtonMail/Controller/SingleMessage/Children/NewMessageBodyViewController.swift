@@ -35,6 +35,7 @@ protocol NewMessageBodyViewControllerDelegate: AnyObject {
                              shouldShowEmbeddedContentBanner: Bool)
     func showDecryptionErrorBanner()
     func hideDecryptionErrorBanner()
+    func sendDarkModeMetric(isApply: Bool)
 }
 
 class NewMessageBodyViewController: UIViewController {
@@ -121,6 +122,10 @@ class NewMessageBodyViewController: UIViewController {
         }
 
         setupContentSizeObservation()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.viewModel.sendMetricAPIIfNeeded()
     }
 
     func prepareReloadView() {
@@ -352,6 +357,15 @@ extension NewMessageBodyViewController: NewMessageBodyViewModelDelegate {
 
     func hideDecryptionErrorBanner() {
         self.delegate?.hideDecryptionErrorBanner()
+    }
+
+    @available(iOS 12.0, *)
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle {
+        self.traitCollection.userInterfaceStyle
+    }
+
+    func sendDarkModeMetric(isApply: Bool) {
+        self.delegate?.sendDarkModeMetric(isApply: isApply)
     }
 }
 

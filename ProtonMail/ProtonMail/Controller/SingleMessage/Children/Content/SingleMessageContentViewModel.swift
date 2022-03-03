@@ -159,6 +159,13 @@ class SingleMessageContentViewModel {
         return tempFileUri
     }
 
+    func sendDarkModeMetric(isApply: Bool) {
+        let request = MetricDarkMode(applyDarkStyle: isApply)
+        self.user.apiService.exec(route: request) { _ in
+
+        }
+    }
+
     private func createExpandedHeaderViewModel() {
         let newVM = ExpandedHeaderViewModel(labelId: context.labelId,
                                             message: message,

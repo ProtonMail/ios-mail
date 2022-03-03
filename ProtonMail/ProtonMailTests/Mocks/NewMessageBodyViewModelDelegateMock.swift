@@ -15,10 +15,37 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
+import UIKit
 import Foundation
 @testable import ProtonMail
 
-class NewMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegate {
+final class NewMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegate {
+    
+    enum UserInterfaceStyle : Int {
+        case unspecified = 0
+        case light = 1
+        case dark = 2
+    }
+
+    var interfaceStyle: UserInterfaceStyle = .unspecified
+    var isApplyDarkStyle: Bool?
+
+    @available(iOS 12.0, *)
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle {
+        switch interfaceStyle {
+        case .unspecified:
+            return .unspecified
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+
+    func sendDarkModeMetric(isApply: Bool) {
+        isApplyDarkStyle = isApply
+    }
+
     var isReloadWebViewCalled = false
     func reloadWebView(forceRecreate: Bool) {
         isReloadWebViewCalled = true

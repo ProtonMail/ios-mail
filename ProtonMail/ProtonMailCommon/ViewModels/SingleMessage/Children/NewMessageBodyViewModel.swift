@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_DataModel
+import UIKit
 import WebKit
 
 protocol NewMessageBodyViewModelDelegate: AnyObject {
@@ -29,6 +30,9 @@ protocol NewMessageBodyViewModelDelegate: AnyObject {
     func updateBannerStatus()
     func showDecryptionErrorBanner()
     func hideDecryptionErrorBanner()
+    @available(iOS 12.0, *)
+    func getUserInterfaceStyle() -> UIUserInterfaceStyle
+    func sendDarkModeMetric(isApply: Bool)
 }
 
 enum MessageDisplayMode {
@@ -146,6 +150,7 @@ class NewMessageBodyViewModel {
         didSet {
             if !shouldHoldReloading {
                 delegate?.reloadWebView(forceRecreate: false)
+                self.sendMetricAPIIfNeeded()
             }
         }
     }
@@ -191,6 +196,11 @@ class NewMessageBodyViewModel {
     private(set) var currentMessageRenderStyle: MessageRenderStyle = .dark {
         didSet {
             self.contents?.changeRenderStyle(currentMessageRenderStyle)
+        }
+        willSet {
+            if self.currentMessageRenderStyle == .dark && newValue == .lightOnly {
+                self.delegate?.sendDarkModeMetric(isApply: false)
+            }
         }
     }
     var shouldDisplayRenderModeOptions: Bool {
@@ -418,6 +428,19 @@ extension NewMessageBodyViewModel {
         }
     }
 
+    func sendMetricAPIIfNeeded(contents: WebContents? = nil) {
+        var contents = contents
+        if contents == nil {
+            contents = self.contents
+        }
+        if #available(iOS 12.0, *) {
+            guard let style = self.delegate?.getUserInterfaceStyle(),
+                  style == .dark,
+                  contents?.supplementCSS != nil,
+                  contents?.renderStyle == .dark else { return }
+            self.delegate?.sendDarkModeMetric(isApply: true)
+        }
+    }
 }
 
 struct BannerHelper {
