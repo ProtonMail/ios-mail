@@ -392,6 +392,30 @@ extension EncryptedSearchIndexService {
         return Int(newestMessage)
     }
 
+    func getMessageIDOfNewestMessageInSearchIndex(for userID: String) -> String? {
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return nil
+        }
+
+        let time: Expression<CLong> = self.databaseSchema.time
+        let id: Expression<String> = self.databaseSchema.messageID
+        let query = self.searchableMessages.select(id).order(time.desc).limit(1)
+        // SELECT "id" FROM "SearchableMessages" ORDER BY "time" DESC LIMIT 1
+
+        let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+        var idOfNewestMessage: String? = nil
+        do {
+            for result in try handleToSQLiteDB!.prepare(query) {
+                idOfNewestMessage = result[id]
+            }
+        } catch {
+            print("Error when querying newest message in search index: \(error)")
+        }
+        return idOfNewestMessage
+    }
+
     private func timeToDateString(time: CLong) -> String {
         let date: Date = Date(timeIntervalSince1970: TimeInterval(time))
         let dateFormatter = DateFormatter()
