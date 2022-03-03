@@ -2300,7 +2300,6 @@
 		D0BA1EC3CE0DCB2FE56023639331C1A3 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */; };
 		D0E6F54C99854B36E16A024FD4716F34 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		D0E81079A24B6C01FB37C2AC89E6E993 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 366FD930B9937DFC8E8C2224A7260FA7 /* Localizable.stringsdict */; };
-		D150F826CEAE3E547B57C06E469BFFAA /* PushNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF448721AE7F5654AD00BF0A37E076 /* PushNotificationHandler.swift */; };
 		D160A35D4D2B8600E0BA28545882992C /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */; };
 		D1675D9B00EBAF7515681C48A4B40926 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7737039039B0057CB8287F7A03624B /* Compare.swift */; };
 		D1AD3C97890D96729070B7DD78696DF5 /* SettingsTwoLinesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A49C2558042E8D2688293D25F35564 /* SettingsTwoLinesCell.xib */; };
@@ -5182,14 +5181,6 @@
 			path = Queue;
 			sourceTree = "<group>";
 		};
-		D1DDEF2E530A600632A0245A5B29B420 /* Logs */ = {
-			isa = PBXGroup;
-			children = (
-				40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */,
-			);
-			path = Logs;
-			sourceTree = "<group>";
-		};
 		480F273763648FD7698B2501262450D4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -6910,6 +6901,14 @@
 				03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */,
 			);
 			path = Encryption;
+			sourceTree = "<group>";
+		};
+		D1DDEF2E530A600632A0245A5B29B420 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				40352B3BC12D98ABC3177E0E3FCC2DE1 /* SystemLogger.swift */,
+			);
+			path = Logs;
 			sourceTree = "<group>";
 		};
 		D2038F203AD2770E390E55955DEDBEF2 /* DataModels */ = {
@@ -11531,7 +11530,6 @@
 				86DDFD26392C50B5D7AD8CA945340128 /* KeychainSaver.swift in Sources */,
 				BBD02B4E5EE8360CC4ABDFFC326589F6 /* KeychainWrapper.swift in Sources */,
 				A578131E99AD5D6137A5C3B75B30355D /* PushNotificationDecryptor.swift in Sources */,
-				D150F826CEAE3E547B57C06E469BFFAA /* PushNotificationHandler.swift in Sources */,
 				27E095426CBD3309EEA057439A1D157E /* PushSubscriptionSettings.swift in Sources */,
 				B2BC3A1FC2568C6D7BB15422529E57C7 /* Saver.swift in Sources */,
 				43DC1996013AD671C2BA359007C09F80 /* SystemLogger.swift in Sources */,
