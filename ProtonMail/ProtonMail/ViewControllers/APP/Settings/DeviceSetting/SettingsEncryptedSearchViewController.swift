@@ -351,7 +351,7 @@ extension SettingsEncryptedSearchViewController {
                         }
 
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
 
@@ -381,7 +381,7 @@ extension SettingsEncryptedSearchViewController {
                         }
 
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
                         let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)

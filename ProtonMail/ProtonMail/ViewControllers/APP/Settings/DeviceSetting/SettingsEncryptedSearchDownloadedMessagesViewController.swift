@@ -158,7 +158,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                     if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage ||
                        EncryptedSearchService.shared.getESState(userID: userID) == .partial {
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
                         let rangeOldestMessage = NSRange(location: LocalString._encrypted_search_downloaded_messages_oldest_message.count, length: oldestMessageString.count)
@@ -178,7 +178,7 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                         threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
                     } else {
                         // Create attributed string for oldest message in search index
-                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID)
+                        let oldestMessageString: String = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString
                         let oldestMessageFullString: String = LocalString._encrypted_search_downloaded_messages_oldest_message + oldestMessageString
                         let oldestMessageAttributedString = NSMutableAttributedString(string: oldestMessageFullString)
 
