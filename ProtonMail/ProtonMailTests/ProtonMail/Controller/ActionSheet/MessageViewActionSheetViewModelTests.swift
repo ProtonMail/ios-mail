@@ -354,7 +354,6 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                                                .markUnread,
                                                                .labelAs,
                                                                .star,
-                                                               .viewInDarkMode,
                                                                .trash,
                                                                .archive,
                                                                .spam,

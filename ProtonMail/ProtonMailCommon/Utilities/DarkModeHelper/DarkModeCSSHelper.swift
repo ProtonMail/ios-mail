@@ -281,7 +281,6 @@ struct CSSMagic {
         let inlineCSS = CSSMagic.assemble(cssDict: cssDict)
 
         let css = newStyleCSS + inlineCSS
-        if css.isEmpty { return "" }
         return "@media (prefers-color-scheme: dark) { \(css) }" 
     }
 }

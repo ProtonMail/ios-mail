@@ -53,7 +53,7 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
         if shouldShowRenderModeOption {
             switch messageRenderStyle {
             case .lightOnly:
-                items.append(.viewInDarkMode)
+                break
             case .dark:
                 items.append(.viewInLightMode)
             }

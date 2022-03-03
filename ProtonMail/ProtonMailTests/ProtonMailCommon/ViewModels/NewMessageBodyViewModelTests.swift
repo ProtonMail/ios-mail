@@ -142,4 +142,33 @@ class NewMessageBodyViewModelTests: XCTestCase {
         isDarkModeEnableStub.toggle()
         XCTAssertEqual(sut.shouldDisplayRenderModeOptions, isDarkModeEnableStub)
     }
+
+    func testSendMetricAPIIfNeeded() throws {
+        guard #available(iOS 12.0, *) else { return }
+        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .light
+        self.sut.sendMetricAPIIfNeeded()
+        XCTAssertNil(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
+
+        // light mode only
+        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .dark
+        var content = WebContents(body: "", remoteContentMode: .allowed, renderStyle: .lightOnly, supplementCSS: nil)
+        self.sut.sendMetricAPIIfNeeded(contents: content)
+        XCTAssertNil(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
+
+        content = WebContents(body: "", remoteContentMode: .allowed, renderStyle: .dark, supplementCSS: "")
+        self.sut.sendMetricAPIIfNeeded(contents: content)
+        let flag = try XCTUnwrap(self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle)
+        XCTAssertTrue(flag)
+    }
+
+    func testSendMetricAPIIfNeeded_reload() {
+        guard #available(iOS 12.0, *) else { return }
+        self.newMessageBodyViewModelDelegateMock.interfaceStyle = .dark
+        self.sut.reloadMessageWith(style: .lightOnly)
+        if let flag = self.newMessageBodyViewModelDelegateMock.isApplyDarkStyle {
+            XCTAssertFalse(flag)
+        } else {
+            XCTFail("Should have the flag")
+        }
+    }
 }

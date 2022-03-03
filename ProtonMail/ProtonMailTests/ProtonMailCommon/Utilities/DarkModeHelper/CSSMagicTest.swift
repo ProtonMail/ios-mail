@@ -102,7 +102,7 @@ final class CSSMagicTest: XCTestCase {
         <html> </head> <body> <div style="font-family:&quot;Google Sans&quot;,Arial,sans-serif;font-weight:400 color: red"></div></body></html>
         """
         css = CSSMagic.generateCSSForDarkMode(htmlString: html)
-        XCTAssertEqual(css, "")
+        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) {  }")
 
         html = """
         <html> <head> <style>span{background-color: rgb(51, 102, 153);}</style> </head> <body> <div class="a" style="color: white">a</div><span>abc</span> </body></html>
