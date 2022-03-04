@@ -27,7 +27,7 @@ import OpenPGP
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Services
-import ProtonCore_SRP
+import ProtonCore_Hash
 
 extension Data {
     var html2AttributedString: NSAttributedString? {

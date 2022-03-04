@@ -31,13 +31,19 @@ class SignupViewModel {
     var signupService: Signup
     var loginService: Login
     let challenge: PMChallenge
+    let humanVerificationVersion: HumanVerificationVersion
     var signUpDomain: String { return loginService.signUpDomain }
 
-    init(apiService: PMAPIService, signupService: Signup, loginService: Login, challenge: PMChallenge) {
+    init(apiService: PMAPIService,
+         signupService: Signup,
+         loginService: Login,
+         challenge: PMChallenge,
+         humanVerificationVersion: HumanVerificationVersion) {
         self.apiService = apiService
         self.signupService = signupService
         self.loginService = loginService
         self.challenge = challenge
+        self.humanVerificationVersion = humanVerificationVersion
     }
 
     func isUserNameValid(name: String) -> Bool {

@@ -52,7 +52,7 @@ public struct Plan: Codable, Equatable {
 
     public static var empty: Plan {
         Plan(name: "", iD: nil, maxAddresses: 0, maxMembers: 0, pricing: nil, maxDomains: 0, maxSpace: 0,
-             type: 0, title: "", maxVPN: 0, features: 0, maxCalendars: nil, state: nil, cycle: 0)
+             type: 0, title: "", maxVPN: 0, features: 0, maxCalendars: nil, state: nil, cycle: nil)
     }
 
     public init(name: String,
@@ -88,6 +88,12 @@ public struct Plan: Codable, Equatable {
 
 public extension Plan {
     func pricing(for period: String?) -> Int? { period.flatMap { pricing?[$0] } }
+    
+    func updating(cycle: Int?) -> Plan {
+        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers, pricing: pricing,
+             maxDomains: maxDomains, maxSpace: maxSpace, type: type, title: title, maxVPN: maxVPN,
+             features: features, maxCalendars: maxCalendars, state: state, cycle: cycle)
+    }
 }
 
 public extension Plan {

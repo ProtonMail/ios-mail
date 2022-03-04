@@ -27,6 +27,7 @@ import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_DataModel
 import ProtonCore_Log
+import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Utilities
 
@@ -65,7 +66,7 @@ public class SignupService: Signup {
 
     public func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         let route = UserAPI.Router.code(type: .email, receiver: email)
-        apiService.exec(route: route) { (_, response) in
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
             DispatchQueue.main.async {
                 if response.responseCode != APIErrorCode.responseOK {
                     if let error = response.error {
@@ -87,7 +88,7 @@ public class SignupService: Signup {
     public func checkValidationToken(email: String, token: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         let token = HumanVerificationToken(type: .email, token: token, input: email)
         let route = UserAPI.Router.check(token: token)
-        apiService.exec(route: route) { (_, response) in
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
             DispatchQueue.main.async {
                 if response.responseCode != APIErrorCode.responseOK {
                     if response.responseCode == 2500 {

@@ -98,6 +98,7 @@ class VerifyCodeViewController: BaseUIViewController, AccessibleView {
 
     private func configureUI() {
         backBarbuttonItem.tintColor = ColorProvider.IconNorm
+        backBarbuttonItem.image = IconProvider.arrowLeft
         view.backgroundColor = ColorProvider.BackgroundNorm
         title = viewTitle ?? CoreString._hv_title
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: CoreString._hv_help_button, style: .done, target: self, action: #selector(helpButtonTapped))

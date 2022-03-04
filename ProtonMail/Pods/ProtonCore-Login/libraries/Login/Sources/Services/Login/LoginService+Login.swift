@@ -190,6 +190,12 @@ extension LoginService {
             return
         }
 
+        if addresses.filter({ $0.type != .externalAddress }).isEmpty {
+            PMLog.debug("No internal addresses means no need to create account key, moving forward")
+            completion(.success(user))
+            return
+        }
+        
         PMLog.debug("Creating account keys")
         let manager = self.manager
         manager.setupAccountKeys(addresses: addresses, password: mailboxPassword) { result in

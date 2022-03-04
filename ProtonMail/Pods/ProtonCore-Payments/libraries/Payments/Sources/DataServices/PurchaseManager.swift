@@ -132,7 +132,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
             api: apiService, protonPlanName: protonPlanName, isAuthenticated: isAuthenticated
         )
 
-        let validationResponse = try validateSubscriptionRequest.awaitResponse()
+        let validationResponse = try validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
         guard let amountDue = validationResponse.validateSubscription?.amountDue
         else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
 
@@ -143,7 +143,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
         plan: InAppPurchasePlan, planId: String, finishCallback: @escaping (PurchaseResult) -> Void
     ) throws {
         let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
-        let subscriptionResponse = try subscriptionRequest.awaitResponse()
+        let subscriptionResponse = try subscriptionRequest.awaitResponse(responseObject: SubscriptionResponse())
         if let newSubscription = subscriptionResponse.newSubscription {
             planService.currentSubscription = newSubscription
             finishCallback(.purchasedPlan(accountPlan: plan))

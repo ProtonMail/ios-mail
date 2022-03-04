@@ -47,6 +47,7 @@ final class Container {
     private let api: PMAPIService
     private let authManager: AuthManager
     private var humanCheckHelper: HumanCheckHelper?
+    let humanVerificationVersion: HumanVerificationVersion
     private var paymentsManager: PaymentsManager?
     private let externalLinks: ExternalLinks
     private let clientApp: ClientApp
@@ -56,7 +57,13 @@ final class Container {
     var token: String?
     var tokenType: String?
 
-    init(appName: String, clientApp: ClientApp, doh: DoH & ServerConfig, apiServiceDelegate: APIServiceDelegate, forceUpgradeDelegate: ForceUpgradeDelegate, minimumAccountType: AccountType) {
+    init(appName: String,
+         clientApp: ClientApp,
+         doh: DoH & ServerConfig,
+         apiServiceDelegate: APIServiceDelegate,
+         forceUpgradeDelegate: ForceUpgradeDelegate,
+         humanVerificationVersion: HumanVerificationVersion,
+         minimumAccountType: AccountType) {
         if PMAPIService.trustKit == nil {
             let trustKit = TrustKit()
             trustKit.pinningValidator = .init()
@@ -75,6 +82,7 @@ final class Container {
         self.appName = appName
         self.clientApp = clientApp
         self.externalLinks = ExternalLinks(clientApp: clientApp)
+        self.humanVerificationVersion = humanVerificationVersion
     }
 
     // MARK: Login view models
@@ -102,7 +110,11 @@ final class Container {
     // MARK: Signup view models
 
     func makeSignupViewModel() -> SignupViewModel {
-        return SignupViewModel(apiService: api, signupService: signupService, loginService: login, challenge: challenge)
+        return SignupViewModel(apiService: api,
+                               signupService: signupService,
+                               loginService: login,
+                               challenge: challenge,
+                               humanVerificationVersion: humanVerificationVersion)
     }
 
     func makePasswordViewModel() -> PasswordViewModel {
@@ -139,7 +151,13 @@ final class Container {
 
     func setupHumanVerification(viewController: UIViewController? = nil) {
         let nonModalUrl = URL(string: "/users/availableExternal")!
-        humanCheckHelper = HumanCheckHelper(apiService: api, viewController: viewController, nonModalUrls: [nonModalUrl], clientApp: clientApp, responseDelegate: self, paymentDelegate: self)
+        humanCheckHelper = HumanCheckHelper(apiService: api,
+                                            viewController: viewController,
+                                            nonModalUrls: [nonModalUrl],
+                                            clientApp: clientApp,
+                                            versionToBeUsed: humanVerificationVersion,
+                                            responseDelegate: self,
+                                            paymentDelegate: self)
         api.humanDelegate = humanCheckHelper
     }
 

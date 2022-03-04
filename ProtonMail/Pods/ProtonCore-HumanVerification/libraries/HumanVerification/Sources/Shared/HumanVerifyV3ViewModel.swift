@@ -67,12 +67,7 @@ class HumanVerifyV3ViewModel {
     }
 
     var getURLRequest: URLRequest {
-        var host = apiService.doh.getHumanVerificationV3Host()
-        if apiService.doh.isCurrentlyUsingProxyDomain {
-            for (custom, original) in schemeMapping {
-                host = host.replacingOccurrences(of: original, with: custom)
-            }
-        }
+        let host = apiService.doh.getHumanVerificationV3Host()
         let token = "?token=\(startToken ?? "")"
         let methodsStrings = methods?.map { $0.method } ?? []
         let methods = "&methods=\(methodsStrings.joined(separator: ","))"
@@ -92,10 +87,15 @@ class HumanVerifyV3ViewModel {
     }
     
     func setup(webViewConfiguration: WKWebViewConfiguration) {
-        let requestInterceptor = AlternativeRoutingRequestInterceptor(doH: apiService.doh, schemeMapping: schemeMapping)
-        for (custom, _) in schemeMapping {
-            webViewConfiguration.setURLSchemeHandler(requestInterceptor, forURLScheme: custom)
+        let requestInterceptor = AlternativeRoutingRequestInterceptor(headersGetter: apiService.doh.getHumanVerificationV3Headers) { challenge, completionHandler in
+            handleAuthenticationChallenge(
+                didReceive: challenge,
+                noTrustKit: PMAPIService.noTrustKit,
+                trustKit: PMAPIService.trustKit,
+                challengeCompletionHandler: completionHandler
+            )
         }
+        requestInterceptor.setup(webViewConfiguration: webViewConfiguration)
     }
     
     func finalToken(method: VerifyMethod, token: String, complete: @escaping SendVerificationCodeBlock) {
@@ -182,176 +182,6 @@ class HumanVerifyV3ViewModel {
     
     private var getCountry: String {
         return Locale.current.regionCode ?? ""
-    }
-}
-
-private final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHandler, URLSessionDelegate {
-    
-    private enum RequestInterceptorError: Error {
-        case noUrlInRequest
-        case constructedUrlIsIncorrect
-    }
-    
-    private let doH: DoHInterface
-    private let schemeMapping: [(String, String)]
-    
-    init(doH: DoHInterface, schemeMapping: [(String, String)]) {
-        self.doH = doH
-        self.schemeMapping = schemeMapping
-    }
-    
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        var request = urlSchemeTask.request
-        
-        guard var urlString = request.url?.absoluteString else {
-            urlSchemeTask.didFailWithError(RequestInterceptorError.noUrlInRequest)
-            return
-        }
-        
-        // Implements rewriting the request if alternative routing is on. Rewriting request means:
-        // 1. Changing the custom scheme "coreios" in the request url to "http"
-        // 2. Replacing the "-api" suffix appended to the first part of url host by captcha JS code.
-        //    It's required because there is no proxy domain with -api suffix)
-        // 3. Adding the appropriate proxying headers for all requests BUT to `/captcha`.
-        //    The request for captcha is the API request that should go directly through proxy, so headers are removed.
-        // 4. Changing the custom scheme "coreios" to "http" in the "Origin" header
-        var apiRange: Range<String.Index>?
-        for (custom, original) in schemeMapping where urlString.contains(custom) {
-            urlString = urlString.replacingOccurrences(of: custom, with: original)
-            if let range = urlString.range(of: "-api") {
-                apiRange = range
-                urlString = urlString.replacingCharacters(in: range, with: "")
-            }
-            let isCaptcha = urlString.contains("/captcha?")
-            for (key, value) in doH.getHumanVerificationV3Headers() {
-                request.setValue(isCaptcha ? nil : value, forHTTPHeaderField: key)
-            }
-            if let origin = request.value(forHTTPHeaderField: "Origin") {
-                request.setValue(origin.replacingOccurrences(of: custom, with: original), forHTTPHeaderField: "Origin")
-            }
-            guard let url = URL(string: urlString) else {
-                urlSchemeTask.didFailWithError(RequestInterceptorError.constructedUrlIsIncorrect)
-                return
-            }
-            request.url = url
-        }
-        
-        performRequest(request, apiRange, urlSchemeTask)
-    }
-    
-    private func performRequest(_ request: URLRequest, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
-        guard let urlString = request.url?.absoluteString else {
-            urlSchemeTask.didFailWithError(RequestInterceptorError.noUrlInRequest)
-            return
-        }
-        PMLog.debug("request interceptor starts request to \(urlString) with X-PM-DoH-Host: \(request.allHTTPHeaderFields?["X-PM-DoH-Host"] ?? "")")
-        
-        let configuration = URLSessionConfiguration.default
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-        configuration.httpCookieStorage = HTTPCookieStorage.shared
-        configuration.httpCookieAcceptPolicy = .always
-        let task = session.dataTask(with: request) { [weak self] data, response, error in
-            if let response = response {
-                self?.transformAndProcessResponse(response, apiRange, urlSchemeTask)
-            }
-            if let data = data {
-                urlSchemeTask.didReceive(data)
-            }
-            if let error = error {
-                urlSchemeTask.didFailWithError(error)
-            } else {
-                urlSchemeTask.didFinish()
-            }
-        }
-        task.resume()
-    }
-    
-    // Implements rewriting the response if alternative routing is on. Rewriting response means:
-    // 1. Enabling the Content Security Policy for captcha with proxy domains by adding the proxy domains
-    //    to frame-src. Both the original and `-api` variants are added. Also, if all "http" is allowed via frame-src,
-    //    we add the custom scheme "coreios" there as well.
-    //    The reason for adding to frame-src is that captcha is being shown in a frame and if CSP is not set up properly,
-    //    the system blocks the loading of the frame even before our interceptor. We never have the chance to control it.
-    // 2. Changing all the urls starting with "http" to "coreios" in the headers
-    // 3. Adding back (if needed) the the "-api" suffix appended to the first part of url host by captcha JS code.
-    // 4. Changing the "http" scheme back to the custom one "coreios" in the response url
-    private func transformAndProcessResponse(_ response: URLResponse, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
-        guard let httpResponse = response as? HTTPURLResponse,
-              var urlString = httpResponse.url?.absoluteString
-        else {
-            urlSchemeTask.didReceive(response)
-            return
-        }
-        
-        var headers: [String: String] = httpResponse.allHeaderFields as? [String: String] ?? [:]
-        headers = headers.mapValues { (originalValue: String) -> String in
-            var value = originalValue
-            for (custom, original) in self.schemeMapping {
-                value = value.replacingOccurrences(of: "\(original)://", with: "\(custom)://")
-                if let range = value.range(of: "frame-src 'self' blob: "), let host = URL(string: urlString)?.host {
-                    value.insert(contentsOf: "\(custom)://\(host) ", at: range.upperBound)
-                    
-                    if let index = host.firstIndex(of: ".") {
-                        var hostWithAPI = host
-                        hostWithAPI.insert(contentsOf: "-api", at: index)
-                        value.insert(contentsOf: "\(custom)://\(hostWithAPI) ", at: range.upperBound)
-                    }
-                }
-                
-                [
-                    "script-src",
-                    "style-src",
-                    "img-src",
-                    "frame-src",
-                    "connect-src",
-                    "media-src"
-                ] .forEach {
-                    if let range = value.range(of: $0) {
-                        value.insert(contentsOf: " \(custom):", at: range.upperBound)
-                    }
-                }
-                
-            }
-            return value
-        }
-        
-        if let apiRange = apiRange {
-            urlString.insert(contentsOf: "-api", at: apiRange.lowerBound)
-        }
-        
-        for (custom, original) in self.schemeMapping where urlString.contains(original) {
-            urlString = urlString.replacingOccurrences(of: original, with: custom)
-        }
-        
-        guard let url = URL(string: urlString),
-              let newResponse = HTTPURLResponse(url: url, statusCode: httpResponse.statusCode, httpVersion: nil, headerFields: headers)
-        else {
-            urlSchemeTask.didReceive(response)
-            return
-        }
-    
-        urlSchemeTask.didReceive(newResponse)
-    }
-    
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        let request = urlSchemeTask.request
-        guard let urlString = request.url?.absoluteString else {
-            urlSchemeTask.didFailWithError(RequestInterceptorError.noUrlInRequest)
-            return
-        }
-        // we only log here and not cancel the url data task just for the simplicity of implementation
-        PMLog.debug("request interceptor stops request to \(urlString) with X-PM-DoH-Host: \(request.allHTTPHeaderFields?["X-PM-DoH-Host"] ?? "")")
-    }
-    
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        handleAuthenticationChallenge(
-            didReceive: challenge,
-            noTrustKit: PMAPIService.noTrustKit,
-            trustKit: PMAPIService.trustKit,
-            challengeCompletionHandler: completionHandler
-        )
     }
 }
 

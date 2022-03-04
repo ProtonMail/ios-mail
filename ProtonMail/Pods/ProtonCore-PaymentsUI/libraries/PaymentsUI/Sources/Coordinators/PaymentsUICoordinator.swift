@@ -41,6 +41,7 @@ final class PaymentsUICoordinator {
     private let shownPlanNames: ListOfShownPlanNames
     private let alertManager: PaymentsUIAlertManager
     private let clientApp: ClientApp
+    private let storyboardName: String
     
     private var processingAccountPlan: InAppPurchasePlan? {
         didSet {
@@ -66,6 +67,7 @@ final class PaymentsUICoordinator {
         self.shownPlanNames = shownPlanNames
         self.alertManager = alertManager
         self.clientApp = clientApp
+        self.storyboardName = Config.storyboardName
     }
     
     func start(viewController: UIViewController?, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -87,7 +89,7 @@ final class PaymentsUICoordinator {
 
     private func showPaymentsUI(servicePlan: ServicePlanDataServiceProtocol, backendFetch: Bool) {
 
-        let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self)
+        let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self, storyboardName: storyboardName)
         paymentsUIViewController.delegate = self
         
         viewModel = PaymentsUIViewModelViewModel(mode: mode, storeKitManager: storeKitManager, servicePlan: servicePlan, shownPlanNames: shownPlanNames, clientApp: clientApp, updateCredits: updateCredits,
@@ -248,7 +250,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
 }
 
 private extension UIStoryboard {
-    static func instantiate<T: UIViewController>(_ controllerType: T.Type) -> T {
-        instantiate(storyboardName: "PaymentsUI", controllerType: controllerType)
+    static func instantiate<T: UIViewController>(_ controllerType: T.Type, storyboardName: String) -> T {
+        instantiate(storyboardName: storyboardName, controllerType: controllerType)
     }
 }

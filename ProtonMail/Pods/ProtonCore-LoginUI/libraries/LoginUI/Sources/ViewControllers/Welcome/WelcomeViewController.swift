@@ -144,6 +144,8 @@ final class WelcomeView: UIView {
 
         topImage.contentMode = .scaleAspectFit
         logo.contentMode = .scaleAspectFit
+        
+        logo.tintColor = ColorProvider.IconNorm
 
         logoTopOffsetConstraint = logo.topAnchor.constraint(greaterThanOrEqualTo: topImage.topAnchor, constant: 0)
         logoTopOffsetConstraint?.isActive = false
@@ -165,6 +167,8 @@ final class WelcomeView: UIView {
 
             logo.topAnchor.constraint(lessThanOrEqualTo: topImage.bottomAnchor, constant: 24),
             logo.centerXAnchor.constraint(equalTo: readableContentGuide.centerXAnchor),
+            logo.leadingAnchor.constraint(greaterThanOrEqualTo: readableContentGuide.leadingAnchor),
+            logo.trailingAnchor.constraint(lessThanOrEqualTo: readableContentGuide.trailingAnchor),
 
             headline.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: UIDevice.current.isSmallIphone ? 10 : 36),
             body.topAnchor.constraint(equalTo: headline.bottomAnchor, constant: 8),
@@ -202,10 +206,10 @@ final class WelcomeView: UIView {
     private func topImage(for variant: WelcomeScreenVariant) -> UIImageView {
         let topImage: UIImage
         switch variant {
-        case .mail: topImage = image(named: "WelcomeTopImageForProton")
-        case .calendar: topImage = image(named: "WelcomeTopImageForProton")
-        case .drive: topImage = image(named: "WelcomeTopImageForProton")
-        case .vpn: topImage = image(named: "WelcomeTopImageForVPN")
+        case .mail: topImage = IconProvider.loginWelcomeTopImageForProton
+        case .calendar: topImage = IconProvider.loginWelcomeTopImageForProton
+        case .drive: topImage = IconProvider.loginWelcomeTopImageForProton
+        case .vpn: topImage = IconProvider.loginWelcomeTopImageForVPN
         case .custom(let data): topImage = data.topImage
         }
         let imageView = UIImageView(image: topImage)
@@ -216,10 +220,10 @@ final class WelcomeView: UIView {
     private func logo(for variant: WelcomeScreenVariant) -> UIImageView {
         let logo: UIImage
         switch variant {
-        case .mail: logo = image(named: "WelcomeMailLogo")
-        case .calendar: logo = image(named: "WelcomeCalendarLogo")
-        case .drive: logo = image(named: "WelcomeDriveLogo")
-        case .vpn: logo = image(named: "WelcomeVPNLogo")
+        case .mail: logo = IconProvider.mailWordmarkNoBackground
+        case .calendar: logo = IconProvider.calendarWordmarkNoBackground
+        case .drive: logo = IconProvider.driveWordmarkNoBackground
+        case .vpn: logo = IconProvider.vpnWordmarkNoBackground
         case .custom(let data): logo = data.logo
         }
         return UIImageView(image: logo)
@@ -255,12 +259,18 @@ final class WelcomeView: UIView {
     }
 
     private func footer() -> UIView {
-        let iconsNamesInOrder = [
-            "WelcomeCalendarSmallLogo", "WelcomeVPNSmallLogo", "WelcomeDriveSmallLogo", "WelcomeMailSmallLogo"
+        let iconsInOrder: [UIImage] = [
+            IconProvider.calendarMainTransparent,
+            IconProvider.vpnMainTransparent,
+            IconProvider.driveMainTransparent,
+            IconProvider.mailMainTransparent
         ]
-        let iconsInFooter = UIStackView(
-            arrangedSubviews: iconsNamesInOrder.map(image(named:)).map(UIImageView.init(image:))
-        )
+        let iconsViewsInOrder = iconsInOrder.map(UIImageView.init(image:))
+        iconsViewsInOrder.forEach {
+            $0.widthAnchor.constraint(lessThanOrEqualToConstant: 40).isActive = true
+            $0.heightAnchor.constraint(lessThanOrEqualToConstant: 40).isActive = true
+        }
+        let iconsInFooter = UIStackView(arrangedSubviews: iconsViewsInOrder)
         iconsInFooter.tintColor = ColorProvider.TextWeak
         iconsInFooter.axis = .horizontal
         iconsInFooter.spacing = 32
@@ -336,12 +346,4 @@ final class WelcomeView: UIView {
         logoTopOffsetConstraint?.isActive = true
     }
 
-}
-
-private func image(named name: String) -> UIImage {
-    guard let icon = UIImage(named: name, in: LoginAndSignup.bundle, compatibleWith: nil) else {
-        assertionFailure("Asset not available, configuration error")
-        return .init()
-    }
-    return icon
 }

@@ -72,7 +72,7 @@ public class HVHelpViewController: UIViewController, AccessibleView {
 
     private func configureUI() {
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
-        closeBarButtonItem.image = .backImage
+        closeBarButtonItem.image = IconProvider.arrowLeft
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
         title = CoreString._hv_help_button

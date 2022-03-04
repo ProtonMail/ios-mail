@@ -233,7 +233,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     
     public func createUser(userParameters: UserParameters, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.CreateUserEndpoint(userParameters: userParameters)
-        self.apiService.exec(route: route) { (_, response) in
+        self.apiService.exec(route: route, responseObject: Response()) { (_, response) in
             if let responseError = response.error {
                 completion(.failure(.networkingError(responseError)))
             } else {
@@ -244,7 +244,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
 
     public func createExternalUser(externalUserParameters: ExternalUserParameters, completion: @escaping (Result<(), AuthErrors>) -> Void) {
         let route = AuthService.CreateExternalUserEndpoint(externalUserParameters: externalUserParameters)
-        self.apiService.exec(route: route) { (_, response) in
+        self.apiService.exec(route: route, responseObject: Response()) { (_, response) in
             if let responseError = response.error {
                 completion(.failure(.networkingError(responseError)))
             } else {

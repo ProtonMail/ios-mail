@@ -231,13 +231,15 @@ extension AccountManagerVC {
         self.navigationController?.view.backgroundColor = .clear
 
         // Left item
-        let closeBtn = UIBarButtonItem(image: UIImage(named: "icon_cross", in: Bundle.switchBundle, compatibleWith: nil), style: .plain, target: self, action: #selector(self.dismissView))
+        let closeBtn = UIBarButtonItem(image: IconProvider.crossSmall, style: .plain, target: self, action: #selector(self.dismissView))
         closeBtn.accessibilityLabel = CoreString._as_dismiss_button
         closeBtn.tintColor = ColorProvider.TextNorm
         self.navigationItem.leftBarButtonItem = closeBtn
 
-        let addBtn = UIBarButtonItem(image: UIImage(named: "menu_plus", in: Bundle.switchBundle, compatibleWith: nil),
-                                     style: .plain, target: self, action: #selector(self.clickAddButton))
+        let addBtn = UIBarButtonItem(image: IconProvider.plus,
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(self.clickAddButton))
         addBtn.tintColor = ColorProvider.TextNorm
         addBtn.accessibilityLabel = CoreString._as_sign_in_button
         self.navigationItem.rightBarButtonItem = addBtn

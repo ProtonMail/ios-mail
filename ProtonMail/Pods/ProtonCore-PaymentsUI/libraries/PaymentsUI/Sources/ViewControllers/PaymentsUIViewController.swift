@@ -62,6 +62,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.estimatedSectionHeaderHeight = sectionHeaderHeight
         }
     }
+    @IBOutlet weak var infoIcon: UIImageView! {
+        didSet {
+            infoIcon.image = IconProvider.info
+        }
+    }
     
     // MARK: - Properties
     
@@ -105,7 +110,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         navigationItem.assignNavItemIndentifiers()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(PaymentsUIViewController.asd),
+            selector: #selector(PaymentsUIViewController.informAboutIAPInProgress),
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
@@ -113,7 +118,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     var banner: PMBanner?
     
-    @objc private func asd() {
+    @objc private func informAboutIAPInProgress() {
         if model?.iapInProgress == true {
             let banner = PMBanner(message: CoreString._pu_iap_in_progress_banner,
                                   style: PMBannerNewStyle.error,

@@ -25,12 +25,16 @@ import ProtonCore_Services
 public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
 
     public init() {}
+    
+    @PropertyStub(\HumanVerifyDelegateMock.version, initialGet: .v3) var versionStub
+    public var version: HumanVerificationVersion { versionStub() }
 
     @FuncStub(HumanVerifyDelegateMock.onHumanVerify) public var onHumanVerifyStub
     public func onHumanVerify(parameters: HumanVerifyParameters,
                               currentURL: URL?,
+                              error: NSError,
                               completion: @escaping ((HumanVerifyFinishReason) -> Void)) {
-        onHumanVerifyStub(parameters, currentURL, completion)
+        onHumanVerifyStub(parameters, currentURL, error, completion)
     }
 
     @FuncStub(HumanVerifyDelegateMock.getSupportURL, initialReturn: URL(string: "https://protoncore.unittest")!) public var getSupportURLStub

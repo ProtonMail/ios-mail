@@ -26,7 +26,7 @@ import ProtonCore_CoreTranslation
 struct PlanPresentation {
     let name: String
     let title: PlanTitle
-    let price: String?
+    var price: String?
     let details: [String]
     var isSelectable: Bool
     var endDate: NSAttributedString?
@@ -57,16 +57,29 @@ extension PlanPresentation {
                            isCurrent: Bool,
                            isSelectable: Bool,
                            isMultiUser: Bool,
+                           hasPaymentMethods: Bool,
                            endDate: NSAttributedString?,
-                           price: String?) -> PlanPresentation? {
-
-        guard let plan = InAppPurchasePlan(protonName: details.name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers)
+                           price protonPrice: String?) -> PlanPresentation? {
+        guard let plan = InAppPurchasePlan(protonName: details.name,
+                                           listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers)
         else { return nil }
-        let price = plan.planPrice(from: storeKitManager) ?? price
+        let price: String?
+        if isCurrent, hasPaymentMethods {
+            price = protonPrice
+        } else if isCurrent, let currentPlanCycle = details.cycle.map(String.init), let iapCycle = plan.period, currentPlanCycle != iapCycle {
+            price = protonPrice
+        } else {
+            price = plan.planPrice(from: storeKitManager) ?? protonPrice
+        }
         let planDetails = planDetails(from: details, clientApp: clientApp, isMultiUser: isMultiUser)
         let name = planDetails.name ?? details.titleDescription
         let title: PlanTitle = isCurrent == true ? .current : .description(planDetails.description)
         return PlanPresentation(name: name, title: title, price: price, details: planDetails.details, isSelectable: isSelectable, endDate: endDate, cycle: details.cycleDescription, accountPlan: plan)
+    }
+    
+    static func getLocale(from name: String, storeKitManager: StoreKitManagerProtocol) -> Locale? {
+        guard let plan = InAppPurchasePlan(protonName: name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
+        return plan.planLocale(from: storeKitManager)
     }
     
     typealias PlanDetails = (name: String?, description: String?, details: [String])
@@ -139,7 +152,7 @@ extension PlanPresentation {
                             details.WUsersDescription
                           ])
 
-        case "IQpNgbDPcAyAH5Y8nlaKYq3L9uMOW929zmZxe3Re1n5L7fdYed9HVErP1AMV8r9f-h9_Ckglrts75_6xnSMhCQ==":
+        case "fEZ6naOcmw7obzRd1UVIgN3yaXUKH9SgfoC8Jj_4n2q1uTq1rES78h_eaO3RHAHZ4T5vgnpAi24hgWq0QZhk8g==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -150,7 +163,7 @@ extension PlanPresentation {
                             details.VCustomDomainDescription
                           ])
 
-        case "ha0056vPzrt4ErHVbwEGSfMo-e0__HU2kvV-XfkspMOCkVKYsJ5BaD1KUXYSLcR0D7K0q6_J_Z8HgJdGGxrJRA==":
+        case "r-cumUipwfofNYhXQWTf36Q9FBpFBdd--ZaLoGLeNGzTpKo86_yqCYWNETc4EubgVm-hgHEqbfae-t4Lw6MJSg==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -160,7 +173,7 @@ extension PlanPresentation {
                             details.ZCalendarsDescription
                           ])
 
-        case "sW6Msiby3tNWhOQycK3dOolAL341K40KHOPNv5wSVVFZwkayc7PIflVDxGU8oMwYoGVuI8RWz5OL3yomRfcO6A==":
+        case "38pKeB043dpMLfF_hjmZb7Zq3Gzrx6vpgojF5tPHKhJXNGUmwvNMKTSMYHDsp8Y-n8EUqYem3QMvUQh7LZDnaw==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -170,7 +183,7 @@ extension PlanPresentation {
                             details.UVPNConnectionsDescription
                           ])
 
-        case "7J7smwDoOZD537x3sohypBmu8phtWjoc7NmddefXLbHy76M8iTpcU9Zn0QsZhN9tRpJ8ILZ2GZVhaeCbku4IPQ==":
+        case "KLMoowYF45_Q0hRhQ_bFx11rMIBCm3Ljr_d-U_eDQhbHSf5-j6Q2CPZxffw37BOel8uOoM0ouUmiO301xt_q7w==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -181,7 +194,7 @@ extension PlanPresentation {
                             details.VCustomDomainDescription
                           ])
             
-        case "Bq1saqZsuqU5bf4pfkaQWs6I1pj4-w4XWMaeYMhsF5AiU5KZw_PFUkGi8F3cPi3wcxhbsyyGMWUGkEgY7pqFjg==":
+        case "jctxnoKsvmlISYpOtESCWNC4tcFbddXmcQ6yyM94YP4tBngrw4O9IKf8jxSLThqZyqFlX972kKwQCPriEeh4qg==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -192,7 +205,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
             
-        case "eV6W5eQXiEchPojDM6SPSy7ph6tkHS1U52TBoZpT_EVqKJsO8rLjHaxS2p0MV9TmugYPdato-OX_NGF-yUEa6Q==":
+        case "Z33WkziHqmXCEJ1Udm8f2vC3Jss9EIkFrgk4_rlSDoVHASjAemj5FsCUTYr7_27bgrbE4whe41PY4TiIr9Z-TA==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -200,43 +213,7 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
             
-        case "TZ0gXiJpXxhLyU2NB1ClFY1mkNISAk0vQKuLUV7MLAynE99drRWsw-7deVSaX8vhZ_Q6rCe4GHrF-9LX345S_w==":
-            strDetails = (name: nil,
-                          description: nil,
-                          optDetails: [
-                            isMultiUser ? details.XGBStorageDescription : details.XGBStoragePerUserDescription,
-                            isMultiUser ? details.YAddressesDescription : details.YAddressesPerUserDescription,
-                            isMultiUser ? details.ZCalendarsDescription : details.ZCalendarsPerUserDescription,
-                            isMultiUser ? details.UHighSpeedVPNConnectionsDescription : details.UHighSpeedVPNConnectionsPerUserDescription,
-                            details.VCustomDomainDescription,
-                            details.multiUserSupportDescription
-                          ])
-
-        case "hkw1pXa83IP_hkXMWCR5LraS6XIxCjCeVfgiuu3Rkge7pdwFJSoGa4H_9_9-qol9f4Cee0KLNXmiNYCcBRl8Aw==":
-            strDetails = (name: nil,
-                          description: nil,
-                          optDetails: [
-                            details.XGBStorageDescription,
-                            details.YAddressesDescription,
-                            details.ZCalendarsDescription,
-                            details.UHighSpeedVPNConnectionsDescription,
-                            details.VCustomDomainDescription,
-                            details.WUsersDescription
-                          ])
-
-        case "ihu53A4CrTd3dTadqbbZOhcnoPZpT2fwUVXoO2nai2IIl9urLn9CU04d8tWtRS4mbZEZ261RkagN1J1l42K6dw==":
-            strDetails = (name: nil,
-                          description: nil,
-                          optDetails: [
-                            details.XGBStorageDescription,
-                            details.YAddressesDescription,
-                            details.ZCalendarsDescription,
-                            details.UHighSpeedVPNConnectionsDescription,
-                            details.VCustomDomainDescription,
-                            details.WUsersDescription
-                          ])
-            
-        case "B78qtYLE6I1BjXKknSHfCGRBlpkWhe-QnR68jPYnO5clBmhF9AGwBlgt_mh5M9Dje4vuMdz9QyMKXVorCx0feg==":
+        case "Zv2tcvM2nlQ8XiYwWvWtfR-wO9BHprBVm-UxtpNUMlex0M-EEQpfQxdx-dEYscubmbHjMo6ItsHNp0QqTM89oA==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [
@@ -248,7 +225,31 @@ extension PlanPresentation {
                             details.multiUserSupportDescription
                           ])
 
-        case "gi_MHe7rStGdIGADZ0zR5fqgqD4FIjq_G53NRs-2uZfiNqYLhA6YSCTX6Ho_OYEwi0v8NLUDoZFPJZouJ_YGzw==":
+        case "N63r9gPcEBu6cenKrOIjIwPLzuT_So458WgbiBvHbDueZ8K_PQboKAAWu5yH95-3SEk7R4nnxqlU-qhRD07r5w==":
+            strDetails = (name: nil,
+                          description: nil,
+                          optDetails: [
+                            details.XGBStorageDescription,
+                            details.YAddressesDescription,
+                            details.ZCalendarsDescription,
+                            details.UHighSpeedVPNConnectionsDescription,
+                            details.VCustomDomainDescription,
+                            details.WUsersDescription
+                          ])
+
+        case "Ik65N-aChBuWFdo1JpmHJB4iWetfzjVLNILERQqbYFBZc5crnxOabXKuIMKhiwBNwiuogItetAUvkFTwJFJPQg==":
+            strDetails = (name: nil,
+                          description: nil,
+                          optDetails: [
+                            details.XGBStorageDescription,
+                            details.YAddressesDescription,
+                            details.ZCalendarsDescription,
+                            details.UHighSpeedVPNConnectionsDescription,
+                            details.VCustomDomainDescription,
+                            details.WUsersDescription
+                          ])
+            
+        case "OYB-3pMQQA2Z2Qnp5s5nIvTVO2alU6h82EGLXYHn1mpbsRvE7UfyAHbt0_EilRjxhx9DCAUM9uXfM2ZUFjzPXw==":
             strDetails = (name: nil,
                           description: nil,
                           optDetails: [

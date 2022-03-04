@@ -75,12 +75,17 @@ public protocol ResponseType: AnyObject {
 }
 
 public extension ResponseType {
+    
+    @available(*, deprecated, renamed: "parseNetworkCallResults(responseObject:originalResponse:responseDict:error:)")
+    static func parseNetworkCallResults<T>(
+        to: T.Type, responseObject: T = T(), response: URLResponse?, responseDict: [String: Any]?, error: NSError?
+    ) -> (T, ResponseError?) where T: ResponseType {
+        parseNetworkCallResults(responseObject: responseObject, originalResponse: response, responseDict: responseDict, error: error)
+    }
 
     static func parseNetworkCallResults<T>(
-        to: T.Type, response: URLResponse?, responseDict: [String: Any]?, error: NSError?
+        responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
-        let apiRes = T()
-        
         if let httpResponse = response as? HTTPURLResponse, let url = httpResponse.url {
             PMLog.debug("URL: \(url.absoluteString), status code: \(httpResponse.statusCode)")
         }

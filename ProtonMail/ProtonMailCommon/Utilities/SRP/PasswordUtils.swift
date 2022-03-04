@@ -25,7 +25,7 @@ import Foundation
 import OpenPGP
 import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_SRP
+import ProtonCore_Hash
 
 enum PasswordError: Error {
     case hashEmpty

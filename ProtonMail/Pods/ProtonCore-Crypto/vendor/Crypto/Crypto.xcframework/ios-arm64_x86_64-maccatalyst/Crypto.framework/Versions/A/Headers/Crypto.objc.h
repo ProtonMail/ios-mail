@@ -529,12 +529,16 @@ the given headers. Empty parameters are omitted from the headers.
 // skipped method PGPMessage.NewReader with unsupported parameter or return types
 
 /**
- * SeparateKeyAndData returns the first keypacket and the (hopefully unique)
-dataPacket (not verified).
-* estimatedLength is the estimate length of the message.
-* garbageCollector > 0 activates the garbage collector.
+ * SeparateKeyAndData splits the message into key and data packet(s).
+Parameters are for backwards compatibility and are unused.
+Deprecated: use SplitMessage().
  */
-- (CryptoPGPSplitMessage* _Nullable)separateKeyAndData:(long)estimatedLength garbageCollector:(long)garbageCollector error:(NSError* _Nullable* _Nullable)error;
+- (CryptoPGPSplitMessage* _Nullable)separateKeyAndData:(long)p0 p1:(long)p1 error:(NSError* _Nullable* _Nullable)error;
+/**
+ * SplitMessage splits the message into key and data packet(s).
+Parameters are for backwards compatibility and are unused.
+ */
+- (CryptoPGPSplitMessage* _Nullable)splitMessage:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**

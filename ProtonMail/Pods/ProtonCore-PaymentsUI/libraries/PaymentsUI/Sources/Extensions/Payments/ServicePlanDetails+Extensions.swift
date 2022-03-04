@@ -29,7 +29,7 @@ extension Plan {
         return title
     }
 
-    private var storageFormatter: ByteCountFormatter {
+    var storageFormatter: ByteCountFormatter {
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
         formatter.allowedUnits = [.useGB]
@@ -37,7 +37,7 @@ extension Plan {
         return formatter
     }
 
-    private func roundedToOneDecimal(_ maxSpace: Int64) -> Int64 {
+    func roundedToOneDecimal(_ maxSpace: Int64) -> Int64 {
         let bytesInGB: Double = 1024 * 1024 * 1024
         let spaceInGB = Double(maxSpace) / bytesInGB
         let roundedSpaceInGB = round(spaceInGB * 10) / 10
@@ -156,7 +156,7 @@ extension Plan {
     }
     
     var cycleDescription: String? {
-        guard let cycle = cycle else { return nil }
+        guard let cycle = cycle, cycle > 0 else { return nil }
         let years = cycle / 12
         if years > 0 {
             return String(format: CoreString._pu_plan_details_price_time_period_y, years)

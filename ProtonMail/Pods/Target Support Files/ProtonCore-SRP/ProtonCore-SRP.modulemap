@@ -1,6 +1,0 @@
-framework module ProtonCore_SRP {
-  umbrella header "ProtonCore-SRP-umbrella.h"
-
-  export *
-  module * { export * }
-}

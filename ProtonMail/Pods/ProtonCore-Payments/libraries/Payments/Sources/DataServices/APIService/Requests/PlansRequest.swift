@@ -44,7 +44,7 @@ final class PlansResponse: Response {
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
         guard let plansResponse = response["Plans"] else { return false }
-        let (result, plans) = decodeResponse(plansResponse, to: [Plan].self)
+        let (result, plans) = decodeResponse(plansResponse, to: [Plan].self, errorToReturn: .plansDecode)
         availableServicePlans = plans
         return result
     }

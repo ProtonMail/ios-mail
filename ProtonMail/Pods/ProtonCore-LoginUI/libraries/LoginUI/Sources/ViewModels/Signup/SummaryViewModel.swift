@@ -77,15 +77,9 @@ class SummaryViewModel {
     var brandIcon: UIImage? {
         switch clientApp {
         case .mail, .drive, .calendar, .other:
-            return UIImage(named: "summary_proton", in: LoginAndSignup.bundle, compatibleWith: nil)
+            return IconProvider.loginSummaryProton
         case .vpn:
-            return UIImage(named: "summary_vpn", in: LoginAndSignup.bundle, compatibleWith: nil)
+            return IconProvider.loginSummaryVPN
         }
-    }
-    
-    // MARK: Private interface
-
-    private func getImage(name: String) -> UIImage? {
-        return UIImage(named: name, in: LoginAndSignup.bundle, compatibleWith: nil)
     }
 }

@@ -108,7 +108,6 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             planDescriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
             planDescriptionLabel.text = CoreString._pu_plan_details_plan_details_unavailable_contact_administrator
             planDescriptionLabel.textColor = ColorProvider.TextNorm
-            layoutIfNeeded()
         }
 
         if let price = plan.price {

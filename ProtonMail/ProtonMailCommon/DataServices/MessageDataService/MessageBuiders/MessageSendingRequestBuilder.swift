@@ -18,7 +18,7 @@
 import AwaitKit
 import PromiseKit
 import ProtonCore_DataModel
-import ProtonCore_SRP
+import ProtonCore_Hash
 
 /// A sending message request builder
 ///

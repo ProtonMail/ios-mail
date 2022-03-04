@@ -83,6 +83,7 @@ public class MenuViewController: UIViewController, AccessibleView {
     // MARK: - Private Interface
 
     private func configureUI() {
+        closeBarButtonItem.image = IconProvider.crossSmall
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
         view.backgroundColor = ColorProvider.BackgroundNorm

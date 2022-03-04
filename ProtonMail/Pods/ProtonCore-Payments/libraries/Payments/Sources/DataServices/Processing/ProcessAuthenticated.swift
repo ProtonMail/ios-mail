@@ -51,7 +51,7 @@ final class ProcessAuthenticated: ProcessProtocol {
         do {
             PMLog.debug("Making TokenRequestStatus")
             let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
-            let tokenStatusRes = try tokenStatusApi.awaitResponse()
+            let tokenStatusRes = try tokenStatusApi.awaitResponse(responseObject: TokenStatusResponse())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:
@@ -96,7 +96,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 api: dependencies.apiService, amount: plan.amount, receipt: receipt
             )
             PMLog.debug("Making TokenRequest")
-            let tokenRes = try tokenApi.awaitResponse()
+            let tokenRes = try tokenApi.awaitResponse(responseObject: TokenResponse())
             guard let token = tokenRes.paymentToken else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
             dependencies.tokenStorage.add(token)
             try self.process(transaction: transaction, plan: plan, completion: completion) // Exception would've been thrown on the first call
@@ -131,7 +131,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 amountDue: plan.amountDue,
                 paymentAction: .token(token: token.token)
             )
-            let recieptRes = try request.awaitResponse()
+            let recieptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
             PMLog.debug("StoreKit: success (1)")
             if let newSubscription = recieptRes.newSubscription {
                 dependencies.updateSubscription(newSubscription)
@@ -149,7 +149,7 @@ final class ProcessAuthenticated: ProcessProtocol {
                 let serverUpdateApi = dependencies.paymentsApiProtocol.creditRequest(
                     api: dependencies.apiService, amount: plan.amount, paymentAction: .token(token: token.token)
                 )
-                _ = try serverUpdateApi.awaitResponse()
+                _ = try serverUpdateApi.awaitResponse(responseObject: CreditResponse())
                 dependencies.finishTransaction(transaction)
                 dependencies.tokenStorage.clear()
                 completion(.errored(.creditsApplied))

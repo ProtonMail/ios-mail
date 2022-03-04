@@ -47,6 +47,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     private (set) var plans: [[PlanPresentation]] = []
     private (set) var footerType: FooterType = .withoutPlans
     
+    var numberOfCells: Int { plans.flatMap { $0 }.count }
     var iapInProgress: Bool { storeKitManager.hasIAPInProgress() }
     
     var processingAccountPlan: InAppPurchasePlan? {
@@ -130,7 +131,14 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
     private func processAllPlans(completionHandler: ((Result<([[PlanPresentation]], FooterType), Error>) -> Void)? = nil) {
         let localPlans = servicePlan.plans
             .compactMap {
-                return createPlan(details: $0, isSelectable: true, isCurrent: false, isMultiUser: false, cycle: $0.cycle)
+                return createPlan(details: $0,
+                                  isSelectable: true,
+                                  isCurrent: false,
+                                  isMultiUser: false,
+                                  hasPaymentMethods: servicePlan.hasPaymentMethods,
+                                  endDate: nil,
+                                  price: nil,
+                                  cycle: $0.cycle)
             }
         if localPlans.count > 0 {
             self.plans.append(localPlans)
@@ -161,7 +169,14 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
         let userHasNoAccessToThePlan = self.servicePlan.currentSubscription?.isEmptyBecauseOfUnsufficientScopeToFetchTheDetails == true
         let userHasNoPlan = !userHasNoAccessToThePlan && (self.servicePlan.currentSubscription?.planDetails.map { $0.isEmpty } ?? true)
         let freePlan = servicePlan.detailsOfServicePlan(named: InAppPurchasePlan.freePlanName).flatMap {
-            self.createPlan(details: $0, isSelectable: false, isCurrent: true, isMultiUser: false)
+            self.createPlan(details: $0,
+                            isSelectable: false,
+                            isCurrent: true,
+                            isMultiUser: false,
+                            hasPaymentMethods: servicePlan.hasPaymentMethods,
+                            endDate: nil,
+                            price: nil,
+                            cycle: nil)
         }
 
         if userHasNoPlan {
@@ -170,7 +185,16 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                 self.plans.append([freePlan])
             }
             let plansToShow = self.servicePlan.availablePlansDetails
-                .compactMap { createPlan(details: $0, isSelectable: true, isCurrent: false, isMultiUser: false) }
+                .compactMap {
+                    createPlan(details: $0,
+                               isSelectable: true,
+                               isCurrent: false,
+                               isMultiUser: false,
+                               hasPaymentMethods: servicePlan.hasPaymentMethods,
+                               endDate: nil,
+                               price: nil,
+                               cycle: $0.cycle)
+                }
             self.plans.append(plansToShow)
             footerType = plansToShow.isEmpty ? .withoutPlans : .withPlans
             completionHandler?(.success((self.plans, footerType)))
@@ -188,8 +212,10 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                           isSelectable: false,
                                           isCurrent: true,
                                           isMultiUser: subscription.organization?.isMultiUser ?? false,
+                                          hasPaymentMethods: servicePlan.hasPaymentMethods,
                                           endDate: servicePlan.endDateString(plan: accountPlan),
-                                          price: servicePlan.price, cycle: subscription.cycle) {
+                                          price: subscription.price,
+                                          cycle: subscription.cycle) {
                 self.plans.append([plan])
                 completionHandler?(.success((self.plans, footerType)))
             } else {
@@ -220,15 +246,28 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
         }
     }
 
-    private func createPlan(details baseDetails: Plan, isSelectable: Bool, isCurrent: Bool, isMultiUser: Bool, endDate: NSAttributedString? = nil, price: String? = nil, cycle: Int? = nil) -> PlanPresentation? {
+    // swiftlint:disable function_parameter_count
+    private func createPlan(details baseDetails: Plan,
+                            isSelectable: Bool,
+                            isCurrent: Bool,
+                            isMultiUser: Bool,
+                            hasPaymentMethods: Bool,
+                            endDate: NSAttributedString?,
+                            price: String?,
+                            cycle: Int?) -> PlanPresentation? {
         
         // we need to remove all other plans not defined in the shownPlanNames
-        guard shownPlanNames.contains(where: { baseDetails.name == $0 || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name) }) else { return nil }
+        guard shownPlanNames.contains(where: {
+            baseDetails.name == $0 || InAppPurchasePlan.isThisAFreePlan(protonName: baseDetails.name)
+        }) else { return nil }
 
         // we only show plans that are either current or available for purchase
         guard isCurrent || baseDetails.isPurchasable else { return nil }
 
-        let details = servicePlan.defaultPlanDetails.map { Plan.combineDetailsDroppingPricing(baseDetails, $0) } ?? baseDetails
+        var details = servicePlan.defaultPlanDetails.map { Plan.combineDetailsDroppingPricing(baseDetails, $0) } ?? baseDetails
+        if let cycle = cycle {
+            details = details.updating(cycle: cycle)
+        }
 
         return PlanPresentation.createPlan(from: details,
                                            clientApp: clientApp,
@@ -236,6 +275,7 @@ final class PaymentsUIViewModelViewModel: CurrentSubscriptionChangeDelegate {
                                            isCurrent: isCurrent,
                                            isSelectable: isSelectable,
                                            isMultiUser: isMultiUser,
+                                           hasPaymentMethods: hasPaymentMethods,
                                            endDate: endDate,
                                            price: price)
     }

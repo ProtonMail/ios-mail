@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -264,19 +264,31 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="21p-Yv-DG4" customClass="PMSegmentedControl" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="112.33333333333334" width="358" height="41"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2cK-Jb-xIR"/>
-                                                </constraints>
-                                                <segments>
-                                                    <segment title="Email"/>
-                                                    <segment title="Phone"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="onMethodSegmentedTap:" destination="6ZI-zN-8iV" eventType="valueChanged" id="a0n-3s-Dcp"/>
-                                                </connections>
-                                            </segmentedControl>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7H5-6h-Ku6">
+                                                <rect key="frame" x="8" y="96.333333333333343" width="358" height="56"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="maY-AN-C76">
+                                                        <rect key="frame" x="0.0" y="0.0" width="358" height="16"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="16" id="SjH-4v-Zey"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="21p-Yv-DG4" customClass="PMSegmentedControl" customModule="ProtonCore_UIFoundations">
+                                                        <rect key="frame" x="0.0" y="16" width="358" height="41"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2cK-Jb-xIR"/>
+                                                        </constraints>
+                                                        <segments>
+                                                            <segment title="Email"/>
+                                                            <segment title="Phone"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="onMethodSegmentedTap:" destination="6ZI-zN-8iV" eventType="valueChanged" id="a0n-3s-Dcp"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                </subviews>
+                                            </stackView>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="350" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="hen-aY-mep" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
                                                 <rect key="frame" x="8" y="184.33333333333334" width="358" height="80.000000000000028"/>
                                             </view>
@@ -309,24 +321,24 @@
                                             <constraint firstItem="546-5J-cxx" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="2Mr-7S-3d1"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="top" secondItem="hen-aY-mep" secondAttribute="bottom" constant="24" id="3ob-J1-fNp"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="top" secondItem="546-5J-cxx" secondAttribute="bottom" constant="8" id="4z0-Dt-5Yo"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="5Ph-c1-4sh"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="9uo-En-PEQ"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="Aip-SO-Im0"/>
+                                            <constraint firstItem="h0d-0U-xjK" firstAttribute="top" secondItem="7H5-6h-Ku6" secondAttribute="bottom" constant="32" id="EYK-Dm-zdE"/>
                                             <constraint firstItem="546-5J-cxx" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="IfM-ha-eXf"/>
-                                            <constraint firstItem="hen-aY-mep" firstAttribute="top" secondItem="21p-Yv-DG4" secondAttribute="bottom" constant="32" id="MYg-Wb-0Yn"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="top" secondItem="9Rt-Fy-zQH" secondAttribute="bottom" constant="16" id="UAM-aE-JEI"/>
+                                            <constraint firstItem="7H5-6h-Ku6" firstAttribute="top" secondItem="9Rt-Fy-zQH" secondAttribute="bottom" id="LQD-eQ-jZW"/>
                                             <constraint firstItem="546-5J-cxx" firstAttribute="top" secondItem="mmH-MH-N8x" secondAttribute="top" constant="8" id="VbY-eT-Dgi"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="leading" secondItem="hen-aY-mep" secondAttribute="leading" id="W8z-UB-dqT"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="bottom" secondItem="mmH-MH-N8x" secondAttribute="bottom" constant="-8" id="X0s-q6-9Ro"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="YFo-bd-D74"/>
-                                            <constraint firstItem="h0d-0U-xjK" firstAttribute="top" secondItem="21p-Yv-DG4" secondAttribute="bottom" constant="32" id="YxB-pn-hnF"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="trailing" secondItem="hen-aY-mep" secondAttribute="trailing" id="bD8-3g-WQU"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="dwq-Lb-VVf"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="top" secondItem="Sg8-Qx-pu3" secondAttribute="bottom" constant="16" id="hXC-wA-GwZ"/>
                                             <constraint firstItem="hen-aY-mep" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="iqh-u7-yzz"/>
+                                            <constraint firstAttribute="trailing" secondItem="7H5-6h-Ku6" secondAttribute="trailing" constant="8" id="ka4-Dh-JxJ"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="kab-A4-wL1"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="lkk-Lm-K5d"/>
+                                            <constraint firstItem="7H5-6h-Ku6" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="oyH-OG-3E2"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="rEr-Cs-FfC"/>
+                                            <constraint firstItem="hen-aY-mep" firstAttribute="top" secondItem="7H5-6h-Ku6" secondAttribute="bottom" constant="32" id="s7o-eM-IKt"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="wcR-sg-O9o"/>
                                         </constraints>
                                     </view>
@@ -352,6 +364,7 @@
                     </view>
                     <connections>
                         <outlet property="methodSegmenedControl" destination="21p-Yv-DG4" id="zdN-A7-dWa"/>
+                        <outlet property="methodStackView" destination="7H5-6h-Ku6" id="pPq-vF-a4e"/>
                         <outlet property="nextButton" destination="Sg8-Qx-pu3" id="KBV-GX-GMy"/>
                         <outlet property="recoveryEmailTextField" destination="hen-aY-mep" id="MU0-ra-PMF"/>
                         <outlet property="recoveryMethodDescriptionLabel" destination="9Rt-Fy-zQH" id="to2-V6-6Va"/>
@@ -674,6 +687,7 @@
                         <outlet property="header" destination="zGS-2r-kFe" id="Da3-Up-gAY"/>
                         <outlet property="imageView" destination="aX7-kd-Yu6" id="Il3-4I-ruO"/>
                         <outlet property="startButton" destination="wbH-i9-YnW" id="10g-mE-umo"/>
+                        <outlet property="summaryImage" destination="CIg-iZ-cOE" id="B6d-r5-KvP"/>
                         <outlet property="welcomeLabel" destination="bhB-wc-uYp" id="pDR-gz-s4b"/>
                     </connections>
                 </viewController>
@@ -682,6 +696,9 @@
             <point key="canvasLocation" x="3223.0769230769229" y="-618.48341232227483"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="ZOD-ob-rBK"/>
+    </designables>
     <resources>
         <image name="summary_bottom" width="233" height="156"/>
         <image name="summary_proton" width="65" height="65"/>
