@@ -234,6 +234,14 @@ class ComposeViewModel: NSObject {
                                                   isPasswordSet: isPasswordSet,
                                                   havingNonPMEmail: havingNonPMEmail)
     }
+
+    func needAttachRemindAlert(subject: String, body: String, attachmentNum: Int) -> Bool {
+        fatalError("This method must be overridden")
+    }
+
+    func getNormalAttachmentNum() -> Int {
+        fatalError("This method must be overridden")
+    }
 }
 
 

@@ -452,8 +452,20 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         
         stopAutoSave()
-        self.collectDraftData().done {
-            self.sendMessageStepThree()
+        _ = self.collectDraftData().done { [weak self] result in
+            guard let self = self else { return }
+            guard let result = result else {
+                      self.sendMessageStepThree()
+                      return
+                  }
+            let attachmentNum = self.viewModel.getNormalAttachmentNum()
+            if self.viewModel.needAttachRemindAlert(subject: result.0,
+                                                    body: result.1,
+                                                    attachmentNum: attachmentNum) {
+                self.showAttachRemindAlert()
+            } else {
+                self.sendMessageStepThree()
+            }
         }
     }
     
@@ -496,8 +508,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.stopAutoSave()
 		//Remove the EO when we save the draft
         self.headerView.expirationTimeInterval = 0
-        self.collectDraftData().done {
-            self.viewModel.updateDraft()
+        self.collectDraftData().done { [weak self] _ in
+            guard let self = self else { return }
+            return self.viewModel.updateDraft()
         }.catch { _ in
             
         }.finally {
@@ -520,15 +533,18 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     @objc func autoSaveTimer() {
-        self.updateCIDs().then {
-            self.collectDraftData()
-        }.done {
-            self.viewModel.updateDraft()
+        _ = self.updateCIDs().then { [weak self] () -> Promise<(String, String)?> in
+            guard let self = self else {
+                return Promise.value(nil)
+            }
+            return self.collectDraftData()
+        }.done { [weak self] _ in
+            self?.viewModel.updateDraft()
         }
     }
     
-    private func updateCIDs() -> Guarantee<Void> {
-        return Guarantee { ret in
+    private func updateCIDs() -> Promise<Void> {
+        return Promise { seal in
             let orignalPromise = self.htmlEditor.getOrignalCIDs()
             let editedPromise  = self.htmlEditor.getEditedCIDs()
             when(fulfilled: orignalPromise, editedPromise).done { (orignal, edited) in
@@ -536,13 +552,17 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }.catch { (_) in
                 //
             }.finally {
-                ret(())
+                seal.fulfill_()
             }
         }
     }
     
-    private func collectDraftData()  -> Guarantee<Void>  {
-        return Guarantee { ret in
+    private func collectDraftData()  -> Promise<(String, String)?>  {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                seal.fulfill(nil)
+                return
+            }
             self.htmlEditor.getHtml().done { bodyString in
                 
                 let head = "<html><head></head><body>"
@@ -560,18 +580,19 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
-                
+                let subject = self.headerView.subject.text ?? "(No Subject)"
                 self.viewModel.collectDraft (
-                    self.headerView.subject.text ?? "(No Subject)",
+                    subject,
                     body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
                 )
+                seal.fulfill((subject, body))
             }.catch { _ in
                 //handle the errors
             }.finally {
-                ret(())
+                seal.fulfill(nil)
             }
         }
     }
@@ -633,6 +654,21 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     @objc func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
+    }
+
+    private func showAttachRemindAlert() {
+        let title = LocalString._no_attachment_found
+        let message = LocalString._do_you_want_to_send_message_anyway
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancel = UIAlertAction(
+            title: LocalString._general_cancel_action,
+            style: .cancel,
+            handler: nil)
+        let send = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
+            self?.sendMessageStepThree()
+        }
+        [cancel, send].forEach(alert.addAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -900,10 +936,19 @@ extension ComposeViewController : ComposeViewDataSource {
 // MARK: Attachment
 extension ComposeViewController {
     func attachments(pickup attachment: Attachment) -> Promise<Void> {
-        return Promise { seal in
-            self.collectDraftData().done {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                seal.fulfill_()
+                return
+            }
+            _ = self.collectDraftData().done { [weak self] _ in
+                guard let self = self,
+                      let message = self.viewModel.message else {
+                          seal.fulfill_()
+                          return
+                      }
                 attachment.managedObjectContext?.performAndWait {
-                    attachment.message = self.viewModel.message!
+                    attachment.message = message
                     _ = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                 }
                 self.viewModel.uploadAtt(attachment)
@@ -913,16 +958,25 @@ extension ComposeViewController {
     }
 
     func attachments(deleted attachment: Attachment) -> Promise<Void> {
-        return Promise { seal in
-            self.collectDraftData().done {
+        return Promise { [weak self] seal in
+            guard let self = self else {
+                seal.fulfill_()
+                return
+            }
+            self.collectDraftData().done { _ in
                 if let content_id = attachment.contentID(),
                    !content_id.isEmpty &&
                     attachment.inline() {
                     self.htmlEditor.remove(embedImage: "cid:\(content_id)")
                 }
-            }.then { (_) -> Promise<Void> in
+            }.then { [weak self] (_) -> Promise<Void> in
+                guard let self = self else { return Promise() }
                 return self.viewModel.deleteAtt(attachment)
-            }.ensure {
+            }.ensure { [weak self] in
+                guard let self = self else {
+                    seal.fulfill_()
+                    return
+                }
                 // decrement number of attachments in message manually
                 let realAttachments = userCachedStatus.realAttachments
                 if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ attach in

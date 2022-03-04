@@ -2239,4 +2239,6 @@ class LocalizedString {
 
     lazy var _token_revoke_noti_title = NSLocalizedString("Logged out of %@", comment: "The title of notification that will show when the token of one account is revoked")
     lazy var _token_revoke_noti_body = NSLocalizedString("Log in again to keep receiving updates", comment: "The body of notification that will show when the token of one account is revoked")
+    lazy var _no_attachment_found = NSLocalizedString("No attachment found", comment: "Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body")
+    lazy var _do_you_want_to_send_message_anyway = NSLocalizedString("Do you want to send your message anyway?", comment: "Alert body for no attachment found")
 }
