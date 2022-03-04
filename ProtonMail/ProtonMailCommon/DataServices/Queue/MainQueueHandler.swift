@@ -520,6 +520,7 @@ extension MainQueueHandler {
                                                      headers: .empty,
                                                      authenticated: true,
                                                      customAuthCredential: attachment.message.cachedAuthCredential,
+                                                     nonDefaultTimeout: 60,
                                                      completion: completionWrapper)
             }
         }
