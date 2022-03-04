@@ -2213,7 +2213,7 @@ extension EncryptedSearchService {
 
                     // Update UI
                     if result.currentProgress != 0 {
-                        self.viewModel?.currentProgress.value = result.currentProgress
+                        self.viewModel?.currentProgress.value = result.currentProgress > 100 ? 100 : result.currentProgress
                     }
 
                     // Just show an time estimate after a few rounds (to have a more stable estimate)
