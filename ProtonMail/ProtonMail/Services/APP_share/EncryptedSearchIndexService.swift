@@ -125,7 +125,7 @@ extension EncryptedSearchIndexService {
                                   encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
 
-        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial]
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             do {
                 let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
@@ -346,7 +346,7 @@ extension EncryptedSearchIndexService {
         return (sizeOfIndex, size)
     }
 
-    func getOldestMessageInSearchIndex(for userID: String) -> (asInt64: Int64?, asString: String) {
+    func getOldestMessageInSearchIndex(for userID: String) -> (asInt: Int, asString: String) {
         // If indexing is disabled then do nothing
         if userCachedStatus.isEncryptedSearchOn == false ||
             EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
@@ -366,7 +366,7 @@ extension EncryptedSearchIndexService {
         } catch {
             print("Error when querying oldest message in search index: \(error)")
         }
-        return (Int64(oldestMessage), self.timeToDateString(time: oldestMessage))
+        return (Int(oldestMessage), self.timeToDateString(time: oldestMessage))
     }
 
     func getNewestMessageInSearchIndex(for userID: String) -> Int {
@@ -390,6 +390,30 @@ extension EncryptedSearchIndexService {
             print("Error when querying newest message in search index: \(error)")
         }
         return Int(newestMessage)
+    }
+
+    func getMessageIDOfOldestMessageInSearchIndex(for userID: String) -> String? {
+        // If indexing is disabled then do nothing
+        if userCachedStatus.isEncryptedSearchOn == false ||
+            EncryptedSearchService.shared.getESState(userID: userID) == .disabled {
+            return nil
+        }
+
+        let time: Expression<CLong> = self.databaseSchema.time
+        let id: Expression<String> = self.databaseSchema.messageID
+        let query = self.searchableMessages.select(id).order(time.asc).limit(1)
+        // SELECT "id" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
+
+        let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+        var idOfOldestMessage: String? = nil
+        do {
+            for result in try handleToSQLiteDB!.prepare(query) {
+                idOfOldestMessage = result[id]
+            }
+        } catch {
+            print("Error when querying oldest message in search index: \(error)")
+        }
+        return idOfOldestMessage
     }
 
     func getMessageIDOfNewestMessageInSearchIndex(for userID: String) -> String? {
