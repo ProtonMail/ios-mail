@@ -91,7 +91,6 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToLowStorage: Bool = false
     internal var indexBuildingTimer: Timer? = nil
     internal var estimateIndexTimeRounds: Int = 0
-    var noNewMessagesFound: Int = 0 // counter to break message fetching loop if no new messages are fetched after 5 attempts
     internal var eventsWhileIndexing: [MessageAction]? = []
     internal var messageIndexingQueue: OperationQueue? = nil
     internal var downloadPageQueue: OperationQueue? = nil
@@ -162,8 +161,8 @@ extension EncryptedSearchService {
                         self.setESState(userID: userID, indexingState: .complete)
                     } else {
                         self.setESState(userID: userID, indexingState: .partial)
-                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
-                        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
+                        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
+                        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
                     }
                 }
             }
@@ -352,8 +351,8 @@ extension EncryptedSearchService {
         userCachedStatus.encryptedSearchProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
         userCachedStatus.encryptedSearchPreviousProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
         // Update last indexed message with the newest message in search index
-        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
-        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
+        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
+        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
 
         // reset counter to stabilize indexing estimate
         self.estimateIndexTimeRounds = 0
@@ -403,8 +402,8 @@ extension EncryptedSearchService {
         userCachedStatus.encryptedSearchPreviousProcessedMessages = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
 
         // Update last indexed message with the newest message in search index
-        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getNewestMessageInSearchIndex(for: userID)
-        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfNewestMessageInSearchIndex(for: userID)
+        userCachedStatus.encryptedSearchLastMessageTimeIndexed = EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asInt
+        userCachedStatus.encryptedSearchLastMessageIDIndexed = EncryptedSearchIndexService.shared.getMessageIDOfOldestMessageInSearchIndex(for: userID)
 
         // Start refreshing the index
         DispatchQueue.global(qos: .userInitiated).async {
@@ -489,11 +488,11 @@ extension EncryptedSearchService {
                     DispatchQueue.main.async {
                         self.indexBuildingTimer?.invalidate()
                     }
-
-                    // Update UI
-                    self.updateUIWithIndexingStatus(userID: userID)
                 }
             }
+
+            // Update UI
+            self.updateUIWithIndexingStatus(userID: userID)
         } else if self.getESState(userID: userID) == .paused {
             // Invalidate timer on same thread as it has been created
             DispatchQueue.main.async {
@@ -689,7 +688,6 @@ extension EncryptedSearchService {
             }
 
             // Update some variables
-            self.noNewMessagesFound = 0
             self.eventsWhileIndexing = []
 
             self.pauseIndexingDueToNetworkConnectivityIssues = false
@@ -1018,9 +1016,6 @@ extension EncryptedSearchService {
             if userCachedStatus.encryptedSearchProcessedMessages >= userCachedStatus.encryptedSearchTotalMessages {
                 completionHandler()
             } else {
-                if self.noNewMessagesFound > 5 {
-                    completionHandler()
-                }
                 let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
                 if expectedESStates.contains(self.getESState(userID: userID)) {
                     // Recursion
@@ -2583,7 +2578,8 @@ extension EncryptedSearchService {
                 self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
                 return
             }
-            if self.getESState(userID: userID) == .complete {
+            let expectedESStates: [EncryptedSearchIndexState] = [.complete, .partial]
+            if expectedESStates.contains(self.getESState(userID: userID)) {
                 self.viewModel?.isIndexingComplete.value = true
                 #if !APP_EXTENSION
                     self.searchViewModel?.encryptedSearchIndexingComplete = true
