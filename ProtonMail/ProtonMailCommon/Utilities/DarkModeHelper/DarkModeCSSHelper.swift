@@ -207,7 +207,7 @@ struct CSSMagic {
             CSSKeys.bgColor.rawValue,
             CSSKeys.color.rawValue
         ]
-        for keyword in keywords {
+        for keyword in keywords { 
             guard node.hasAttr(keyword) else { continue }
             return true
         }
