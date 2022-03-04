@@ -176,6 +176,16 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertTrue("abccdew".preg_match("cc"))
     }
 
+    func testPreg_range() {
+        guard let range = "abc".preg_range("bc") else {
+            XCTFail("Should have range")
+            return
+        }
+        let subString = "abc"[range]
+        XCTAssertEqual(subString, "bc")
+        XCTAssertNil("abc".preg_range("eifl"))
+    }
+
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
         XCTAssertFalse(testSrc1.hasImage())

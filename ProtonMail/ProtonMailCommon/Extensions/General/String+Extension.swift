@@ -174,6 +174,21 @@ extension String {
         return false
     }
 
+    func preg_range(_ pattern: String) -> Range<String.Index>? {
+        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options:options)
+            guard let match = regex.firstMatch(in: self,
+                                               options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                                               range: NSRange(location: 0, length: self.count)) else {
+                return nil
+            }
+            return Range(match.range, in: self)
+        } catch {
+        }
+        return nil
+    }
+
     //<link rel="stylesheet" type="text/css" href="http://url/">
     func hasImage() -> Bool {
         if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!cid:)|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {

@@ -818,6 +818,28 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
         
     }
+
+    override func getNormalAttachmentNum() -> Int {
+        guard let messageObject = self.message else { return 0 }
+        let attachments = messageObject.attachments
+            .allObjects
+            .compactMap({ $0 as? Attachment })
+            .filter({ !$0.inline() && !$0.isSoftDeleted })
+        return attachments.count
+    }
+
+    override func needAttachRemindAlert(subject: String,
+                                        body: String,
+                                        attachmentNum: Int) -> Bool {
+        // If the message contains attachments
+        // It contains keywords or not doesn't important
+        if attachmentNum > 0 { return false }
+
+        let content = "\(subject) \(body.body(strippedFromQuotes: true))"
+        let language = LanguageManager.currentLanguageEnum()
+        return AttachReminderHelper.hasAttachKeyword(content: content,
+                                                     language: language)
+    }
 }
 
 extension ComposeViewModelImpl {
