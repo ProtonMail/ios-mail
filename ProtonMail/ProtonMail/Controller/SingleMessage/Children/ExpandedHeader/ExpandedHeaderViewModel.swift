@@ -136,7 +136,8 @@ class ExpandedHeaderViewModel {
         let recipients = contacts.map { recipient -> ExpandedHeaderRecipientRowViewModel in
             let email = recipient.email.isEmpty ? "" : "\(recipient.email ?? "")"
             let emailToDisplay = email.isEmpty ? "" : "\(email)"
-            let name = recipient.getName(in: userContacts) ?? email
+            let nameFromContact = recipient.getName(in: userContacts) ?? .empty
+            let name = nameFromContact.isEmpty ? email : nameFromContact
             var addressStyle = FontManager.body3RegularInteractionNorm
             addressStyle = addressStyle.addTruncatingTail(mode: .byTruncatingMiddle)
             let nameStyle = FontManager.body3RegularNorm.addTruncatingTail(mode: .byTruncatingTail)
