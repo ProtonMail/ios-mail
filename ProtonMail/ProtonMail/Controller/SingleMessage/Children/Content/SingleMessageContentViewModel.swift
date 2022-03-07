@@ -66,7 +66,6 @@ class SingleMessageContentViewModel {
                 viewModel.setUp(senderContact: nonExpandedVM.senderContact)
             }
             embedExpandedHeader?(viewModel)
-            nonExapndedHeaderViewModel = nil
         }
     }
 
