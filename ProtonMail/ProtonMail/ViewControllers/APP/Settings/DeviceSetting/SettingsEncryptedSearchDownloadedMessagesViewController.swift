@@ -167,12 +167,23 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
                         // Create icon
                         let image: UIImage = UIImage(named: "ic-exclamation-circle")!
                         let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                        threeLineCell.icon.tintColor = ColorProvider.NotificationError
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationWarning
 
                         // Create attributed string for download status
-                        let downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
-                        let rangeDownloadStatus = NSRange(location: 0, length: LocalString._settings_message_history_status_low_storage.count)
-                        downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.NotificationError, range: rangeDownloadStatus)
+                        var downloadStatus = NSMutableAttributedString(string: "")
+                        if EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage {
+                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_low_storage)
+                            downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor,
+                                                        value: ColorProvider.NotificationError,
+                                                        range: NSRange(location: 0,
+                                                                       length: LocalString._settings_message_history_status_low_storage.count))
+                        } else if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                            downloadStatus = NSMutableAttributedString(string: LocalString._settings_message_history_status_partial_index)
+                            downloadStatus.addAttribute(NSAttributedString.Key.foregroundColor,
+                                                        value: ColorProvider.NotificationError,
+                                                        range: NSRange(location: 0,
+                                                                       length: LocalString._settings_message_history_status_partial_index.count))
+                        }
 
                         // Config cell
                         threeLineCell.configCell(eSection.title, oldestMessageAttributedString, downloadStatus, tintableImage)
@@ -255,21 +266,30 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.CellID, for: indexPath)
             if let buttonCell = cell as? ButtonTableViewCell {
                 var sizeOfIndex: String = ""
+                var bottomLine: String = ""
+                var storageLimit: String = ""
+                var bottomLineAttributed: NSMutableAttributedString = NSMutableAttributedString(string: "")
+
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 let userID: String? = usersManager.firstUser?.userInfo.userId
                 if let userID = userID {
                     sizeOfIndex = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asString
+                    if userCachedStatus.storageLimit == -1 {
+                        storageLimit = LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
+                    } else {
+                        storageLimit = self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
+                    }
+                    bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
+
+                    bottomLineAttributed = NSMutableAttributedString(string: bottomLine)
+                    if EncryptedSearchService.shared.getESState(userID: userID) == .partial {
+                        bottomLineAttributed.addAttribute(NSAttributedString.Key.foregroundColor,
+                                                          value: ColorProvider.NotificationError,
+                                                          range: NSRange(location: 0, length: bottomLine.count))
+                    }
                 }
 
-                var storageLimit: String = ""
-                if userCachedStatus.storageLimit == -1 {
-                    storageLimit = LocalString._encrypted_search_downloaded_messages_storage_limit_no_limit
-                } else {
-                    storageLimit = self.fileByteCountFormatter.string(fromByteCount: userCachedStatus.storageLimit)
-                }
-                let bottomLine = sizeOfIndex + LocalString._encrypted_search_downloaded_messages_storage_used_combiner + storageLimit
-
-                buttonCell.configCell(eSection.title, bottomLine, LocalString._encrypted_search_downloaded_messages_storage_used_button_title){
+                buttonCell.configCell(eSection.title, bottomLineAttributed, LocalString._encrypted_search_downloaded_messages_storage_used_button_title){
                     self.showAlertDeleteDownloadedMessages()
                 }
             }

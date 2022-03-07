@@ -74,9 +74,9 @@ import UIKit
         callback?()
     }
 
-    func configCell(_ topLine: String, _ bottomLine: String, _ titleOfButton: String, complete: buttonActionBlock?) {
+    func configCell(_ topLine: String, _ bottomLine: NSMutableAttributedString, _ titleOfButton: String, complete: buttonActionBlock?) {
         topLabel.text = topLine
-        bottomLabel.text = bottomLine
+        bottomLabel.attributedText = bottomLine
         button.setTitle(titleOfButton, for: .normal)
         callback = complete
 

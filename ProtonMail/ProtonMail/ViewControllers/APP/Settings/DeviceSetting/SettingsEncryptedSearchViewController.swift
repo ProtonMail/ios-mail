@@ -202,7 +202,7 @@ extension SettingsEncryptedSearchViewController {
                     return Key.cellHeightDownloadProgressFinished
                 } else if EncryptedSearchService.shared.getESState(userID: userID) == .refresh {
                     return Key.cellHeightDownloadProgressIndexUpdate
-                } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToLowStorage || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
+                } else if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.getESState(userID: userID) == .lowstorage || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
                     return Key.cellHeightDownloadProgressNoWifi
                 } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
                     return Key.cellHeightDownloadProgressLowBattery
@@ -397,7 +397,7 @@ extension SettingsEncryptedSearchViewController {
                         // Create icon for the partial index
                         let image: UIImage = UIImage(named: "ic-exclamation-circle")!
                         let tintableImage = image.withRenderingMode(.alwaysTemplate)
-                        threeLineCell.icon.tintColor = ColorProvider.NotificationError
+                        threeLineCell.icon.tintColor = ColorProvider.NotificationWarning
 
                         threeLineCell.configCell(LocalString._settings_title_of_downloaded_messages, oldestMessageAttributedString, sizeOfIndexAttributedString, tintableImage)
                         threeLineCell.accessoryType = .disclosureIndicator
@@ -426,7 +426,7 @@ extension SettingsEncryptedSearchViewController {
                             estimatedTimeText = interrupt
                             progressBarButtonCell.estimatedTimeLabel.textColor = ColorProvider.NotificationError
                             progressBarButtonCell.currentProgressLabel.textColor = ColorProvider.NotificationError
-                            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
+                            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues {
                                 progressBarButtonCell.pauseButton.isHidden = true
                                 progressBarButtonCell.statusLabel.isHidden = false
                             }

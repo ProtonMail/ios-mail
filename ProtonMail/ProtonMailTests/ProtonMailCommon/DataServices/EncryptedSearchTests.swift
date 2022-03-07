@@ -68,7 +68,6 @@ class EncryptedSearchTests: XCTestCase {
         // Reset some values in EncryptedSearchService Singleton
         EncryptedSearchService.shared.pauseIndexingDueToOverheating = false
         EncryptedSearchService.shared.pauseIndexingDueToLowBattery = false
-        EncryptedSearchService.shared.pauseIndexingDueToLowStorage = false
         EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected = false
         EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues = false
 
@@ -188,9 +187,9 @@ class EncryptedSearchTests: XCTestCase {
         let sut = EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption
 
         // Test interruption low battery
-        EncryptedSearchService.shared.pauseIndexingDueToLowStorage = true
+        EncryptedSearchService.shared.setESState(userID: self.testUserID, indexingState: EncryptedSearchService.EncryptedSearchIndexState.lowstorage)
         sut(true, self.testUserID)
-        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.paused)
+        XCTAssertEqual(EncryptedSearchService.shared.getESState(userID: self.testUserID), EncryptedSearchService.EncryptedSearchIndexState.lowstorage)
     }
 
     func testPauseIndexingDueToWiFiNotDetected() throws {
