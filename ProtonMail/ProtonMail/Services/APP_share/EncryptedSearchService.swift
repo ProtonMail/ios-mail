@@ -88,7 +88,6 @@ public class EncryptedSearchService {
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
     internal var pauseIndexingDueToOverheating: Bool = false
     internal var pauseIndexingDueToLowBattery: Bool = false
-    internal var pauseIndexingDueToLowStorage: Bool = false
     internal var indexBuildingTimer: Timer? = nil
     internal var estimateIndexTimeRounds: Int = 0
     internal var eventsWhileIndexing: [MessageAction]? = []
@@ -422,14 +421,6 @@ extension EncryptedSearchService {
 
                 // cleanup
                 self.cleanUpAfterIndexing(userID: userID)
-            } else {
-                let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .refresh]
-                if expectedESStates.contains(self.getESState(userID: userID)) {
-                    self.setESState(userID: userID, indexingState: .partial)
-
-                    // cleanup
-                    self.cleanUpAfterIndexing(userID: userID)
-                }
             }
             completionHandler()
         }
@@ -519,7 +510,10 @@ extension EncryptedSearchService {
             self.setESState(userID: userID, indexingState: .paused)
         } else {
             // Check if any of the flags is set to true
-            if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
+            if self.pauseIndexingDueToLowBattery ||
+                self.pauseIndexingDueToNetworkConnectivityIssues ||
+                self.pauseIndexingDueToOverheating ||
+                self.pauseIndexingDueToWiFiNotDetected {
                 self.setESState(userID: userID, indexingState: .paused)
                 return
             }
@@ -537,7 +531,10 @@ extension EncryptedSearchService {
             self.deleteAndClearOperationQueues() {
                 self.cleanUpAfterIndexing(userID: userID)
                 // In case of an interrupt - update UI
-                if self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowStorage || self.pauseIndexingDueToWiFiNotDetected {
+                if self.pauseIndexingDueToLowBattery ||
+                    self.pauseIndexingDueToNetworkConnectivityIssues ||
+                    self.pauseIndexingDueToOverheating ||
+                    self.pauseIndexingDueToWiFiNotDetected {
                     self.updateUIWithIndexingStatus(userID: userID)
                 }
             }
@@ -694,7 +691,6 @@ extension EncryptedSearchService {
             self.pauseIndexingDueToWiFiNotDetected = false
             self.pauseIndexingDueToOverheating = false
             self.pauseIndexingDueToLowBattery = false
-            self.pauseIndexingDueToLowStorage = false
             self.estimateIndexTimeRounds = 0
             self.slowDownIndexBuilding = false
 
@@ -1024,7 +1020,7 @@ extension EncryptedSearchService {
                     }
                 } else {
                     // Index building stopped from outside - finish up current page and return
-                    completionHandler()
+                    return
                 }
             }
         }
@@ -2134,8 +2130,17 @@ extension EncryptedSearchService {
 
         let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
         if remainingStorageSpace < (100_000_000)  {    // 100 MB
-            self.pauseIndexingDueToLowStorage = true
-            self.pauseAndResumeIndexingDueToInterruption(isPause: true, userID: userID)
+            // Run on seperate thread to prevent the app from being unresponsive
+            DispatchQueue.global(qos: .userInitiated).async {
+                // Cancle any running indexing process
+                self.deleteAndClearOperationQueues() {
+                    // Set state to lowstorage
+                    self.setESState(userID: userID, indexingState: .lowstorage)
+
+                    // clean up indexing
+                    self.cleanUpAfterIndexing(userID: userID)
+                }
+            }
             return false
         }
         return true
@@ -2573,7 +2578,7 @@ extension EncryptedSearchService {
                 self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_battery_status
                 return
             }
-            if self.pauseIndexingDueToLowStorage {
+            if self.getESState(userID: userID) == .lowstorage {
                 self.viewModel?.interruptStatus.value = LocalString._encrypted_search_download_paused_low_storage
                 self.viewModel?.interruptAdvice.value = LocalString._encrypted_search_download_paused_low_storage_status
                 return
