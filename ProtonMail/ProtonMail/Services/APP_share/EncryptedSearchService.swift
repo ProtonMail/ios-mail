@@ -1915,10 +1915,10 @@ extension EncryptedSearchService {
 
     private func sendIndexingMetrics(indexTime: Double, userID: String) {
         let indexSize: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64 ?? 0
-        let numMessagesIndexed = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
+        let numMessagesIndexed: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
         let indexingMetricsData: [String:Any] = ["numMessagesIndexed" : numMessagesIndexed,
                                                  "indexSize"          : indexSize!,
-                                                 "indexTime"          : indexTime,
+                                                 "indexTime"          : Int(indexTime),
                                                  "originalEstimate"   : userCachedStatus.encryptedSearchInitialIndexingTimeEstimate,
                                                  "numPauses"          : userCachedStatus.encryptedSearchNumberOfPauses,
                                                  "numInterruptions"   : userCachedStatus.encryptedSearchNumberOfInterruptions,
