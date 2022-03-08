@@ -71,16 +71,6 @@ extension MailboxViewModel {
         }
     }
 
-    func allowDeleteSwipe(itemID: String, indexPath: IndexPath) -> Bool {
-        let trashID = Message.Location.trash.rawValue
-        if let message = self.item(index: indexPath) {
-            return !message.getLabelIDs().contains(trashID)
-        } else if let conversation = self.itemOfConversation(index: indexPath) {
-            return !conversation.getLabelIds().contains(trashID)
-        }
-        return false
-    }
-
     func delete(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
             delete(message: message, isSwipeAction : isSwipeAction)
