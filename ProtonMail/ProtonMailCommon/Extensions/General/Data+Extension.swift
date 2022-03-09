@@ -24,6 +24,7 @@ import Foundation
 
 extension Data {
 
+    /// Converts binary data to hexadecimal representation
     func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""

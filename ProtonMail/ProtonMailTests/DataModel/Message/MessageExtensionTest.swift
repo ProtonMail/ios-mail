@@ -64,11 +64,16 @@ class MessageExtensionTest: XCTestCase {
 //    }
 
     func testMessageWithValidIDShouldGenerateMatchingNotificationUUID() {
-        let base64MessageID = "B8noUg_pBEQ7Bw1EQv1vsYmw6YlnoZVg_Vh5gwYvIkU_fHlMLlgKGAF5E9fQ04xx0VVv6wUxn7pCScr4-8DHmw=="
-        let expectedUUID = "07c9e852-0a41-110e-c1c3-000000000000"
-        let message = Message(context: testContext)
-        message.messageID = base64MessageID
-        let generatedUUID = message.notificationId
-        XCTAssertEqual(generatedUUID, expectedUUID)
+        let pairs: [(messageId: String, uuid: String)] = [
+            ("l8vWAXHBQmv0u7OVtPbcqMa4iwQaBqowINSQjPrxAr-Da8fVPKUkUcqAq30_BCxj1X0nW70HQRmAa-rIvzmKUA==",
+             "6c387657-4158-4842-516d"),
+            ("uRA-Yxg_D1aU_WssF71zbN2Cd_FVkmhu2PdvNnt6Fz4fiMJhXTjTVqDJJBxcetoX8ja6qRCzRdMLw65AiPbgRA==",
+             "7552412d-5978-675f-4431")
+        ]
+        pairs.forEach { (messageId, expectedUUID) in
+            let message = Message(context: testContext)
+            message.messageID = messageId
+            XCTAssertEqual(message.notificationId, expectedUUID)
+        }
     }
 }
