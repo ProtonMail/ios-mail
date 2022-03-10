@@ -55,7 +55,7 @@ class MenuViewModelTests: XCTestCase {
 
     func testInit_withInAppFeedbackDisable() {
         XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-        XCTAssertTrue(sut.feedbackItems.isEmpty)
+        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .provideFeedback }))
     }
 
     func testInit_withInAppFeedbackEnable() {
@@ -63,9 +63,9 @@ class MenuViewModelTests: XCTestCase {
         sut = MenuViewModel(usersManager: usersManagerMock,
                             userStatusInQueueProvider: userStatusInQueueProviderMock,
                             coreDataContextProvider: coreDataContextProviderMock)
-        XCTAssertEqual(sut.sections, [.feedback, .inboxes, .folders, .labels, .more])
-        XCTAssertEqual(sut.feedbackItems.count, 1)
-        XCTAssertEqual(sut.feedbackItems.first?.location, .provideFeedback)
+        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
+
+        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .provideFeedback }))
     }
 
     func testInboxItemsAreTheExpectedOnes() {
@@ -83,6 +83,7 @@ class MenuViewModelTests: XCTestCase {
     func testDefaultMoreItemsAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -96,6 +97,7 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsForMemberUserAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -110,6 +112,7 @@ class MenuViewModelTests: XCTestCase {
         let expectedItems = [MenuLabel(location: .subscription),
                              MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -123,6 +126,7 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsForNonMemberWithUnavailableSubscriptionAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -136,6 +140,7 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledPINCodeAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -149,6 +154,7 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledTouchIDAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .lockapp),
                              MenuLabel(location: .signout)]
@@ -162,6 +168,7 @@ class MenuViewModelTests: XCTestCase {
     func testMoreItemsWithDisabledPINCodeAndTouchIDAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .settings),
                              MenuLabel(location: .contacts),
+                             MenuLabel(location: .provideFeedback),
                              MenuLabel(location: .bugs),
                              MenuLabel(location: .signout)]
         let moreInfo = MenuViewModel.MoreItemsInfo(userIsMember: false,

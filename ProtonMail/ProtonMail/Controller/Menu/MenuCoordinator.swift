@@ -109,7 +109,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         self.go(to: label, deepLink: deepLink)
     }
     
-    func go(to labelInfo: MenuLabel, deepLink: DeepLink?=nil) {
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
         switch labelInfo.location {
         case .customize(_):
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
@@ -134,6 +134,8 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             self.navigateToCreateFolder(type: .folder)
         case .provideFeedback:
             self.navigateToMailBox(labelInfo: MenuLabel(location: .inbox), deepLink: deepLink, showFeedbackActionSheet: true)
+            self.vm.highlight(label: MenuLabel(location: .inbox))
+            return
         default:
             break
         }
