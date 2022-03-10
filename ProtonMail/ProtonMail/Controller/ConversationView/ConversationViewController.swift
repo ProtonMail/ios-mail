@@ -34,10 +34,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        emptyBackButtonTitleForNextView()
+        setUpNavigationBar()
         setUpTableView()
-        navigationItem.backButtonTitle = .empty
-        navigationItem.rightBarButtonItem = starBarButton
+
         starButtonSetUp(starred: viewModel.conversation.starred)
 
         viewModel.refreshView = { [weak self] in
@@ -90,9 +89,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         viewModel.observeConversationUpdate()
         viewModel.observeConversationMessages(tableView: customView.tableView)
         setUpToolBar()
-
-        starBarButton.isAccessibilityElement = true
-        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -212,6 +208,11 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     @objc
+    private func tapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
     private func starButtonTapped() {
         viewModel.starTapped { [weak self] result in
             if let shouldStar = try? result.get() {
@@ -224,6 +225,18 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         starBarButton.image = starred ?
             Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
         starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
+    }
+
+    private func setUpNavigationBar() {
+        navigationItem.backButtonTitle = .empty
+        navigationItem.rightBarButtonItem = starBarButton
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
+        navigationItem.leftBarButtonItem = backButtonItem
+
+        // Accessibility
+        navigationItem.leftBarButtonItem?.accessibilityLabel = LocalString._menu_inbox_title
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func setUpTableView() {

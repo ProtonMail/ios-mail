@@ -1782,7 +1782,7 @@
 "No internet connection" = "No internet connection";
 
 /* message when mailbox doesnt have emailsß */
-"No Messages" = "No Messages";
+"No Messages" = "No messages";
 
 /* no object error, local only , this could be not translated! */
 "no object" = "no object";

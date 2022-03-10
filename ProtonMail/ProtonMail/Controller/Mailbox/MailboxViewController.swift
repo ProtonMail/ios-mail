@@ -1244,7 +1244,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
                     self.noResultImage.isHidden = false
 
-                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_mail_label : LocalString._mailbox_no_result_main_label, attributes: FontManager.Headline)
+                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: LocalString._messages_no_messages, attributes: FontManager.Headline)
                     self.noResultMainLabel.isHidden = false
 
                     self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_secondary_label : LocalString._mailbox_no_result_secondary_label, attributes: FontManager.DefaultWeak)

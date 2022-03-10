@@ -671,16 +671,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_no_result_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7Gk-dS-cYZ">
-                                <rect key="frame" x="242" y="184" width="220" height="213.5"/>
+                                <rect key="frame" x="164.5" y="184" width="375" height="140"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are all caught up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAD-wQ-KH7">
-                                <rect key="frame" x="253.5" y="440.5" width="197" height="26.5"/>
+                                <rect key="frame" x="253.5" y="336" width="197" height="26.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time to relax" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTF-Wh-y2B">
-                                <rect key="frame" x="303" y="475" width="98" height="20.5"/>
+                                <rect key="frame" x="303" y="370.5" width="98" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -753,7 +753,7 @@
                         <viewLayoutGuide key="safeArea" id="i3D-aW-3kN"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="7Gk-dS-cYZ" firstAttribute="bottom" secondItem="QAD-wQ-KH7" secondAttribute="top" constant="-43" id="5GN-cQ-cqZ"/>
+                            <constraint firstItem="7Gk-dS-cYZ" firstAttribute="bottom" secondItem="QAD-wQ-KH7" secondAttribute="top" constant="-12" id="5GN-cQ-cqZ"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QAD-wQ-KH7" secondAttribute="trailing" constant="8" id="5Hi-Cs-6Ha"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="i3D-aW-3kN" secondAttribute="leading" id="6aH-UA-ezI"/>
                             <constraint firstItem="i3D-aW-3kN" firstAttribute="bottom" secondItem="ynN-R3-TTo" secondAttribute="bottom" constant="45" id="AH2-5u-NxT"/>
@@ -1721,7 +1721,7 @@
         <image name="mail_attachment" width="16" height="16"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
-        <image name="mail_no_result_icon" width="220" height="213.5"/>
+        <image name="mail_no_result_icon" width="375" height="140"/>
         <image name="mail_starred-active" width="20" height="20"/>
         <image name="menu_snooze-active" width="24" height="24"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
