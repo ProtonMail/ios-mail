@@ -52,16 +52,6 @@ public class EncryptedSearchService {
         self.registerForTermalStateChangeNotifications()
         // Enable battery level monitoring
         self.registerForPowerStateChangeNotifications()
-        // Enable network monitoring
-        if #available(iOS 12, *) {
-            // Enable network monitoring if not already enabled
-            if self.networkMonitor == nil {
-                self.registerForNetworkChangeNotifications()
-            }
-        } else {
-            // Use Reachability for iOS 11
-            //self.registerForNetworkChangeNotificationsAllIOS()
-        }
     }
 
     // State variables
@@ -1970,7 +1960,6 @@ extension EncryptedSearchService {
 
     // MARK: - Helper Functions
     func setESState(userID: String, indexingState: EncryptedSearchIndexState) {
-        userCachedStatus.indexStatus = indexingState.rawValue
         print("ENCRYPTEDSEARCH-STATE: \(indexingState)")
 
         let stateValue: String = userID + "-" + String(indexingState.rawValue)

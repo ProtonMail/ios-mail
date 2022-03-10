@@ -108,8 +108,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encrypedSearchFlag = "encrypted_search_flag"
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
-        static let encryptedSearchStatus = "encrypted_search_status_flag"
         static let encryptedSearchAvailableShowPopupFlag = "encrypted_search_available_show_popup_flag"
+        static let encryptedSearchAppFreshInstalledFlag = "encrypted_search_app_fresh_installed_flag"
 
         // Encrypted search user dependent variables
         static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
@@ -850,36 +850,6 @@ extension UserCachedStatus {
         }
     }
 
-    var indexStatus: Int {
-        get {
-            var key: String = ""
-            #if !APP_EXTENSION
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                key = userID + "_" + Key.encryptedSearchStatus
-            } else {
-                key = Key.encryptedSearchStatus
-            }
-            #endif
-            if getShared()?.object(forKey: key) == nil {
-                return 0 // disabled
-            }
-            return getShared().integer(forKey: key)
-        }
-        set {
-            var key: String = ""
-            #if !APP_EXTENSION
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                key = userID + "_" + Key.encryptedSearchStatus
-            } else {
-                key = Key.encryptedSearchStatus
-            }
-            #endif
-            setValue(newValue, forKey: key)
-        }
-    }
-
     var isEncryptedSearchAvailablePopupAlreadyShown: Bool {
         get {
             var key: String = ""
@@ -904,6 +874,36 @@ extension UserCachedStatus {
                 key = userID + "_" + Key.encryptedSearchAvailableShowPopupFlag
             } else {
                 key = Key.encryptedSearchAvailableShowPopupFlag
+            }
+            #endif
+            setValue(newValue, forKey: key)
+        }
+    }
+
+    var isEncryptedSearchAppFreshInstalledFlag: Bool {
+        get {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchAppFreshInstalledFlag
+            } else {
+                key = Key.encryptedSearchAppFreshInstalledFlag
+            }
+            #endif
+            if getShared()?.object(forKey: key) == nil {
+                return true
+            }
+            return getShared().bool(forKey: key)
+        }
+        set {
+            var key: String = ""
+            #if !APP_EXTENSION
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                key = userID + "_" + Key.encryptedSearchAppFreshInstalledFlag
+            } else {
+                key = Key.encryptedSearchAppFreshInstalledFlag
             }
             #endif
             setValue(newValue, forKey: key)
