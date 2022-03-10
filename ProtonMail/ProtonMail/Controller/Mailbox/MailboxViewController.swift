@@ -519,16 +519,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @objc func searchButtonTapped() {
         self.coordinator?.go(to: .search)
     }
-    
+
     @objc func cancelButtonTapped() {
-        self.viewModel.removeAllSelectedIDs()
-        self.hideCheckOptions()
-        self.updateNavigationController(false)
-        if viewModel.eventsService.status != .running {
-            self.startAutoFetch(false)
-        }
-        self.hideActionBar()
-        self.dismissActionSheet()
+        hideSelectionMode()
     }
 
     @objc func ellipsisMenuTapped() {
@@ -606,9 +599,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     // MARK: - Private methods
 
+    private func hideSelectionMode() {
+        self.viewModel.removeAllSelectedIDs()
+        self.hideCheckOptions()
+        self.updateNavigationController(false)
+        if viewModel.eventsService.status != .running {
+            self.startAutoFetch(false)
+        }
+        self.hideActionBar()
+        self.dismissActionSheet()
+    }
+
     private func handleViewModeIsChanged() {
         // Cancel selected items
-        cancelButtonTapped()
+        hideSelectionMode()
 
         viewModel.setupFetchController(self,
                                        isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
@@ -1378,8 +1382,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
     }
     
-    private func setupNavigationTitle(_ editingMode: Bool) {
-        if (editingMode) {
+    private func setupNavigationTitle(showSelected: Bool) {
+        if showSelected {
             let count = self.viewModel.selectedIDs.count
             self.setNavigationTitleText("\(count) " + LocalString._selected_navogationTitle)
         } else {
@@ -1419,7 +1423,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func updateNavigationController(_ editingMode: Bool) {
         self.isEditingMode = editingMode
         self.setupLeftButtons(editingMode)
-        self.setupNavigationTitle(editingMode)
+        self.setupNavigationTitle(showSelected: editingMode)
         self.setupRightButtons(editingMode)
     }
  
@@ -1553,7 +1557,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func handleShadow(isScrolled: Bool) {
-        isScrolled ? topActionsView.layer.apply(shadow: .default) : topActionsView.layer.clearShadow()
+        isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
     }
 
     private func deleteExpiredMessages() {
@@ -1599,7 +1603,7 @@ extension MailboxViewController {
                         if action != .readUnread {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                         }
-                        self.cancelButtonTapped()
+                        self.hideSelectionMode()
                     }
                 }
             }
@@ -1650,10 +1654,10 @@ extension MailboxViewController {
         )
         let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
             yesHandler()
-            self?.cancelButtonTapped()
+            self?.hideSelectionMode()
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [weak self] _ in
-            self?.cancelButtonTapped()
+            self?.hideSelectionMode()
         }
         [yes, cancel].forEach(alert.addAction)
         present(alert, animated: true, completion: nil)
@@ -1753,7 +1757,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                                            undoActionType: .archive)
                 }
                 self?.dismissActionSheet()
-                self?.cancelButtonTapped()
+                self?.hideSelectionMode()
             })
     }
     
@@ -1799,7 +1803,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                                            undoActionType: .archive)
                 }
                 self?.dismissActionSheet()
-                self?.cancelButtonTapped()
+                self?.hideSelectionMode()
             })
     }
 }
@@ -1862,7 +1866,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                      done: { [weak self] isHavingUnsavedChanges in
                         defer {
                             self?.dismissActionSheet()
-                            self?.cancelButtonTapped()
+                            self?.hideSelectionMode()
                         }
                         guard isHavingUnsavedChanges,
                               let destination = self?.moveToActionHandler.selectedMoveToFolder else {
@@ -1913,7 +1917,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                      done: { [weak self] isHavingUnsavedChanges in
                         defer {
                             self?.dismissActionSheet()
-                            self?.cancelButtonTapped()
+                            self?.hideSelectionMode()
                         }
                         guard isHavingUnsavedChanges,
                               let destination = self?.moveToActionHandler.selectedMoveToFolder else {
@@ -1938,9 +1942,9 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             dismissActionSheet()
         case .remove, .moveToArchive, .moveToSpam, .moveToInbox:
             showMessageMoved(title: LocalString._messages_has_been_moved)
-            cancelButtonTapped()
+            hideSelectionMode()
         case .markRead, .markUnread, .star, .unstar:
-            cancelButtonTapped()
+            hideSelectionMode()
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
@@ -2307,7 +2311,7 @@ extension MailboxViewController {
         }
         guard viewModel.selectedIDs.contains(id) else { return }
         viewModel.removeSelected(id: id)
-        self.setupNavigationTitle(self.listEditing)
+        self.setupNavigationTitle(showSelected: self.listEditing)
         self.dismissActionSheet()
         if viewModel.selectedIDs.isEmpty {
             hideActionBar()
@@ -2408,12 +2412,6 @@ extension MailboxViewController: UITableViewDelegate {
         let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
         selectionAction(id)
 
-        if viewModel.selectedIDs.isEmpty {
-            hideActionBar()
-        } else {
-            showActionBar()
-        }
-
         // update checkbox state
         if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
             messageCellPresenter.presentSelectionStyle(
@@ -2423,7 +2421,13 @@ extension MailboxViewController: UITableViewDelegate {
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
-        self.setupNavigationTitle(true)
+        setupNavigationTitle(showSelected: true)
+
+        if viewModel.selectedIDs.isEmpty {
+            hideSelectionMode()
+        } else {
+            showActionBar()
+        }
     }
 }
 

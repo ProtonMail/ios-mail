@@ -111,8 +111,8 @@ extension TempFigmaShadow {
         .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: 4, blur: 8, spread: 0)
     }
 
-    static func custom(y: CGFloat) -> TempFigmaShadow {
-        .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: y, blur: 8, spread: 0)
+    static func custom(y: CGFloat, blur: CGFloat) -> TempFigmaShadow {
+        .init(color: ColorProvider.Shade100.withAlphaComponent(0.1), x: 0, y: y, blur: blur, spread: 0)
     }
 
 }
