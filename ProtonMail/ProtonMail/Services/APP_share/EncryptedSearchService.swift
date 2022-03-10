@@ -83,6 +83,7 @@ public class EncryptedSearchService {
     internal var viewModel: SettingsEncryptedSearchViewModel? = nil
     @available(iOS 12, *)
     internal lazy var networkMonitor: NWPathMonitor? = nil
+    internal lazy var networkMonitoringQueue: DispatchQueue? = nil
     //internal lazy var networkMonitorAllIOS: InternetConnectionStatusProvider? = nil
     internal var pauseIndexingDueToNetworkConnectivityIssues: Bool = false
     internal var pauseIndexingDueToWiFiNotDetected: Bool = false
@@ -2275,15 +2276,20 @@ extension EncryptedSearchService {
 
     @available(iOS 12, *)
     private func registerForNetworkChangeNotifications() {
+        // Create network monitor - if not already existing
         if self.networkMonitor == nil {
             self.networkMonitor = NWPathMonitor()
+            self.networkMonitor?.pathUpdateHandler = { path in
+                self.responseToNetworkChanges(path: path)
+            }
         }
-        self.networkMonitor?.pathUpdateHandler = { path in
-            self.responseToNetworkChanges(path: path)
+
+        // Start network monitoring - if not already running
+        if self.networkMonitoringQueue == nil {
+            self.networkMonitoringQueue = DispatchQueue(label: "NetworkMonitor")
+            self.networkMonitor?.start(queue: networkMonitoringQueue!)
+            print("ES-NETWORK: start monitoring network changes")
         }
-        let networkMonitoringQueue = DispatchQueue(label: "NetworkMonitor")
-        self.networkMonitor?.start(queue: networkMonitoringQueue)
-        print("ES-NETWORK: monitoring enabled")
     }
 
     /*private func registerForNetworkChangeNotificationsAllIOS() {
@@ -2312,6 +2318,8 @@ extension EncryptedSearchService {
     private func unRegisterForNetworkChangeNotifications() {
         self.networkMonitor?.cancel()
         self.networkMonitor = nil
+        self.networkMonitoringQueue = nil
+        print("ES-NETWORK: stop monitoring network changes")
     }
 
     @available(iOS 12, *)
