@@ -144,6 +144,14 @@ class UsersManager: Service {
                                           userID: newUser.userID.rawValue))
         self.users.append(newUser)
 
+        // On login check if the app is fresh installed - if yes, set ES state to disabled
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchAppFreshInstalledFlag {
+                EncryptedSearchService.shared.setESState(userID: newUser.userinfo.userId, indexingState: .disabled)
+                userCachedStatus.isEncryptedSearchAppFreshInstalledFlag = false
+            }
+        }
+
         self.save()
     }
 
