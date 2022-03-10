@@ -56,17 +56,12 @@ final class MenuViewModel: NSObject {
     
     private var rawData = [MenuLabel]()
     private(set) var sections: [MenuSection]
-    private(set) var feedbackItems: [MenuLabel]
     private let inboxItems: [MenuLabel]
     private(set) var folderItems: [MenuLabel] = []
     private var labelItems: [MenuLabel] = []
-    private var moreItems: [MenuLabel]
-    /// When BE has issue, BE will disable subcription functionality
+    private(set) var moreItems: [MenuLabel]
+    /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
-
-    var isInAppFeedbackEnable: Bool {
-        usersManager.firstUser?.inAppFeedbackStateService.isEnable ?? false
-    }
 
     var reloadClosure: (() -> Void)?
     
@@ -76,16 +71,8 @@ final class MenuViewModel: NSObject {
         self.usersManager = usersManager
         self.userStatusInQueueProvider = userStatusInQueueProvider
         self.coreDataContextProvider = coreDataContextProvider
-        
-        var sections: [MenuSection] = [.inboxes, .folders, .labels, .more]
-        let localIsInAppFeedbackEnable = usersManager.firstUser?.inAppFeedbackStateService.isEnable ?? false
-        if localIsInAppFeedbackEnable {
-            sections.insert(.feedback, at: 0)
-            self.feedbackItems = [MenuLabel(location: .provideFeedback)]
-        } else {
-            self.feedbackItems = []
-        }
-        self.sections = sections
+
+        self.sections = [.inboxes, .folders, .labels, .more]
         self.inboxItems = Self.inboxItems()
         let defaultInfo = MoreItemsInfo(userIsMember: nil,
                                         subscriptionAvailable: subscriptionAvailable,
@@ -93,8 +80,6 @@ final class MenuViewModel: NSObject {
                                         isTouchIDEnabled: userCachedStatus.isTouchIDEnabled)
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
-
-        usersManager.firstUser?.inAppFeedbackStateService.register(delegate: self)
     }
     
     deinit {
@@ -141,8 +126,6 @@ extension MenuViewModel: MenuVMProtocol {
         let row = indexPath.row
         
         switch self.sections[section] {
-        case .feedback:
-            return self.feedbackItems[row]
         case .inboxes:
             return self.inboxItems[row]
         case .folders:
@@ -157,7 +140,6 @@ extension MenuViewModel: MenuVMProtocol {
     
     func numberOfRowsIn(section: Int) -> Int {
         switch self.sections[section] {
-        case .feedback: return self.feedbackItems.count
         case .inboxes: return self.inboxItems.count
         case .folders:
             return self.folderItems.getNumberOfRows()
@@ -589,6 +571,7 @@ extension MenuViewModel {
     static func moreItems(for info: MoreItemsInfo) -> [MenuLabel] {
         var newMore = [MenuLabel(location: .settings),
                        MenuLabel(location: .contacts),
+                       MenuLabel(location: .provideFeedback),
                        MenuLabel(location: .bugs),
                        MenuLabel(location: .lockapp),
                        MenuLabel(location: .signout)]
@@ -606,18 +589,5 @@ extension MenuViewModel {
         }
 
         return newMore
-    }
-}
-
-extension MenuViewModel: InAppFeedbackStateServiceDelegate {
-    func inAppFeedbackFeatureFlagHasChanged(enable: Bool) {
-        if enable {
-            sections.insert(.feedback, at: 0)
-            feedbackItems = [MenuLabel(location: .provideFeedback)]
-        } else {
-            sections = sections.filter({ $0 != .feedback })
-            feedbackItems = []
-        }
-        reloadClosure?()
     }
 }
