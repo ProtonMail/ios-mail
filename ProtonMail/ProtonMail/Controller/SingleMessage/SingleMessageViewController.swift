@@ -74,8 +74,6 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         emptyBackButtonTitleForNextView()
 
         setUpToolBar()
-        starBarButton.isAccessibilityElement = true
-        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func embedChildren() {
@@ -120,9 +118,16 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         customView.scrollView.delegate = self
         navigationTitleLabel.label.alpha = 0
 
+        let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
+        navigationItem.leftBarButtonItem = backButtonItem
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
         starButtonSetUp(starred: viewModel.message.starred)
+
+        // Accessibility
+        navigationItem.leftBarButtonItem?.accessibilityLabel = LocalString._menu_inbox_title
+        starBarButton.isAccessibilityElement = true
+        starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
 
     private func starButtonSetUp(starred: Bool) {
@@ -138,6 +143,11 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
 
 // MARK: - Actions
 extension SingleMessageViewController {
+    @objc
+    private func tapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+
     @objc
     private func starButtonTapped() {
         viewModel.starTapped()
