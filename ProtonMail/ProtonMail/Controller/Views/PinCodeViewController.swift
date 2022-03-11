@@ -21,13 +21,12 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PromiseKit
 import ProtonCore_UIFoundations
 import UIKit
 
 protocol PinCodeViewControllerDelegate: AnyObject {
-    func Cancel() -> Promise<Void>
-    func Next()
+    func cancel(completion: @escaping () -> Void)
+    func next()
 }
 
 class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView {
@@ -90,7 +89,7 @@ class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView
     func authenticateUser() {
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             self.viewModel.done { shouldPop in
-                self.delegate?.Next()
+                self.delegate?.next()
                 if shouldPop {
                     _ = self.navigationController?.popViewController(animated: true)
                 }
@@ -128,7 +127,7 @@ extension PinCodeViewController: PinCodeViewDelegate {
             return
         }
         // unlock when app launch
-        _ = _delegate.Cancel().done {
+        _ = _delegate.cancel {
             _ = self.navigationController?.popViewController(animated: true)
         }
     }
@@ -147,7 +146,7 @@ extension PinCodeViewController: PinCodeViewDelegate {
                     if matched {
                         self.pinCodeView.hideAttempError(true)
                         self.viewModel.done { shouldPop in
-                            self.delegate?.Next()
+                            self.delegate?.next()
                             if shouldPop {
                                 self.navigationController?.popViewController(animated: true)
                             }

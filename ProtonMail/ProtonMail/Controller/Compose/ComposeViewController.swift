@@ -612,21 +612,26 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     //MARK: - HtmlEditorBehaviourDelegate
-    func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
+    func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         
-        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata, isInline: true).done { (attachment) in
+        data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata, isInline: true).done { (attachment) in
             guard let att = attachment else {
+                completion?()
                 return
             }
             self.viewModel.uploadAtt(att)
-        }
+            completion?()
+        }.cauterize()
     }
     
-    func removeInlineAttachment(_ sid: String) {
+    func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
         // find attachment to remove
-        guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
+        guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else {
+            completion?()
+            return
+        }
         
         // decrement number of attachments in message manually
         let realAttachments = userCachedStatus.realAttachments
@@ -645,7 +650,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
         }
         
-        self.viewModel.deleteAtt(attachment).cauterize()
+        self.viewModel.deleteAtt(attachment).done {
+            completion?()
+        }.cauterize()
     }
     
     func htmlEditorDidFinishLoadingContent() {
@@ -847,10 +854,10 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     func updateEO() {
-        _ = self.viewModel.updateEO(expirationTime: self.headerView.expirationTimeInterval,
-                                    pwd: self.encryptionPassword,
-                                    pwdHint: self.encryptionPasswordHint).done { (_) in
-                                        self.headerView.reloadPicker()
+        self.viewModel.updateEO(expirationTime: self.headerView.expirationTimeInterval,
+                                pwd: self.encryptionPassword,
+                                pwdHint: self.encryptionPasswordHint) { [weak self] in
+            self?.headerView.reloadPicker()
         }
     }
 

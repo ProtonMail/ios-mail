@@ -92,7 +92,7 @@ final class LockCoordinator: DefaultCoordinator {
 // copied from old implementation of SignInViewController to keep the pin logic untact
 extension LockCoordinator: PinCodeViewControllerDelegate {
 
-    func Next() {
+    func next() {
         unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
             self?.finishLockFlow(.mailboxPassword)
         }, unlockFailed: { [weak self] in
@@ -102,13 +102,11 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
         })
     }
 
-    func Cancel() -> Promise<Void> {
-        return Promise { [weak self] seal in
-            UserTempCachedStatus.backup()
-            _ = self?.usersManager.clean().done { [weak self] in
-                seal.fulfill_()
-                self?.finishLockFlow(.signIn)
-            }
+    func cancel(completion: @escaping () -> Void) {
+        UserTempCachedStatus.backup()
+        _ = self.usersManager.clean().done { [weak self] in
+            completion()
+            self?.finishLockFlow(.signIn)
         }
     }
 }

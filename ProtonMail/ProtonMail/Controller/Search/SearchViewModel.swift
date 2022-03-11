@@ -18,7 +18,6 @@
 import CoreData
 import Foundation
 import ProtonCore_UIFoundations
-import PromiseKit
 
 protocol SearchVMProtocol {
     var user: UserManager { get }
@@ -50,7 +49,8 @@ protocol SearchVMProtocol {
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getFolderMenuItems() -> [MenuLabel]
     func getConversation(conversationID: String,
-                         messageID: String) -> Promise<Conversation>
+                         messageID: String,
+                         completion: @escaping (Result<Conversation, Error>) -> Void)
 }
 
 final class SearchViewModel: NSObject {
@@ -311,25 +311,9 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getConversation(conversationID: String,
-                         messageID: String) -> Promise<Conversation> {
-        return Promise { [weak self] seal in
-            guard let self = self else {
-                let error = NSError(domain: "", code: -1,
-                                    localizedDescription: LocalString._error_no_object)
-                seal.reject(error)
-                return
-            }
-
-            self.user.conversationService.fetchConversation(with: conversationID, includeBodyOf: messageID) { result in
-                switch result {
-                case .success(let conversation):
-                    seal.fulfill(conversation)
-                case .failure(let error):
-                    seal.reject(error)
-                }
-            }
-        }
-        
+                         messageID: String,
+                         completion: @escaping (Result<Conversation, Error>) -> Void) {
+        self.user.conversationService.fetchConversation(with: conversationID, includeBodyOf: messageID, completion: completion)
     }
 }
 

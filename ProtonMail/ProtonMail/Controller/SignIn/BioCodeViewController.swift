@@ -45,10 +45,10 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             if Thread.isMainThread {
-                self.delegate?.Next()
+                self.delegate?.next()
             } else {
                 DispatchQueue.main.async {
-                    self.delegate?.Next()
+                    self.delegate?.next()
                 }
             }
         })
@@ -121,7 +121,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     }
     
     private func logout() {
-        _ = self.delegate?.Cancel().done {
+        self.delegate?.cancel() {
             self.navigationController?.popViewController(animated: true)
         }
     }

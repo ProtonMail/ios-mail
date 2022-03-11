@@ -33,8 +33,8 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
 protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
-    func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void>
-    func removeInlineAttachment(_ sid: String)
+    func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?)
+    func removeInlineAttachment(_ sid: String, completion: (() -> Void)?)
 }
 
 /// Html editor
@@ -352,7 +352,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.delegate?.addInlineAttachment(path, data: base64Data).cauterize()
+            self.delegate?.addInlineAttachment(path, data: base64Data, completion: nil)
             
         case .heightUpdated:
             guard let newHeight = userInfo["height"] as? Double else {
@@ -377,7 +377,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.delegate?.removeInlineAttachment(path)
+            self.delegate?.removeInlineAttachment(path, completion: nil)
         }
     }
 }

@@ -120,7 +120,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         super.webView(webView, didFinish: navigation)
     }
     
-    override func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
+    override func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
                 self.latestErrorBanner?.remove(animated: true)
@@ -134,9 +134,10 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             }
             
             self.htmlEditor.remove(embedImage: "cid:\(sid)")
-            return Promise()
+            completion?()
+            return
         }
-        return super.addInlineAttachment(sid, data: data)
+        return super.addInlineAttachment(sid, data: data, completion: completion)
     }
     
     func errorBannerToPresent() -> BannerView? {

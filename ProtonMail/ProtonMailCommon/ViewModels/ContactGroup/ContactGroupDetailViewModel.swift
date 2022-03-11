@@ -37,5 +37,5 @@ protocol ContactGroupDetailViewModel {
     func getTotalEmailString() -> String
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String)
     
-    func reload() -> Promise<Bool>
+    func reload() -> Bool
 }

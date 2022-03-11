@@ -663,15 +663,11 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
-        return Promise { seal in
-            if let msg = message {
-                self.user.cacheService.updateExpirationOffset(of: msg, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
-                    seal.fulfill_()
-                }
-            } else {
-                seal.fulfill_()
-            }
+    override func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: @escaping () -> Void) {
+        if let msg = message {
+            self.user.cacheService.updateExpirationOffset(of: msg, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint, completion: completion)
+        } else {
+            completion()
         }
     }
     

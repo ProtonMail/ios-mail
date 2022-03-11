@@ -210,9 +210,8 @@ extension MenuViewController {
         let switcher = try! AccountSwitcher(accounts: list, origin: origin)
         let userIDs = list.map {$0.userID}
         for id in userIDs {
-            _ = self.viewModel.getUnread(of: id).done { (unread) in
-                switcher.updateUnread(userID: id, unread: unread)
-            }
+            let unread = self.viewModel.getUnread(of: id)
+            switcher.updateUnread(userID: id, unread: unread)
         }
         guard let sideMenu = self.sideMenuController else {return}
         switcher.present(on: sideMenu, delegate: self)

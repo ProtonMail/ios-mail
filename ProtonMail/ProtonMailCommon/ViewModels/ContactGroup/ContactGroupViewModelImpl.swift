@@ -110,24 +110,18 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     /**
      Fetch all contact groups from the server using API
      */
-    func fetchLatestContactGroup() -> Promise<Void> {
-        return Promise { seal in
-            if self.isFetching == false {
-                self.isFetching = true
-                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
-                    self.isFetching = false
-                    if let error = error {
-                        seal.reject(error)
-                    } else {
-                        seal.fulfill(())
-                    }
-                })
-                self.user.contactService.fetchContacts { (_, error) in
-                    
-                }
-            } else {
-                seal.fulfill(())
+    func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
+        if self.isFetching == false {
+            self.isFetching = true
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+                completion(error)
+            })
+            self.user.contactService.fetchContacts { (_, error) in
+
             }
+        } else {
+            completion(nil)
         }
     }
     

@@ -122,19 +122,18 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     /**
      Reloads the contact group from core data
      
-     - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
+     - Returns: Bool. true if the reloading succeeds because the contact group can be fetched from core data; false if the contact group has been deleted from core data
      */
-    func reload() -> Promise<Bool> {
-        if let label = self.fetchedController?.fetchedObjects?.compactMap({$0 as? Label}).first {
-            name = label.name
-            color = label.color
-            emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()
-
-            return .value(false)
-        } else {
+    func reload() -> Bool {
+        guard let label = self.fetchedController?.fetchedObjects?.compactMap({$0 as? Label}).first else {
             // deleted case
-            return .value(true)
+            return false
         }
+
+        name = label.name
+        color = label.color
+        emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()
+        return true
     }
 }
 
