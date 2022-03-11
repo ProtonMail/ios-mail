@@ -39,7 +39,7 @@ protocol ContactGroupsViewModel {
     func save()
     func isSelected(groupID: String) -> Bool
     
-    func fetchLatestContactGroup() -> Promise<Void>
+    func fetchLatestContactGroup(completion: @escaping (Error?) -> Void)
     func timerStart(_ run: Bool)
     func timerStop()
     

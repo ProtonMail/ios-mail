@@ -102,19 +102,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
     
     private func reload() {
-        firstly { () -> Promise<Bool> in
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-            return self.viewModel.reload()
-        }.ensure {
-            MBProgressHUD.hide(for: self.view, animated: true)
-        }.done { (isDeleted) in
-            
-            if isDeleted {
-                self.navigationController?.popViewController(animated: true)
-            } else {
-                self.refresh()
-            }
-        }.catch { _ in
+        let isReloadSuccessful = self.viewModel.reload()
+        if isReloadSuccessful {
+            self.refresh()
+        } else {
+            self.navigationController?.popViewController(animated: true)
         }
     }
 

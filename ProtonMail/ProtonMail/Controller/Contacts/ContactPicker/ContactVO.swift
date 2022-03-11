@@ -303,43 +303,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-
-    
-    /**
-     This is a temp function here. the fetch action or network should be in a model manager class. TODO:: later
-     
-     - Parameter progress: in progress ()-> Void
-     - Parameter complete: complete ()-> Void
-     **/
-    func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {
-        progress()
-        async {
-            let getEmail: Promise<KeysResponse> = api.run(route: UserEmailPubKeys(email: self.email))
-            let getContact = contactService.fetch(byEmails: [self.email], context: nil)
-            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-                //internal emails
-                if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        self.pgpType = .internal_trusted_key
-                    } else {
-                        self.pgpType = .internal_normal
-                    }
-                } else {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        if contact.encrypt {
-                            self.pgpType = .pgp_encrypt_trusted_key
-                        } else if contact.sign {
-                            self.pgpType = .pgp_signed
-                        }
-                    }
-                }
-                complete?(nil, -1)
-            }.catch(policy: .allErrors) { _ in
-                complete?(nil, -1)
-            }
-        }
-        
-    }
     
     public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id

@@ -498,7 +498,7 @@ extension UserManager : UserDataSource {
         }
     }
     
-    func getUnReadCount(by labelID: String) -> Promise<Int> {
+    func getUnReadCount(by labelID: String) -> Int {
         return self.labelService.unreadCount(by: labelID)
     }
 }

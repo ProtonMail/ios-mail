@@ -184,9 +184,9 @@ class ComposeViewModel: NSObject {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
+    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: @escaping () -> Void) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-        return Promise()
+        return completion()
     }
     
     

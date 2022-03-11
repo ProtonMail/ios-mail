@@ -101,8 +101,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {}
-    
     /*
      contact group subselection
      

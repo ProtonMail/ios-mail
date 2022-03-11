@@ -291,30 +291,19 @@ class LabelsDataService: Service, HasLocalStorage {
         return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, context: context, type: viewMode)
     }
     
-    func unreadCount(by labelID: String, userID: String? = nil) -> Promise<Int> {
+    func unreadCount(by labelID: String) -> Int {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return Promise<Int>.value(0)
+            return 0
         }
-        
-        switch viewMode {
-        case .conversation:
-            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .conversation)
-        case .singleMessage:
-            return lastUpdatedStore.unreadCount(by: labelID, userID: userID ?? self.userID, type: .singleMessage)
-        }
+        return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
     }
 
-    func getUnreadCounts(by labelIDs: [String], userID: String? = nil) -> Promise<[String: Int]> {
+    func getUnreadCounts(by labelIDs: [String], completion: @escaping ([String: Int]) -> Void) {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return Promise<[String: Int]>.value([:])
+            return completion([:])
         }
 
-        switch viewMode {
-        case .conversation:
-            return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: userID ?? self.userID, type: .conversation)
-        case .singleMessage:
-            return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: userID ?? self.userID, type: .singleMessage)
-        }
+        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
     }
 
     func resetCounter(labelID: String, userID: String? = nil, viewMode: ViewMode? = nil) {

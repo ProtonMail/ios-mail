@@ -39,19 +39,17 @@ protocol LastUpdatedStoreProtocol {
     
     func updateEventID(by userID : String, eventID: String) -> Promise<Void>
     func lastEventID(userID: String) -> String
-    func lastEvent(userID: String, context: NSManagedObjectContext) -> UserEvent
     func lastEventUpdateTime(userID: String) -> Date?
     
     func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount?
     func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext, type: ViewMode) -> LabelCount
-    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int>
     func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Int
     func updateUnreadCount(by labelID : String, userID: String, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool)
     func removeUpdateTime(by userID: String, type: ViewMode)
     func resetCounter(labelID: String, userID: String, type: ViewMode?)
     func removeUpdateTimeExceptUnread(by userID: String, type: ViewMode)
     func lastUpdates(by labelIDs: [String], userID: String, context: NSManagedObjectContext, type: ViewMode) -> [LabelCount]
-    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]>
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void)
 }
 
 final class LastUpdatedStore : SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
@@ -200,10 +198,6 @@ extension LastUpdatedStore {
                                       inManagedObjectContext: context)
     }
     
-    func lastEvent(userID: String, context: NSManagedObjectContext) -> UserEvent {
-        return eventIDDefault(by: userID, context: context)
-    }
-    
     func lastEventID(userID: String) -> String {
         var eventID = ""
         context.performAndWait {
@@ -258,30 +252,15 @@ extension LastUpdatedStore {
         }
         
     }
-    
-    func unreadCount(by labelID : String, userID: String, type: ViewMode) -> Promise<Int> {
-        return Promise { seal in
-            var unreadCount: Int32?
-            context.perform {
-                let update = self.lastUpdate(by: labelID, userID: userID, context: self.context, type: type)
-                unreadCount = update?.unread
 
-                guard let result = unreadCount else {
-                    seal.fulfill(0)
-                    return
-                }
-                seal.fulfill(Int(result))
-            }
-        }
-    }
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
+        context.perform {
+            var results: [String: Int] = [:]
+            let labelCounts = self.lastUpdates(by: labelID, userID: userID, context: self.context, type: type)
+            labelCounts.forEach({ results[$0.labelID] = Int($0.unread) })
 
-    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]> {
-        return Promise { seal in
-            context.perform {
-                var results: [String: Int] = [:]
-                let labelCounts = self.lastUpdates(by: labelID, userID: userID, context: self.context, type: type)
-                labelCounts.forEach({ results[$0.labelID] = Int($0.unread) })
-                seal.fulfill(results)
+            DispatchQueue.main.async {
+                completion(results)
             }
         }
     }

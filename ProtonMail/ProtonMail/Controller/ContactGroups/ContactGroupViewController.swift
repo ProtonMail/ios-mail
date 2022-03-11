@@ -342,12 +342,15 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }
 
             guard let self = self else { return }
-            firstly {
-                return self.viewModel.fetchLatestContactGroup()
-            }.done {
-                self.refreshControl.endRefreshing()
-            }.catch { error in
-                error.alert(at: self.view)
+
+            self.viewModel.fetchLatestContactGroup { [weak self] error in
+                guard let self = self else { return }
+
+                if let error = error {
+                    error.alert(at: self.view)
+                } else {
+                    self.refreshControl.endRefreshing()
+                }
             }
         }
     }

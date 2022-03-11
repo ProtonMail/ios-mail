@@ -551,8 +551,11 @@ extension SearchViewController {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         let conversationID = message.conversationID
         let messageID = message.messageID
-        self.viewModel.getConversation(conversationID: conversationID, messageID: messageID).done { [weak self] conversation in
+        self.viewModel.getConversation(conversationID: conversationID, messageID: messageID) { [weak self] result in
             guard let self = self else { return }
+
+        switch result {
+        case .success(let conversation):
             let coordinator = ConversationCoordinator(
                 labelId: self.viewModel.labelID,
                 navigationController: navigation,
@@ -561,10 +564,10 @@ extension SearchViewController {
                 targetID: messageID
             )
             coordinator.start()
-        }.catch { error in
+        case .failure(let error):
             error.alert(at: nil)
-        }.finally { [weak self] in
-            guard let self = self else { return }
+        }
+
             self.updateTapped(status: false)
             MBProgressHUD.hide(for: self.view, animated: true)
         }

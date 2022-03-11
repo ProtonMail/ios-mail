@@ -63,10 +63,6 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return ""
     }
     
-    func lastEvent(userID: String, context: NSManagedObjectContext) -> UserEvent {
-        return UserEvent(context: context)
-    }
-    
     func lastEventUpdateTime(userID: String) -> Date? {
         return nil
     }
@@ -99,17 +95,6 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
                 return newData
             }
         }
-    }
-    
-    func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Promise<Int> {
-        var count = 0
-        switch type {
-        case .singleMessage:
-            count = Int(self.msgLabelUpdate[labelID]?.unread ?? 0)
-        case .conversation:
-            count = Int(self.conversationLabelUpdate[labelID]?.unread ?? 0)
-        }
-        return Promise.value(count)
     }
     
     func unreadCount(by labelID: String, userID: String, type: ViewMode) -> Int {
@@ -158,7 +143,7 @@ class MockLastUpdatedStore: LastUpdatedStoreProtocol {
         return []
     }
 
-    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode) -> Promise<[String: Int]> {
-        return Promise<[String: Int]>.value([:])
+    func getUnreadCounts(by labelID: [String], userID: String, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
+        completion([:])
     }
 }

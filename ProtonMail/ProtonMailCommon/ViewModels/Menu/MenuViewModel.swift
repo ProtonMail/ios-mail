@@ -116,8 +116,8 @@ extension MenuViewModel: MenuVMProtocol {
     func menuViewInit() {
         self.updatePrimaryUserView()
         self.updateMoreItems(shouldReload: false)
-        _ = self.updateUnread().done {
-            self.delegate?.updateMenu(section: nil)
+        self.updateUnread { [weak self] in
+            self?.delegate?.updateMenu(section: nil)
         }
     }
     
@@ -224,15 +224,10 @@ extension MenuViewModel: MenuVMProtocol {
         return list
     }
     
-    func getUnread(of userID: String) -> Promise<Int> {
-        return Promise { [weak self] seal in
-            guard let vm = self,
-                  let user = vm.usersManager.getUser(byUserId: userID) else {return seal.fulfill(0) }
-            let labelID = LabelLocation.inbox.toMessageLocation.rawValue
-            _ = user.getUnReadCount(by: labelID).done { (unread) in
-                seal.fulfill(unread)
-            }
-        }
+    func getUnread(of userID: String) -> Int {
+        guard let user = usersManager.getUser(byUserId: userID) else { return 0 }
+        let labelID = LabelLocation.inbox.toMessageLocation.rawValue
+        return user.getUnReadCount(by: labelID)
     }
     
     func activateUser(id: String) {
@@ -300,7 +295,7 @@ extension MenuViewModel: MenuVMProtocol {
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if controller == self.labelUpdateFetcher || controller == self.conversationCountFetcher {
-            _ = self.updateUnread().done {
+            self.updateUnread {
                 self.delegate?.updateMenu(section: nil)
             }
             return
@@ -382,7 +377,7 @@ extension MenuViewModel {
     private func handle(dbLabels: [Label]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
-        _ = self.updateUnread().done { [weak self] in
+        self.updateUnread { [weak self] in
             self?.sortoutData(data: datas)
         }
     }
@@ -439,38 +434,33 @@ extension MenuViewModel {
     }
     
     // Query unread number of labels
-    private func getUnreadNumbers() -> Promise<Void> {
-        return Promise<Void> { seal in
-            let tmp = self.inboxItems + self.rawData
-            let labels = tmp.map({ $0.location.labelID })
+    private func getUnreadNumbers(completion: @escaping () -> Void) {
+        let tmp = self.inboxItems + self.rawData
+        let labels = tmp.map({ $0.location.labelID })
 
-            self.labelDataService?.getUnreadCounts(by: labels, userID: nil).done({ labelUnreadDict in
-                for item in tmp {
-                    item.unread = labelUnreadDict[item.location.labelID] ?? 0
-                }
-                if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
-                    UIApplication.setBadge(badge: unreadOfInbox)
-                }
-                seal.fulfill_()
-            }).cauterize()
+        self.labelDataService?.getUnreadCounts(by: labels) { labelUnreadDict in
+            for item in tmp {
+                item.unread = labelUnreadDict[item.location.labelID] ?? 0
+            }
+            if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
+                UIApplication.setBadge(badge: unreadOfInbox)
+            }
+            completion()
         }
     }
     
-    private func aggregateUnreadNumbers() -> Promise<Void> {
-        return Promise { seal in
-            let arr = self.rawData.filter({$0.type == .folder}).reversed()
-            // 0 is "add folder" label, skip
-            for label in arr {
-                guard label.subLabels.count > 0 else {
-                    label.aggreateUnread = label.unread
-                    continue
-                }
-                
-                label.aggreateUnread = label.unread + label.subLabels.reduce(0, { (sum, label) -> Int in
-                    return sum + label.aggreateUnread
-                })
+    private func aggregateUnreadNumbers() {
+        let arr = self.rawData.filter({$0.type == .folder}).reversed()
+        // 0 is "add folder" label, skip
+        for label in arr {
+            guard label.subLabels.count > 0 else {
+                label.aggreateUnread = label.unread
+                continue
             }
-            seal.fulfill_()
+
+            label.aggreateUnread = label.unread + label.subLabels.reduce(0, { (sum, label) -> Int in
+                return sum + label.aggreateUnread
+            })
         }
     }
 }
@@ -542,9 +532,11 @@ extension MenuViewModel {
                               deleteRows: deleteRows)
     }
 
-    private func updateUnread() -> Promise<Void> {
-        return self.getUnreadNumbers()
-            .then { self.aggregateUnreadNumbers() }
+    private func updateUnread(completion: @escaping () -> Void) {
+        getUnreadNumbers { [weak self] in
+            self?.aggregateUnreadNumbers()
+            completion()
+        }
     }
 }
 
