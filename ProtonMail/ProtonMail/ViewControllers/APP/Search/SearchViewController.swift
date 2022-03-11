@@ -288,11 +288,16 @@ extension SearchViewController {
                 self.view.addSubview(self.searchInfoBanner!)
                 self.searchInfoBanner?.displayBanner(on: self.view)
 
-                // TODO update constriants to shift down table
-                //self.view.layoutIfNeeded()  // finish pending layout changes
-                //self.tableView.translatesAutoresizingMaskIntoConstraints = false
-                //self.tableView.topAnchor.constraint(equalTo: self.searchInfoBanner!.bottomAnchor).isActive = true
-                //self.view.layoutIfNeeded()  // update table layout change
+                // Shift tableview down to make place for the banner
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.2) {
+                        var frame = self.tableView.frame
+                        // Size of banner + distance to top of table view
+                        let tableOffset = ((self.searchInfoBanner?.frame.height ?? 60) + 20)
+                        frame.origin.y += tableOffset
+                        self.tableView.frame = frame
+                    }
+                }
             }
         }
     }
