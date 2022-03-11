@@ -139,19 +139,19 @@ class BannerView: PMView {
         super.init(frame: CGRect.zero)
 
         self.roundCorners()
-        
+
         self.messageTextview.delegate = self
         self.messageTextview.textContainer.lineFragmentPadding = 0
         self.messageTextview.textContainerInset = .zero
         self.messageTextview.font = appearance.fontSize
+        self.messageTextview.isScrollEnabled = false
+        self.messageTextview.isEditable = false
         if link == "" {
             self.messageTextview.text = message
             self.messageTextview.textColor = appearance.textColor
         } else {
-            self.messageTextview.isScrollEnabled = false
             self.messageTextview.isUserInteractionEnabled = true
             self.messageTextview.isSelectable = true
-            self.messageTextview.isEditable = false
             self.messageTextview.dataDetectorTypes = [.link]
             self.messageTextview.attributedText = self.prepareAttributedText(text: message, link: link!)
             self.messageTextview.linkTextAttributes = [.foregroundColor: UIColor.blue]
@@ -163,7 +163,12 @@ class BannerView: PMView {
             self.link = link
             self.handleAttributedTextTap = handleAttributedTextTap
         }
-        
+
+        self.messageLabel = UILabel()
+        self.messageLabel?.isHidden = true
+        self.messageLabel?.text = message
+        self.addSubview(self.messageLabel!)
+
         self.backgroundView.backgroundColor = appearance.backgroundColor
         self.backgroundView.alpha = appearance.backgroundAlpha
         self.buttonConfig = buttons
@@ -183,11 +188,6 @@ class BannerView: PMView {
             self.messageTextview.attributedText = attributed
             self.messageTextview.linkTextAttributes = yourAttributes
         }
-
-        self.messageLabel = UILabel()
-        self.messageLabel?.text = message
-        self.messageLabel?.isHidden = true
-        self.addSubview(self.messageLabel!)
 
         self.messageTextview.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
@@ -346,7 +346,16 @@ extension BannerView: UIGestureRecognizerDelegate {
         if self.appearance == .esGray {
             self.messageTextview.font = self.appearance?.fontSize
             self.messageTextview.textColor = self.appearance?.textColor
-            bannerHeight = 92.0//self.messageTextview.bounds.height + (2 * 16.0)    //TODO banner height wrong when more than one line
+
+            let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
+
+            let numberOfLines = Int(sizeOfText.height / (self.appearance?.fontSize.lineHeight ?? 1.0))
+            if numberOfLines == 1 {
+                self.messageTextview.textAlignment = .center
+            }
+
+            // number of lines + padding top/bottom + some extra space
+            bannerHeight = (CGFloat(numberOfLines) * (self.appearance?.fontSize.lineHeight ?? 1.0)) + (2 * 16.0) + 4.0
         } else if self.appearance == .esBlack {
             self.messageTextview.font = self.appearance?.fontSize
             self.messageTextview.textColor = self.appearance?.textColor
@@ -358,16 +367,16 @@ extension BannerView: UIGestureRecognizerDelegate {
 
         let size = CGSize(width: bannerWidth, height: bannerHeight)
         self.frame = CGRect(origin: .zero, size: size)
-        self.center = CGPoint(x: (baseView.bounds.width / 2), y: self.offset)
+        self.center = CGPoint(x: (baseView.bounds.width / 2), y: self.offset + bannerHeight/2)
 
         // Set some constraints
         if self.appearance == .esGray {
             self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
+                self.messageTextview.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -8),
+                //self.messageTextview.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -48),
-                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
             ])
 
             // Add dismiss icon + callback
@@ -382,10 +391,11 @@ extension BannerView: UIGestureRecognizerDelegate {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 self.addSubview(imageView)
                 NSLayoutConstraint.activate([
-                    imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 34),
                     imageView.leadingAnchor.constraint(equalTo: self.messageTextview.trailingAnchor, constant: 8),
                     imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-                    imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -34)
+                    imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                    imageView.widthAnchor.constraint(equalToConstant: 24),
+                    imageView.heightAnchor.constraint(equalToConstant: 24)
                 ])
             }
         } else if self.appearance == .esBlack {
@@ -558,7 +568,9 @@ extension BannerView {
             url = URL(string: link)
         }
 
-        let attributes = [NSAttributedString.Key.link: url!] as [NSAttributedString.Key: Any]
+        let attributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.link: url!
+        ]
 
         if let subrange = fullString.range(of: link) {
             let range = NSRange(subrange, in: fullString)

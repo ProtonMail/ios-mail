@@ -120,13 +120,17 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
             }
 
             // remove search info banner if encrypted search is disabled or complete
-            if self.searchInfoBanner != nil {
-                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.partial, .complete, .disabled, .undetermined]
+            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            if let userID = usersManager.firstUser?.userInfo.userId {
+                if self.searchInfoBanner != nil {
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.complete, .disabled, .undetermined]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         UIView.performWithoutAnimation {
                             self.removeSearchInfoBanner()
+                        }
+                    } else {
+                        UIView.performWithoutAnimation {
+                            self.showSearchInfoBanner()
                         }
                     }
                 }
@@ -276,9 +280,13 @@ extension SearchViewController {
                         break
                     }
                 }
-                self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
+
+                let positionOfSearchBar = self.searchBar.superview?.convert(self.searchBar.frame.origin, to: nil)
+                // Top corner of search bar + size of search bar + distance to top of banner
+                let offset = (positionOfSearchBar?.y ?? 48.0) + 36.0 + 20.0
+                self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: offset, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
                 self.view.addSubview(self.searchInfoBanner!)
-                self.searchInfoBanner!.drop(on: self.view, from: .top)
+                self.searchInfoBanner?.displayBanner(on: self.view)
 
                 // TODO update constriants to shift down table
                 //self.view.layoutIfNeeded()  // finish pending layout changes
@@ -936,7 +944,7 @@ extension SearchViewController: UITextFieldDelegate {
             if userCachedStatus.isEncryptedSearchOn {
                 let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
                 if let userID = usersManager.firstUser?.userInfo.userId {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh]
+                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .paused, .refresh, .lowstorage, .partial]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
                         self.showSearchInfoBanner()    // display only when ES is on
                     }
