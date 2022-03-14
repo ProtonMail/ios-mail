@@ -209,7 +209,7 @@ extension SingleMessageViewModel: MoveToActionSheetProtocol {
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)?) {
         fatalError("Not implemented")
     }
 }
@@ -251,7 +251,8 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [Conversation],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             completion: (() -> Void)?) {
         fatalError("Not implemented")
     }
 }

@@ -34,6 +34,12 @@ class MailboxCoordinatorTests: XCTestCase {
     var humanCheckStatusProviderMock: MockHumanCheckStatusProvider!
     var conversationStateProviderMock: MockConversationStateProvider!
     var applicationStateStub: UIApplication.State = .active
+    var contactGroupProviderMock: MockContactGroupsProvider!
+    var labelProviderMock: MockLabelProvider!
+    var contactProviderMock: MockContactProvider!
+    var conversationProviderMock: MockConversationProvider!
+    var messageProviderMock: MockMessageProvider!
+    var eventServiceMock: EventsServiceMock!
 
     override func setUp() {
         super.setUp()
@@ -48,6 +54,13 @@ class MailboxCoordinatorTests: XCTestCase {
         contextProviderMock = MockCoreDataContextProvider()
         mailboxViewControllerMock = MailboxViewController()
         uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
+        contactGroupProviderMock = MockContactGroupsProvider()
+        labelProviderMock = MockLabelProvider()
+        contactProviderMock = MockContactProvider()
+        conversationProviderMock = MockConversationProvider()
+        messageProviderMock = MockMessageProvider()
+        eventServiceMock = EventsServiceMock()
+
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
                                              labelType: .unknown,
@@ -57,12 +70,18 @@ class MailboxCoordinatorTests: XCTestCase {
                                              lastUpdatedStore: lastUpdatedStoreMock,
                                              humanCheckStatusProvider: humanCheckStatusProviderMock,
                                              conversationStateProvider: conversationStateProviderMock,
+                                             contactGroupProvider: contactGroupProviderMock,
+                                             labelProvider: labelProviderMock,
+                                             contactProvider: contactProviderMock,
+                                             conversationProvider: conversationProviderMock,
+                                             messageProvider: messageProviderMock,
+                                             eventsService: eventServiceMock,
                                              totalUserCountClosure: {
             return 0
-        },
-                                             getOtherUsersClosure: { _ in
+        }, getOtherUsersClosure: { _ in
             return []
         })
+
         reachabilityStub = ReachabilityStub()
         connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
 

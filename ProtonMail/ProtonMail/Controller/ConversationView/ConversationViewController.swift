@@ -742,7 +742,8 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                             self?.labelAsActionHandler
                                 .handleLabelAsAction(conversations: [conversation],
                                                      shouldArchive: isArchive,
-                                                     currentOptionsStatus: currentOptionsStatus)
+                                                     currentOptionsStatus: currentOptionsStatus,
+                                                     completion: nil)
                         }
                         self?.dismissActionSheet()
                      }
@@ -901,7 +902,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                             return
                         }
                         self?.moveToActionHandler
-                                .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false)
+                    .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false, completion: nil)
                      })
     }
 

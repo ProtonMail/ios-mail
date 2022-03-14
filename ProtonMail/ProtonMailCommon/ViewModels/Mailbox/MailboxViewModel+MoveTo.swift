@@ -32,12 +32,18 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        conversationService.move(conversationIDs: conversations.map(\.conversationID),
-                                 from: "",
-                                 to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction) { [weak self] result in
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
+        guard let destination = selectedMoveToFolder else {
+            completion?()
+            return
+        }
+        conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
+                                  from: "",
+                                  to: destination.location.labelID,
+                                  isSwipeAction: isFromSwipeAction) { [weak self] result in
+            defer {
+                completion?()
+            }
             guard let self = self else { return }
             if let _ = try? result.get() {
                 self.eventsService.fetchEvents(labelID: self.labelId)
@@ -46,7 +52,7 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         /*
          We pass the empty string because we don't have the source folder here
          The same is done for messages in `move(messages: [Message], to tLabel: String, queue: Bool = true)`
-        */
+         */
         selectedMoveToFolder = nil
     }
 }

@@ -54,44 +54,50 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
         }
     }
     
-    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType], completion: (() -> Void)? = nil) {
+        let group = DispatchGroup()
+        let fetchEvents = { [weak self] (result: Result<Void, Error>) in
+            defer {
+                group.leave()
+            }
+            guard let self = self else { return }
+            if (try? result.get()) != nil {
+                self.eventsService.fetchEvents(labelID: self.labelId)
+            }
+        }
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID}) {
+                group.enter()
                 // Add to message which does not have this label
                 let conversationsToApply = conversations.filter({ !$0.getLabelIds().contains(label.location.labelID )})
-                conversationService.label(conversationIDs: conversationsToApply.map(\.conversationID),
+                conversationProvider.label(conversationIDs: conversationsToApply.map(\.conversationID),
                                           as: label.location.labelID,
-                                          isSwipeAction: false) { [weak self] result in
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
-                }
+                                          isSwipeAction: false,
+                                          completion: fetchEvents)
             } else if markType != .dash { // Ignore the option in dash
+                group.enter()
                 let conversationsToRemove = conversations.filter({ $0.getLabelIds().contains(label.location.labelID )})
-                conversationService.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
+                conversationProvider.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
                                             as: label.location.labelID,
-                                            isSwipeAction: false) { [weak self] result in
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
-                }
+                                            isSwipeAction: false,
+                                            completion: fetchEvents)
             }
         }
 
         selectedLabelAsLabels.removeAll()
 
         if shouldArchive {
-            conversationService.move(conversationIDs: conversations.map(\.conversationID), from: "",
+            group.enter()
+            conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
+                                     from: "",
                                      to: Message.Location.archive.rawValue,
-                                    isSwipeAction: false) { [weak self] result in
-                guard let self = self else { return }
-                if let _ = try? result.get() {
-                    self.eventsService.fetchEvents(labelID: self.labelId)
-                }
-            }
+                                     isSwipeAction: false,
+                                     completion: fetchEvents)
+        }
+
+        group.notify(queue: .main) {
+            completion?()
         }
     }
 }

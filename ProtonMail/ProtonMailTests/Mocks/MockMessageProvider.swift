@@ -16,14 +16,8 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
-class MockMailBoxViewModel: MailboxViewModel {
-
-    @FuncStub(MockMailBoxViewModel.fetchConversationDetail) var callFetchConversationDetail
-    override func fetchConversationDetail(conversationID: String, completion: ((Result<Conversation, Error>) -> Void)?) {
-        callFetchConversationDetail(conversationID, completion)
-    }
-
+class MockMessageProvider: MessageProvider {
+    
 }

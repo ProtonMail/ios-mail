@@ -167,7 +167,14 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             tsVC.start()
         case .feedback, .feedbackView:
             return false
-        case .newFolder, .newLabel, .search, .onboarding:
+        case .search:
+            guard let next = (destination as? UINavigationController)?.viewControllers.first as? SearchViewController else {
+                return false
+            }
+            let viewModel = SearchViewModel(user: self.viewModel.user,
+                                            coreDataContextProvider: self.services.get(by: CoreDataService.self), uiDelegate: next)
+            next.set(viewModel: viewModel)
+        case .newFolder, .newLabel, .onboarding:
             break
         }
         return true

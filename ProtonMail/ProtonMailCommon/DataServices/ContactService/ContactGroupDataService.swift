@@ -27,9 +27,11 @@ import Groot
 import PromiseKit
 import ProtonCore_Services
 
-//let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
+protocol ContactGroupsProviderProtocol: AnyObject {
+    func getAllContactGroupVOs() -> [ContactGroupVO]
+}
 
-class ContactGroupsDataService: Service, HasLocalStorage {
+class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderProtocol {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             let context = self.coreDataService.operationContext

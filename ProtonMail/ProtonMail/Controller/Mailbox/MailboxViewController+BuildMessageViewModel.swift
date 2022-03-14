@@ -33,10 +33,10 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: message.messageID)
-        let initial = message.initial(replacingEmails: replacingEmails,
-                                      groupContacts: groupContacts)
-        let sender = message.sender(replacingEmails: replacingEmails,
-                                    groupContacts: groupContacts)
+        let initial = message.initial(replacingEmails: viewModel.allEmails,
+                                      groupContacts: viewModel.groupContacts)
+        let sender = message.sender(replacingEmails: viewModel.allEmails,
+                                    groupContacts: viewModel.groupContacts)
 
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(rawValue: viewModel.labelID),
@@ -69,8 +69,8 @@ extension MailboxViewController {
     ) -> NewMailboxMessageViewModel {
         let labelId = viewModel.labelID
         let isSelected = self.viewModel.selectionContains(id: conversation.conversationID)
-        let sender = conversation.getJoinedSendersName(replacingEmails)
-        let initial = conversation.initial(replacingEmails)
+        let sender = conversation.getJoinedSendersName(viewModel.allEmails)
+        let initial = conversation.initial(viewModel.allEmails)
         let messageCount = conversation.numMessages.intValue
         let isInCustomFolder = customFolderLabels.map({ $0.labelID }).contains(labelId)
 

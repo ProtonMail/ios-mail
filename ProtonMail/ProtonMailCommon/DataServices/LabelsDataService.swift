@@ -37,6 +37,11 @@ enum LabelFetchType : Int {
     case folderWithOutbox = 5
 }
 
+protocol LabelProviderProtocol: AnyObject {
+    func getCustomFolders() -> [Label]
+    func getLabel(by labelID: String) -> Label?
+}
+
 class LabelsDataService: Service, HasLocalStorage {
     
     public let apiService: APIService
@@ -363,5 +368,15 @@ class LabelsDataService: Service, HasLocalStorage {
         self.cacheService.deleteLabels(objectIDs: ids) {
             completion?()
         }
+    }
+}
+
+extension LabelsDataService: LabelProviderProtocol {
+    func getCustomFolders() -> [Label] {
+        return getAllLabels(of: .folder, context: coreDataService.mainContext)
+    }
+
+    func getLabel(by labelID: String) -> Label? {
+        return label(by: labelID)
     }
 }

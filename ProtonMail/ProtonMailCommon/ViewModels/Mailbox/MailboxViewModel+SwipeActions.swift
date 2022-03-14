@@ -36,10 +36,10 @@ extension MailboxViewModel {
         } else if let conversation = self.itemOfConversation(index: index) {
             // Empty string as source if we don't find a valid folder
             let fLabel = conversation.firstValidFolder() ?? ""
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: fLabel,
-                                     to: Message.Location.archive.rawValue,
-                                     isSwipeAction: isSwipeAction) { [weak self] result in
+            conversationProvider.move(conversationIDs: [conversation.conversationID],
+                                      from: fLabel,
+                                      to: Message.Location.archive.rawValue,
+                                      isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -59,10 +59,10 @@ extension MailboxViewModel {
         } else if let conversation = self.itemOfConversation(index: index) {
             // Empty string as source if we don't find a valid folder
             let fLabel = conversation.firstValidFolder() ?? ""
-            conversationService.move(conversationIDs: [conversation.conversationID],
-                                     from: fLabel,
-                                     to: Message.Location.spam.rawValue,
-                                     isSwipeAction: isSwipeAction) { [weak self] result in
+            conversationProvider.move(conversationIDs: [conversation.conversationID],
+                                      from: fLabel,
+                                      to: Message.Location.spam.rawValue,
+                                      isSwipeAction: isSwipeAction) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.eventsService.fetchEvents(labelID: self.labelId)
@@ -75,7 +75,7 @@ extension MailboxViewModel {
         if let message = self.item(index: index) {
             delete(message: message, isSwipeAction : isSwipeAction)
         } else if let conversation = self.itemOfConversation(index: index) {
-            delete(conversation: conversation, isSwipeAction: isSwipeAction)
+            delete(conversation: conversation, isSwipeAction: isSwipeAction, completion: nil)
         }
 
     }
@@ -87,13 +87,16 @@ extension MailboxViewModel {
         }
     }
 
-    func delete(conversation: Conversation, isSwipeAction: Bool) {
+    func delete(conversation: Conversation, isSwipeAction: Bool, completion: (() -> Void)?) {
         // Empty string as source if we don't find a valid folder
         let fLabel = conversation.firstValidFolder() ?? ""
-        conversationService.move(conversationIDs: [conversation.conversationID],
+        conversationProvider.move(conversationIDs: [conversation.conversationID],
                                  from: fLabel,
                                  to: Message.Location.trash.rawValue,
                                  isSwipeAction: isSwipeAction) { [weak self] result in
+            defer {
+                completion?()
+            }
             guard let self = self else { return }
             if let _ = try? result.get() {
                 self.eventsService.fetchEvents(labelID: self.labelId)

@@ -52,11 +52,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel = viewModel
     }
 
-    lazy var replacingEmails: [Email] = viewModel.allEmails()
-
-    lazy var groupContacts: [ContactGroupVO] = { [unowned self] in
-        viewModel.groupContacts
-    }()
+    lazy var replacingEmails: [Email] = viewModel.allEmails
 
     var listEditing: Bool = false
     
@@ -313,7 +309,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
         if let selectedItem = selectedItem {
-            if self.viewModel.isDrafts() {
+            if self.viewModel.isInDraftFolder {
                 // updated draft should either be deleted or moved to top, so all the rows in between should be moved 1 position down
                 let rowsToMove = (0...selectedItem.row).map{ IndexPath(row: $0, section: 0) }
                 self.refreshCells(at: rowsToMove, animation: .top)
@@ -814,7 +810,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        guard action != .read && action != .unread else {
+        // Since the read action will try to swipe the cell to origin. It conflicts with the animation of removing the cell from tableView.
+        // Here to prevent the cell swiping to origin to remove weird animation.
+        guard !unreadFilterButton.isSelected && action != .read else {
             return
         }
 
@@ -838,7 +836,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        guard action != .read && action != .unread else {
+        // Since the read action will try to swipe the cell to origin. It conflicts with the animation of removing the cell from tableView.
+        // Here to prevent the cell swiping to origin to remove weird animation.
+        guard !unreadFilterButton.isSelected && action != .read else {
             return
         }
 
@@ -1072,7 +1072,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.refreshControl.endRefreshing()
             return
         }
-        self.replacingEmails = self.viewModel.allEmails()
+        self.replacingEmails = self.viewModel.allEmails
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
@@ -1199,8 +1199,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if viewModel.isEventIDValid() {
                     //fetch
                     self.needToShowNewMessage = true
-                    viewModel.fetchEvents(time: 0,
-                                          notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
+                    viewModel.fetchEvents(notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
                     }
                 } else {// this new
@@ -1308,7 +1307,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func tappedMessage(_ message: Message) {
         if getTapped() == false {
-            guard viewModel.isDrafts() || message.draft else {
+            guard viewModel.isInDraftFolder || message.draft else {
                 self.coordinator?.go(to: .details)
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
@@ -1425,16 +1424,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
         self.setupRightButtons(editingMode)
-    }
- 
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // TODO: refactor SearchViewController to have Coordinator and properly inject this hunk
-        if let search = (segue.destination as? UINavigationController)?.topViewController as? SearchViewController {
-            let viewModel = self.viewModel.getSearchViewModel(uiDelegate: search)
-            search.set(viewModel: viewModel)
-        }
-        super.prepare(for: segue, sender: sender)
     }
     
     private func retry(delay: Double = 0) {
@@ -1571,7 +1560,7 @@ extension MailboxViewController {
         guard self.mailActionBar == nil else {
             return
         }
-        let actions = self.viewModel.getActionTypes()
+        let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMActionBarItem] = []
         
         for (key, action) in actions.enumerated() {
@@ -1590,7 +1579,7 @@ extension MailboxViewController {
                         self.showDeleteAlert { [weak self] in
                             guard let `self` = self else { return }
                             self.viewModel.handleBarActions(action,
-                                                            selectedIDs: NSMutableSet(set: self.viewModel.selectedIDs))
+                                                            selectedIDs: self.viewModel.selectedIDs)
                             self.showMessageMoved(title: LocalString._messages_has_been_deleted)
                         }
                     case .moveTo:
@@ -1598,8 +1587,7 @@ extension MailboxViewController {
                     case .labelAs:
                         self.labelButtonTapped()
                     default:
-                        let temp = NSMutableSet(set: self.viewModel.selectedIDs)
-                        self.viewModel.handleBarActions(action, selectedIDs: temp)
+                        self.viewModel.handleBarActions(action, selectedIDs: self.viewModel.selectedIDs)
                         if action != .readUnread {
                             self.showMessageMoved(title: LocalString._messages_has_been_moved)
                         }
@@ -1789,7 +1777,8 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                 self?.labelAsActionHandler
                     .handleLabelAsAction(conversations: conversations,
                                          shouldArchive: isArchive,
-                                         currentOptionsStatus: currentOptionsStatus)
+                                         currentOptionsStatus: currentOptionsStatus,
+                                         completion: nil)
                 if isFromSwipeAction && isAnyOptionSelected {
                     let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_label_conversation_banner_title,
                                                                  conversations.count)
@@ -1925,7 +1914,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                         }
 
                         self?.moveToActionHandler
-                                .handleMoveToAction(conversations: conversations, isFromSwipeAction: isFromSwipeAction)
+                    .handleMoveToAction(conversations: conversations, isFromSwipeAction: isFromSwipeAction, completion: nil)
                         if isFromSwipeAction {
                             let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_conversation_banner_title,
                                                                          conversations.count,
@@ -1948,7 +1937,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         case .delete:
             showDeleteAlert { [weak self] in
                 guard let `self` = self else { return }
-                self.viewModel.delete(IDs: NSMutableSet(set: self.viewModel.selectedIDs))
+                self.viewModel.delete(IDs: self.viewModel.selectedIDs)
             }
         case .labelAs:
             labelButtonTapped()

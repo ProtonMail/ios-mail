@@ -43,6 +43,11 @@ typealias ContactImportCancel = (() -> Bool)
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
+protocol ContactProviderProtocol: AnyObject {
+    func getAllEmails() -> [Email]
+    func fetchContacts(completion: ContactFetchComplete?)
+}
+
 class ContactDataService: Service, HasLocalStorage {
     
     private let addressBookService: AddressBookService
@@ -820,5 +825,11 @@ extension ContactDataService {
                 completion(filteredResult, lastError)
             }
         }
+    }
+}
+
+extension ContactDataService: ContactProviderProtocol {
+    func getAllEmails() -> [Email] {
+        return allAccountEmails()
     }
 }
