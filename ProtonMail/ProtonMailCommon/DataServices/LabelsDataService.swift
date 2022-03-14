@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 import Groot
@@ -28,7 +27,7 @@ import PromiseKit
 import AwaitKit
 import ProtonCore_Services
 
-enum LabelFetchType : Int {
+enum LabelFetchType: Int {
     case all = 0
     case label = 1
     case folder = 2
@@ -43,14 +42,14 @@ protocol LabelProviderProtocol: AnyObject {
 }
 
 class LabelsDataService: Service, HasLocalStorage {
-    
+
     public let apiService: APIService
-    private let userID : String
+    private let userID: String
     private let coreDataService: CoreDataService
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
     weak var viewModeDataSource: ViewModeDataSource?
-    
+
     init(api: APIService, userID: String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService) {
         self.apiService = api
         self.userID = userID
@@ -58,7 +57,7 @@ class LabelsDataService: Service, HasLocalStorage {
         self.lastUpdatedStore = lastUpdatedStore
         self.cacheService = cacheService
     }
-    
+
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             let labelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
@@ -78,7 +77,7 @@ class LabelsDataService: Service, HasLocalStorage {
             }
         }
     }
-    
+
     static func cleanUpAll() -> Promise<Void> {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
@@ -88,7 +87,7 @@ class LabelsDataService: Service, HasLocalStorage {
                 LabelUpdate.deleteAll(inContext: context)
                 ContextLabel.deleteAll(inContext: context)
                 seal.fulfill_()
-            }            
+            }
         }
     }
 
@@ -97,7 +96,7 @@ class LabelsDataService: Service, HasLocalStorage {
         return Promise { seal in
             let labelReq = GetV4LabelsRequest(type: .label)
             let folderReq = GetV4LabelsRequest(type: .folder)
-            
+
             let labelAPI: Promise<GetLabelsResponse> = self.apiService.run(route: labelReq)
             let folderAPI: Promise<GetLabelsResponse> = self.apiService.run(route: folderReq)
             // [labelAPI, folderAPI]
@@ -115,21 +114,21 @@ class LabelsDataService: Service, HasLocalStorage {
                 for (index, _) in folders.enumerated() {
                     folders[index]["UserID"] = self.userID
                 }
-                
-                folders.append(["ID": "0"]) //case inbox   = "0"
-                folders.append(["ID": "8"]) //case draft   = "8"
-                folders.append(["ID": "1"]) //case draft   = "1"
-                folders.append(["ID": "7"]) //case sent    = "7"
-                folders.append(["ID": "2"]) //case sent    = "2"
-                folders.append(["ID": "10"]) //case starred = "10"
-                folders.append(["ID": "6"]) //case archive = "6"
-                folders.append(["ID": "4"]) //case spam    = "4"
-                folders.append(["ID": "3"]) //case trash   = "3"
-                folders.append(["ID": "5"]) //case allmail = "5"
-                
+
+                folders.append(["ID": "0"]) // case inbox   = "0"
+                folders.append(["ID": "8"]) // case draft   = "8"
+                folders.append(["ID": "1"]) // case draft   = "1"
+                folders.append(["ID": "7"]) // case sent    = "7"
+                folders.append(["ID": "2"]) // case sent    = "2"
+                folders.append(["ID": "10"]) // case starred = "10"
+                folders.append(["ID": "6"]) // case archive = "6"
+                folders.append(["ID": "4"]) // case spam    = "4"
+                folders.append(["ID": "3"]) // case trash   = "3"
+                folders.append(["ID": "5"]) // case allmail = "5"
+
                 let allFolders = labels + folders
-                
-                //save
+
+                // save
                 let context = self.coreDataService.operationContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
@@ -167,7 +166,7 @@ class LabelsDataService: Service, HasLocalStorage {
                 for (index, _) in labels.enumerated() {
                     labels[index]["UserID"] = self.userID
                 }
-                //save
+                // save
                 let context = self.coreDataService.operationContext
                 self.coreDataService.enqueue(context: context) { (context) in
                     do {
@@ -193,16 +192,16 @@ class LabelsDataService: Service, HasLocalStorage {
         return folderItems
     }
 
-    func getAllLabels(of type : LabelFetchType, context: NSManagedObjectContext) -> [Label] {
+    func getAllLabels(of type: LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-        
+
         if type == .contactGroup && userCachedStatus.isCombineContactOn {
             // in contact group searching, predicate must be consistent with this one
             fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         } else {
             fetchRequest.predicate = self.fetchRequestPrecidate(type)
         }
-        
+
         let context = context
         do {
             let results = try context.fetch(fetchRequest)
@@ -211,15 +210,15 @@ class LabelsDataService: Service, HasLocalStorage {
             }
         } catch {
         }
-        
+
         return []
     }
-    
-    func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
+
+    func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = self.coreDataService.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
-        
+
         if type != .contactGroup {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
         } else {
@@ -230,7 +229,7 @@ class LabelsDataService: Service, HasLocalStorage {
         }
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
-    
+
     private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
         switch type {
         case .all:
@@ -242,14 +241,14 @@ class LabelsDataService: Service, HasLocalStorage {
             let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
             // custom folders like in previous (LabelFetchType.folder) case
             let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
-            
+
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .folderWithOutbox:
             // 7 - sent, 6 - archive, 3 - trash
             let defaults = NSPredicate(format: "labelID IN %@", [6, 7, 3])
             // custom folders like in previous (LabelFetchType.folder) case
             let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
-            
+
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .label:
             return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
@@ -257,11 +256,11 @@ class LabelsDataService: Service, HasLocalStorage {
             return NSPredicate(format: "(%K == 2) AND (%K == %@) AND (%K == 0)", Label.Attributes.type, Label.Attributes.userID, self.userID, Label.Attributes.isSoftDeleted)
         }
     }
-    
-    func addNewLabel(_ response : [String : Any]?) {
+
+    func addNewLabel(_ response: [String: Any]?) {
         if var label = response {
             let context = self.coreDataService.operationContext
-            context.performAndWait() {
+            context.performAndWait {
                 do {
                     label["UserID"] = self.userID
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
@@ -276,8 +275,8 @@ class LabelsDataService: Service, HasLocalStorage {
         let context = self.coreDataService.mainContext
         return Label.labelFetchController(for: labelID, inManagedObjectContext: context)
     }
-    
-    func label(by labelID : String) -> Label? {
+
+    func label(by labelID: String) -> Label? {
         let context = self.coreDataService.mainContext
         return Label.labelForLabelID(labelID, inManagedObjectContext: context)
     }
@@ -287,7 +286,7 @@ class LabelsDataService: Service, HasLocalStorage {
         return Label.labelForLabelName(name, inManagedObjectContext: context)
     }
 
-    func lastUpdate(by labelID : String, userID: String? = nil) -> LabelCount? {
+    func lastUpdate(by labelID: String, userID: String? = nil) -> LabelCount? {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return nil
         }
@@ -295,7 +294,7 @@ class LabelsDataService: Service, HasLocalStorage {
         let id = userID ?? self.userID
         return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, context: context, type: viewMode)
     }
-    
+
     func unreadCount(by labelID: String) -> Int {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return 0
@@ -351,7 +350,6 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
 
-    
     /// Send api to delete label and remove related labels from the DB
     /// - Parameters:
     ///   - label: The label want to be deleted

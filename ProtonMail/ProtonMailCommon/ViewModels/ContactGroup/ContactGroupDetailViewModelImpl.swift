@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 import CoreData
@@ -28,20 +27,20 @@ import CoreData
 class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     /// the contact group label ID
     let groupID: String
-    
+
     /// the contact group's name
     var name: String
-    
+
     /// the contact group's color
     var color: String
-    
+
     /// the contact group's emails (in NSSet)
     var emailIDs: Set<Email> {
         didSet {
             setupEmailIDsArray()
         }
     }
-    
+
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     private(set) var user: UserManager
@@ -49,7 +48,7 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
 
     var reloadView: (() -> Void)?
-    
+
     init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>, labelsDataService: LabelsDataService) {
         self.user = user
         self.groupID = groupID
@@ -67,10 +66,10 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
         fetchedController.delegate = self
         self.fetchedController = fetchedController
     }
-    
+
     private func setupEmailIDsArray() {
-        emailIDsArray = emailIDs.map{$0}
-        emailIDsArray.sort{
+        emailIDsArray = emailIDs.map {$0}
+        emailIDsArray.sort {
             (first: Email, second: Email) -> Bool in
             if first.name == second.name {
                 return first.email < second.email
@@ -78,30 +77,30 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
             return first.name < second.name
         }
     }
-    
+
     func getGroupID() -> String {
         return groupID
     }
-    
+
     func getName() -> String {
         return name
     }
-    
+
     func getColor() -> String {
         return color
     }
-    
+
     func getTotalEmails() -> Int {
         return emailIDs.count
     }
-    
+
     func getEmailIDs() -> Set<Email> {
         return emailIDs
     }
-    
+
     func getTotalEmailString() -> String {
         let cnt = self.getTotalEmails()
-        
+
         if cnt <= 1 {
             return String.init(format: LocalString._contact_groups_member_count_description,
                                cnt)
@@ -110,15 +109,15 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
                                cnt)
         }
     }
-    
+
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String) {
         guard indexPath.row < emailIDsArray.count else {
             return ("", "", "")
         }
-        
+
         return (emailIDsArray[indexPath.row].emailID, emailIDsArray[indexPath.row].name, emailIDsArray[indexPath.row].email)
     }
-    
+
     /**
      Reloads the contact group from core data
      

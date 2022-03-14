@@ -20,22 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-
 
 class HumanCheckViewModel {
     public typealias HumanResBlock = (_ token: String?, _ error: NSError?) -> Void
     public typealias HumanCheckBlock = (_ error: NSError?) -> Void
-    
+
     public init() { }
 
     func getToken(_ complete: @escaping HumanResBlock) {
         fatalError("This method must be overridden")
     }
-   
+
     func humanCheck(_ type: String, token: String, complete:@escaping HumanCheckBlock) {
         fatalError("This method must be overridden")
     }
-    
+
 }

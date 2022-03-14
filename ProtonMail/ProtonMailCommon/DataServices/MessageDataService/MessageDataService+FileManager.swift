@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 // MARK: - NSFileManager extension
@@ -30,18 +29,17 @@ extension FileManager {
         if !self.fileExists(atPath: attachmentDirectory.absoluteString) {
             do {
                 try self.createDirectory(at: attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
-            }
-            catch {
+            } catch {
             }
         }
         return attachmentDirectory
     }
-    
+
     func cleanTemporaryDirectory() {
         try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectoryUrl)
         try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
     }
-    
+
     // this directory is no longer in use, but keep clearing it for old users
     func cleanCachedAttsLegacy() {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
@@ -54,8 +52,7 @@ extension FileManager {
                     try self.removeItem(atPath: filePathName)
                 }
             }
-        }
-        catch {
+        } catch {
         }
     }
 }

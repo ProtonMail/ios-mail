@@ -28,29 +28,29 @@ class ExpirationIconView: PMView {
     @IBOutlet var view: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var expirationLabel: UILabel!
-    
+
     struct Constant {
         static let height: CGFloat = 18.0
     }
-    
+
     override func getNibName() -> String {
         return "ExpirationIconView"
     }
-    
+
     override class func awakeFromNib() {
         super.awakeFromNib()
     }
-    
+
     override func setupView() {
         super.setupView()
         self.view.backgroundColor = ColorProvider.InteractionWeak
         self.view.layer.cornerRadius = Constant.height / 2.0
         self.view.layer.masksToBounds = true
-        
+
         iconImageView.image = UIImage(named: "mail_list_expiration")?.toTemplateUIImage()
         iconImageView.tintColor = ColorProvider.IconNorm
     }
-    
+
     func configureView(time: Date) {
         var distance: TimeInterval = 0.0
         if #available(iOS 13.0, *) {
@@ -58,7 +58,7 @@ class ExpirationIconView: PMView {
         } else {
             distance = time.timeIntervalSinceReferenceDate - Date().timeIntervalSinceReferenceDate
         }
-        
+
         if distance > 86400 {
             let day = Int(distance / 86400)
             expirationLabel.text = String.localizedStringWithFormat(LocalString._day, day)

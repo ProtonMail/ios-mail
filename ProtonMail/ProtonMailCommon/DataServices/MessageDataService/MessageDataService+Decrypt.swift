@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 import Groot
@@ -30,8 +29,7 @@ import ProtonCore_DataModel
 import ProtonCore_Services
 
 /// TODO:: global access need to be refactored //TODO::fixme
-//let sharedMessageDataService = MessageDataService(api: APIService.shared)
-
+// let sharedMessageDataService = MessageDataService(api: APIService.shared)
 
 /// Message data service
 extension MessageDataService {
@@ -43,14 +41,14 @@ extension MessageDataService {
         } else {
             keys = self.userDataSource!.addressKeys
         }
-        
+
         if let passphrase = self.userDataSource?.mailboxPassword ?? message.cachedPassphrase,
             var body = self.userDataSource!.newSchema ?
                 try message.decryptBody(keys: keys,
                                 userKeys: self.userDataSource!.userPrivateKeys,
                                 passphrase: passphrase) :
                 try message.decryptBody(keys: keys,
-                                passphrase: passphrase) { //DONE
+                                passphrase: passphrase) { // DONE
             if message.isPgpMime || message.isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
                     if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
@@ -59,15 +57,15 @@ extension MessageDataService {
                         body = text.encodeHtml()
                         body = "<html><body>\(body.ln2br())</body></html>"
                     }
-                    
+
                     let cidParts = mimeMsg.mainPart.partCIDs()
-                    
+
                     for cidPart in cidParts {
                         if var cid = cidPart.cid,
                             let rawBody = cidPart.rawBodyString {
                             cid = cid.preg_replace("<", replaceto: "")
                             cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let attType = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
                             let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
                             body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
                         }
@@ -88,8 +86,8 @@ extension MessageDataService {
                         }
                     }
                     message.tempAtts = inlineAtts
-                } else { //backup plan
-                    body = body.multipartGetHtmlContent ()
+                } else { // backup plan
+                    body = body.multipartGetHtmlContent()
                 }
             } else if message.isPgpInline {
                 if message.isPlainText {
@@ -103,7 +101,7 @@ extension MessageDataService {
                     }
                     return body
                 } else if message.isMultipartMixed {
-                    ///TODO:: clean up later
+                    /// TODO:: clean up later
                     if let mimeMsg = MIMEMessage(string: body) {
                         if let html = mimeMsg.mainPart.part(ofType: Message.MimeType.html)?.bodyString {
                             body = html
@@ -111,13 +109,13 @@ extension MessageDataService {
                             body = text.encodeHtml()
                             body = "<html><body>\(body.ln2br())</body></html>"
                         }
-                        
+
                         if let cidPart = mimeMsg.mainPart.partCID(),
                             var cid = cidPart.cid,
                             let rawBody = cidPart.rawBodyString {
                             cid = cid.preg_replace("<", replaceto: "")
                             cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let attType = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
                             let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
                             body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
                         }
@@ -137,8 +135,8 @@ extension MessageDataService {
                             }
                         }
                         message.tempAtts = inlineAtts
-                    } else { //backup plan
-                        body = body.multipartGetHtmlContent ()
+                    } else { // backup plan
+                        body = body.multipartGetHtmlContent()
                     }
                 } else {
                     return body
@@ -154,15 +152,13 @@ extension MessageDataService {
             }
             return body
         }
-        
+
         return message.body
     }
-    
-    
-    
-    func copyMessage (message: Message, copyAtts : Bool, context: NSManagedObjectContext) -> Message {
+
+    func copyMessage (message: Message, copyAtts: Bool, context: NSManagedObjectContext) -> Message {
         var newMessage: Message!
-        
+
         context.performAndWait {
             newMessage = Message(context: context)
             newMessage.toList = message.toList
@@ -171,60 +167,60 @@ extension MessageDataService {
             newMessage.title = message.title
             newMessage.time = Date()
             newMessage.body = message.body
-            
-            //newMessage.flag = message.flag
+
+            // newMessage.flag = message.flag
             newMessage.sender = message.sender
             newMessage.replyTos = message.replyTos
-            
+
             newMessage.orginalTime = message.time
             newMessage.orginalMessageID = message.messageID
             newMessage.expirationOffset = 0
-            
+
             newMessage.addressID = message.addressID
             newMessage.messageStatus = message.messageStatus
             newMessage.mimeType = message.mimeType
             newMessage.conversationID = message.conversationID
             newMessage.setAsDraft()
-            
+
             newMessage.userID = self.userID
 
             if let conversation = Conversation.conversationForConversationID(message.conversationID, inManagedObjectContext: context) {
                 let newCount = conversation.numMessages.intValue + 1
                 conversation.numMessages = NSNumber(value: newCount)
             }
-            
+
             _ = newMessage.managedObjectContext?.saveUpstreamIfNeeded()
-            
+
             var key: Key?
             if let address_id = message.addressID,
                 let userinfo = self.userDataSource?.userInfo,
                 let addr = userinfo.userAddresses.address(byID: address_id) {
                 key = addr.keys.first
             }
-            
-            var body : String?
+
+            var body: String?
             do {
                 body = try self.decryptBodyIfNeeded(message: newMessage)
             } catch _ {
-                //ignore it
+                // ignore it
             }
-            
-            var newAttachmentCount : Int = 0
+
+            var newAttachmentCount: Int = 0
             for (_, attachment) in message.attachments.enumerated() {
                 guard let att = attachment as? Attachment else { continue }
-                
+
                 if att.inline() || copyAtts {
                     /// this logic to filter out the inline messages without cid in the message body
-                    if let b = body { //if body is nil. copy att by default
-                        if let cid = att.contentID(), b.contains(check: cid) { //if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
-                            
+                    if let b = body { // if body is nil. copy att by default
+                        if let cid = att.contentID(), b.contains(check: cid) { // if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
+
                         } else {
                             if !copyAtts {
                                 continue
                             }
                         }
                     }
-                    
+
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = att.attachmentID
                     attachment.message = newMessage
@@ -243,16 +239,16 @@ extension MessageDataService {
                             try att.getSession(userKey: self.userDataSource!.userPrivateKeys,
                                                keys: self.userDataSource!.addressKeys,
                                                mailboxPassword: self.userDataSource!.mailboxPassword) :
-                                try att.getSession(keys:  self.userDataSource!.addressPrivateKeys,
-                                                   mailboxPassword: self.userDataSource!.mailboxPassword),//DONE
+                                try att.getSession(keys: self.userDataSource!.addressPrivateKeys,
+                                                   mailboxPassword: self.userDataSource!.mailboxPassword), // DONE
                            let session = sessionPack.key,
-                           let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo:  sessionPack.algo) {
+                           let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo: sessionPack.algo) {
                             let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                             attachment.keyPacket = encodedkp
                             attachment.keyChanged = true
                         }
                     } catch {
-                        
+
                     }
 
                     guard attachment.managedObjectContext?.saveUpstreamIfNeeded() == nil else {
@@ -270,7 +266,7 @@ extension MessageDataService {
             newMessage.numAttachments = NSNumber(value: newAttachmentCount)
             _ = context.saveUpstreamIfNeeded()
         }
-        
+
         return newMessage
     }
 }

@@ -121,7 +121,7 @@ enum SwipeActionSettingType: Int, CustomStringConvertible {
             return ColorProvider.NotificationError
         }
     }
-    
+
     static func migrateFromV3(rawValue: Int) -> SwipeActionSettingType? {
         switch rawValue {
         case 0:

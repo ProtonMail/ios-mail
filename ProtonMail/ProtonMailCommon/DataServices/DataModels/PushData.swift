@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 public struct PushData: Codable {
@@ -35,12 +34,10 @@ public struct PushData: Codable {
     //    let sound: Int
     //    let largeIcon: String
     //    let smallIcon: String
-    
-    
+
     static func parse(with json: String) -> PushData? {
         guard let data = json.data(using: .utf8),
-            let push = try? JSONDecoder().decode(Push.self, from: data) else
-        {
+            let push = try? JSONDecoder().decode(Push.self, from: data) else {
             return nil
         }
         return push.data

@@ -142,8 +142,7 @@ extension SettingsGesturesViewController: UITableViewDelegate, UITableViewDataSo
         switch item {
         case .left, .right:
             if let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID,
-                                                        for: indexPath) as? SettingsGeneralCell
-            {
+                                                        for: indexPath) as? SettingsGeneralCell {
                 cell.backgroundColor = ColorProvider.BackgroundNorm
                 cell.addSeparator(padding: 0)
                 switch item {

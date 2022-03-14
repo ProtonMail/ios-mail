@@ -1,4 +1,3 @@
-
 //
 //  OpenPGPExtension.swift
 //  ProtonMail
@@ -21,16 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import Crypto
 import OpenPGP
 import ProtonCore_DataModel
 
 extension Crypto {
-    
-    static func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
-        var outKeys : [Key] = [Key]()
+
+    static func updateKeysPassword(_ old_keys: [Key], old_pass: String, new_pass: String ) throws -> [Key] {
+        var outKeys: [Key] = [Key]()
         for okey in old_keys {
             do {
                 let new_private_key = try self.updatePassphrase(privateKey: okey.privateKey, oldPassphrase: old_pass, newPassphrase: new_pass)
@@ -41,15 +39,15 @@ extension Crypto {
                 outKeys.append(newK)
             }
         }
-        
+
         guard outKeys.count == old_keys.count else {
             throw UpdatePasswordError.keyUpdateFailed.error
         }
-        
+
         guard outKeys.count > 0 && outKeys[0].isUpdated == true else {
             throw UpdatePasswordError.keyUpdateFailed.error
         }
-        
+
         for u_k in outKeys {
             if u_k.isUpdated == false {
                 continue
@@ -61,11 +59,8 @@ extension Crypto {
         }
         return outKeys
     }
-    
-    
-    
-    
-    static func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
+
+    static func updateAddrKeysPassword(_ old_addresses: [Address], old_pass: String, new_pass: String ) throws -> [Address] {
         var out_addresses = [Address]()
         for addr in old_addresses {
             var outKeys = [Key]()
@@ -99,15 +94,15 @@ extension Crypto {
                     outKeys.append(newK)
                 }
             }
-            
+
             guard outKeys.count == addr.keys.count else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
-            
+
             guard outKeys.count > 0 && outKeys[0].isUpdated == true else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
-            
+
             for u_k in outKeys {
                 if u_k.isUpdated == false {
                     continue
@@ -131,24 +126,24 @@ extension Crypto {
                                    keys: outKeys)
             out_addresses.append(new_addr)
         }
-        
+
         guard out_addresses.count == old_addresses.count else {
             throw UpdatePasswordError.keyUpdateFailed.error
         }
-        
+
         return out_addresses
     }
-    
+
 }
 
 //
 extension PMNOpenPgp {
-    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
-        var out_new_key : PMNOpenPgpKey?
+    func generateKey(_ passphrase: String, userName: String, domain: String, bits: Int32) throws -> PMNOpenPgpKey? {
+        var out_new_key: PMNOpenPgpKey?
         try ObjC.catchException {
             let timeinterval = CryptoGetUnixTime()
             let int32Value = NSNumber(value: timeinterval).int32Value
-            let email =  userName + "@" + domain
+            let email = userName + "@" + domain
             out_new_key = self.generateKey(email, domain: email, passphrase: passphrase, bits: bits, time: int32Value)
             if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
                 out_new_key = nil
@@ -173,13 +168,13 @@ extension Data {
                            passphrase: String,
                            keys: [Key],
                            attachmentDecryptor: AttachmentDecryptor = Crypto()) throws -> Data? {
-        var firstError : Error?
+        var firstError: Error?
         for key in keys {
             do {
                 let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
                                                                               passphrase: passphrase,
                                                                               key: key)
-                if let decryptedAttachment =  try attachmentDecryptor.decryptAttachment(keyPacket: keyPackage,
+                if let decryptedAttachment = try attachmentDecryptor.decryptAttachment(keyPacket: keyPackage,
                                                                                         dataPacket: self,
                                                                                         privateKey: key.privateKey,
                                                                                         passphrase: addressKeyPassphrase) {
@@ -198,8 +193,7 @@ extension Data {
         }
         return nil
     }
-    
-    
+
     func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
     }
@@ -207,29 +201,29 @@ extension Data {
     func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
-    
-    func encryptAttachment(fileName:String, pubKey: String) throws -> SplitMessage? {
+
+    func encryptAttachment(fileName: String, pubKey: String) throws -> SplitMessage? {
         return try Crypto().encryptAttachment(plainData: self, fileName: fileName, publicKey: pubKey)
     }
-    
+
     // could remove and dirrectly use Crypto()
-    static func makeEncryptAttachmentProcessor(fileName:String, totalSize: Int, pubKey: String) throws -> AttachmentProcessor {
+    static func makeEncryptAttachmentProcessor(fileName: String, totalSize: Int, pubKey: String) throws -> AttachmentProcessor {
         return try Crypto().encryptAttachmentLowMemory(fileName: fileName, totalSize: totalSize, publicKey: pubKey)
     }
-    
-    //key packet part
+
+    // key packet part
     func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: [Data]) throws -> SymmetricKey? {
         return try Crypto().getSession(keyPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
-    
-    //key packet part
+
+    // key packet part
     func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> SymmetricKey? {
         return try Crypto().getSession(keyPacket: self, privateKey: addrPrivKey, passphrase: passphrase)
     }
-    
-    //key packet part
+
+    // key packet part
     func getSessionFromPubKeyPackage(userKeys: [Data], passphrase: String, keys: [Key]) throws -> SymmetricKey? {
-        var firstError : Error?
+        var firstError: Error?
         for key in keys {
             do {
                 let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,

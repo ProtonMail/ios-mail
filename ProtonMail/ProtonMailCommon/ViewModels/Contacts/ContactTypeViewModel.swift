@@ -20,31 +20,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
 class ContactTypeViewModel {
-    
+
     public init() { }
-    
+
     func getDefinedTypes() -> [ContactFieldType] {
         fatalError("This method must be overridden")
     }
-    
+
     func getCustomType() -> ContactFieldType {
         fatalError("This method must be overridden")
     }
-    
+
     func getPickedType() -> ContactFieldType {
         fatalError("This method must be overridden")
     }
-    
+
     func getSectionType() -> ContactEditSectionType {
         fatalError("This method must be overridden")
     }
-    
-    func updateType(t : ContactFieldType) {
+
+    func updateType(t: ContactFieldType) {
         fatalError("This method must be overridden")
     }
 }

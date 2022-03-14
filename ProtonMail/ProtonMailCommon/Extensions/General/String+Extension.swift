@@ -20,14 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension String {
     func contains(check s: String) -> Bool {
         return self.range(of: s, options: NSString.CompareOptions.caseInsensitive) != nil ? true : false
     }
-    
+
     func isMatch(_ regex: String, options: NSRegularExpression.Options) -> Bool {
         do {
             let exp = try NSRegularExpression(pattern: regex, options: options)
@@ -50,29 +49,29 @@ extension String {
         let check = String(self[..<index])
         return check.range(of: re, options: [.caseInsensitive, .anchored]) != nil
     }
-    
+
     func hasFwd () -> Bool {
         let fwd = LocalString._composer_short_forward
         let checkCount = fwd.count
         if self.count < checkCount {
-            return false;
+            return false
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
         return check.range(of: fwd, options: [.caseInsensitive, .anchored]) != nil
     }
-    
+
     func hasFw () -> Bool {
         let fw = LocalString._composer_short_forward_shorter
         let checkCount = fw.count
         if self.count < checkCount {
-            return false;
+            return false
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
         return check.range(of: fw, options: [.caseInsensitive, .anchored]) != nil
     }
-    
+
     /**
      String extension check is email valid use the basic regex
      
@@ -85,12 +84,12 @@ extension String {
     "]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-" +
     "9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21" +
     "-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
-    static let emailTest = NSPredicate(format:"SELF MATCHES[c] %@", String.emailRegEx)
-    
+    static let emailTest = NSPredicate(format: "SELF MATCHES[c] %@", String.emailRegEx)
+
     func isValidEmail() -> Bool {
         return String.emailTest.evaluate(with: self)
     }
-    
+
     /**
      String extension for remove the whitespaces begain&end
      
@@ -102,21 +101,21 @@ extension String {
     func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
-    
+
     func ln2br() -> String {
         let out = self.replacingOccurrences(of: "\r\n", with: "<br />")
         return out.replacingOccurrences(of: "\n", with: "<br />")
     }
-    
+
     func rmln() -> String {
         return  self.replacingOccurrences(of: "\n", with: "")
     }
-    
+
     func lr2lrln() -> String {
         return self.replacingOccurrences(of: "\r", with: "\r\n")
             .replacingOccurrences(of: "\r\n\n", with: "\r\n")
     }
-    
+
     /**
      String extension decode some encoded htme tags
      
@@ -130,7 +129,7 @@ extension String {
             .preg_replace_none_regex("&lt;", replaceto: "<")
             .preg_replace_none_regex("&gt;", replaceto: ">")
     }
-    
+
     func encodeHtml() -> String {
         self.preg_replace_none_regex("&", replaceto: "&amp;")
             .preg_replace_none_regex("\"", replaceto: "&quot;")
@@ -142,14 +141,14 @@ extension String {
             .preg_replace_none_regex("\r\n", replaceto: "<br />")
     }
 
-    func preg_replace_none_regex(_ partten: String, replaceto:String) -> String {
+    func preg_replace_none_regex(_ partten: String, replaceto: String) -> String {
         self.replacingOccurrences(of: partten, with: replaceto, options: .caseInsensitive, range: nil)
     }
-    
-    func preg_replace (_ partten: String, replaceto:String) -> String {
-        let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+
+    func preg_replace (_ partten: String, replaceto: String) -> String {
+        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options:options)
+            let regex = try NSRegularExpression(pattern: partten, options: options)
             let replacedString = regex.stringByReplacingMatches(in: self,
                                                                 options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                                                 range: NSRange(location: 0, length: self.count),
@@ -163,9 +162,9 @@ extension String {
     }
 
     func preg_match(_ partten: String) -> Bool {
-        let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+        let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: partten, options:options)
+            let regex = try NSRegularExpression(pattern: partten, options: options)
             return regex.firstMatch(in: self,
                                     options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                     range: NSRange(location: 0, length: self.count)) != nil
@@ -177,7 +176,7 @@ extension String {
     func preg_range(_ pattern: String) -> Range<String.Index>? {
         let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options:options)
+            let regex = try NSRegularExpression(pattern: pattern, options: options)
             guard let match = regex.firstMatch(in: self,
                                                options: NSRegularExpression.MatchingOptions(rawValue: 0),
                                                range: NSRange(location: 0, length: self.count)) else {
@@ -189,18 +188,18 @@ extension String {
         return nil
     }
 
-    //<link rel="stylesheet" type="text/css" href="http://url/">
+    // <link rel="stylesheet" type="text/css" href="http://url/">
     func hasImage() -> Bool {
         if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!cid:)|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
     }
-    
+
     func stringByPurifyImages () -> String {
-        //src=\"(?!cid:)(.*?)(^|>|\"|\\s)
-        //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
-        
+        // src=\"(?!cid:)(.*?)(^|>|\"|\\s)
+        // let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+
         var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
         out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
         out = out.preg_replace("srcset=", replaceto: " data-srcset=")
@@ -222,8 +221,8 @@ extension String {
         return out
     }
 
-    func stringBySetupInlineImage(_ from : String, to: String) -> String {
-        return self.preg_replace_none_regex(from, replaceto:to)
+    func stringBySetupInlineImage(_ from: String, to: String) -> String {
+        return self.preg_replace_none_regex(from, replaceto: to)
     }
 
     func stringByEscapeHTML() -> String {
@@ -235,9 +234,9 @@ extension String {
     }
 
     static func randomString(_ len: Int) -> String {
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let randomString : NSMutableString = NSMutableString(capacity: len)
-        let length = UInt32 (letters.length)
+        let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let randomString: NSMutableString = NSMutableString(capacity: len)
+        let length = UInt32(letters.length)
         for _ in 0 ..< len {
             let rand = arc4random_uniform(length)
             randomString.appendFormat("%C", letters.character(at: Int(rand)))
@@ -252,16 +251,16 @@ extension String {
     }
 
     static func randomPhone(_ len: Int) -> String {
-        let letters : NSString = "0123456789"
-        let randomString : NSMutableString = NSMutableString(capacity: len)
-        let length = UInt32 (letters.length)
+        let letters: NSString = "0123456789"
+        let randomString: NSMutableString = NSMutableString(capacity: len)
+        let length = UInt32(letters.length)
         for _ in 0 ..< len {
             let rand = arc4random_uniform(length)
             randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         return randomString as String
     }
-    
+
     func range(from nsRange: NSRange) -> Range<String.Index>? {
         guard
             let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
@@ -271,7 +270,7 @@ extension String {
             else { return nil }
         return from ..< to
     }
-    
+
     func encodeBase64() -> String {
         let utf8str = self.data(using: String.Encoding.utf8)
         let base64Encoded = utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
@@ -288,14 +287,14 @@ extension String {
         let decodedData = Data(base64Encoded: self, options: NSData.Base64DecodingOptions(rawValue: 0))
         return decodedData!
     }
-    
+
     func parseObject() -> [String: String] {
         if self.isEmpty {
             return [:]
         }
         do {
-            let data : Data! = self.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String] ?? [:]
+            let data: Data! = self.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: String] ?? [:]
             return decoded
         } catch {
         }
@@ -308,14 +307,14 @@ extension String {
         }
         return nil
     }
-    
+
     func batchAddingPercentEncoding(withAllowedCharacters allowedCharacters: CharacterSet) -> String? {
         let batchSize = 100
         var batchPosition = startIndex
         var escaped = ""
         while batchPosition != endIndex {
             let range = batchPosition ..< (index(batchPosition, offsetBy: batchSize, limitedBy: endIndex) ?? endIndex)
-            
+
             guard let percentEncodedSubstring = String(self[range]).addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
                 return nil
             }
@@ -334,11 +333,11 @@ extension Array where Element == String {
 }
 
 extension String {
-    
+
     subscript (i: Int) -> Character {
         return self[self.index(self.startIndex, offsetBy: i)]
     }
-    
+
     subscript (i: Int) -> String {
         return String(self[i] as Character)
     }
@@ -354,10 +353,10 @@ extension String {
         if self.isEmpty {
             return []
         }
-        
+
         do {
             if let data = self.data(using: String.Encoding.utf8) {
-                let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String : Any]]
+                let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
                 return decoded
             }
         } catch {
@@ -370,11 +369,11 @@ extension String {
      
      :returns: String
      */
-    func formatJsonContact(_ mailto : Bool = false) -> String {
+    func formatJsonContact(_ mailto: Bool = false) -> String {
         var lists: [String] = []
-        
-        if let recipients : [[String : Any]] = self.parseJson() {
-            for dict:[String : Any] in recipients {
+
+        if let recipients: [[String: Any]] = self.parseJson() {
+            for dict: [String: Any] in recipients {
                 if mailto {
                     lists.append(dict.getName() + " &lt;<a href=\"mailto:\(dict.getAddress())\" class=\"\">\(dict.getAddress())</a>&gt;")
                 } else {
@@ -386,9 +385,9 @@ extension String {
     }
 
     func toContacts() -> [ContactVO] {
-        var out : [ContactVO] = [ContactVO]();
-        if let recipients : [[String : Any]] = self.parseJson() {
-            for dict:[String : Any] in recipients {
+        var out: [ContactVO] = [ContactVO]()
+        if let recipients: [[String: Any]] = self.parseJson() {
+            for dict: [String: Any] in recipients {
                 let name = dict["Name"] as? String ?? ""
                 let email = dict["Address"] as? String ?? ""
                 out.append(ContactVO(id: "", name: name, email: email))
@@ -398,12 +397,12 @@ extension String {
     }
 
     func toContact() -> ContactVO? {
-        var out : ContactVO? = nil
-        let recipients : [String : String] = self.parseObject()
-        
+        var out: ContactVO?
+        let recipients: [String: String] = self.parseObject()
+
         let name = recipients["Name"] ?? ""
         let address = recipients["Address"] ?? ""
-        
+
         if !address.isEmpty {
             out = ContactVO(id: "", name: name, email: address)
         }
@@ -411,15 +410,15 @@ extension String {
     }
 }
 
-extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any { //email name
-    func getAddress() -> String {    //this function only for the To CC BCC list parsing
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any { // email name
+    func getAddress() -> String {    // this function only for the To CC BCC list parsing
         if let key = "Address" as? Key {
             return self[key] as? String ?? ""
         }
         return ""
     }
-    
-    func getName() -> String {    //this function only for the To CC BCC list parsing
+
+    func getName() -> String {    // this function only for the To CC BCC list parsing
         if let key = "Name" as? Key {
             return self[key] as? String ?? ""
         }

@@ -20,14 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Keymaker
 
 final class KeychainWrapper: Keychain {
-    
+
     public static var keychain = KeychainWrapper()
-    
+
     init() {
         #if Enterprise
             let prefix = "6UN54H93QT."
@@ -38,7 +37,7 @@ final class KeychainWrapper: Keychain {
             let group = prefix + "ch.protonmail.protonmail"
             let service = "ch.protonmail"
         #endif
-        
+
         super.init(service: service, accessGroup: group)
     }
 }

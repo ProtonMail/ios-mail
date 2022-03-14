@@ -19,40 +19,39 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class SettingsAccountCoordinator: DefaultCoordinator {
 
     typealias VC = SettingsAccountViewController
-    
+
     let viewModel: SettingsAccountViewModel
     var services: ServiceFactory
-    
+
     internal weak var viewController: SettingsAccountViewController?
     internal weak var deepLink: DeepLink?
-    
-    lazy internal var configuration: ((SettingsAccountViewController) -> ())? = { [unowned self] vc in
+
+    lazy internal var configuration: ((SettingsAccountViewController) -> Void)? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }
-    
+
     func processDeepLink() {
         if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
             self.go(to: dest, sender: path.value)
         }
     }
-    
-    enum Destination : String {
-        case recoveryEmail = "setting_notification"//"recoveryEmail"
+
+    enum Destination: String {
+        case recoveryEmail = "setting_notification"// "recoveryEmail"
         case loginPwd      = "setting_login_pwd"
         case mailboxPwd    = "setting_mailbox_pwd"
         case singlePwd     = "setting_single_password_segue"
         case displayName   = "setting_displayname"
         case signature     = "setting_signature"
         case mobileSignature = "setting_mobile_signature"
-        
+
 //        case notification    = "setting_notification"
 //        case debugQueue      = "setting_debug_queue_segue"
 //        case pinCode         = "setting_setup_pingcode"
@@ -66,7 +65,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case folders = "folders_management"
         case conversation
     }
-    
+
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = dest as? VC else {
             return nil
@@ -75,12 +74,12 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         self.viewModel = vm
         self.services = services
     }
-    
+
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
     }
-    
+
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .privacy:
@@ -95,12 +94,12 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
+
         switch dest {
         case .recoveryEmail:
             guard let next = destination as? SettingDetailViewController else {
@@ -173,7 +172,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         }
         return true
     }
-    
+
     private func openPrivacy() {
         let vc = SettingsPrivacyViewController()
         let users: UsersManager = services.get()
@@ -182,7 +181,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         coordinator?.start()
         self.viewController?.navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     private func openFolderManagement(type: PMLabelType) {
         let vm = LabelManagerViewModel(user: self.viewModel.userManager, type: type)
         let vc = LabelManagerViewController.instance(needNavigation: false)
@@ -206,4 +205,3 @@ class SettingsAccountCoordinator: DefaultCoordinator {
     }
 
 }
-

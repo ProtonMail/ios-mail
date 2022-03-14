@@ -20,11 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
-//final class AuthCredential: NSObject, NSCoding {
+// final class AuthCredential: NSObject, NSCoding {
 //    internal init(sessionID: String, accessToken: String, refreshToken: String, expiration: Date, privateKey: String?, passwordKeySalt: String?) {
 //        self.sessionID = sessionID
 //        self.accessToken = accessToken
@@ -147,7 +145,7 @@ import Foundation
 //        return NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential
 //    }
 //    
-//    // MARK - Class methods
+// MARK: - Class methods
 //    
 //    func archive() -> Data {
 //        return NSKeyedArchiver.archivedData(withRootObject: self)
@@ -162,4 +160,4 @@ import Foundation
 //        aCoder.encode(mailboxpassword, forKey: CoderKey.password)
 //        aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
 //    }
-//}
+// }

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import MBProgressHUD
 import Masonry
@@ -30,7 +29,7 @@ import ProtonCore_UIFoundations
 class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
     internal var viewModel: SettingsLockViewModel!
     internal var coordinator: SettingsLockCoordinator?
-    
+
     struct Key {
         static let headerCell: String = "header_cell"
         static let headerCellHeight: CGFloat = 52.0
@@ -39,19 +38,19 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         static let enableProtectionCell: String = "EnableProtection"
         static let switchCell: String = "switch_table_view_cell"
     }
-    
+
     func set(viewModel: SettingsLockViewModel) {
         self.viewModel = viewModel
     }
-    
+
     func set(coordinator: SettingsLockCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
@@ -59,10 +58,10 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
-        
+
         self.tableView.estimatedSectionHeaderHeight = Key.headerCellHeight
         self.tableView.sectionHeaderHeight = UITableView.automaticDimension
-        
+
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
 
@@ -75,31 +74,31 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
 
         generateAccessibilityIdentifiers()
     }
-    
+
     private func updateTitle() {
         self.title = viewModel.appPINTitle
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateTableProtectionSection()
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    
+
     private func updateTableProtectionSection() {
         self.viewModel.updateProtectionItems()
         self.tableView.reloadData()
     }
-    
-    ///MARK: -- table view delegate
+
+    // MARK: - - table view delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section < self.viewModel.sections.count else {
             return 0
@@ -116,7 +115,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             return 1
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
@@ -153,21 +152,21 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             return cell
         case .timing:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath) as! SettingsGeneralCell
-            
+
             let timeIndex = userCachedStatus.lockTime.rawValue
             var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
             if timeIndex == -1 {
                 text = LocalString._general_none
             } else if timeIndex == 0 {
                 text = LocalString._settings_every_time_enter_app
-            } else if timeIndex == 1{
+            } else if timeIndex == 1 {
                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
             cell.configureCell(left: eSection.description.string, right: text, imageType: .arrow)
             return cell
         case .mainKey:
             let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
-            
+
             let appKeyEnabled = self.viewModel.isAppKeyEnabled
             cell.configCell(eSection.description.string, bottomLine: "", status: appKeyEnabled) { _, newStatus, feedback in
                 if newStatus {
@@ -179,7 +178,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                     userCachedStatus.keymakerRandomkey = String.randomString(32)
                     if let randomProtection = RandomPinProtection.randomPin {
                         keymaker.activate(randomProtection) { _ in
-                            
+
                         }
                     }
                 }
@@ -197,7 +196,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
 
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
-        
+
         if let headerCell = header {
             let textLabel = UILabel()
             textLabel.attributedText = eSection.description
@@ -213,7 +212,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         }
         return header
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
@@ -226,7 +225,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 self.updateTableProtectionSection()
             case .pinCode:
                 self.coordinator?.go(to: .pinCodeSetup)
-                //add call back or check in view will appear
+                // add call back or check in view will appear
             case .faceId:
                 self.viewModel.enableBioProtection { [weak self] in
                     self?.updateTableProtectionSection()
@@ -245,7 +244,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                     text = LocalString._general_none
                 } else if timeIndex == 0 {
                     text = LocalString._settings_every_time_enter_app
-                } else if timeIndex == 1{
+                } else if timeIndex == 1 {
                     text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                 }
                 alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in

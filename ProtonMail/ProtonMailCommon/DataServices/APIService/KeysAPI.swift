@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 import Crypto
@@ -28,42 +27,41 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
-//Keys API
+// Keys API
 struct KeysAPI {
-    static let path : String = "/keys"
+    static let path: String = "/keys"
 }
 
+/// KeysResponse
+final class UserEmailPubKeys: Request {
+    let email: String
 
-///KeysResponse
-final class UserEmailPubKeys : Request {
-    let email : String
-    
     init(email: String, authCredential: AuthCredential? = nil) {
         self.email = email
         self.auth = authCredential
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["Email" : self.email]
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = ["Email": self.email]
         return out
     }
-    
+
     var path: String {
         return KeysAPI.path
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
 }
 
-extension Array where Element : UserEmailPubKeys {
+extension Array where Element: UserEmailPubKeys {
     func getPromises(api: APIService) -> [Promise<KeysResponse>] {
-        var out : [Promise<KeysResponse>] = [Promise<KeysResponse>]()
+        var out: [Promise<KeysResponse>] = [Promise<KeysResponse>]()
         for it in self {
             out.append(api.run(route: it))
         }
@@ -71,40 +69,38 @@ extension Array where Element : UserEmailPubKeys {
     }
 }
 
-
 final class KeyResponse {
-    //TODO:: change to bitmap later
-    var flags : Int = 0 // bitmap: 1 = can be used to verify, 2 = can be used to encrypt
-    var publicKey : String?
-   
-    init(flags : Int, pubkey: String?) {
+    // TODO:: change to bitmap later
+    var flags: Int = 0 // bitmap: 1 = can be used to verify, 2 = can be used to encrypt
+    var publicKey: String?
+
+    init(flags: Int, pubkey: String?) {
         self.flags = flags
         self.publicKey = pubkey
     }
 }
 
-
-final class KeysResponse : Response {
-    var recipientType : Int = 1 // 1 internal 2 external
-    var mimeType : String?
-    var keys : [KeyResponse] = [KeyResponse]()
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+final class KeysResponse: Response {
+    var recipientType: Int = 1 // 1 internal 2 external
+    var mimeType: String?
+    var keys: [KeyResponse] = [KeyResponse]()
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         self.recipientType = response["RecipientType"] as? Int ?? 1
         self.mimeType = response["MIMEType"] as? String
-        
-        if let keyRes = response["Keys"] as? [[String : Any]] {
+
+        if let keyRes = response["Keys"] as? [[String: Any]] {
             for keyDict in keyRes {
-                let flags =  keyDict["Flags"] as? Int ?? 0
+                let flags = keyDict["Flags"] as? Int ?? 0
                 let pubKey = keyDict["PublicKey"] as? String
                 self.keys.append(KeyResponse(flags: flags, pubkey: pubKey))
             }
         }
         return true
     }
-    
+
     func firstKey () -> String? {
         for k in keys {
-            if k.flags == 2 ||  k.flags == 3 {
+            if k.flags == 2 || k.flags == 3 {
                 return k.publicKey
             }
         }
@@ -113,44 +109,43 @@ final class KeysResponse : Response {
 }
 
 /// message packages
-final class PasswordAuth : Package {
+final class PasswordAuth: Package {
 
-    let AuthVersion : Int = 4
-    let ModulusID : String //encrypted id
-    let salt : String //base64 encoded
-    let verifer : String //base64 encoded
-    
-    init(modulus_id : String, salt :String, verifer : String) {
+    let AuthVersion: Int = 4
+    let ModulusID: String // encrypted id
+    let salt: String // base64 encoded
+    let verifer: String // base64 encoded
+
+    init(modulus_id: String, salt: String, verifer: String) {
         self.ModulusID = modulus_id
         self.salt = salt
         self.verifer = verifer
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = [
-            "Version" : self.AuthVersion,
-            "ModulusID" : self.ModulusID,
-            "Salt" : self.salt,
-            "Verifier" : self.verifer
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = [
+            "Version": self.AuthVersion,
+            "ModulusID": self.ModulusID,
+            "Salt": self.salt,
+            "Verifier": self.verifer
         ]
         return out
     }
 }
 
+// MARK: update user's private keys -- Response
+final class UpdatePrivateKeyRequest: Request {
 
-//MARK : update user's private keys -- Response
-final class UpdatePrivateKeyRequest : Request {
-    
-    let clientEphemeral : String //base64 encoded
-    let clientProof : String //base64 encoded
-    let SRPSession : String //hex encoded session id
-    let tfaCode : String? // optional
-    let keySalt : String //base64 encoded need random value
+    let clientEphemeral: String // base64 encoded
+    let clientProof: String // base64 encoded
+    let SRPSession: String // hex encoded session id
+    let tfaCode: String? // optional
+    let keySalt: String // base64 encoded need random value
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
-    let orgKey : String?
+    let orgKey: String?
     let userKeys: [Key]?
-    let auth : PasswordAuth?
+    let auth: PasswordAuth?
 
     init(clientEphemeral: String,
          clientProof: String,
@@ -158,7 +153,7 @@ final class UpdatePrivateKeyRequest : Request {
          keySalt: String,
          userlevelKeys: [Key] = [],
          addressKeys: [Key] = [],
-         tfaCode : String? = nil,
+         tfaCode: String? = nil,
          orgKey: String? = nil,
          userKeys: [Key]?,
          auth: PasswordAuth?,
@@ -170,55 +165,55 @@ final class UpdatePrivateKeyRequest : Request {
         self.keySalt = keySalt
         self.userLevelKeys = userlevelKeys
         self.userAddressKeys = addressKeys
-        
+
         self.userKeys = userKeys
-        
-        //optional values
+
+        // optional values
         self.orgKey = orgKey
         self.tfaCode = tfaCode
         self.auth = auth
-        
+
         self.credential = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let credential: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.credential
         }
     }
-    
-    var parameters: [String : Any]? {
-        var keysDict : [Any] = [Any]()
+
+    var parameters: [String: Any]? {
+        var keysDict: [Any] = [Any]()
         for userLevelKey in userLevelKeys where userLevelKey.isUpdated {
-            keysDict.append( ["ID": userLevelKey.keyID, "PrivateKey" : userLevelKey.privateKey] )
+            keysDict.append( ["ID": userLevelKey.keyID, "PrivateKey": userLevelKey.privateKey] )
         }
         for userAddressKey in userAddressKeys where userAddressKey.isUpdated {
-            keysDict.append( ["ID": userAddressKey.keyID, "PrivateKey" : userAddressKey.privateKey] )
+            keysDict.append( ["ID": userAddressKey.keyID, "PrivateKey": userAddressKey.privateKey] )
         }
-        
-        var out : [String : Any] = [
-            "ClientEphemeral" : self.clientEphemeral,
-            "ClientProof" : self.clientProof,
+
+        var out: [String: Any] = [
+            "ClientEphemeral": self.clientEphemeral,
+            "ClientProof": self.clientProof,
             "SRPSession": self.SRPSession,
-            "KeySalt" : self.keySalt,
-            ]
-        
+            "KeySalt": self.keySalt
+        ]
+
         if !keysDict.isEmpty {
             out["Keys"] = keysDict
         }
-        
+
         if let userKeys = self.userKeys {
             var userKeysDict: [Any] = []
             for userKey in userKeys where userKey.isUpdated {
-                userKeysDict.append( ["ID": userKey.keyID, "PrivateKey" : userKey.privateKey] )
+                userKeysDict.append( ["ID": userKey.keyID, "PrivateKey": userKey.privateKey] )
             }
             if !userKeysDict.isEmpty {
                 out["UserKeys"] = userKeysDict
             }
         }
-        
+
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
@@ -228,14 +223,14 @@ final class UpdatePrivateKeyRequest : Request {
         if let auth_obj = self.auth {
             out["Auth"] = auth_obj.parameters
         }
-        
+
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return KeysAPI.path + "/private"
     }
@@ -243,20 +238,20 @@ final class UpdatePrivateKeyRequest : Request {
 
 extension Array where Element: Package {
     var parameters: [Any]? {
-        var out : [Any] = []
+        var out: [Any] = []
         for item in self {
             out.append(item.parameters as Any)
         }
         return  out
     }
-    var json : String {
+    var json: String {
         return self.parameters!.toJson()
     }
 }
 
 extension Array where Element: Any {
-    func toJson(prettyPrinted : Bool = false) -> String {
-        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
+    func toJson(prettyPrinted: Bool = false) -> String {
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
         let anyObject: Any = self
         if JSONSerialization.isValidJSONObject(anyObject) {
             do {
@@ -269,45 +264,42 @@ extension Array where Element: Any {
         }
         return ""
     }
-    
+
 }
 
-//MARK : active a key when Activation is not null --- Response
-final class ActivateKey : Request {
-    let addressID : String
-    let privateKey : String
+// MARK: active a key when Activation is not null --- Response
+final class ActivateKey: Request {
+    let addressID: String
+    let privateKey: String
     let signedKeyList: [String: Any]
-    
-    init(addrID: String, privKey : String, signedKL : [String: Any]) {
+
+    init(addrID: String, privKey: String, signedKL: [String: Any]) {
         self.addressID = addrID
         self.privateKey = privKey
         self.signedKeyList = signedKL
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String: Any] = [
-            "PrivateKey" : self.privateKey,
-            "SignedKeyList" : self.signedKeyList
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = [
+            "PrivateKey": self.privateKey,
+            "SignedKeyList": self.signedKeyList
         ]
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return KeysAPI.path + "/" + addressID + "/activate"
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     var auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
 }
-
-
-

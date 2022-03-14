@@ -19,34 +19,33 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import SideMenuSwift
 
 class SettingsCoordinator: SideMenuCoordinator {
     typealias VC = SettingsTableViewController
-    
-    let viewModel : SettingsViewModel
+
+    let viewModel: SettingsViewModel
     var services: ServiceFactory
-    
+
     internal weak var viewController: SettingsTableViewController?
     internal weak var navigation: UIViewController?
     internal weak var sideMenu: SideMenuController?
     internal weak var deepLink: DeepLink?
-    
-    lazy internal var configuration: ((SettingsTableViewController) -> ())? = { [unowned self] vc in
+
+    lazy internal var configuration: ((SettingsTableViewController) -> Void)? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }
-    
+
     func processDeepLink() {
         if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
             self.go(to: dest, sender: path.value)
         }
     }
-    
-    enum Destination : String {
+
+    enum Destination: String {
         case notification    = "setting_notification"
         case displayName     = "setting_displayname"
         case signature       = "setting_signature"
@@ -58,13 +57,13 @@ class SettingsCoordinator: SideMenuCoordinator {
         case singlePwd       = "setting_single_password_segue"
         case snooze          = "setting_notifications_snooze_segue"
     }
-    
+
     init(vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
         self.services = services
     }
-    
+
     init(sideMenu: SideMenuController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
         self.sideMenu = sideMenu
@@ -73,16 +72,16 @@ class SettingsCoordinator: SideMenuCoordinator {
         self.deepLink = deeplink
         self.services = services
     }
-    
+
     func go(to dest: Destination, sender: Any? = nil) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
+
         switch dest {
         case .notification:
             guard let next = destination as? SettingDetailViewController else {
@@ -130,9 +129,7 @@ class SettingsCoordinator: SideMenuCoordinator {
         case .snooze:
             break
         }
-        
-        
+
         return true
     }
 }
-

@@ -248,14 +248,13 @@ extension SettingsDeviceViewController {
                             }
                         case .denied:// Notification permission was previously denied, go to settings & privacy to re-enable
                             { cellToConfig.configure(right: LocalString._settings_Off_title, imageType: .system) } ~> .main
-                        case .authorized:
-                            { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
+                        case .authorized: { cellToConfig.configure(right: LocalString._settings_On_title, imageType: .system) } ~> .main
                         default:
                             break
                         }
                     })
                 case .language:
-                    let language: ELanguage =  LanguageManager.currentLanguageEnum()
+                    let language: ELanguage = LanguageManager.currentLanguageEnum()
                     cellToConfig.configure(right: language.nativeDescription, imageType: .system)
                 }
             }

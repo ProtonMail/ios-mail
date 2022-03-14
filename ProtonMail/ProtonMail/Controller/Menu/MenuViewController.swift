@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_UIFoundations
@@ -36,15 +35,15 @@ final class MenuViewController: UIViewController, AccessibleView {
     @IBOutlet private var arrowBtn: UIButton!
     @IBOutlet private var addressLabel: UILabel!
     @IBOutlet private var tableView: UITableView!
-    
+
     private(set) var viewModel: MenuVMProtocol!
     private(set) var coordinator: MenuCoordinator!
-    
+
     func set(vm: MenuVMProtocol, coordinator: MenuCoordinator) {
         self.viewModel = vm
         self.coordinator = coordinator
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         if #available(iOS 13.0, *) {
             return true
@@ -52,18 +51,18 @@ final class MenuViewController: UIViewController, AccessibleView {
             return false
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(self.viewModel != nil, "viewModel can't be empty")
         assert(self.coordinator != nil, "viewModel can't be empty")
-        
+
         self.viewModel.userDataInit()
         self.viewModel.reloadClosure = { [weak self] in
             self?.tableView.reloadData()
         }
         self.viewInit()
-        
+
         generateAccessibilityIdentifiers()
 
         NotificationCenter.default.addObserver(self,
@@ -71,7 +70,7 @@ final class MenuViewController: UIViewController, AccessibleView {
                                                name: UIApplication.didEnterBackgroundNotification,
                                                object: nil)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.viewModel.menuViewInit()
@@ -134,22 +133,22 @@ extension MenuViewController {
 
         self.shortNameView.setCornerRadius(radius: 8)
         self.avatarLabel.adjustsFontSizeToFitWidth = true
-        self.avatarLabel.accessibilityElementsHidden =  true
+        self.avatarLabel.accessibilityElementsHidden = true
         self.addGesture()
     }
-    
+
     private func addGesture() {
         let ges = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnPrimaryUserView(ges:)))
         ges.minimumPressDuration = 0
         self.primaryUserview.addGestureRecognizer(ges)
     }
-    
+
     @objc func longPressOnPrimaryUserView(ges: UILongPressGestureRecognizer) {
-        
+
         let point = ges.location(in: self.primaryUserview)
         let origin = self.primaryUserview.bounds
         let isInside = origin.contains(point)
-        
+
         let state = ges.state
         switch state {
         case .began:
@@ -167,15 +166,15 @@ extension MenuViewController {
             break
         }
     }
-    
+
     private func closeMenu() {
         self.sideMenuController?.hideMenu()
     }
-    
+
     private func showSignupAlarm(_ sender: UIView?) {
         let shouldDeleteMessageInQueue = self.viewModel.isCurrentUserHasQueuedMessage()
         var message = LocalString._signout_confirmation
-        
+
         if shouldDeleteMessageInQueue {
             message = LocalString._signout_confirmation_having_pending_message
         } else {
@@ -187,9 +186,9 @@ extension MenuViewController {
                 }
             }
         }
-        
+
         let alertController = UIAlertController(title: LocalString._signout_title, message: message, preferredStyle: .actionSheet)
-        
+
         alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
@@ -240,7 +239,7 @@ extension MenuViewController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
     }
-    
+
     private func checkAddLabelAbility(label: MenuLabel) {
         guard self.viewModel.allowToCreate(type: .label) else {
             let title = LocalString._creating_label_not_allowed
@@ -277,7 +276,7 @@ extension MenuViewController: MenuUIProtocol {
     func update(email: String) {
         self.addressLabel.text = email
     }
-    
+
     func update(displayName: String) {
         self.displayName.text = displayName
         self.primaryUserview.accessibilityLabel = displayName
@@ -285,44 +284,44 @@ extension MenuViewController: MenuUIProtocol {
             UIAccessibility.post(notification: .screenChanged, argument: primaryUserview)
         }
     }
-    
+
     func update(avatar: String) {
         self.avatarLabel.text = avatar
     }
-    
+
     func updateMenu(section: Int?) {
         guard let _section = section else {
             self.tableView.reloadData()
             return
         }
-        
+
         self.tableView.beginUpdates()
         self.tableView.reloadSections(IndexSet(integer: _section),
                                       with: .fade)
         self.tableView.endUpdates()
-        
+
     }
-    
+
     func reloadRow(indexPath: IndexPath) {
         self.tableView.beginUpdates()
         self.tableView.reloadRows(at: [indexPath], with: .fade)
         self.tableView.endUpdates()
     }
-    
+
     func insertRows(indexPaths: [IndexPath]) {
         self.tableView.beginUpdates()
         self.tableView.insertRows(at: indexPaths, with: .fade)
         self.tableView.endUpdates()
     }
-    
+
     func deleteRows(indexPaths: [IndexPath]) {
         self.tableView.beginUpdates()
         self.tableView.deleteRows(at: indexPaths, with: .fade)
         self.tableView.endUpdates()
     }
-    
+
     func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {
-        
+
         self.tableView.beginUpdates()
         for indexPath in rows {
             guard let cell = self.tableView.cellForRow(at: indexPath) as? MenuItemTableViewCell,
@@ -332,23 +331,23 @@ extension MenuViewController: MenuUIProtocol {
             cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
             cell.update(iconColor: self.viewModel.getColor(of: label))
         }
-        
+
         self.tableView.insertRows(at: insertRows, with: .fade)
         self.tableView.deleteRows(at: deleteRows, with: .fade)
         self.tableView.endUpdates()
     }
-    
+
     func navigateTo(label: MenuLabel) {
         if let sideMenu = self.sideMenuController {
             AccountSwitcher.dismiss(from: sideMenu)
         }
         self.coordinator.go(to: label)
     }
-    
+
     func showToast(message: String) {
         message.alertToastBottom()
     }
-    
+
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addOKAction()
@@ -361,15 +360,15 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.numberOfRowsIn(section: section)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 48
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(MenuItemTableViewCell.self)", for: indexPath) as! MenuItemTableViewCell
         guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
@@ -380,7 +379,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         cell.update(iconColor: self.viewModel.getColor(of: label))
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let label = self.viewModel.getMenuItem(indexPath: indexPath) else {
@@ -390,12 +389,12 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         switch label.location {
         case .lockapp:
             keymaker.lockTheApp() // remove mainKey from memory
-            let _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
+            _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
             self.closeMenu()
         case .signout:
             let cell = tableView.cellForRow(at: indexPath)
             self.showSignupAlarm(cell)
-        case .customize(_):
+        case .customize:
             self.coordinator.go(to: label)
         case .addLabel:
             self.checkAddLabelAbility(label: label)
@@ -405,27 +404,27 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             self.coordinator.go(to: label)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 8: 48
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let _section = self.viewModel.sections[section]
         let view = self.createHeaderView(section: _section)
         return view
     }
-    
+
     func clickCollapsedArrow(labelID: String) {
         self.viewModel.clickCollapsedArrow(labelID: labelID)
     }
-    
+
     private func createHeaderView(section: MenuSection) -> UIView {
         let vi = UIView()
         vi.backgroundColor = .clear
-        
+
         if section == .inboxes { return vi }
-        
+
         let line = UIView()
         line.backgroundColor = UIColor(hexColorCode: "#303239")
         vi.addSubview(line)
@@ -435,10 +434,10 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             line.trailingAnchor.constraint(equalTo: vi.trailingAnchor),
             line.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
-        
+
         let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         vi.addSubview(label)
         [
             label.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: 16),
@@ -472,10 +471,10 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let selector = section == .folders ? #selector(self.clickAddFolderFromSection): #selector(self.clickAddLabelFromSection)
         let tapGesture = UITapGestureRecognizer(target: self, action: selector)
         plusView.addGestureRecognizer(tapGesture)
-    
+
         let plusIcon = UIImageView(image: Asset.menuPlus.image)
         plusIcon.tintColor = UIColor(hexColorCode: "#9CA0AA")
-        
+
         plusView.addSubview(plusIcon)
         [
             plusIcon.trailingAnchor.constraint(equalTo: plusView.trailingAnchor, constant: -20),
@@ -501,7 +500,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
         return vi
     }
-    
+
     private func createTableFooter() -> UIView {
         let version = self.viewModel.appVersion()
         let label = UILabel(font: .systemFont(ofSize: 13), text: "ProtonMail \(version)", textColor: UIColor(RRGGBB: UInt(0x727680)))
@@ -540,7 +539,7 @@ extension MenuViewController: AccountSwitchDelegate {
             viewModel.updateAccountList(list: list)
         }
     }
-    
+
     func accountManagerWillAppear() {
         guard let sideMenu = self.sideMenuController else {return}
         sideMenu.hideMenu()
@@ -552,7 +551,6 @@ extension MenuViewController: AccountSwitchDelegate {
         }
     }
 }
-
 
 extension MenuViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {

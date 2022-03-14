@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Keymaker
 
@@ -48,12 +47,11 @@ extension BioProtection {
 }
 
 extension RandomPinProtection {
-    
+
     init(pin: String) {
         self.init(pin: pin, keychain: KeychainWrapper.keychain)
     }
-    
-    
+
     static var randomPin: RandomPinProtection? {
         guard let keymakerRandomkey = userCachedStatus.keymakerRandomkey else {
             return nil

@@ -54,7 +54,7 @@ protocol SearchVMProtocol {
 }
 
 final class SearchViewModel: NSObject {
-    typealias LocalObjectsIndexRow = Dictionary<String, Any>
+    typealias LocalObjectsIndexRow = [String: Any]
     let user: UserManager
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
@@ -81,7 +81,7 @@ final class SearchViewModel: NSObject {
             }
         }
     }
-    private var dbContents: Array<LocalObjectsIndexRow> = []
+    private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
 
@@ -93,7 +93,7 @@ final class SearchViewModel: NSObject {
         self.messages.filter { selectedIDs.contains($0.messageID) }
     }
     var selectedConversations: [Conversation] { [] }
-    
+
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,
          uiDelegate: SearchViewUIProtocol) {
@@ -112,20 +112,20 @@ extension SearchViewModel: SearchVMProtocol {
             self.fetchLocalObjects()
         }
     }
-    
+
     func cleanLocalIndex() {
         // switches off indexing of Messages in local db
         self.localObjectIndexing.cancel()
         self.fetchController?.delegate = nil
         self.fetchController = nil
     }
-    
+
     func fetchRemoteData(query: String, fromStart: Bool) {
         if fromStart {
             self.messages = []
         }
         self.uiDelegate?.activityIndicator(isAnimating: true)
-        
+
         self.query = query
         let pageToLoad = fromStart ? 0: self.currentPage + 1
         let service = user.messageService
@@ -149,7 +149,7 @@ extension SearchViewModel: SearchVMProtocol {
                 }
                 return
             }
-            
+
             let context = self.coreDataContextProvider.mainContext
             context.perform { [weak self] in
                 let messagesInContext = messageBoxes
@@ -177,7 +177,7 @@ extension SearchViewModel: SearchVMProtocol {
             completeHandler(error)
         }
     }
-    
+
     func getComposeViewModel(message: Message) -> ContainableComposeViewModel {
         ContainableComposeViewModel(msg: message,
                                     action: .openDraft,
@@ -185,7 +185,7 @@ extension SearchViewModel: SearchVMProtocol {
                                     user: user,
                                     coreDataContextProvider: coreDataContextProvider)
     }
-    
+
     func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel {
         let replacingEmails = self.user.contactService.allEmails()
         let initial = message.initial(replacingEmails: replacingEmails,
@@ -241,20 +241,20 @@ extension SearchViewModel: SearchVMProtocol {
         // Follow all mail folder
         return [.trash, .readUnread, .moveTo, .labelAs, .more]
     }
-    
+
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
         return .init(labelId: labelID,
                      title: .actionSheetTitle(selectedCount: selectedIDs.count,
                                               viewMode: .singleMessage))
     }
-    
+
     func handleBarActions(_ action: MailboxViewModel.ActionTypes) {
         let ids = NSMutableSet(set: self.selectedIDs)
         switch action {
         case .readUnread:
-            //if all unread -> read
-            //if all read -> unread
-            //if mixed read and unread -> unread
+            // if all unread -> read
+            // if all read -> unread
+            // if mixed read and unread -> unread
             let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: ids, labelID: labelID)
             self.mark(IDs: ids, unread: isAnyReadMessage)
         case .trash:
@@ -323,7 +323,7 @@ extension SearchViewModel: MoveToActionSheetProtocol {
     var labelId: String {
         self.labelID
     }
-    
+
     func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
@@ -367,7 +367,7 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
                                 queue: true)
         }
     }
-    
+
     func handleLabelAsAction(conversations: [Conversation],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
@@ -395,11 +395,11 @@ extension SearchViewModel {
         return readCount > 0
     }
 
-    private func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
+    private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
     }
-    
+
     private func move(toLabel: Message.Location) {
         let messageIDs = NSMutableSet(set: selectedIDs)
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
@@ -410,7 +410,7 @@ extension SearchViewModel {
         }
         messageService.move(messages: messages, from: fLabels, to: toLabel.rawValue)
     }
-    
+
     private func delete(IDs: NSMutableSet) {
         let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
         for msg in messages {
@@ -422,7 +422,7 @@ extension SearchViewModel {
         messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue)
     }
 
-    private func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
+    private func label(IDs messageIDs: NSMutableSet, with labelID: String, apply: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
@@ -457,7 +457,7 @@ extension SearchViewModel {
 }
 
 extension SearchViewModel {
-    private func indexLocalObjects(_ completion: @escaping ()->Void) {
+    private func indexLocalObjects(_ completion: @escaping () -> Void) {
         let context = coreDataContextProvider.rootSavingContext
         var count = 0
         context.performAndWait {
@@ -471,7 +471,7 @@ extension SearchViewModel {
                 assert(false, "Failed to fetch message dicts")
             }
         }
-        
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
@@ -481,26 +481,25 @@ extension SearchViewModel {
         objectId.name = "objectID"
         objectId.expression = NSExpression.expressionForEvaluatedObject()
         objectId.expressionResultType = NSAttributeType.objectIDAttributeType
-        
+
         fetchRequest.propertiesToFetch = [objectId,
                                           Message.Attributes.title,
                                           Message.Attributes.sender,
                                           Message.Attributes.toList]
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
             self?.localObjectsIndexingObserver = nil
             completion()
         })
-        
+
         context.perform {
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
-                let index = indexRaw as? NSPersistentStoreAsynchronousResult else
-            {
+                let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
                 self.localObjectIndexing.resignCurrent()
                 return
             }
-            
+
             self.localObjectIndexing.resignCurrent()
             self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
                 DispatchQueue.main.async {
@@ -510,33 +509,29 @@ extension SearchViewModel {
             })
         }
     }
-    
+
     private func fetchLocalObjects() {
         // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
         let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
             if let title = $0["title"] as? String,
-                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
+                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
                 return $0["objectID"] as? NSManagedObjectID
             }
             if let senderName = $0["senderName"]  as? String,
-                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
+                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
                 return $0["objectID"] as? NSManagedObjectID
             }
             if let sender = $0["sender"]  as? String,
-                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
+                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
                 return $0["objectID"] as? NSManagedObjectID
             }
             if let toList = $0["toList"]  as? String,
-                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
+                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
                 return $0["objectID"] as? NSManagedObjectID
             }
             return nil
         }
-        
+
         let context = coreDataContextProvider.mainContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in

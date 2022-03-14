@@ -73,8 +73,7 @@ extension ConversationCount {
 
     class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {
         if let toDeletes = context.managedObjectsWithEntityName(Attributes.entityName,
-                                                                matching: [Attributes.userID: userID]) as? [ConversationCount]
-        {
+                                                                matching: [Attributes.userID: userID]) as? [ConversationCount] {
             for update in toDeletes {
                 context.delete(update)
             }

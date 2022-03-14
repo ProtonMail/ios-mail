@@ -34,7 +34,7 @@ extension Message {
             Message.Location.draft
         ].map({ $0.rawValue })
 
-        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String : Label] in
+        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String: Label] in
             var newValue = result
             newValue[label.labelID] = label
             return newValue

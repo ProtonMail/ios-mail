@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 import AwaitKit
@@ -31,13 +30,12 @@ protocol AttachmentProvider {
     var controller: AttachmentController? { get }
 }
 
-
 protocol AttachmentController: AnyObject {
-    func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
+    func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?)
     func error(_ description: String)
     func error(title: String, description: String)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
-    
+
     @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
-    var barItem : UIBarButtonItem? {get}
+    var barItem: UIBarButtonItem? {get}
 }

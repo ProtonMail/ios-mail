@@ -20,23 +20,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 class MultiSet<T: Hashable> {
-    typealias DataType = [T:Int]
+    typealias DataType = [T: Int]
     private var data: DataType
-    
+
     init() {
         data = DataType()
     }
-    
+
     subscript(_ query: T) -> Int? {
         get {
             return data[query]
         }
     }
-    
+
     /**
      Insert an element
      */
@@ -47,7 +46,7 @@ class MultiSet<T: Hashable> {
             data[newData] = 1
         }
     }
-    
+
     /**
      Remove an element
      */
@@ -60,7 +59,7 @@ class MultiSet<T: Hashable> {
             }
         }
     }
-    
+
     /**
      Remove all specified elements
      */
@@ -69,14 +68,14 @@ class MultiSet<T: Hashable> {
             data.removeValue(forKey: removeData)
         }
     }
-    
+
     /**
      Clears the multiset
      */
     func removeAll() {
         data.removeAll()
     }
-    
+
     func allObjectsWithDuplicates() -> [T] {
         var result: [T] = []
         for member in data {
@@ -86,9 +85,9 @@ class MultiSet<T: Hashable> {
         }
         return result
     }
-    
+
     func allObjectsWithoutDuplicates() -> [T] {
-        return data.map{$0.key}
+        return data.map {$0.key}
     }
 }
 

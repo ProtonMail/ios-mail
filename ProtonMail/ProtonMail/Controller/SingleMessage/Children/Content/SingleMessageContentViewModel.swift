@@ -69,7 +69,6 @@ class SingleMessageContentViewModel {
         }
     }
 
-
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,

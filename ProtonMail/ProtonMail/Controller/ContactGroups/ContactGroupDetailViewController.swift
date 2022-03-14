@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import PromiseKit
 import MBProgressHUD
@@ -31,7 +30,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
-    
+
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
@@ -41,11 +40,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     @IBOutlet weak var sendButton: UIButton!
     private var editBarItem: UIBarButtonItem!
     private var paymentsUI: PaymentsUI?
-    
+
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
     private let kToComposerSegue = "toComposer"
-    
+
     func set(viewModel: ContactGroupDetailViewModel) {
         self.viewModel = viewModel
         self.viewModel.reloadView = { [weak self] in
@@ -64,7 +63,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         }
         self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
     }
-    
+
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         if self.viewModel.user.hasPaidMailPlan == false {
             presentPlanUpgrade()
@@ -73,7 +72,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         performSegue(withIdentifier: kToContactGroupEditSegue,
                      sender: self)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -95,12 +94,12 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 
         prepareTable()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reload()
     }
-    
+
     private func reload() {
         let isReloadSuccessful = self.viewModel.reload()
         if isReloadSuccessful {
@@ -117,9 +116,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 
     private func prepareHeader() {
         groupNameLabel.attributedText = viewModel.getName().apply(style: .Default)
-        
+
         groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
-        
+
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.getColor(),
                                                             alpha: 1))
@@ -128,7 +127,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
         }
     }
-    
+
     private func prepareTable() {
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupViewCellIdentifier)
@@ -136,11 +135,11 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         tableView.estimatedRowHeight = 60.0
         tableView.allowsSelection = false
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupEditSegue {
             let contactGroupEditViewController = segue.destination.children[0] as! ContactGroupEditViewController
-            
+
             if let sender = sender as? ContactGroupDetailViewController,
                 let viewModel = sender.viewModel {
                 sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
@@ -156,8 +155,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             }
         } else if segue.identifier == kToComposerSegue {
             guard let nav = segue.destination as? UINavigationController,
-                let next = nav.viewControllers.first as? ComposeContainerViewController else
-            {
+                let next = nav.viewControllers.first as? ComposeContainerViewController else {
                 return
             }
             let user = self.viewModel.user
@@ -174,7 +172,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
-        
+
         if #available(iOS 13, *) {
             if let nav = segue.destination as? UINavigationController {
                 nav.children[0].presentationController?.delegate = self
@@ -196,35 +194,35 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getTotalEmails()
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 && viewModel.getTotalEmails() > 0 {
             return LocalString._menu_contacts_title
         }
         return nil
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupViewCellIdentifier,
                                                  for: indexPath) as! ContactGroupEditViewCell
-        
+
         let ret = viewModel.getEmail(at: indexPath)
         cell.config(emailID: ret.emailID,
                     name: ret.name,
                     email: ret.email,
                     queryString: "",
                     state: .detailView)
-        
+
         return cell
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let titleView = view as? UITableViewHeaderFooterView {
-            titleView.textLabel?.text =  titleView.textLabel?.text?.capitalized
+            titleView.textLabel?.text = titleView.textLabel?.text?.capitalized
         }
     }
 }

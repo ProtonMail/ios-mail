@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import UserNotifications
 import Intents
@@ -88,7 +87,7 @@ extension AppDelegate: UserDataServiceDelegate {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
             (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow(.form))
-            
+
             for session in sessions where session != oneToStay {
                 UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { _ in }
             }
@@ -140,19 +139,19 @@ extension AppDelegate: TrustKitUIDelegate {
                 return self.window
             }
         }()
-        
+
         guard let top = currentWindow?.topmostViewController(), !(top is UIAlertController) else { return }
         top.present(alert, animated: true, completion: nil)
     }
 }
 
-//move to a manager class later
-let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
-//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
+// move to a manager class later
+let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
+// let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
@@ -170,7 +169,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         return true
     }
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
         #if DEBUG
@@ -179,36 +178,35 @@ extension AppDelegate: UIApplicationDelegate {
         }
         Analytics.shared.setup(isInDebug: true, isProduction: true)
         #else
-        
+
         #if Enterprise
         Analytics.shared.setup(isInDebug: false, isProduction: false)
         #else
         Analytics.shared.setup(isInDebug: false, isProduction: true)
         #endif
-        
+
         #endif
-        
-        
+
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
 
         configureAppearance()
-        
-        //start network notifier
+
+        // start network notifier
         sharedInternetReachability.startNotifier()
-        
+
         // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
         if #available(iOS 13.0, *), let code = Bundle.main.preferredLocalizations.first {
             LanguageManager.saveLanguage(byCode: code)
         }
-        //setup language
+        // setup language
         LanguageManager.setupCurrentLanguage()
 
         if #available(iOS 15.0, *) {
             UITableView.appearance().sectionHeaderTopPadding = .zero
         }
 
-        let pushService : PushNotificationService = sharedServices.get()
+        let pushService: PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
@@ -225,7 +223,7 @@ extension AppDelegate: UIApplicationDelegate {
             #if DEBUG
                 "Obtained main key".alertToastBottom()
             #endif
-            
+
             if self.currentState != .active {
                 keymaker.updateAutolockCountdownStart()
             }
@@ -234,7 +232,7 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
                                                object: nil)
-        
+
         if #available(iOS 12.0, *) {
 //            let intent = WipeMainKeyIntent()
 //            let suggestions = [INShortcut(intent: intent)!]
@@ -253,75 +251,74 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         return true
     }
-    
-    
+
     @objc fileprivate func didSignOutNotification(_ notification: Notification) {
         self.onLogout(animated: false)
     }
-    
+
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return .portrait
     }
-    
+
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         return self.application(app, handleOpen: url)
     }
-    
+
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return false
         }
-        
+
         if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
             var path = url.absoluteString
             if urlComponents.scheme == "protonmail" {
                 path = path.preg_replace("protonmail://", replaceto: "")
             }
-            
+
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
             self.coordinator.followDeeplink(deeplink)
             return true
         }
-        
+
         guard urlComponents.host == "signup" else {
             return false
         }
         guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
             return false
         }
-        
+
         guard let code = verifyObject.value else {
             return false
         }
-        ///TODO::fixme change to deeplink
-        let info : [String:String] = ["verifyCode" : code]
+        /// TODO::fixme change to deeplink
+        let info: [String: String] = ["verifyCode": code]
         let notification = Notification(name: .customUrlSchema,
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
-                
+
         return true
     }
-    
+
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
         keymaker.updateAutolockCountdownStart()
-        
+
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()
-        
+
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { }
-        let delayedCompletion: ()->Void = {
+        let delayedCompletion: () -> Void = {
             application.endBackgroundTask(taskID)
             taskID = .invalid
         }
-        
+
         if let user = users.firstUser {
             user.messageService.purgeOldMessages()
             user.cacheService.cleanOldAttachment()
@@ -337,27 +334,25 @@ extension AppDelegate: UIApplicationDelegate {
         }
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
-    
+
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
                      continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
-    {
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
-        {
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
             self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         return true
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
-        //TODO::here need change to notify composer to save editing draft
+        // TODO::here need change to notify composer to save editing draft
         let coreDataService = sharedServices.get(by: CoreDataService.self)
-        
+
         let rootContext = coreDataService.rootSavingContext
         rootContext.performAndWait {
-            let _ = rootContext.saveUpstreamIfNeeded()
+            _ = rootContext.saveUpstreamIfNeeded()
         }
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
@@ -371,7 +366,7 @@ extension AppDelegate: UIApplicationDelegate {
             users.firstUser?.refreshFeatureFlags()
         }
     }
-    
+
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
@@ -390,7 +385,7 @@ extension AppDelegate: UIApplicationDelegate {
 //        })
         completionHandler(.noData)
     }
-    
+
     // MARK: Notification methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let pushService: PushNotificationService = sharedServices.get()
@@ -398,30 +393,30 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication,
-                     didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PushUpdater().update(with: userInfo) {
             completionHandler(.newData)
         }
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let point = touch.location(in: UIApplication.shared.keyWindow)
             let statusBarFrame = UIApplication.shared.statusBarFrame
-            if (statusBarFrame.contains(point)) {
+            if statusBarFrame.contains(point) {
                 self.touchStatusBar()
             }
         }
     }
-    
+
     func touchStatusBar() {
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
 
     // MARK: - State restoration
-    
+
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         if UIDevice.current.stateRestorationPolicy == .multiwindow {
             return false
@@ -436,21 +431,20 @@ extension AppDelegate: UIApplicationDelegate {
         } else if UIDevice.current.stateRestorationPolicy == .deeplink {
             self.coordinator.restoreState(coder)
         }
-        
+
         return false
     }
-    
+
     // MARK: - Multiwindow iOS 13
-    
+
     @available(iOS 13.0, *)
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
-    {
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let scene = Scenes.fullApp // TODO: add more scenes
         let config = UISceneConfiguration(name: scene.rawValue, sessionRole: connectingSceneSession.role)
         config.delegateClass = scene.delegateClass
         return config
     }
-    
+
     @available(iOS 13.0, *)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         sceneSessions.forEach { session in
@@ -460,27 +454,25 @@ extension AppDelegate: UIApplicationDelegate {
             session.scene?.userActivity = nil
         }
     }
-    
+
     // MARK: Shortcuts
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void)
-    {
+                     completionHandler: @escaping (Bool) -> Void) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
-        {
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
             self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
 }
 
-extension AppDelegate : UsersManagerDelegate {
+extension AppDelegate: UsersManagerDelegate {
 
 }
 
-extension AppDelegate : UnlockManagerDelegate {
+extension AppDelegate: UnlockManagerDelegate {
     var isUserCredentialStored: Bool {
         get {
             let users = sharedServices.get(by: UsersManager.self)
@@ -490,7 +482,7 @@ extension AppDelegate : UnlockManagerDelegate {
             return false
         }
     }
-    
+
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         if users.hasUserName() || users.hasUsers() {
@@ -498,22 +490,22 @@ extension AppDelegate : UnlockManagerDelegate {
         }
         return false
     }
-    
+
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         guard let _ = uid else {
-            return users.isPasswordStored || users.hasUserName() //|| users.isMailboxPasswordStored
+            return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
         }
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
     }
-    
+
     func cleanAll() {
         ///
         sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }
-    
+
     func unlocked() {
         // should work via messages
     }

@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 
 extension UITableView {
-    
+
     fileprivate struct Constant {
         static let animationDuration: TimeInterval = 1
     }
-    
+
     func hideLoadingFooter(replaceWithView view: UIView? = UIView(frame: CGRect.zero)) {
         UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
             self.tableFooterView?.alpha = 0
@@ -42,7 +41,7 @@ extension UITableView {
     func noSeparatorsBelowFooter() {
         tableFooterView = UIView(frame: CGRect.zero)
     }
-    
+
     func showLoadingFooter() {
         tableFooterView = makeLoadingFooterView()
     }
@@ -68,27 +67,26 @@ extension UITableView {
         loadingActivityView.startAnimating()
         return view
     }
-    
+
     /**
      reset table view inset and margins to .zero
      **/
     func zeroMargin() {
-        if (self.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+        if self.responds(to: #selector(setter: UITableViewCell.separatorInset)) {
             self.separatorInset = .zero
         }
-        
-        if (self.responds(to: #selector(setter: UIView.layoutMargins))) {
+
+        if self.responds(to: #selector(setter: UIView.layoutMargins)) {
             self.layoutMargins = .zero
         }
     }
 }
 
 extension UITableView {
-    
-    func RegisterCell(_ cellID : String) {
+
+    func RegisterCell(_ cellID: String) {
         self.register(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
     }
-
 
     func dequeue<T: UITableViewCell>(cellType: T.Type) -> T {
         guard let cell = dequeueReusableCell(withIdentifier: cellType.reuseIdentifier) as? T else {

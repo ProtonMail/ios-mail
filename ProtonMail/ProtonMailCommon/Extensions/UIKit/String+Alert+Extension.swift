@@ -20,18 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension String {
-    
+
     public func alertViewController(_ title: String?, _ action: UIAlertAction?) {
         #if !APP_EXTENSION
         DispatchQueue.main.async {
             guard let window: UIWindow = UIApplication.shared.keyWindow else {
                 return
             }
-            
+
             let alert = UIAlertController(title: title ?? LocalString._general_alert_title,
                                           message: self,
                                           preferredStyle: .alert)
@@ -43,15 +42,15 @@ extension String {
         }
         #endif
     }
-    
+
     public func alertController() -> UIAlertController {
         let message = self
         return UIAlertController(title: LocalString._general_alert_title,
                                  message: message,
                                  preferredStyle: .alert)
     }
-    
-    public func alertController(_ localizedTitle : String) -> UIAlertController {
+
+    public func alertController(_ localizedTitle: String) -> UIAlertController {
         let message = self
         return UIAlertController(title: localizedTitle,
                                  message: message,

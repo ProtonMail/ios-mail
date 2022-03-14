@@ -20,17 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 
-final class ContactEditUpgradeCell : UITableViewCell {
-    
+final class ContactEditUpgradeCell: UITableViewCell {
+
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var upgradeButton: UIButton!
-    
-    //fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
-    private var delegate:ContactUpgradeCellDelegate?
-    
+
+    // fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
+    private var delegate: ContactUpgradeCellDelegate?
+
     override func awakeFromNib() {
         let color = ColorProvider.BrandNorm
         frameView.layer.borderColor = color.cgColor
@@ -39,11 +38,11 @@ final class ContactEditUpgradeCell : UITableViewCell {
         frameView.clipsToBounds = true
         upgradeButton.roundCorners()
     }
-    
+
     @IBAction func upgradeAction(_ sender: Any) {
         self.delegate?.upgrade()
     }
-    
+
     func configCell(delegate: ContactUpgradeCellDelegate?) {
         self.delegate = delegate
     }

@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 import ProtonCore_DataModel
@@ -27,24 +26,24 @@ import ProtonCore_DataModel
 protocol LinkOpeningValidator {
     var linkConfirmation: LinkOpeningMode { get }
 
-    func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void)
+    func validateNotPhishing(_ url: URL, handler: @escaping (Bool) -> Void)
 }
 extension LinkOpeningValidator {
-    func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
+    func validateNotPhishing(_ url: URL, handler: @escaping (Bool) -> Void) {
         guard linkConfirmation == .confirmationAlert else {
             handler(true)
             return
         }
-        
+
         guard url.isOwnedByProton == false else {
             handler(true)
             return
         }
-        
+
         var tail = url.absoluteString.dropFirst(60)
         tail = tail.isEmpty ? "" : ("\n...\n" + tail.suffix(40))
         let shortLink = url.absoluteString.prefix(60) + tail
-        
+
         let alert = UIAlertController(title: LocalString._about_to_open_link,
                                       message: String(shortLink),
                                       preferredStyle: .alert)
@@ -73,6 +72,6 @@ extension URL {
                 "pm.me",
                 "protonirockerxow.onion",
                 "mail.protonmail.com",
-                "account.protonvpn.com",].contains(host)
+                "account.protonvpn.com" ].contains(host)
     }
 }

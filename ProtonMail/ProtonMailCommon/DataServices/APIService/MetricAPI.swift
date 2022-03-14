@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_Networking
 
 struct MetricAPI {
-    static let path :String = "/metrics"
+    static let path: String = "/metrics"
 }
 
 final class MetricDarkMode: Request {
@@ -53,11 +53,11 @@ final class MetricDarkMode: Request {
     init(applyDarkStyle: Bool) {
         self.applyDarkStyle = applyDarkStyle
     }
-    
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         if self.applyDarkStyle {
             let data = ["action": Action.applyDarkStyles.rawValue]
-            let out : [String : Any] = [
+            let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
                 ParameterKeys.title.rawValue: Title.applyDarkStyles.rawValue,
                 ParameterKeys.Data.rawValue: data
@@ -65,7 +65,7 @@ final class MetricDarkMode: Request {
             return out
         } else {
             let data = ["action": Action.removeDarkStyles.rawValue]
-            let out : [String : Any] = [
+            let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
                 ParameterKeys.title.rawValue: Title.removeDarkStyles.rawValue,
                 ParameterKeys.Data.rawValue: data

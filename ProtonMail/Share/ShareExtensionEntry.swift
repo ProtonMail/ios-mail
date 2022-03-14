@@ -20,26 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import UIKit
 import ProtonCore_UIFoundations
 import ProtonCore_Services
 
 @objc(ShareExtensionEntry)
-class ShareExtensionEntry : UINavigationController {
-    var appCoordinator : ShareAppCoordinator?
+class ShareExtensionEntry: UINavigationController {
+    var appCoordinator: ShareAppCoordinator?
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         self.setup()
     }
-    
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.setup()
     }
-    
+
     private func setup() {
         #if DEBUG
         PMAPIService.noTrustKit = true
@@ -50,10 +49,10 @@ class ShareExtensionEntry : UINavigationController {
             setupNavigationBarAppearance()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.appCoordinator?.start()
     }
 }

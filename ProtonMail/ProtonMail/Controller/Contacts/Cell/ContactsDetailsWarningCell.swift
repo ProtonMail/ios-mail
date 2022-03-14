@@ -20,10 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-enum WarningType : Int {
+enum WarningType: Int {
     case signatureWarning = 1
     case decryptionError = 2
 }
@@ -33,13 +32,13 @@ class ContactsDetailsWarningCell: UITableViewCell {
     @IBOutlet weak var warningImage: UIImageView!
     @IBOutlet weak var errorTitle: UILabel!
     @IBOutlet weak var errorDetails: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    func configCell(warning : WarningType) {
+
+    func configCell(warning: WarningType) {
         switch warning {
         case .signatureWarning:
             self.errorTitle.text = LocalString._verification_error
@@ -49,7 +48,7 @@ class ContactsDetailsWarningCell: UITableViewCell {
             self.errorDetails.text = LocalString._decryption_of_this_content_failed
         }
     }
-    
+
     func configCell(forlog: String) {
         self.errorTitle.text = LocalString._logs
         self.errorDetails.text = forlog

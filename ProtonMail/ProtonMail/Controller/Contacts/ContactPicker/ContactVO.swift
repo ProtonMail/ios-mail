@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 import AwaitKit
 import ProtonCore_Services
 
-enum SignStatus : Int {
+enum SignStatus: Int {
     case ok = 0 /// normal outgoing
     case notSigned = 1
     case noVerifier = 2
@@ -38,8 +37,8 @@ enum PGPTypeErrorCode: Int {
     case emailAddressFailedValidation = 33101
 }
 
-enum PGPType : Int {
-    //Do not use -1, this value will break the locker check function
+enum PGPType: Int {
+    // Do not use -1, this value will break the locker check function
     case failed_non_exist = 33102 // non existing internal user
     case failed_validation = -2 // not pass FE validation
     case failed_server_validation = 33101 // not pass BE validation
@@ -107,58 +106,57 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     public var name: String
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
-    
+
     var modelType: ContactPickerModelState {
         get {
             return .contact
         }
     }
-    
-    @objc var contactTitle : String {
+
+    @objc var contactTitle: String {
         get {
             return title
         }
     }
-    @objc var contactSubtitle : String? {
+    @objc var contactSubtitle: String? {
         get {
             return subtitle
         }
     }
-    var contactImage : UIImage? {
+    var contactImage: UIImage? {
         get {
             return nil
         }
     }
-    
+
     var color: String? {
         get {
             return nil
         }
     }
-    
 
-    var displayName : String? {
+    var displayName: String? {
         get {
             return name
         }
     }
-    
-    var displayEmail : String? {
+
+    var displayEmail: String? {
         get {
             return email
         }
     }
-    
+
     var pgpType: PGPType = .none
-    
+
     func setType(type: Int) {
         if let pgp_type = PGPType(rawValue: type) {
             self.pgpType = pgp_type
         }
     }
-    
+
     func notes(type: Int) -> String {
-        //0 composer, 1 inbox 2 sent
+        // 0 composer, 1 inbox 2 sent
         if type == 1 {
             return self.inboxNotes
         } else if type == 2 {
@@ -166,8 +164,8 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
         return self.composerNotes
     }
-    
-    var hasPGPPined : Bool {
+
+    var hasPGPPined: Bool {
         get {
             switch self.pgpType {
             case .pgp_encrypt_trusted_key,
@@ -179,7 +177,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    var hasNonePM : Bool {
+    var hasNonePM: Bool {
         get {
             switch self.pgpType {
             case .internal_normal,
@@ -202,18 +200,18 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .eo:
                 return LocalString._end_to_end_encrypted
-            case .pgp_encrypt_trusted_key: //PM --> non-PM PGP (encrypted+signed/pinned)
+            case .pgp_encrypt_trusted_key: // PM --> non-PM PGP (encrypted+signed/pinned)
                 return LocalString._pgp_encrypted
-            case .pgp_signed://PM --> non-PM PGP (signed)
+            case .pgp_signed:// PM --> non-PM PGP (signed)
                 return LocalString._pgp_signed
-            case .pgp_encrypted: //not for composer but in case
+            case .pgp_encrypted: // not for composer but in case
                 return LocalString._pgp_encrypted
-                
-            case .internal_normal: //PM --> PM (encrypted+signed)
+
+            case .internal_normal: // PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted
-            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
                 return LocalString._end_to_end_encrypted_to_verified_address
-                
+
             case .pgp_encrypt_trusted_key_verify_failed,
                  .internal_trusted_key_verify_failed,
                  .internal_normal_verify_failed,
@@ -231,7 +229,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    
+
     var sentNotes: String {
         get {
             switch self.pgpType {
@@ -239,15 +237,15 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                 return LocalString._stored_with_zero_access_encryption
             case .eo:
                 return LocalString._end_to_end_encrypted
-            case .internal_normal: //PM --> PM (encrypted+signed)
+            case .internal_normal: // PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted
-            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
                 return LocalString._end_to_end_encrypted_to_verified_address
             case .pgp_encrypted:
                 return LocalString._pgp_encrypted_message
             case .pgp_encrypt_trusted_key:
                 return LocalString._pgp_encrypted
-            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+            case .pgp_signed:// non-PM signed PGP --> PM (pinned)
                 return LocalString._pgp_signed
             case .pgp_encrypt_trusted_key_verify_failed,
                  .internal_trusted_key_verify_failed,
@@ -267,24 +265,24 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    
+
     var inboxNotes: String {
         get {
             switch self.pgpType {
             case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
                 return LocalString._stored_with_zero_access_encryption
-            case .eo, .internal_normal: //PM --> PM (encrypted+signed)
+            case .eo, .internal_normal: // PM --> PM (encrypted+signed)
                 return LocalString._end_to_end_encrypted_message
-            case .internal_trusted_key: //PM --> PM (encrypted+signed/pinned)
+            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
                 return LocalString._end_to_end_encrypted_message_from_verified_address
-                
+
             case .pgp_encrypted:
                 return LocalString._pgp_encrypted_message
             case .pgp_encrypt_trusted_key:
                 return LocalString._pgp_encrypted_message_from_verified_address
-            case .pgp_signed://non-PM signed PGP --> PM (pinned)
+            case .pgp_signed:// non-PM signed PGP --> PM (pinned)
                 return LocalString._pgp_signed_message_from_verified_address
-                
+
             case .pgp_encrypt_trusted_key_verify_failed,
                  .internal_trusted_key_verify_failed,
                  .internal_normal_verify_failed,
@@ -303,42 +301,42 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    
+
     public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
         self.name = name
         self.email = email
         self.isProtonMailContact = isProtonMailContact
-        
+
         self.title = !name.isEmpty && name != " " ? name : email
         self.subtitle = email
     }
-    
+
     override public var description: String {
         return "\(name) \(email ?? "")"
     }
-    
+
     override public func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? ContactVO else {
             return false
         }
         let lhs = self
-        
+
         return lhs.name + lhs.email == rhs.name + rhs.email
     }
-    
+
     func equals(_ other: ContactPickerModelProtocol) -> Bool {
         return self.isEqual(other)
     }
-    
+
     override public var hash: Int {
         return (name + email).hashValue
     }
 }
 
-//Extension::Array - contact vo
+// Extension::Array - contact vo
 extension Array where Element: ContactVO {
-    mutating func distinctMerge(_ check : [Element]) {
+    mutating func distinctMerge(_ check: [Element]) {
         var objectToIgnore: [Element] = []
         for element in self {
             objectToIgnore.append(contentsOf: check.filter { $0 == element })
@@ -350,13 +348,13 @@ extension Array where Element: ContactVO {
             }
         }
     }
-    
+
     public func uniq() -> [Element] {
         var arrayCopy = self
         arrayCopy.uniqInPlace()
         return arrayCopy
     }
-    
+
     mutating internal func uniqInPlace() {
         var seen = [Element]()
         var index = 0
@@ -365,7 +363,7 @@ extension Array where Element: ContactVO {
                 remove(at: index)
             } else {
                 seen.append(element)
-                index+=1
+                index += 1
             }
         }
     }

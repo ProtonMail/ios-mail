@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 enum HTTPStatusCode: Int {
@@ -35,7 +34,7 @@ extension HTTPStatusCode {
     static func ==(lhs: Int, rhs: HTTPStatusCode) -> Bool {
         lhs == rhs.rawValue
     }
-    
+
     static func !=(lhs: Int, rhs: HTTPStatusCode) -> Bool {
         lhs != rhs.rawValue
     }

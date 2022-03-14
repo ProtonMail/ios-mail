@@ -20,52 +20,45 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class MultiLabelDisplayView: PMView {
-    
-    var labels : [Label]?
-    
+
+    var labels: [Label]?
+
     @IBOutlet var label1: LabelDisplayView!
-    
-    
-    
+
     var labelOne: LabelDisplayView!
-    
+
     override func getNibName() -> String {
-        return "MultiLabelDisplayView";
+        return "MultiLabelDisplayView"
     }
-    
+
     override func setup() {
         labelOne = LabelDisplayView()
         self.pmView.addSubview(labelOne)
-        
-        
+
         label1.mas_updateConstraints { (make) -> Void in
             make?.removeExisting = true
-            let _ = make?.right.equalTo()(self.pmView.mas_left)
-            let _ = make?.bottom.equalTo()(self.pmView.mas_bottom)
-            let _ = make?.top.equalTo()(self.pmView.mas_top)
+            _ = make?.right.equalTo()(self.pmView.mas_left)
+            _ = make?.bottom.equalTo()(self.pmView.mas_bottom)
+            _ = make?.top.equalTo()(self.pmView.mas_top)
         }
     }
-    
+
     func updateLabelsDetails(_ labelView: LabelDisplayView, label: Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
-                //labelView.hidden = true;
+                // labelView.hidden = true;
             } else {
-                //labelView.hidden = false;
+                // labelView.hidden = false;
                 labelView.labelTitle = label.name
                 labelView.LabelTintColor = UIColor(hexString: label.color, alpha: 1.0)
             }
         } else {
-            //labelView.hidden = true;
+            // labelView.hidden = true;
         }
 
     }
-    
-    
+
 }
-
-

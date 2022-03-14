@@ -20,9 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-
 
 struct ColorManager {
     static let forLabel = [
@@ -32,9 +30,9 @@ struct ColorManager {
         "#72bb75", "#9db99f", "#c3d261", "#c6cd97",
         "#e6c04c", "#e7d292", "#e6984c", "#dfb286"
     ]
-    
+
     static let defaultColor = ColorManager.forLabel[0]
-        
+
     static func getRandomColor() -> String {
         return forLabel[Int.random(in: 0..<forLabel.count)]
     }

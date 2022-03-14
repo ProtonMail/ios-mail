@@ -20,17 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
+class PMDocumentPickerViewController: UIDocumentPickerViewController {
 
-class PMDocumentPickerViewController : UIDocumentPickerViewController {
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.all
     }
-    
-    override var shouldAutorotate : Bool {
+
+    override var shouldAutorotate: Bool {
         return true
     }
 }

@@ -135,7 +135,7 @@ class ExpandedHeaderViewController: UIViewController {
         tagsRow.contentStackView.addArrangedSubview(StackViewContainer(view: tagsView))
         customView.contentStackView.addArrangedSubview(StackViewContainer(view: tagsRow))
     }
-    
+
     @discardableResult
     private func present(viewModel: ExpandedHeaderRecipientsRowViewModel, isToContacts: Bool = false) -> ExpandedHeaderRowView {
         let row = ExpandedHeaderRowView()

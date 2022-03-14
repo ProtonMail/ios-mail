@@ -20,26 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 @IBDesignable class DomainsTableViewCell: UITableViewCell {
     @IBOutlet weak var domainText: UILabel!
     @IBOutlet weak var defaultMark: UILabel!
-    
+
     func configCell(domainText: String, defaultMark: String) {
         self.domainText.text = domainText
         self.defaultMark.text = defaultMark
         self.accessibilityLabel = domainText
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         if #available(iOS 10, *) {
             self.domainText.font = UIFont.preferredFont(forTextStyle: .footnote)
             self.domainText.adjustsFontForContentSizeCategory = true
-            
+
             self.defaultMark.font = UIFont.preferredFont(forTextStyle: .footnote)
             self.defaultMark.adjustsFontForContentSizeCategory = true
         }

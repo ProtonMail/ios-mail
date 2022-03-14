@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 
@@ -32,11 +31,11 @@ protocol ContactGroupEditViewControllerDelegate: AnyObject {
 enum ContactGroupEditError: Error {
     case noEmailInGroup
     case noNameForGroup
-    
+
     case updateFailed
-    
+
     case cannotGetCoreDataContext
-    
+
     case InternalError
     case TypeCastingError
 }
@@ -52,7 +51,7 @@ extension ContactGroupEditError: LocalizedError {
             return LocalString._internal_error
         case .TypeCastingError:
             return LocalString._type_casting_error
-            
+
         case .updateFailed:
             return LocalString._contact_groups_api_update_error
         case .cannotGetCoreDataContext:
@@ -61,54 +60,51 @@ extension ContactGroupEditError: LocalizedError {
     }
 }
 
-enum ContactGroupEditTableCellType
-{
+enum ContactGroupEditTableCellType {
     case manageContact
     case email
     case deleteGroup
     case error
 }
 
-struct ContactGroupData
-{
+struct ContactGroupData {
     var ID: String?
     var name: String?
     var color: String
     var emailIDs: Set<Email>
-    
+
     let originalName: String?
     let originalColor: String
     let originalEmailIDs: Set<Email>
-    
+
     init(ID: String?,
          name: String?,
          color: String?,
-         emailIDs: Set<Email>)
-    {
+         emailIDs: Set<Email>) {
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
         self.emailIDs = emailIDs
-        
+
         self.originalEmailIDs = emailIDs
         self.originalName = self.name
         self.originalColor = self.color
     }
-    
+
     func hasChanged() -> Bool {
         if name != originalName {
             return true
         }
-        
+
         if color != originalColor {
             return true
         }
-        
+
         let currentEmailIDs = emailIDs
         if originalEmailIDs != currentEmailIDs {
             return true
         }
-        
+
         return false
     }
 }
@@ -117,14 +113,14 @@ protocol ContactGroupEditViewModel {
     var user: UserManager { get }
     // delegate
     var delegate: ContactGroupEditViewControllerDelegate? { get set }
-    
+
     // set operations
     func setName(name: String)
     func setEmails(emails: Set<Email>)
     func setColor(newColor: String)
-    
+
     func removeEmail(emailID: String)
-    
+
     // get operations
     func getViewTitle() -> String
     func getName() -> String
@@ -132,14 +128,14 @@ protocol ContactGroupEditViewModel {
     func getColor() -> String
     func getEmails() -> Set<Email>
     func getSectionTitle(for: Int) -> String
-    
+
     // create and edit
     func saveDetail() -> Promise<Void>
     func hasUnsavedChanges() -> Bool
-    
+
     // delete
     func deleteContactGroup() -> Promise<Void>
-    
+
     // table operation
     func getTotalSections() -> Int
     func getTotalRows(for section: Int) -> Int

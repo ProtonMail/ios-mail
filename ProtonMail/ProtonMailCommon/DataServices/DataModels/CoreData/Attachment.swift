@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 class Attachment: NSManagedObject {
-    
+
     @NSManaged var attachmentID: String
     @NSManaged var fileData: Data?
     @NSManaged var keyPacket: String?
@@ -36,11 +35,11 @@ class Attachment: NSManagedObject {
     @NSManaged var isTemp: Bool
     @NSManaged var keyChanged: Bool
     @NSManaged var userID: String
-    
+
     @NSManaged var headerInfo: String?
-    
+
     @NSManaged var message: Message
-    
-    //Added in version 1.12.5 to handle the attachment deletion failed issue
+
+    // Added in version 1.12.5 to handle the attachment deletion failed issue
     @NSManaged var isSoftDeleted: Bool
 }

@@ -27,7 +27,7 @@ import ProtonCore_UIFoundations
 
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     internal weak var controller: AttachmentController?
-    
+
     init(for controller: AttachmentController) {
         self.controller = controller
     }
@@ -35,7 +35,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     var actionSheetItem: PMActionSheetItem {
         PMActionSheetPlainItem(title: LocalString._import_from,
                                icon: UIImage(named: "ic-export"),
-                               iconColor: ColorProvider.IconNorm) { (_) -> (Void) in
+                               iconColor: ColorProvider.IconNorm) { (_) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeVideo as String,
@@ -55,17 +55,16 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             self.controller?.present(picker, animated: true, completion: nil)
         }
     }
-    
-    
+
     internal func process(fileAt url: URL) -> Promise<Void> {
-        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
-        var error : NSError?
-        
+        let coordinator: NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
+        var error: NSError?
+
         return Promise<FileData> { seal in
             coordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] new_url in
                 guard let `self` = self else { return }
                 var fileData: FileData!
-                
+
                 #if APP_EXTENSION
                     do {
                         let newUrl = try self.copyItemToTempDirectory(from: url)
@@ -87,16 +86,16 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                         return
                     }
                 #endif
-                
+
                 seal.fulfill(fileData)
             }
-            
+
             if let err = error {
                 seal.reject(err)
             }
         }.then { (file) -> Promise<Void> in
             guard let controller = self.controller else {
-                //End process
+                // End process
                 return Promise()
             }
             return controller.fileSuccessfullyImported(as: file)
@@ -116,7 +115,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
 }
 
-
 @available(iOS, deprecated: 11.0, message: "We don't use UIDocumentMenuViewController for iOS 11+, only UIDocumentPickerViewController")
 extension DocumentAttachmentProvider: UIDocumentMenuDelegate {
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
@@ -132,15 +130,15 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
     internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
     }
-    
+
     internal func documentPicker(_ documentController: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         // TODO: at least on iOS 11.3.1, DocumentPicker does not call this method until whole file will be downloaded from the cloud. This should be a bug, but in future we can check size of document before downloading it
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
-        
+
         DispatchQueue.global().async {
             _ = self.process(fileAt: url)
         }
     }
-    
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) { }
 }

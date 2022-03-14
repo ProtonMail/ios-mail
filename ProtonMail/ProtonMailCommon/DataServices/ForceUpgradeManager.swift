@@ -29,9 +29,9 @@ import OHHTTPStubs
 
 class ForceUpgradeManager {
     static let shared = ForceUpgradeManager()
-    
+
     private init() { }
-    
+
     var forceUpgradeHelper: ForceUpgradeDelegate = {
         return ForceUpgradeHelper(config: .mobile(URL.appleStore))
     }()

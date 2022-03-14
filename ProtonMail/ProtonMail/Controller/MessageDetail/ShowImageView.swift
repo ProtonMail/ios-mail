@@ -20,26 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 
-protocol ShowImageViewDelegate : AnyObject {
+protocol ShowImageViewDelegate: AnyObject {
     func showImage()
 }
 
 class ShowImageView: PMView {
-    
+
     @IBOutlet weak var showImageButton: UIButton!
-    weak var delegate : ShowImageViewDelegate?
-    
+    weak var delegate: ShowImageViewDelegate?
+
     override func getNibName() -> String {
         return "ShowImageView"
     }
-    
+
     @IBAction func clickAction(_ sender: AnyObject) {
         self.delegate?.showImage()
     }
-    
+
     override func setup() {
         showImageButton.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
         showImageButton.layer.borderWidth = 1.0

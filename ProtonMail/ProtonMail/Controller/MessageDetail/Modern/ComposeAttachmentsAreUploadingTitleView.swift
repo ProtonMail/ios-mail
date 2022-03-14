@@ -53,4 +53,3 @@ class ComposeAttachmentsAreUploadingTitleView: UIView {
     }
 
 }
-

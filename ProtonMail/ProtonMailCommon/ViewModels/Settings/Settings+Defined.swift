@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-//settings language item  ***!!! this need match with LanguageManager.h
+// settings language item  ***!!! this need match with LanguageManager.h
 extension ELanguage {
-    
-    public var nativeDescription : String {
+
+    public var nativeDescription: String {
         get {
-            switch(self) {
+            switch self {
             case .english:
                 return "English"
             case .german:
@@ -86,10 +85,10 @@ extension ELanguage {
             }
         }
     }
-    
-    public var localeString : String {
+
+    public var localeString: String {
         get {
-            switch(self) {
+            switch self {
             case .english:
                 return "en_US"
             case .german:
@@ -147,11 +146,11 @@ extension ELanguage {
             }
         }
     }
-    
-    //This code needs to match the project language folder
-    public var code : String {
+
+    // This code needs to match the project language folder
+    public var code: String {
         get {
-            switch(self) {
+            switch self {
             case .english:
                 return "en"
             case .german:
@@ -257,7 +256,7 @@ extension ELanguage {
             .spanish,
             .swedish,
             .turkish,
-            .ukrainian,
+            .ukrainian
         ]
     }
 }
@@ -265,8 +264,8 @@ extension ELanguage {
 public enum SDebugItem: Int, CustomStringConvertible {
     case queue = 0
     case errorLogs = 1
-    public var description : String {
-        switch(self){
+    public var description: String {
+        switch self {
         case .queue:
             return LocalString._message_queue
         case .errorLogs:
@@ -288,9 +287,9 @@ public enum SGItems: Int, CustomStringConvertible {
     case linkOpeningMode = 12
     case metadataStripping = 13
     case browser
-    
-    public var description : String {
-        switch(self){
+
+    public var description: String {
+        switch self {
         case .notifyEmail:
             return LocalString._settings_notification_email
         case .loginPWD:
@@ -321,8 +320,8 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
     case empty
     case right
     case rightActionView
-    
-    public var description : String {
+
+    public var description: String {
         switch self {
         case .left:
             return LocalString._swipe_left_to_right
@@ -332,8 +331,8 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
             return ""
         }
     }
-    
-    public var actionDescription : String {
+
+    public var actionDescription: String {
         switch self {
         case .left:
             return LocalString._change_left_swipe_action
@@ -345,16 +344,16 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SProtectionItems : Int, CustomStringConvertible {
+public enum SProtectionItems: Int, CustomStringConvertible {
     case touchID = 0
     case pinCode = 1
     case updatePin = 2
     case autoLogout = 3
     case enterTime = 4
     case faceID = 5
-    
-    public var description : String {
-        switch(self){
+
+    public var description: String {
+        switch self {
         case .touchID:
             return LocalString._enable_touchid
         case .pinCode:
@@ -376,9 +375,9 @@ public enum SAddressItems: Int, CustomStringConvertible {
     case displayName = 1
     case signature = 2
     case defaultMobilSign = 3
-    
-    public var description : String {
-        switch(self){
+
+    public var description: String {
+        switch self {
         case .addresses:
             return ""
         case .displayName:
@@ -393,20 +392,19 @@ public enum SAddressItems: Int, CustomStringConvertible {
 
 public enum SLabelsItems: Int, CustomStringConvertible {
     case labelFolderManager = 0
-    public var description : String {
-        switch(self){
+    public var description: String {
+        switch self {
         case .labelFolderManager:
             return LocalString._labels_manage_title
         }
     }
 }
 
-
 public enum SNetworkItems: Int, CustomStringConvertible {
     case doh = 0
     case clear = 1
-    public var description : String {
-        switch(self){
+    public var description: String {
+        switch self {
         case .doh:
             return "DNS over Https"
         case .clear:
@@ -414,7 +412,6 @@ public enum SNetworkItems: Int, CustomStringConvertible {
         }
     }
 }
-
 
 public enum SettingSections: Int, CustomStringConvertible {
     case debug = 0
@@ -426,9 +423,9 @@ public enum SettingSections: Int, CustomStringConvertible {
     case protection = 6
     case language = 7
     case network = 8
-    
-    public var description : String {
-        switch(self){
+
+    public var description: String {
+        switch self {
         case .debug:
             return LocalString._debug
         case .general:
@@ -450,4 +447,3 @@ public enum SettingSections: Int, CustomStringConvertible {
         }
     }
 }
-

@@ -25,16 +25,16 @@ import UIKit
 protocol ComposeViewDelegate: AnyObject {
     func composeViewWillPresentSubview()
     func composeViewWillDismissSubview()
-    
+
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))
-    
+
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
-    
+
     @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton)
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController)

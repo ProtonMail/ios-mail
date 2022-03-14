@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
@@ -43,37 +42,37 @@ extension LabelUpdate {
         }
         return []
     }
-    
-    class func lastUpdate(by labelID: String, userID: String,  inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : labelID, Attributes.userID : userID]) as? LabelUpdate
+
+    class func lastUpdate(by labelID: String, userID: String, inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate? {
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID: labelID, Attributes.userID: userID]) as? LabelUpdate
     }
 
     class func lastUpdates(userID: String, inManagedObjectContext context: NSManagedObjectContext) -> [LabelUpdate] {
         return context.managedObjectsWithEntityName(Attributes.entityName,
-                                                    matching: [Attributes.userID : userID]) as? [LabelUpdate] ?? []
+                                                    matching: [Attributes.userID: userID]) as? [LabelUpdate] ?? []
     }
-    
+
     class func newLabelUpdate(by labelID: String, userID: String, inManagedObjectContext context: NSManagedObjectContext) -> LabelUpdate {
         let update = LabelUpdate(context: context)
-        
+
         update.start = Date.distantPast
         update.end = Date.distantPast
         update.update = Date.distantPast
-        
+
         update.labelID = labelID
         update.userID = userID
-        
+
         update.total = 0
         update.unread = 0
-        
+
         _ = context.saveUpstreamIfNeeded()
-        
+
         return update
     }
-    
+
     class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {
         if let toDeletes = context.managedObjectsWithEntityName(Attributes.entityName,
-                                                                matching: [Attributes.userID : userID]) as? [LabelUpdate] {
+                                                                matching: [Attributes.userID: userID]) as? [LabelUpdate] {
             for update in toDeletes {
                 context.delete(update)
             }
@@ -83,7 +82,7 @@ extension LabelUpdate {
         }
         return false
     }
-    
+
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }

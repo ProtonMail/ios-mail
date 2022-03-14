@@ -20,32 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class DebugDetailViewController: UIViewController {
-    
+
     @IBOutlet weak var debugDetail: UITextView!
-    
-    fileprivate var detail : String!
+
+    fileprivate var detail: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.debugDetail.text = detail
     }
-    
-    func setDetailText (_ detail : String)
-    {
-        self.detail = detail;
+
+    func setDetailText (_ detail: String) {
+        self.detail = detail
     }
-    
+
 }

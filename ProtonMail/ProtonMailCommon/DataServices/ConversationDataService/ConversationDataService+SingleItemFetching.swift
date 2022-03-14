@@ -40,7 +40,7 @@ extension ConversationDataService {
                     }
                     return
                 }
-                
+
                 let context = self.coreDataService.rootSavingContext
                 context.perform {
                     do {
@@ -51,7 +51,7 @@ extension ConversationDataService {
                             }
                             return
                         }
-                        
+
                         conversationDict["UserID"] = self.userID
                         if var labels = conversationDict["Labels"] as? [[String: Any]] {
 
@@ -84,11 +84,11 @@ extension ConversationDataService {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
                             }
                         }
-                        
+
                         if let error = context.saveUpstreamIfNeeded() {
                             throw error
                         }
-                        
+
                         DispatchQueue.main.async {
                             if let conversation = conversation as? Conversation {
                                 completion?(.success((conversation)))

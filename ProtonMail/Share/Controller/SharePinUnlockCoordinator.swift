@@ -19,30 +19,29 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
-class SharePinUnlockCoordinator : ModalCoordinator {
+class SharePinUnlockCoordinator: ModalCoordinator {
     typealias VC = SharePinUnlockViewController
-    
+
     var services: ServiceFactory
-    
+
     weak var destinationNavigationController: UINavigationController?
     weak var navigationController: UINavigationController?
-    
+
     var viewController: SharePinUnlockViewController?
     let viewModel: PinCodeViewModel
-    lazy var configuration: ((VC) -> ())? = { [unowned self] vc in
+    lazy var configuration: ((VC) -> Void)? = { [unowned self] vc in
         vc.viewModel = self.viewModel
     }
-    
-    init(navigation : UINavigationController, vm: PinCodeViewModel, services: ServiceFactory, delegate: SharePinUnlockViewControllerDelegate) {
-        //parent navigation
+
+    init(navigation: UINavigationController, vm: PinCodeViewModel, services: ServiceFactory, delegate: SharePinUnlockViewControllerDelegate) {
+        // parent navigation
         self.navigationController = navigation
         self.viewModel = vm
         self.services = services
-        //create self view controller
+        // create self view controller
         self.viewController = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
         self.viewController?.delegate = delegate
     }

@@ -20,22 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
-{
+class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.user.contactService.lockerCheck(model: model, progress: progress, complete: complete)
     }
-    
+
     private let user: UserManager
     private let groupName: String
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private var delegate: ContactGroupSubSelectionViewModelDelegate?
     private let labelsDataService: LabelsDataService
-    
+
     /**
      Setup the sub-selection view of a specific group, at a specific state
      
@@ -56,14 +54,14 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         self.groupName = contactGroupName
         self.delegate = delegate
         self.labelsDataService = labelsDataService
-        
+
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
 
         // (1)
         if let label = labelsDataService.label(name: groupName),
             let emails = label.emails.allObjects as? [Email] {
             self.groupColor = label.color
-            
+
             for email in emails {
                 emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
                                                                                        name: email.name))
@@ -72,7 +70,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             // the group might be renamed or deleted
             self.groupColor = ColorManager.defaultColor
         }
-        
+
         // (2)
         for member in selectedEmails {
             var found = false
@@ -85,16 +83,16 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                     break
                 }
             }
-            
+
             if found {
                 continue
             }
-            
+
             emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
                                                                               name: member.name,
                                                                               isSelected: true))
         }
-        
+
         // (3)
         emailData.sort {
             if $0.name == $1.name {
@@ -102,10 +100,10 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
             }
             return $0.name < $1.name
         }
-        
+
         emailArray = emailData // query
     }
-    
+
     /**
      - Returns: currently selected email addresses
     */
@@ -116,22 +114,22 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
                 result.append(DraftEmailData.init(name: e.name, email: e.email))
             }
         }
-        
+
         return result
     }
-    
+
     /**
      Select the given email data
     */
     func select(indexPath: IndexPath) {
         emailArray[indexPath.row].isSelected = true
-        
+
         // TODO: performance improvement
         if self.isAllSelected() {
             delegate?.reloadTable()
         }
     }
-    
+
     /**
      Select all email addresses
     */
@@ -141,21 +139,21 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         }
         delegate?.reloadTable()
     }
-    
+
     /**
      Deselect the given email data
     */
     func deselect(indexPath: IndexPath) {
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
-        
+
         emailArray[indexPath.row].isSelected = false
-        
+
         if performDeselectInHeader {
              delegate?.reloadTable()
         }
     }
-    
+
     /**
      Deselect all email addresses
     */
@@ -165,7 +163,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         }
         delegate?.reloadTable()
     }
-    
+
     /**
      - Returns: true if all of the email are selected
     */
@@ -177,34 +175,34 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         }
         return true
     }
-    
+
     func getGroupName() -> String {
         return self.groupName
     }
-    
+
     func getGroupColor() -> String? {
         return self.groupColor
     }
-    
+
     func getTotalRows() -> Int {
         self.emailArray.count
     }
-    
+
     func cellForRow(at indexPath: IndexPath) -> ContactGroupSubSelectionViewModelEmailInfomation {
         guard indexPath.row < self.getTotalRows() else {
             return ContactGroupSubSelectionViewModelEmailInfomation.init(email: "", name: "")
         }
-        
+
         return self.emailArray[indexPath.row]
     }
-    
+
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
                                          to status: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?) {
         guard indexPath.row < self.getTotalRows() else {
             return
         }
-        
+
         self.emailArray[indexPath.row].isEncrypted = isEncrypted
         self.emailArray[indexPath.row].checkEncryptedStatus = status
     }

@@ -20,37 +20,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 
-// MARK : delete attachment from a draft -- Response
-final class DeleteAttachment : Request {
-    let attachmentID : String
-    init(attID : String) {
+// MARK: delete attachment from a draft -- Response
+final class DeleteAttachment: Request {
+    let attachmentID: String
+    init(attID: String) {
         self.attachmentID = attID
     }
-    
+
     convenience init(attID: String, authCredential: AuthCredential?) {
         self.init(attID: attID)
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     var auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
+
     var path: String {
         return AttachmentAPI.path + "/" + self.attachmentID
     }
-    
+
     var method: HTTPMethod {
         return .delete
     }
 }
-
-

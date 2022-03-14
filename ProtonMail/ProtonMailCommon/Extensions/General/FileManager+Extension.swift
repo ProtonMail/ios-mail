@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension FileManager {
@@ -29,9 +28,9 @@ extension FileManager {
     }
 
     var applicationSupportDirectoryURL: URL {
-        let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask) 
+        let urls = self.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         let applicationSupportDirectoryURL = urls.first!
-        //TODO:: need to handle the ! when empty
+        // TODO:: need to handle the ! when empty
         if !FileManager.default.fileExists(atPath: applicationSupportDirectoryURL.absoluteString) {
             do {
                 try FileManager.default.createDirectory(at: applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil)
@@ -42,7 +41,7 @@ extension FileManager {
     }
 
     var cachesDirectoryURL: URL {
-        let urls = self.urls(for: .cachesDirectory, in: .userDomainMask) 
+        let urls = self.urls(for: .cachesDirectory, in: .userDomainMask)
         return urls.first!
     }
 
@@ -65,7 +64,7 @@ extension FileManager {
     func createTempURL(forCopyOfFileNamed name: String) throws -> URL {
         let subUrl = self.appGroupsTempDirectoryURL.appendingPathComponent(ProcessInfo.processInfo.globallyUniqueString, isDirectory: true)
         try FileManager.default.createDirectory(at: subUrl, withIntermediateDirectories: true, attributes: nil)
-        
+
         return subUrl.appendingPathComponent(name, isDirectory: false)
     }
 }

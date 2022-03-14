@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_UIFoundations
 import UIKit
 
-fileprivate enum BarButtonType: Int {
+private enum BarButtonType: Int {
     case cancel = 1000
     case search, storageExceeded, composer, ellipsis
 }
@@ -46,7 +46,7 @@ extension MailboxViewController {
         let items = [item, setupSearchBarItem()]
         self.updateRightButtonsIfNeeded(items: items)
     }
-    
+
     private func updateRightButtonsIfNeeded(items: [UIBarButtonItem]) {
         let itemTags = items.map({ $0.tag }).sorted()
         let oldItemTags = self.navigationItem.rightBarButtonItems?

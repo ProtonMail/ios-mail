@@ -25,25 +25,25 @@ import ProtonCore_Keymaker
 
 @available(iOS 12.0, *)
 class IntentHandler: INExtension {
-    
+
     override func handler(for intent: INIntent) -> Any {
         if intent is WipeMainKeyIntent {
             return WipeMainKeyIntentHandler()
         }
-        
+
         assert(false, "Undefined intent")
         return self
     }
-    
+
 }
 
 @available(iOS 12.0, *)
 public class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
-    
+
     public func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {
         Keymaker(autolocker: nil, keychain: KeychainWrapper.keychain).wipeMainKey()
         PushNotificationDecryptor().wipeEncryptionKit()
-        
+
         completion(WipeMainKeyIntentResponse(code: WipeMainKeyIntentResponseCode.success, userActivity: nil))
     }
 }

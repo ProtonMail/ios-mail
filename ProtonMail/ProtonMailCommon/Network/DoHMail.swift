@@ -20,20 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Doh
 
-class DoHMail : DoH, ServerConfig {
-    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
+class DoHMail: DoH, ServerConfig {
+    var apiHost: String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
 
     /// if set false app will ignore the Doh status settings
     var enableDoh: Bool = Constants.App.DOH_ENABLE
 
     var defaultHost = Constants.App.apiHost()
-    
+
     var defaultPath = Constants.App.API_PATH
-    
+
     var captchaHost = Constants.App.captchaHost()
 
     var humanVerificationV3Host = Constants.App.humanVerifyHost
@@ -43,8 +42,8 @@ class DoHMail : DoH, ServerConfig {
     var signupDomain = Constants.App.domain
 
     var debugMode: Bool = false
-    
-    var blockList: [String : Int] = [:]
+
+    var blockList: [String: Int] = [:]
 
     var timeout: TimeInterval = 5
 

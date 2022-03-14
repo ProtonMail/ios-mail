@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import Crypto
 import ProtonCore_DataModel
 
-//@objc(Key)
-//final class Key : NSObject {
+// @objc(Key)
+// final class Key : NSObject {
 //    let key_id: String
 //    var private_key : String
 //    var is_updated : Bool = false
@@ -71,10 +70,10 @@ import ProtonCore_DataModel
 //    var newSchema : Bool {
 //        return signature != nil
 //    }
-//}
+// }
 //
 //
-//extension Key: NSCoding {
+// extension Key: NSCoding {
 //    
 //    private struct CoderKey {
 //        static let keyID          = "keyID"
@@ -117,18 +116,15 @@ import ProtonCore_DataModel
 //        //TODO:: fingerprintKey is deprecated, need to "remove and clean"
 //        aCoder.encode("", forKey: CoderKey.fingerprintKey)
 //    }
-//}
-
-
-
+// }
 
 extension Key {
 
-    var publicKey : String {
+    var publicKey: String {
         return self.privateKey.publicKey
     }
-    
-    var fingerprint : String {
+
+    var fingerprint: String {
         return self.privateKey.fingerprint
     }
 
@@ -141,14 +137,14 @@ extension Key {
     }
 }
 
-extension Array where Element : Key {
+extension Array where Element: Key {
     func archive() -> Data {
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
-    
-    var binPrivKeys : Data {
+
+    var binPrivKeys: Data {
         var out = Data()
-        var error : NSError?
+        var error: NSError?
         for key in self {
             if let privK = ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
@@ -156,7 +152,7 @@ extension Array where Element : Key {
         }
         return out
     }
-    
+
     var binPrivKeysArray: [Data] {
         var out: [Data] = []
         var error: NSError?
@@ -167,8 +163,8 @@ extension Array where Element : Key {
         }
         return out
     }
-    
-    var newSchema : Bool {
+
+    var newSchema: Bool {
         for key in self {
             if key.isKeyV2 {
                 return true
@@ -176,5 +172,5 @@ extension Array where Element : Key {
         }
         return false
     }
-    
+
 }

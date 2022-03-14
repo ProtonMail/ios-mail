@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 @IBDesignable class SettingsDeviceGeneralCell: UITableViewCell {
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -35,7 +34,7 @@ import UIKit
         super.setSelected(selected, animated: animated)
     }
 
-    func configCell(_ left:String, right:String) {
+    func configCell(_ left: String, right: String) {
         LeftText.text = left
         RightText.text = right
         self.accessibilityLabel = left

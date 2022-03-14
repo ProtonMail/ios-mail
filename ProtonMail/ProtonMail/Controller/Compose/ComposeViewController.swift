@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import PromiseKit
 import AwaitKit
@@ -30,33 +29,33 @@ import SideMenuSwift
 #endif
 import ProtonCore_DataModel
 
-class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
+class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
-    
+
     ///
-    var viewModel : ComposeViewModel! // view model
+    var viewModel: ComposeViewModel! // view model
     private var coordinator: ComposeCoordinator?
-    
+
     ///  UI
     weak var headerView: ComposeHeaderViewController!
     lazy var htmlEditor = HtmlEditorBehaviour()
-    
+
     ///
-    private var timer : Timer? //auto save timer
-    
+    private var timer: Timer? // auto save timer
+
     /// private vars
     private var contacts: [ContactPickerModelProtocol] = []
     private var phoneContacts: [ContactPickerModelProtocol] = []
     private var attachments: [Any]?
-    
+
     var encryptionPassword: String        = ""
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String    = ""
     private var dismissBySending = false
-    
+
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
-    
+
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
@@ -65,11 +64,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     func set(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: ComposeCoordinator) {
         self.coordinator = coordinator
     }
@@ -86,7 +85,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         NotificationCenter.default.removeObserver(self)
         self.htmlEditor.eject()
     }
-    
+
     internal func injectHeader(_ header: ComposeHeaderViewController) {
         self.headerView = header
         self.headerView.delegate = self
@@ -95,10 +94,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         assert(self.coordinator != nil)
         assert(self.viewModel != nil)
-        
+
         self.prepareWebView()
         self.htmlEditor.delegate = self
         self.webView.isOpaque = false
@@ -110,10 +109,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
 
         self.extendedLayoutIncludesOpaqueBars = true
-        
+
         //  update header view data
         self.updateMessageView()
-        
+
         // load all contacts and groups
         // TODO: move to view model
         firstly { () -> Promise<Void> in
@@ -128,36 +127,35 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             var contactsWithoutLastTimeUsed: [ContactPickerModelProtocol] = self.phoneContacts
 
             if user.hasPaidMailPlan {
-                let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter{ $0.contactCount > 0 }
+                let contactGroupsToAdd = user.contactGroupService.getAllContactGroupVOs().filter { $0.contactCount > 0 }
                 contactsWithoutLastTimeUsed.append(contentsOf: contactGroupsToAdd)
             }
             // sort the contact group and phone address together
             contactsWithoutLastTimeUsed.sort(by: { $0.contactTitle.lowercased() < $1.contactTitle.lowercased() })
 
             self.contacts = self.contacts + contactsWithoutLastTimeUsed
-            
+
             self.headerView?.toContactPicker?.reloadData()
             self.headerView?.ccContactPicker?.reloadData()
             self.headerView?.bccContactPicker?.reloadData()
-            
+
             self.headerView?.toContactPicker?.contactCollectionView?.layoutIfNeeded()
             self.headerView?.bccContactPicker?.contactCollectionView?.layoutIfNeeded()
             self.headerView?.ccContactPicker?.contactCollectionView?.layoutIfNeeded()
-            
+
             delay(0.5) {
                 // There is a height observer in ComposeContainerViewController
                 // If the tableview reload, the keyboard will be dismissed
-                switch self.viewModel.messageAction
-                {
+                switch self.viewModel.messageAction {
                 case .openDraft, .reply, .replyAll:
                     self.headerView?.notifyViewSize(true)
                 case .forward:
-                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
+                    _ = self.headerView?.toContactPicker.becomeFirstResponder()
                 default:
-                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
+                    _ = self.headerView?.toContactPicker.becomeFirstResponder()
                 }
             }
-            
+
         }.catch { _ in
         }
 
@@ -171,7 +169,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private func retrievePMContacts() -> Promise<Void> {
         return Promise { seal in
             let service = self.viewModel.getUser().contactService
-            service.getContactVOs() { (contacts, _) in
+            service.getContactVOs { (contacts, _) in
                 self.contacts = contacts
                 seal.fulfill(())
             }
@@ -187,7 +185,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
         }
     }
-    
 
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
@@ -210,26 +207,26 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
         #if !APP_EXTENSION
         guard let messageID = self.viewModel.message?.messageID else {
             return nil
         }
         userCachedStatus.lastDraftMessageID = messageID
-        
+
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
-        
+
         if let presentingVC = presentingVC as? SideMenuController {
             contentVC = presentingVC.contentViewController
         } else if let presentingVC = presentingVC as? UINavigationController {
             navigationController = presentingVC
         }
-        
+
         if let contactTabbar = contentVC as? ContactTabBarViewController {
             navigationController = contactTabbar.selectedViewController as? UINavigationController
-        } else if let navController = contentVC as? UINavigationController  {
+        } else if let navController = contentVC as? UINavigationController {
             navigationController = navController
         }
         let topVC = navigationController?.topViewController as? ComposeSaveHintProtocol
@@ -238,7 +235,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         return nil
         #endif
     }
-    
+
     private func removeHintBanner(presentingVC: UIViewController?) {
         #if !APP_EXTENSION
         guard let topVC = self.findPreviousVC(presentingVC: presentingVC) as? ComposeSaveHintProtocol else {
@@ -247,7 +244,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         topVC.removeDraftSaveHintBanner()
         #endif
     }
-    
+
     private func handleHintBanner(presentingVC: UIViewController?) {
         #if !APP_EXTENSION
         guard let topVC = self.findPreviousVC(presentingVC: presentingVC) as? ComposeSaveHintProtocol,
@@ -278,23 +275,23 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.headerView.subject.text = self.viewModel.getSubject()
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
-        
+
         if viewModel.getActionType() != .openDraft {
-            self.viewModel.collectDraft (
+            self.viewModel.collectDraft(
                 self.viewModel.getSubject(),
                 body: body.body,
                 expir: self.headerView.expirationTimeInterval,
-                pwd:self.encryptionPassword,
-                pwdHit:self.encryptionPasswordHint
+                pwd: self.encryptionPassword,
+                pwdHit: self.encryptionPasswordHint
             )
-            
+
             self.viewModel.uploadMimeAttachments()
         }
 
         guard let addr = self.viewModel.getDefaultSendAddress() else {
             return
         }
-        
+
         var isFromValid = true
         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
         if let origAddr = self.viewModel.fromAddress() {
@@ -327,23 +324,23 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.viewModel.updateDraft()
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.removeHintBanner(presentingVC: self.presentingViewController)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
-                                               object:nil)
+                                               object: nil)
         setupAutoSave()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         stopAutoSave()
     }
-    
+
     @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
     }
@@ -368,35 +365,35 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
-    
+
     private func recipientsValidation() -> Bool {
-        
+
         let showAlert: ((String) -> Void) = { message in
             let title = LocalString._warning
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }
-        
+
         let contacts = self.headerView.toContactPicker.contactsSelected +
             self.headerView.ccContactPicker.contactsSelected +
             self.headerView.bccContactPicker.contactsSelected
         let recipients = contacts.compactMap { $0 as? ContactVO }
-        
+
         let invalids = recipients.filter { $0.pgpType == .failed_server_validation }
         guard invalids.count == 0 else {
             let message = LocalString._address_invalid_warning_sending
             showAlert(message)
             return false
         }
-        
+
         let nonExists = recipients.filter { $0.pgpType == .failed_non_exist }
         guard nonExists.count == 0 else {
             let message = LocalString._address_non_exist_warning
             showAlert(message)
             return false
         }
-        
+
         let badGroups = contacts
             .compactMap { $0 as? ContactGroupVO }
             .filter { !$0.allMemberValidate }
@@ -422,7 +419,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.sendMessageStepTwo()
         }
     }
-    
+
     func sendMessageStepTwo() {
         if self.viewModel.toSelectedContacts.count <= 0 &&
             self.viewModel.ccSelectedContacts.count <= 0 &&
@@ -434,13 +431,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             present(alert, animated: true, completion: nil)
             return
         }
-        
+
         let allMails = self.viewModel.toSelectedContacts + self.viewModel.ccSelectedContacts + self.viewModel.bccSelectedContacts
-        
+
         let invalidEmails = allMails
-            .filter{ $0.modelType == .contact}
-            .compactMap{ $0 as? ContactVO}
-            .filter{ $0.pgpType == .failed_server_validation ||
+            .filter { $0.modelType == .contact}
+            .compactMap { $0 as? ContactVO}
+            .filter { $0.pgpType == .failed_server_validation ||
                 $0.pgpType == .failed_validation }
         guard invalidEmails.isEmpty else {
             let alert = UIAlertController(title: LocalString._address_invalid_error_title,
@@ -450,7 +447,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             present(alert, animated: true, completion: nil)
             return
         }
-        
+
         stopAutoSave()
         _ = self.collectDraftData().done { [weak self] result in
             guard let self = self else { return }
@@ -468,51 +465,51 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
         }
     }
-    
+
     func sendMessageStepThree() {
         self.viewModel.sendMessage()
 
         self.dismissBySending = true
         self.dismiss()
     }
-    
+
     func cancel() {
         // overriden in Share
     }
-    
+
     func cancelAction(_ sender: UIBarButtonItem) {
         self.handleDismissDraft()
     }
-    
+
     private func handleDismissDraft() {
-        
+
         guard !self.dismissBySending else {
             self.dismiss()
             return
         }
-        
+
         // Cancel handling
         let dismiss: (() -> Void) = {
             self.dismissKeyboard()
             self.cancel()
             self.dismiss()
         }
-        
+
         guard self.viewModel.hasDraft ||
                 self.headerView.hasContent ||
                 (self.attachments?.count ?? 0) > 0 else {
             dismiss()
             return
         }
-        
+
         self.stopAutoSave()
-		//Remove the EO when we save the draft
+		// Remove the EO when we save the draft
         self.headerView.expirationTimeInterval = 0
         self.collectDraftData().done { [weak self] _ in
             guard let self = self else { return }
             return self.viewModel.updateDraft()
         }.catch { _ in
-            
+
         }.finally {
             dismiss()
         }
@@ -524,14 +521,14 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self?.autoSaveTimer()
         }
     }
-    
+
     private func stopAutoSave() {
         if let t = self.timer {
             t.invalidate()
             self.timer = nil
         }
     }
-    
+
     @objc func autoSaveTimer() {
         _ = self.updateCIDs().then { [weak self] () -> Promise<(String, String)?> in
             guard let self = self else {
@@ -542,7 +539,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self?.viewModel.updateDraft()
         }
     }
-    
+
     private func updateCIDs() -> Promise<Void> {
         return Promise { seal in
             let orignalPromise = self.htmlEditor.getOrignalCIDs()
@@ -556,47 +553,47 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
         }
     }
-    
-    private func collectDraftData()  -> Promise<(String, String)?>  {
+
+    private func collectDraftData() -> Promise<(String, String)?> {
         return Promise { [weak self] seal in
             guard let self = self else {
                 seal.fulfill(nil)
                 return
             }
             self.htmlEditor.getHtml().done { bodyString in
-                
+
                 let head = "<html><head></head><body>"
                 let foot = "</body></html>"
-                
+
                 let mutableString = NSMutableString(string: bodyString)
                 CFStringTransform(mutableString, nil, "Any-Hex/Java" as NSString, true)
                 let resultString = mutableString as String
-                
+
                 var body = resultString.isEmpty ? bodyString : resultString
                 if !body.hasPrefix(head) {
                     body = head + body
                 }
-                
+
                 if !body.hasSuffix(foot) {
                     body = body + foot
                 }
                 let subject = self.headerView.subject.text ?? "(No Subject)"
-                self.viewModel.collectDraft (
+                self.viewModel.collectDraft(
                     subject,
                     body: body,
                     expir: self.headerView.expirationTimeInterval,
-                    pwd:self.encryptionPassword,
-                    pwdHit:self.encryptionPasswordHint
+                    pwd: self.encryptionPassword,
+                    pwdHit: self.encryptionPasswordHint
                 )
                 seal.fulfill((subject, body))
             }.catch { _ in
-                //handle the errors
+                // handle the errors
             }.finally {
                 seal.fulfill(nil)
             }
         }
     }
-    
+
     private func checkEmbedImageEdit(_ orignal: String, edited: String) {
         if let atts = viewModel.getAttachments() {
             for att in atts {
@@ -610,12 +607,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             }
         }
     }
-    
-    //MARK: - HtmlEditorBehaviourDelegate
+
+    // MARK: - HtmlEditorBehaviourDelegate
     func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        
+
         data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata, isInline: true).done { (attachment) in
             guard let att = attachment else {
                 completion?()
@@ -625,17 +622,17 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             completion?()
         }.cauterize()
     }
-    
+
     func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
         // find attachment to remove
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else {
             completion?()
             return
         }
-        
+
         // decrement number of attachments in message manually
         let realAttachments = userCachedStatus.realAttachments
-        if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ attach in
+        if let number = self.viewModel.message?.attachments.compactMap { $0 as? Attachment }.filter({ attach in
             if attach.isSoftDeleted {
                 return false
             } else if realAttachments {
@@ -649,16 +646,16 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 _ = self.viewModel.composerContext?.saveUpstreamIfNeeded()
             }
         }
-        
+
         self.viewModel.deleteAtt(attachment).done {
             completion?()
         }.cauterize()
     }
-    
+
     func htmlEditorDidFinishLoadingContent() {
         self.updateEmbedImages()
     }
-    
+
     @objc func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
     }
@@ -721,24 +718,24 @@ extension ComposeViewController {
     }
 }
 
-//MARK: - view extensions
-extension ComposeViewController : ComposeViewDelegate {
-    
+// MARK: - view extensions
+extension ComposeViewController: ComposeViewDelegate {
+
     func composeViewWillPresentSubview() {
         // FIXME
     }
     func composeViewWillDismissSubview() {
         // FIXME
     }
-    
+
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }
-    
+
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
-    
+
     @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton) {
         var multi_domains = self.viewModel.getAddresses()
@@ -774,9 +771,9 @@ extension ComposeViewController : ComposeViewDelegate {
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
     }
-    
+
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
-        var needsShow : Bool = false
+        var needsShow: Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
@@ -812,7 +809,7 @@ extension ComposeViewController : ComposeViewDelegate {
                 selectEmail.setValue(true, forKey: "checked")
             }
             alertController.addAction(selectEmail)
-            
+
         }
         if needsShow {
             alertController.popoverPresentationController?.sourceView = self.headerView.fromView
@@ -820,7 +817,7 @@ extension ComposeViewController : ComposeViewDelegate {
             present(alertController, animated: true, completion: nil)
         }
     }
-    
+
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync {
             self.viewModel.updateAddressID(addr.addressID).catch { (error ) in
@@ -835,15 +832,15 @@ extension ComposeViewController : ComposeViewDelegate {
             }
         }
     }
-    
+
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
         // FIXME
     }
-    
+
     func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
         // FIXME
     }
-    
+
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {
@@ -862,78 +859,78 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
-        if (picker == self.headerView.toContactPicker) {
+        if picker == self.headerView.toContactPicker {
             self.viewModel.toSelectedContacts.append(contact)
-        } else if (picker == headerView.ccContactPicker) {
+        } else if picker == headerView.ccContactPicker {
             self.viewModel.ccSelectedContacts.append(contact)
-        } else if (picker == headerView.bccContactPicker) {
+        } else if picker == headerView.bccContactPicker {
             self.viewModel.bccSelectedContacts.append(contact)
         }
     }
 
     func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
         // here each logic most same, need refactor later
-        if (picker == self.headerView.toContactPicker) {
+        if picker == self.headerView.toContactPicker {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
                 if let contact = contact as? ContactVO {
-                    if (contact.displayEmail == selectedContact.displayEmail) {
+                    if contact.displayEmail == selectedContact.displayEmail {
                         contactIndex = index
                     }
                 } else if let _ = contact as? ContactGroupVO {
-                    if (contact.contactTitle == selectedContact.contactTitle) {
+                    if contact.contactTitle == selectedContact.contactTitle {
                         contactIndex = index
                     }
                 }
             }
-            if (contactIndex >= 0) {
+            if contactIndex >= 0 {
                 self.viewModel.toSelectedContacts.remove(at: contactIndex)
             }
-        } else if (picker == headerView.ccContactPicker) {
+        } else if picker == headerView.ccContactPicker {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.displayEmail == selectedContact.displayEmail) {
+                if contact.displayEmail == selectedContact.displayEmail {
                     contactIndex = index
                 }
             }
-            if (contactIndex >= 0) {
+            if contactIndex >= 0 {
                 self.viewModel.ccSelectedContacts.remove(at: contactIndex)
             }
-        } else if (picker == headerView.bccContactPicker) {
+        } else if picker == headerView.bccContactPicker {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
             for (index, selectedContact) in selectedContacts.enumerated() {
-                if (contact.displayEmail == selectedContact.displayEmail) {
+                if contact.displayEmail == selectedContact.displayEmail {
                     contactIndex = index
                 }
             }
-            if (contactIndex >= 0) {
+            if contactIndex >= 0 {
                 self.viewModel.bccSelectedContacts.remove(at: contactIndex)
             }
         }
     }
 }
 
-// MARK : compose data source
-extension ComposeViewController : ComposeViewDataSource {
+// MARK: compose data source
+extension ComposeViewController: ComposeViewDataSource {
 
     func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
-    
+
     func ccBccIsShownInitially() -> Bool {
         return !self.viewModel.ccSelectedContacts.isEmpty || !self.viewModel.bccSelectedContacts.isEmpty
     }
 
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         var selectedContacts: [ContactPickerModelProtocol] = []
-        if (picker == composeView.toContactPicker) {
+        if picker == composeView.toContactPicker {
             selectedContacts = self.viewModel.toSelectedContacts
-        } else if (picker == composeView.ccContactPicker) {
+        } else if picker == composeView.ccContactPicker {
             selectedContacts = self.viewModel.ccSelectedContacts
-        } else if (picker == composeView.bccContactPicker) {
+        } else if picker == composeView.bccContactPicker {
             selectedContacts = self.viewModel.bccSelectedContacts
         }
         return selectedContacts
@@ -986,7 +983,7 @@ extension ComposeViewController {
                 }
                 // decrement number of attachments in message manually
                 let realAttachments = userCachedStatus.realAttachments
-                if let number = self.viewModel.message?.attachments.compactMap{ $0 as? Attachment }.filter({ attach in
+                if let number = self.viewModel.message?.attachments.compactMap { $0 as? Attachment }.filter({ attach in
                     if attach.isSoftDeleted {
                         return false
                     } else if realAttachments {
@@ -1002,6 +999,6 @@ extension ComposeViewController {
                 seal.fulfill_()
             }.cauterize()
         }
-        
+
     }
 }

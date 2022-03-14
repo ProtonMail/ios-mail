@@ -20,10 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-protocol MessageDetailBottomViewDelegate : AnyObject {
+protocol MessageDetailBottomViewDelegate: AnyObject {
     func replyAction()
     func replyAllAction()
     func forwardAction()
@@ -32,30 +31,30 @@ protocol MessageDetailBottomViewDelegate : AnyObject {
 class MessageDetailBottomView: PMView {
 
     weak var delegate: MessageDetailBottomViewDelegate?
-    
+
     @IBOutlet weak var replyButton: UIButton!
     @IBOutlet weak var replyAllButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
-    
+
     override func getNibName() -> String {
         return "MessageDetailBottomView"
     }
-    
+
     override func setup() {
         self.replyButton.setTitle(LocalString._general_reply_button, for: .normal)
         self.replyAllButton.setTitle(LocalString._general_replyall_button, for: .normal)
         self.forwardButton.setTitle(LocalString._general_forward_button, for: .normal)
         self.generateAccessibilityIdentifiers()
     }
-    
+
     @IBAction func replyClicked(_ sender: AnyObject) {
         self.delegate?.replyAction()
     }
-    
+
     @IBAction func replyAllClicked(_ sender: AnyObject) {
         self.delegate?.replyAllAction()
     }
-    
+
     @IBAction func forwardClicked(_ sender: AnyObject) {
         self.delegate?.forwardAction()
     }

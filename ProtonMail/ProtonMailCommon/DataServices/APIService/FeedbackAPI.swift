@@ -26,30 +26,30 @@ struct UserFeedbackRequest: Request {
         case score = "Score"
         case feedback = "Feedback"
     }
-    
+
     static let apiPath = "/core/v4/feedback"
-    
+
     static let responseSuccessCode = 1000
-    
+
     let path = Self.apiPath
-    
+
     let method: HTTPMethod = .post
-    
+
     let feedbackType: String
-    
+
     let score: Int
-    
+
     let feedback: String
-    
-    var parameters: [String : Any]? {
-        let params: [String : Any] = [
+
+    var parameters: [String: Any]? {
+        let params: [String: Any] = [
             ParamKeys.feedbackType.rawValue: self.feedbackType,
             ParamKeys.score.rawValue: self.score,
-            ParamKeys.feedback.rawValue: self.feedback,
+            ParamKeys.feedback.rawValue: self.feedback
         ]
         return params
     }
-    
+
     init(with feedback: UserFeedback) {
         self.feedbackType = feedback.type
         self.feedback = feedback.text
@@ -59,9 +59,9 @@ struct UserFeedbackRequest: Request {
 
 struct UserFeedback {
     let type: String
-    
+
     let score: Int
-    
+
     let text: String
 }
 
@@ -80,13 +80,13 @@ protocol UserFeedbackServiceProtocol: Service {
 
 final class UserFeedbackService: UserFeedbackServiceProtocol {
     static let feedbackTypeMaxLength = 100
-    
+
     let apiService: APIService
-    
+
     init(apiService: APIService) {
         self.apiService = apiService
     }
-    
+
     func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
         guard feedback.type.count <= Self.feedbackTypeMaxLength else {
             handler(.feedbackTypeIsTooLong)
@@ -102,7 +102,7 @@ final class UserFeedbackService: UserFeedbackServiceProtocol {
                 handler(.unexpectedCode(response.httpCode))
                 return
             }
-    
+
             handler(nil)
         }
     }

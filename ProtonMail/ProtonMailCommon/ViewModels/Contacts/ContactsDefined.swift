@@ -27,10 +27,10 @@ import OpenPGP
 protocol ContactEditTypeInterface {
     func getCurrentType() -> ContactFieldType
     func getSectionType() -> ContactEditSectionType
-    func updateType(type: ContactFieldType) -> Void
+    func updateType(type: ContactFieldType)
     func types() -> [ContactFieldType]
     func needsUpdate() -> Bool
-    
+
     func isEmpty() -> Bool
 }
 
@@ -41,28 +41,28 @@ protocol ContactEditNoTypeInterface {
 }
 
 final class ContactEditProfile {
-    var origDisplayName : String = ""
-    var isNew : Bool = false
-    
-    var newDisplayName : String = ""
-    
+    var origDisplayName: String = ""
+    var isNew: Bool = false
+
+    var newDisplayName: String = ""
+
     init(n_displayname: String) {
         self.newDisplayName = n_displayname
         self.isNew = true
     }
-    
+
     init(n_displayname: String, isNew: Bool) {
         self.origDisplayName = n_displayname
         self.newDisplayName = n_displayname
         self.isNew = isNew
     }
-    
-    init(o_displayname : String) {
+
+    init(o_displayname: String) {
         self.origDisplayName = o_displayname
         self.newDisplayName = o_displayname
         self.isNew = false
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && newDisplayName.isEmpty {
             return false
@@ -73,7 +73,6 @@ final class ContactEditProfile {
         return true
     }
 }
-
 
 final class ContactEditEmail: ContactEditTypeInterface {
     private var origOrder = 0
@@ -86,31 +85,31 @@ final class ContactEditEmail: ContactEditTypeInterface {
     private var newOrder = 0
     var newType: ContactFieldType = .empty
     var newEmail = ""
-    
+
     var keys: [PMNIKey]?
     var encrypt: PMNIPMEncrypt?
     var sign: PMNIPMSign?
     var scheme: PMNIPMScheme?
     var mimeType: PMNIPMMimeType?
-    
+
     private let delegate: ContactEditViewModelContactGroupDelegate?
     private let coreDataService: CoreDataService
-    
+
     init(order: Int,
          type: ContactFieldType,
          email: String,
          isNew: Bool,
-         keys : [PMNIKey]?,
+         keys: [PMNIKey]?,
          contactID: String?,
-         encrypt : PMNIPMEncrypt?,
-         sign : PMNIPMSign?,
-         scheme : PMNIPMScheme?,
+         encrypt: PMNIPMEncrypt?,
+         sign: PMNIPMSign?,
+         scheme: PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
          delegate: ContactEditViewModelContactGroupDelegate?,
          coreDataService: CoreDataService) {
         self.delegate = delegate
         self.coreDataService = coreDataService
-        
+
         self.newOrder = order
         self.newType = type
         self.newEmail = email
@@ -121,13 +120,13 @@ final class ContactEditEmail: ContactEditTypeInterface {
             newContactGroupIDs.removeAll()
         }
         self.origOrder = self.newOrder
-        
+
         self.keys = keys
         self.encrypt = encrypt
         self.sign = sign
         self.scheme = scheme
         self.mimeType = mimeType
-        
+
         self.isNew = isNew
         if !self.isNew {
             self.origType = self.newType
@@ -135,34 +134,34 @@ final class ContactEditEmail: ContactEditTypeInterface {
             self.origContactGroupIDs = self.newContactGroupIDs
         }
     }
-    
+
     func getCurrentType() -> ContactFieldType {
         return newType
     }
     func getSectionType() -> ContactEditSectionType {
         return .emails
     }
-    func updateType(type: ContactFieldType) -> Void {
+    func updateType(type: ContactFieldType) {
         newType = type
     }
-    
+
     func types() -> [ContactFieldType] {
         return ContactFieldType.emailTypes
     }
-    
+
     func update(order: Int) {
         self.newOrder = order
     }
-    
+
     // to
     func toContactEmail() -> ContactEmail {
         return ContactEmail(e: newEmail, t: newType.vcardType)
     }
-    
+
     private func getContactGroupIDsFromCoreData(contactID: String) {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
-        
+
         let context = self.coreDataService.mainContext
         let emailObject = Email.EmailForAddressWithContact(self.newEmail,
                                                            contactID: contactID,
@@ -174,10 +173,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
                 }
             }
         }
-        
+
         newContactGroupIDs = origContactGroupIDs
     }
-    
+
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
@@ -186,10 +185,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
                 result.append(label.name)
             }
         }
-        
+
         return result
     }
-    
+
     // contact group
     /**
      - Returns: all currently selected contact group IDs
@@ -197,48 +196,48 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupsID() -> Set<String> {
         return newContactGroupIDs
     }
-    
+
     /**
      - Returns: all currently selected contact group's color
     */
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
-        
+
         let context = self.coreDataService.mainContext
         for ID in newContactGroupIDs {
             let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
-            
+
             if let label = label {
                 colors.append(label.color)
             }
         }
-        
+
         return colors
     }
-    
+
     /**
      Update the selected contact group information for this email
     */
     func updateContactGroups(updatedContactGroups: Set<String>) {
         let currentSet = newContactGroupIDs
-        
+
         // perform diffing
         let increase = updatedContactGroups.subtracting(currentSet) // the contact groups that requires +1 to their count
         let decrease = currentSet.subtracting(updatedContactGroups) // the contact groups that requires -1 to their count
-        
+
         delegate?.updateContactCounts(increase: true, contactGroups: increase)
         delegate?.updateContactCounts(increase: false, contactGroups: decrease)
-        
+
         // update
         newContactGroupIDs = updatedContactGroups
     }
-    
+
     // update
     func needsUpdate() -> Bool {
         if isNew && newEmail.isEmpty {
             return false
         }
-        
+
         if origOrder == newOrder &&
             origType == newType &&
             origEmail == newEmail &&
@@ -247,11 +246,11 @@ final class ContactEditEmail: ContactEditTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         return newEmail.isEmpty
     }
-    
+
     func makeTempEmail(context: NSManagedObjectContext, contact: Contact) -> Email {
         let mail = Email(context: context)
         mail.userID = contact.userID
@@ -275,16 +274,16 @@ final class ContactEditEmail: ContactEditTypeInterface {
 }
 
 final class ContactEditPhone: ContactEditTypeInterface {
-    var origOrder : Int = 0
-    var origType : ContactFieldType = .empty
-    var origPhone : String = ""
-    var isNew : Bool = false
-    
-    var newOrder : Int = 0
-    var newType : ContactFieldType = .empty
-    var newPhone : String = ""
-    
-    init(order: Int, type: ContactFieldType, phone:String, isNew: Bool) {
+    var origOrder: Int = 0
+    var origType: ContactFieldType = .empty
+    var origPhone: String = ""
+    var isNew: Bool = false
+
+    var newOrder: Int = 0
+    var newType: ContactFieldType = .empty
+    var newPhone: String = ""
+
+    init(order: Int, type: ContactFieldType, phone: String, isNew: Bool) {
         self.newType = type
         self.newOrder = order
         self.origOrder = self.newOrder
@@ -295,7 +294,7 @@ final class ContactEditPhone: ContactEditTypeInterface {
             self.origPhone = self.newPhone
         }
     }
-    
+
     //
     func getCurrentType() -> ContactFieldType {
         return newType
@@ -303,13 +302,13 @@ final class ContactEditPhone: ContactEditTypeInterface {
     func getSectionType() -> ContactEditSectionType {
         return .cellphone
     }
-    func updateType(type: ContactFieldType) -> Void {
+    func updateType(type: ContactFieldType) {
         newType = type
     }
     func types() -> [ContactFieldType] {
         return ContactFieldType.phoneTypes
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && newPhone.isEmpty {
             return false
@@ -321,23 +320,23 @@ final class ContactEditPhone: ContactEditTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         return newPhone.isEmpty
     }
 }
 
-//url
+// url
 final class ContactEditUrl: ContactEditTypeInterface {
-    var origOrder : Int = 0
-    var origType : ContactFieldType = .empty
-    var origUrl : String = ""
-    var isNew : Bool = false
-    
-    var newOrder : Int = 0
-    var newType : ContactFieldType = .empty
-    var newUrl : String = ""
-    
+    var origOrder: Int = 0
+    var origType: ContactFieldType = .empty
+    var origUrl: String = ""
+    var isNew: Bool = false
+
+    var newOrder: Int = 0
+    var newType: ContactFieldType = .empty
+    var newUrl: String = ""
+
     init(order: Int, type: ContactFieldType, url: String, isNew: Bool) {
         self.newType = type
         self.newOrder = order
@@ -349,7 +348,7 @@ final class ContactEditUrl: ContactEditTypeInterface {
             self.origUrl = self.newUrl
         }
     }
-    
+
     //
     func getCurrentType() -> ContactFieldType {
         return newType
@@ -357,13 +356,13 @@ final class ContactEditUrl: ContactEditTypeInterface {
     func getSectionType() -> ContactEditSectionType {
         return .cellphone
     }
-    func updateType(type: ContactFieldType) -> Void {
+    func updateType(type: ContactFieldType) {
         newType = type
     }
     func types() -> [ContactFieldType] {
         return ContactFieldType.urlTypes
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && newUrl.isEmpty {
             return false
@@ -375,39 +374,39 @@ final class ContactEditUrl: ContactEditTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         return newUrl.isEmpty
     }
 }
 
-//address
+// address
 final class ContactEditAddress: ContactEditTypeInterface {
-    var origOrder : Int = 0
-    var origType : ContactFieldType = .empty
-    var origPoxbox : String = ""
-    var origStreet : String = ""
+    var origOrder: Int = 0
+    var origType: ContactFieldType = .empty
+    var origPoxbox: String = ""
+    var origStreet: String = ""
     var origStreetTwo: String = ""
-    var origLocality : String = ""
-    var origRegion : String = ""
-    var origPostal : String = ""
-    var origCountry : String = ""
-    var isNew : Bool = false
-    
-    var newOrder : Int = 0
-    var newType : ContactFieldType = .empty
-    var newPoxbox : String = ""
-    var newStreet : String = ""
+    var origLocality: String = ""
+    var origRegion: String = ""
+    var origPostal: String = ""
+    var origCountry: String = ""
+    var isNew: Bool = false
+
+    var newOrder: Int = 0
+    var newType: ContactFieldType = .empty
+    var newPoxbox: String = ""
+    var newStreet: String = ""
     var newStreetTwo: String = ""
-    var newLocality : String = ""
-    var newRegion : String = ""
-    var newPostal : String = ""
-    var newCountry : String = ""
-    
+    var newLocality: String = ""
+    var newRegion: String = ""
+    var newPostal: String = ""
+    var newCountry: String = ""
+
     init(order: Int, type: ContactFieldType,
          pobox: String, street: String, streetTwo: String, locality: String,
          region: String, postal: String, country: String, isNew: Bool) {
-        
+
         self.newOrder = order
         self.origOrder = self.newOrder
         self.newType = type
@@ -418,9 +417,9 @@ final class ContactEditAddress: ContactEditTypeInterface {
         self.newRegion = region
         self.newPostal = postal
         self.newCountry = country
-        
+
         self.isNew = isNew
-        
+
         if !self.isNew {
             self.origType = self.newType
             self.origPoxbox = self.newPoxbox
@@ -432,11 +431,11 @@ final class ContactEditAddress: ContactEditTypeInterface {
             self.origCountry = self.newCountry
         }
     }
-    
+
     convenience init(order: Int, type: ContactFieldType) {
         self.init(order: order, type: type, pobox: "", street: "", streetTwo: "", locality: "", region: "", postal: "", country: "", isNew: true)
     }
-    
+
     //
     func getCurrentType() -> ContactFieldType {
         return newType
@@ -444,27 +443,27 @@ final class ContactEditAddress: ContactEditTypeInterface {
     func getSectionType() -> ContactEditSectionType {
         return .home_address
     }
-    func updateType(type: ContactFieldType) -> Void {
+    func updateType(type: ContactFieldType) {
         newType = type
     }
     func types() -> [ContactFieldType] {
         return ContactFieldType.addrTypes
     }
-    
+
     func fullAddress() -> String {
-        var full : String = newPoxbox
+        var full: String = newPoxbox
         if full.isEmpty {
             full = newStreet
         } else {
             full += " "
             full += newStreet
         }
-        
+
         if !newStreetTwo.isEmpty {
             full += " "
             full += newStreetTwo
         }
-        
+
         full += " "
         full += newLocality
         full += " "
@@ -475,7 +474,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
         full += newCountry
         return full
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew &&
             self.newPoxbox.isEmpty &&
@@ -487,7 +486,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
             self.newCountry.isEmpty {
             return false
         }
-        
+
         if  self.origType == self.newType &&
             self.origPoxbox == self.newPoxbox &&
             self.origStreet == self.newStreet &&
@@ -501,7 +500,7 @@ final class ContactEditAddress: ContactEditTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         if self.newStreet.isEmpty &&
             self.newStreetTwo.isEmpty &&
@@ -515,30 +514,29 @@ final class ContactEditAddress: ContactEditTypeInterface {
     }
 }
 
-
-//informations part
+// informations part
 final class ContactEditInformation: ContactEditNoTypeInterface {
-    
-    var infoType : InformationType
-    var origValue : String = ""
-    var isNew : Bool = false
-    
-    var newValue : String = ""
-    
+
+    var infoType: InformationType
+    var origValue: String = ""
+    var isNew: Bool = false
+
+    var newValue: String = ""
+
     init(type: InformationType, value: String, isNew: Bool) {
         self.infoType = type
         self.newValue = value
         self.isNew = isNew
-        
+
         if !self.isNew {
             self.origValue = self.newValue
         }
     }
-    
+
     func getSectionType() -> ContactEditSectionType {
         return .information
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && newValue.isEmpty {
             return false
@@ -548,37 +546,37 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         return newValue.isEmpty
     }
 }
 
-//custom field
+// custom field
 final class ContactEditField: ContactEditTypeInterface {
-    
-    var origOrder : Int = 0
-    var origType : ContactFieldType = .empty
-    var origField : String = ""
-    var isNew : Bool = false
-    
-    var newOrder : Int = 0
-    var newType : ContactFieldType = .empty
-    var newField : String = ""
-    
-    init(order: Int, type: ContactFieldType, field:String, isNew: Bool) {
+
+    var origOrder: Int = 0
+    var origType: ContactFieldType = .empty
+    var origField: String = ""
+    var isNew: Bool = false
+
+    var newOrder: Int = 0
+    var newType: ContactFieldType = .empty
+    var newField: String = ""
+
+    init(order: Int, type: ContactFieldType, field: String, isNew: Bool) {
         self.newType = type
         self.newOrder = order
         self.newField = field
         self.isNew = isNew
         self.origOrder = self.newOrder
-        
+
         if !self.isNew {
             self.origType = self.newType
             self.origField = self.newField
         }
     }
-    
+
     //
     func getCurrentType() -> ContactFieldType {
         return newType
@@ -586,13 +584,13 @@ final class ContactEditField: ContactEditTypeInterface {
     func getSectionType() -> ContactEditSectionType {
         return .custom_field
     }
-    func updateType(type: ContactFieldType) -> Void {
+    func updateType(type: ContactFieldType) {
         newType = type
     }
     func types() -> [ContactFieldType] {
         return ContactFieldType.fieldTypes
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && self.newField.isEmpty && self.newType == .empty {
             return false
@@ -604,25 +602,25 @@ final class ContactEditField: ContactEditTypeInterface {
         }
         return true
     }
-    
+
     func isEmpty() -> Bool {
         return newField.isEmpty
     }
 }
 
 final class ContactEditNote {
-    var origNote : String = ""
-    var isNew : Bool = false
-    
-    var newNote : String = ""
-    init(note:String, isNew: Bool) {
+    var origNote: String = ""
+    var isNew: Bool = false
+
+    var newNote: String = ""
+    init(note: String, isNew: Bool) {
         self.newNote = note
         self.isNew = isNew
         if !self.isNew {
             self.origNote = self.newNote
         }
     }
-    
+
     func needsUpdate() -> Bool {
         if isNew && self.newNote.isEmpty {
             return false
@@ -633,4 +631,3 @@ final class ContactEditNote {
         return true
     }
 }
-

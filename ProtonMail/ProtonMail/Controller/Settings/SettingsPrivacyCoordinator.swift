@@ -19,35 +19,34 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
-class SettingsPrivacyCoordinator : DefaultCoordinator {
+class SettingsPrivacyCoordinator: DefaultCoordinator {
 
     typealias VC = SettingsPrivacyViewController
-    
-    let viewModel : SettingsPrivacyViewModel
+
+    let viewModel: SettingsPrivacyViewModel
     var services: ServiceFactory
-    
+
     internal weak var viewController: SettingsPrivacyViewController?
     internal weak var deepLink: DeepLink?
-    
-    lazy internal var configuration: ((SettingsPrivacyViewController) -> ())? = { [unowned self] vc in
+
+    lazy internal var configuration: ((SettingsPrivacyViewController) -> Void)? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }
-    
+
     func processDeepLink() {
         if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
             self.go(to: dest, sender: path.value)
         }
     }
-    
-    enum Destination : String {
-        case notification    = "setting_notification"
+
+    enum Destination: String {
+        case notification = "setting_notification"
     }
-    
+
     init?(dest: UIViewController, vm: SettingsPrivacyViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = dest as? VC else {
             return nil
@@ -56,21 +55,21 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
         self.viewModel = vm
         self.services = services
     }
-    
+
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
     }
-    
+
     func go(to dest: Destination, sender: Any? = nil) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
+
         switch dest {
         case .notification:
             guard let next = destination as? SettingDetailViewController else {
@@ -81,4 +80,3 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
         return false
     }
 }
-

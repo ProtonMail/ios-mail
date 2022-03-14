@@ -24,13 +24,13 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class CaptchaViewModelImpl : HumanCheckViewModel {
-    
-    let apiService : APIService
+final class CaptchaViewModelImpl: HumanCheckViewModel {
+
+    let apiService: APIService
     init(api: APIService) {
         self.apiService = api
     }
-    
+
     override func getToken(_ complete: @escaping HumanResBlock) {
         let api = GetHumanCheckToken()
         self.apiService.exec(route: api) { (task, response: GetHumanCheckResponse) in
@@ -41,7 +41,7 @@ final class CaptchaViewModelImpl : HumanCheckViewModel {
             }
         }
     }
-    
+
     override func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         let api = HumanCheckRequest(type: type, token: token)
         self.apiService.exec(route: api) { (task, response: Response) in

@@ -78,12 +78,12 @@ extension MessageDataService {
         }
 
         if queue {
-            let ids = messages.map{ $0.messageID }
+            let ids = messages.map { $0.messageID }
             self.queue(.folder(nextLabelID: tLabel, shouldFetch: false, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []), isConversation: false)
         }
         return true
     }
-    
+
     @discardableResult
     func delete(messages: [Message], label: String) -> Bool {
         guard !messages.isEmpty else {
@@ -98,7 +98,7 @@ extension MessageDataService {
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         return true
     }
-    
+
     /// mark message to unread
     ///
     /// - Parameter message: message
@@ -115,7 +115,7 @@ extension MessageDataService {
         }
         return true
     }
-    
+
     @discardableResult
     func label(messages: [Message], label: String, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {

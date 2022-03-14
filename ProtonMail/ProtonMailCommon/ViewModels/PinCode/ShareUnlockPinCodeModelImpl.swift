@@ -20,40 +20,39 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
-    
-    let titleText : String = LocalString._enter_pin_to_unlock_inbox
-    
-    var currentStep : PinCodeStep = .enterPin
-    
-    var enterPin : String = ""
-    
-    let unlockManager : UnlockManager
-    
+class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
+
+    let titleText: String = LocalString._enter_pin_to_unlock_inbox
+
+    var currentStep: PinCodeStep = .enterPin
+
+    var enterPin: String = ""
+
+    let unlockManager: UnlockManager
+
     init(unlock: UnlockManager) {
         self.unlockManager = unlock
     }
-    
+
     override func title() -> String {
         return titleText
     }
-    
+
     override func cancel() -> String {
         return LocalString._general_confirm_action
     }
-    
+
     override func showConfirm() -> Bool {
         return false
     }
-    
+
     override func confirmString () -> String {
         return ""
     }
-    
-    override func setCode (_ code : String) -> PinCodeStep {
+
+    override func setCode (_ code: String) -> PinCodeStep {
         switch currentStep {
         case .enterPin:
             enterPin = code
@@ -64,19 +63,19 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
             enterPin = ""
             currentStep = .enterPin
         }
-        
+
         return currentStep
     }
-    
-    override func isPinMatched(completion: @escaping (Bool)->Void) {
+
+    override func isPinMatched(completion: @escaping (Bool) -> Void) {
         unlockManager.match(userInputPin: enterPin, completion: completion)
         currentStep = .enterPin
     }
-    
+
     override func getPinFailedRemainingCount() -> Int {
-        return 10 - userCachedStatus.pinFailedCount;
+        return 10 - userCachedStatus.pinFailedCount
     }
-    
+
     override func getPinFailedError() -> String {
         let c = 10 - userCachedStatus.pinFailedCount
         if c < 4 {
@@ -86,12 +85,12 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
         let text = String.localizedStringWithFormat(LocalString._attempt_remaining, c)
         return "\(LocalString._incorrect_pin) \(text)"
     }
-    
+
     override func checkTouchID() -> Bool {
         return true
     }
-    
-    override func done(completion: @escaping (Bool)->Void) {
+
+    override func done(completion: @escaping (Bool) -> Void) {
         completion(false)
     }
 }

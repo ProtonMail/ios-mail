@@ -23,17 +23,17 @@
 import ProtonCore_UIFoundations
 
 class ContactDetailDisplayEmailCell: UITableViewCell {
-    
+
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
     @IBOutlet weak var iconStackView: UIStackView!
-    
+
     func configCell(title: String, value: String, contactGroupColors: [String]) {
         contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.title.attributedText = title.apply(style: .DefaultSmallWeek)
         self.value.attributedText = value.apply(style: .Default)
-        
+
         prepareContactGroupIcons(cell: self,
                                  contactGroupColors: contactGroupColors,
                                  iconStackView: iconStackView,

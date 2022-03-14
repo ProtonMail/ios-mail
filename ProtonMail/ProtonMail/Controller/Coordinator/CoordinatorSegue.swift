@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 /// when viewController override the 'prepare' function. don't forget to call super. it triggers the setSender.
@@ -28,12 +27,12 @@ import UIKit
 class CoordinatorSegue: UIStoryboardSegue {
     /// keep the @objc key word. the setSender will not work without it.
     @objc open var sender: AnyObject?
-    
+
     override func perform() {
         guard let coordinated = self.source as? CoordinatedNewBase else {
             return
         }
-        
+
         if let ret = coordinated.getCoordinator()?.navigate(from: self.source,
                                                             to: destination,
                                                             with: identifier,

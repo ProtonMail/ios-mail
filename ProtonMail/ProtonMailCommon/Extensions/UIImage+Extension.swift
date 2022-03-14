@@ -18,35 +18,35 @@
 import UIKit
 
 extension UIImage {
-    
+
     class func resizeWithRespectTo(box size: CGSize, scale: CGFloat, image: UIImage) -> UIImage? {
         return UIImage.resize(image: image, targetSize: CGSize.init(width: size.width * scale,
                                                                     height: size.height * scale))
     }
-    
+
     class func resize(image: UIImage, targetSize: CGSize) -> UIImage? {
         let size = image.size
-        
-        let widthRatio  = targetSize.width  / image.size.width
+
+        let widthRatio  = targetSize.width / image.size.width
         let heightRatio = targetSize.height / image.size.height
-        
+
         var newSize: CGSize
         if widthRatio > heightRatio {
             newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
         } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+            newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
         }
-        
+
         let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
+
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         image.draw(in: rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         return newImage
     }
-    
+
     /// Only supports contentMode as `.scaleAspectFit`
     ///
     /// ### Reference
@@ -55,10 +55,10 @@ extension UIImage {
         var width: CGFloat
         var height: CGFloat
         var newImage: UIImage
-        
+
         let size = self.size
-        let aspectRatio =  size.width/size.height
-        
+        let aspectRatio = size.width / size.height
+
         switch contentMode {
         case .scaleAspectFit:
             if aspectRatio > 1 {                            // Landscape image
@@ -68,11 +68,11 @@ extension UIImage {
                 height = dimension
                 width = dimension * aspectRatio
             }
-            
+
         default:
             fatalError("UIIMage.resizeToFit(): FATAL: Unimplemented ContentMode")
         }
-        
+
         if #available(iOS 10.0, *) {
             let renderFormat = UIGraphicsImageRendererFormat.default()
             renderFormat.opaque = opaque
@@ -87,7 +87,7 @@ extension UIImage {
             newImage = UIGraphicsGetImageFromCurrentImageContext()!
             UIGraphicsEndImageContext()
         }
-        
+
         return newImage
     }
 }

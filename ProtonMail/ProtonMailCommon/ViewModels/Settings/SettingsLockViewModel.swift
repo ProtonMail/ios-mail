@@ -23,12 +23,12 @@
 import Foundation
 import ProtonCore_Keymaker
 
-enum SettingLockSection : Int {
+enum SettingLockSection: Int {
     case enableProtection = 0
     case changePin = 1
     case timing = 2
     case mainKey = 3
-    
+
     var description: NSAttributedString {
         switch self {
         case .enableProtection:
@@ -64,11 +64,11 @@ enum ProtectionItem: Int, CustomStringConvertible {
     }
 }
 
-protocol SettingsLockViewModel : AnyObject {
+protocol SettingsLockViewModel: AnyObject {
     var sections: [SettingLockSection] { get set }
 
     var protectionItems: [ProtectionItem] { get set }
-    
+
     var lockOn: Bool { get }
     var isTouchIDEnabled: Bool { get }
     var isPinCodeEnabled: Bool { get }
@@ -84,20 +84,20 @@ protocol SettingsLockViewModel : AnyObject {
     func getBioProtectionSectionTitle() -> NSAttributedString?
 }
 
-class SettingsLockViewModelImpl : SettingsLockViewModel {
+class SettingsLockViewModelImpl: SettingsLockViewModel {
     // Local feature flag to disable the random pin protection toggle
     private var enableRandomProtection = false
     var protectionItems: [ProtectionItem] = [.none, .pinCode]
-    
+
     var sections: [SettingLockSection] = [.enableProtection, .changePin, .timing]
 
     var biometricType: BiometricType {
         return self.biometricStatus.biometricType
     }
-    
+
     private let biometricStatus: BiometricStatusProvider
     private let userCacheStatus: CacheStatusInject
-    
+
     var lockOn: Bool {
         return self.isPinCodeEnabled || self.isTouchIDEnabled
     }
@@ -109,7 +109,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
     var isTouchIDEnabled: Bool {
         return self.userCacheStatus.isTouchIDEnabled
     }
-    
+
     var isAppKeyEnabled: Bool {
         return self.userCacheStatus.isAppKeyEnabled
     }
@@ -127,7 +127,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
 
     let auto_logout_time_options = [-1, 0, 1, 2, 5,
                                     10, 15, 30, 60]
-    
+
     init(biometricStatus: BiometricStatusProvider, userCacheStatus: CacheStatusInject) {
         self.biometricStatus = biometricStatus
         self.userCacheStatus = userCacheStatus
@@ -139,7 +139,7 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             break
         }
     }
-    
+
     func updateProtectionItems() {
         let oldStatus = sections
         sections = [.enableProtection]
@@ -184,18 +184,18 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             completion()
         }
     }
-    
+
     func enableRandomPinProtection( completion: @escaping () -> Void) {
         keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
         keymaker.activate(BioProtection()) { _ in
             completion()
         }
     }
-    
+
     func disableRandomPinProtection() {
         keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
         keymaker.activate(BioProtection()) { _ in
-            
+
         }
     }
 

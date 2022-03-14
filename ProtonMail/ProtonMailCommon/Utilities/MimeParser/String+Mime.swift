@@ -36,10 +36,10 @@ extension String {
         let utfEnd = "?="
         var done = false
         var lastUpperBound: Int?
-        
+
         //        while let range = result.range(of: utf, options: .caseInsensitive),
         //            let endRange = result.range(of: utfEnd, options: .caseInsensitive, range: range.upperBound..<(self.index(before: self.endIndex)), locale: nil) {
-        
+
         while let range = result.range(of: utf, options: .caseInsensitive), let endRange = result.range(of: utfEnd), range.upperBound < endRange.lowerBound, !done {
             var upperBound = endRange.lowerBound
             if let lineBreak = result.range(of: "\n", options: [], range: range.upperBound..<result.endIndex, locale: nil), lineBreak.lowerBound < upperBound {
@@ -52,7 +52,7 @@ extension String {
             result = result.replacingCharacters(in: range.lowerBound..<endRange.upperBound, with: convertedFiller)
             lastUpperBound = result.distance(from: result.startIndex, to: range.lowerBound) + convertedFiller.count
         }
-        
+
         while let range = result.range(of: base64, options: .caseInsensitive), let endRange = result.range(of: utfEnd), range.upperBound < endRange.lowerBound, !done {
             var upperBound = endRange.lowerBound
             if let lineBreak = result.range(of: "\n", options: [], range: range.upperBound..<result.endIndex, locale: nil), lineBreak.lowerBound < upperBound {
@@ -65,25 +65,24 @@ extension String {
             result = result.replacingCharacters(in: range.lowerBound..<endRange.upperBound, with: convertedFiller)
             lastUpperBound = result.distance(from: result.startIndex, to: range.lowerBound) + convertedFiller.count
         }
-        
+
         if let endLimit = lastUpperBound {
             result = String(result[..<result.index(result.startIndex, offsetBy: endLimit)])
         }
-        
+
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
-	
+
     var convertedFromEmailHeaderField: String {
         var result = self.replacingOccurrences(of: "_", with: " ")
-        
+
         while let range = result.range(of: "=") {
             if range.upperBound > result.index(result.endIndex, offsetBy: -2) { break }
             let ascii = UInt8(String(result[range.upperBound..<result.index(range.upperBound, offsetBy: 2)]), radix: 16) ?? 20
             let replacement = String(UnicodeScalar(ascii))
             result = result.replacingCharacters(in: range.lowerBound..<result.index(range.upperBound, offsetBy: 2), with: replacement)
         }
-        
+
         return result
     }
 }
-

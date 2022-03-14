@@ -26,4 +26,3 @@ enum ProtonMailAddresses: String, CaseIterable {
         return "\(prefix)@\(self)"
     }
 }
-

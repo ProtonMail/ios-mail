@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 class UserDefaultsSaver<T>: Saver<T> where T: Codable {
@@ -33,11 +32,11 @@ extension UserDefaults: KeyValueStoreProvider {
     func int(forKey key: String) -> Int? {
         return self.object(forKey: key) as? Int
     }
-    
+
     func data(forKey key: String) -> Data? {
         return self.object(forKey: key) as? Data
     }
-    
+
     func set(_ data: Int, forKey key: String) {
         self.setValue(data, forKey: key)
     }
@@ -45,7 +44,7 @@ extension UserDefaults: KeyValueStoreProvider {
     func set(_ data: Data, forKey key: String) {
         self.setValue(data, forKey: key)
     }
-    
+
     func remove(forKey key: String) {
         self.removeObject(forKey: key)
     }

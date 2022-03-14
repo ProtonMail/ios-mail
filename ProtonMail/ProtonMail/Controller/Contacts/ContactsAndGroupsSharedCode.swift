@@ -24,17 +24,17 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
-    
-    var navigationItemRightNotEditing: [UIBarButtonItem]? = nil
-    var navigationItemLeftNotEditing: [UIBarButtonItem]? = nil
+
+    var navigationItemRightNotEditing: [UIBarButtonItem]?
+    var navigationItemLeftNotEditing: [UIBarButtonItem]?
     private var addBarButtonItem: UIBarButtonItem!
     private var user: UserManager?
     private var paymentsUI: PaymentsUI?
-    
+
     let kAddContactSugue = "toAddContact"
     let kAddContactGroupSugue = "toAddContactGroup"
     let kSegueToImportView = "toImportContacts"
-    
+
     var isOnMainView = true {
         didSet {
             if isOnMainView {
@@ -44,7 +44,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
             }
         }
     }
-    
+
     func prepareNavigationItemRightDefault(_ user: UserManager) {
         self.user = user
         self.addBarButtonItem = Asset.menuPlus.image.toUIBarButtonItem(
@@ -55,16 +55,16 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
             isRound: true
         )
         self.addBarButtonItem.accessibilityLabel = LocalString._general_create_action
-        
+
         let rightButtons: [UIBarButtonItem] = [self.addBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
-        
+
         navigationItemLeftNotEditing = navigationItem.leftBarButtonItems
         navigationItemRightNotEditing = navigationItem.rightBarButtonItems
         self.navigationItem.assignNavItemIndentifiers()
         generateAccessibilityIdentifiers()
     }
-    
+
     @objc private func addButtonTapped() {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
             let viewController = self?.tabBarController ?? self
@@ -102,7 +102,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: [actionsGroup])
         actionSheet.presentAt(self.tabBarController ?? self, animated: true)
     }
-    
+
     private func importButtonTapped() {
         let alertController = UIAlertController(title: LocalString._contacts_title,
                                                 message: LocalString._upload_ios_contacts_to_protonmail,
@@ -118,13 +118,13 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                                 handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
     private func addContactTapped() {
         self.performSegue(withIdentifier: kAddContactSugue, sender: self)
     }
-    
+
     private func addContactGroupTapped() {
-        if let user = self.user, user.hasPaidMailPlan  {
+        if let user = self.user, user.hasPaidMailPlan {
             self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
         } else {
             presentPlanUpgrade()

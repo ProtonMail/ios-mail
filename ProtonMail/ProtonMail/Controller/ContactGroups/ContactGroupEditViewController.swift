@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import PromiseKit
 import MBProgressHUD
@@ -36,46 +35,46 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
-    
+
     @IBOutlet weak var contactGroupNameInstructionLabel: UILabel!
     @IBOutlet weak var contactGroupNameLabel: UITextField!
     @IBOutlet weak var contactGroupImage: UIImageView!
-    
+
     private var cancelButton: UIBarButtonItem!
     private var doneButton: UIBarButtonItem!
-    
+
     @IBOutlet weak var navigationBarItem: UINavigationItem!
     @IBOutlet weak var headerContainerView: UIView!
 
     @IBOutlet weak var changeColorButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    
+
     var viewModel: ContactGroupEditViewModel!
-    var activeText: UIResponder? = nil
-    
+    var activeText: UIResponder?
+
     func set(viewModel: ContactGroupEditViewModel) {
         self.viewModel = viewModel
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         dismissKeyboard()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupEditCellIdentifier)
-        
+
         viewModel.delegate = self
         contactGroupNameLabel.delegate = self
-        
+
         loadDataIntoView()
         tableView.noSeparatorsBelowFooter()
-        
+
         prepareContactGroupImage()
 
         doneButton = UIBarButtonItem(title: LocalString._general_done_button,
@@ -95,28 +94,28 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                                       action: #selector(self.cancelItem(_:)),
                                                                       tintColor: ColorProvider.IconNorm)
         navigationItem.leftBarButtonItem = cancelButton
-        
+
         contactGroupNameLabel.addBottomBorder()
 
         emptyBackButtonTitleForNextView()
     }
-    
+
     func prepareContactGroupImage() {
         contactGroupImage.image = UIImage.init(named: "contact_groups_icon")
         contactGroupImage.setupImage(tintColor: UIColor.white,
                                      backgroundColor: UIColor.init(hexString: viewModel.getColor(),
                                                                    alpha: 1))
     }
-    
+
     func loadDataIntoView() {
         navigationBarItem.title = viewModel.getViewTitle()
         contactGroupNameLabel.text = viewModel.getName()
         contactGroupImage.backgroundColor = UIColor(hexString: viewModel.getColor(),
                                                     alpha: 1.0)
-        
+
         self.tableView.reloadData()
     }
-    
+
     @IBAction func cancelItem(_ sender: UIBarButtonItem) {
         dismissKeyboard()
 
@@ -151,14 +150,14 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         contactGroupNameInstructionLabel.attributedText = LocalString._contact_groups_group_name_instruction_label.apply(style: .DefaultWeak)
         contactGroupNameLabel.textColor = ColorProvider.TextNorm
     }
-    
+
     private func dismissKeyboard() {
         if let t = activeText {
             t.resignFirstResponder()
             activeText = nil
         }
     }
-    
+
     private func dismiss(message: String? = nil) {
         let isOffline = !self.isOnline
         if self.presentingViewController != nil {
@@ -168,10 +167,10 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                 }
             }
         } else {
-            let _ = self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         }
     }
-    
+
     private func save() {
         firstly { () -> Promise<Void> in
             MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -187,11 +186,11 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             error.alert(at: self.view)
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToContactGroupSelectColorSegue {
             let contactGroupSelectColorViewController = segue.destination as! ContactGroupSelectColorViewController
-            
+
             let refreshHandler = {
                 (newColor: String) -> Void in
                 self.viewModel.setColor(newColor: newColor)
@@ -202,10 +201,10 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
                 (emailIDs: Set<Email>) -> Void in
-                
+
                 self.viewModel.setEmails(emails: emailIDs)
             }
-            
+
             let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController
             let data = sender as! ContactGroupEditViewController
             sharedVMService.contactGroupSelectEmailViewModel(contactGroupSelectEmailViewController,
@@ -216,20 +215,19 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     }
 }
 
-extension ContactGroupEditViewController: UITableViewDataSource
-{
+extension ContactGroupEditViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.getTotalSections()
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getTotalRows(for: section)
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.getSectionTitle(for: section)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
@@ -240,7 +238,7 @@ extension ContactGroupEditViewController: UITableViewDataSource
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
                                                      for: indexPath) as! ContactGroupEditViewCell
-            
+
             let (emailID, name, email) = viewModel.getEmail(at: indexPath)
             cell.config(emailID: emailID,
                         name: name,
@@ -257,19 +255,18 @@ extension ContactGroupEditViewController: UITableViewDataSource
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let titleView = view as? UITableViewHeaderFooterView {
-            titleView.textLabel?.text =  titleView.textLabel?.text?.capitalized
+            titleView.textLabel?.text = titleView.textLabel?.text?.capitalized
         }
     }
 }
 
-extension ContactGroupEditViewController: UITableViewDelegate
-{
+extension ContactGroupEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         switch viewModel.getCellType(at: indexPath) {
         case .manageContact:
             self.performSegue(withIdentifier: kToContactGroupSelectEmailSegue, sender: self)
@@ -278,7 +275,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
         case .deleteGroup:
             let deleteActionHandler = {
                 (action: UIAlertAction) -> Void in
-                
+
                 firstly {
                     () -> Promise<Void> in
                     MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -294,7 +291,7 @@ extension ContactGroupEditViewController: UITableViewDelegate
                         error.alert(at: self.view)
                 }
             }
-            
+
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                     style: .cancel,
@@ -313,26 +310,24 @@ extension ContactGroupEditViewController: UITableViewDelegate
     }
 }
 
-extension ContactGroupEditViewController: UITextFieldDelegate
-{
+extension ContactGroupEditViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         activeText = textField
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         contactGroupNameLabel.text = textField.text
         viewModel.setName(name: textField.text ?? "")
-        
+
         activeText = nil
     }
 }
 
-extension ContactGroupEditViewController: ContactGroupEditViewControllerDelegate
-{
+extension ContactGroupEditViewController: ContactGroupEditViewControllerDelegate {
     func update() {
         loadDataIntoView()
     }

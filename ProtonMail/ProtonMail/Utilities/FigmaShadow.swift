@@ -84,7 +84,7 @@ public extension UIView {
             layer.shadowPath = shadowPath.cgPath
             self.layer.addSublayer(layer)
         }
-        
+
     }
 
     func clearShadow() {

@@ -24,11 +24,10 @@ import Foundation
 import ProtonCore_Services
 
 // contact group sub-selection
-struct DraftEmailData: Hashable
-{
+struct DraftEmailData: Hashable {
     let name: String
     let email: String
-    
+
     init(name: String, email: String) {
         self.name = name
         self.email = email
@@ -36,13 +35,13 @@ struct DraftEmailData: Hashable
 }
 
 class ContactGroupVO: NSObject, ContactPickerModelProtocol {
-    
+
     var modelType: ContactPickerModelState {
         get {
             return .contactGroup
         }
     }
-    
+
     var ID: String
     @objc var contactTitle: String
     var displayName: String?
@@ -54,13 +53,13 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     private(set) var hasNonePM: Bool
     private(set) var nonePMEmails: [String] = []
     private(set) var allMemberValidate = true
-    
+
     var color: String? {
         get {
             if let color = groupColor {
                 return color
             }
-            
+
             let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
@@ -68,11 +67,11 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 groupSize = label.emails.count
                 return label.color
             }
-            
+
             return ColorManager.defaultColor
         }
     }
-    
+
     @objc var contactSubtitle: String? {
         get {
             let count = self.contactCount
@@ -85,11 +84,11 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    
+
     func notes(type: Int) -> String {
         return ""
     }
-    
+
     func setType(type: Int) {
         if let pgp = PGPType(rawValue: type) {
             let badTypes: [PGPType] = [.failed_validation,
@@ -100,7 +99,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             self.allMemberValidate = false
         }
     }
-    
+
     /*
      contact group subselection
      
@@ -110,11 +109,10 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
      we will treat it as a new pair
      */
     private var selectedMembers: MultiSet<DraftEmailData>
-    
-    func getSelectedEmailsWithDetail() -> [(Group: String, Name: String, Address: String)]
-    {
+
+    func getSelectedEmailsWithDetail() -> [(Group: String, Name: String, Address: String)] {
         var result: [(Group: String, Name: String, Address: String)] = []
-        
+
         for member in selectedMembers {
             for _ in 0..<member.value {
                 result.append((Group: self.contactTitle,
@@ -122,17 +120,17 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                                Address: member.key.email))
             }
         }
-        
+
         return result
     }
-    
+
     /**
      Get all email addresses
     */
     func getSelectedEmailAddresses() -> [String] {
-        return self.selectedMembers.map{$0.key.email}
+        return self.selectedMembers.map {$0.key.email}
     }
-    
+
     /**
      Get all DraftEmailData (the count will match)
     */
@@ -145,27 +143,26 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
         return result
     }
-    
+
     /**
      Updates the selected members (completely overwrite)
     */
-    func overwriteSelectedEmails(with newSelectedMembers: [DraftEmailData])
-    {
+    func overwriteSelectedEmails(with newSelectedMembers: [DraftEmailData]) {
         selectedMembers.removeAll()
         for member in newSelectedMembers {
             selectedMembers.insert(member)
         }
     }
-    
+
     /**
      Select all emails from the contact group
      Notice: this method will clear all previous selections
     */
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
-        
+
         let context = CoreDataService.shared.mainContext
-        
+
         if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
                 let member = DraftEmailData.init(name: email.name,
@@ -174,9 +171,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             }
         }
     }
-    
-    private var groupSize: Int? = nil
-    private var groupColor: String? = nil
+
+    private var groupSize: Int?
+    private var groupColor: String?
     /**
      For the composer's autocomplete
      Note that groupSize and groupColor are cached!
@@ -186,7 +183,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         if let size = groupSize, let color = groupColor {
             return (size, color)
         }
-        
+
         let context = CoreDataService.shared.mainContext
         if let label = Label.labelForLabelName(contactTitle,
                                                inManagedObjectContext: context) {
@@ -194,16 +191,16 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             groupSize = label.emails.count
             return (label.emails.count, label.color)
         }
-        
+
         return (0, ColorManager.defaultColor)
     }
-    
-    var contactCount : Int {
+
+    var contactCount: Int {
         get {
             if let size = groupSize {
                 return size
             }
-            
+
             let context = CoreDataService.shared.mainContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
@@ -211,18 +208,18 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 groupSize = label.emails.count
                 return label.emails.count
             }
-            
+
             return 0
         }
     }
-    
+
     /**
      Calculates the group size, selected member count, and group color
      Information for composer collection view cell
     */
     func getGroupInformation() -> (memberSelected: Int, totalMemberCount: Int, groupColor: String) {
         let errorResponse = (0, 0, ColorManager.defaultColor)
-        
+
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
         let context = CoreDataService.shared.mainContext
@@ -232,7 +229,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                                                    inManagedObjectContext: context),
                 let emails = label.emails.allObjects as? [Email] {
                 color = label.color
-            
+
                 for email in emails {
                     let member = DraftEmailData.init(name: email.name,
                                                      email: email.email)
@@ -247,7 +244,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                                                  inManagedObjectContext: context),
                 let emails = label.emails.allObjects as? [Email] {
                 color = label.color
-            
+
                 for email in emails {
                     let member = DraftEmailData.init(name: email.name,
                                                      email: email.email)
@@ -258,8 +255,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return errorResponse
             }
         }
-        
-        
+
         // (2) get all that is NOT in the contact group, but is selected
         // Because we might have identical name-email pairs, we can't simply use a set
         //
@@ -275,7 +271,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 }
             }
         }
-        
+
         let memberSelected = self.selectedMembers.reduce(0, {x, y in
             return x + y.value
         })
@@ -283,16 +279,16 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             x, y in
             return x + y.value
         })
-        
+
         return (memberSelected, totalMemberCount, color)
     }
-    
+
     init(ID: String, name: String, groupSize: Int? = nil, color: String? = nil) {
         self.ID = ID
         self.contactTitle = name
         self.groupColor = color
         self.groupSize = groupSize
-        
+
         self.displayName = nil
         self.displayEmail = nil
         self.contactImage = nil
@@ -301,11 +297,11 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         self.hasNonePM = false
         self.selectedMembers = MultiSet<DraftEmailData>()
     }
-    
+
     func equals(_ other: ContactPickerModelProtocol) -> Bool {
         return self.isEqual(other)
     }
-    
+
     func update(mail: String, pgpType: PGPType) {
         if self.checkHasPGPPined(pgpType: pgpType) {
             self.hasPGPPined = true
@@ -329,7 +325,7 @@ extension ContactGroupVO {
             return false
         }
     }
-    
+
     private func checkHasNonePM(pgpType: PGPType) -> Bool {
         switch pgpType {
         case .internal_normal,

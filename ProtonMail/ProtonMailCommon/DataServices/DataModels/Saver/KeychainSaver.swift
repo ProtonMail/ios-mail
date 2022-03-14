@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
@@ -43,10 +42,10 @@ extension KeychainWrapper: KeyValueStoreProvider {
     public func set(_ intValue: Int, forKey key: String) {
         assert(false, "Looks like this one is never actually used")
     }
-    
+
     public func int(forKey key: String) -> Int? {
         assert(false, "Looks like this one is never actually used")
         return nil
     }
-    
+
 }

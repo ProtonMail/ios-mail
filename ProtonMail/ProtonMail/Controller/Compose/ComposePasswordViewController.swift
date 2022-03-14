@@ -20,17 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-protocol ComposePasswordViewControllerDelegate : AnyObject {
+protocol ComposePasswordViewControllerDelegate: AnyObject {
     func Cancelled()
     func Removed()
-    func Apply(_ password : String, confirmPassword :String, hint : String)
+    func Apply(_ password: String, confirmPassword: String, hint: String)
 }
 
 class ComposePasswordViewController: UIViewController, AccessibleView {
-    
+
     @IBOutlet weak var viewTitleLabel: UILabel!
     @IBOutlet weak var titleDesLabel: UILabel!
     @IBOutlet weak var moreInfoButton: UIButton!
@@ -43,18 +42,18 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var removeButton: UIButton!
     @IBOutlet weak var applyButton: UIButton!
-    
+
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
-    private var pwd : String = ""
-    private var pwdConfirm : String  = ""
-    private var pwdHint : String = ""
-    
-    weak var pwdDelegate : ComposePasswordViewControllerDelegate?
+    private var pwd: String = ""
+    private var pwdConfirm: String = ""
+    private var pwdHint: String = ""
+
+    weak var pwdDelegate: ComposePasswordViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         viewTitleLabel.text              = LocalString._composer_set_password
         titleDesLabel.text               = LocalString._composer_eo_desc
         moreInfoButton.setTitle(LocalString._composer_eo_info, for: .normal)
@@ -65,32 +64,32 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
         hintField.placeholder            = LocalString._define_hint_optional
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         removeButton.setTitle(LocalString._general_remove_button, for: .normal)
-        
+
         applyButton.titleLabel?.numberOfLines = 1
         applyButton.titleLabel?.adjustsFontSizeToFitWidth = true
         applyButton.titleLabel?.minimumScaleFactor = 10.0 / 16.0
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)
         generateAccessibilityIdentifiers()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addKeyboardObserver(self)
-        
+
         self.passwordField.text = pwd
         self.confirmPasswordField.text = pwdConfirm
         self.hintField.text = pwdHint
-        
-        if (!pwd.isEmpty) {
+
+        if !pwd.isEmpty {
             removeButton.isHidden = false
         } else {
             removeButton.isHidden = true
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
+
     @IBAction func getMoreInfoAction(_ sender: UIButton) {
         #if !APP_EXTENSION
         if #available(iOS 10.0, *) {
@@ -105,72 +104,71 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
         pwdDelegate?.Cancelled()
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func removeAction(_ sender: UIButton) {
         pwdDelegate?.Removed()
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func applyAction(_ sender: UIButton) {
         passwordErrorLabel.isHidden = true
         confirmPasswordErrorLabel.isHidden = true
-        
+
         let pwd = (passwordField.text ?? "").trim()
         let pwdConfirm = (confirmPasswordField.text ?? "").trim()
         let hint = (hintField.text ?? "").trim()
-        
+
         if pwd.isEmpty {
             passwordErrorLabel.isHidden = false
             passwordErrorLabel.shake(3, offset: 10)
             return
         }
-        
+
         if pwd != pwdConfirm {
             confirmPasswordErrorLabel.isHidden = false
             confirmPasswordErrorLabel.shake(3, offset: 10)
             return
         }
-        
+
         pwdDelegate?.Apply(pwd, confirmPassword: pwdConfirm, hint: hint)
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
-    
+
     internal func dismissKeyboard() {
         passwordField.resignFirstResponder()
         confirmPasswordField.resignFirstResponder()
         hintField.resignFirstResponder()
     }
-    
-    func setupPasswords(_ password : String, confirmPassword : String, hint : String) {
+
+    func setupPasswords(_ password: String, confirmPassword: String, hint: String) {
         self.pwd = password
         self.pwdConfirm = confirmPassword
         self.pwdHint = hint
     }
 }
 
-
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ComposePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
-        //self.configConstraint(false)
+        // self.configConstraint(false)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height
         }
-        //self.configConstraint(true)
+        // self.configConstraint(true)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)

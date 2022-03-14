@@ -20,21 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 
-final class MessageCountResponse : Response {
-    var counts : [[String : Any]]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.counts = response?["Counts"] as? [[String : Any]]
+final class MessageCountResponse: Response {
+    var counts: [[String: Any]]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.counts = response?["Counts"] as? [[String: Any]]
         return true
     }
 }
 
-final class SearchMessageResponse : Response {
-    var jsonDic : [String : Any]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+final class SearchMessageResponse: Response {
+    var jsonDic: [String: Any]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         self.jsonDic = response
         return true
     }
@@ -42,13 +41,13 @@ final class SearchMessageResponse : Response {
 
 final class UpdateDraftResponse: Response {
     var responseDict: [String: Any] = [:]
-    
-    override func ParseResponse(_ response: [String : Any]) -> Bool {
+
+    override func ParseResponse(_ response: [String: Any]) -> Bool {
         let result = super.ParseResponse(response)
         if result {
-            self.responseDict = response["Message"] as? [String : Any] ?? [:]
+            self.responseDict = response["Message"] as? [String: Any] ?? [:]
         }
-        
+
         return result
     }
 }

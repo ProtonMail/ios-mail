@@ -20,16 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
-class ContactTypeViewModelImpl : ContactTypeViewModel {
-    var typeInterface : ContactEditTypeInterface
-    init(t : ContactEditTypeInterface) {
+class ContactTypeViewModelImpl: ContactTypeViewModel {
+    var typeInterface: ContactEditTypeInterface
+    init(t: ContactEditTypeInterface) {
         self.typeInterface = t
     }
-    
+
     override func getPickedType() -> ContactFieldType {
         return typeInterface.getCurrentType()
     }
@@ -37,24 +35,24 @@ class ContactTypeViewModelImpl : ContactTypeViewModel {
     override func getDefinedTypes() -> [ContactFieldType] {
         return typeInterface.types()
     }
-    
+
     override func getCustomType() -> ContactFieldType {
         let type = typeInterface.getCurrentType()
         let types = getDefinedTypes()
         if let _ = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
-            
+
         } else {
             return type
         }
         return .empty
     }
-    
+
     override func getSectionType() -> ContactEditSectionType {
         return typeInterface.getSectionType()
     }
-    
+
     override func updateType(t: ContactFieldType) {
         typeInterface.updateType(type: t)
     }
-    
+
 }

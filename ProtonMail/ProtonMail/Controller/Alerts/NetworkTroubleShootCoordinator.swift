@@ -19,28 +19,27 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
-class NetworkTroubleShootCoordinator : DefaultCoordinator {
+class NetworkTroubleShootCoordinator: DefaultCoordinator {
     typealias VC = NetworkTroubleShootViewController
 
     weak var viewController: NetworkTroubleShootViewController?
     weak var navigationController: UINavigationController?
-    
-    let viewModel : NetworkTroubleShootViewModel
+
+    let viewModel: NetworkTroubleShootViewModel
     var services: ServiceFactory
-    
+
     init(segueNav: UINavigationController, vm: NetworkTroubleShootViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.navigationController = segueNav
         self.services = services
         self.viewController = segueNav.firstViewController() as? NetworkTroubleShootViewController
     }
-    
+
     weak var delegate: CoordinatorDelegate?
-    
+
     func start() {
         viewController?.set(viewModel: self.viewModel)
         viewController?.set(coordinator: self)

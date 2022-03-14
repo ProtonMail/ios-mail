@@ -12,7 +12,7 @@ struct UpdateViewModeRequest: Request {
         .put
     }
 
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         [
             "ViewMode": viewMode.rawValue
         ]

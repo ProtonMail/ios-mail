@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
@@ -28,21 +27,21 @@ class DropLandingZone: UIVisualEffectView {
     convenience init(frame: CGRect) {
         let blur = UIBlurEffect(style: .prominent)
         self.init(effect: blur)
-        
+
         self.frame = frame
         self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
+
         let vibrancy = UIVibrancyEffect(blurEffect: blur)
         let vibrancyOverlay = UIVisualEffectView(effect: vibrancy)
         vibrancyOverlay.frame = frame
         vibrancyOverlay.autoresizingMask = [.flexibleWidth]
-        
+
         let subtitle = UILabel()
         subtitle.text = LocalString._drop_here
         subtitle.textColor = .black
         subtitle.sizeToFit()
         subtitle.center = vibrancyOverlay.center
-        
+
         vibrancyOverlay.contentView.addSubview(subtitle)
         self.contentView.addSubview(vibrancyOverlay)
     }

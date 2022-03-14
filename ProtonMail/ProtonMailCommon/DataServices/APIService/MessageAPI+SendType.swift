@@ -20,29 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 
-struct SendType : OptionSet {
+struct SendType: OptionSet {
     let rawValue: Int
-    
-    //address package one
-    
-    //internal email
+
+    // address package one
+
+    // internal email
     static let intl    = SendType(rawValue: 1 << 0)
-    //encrypt outside
+    // encrypt outside
     static let eo      = SendType(rawValue: 1 << 1)
-    //cleartext inline
+    // cleartext inline
     static let cinln   = SendType(rawValue: 1 << 2)
-    //inline pgp
+    // inline pgp
     static let inlnpgp = SendType(rawValue: 1 << 3)
-    
-    //address package two MIME
-    
-    //pgp mime
+
+    // address package two MIME
+
+    // pgp mime
     static let pgpmime = SendType(rawValue: 1 << 4)
-    //clear text mime
+    // clear text mime
     static let cmime   = SendType(rawValue: 1 << 5)
-    
+
 }

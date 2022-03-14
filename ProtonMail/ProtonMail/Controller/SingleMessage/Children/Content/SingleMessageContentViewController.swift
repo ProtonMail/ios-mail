@@ -33,7 +33,7 @@ class SingleMessageContentViewController: UIViewController {
         self.navigationAction = navigationAction
         let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
         let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
-        self.customView =  SingleMessageContentView(replyState: replyState)
+        self.customView = SingleMessageContentView(replyState: replyState)
         super.init(nibName: nil, bundle: nil)
 
         self.messageBodyViewController =
@@ -245,7 +245,6 @@ class SingleMessageContentViewController: UIViewController {
                                                name: NSNotification.Name.reachabilityChanged,
                                                object: nil)
     }
-
 
     @objc
     private func expandButton() {

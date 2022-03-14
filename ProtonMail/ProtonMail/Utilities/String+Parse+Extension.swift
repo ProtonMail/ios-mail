@@ -20,18 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension String {
-    
-    func parseObjectAny () -> [String:Any]? {
+
+    func parseObjectAny () -> [String: Any]? {
         if self.isEmpty {
             return nil
         }
         do {
-            let data : Data! = self.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
+            let data: Data! = self.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
             return decoded
         } catch {
         }

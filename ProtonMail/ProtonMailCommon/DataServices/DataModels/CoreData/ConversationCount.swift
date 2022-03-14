@@ -31,7 +31,7 @@ public class ConversationCount: NSManagedObject, LabelCount {
     @NSManaged var start: Date?
     @NSManaged var end: Date?
     @NSManaged var update: Date?
-    
+
     @NSManaged var unreadStart: Date?
     @NSManaged var unreadEnd: Date?
     @NSManaged var unreadUpdate: Date?

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_APIClient
 import ProtonCore_DataModel
@@ -42,13 +41,10 @@ internal typealias AFNetworkingFailureBlock = (URLSessionDataTask?, Error?) -> V
 internal typealias AFNetworkingSuccessBlock = (URLSessionDataTask?, Any?) -> Void
 
 internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
-internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
-//internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: Credential?, _ hasError : NSError?) -> Void
+internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError: NSError?) -> Void
+// internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: Credential?, _ hasError : NSError?) -> Void
 
-
-internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
+internal typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
 //    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
 
-
-internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context:  TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
-
+internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context: TwoFactorContext?, _ userInfo: UserInfo?, _ error: NSError?) -> Void

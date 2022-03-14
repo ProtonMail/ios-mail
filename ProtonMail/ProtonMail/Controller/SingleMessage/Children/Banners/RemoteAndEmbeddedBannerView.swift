@@ -77,7 +77,7 @@ class RemoteAndEmbeddedBannerView: UIView {
 
         [
             loadContentButton.heightAnchor.constraint(equalToConstant: 32),
-            loadImagesButton.heightAnchor.constraint(equalToConstant: 32),
+            loadImagesButton.heightAnchor.constraint(equalToConstant: 32)
         ].activate()
 
         [

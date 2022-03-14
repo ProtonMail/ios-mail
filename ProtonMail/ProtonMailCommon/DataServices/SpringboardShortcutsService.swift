@@ -19,14 +19,13 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class SpringboardShortcutsService: NSObject, Service {
     enum QuickActions: String, CaseIterable {
         case search, favorites, compose
-        
+
         var deeplink: DeepLink {
             switch self {
             case .search:
@@ -45,7 +44,7 @@ class SpringboardShortcutsService: NSObject, Service {
                 return deeplink
             }
         }
-        
+
         var localization: String {
             switch self {
             case .search: return LocalString._springboard_shortcuts_search
@@ -53,7 +52,7 @@ class SpringboardShortcutsService: NSObject, Service {
             case .compose: return LocalString._springboard_shortcuts_composer
             }
         }
-        
+
         var icon: UIApplicationShortcutIcon {
             switch self {
             case .search: return .init(type: .search)
@@ -62,14 +61,14 @@ class SpringboardShortcutsService: NSObject, Service {
             }
         }
     }
-    
+
     override init() {
         super.init()
         self.updateShortcuts()
         NotificationCenter.default.addObserver(forName: .didSignIn, object: nil, queue: nil, using: { [weak self] _ in self?.addShortcuts() })
         NotificationCenter.default.addObserver(forName: .didSignOut, object: nil, queue: nil, using: { [weak self] _ in self?.removeShortcuts() })
     }
-    
+
     private func updateShortcuts() {
         if sharedServices.get(by: UsersManager.self).hasUsers() {
             self.addShortcuts()
@@ -77,7 +76,7 @@ class SpringboardShortcutsService: NSObject, Service {
             self.removeShortcuts()
         }
     }
-    
+
     private func addShortcuts() {
         UIApplication.shared.shortcutItems = QuickActions.allCases.compactMap {
             guard let deeplink = try? JSONEncoder().encode($0.deeplink) else {

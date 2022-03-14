@@ -30,7 +30,7 @@ extension ConversationDataService {
                 completion?(.failure(err))
                 return
             }
-            
+
             guard response.results != nil else {
                 let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
                 completion?(.failure(err))
@@ -63,7 +63,7 @@ extension ConversationDataService {
                 completion?(.failure(err))
                 return
             }
-            
+
             guard response.results != nil else {
                 let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
                 completion?(.failure(err))
@@ -83,7 +83,7 @@ extension ConversationDataService {
                 completion?(.failure(err))
                 return
             }
-            
+
             guard response.results != nil else {
                 let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
                 completion?(.failure(err))
@@ -108,7 +108,7 @@ extension ConversationDataService {
                 completion?(.failure(err))
                 return
             }
-            
+
             guard response.results != nil else {
                 let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
                 completion?(.failure(err))

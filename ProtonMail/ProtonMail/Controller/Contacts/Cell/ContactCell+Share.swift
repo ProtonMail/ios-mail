@@ -20,19 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-protocol ContactCellShare: AnyObject
-{
+protocol ContactCellShare: AnyObject {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],
                                   iconStackView: UIStackView,
                                   showNoneLabel: Bool)
 }
 
-extension ContactCellShare
-{
+extension ContactCellShare {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],
                                   iconStackView: UIStackView,
@@ -41,14 +38,14 @@ extension ContactCellShare
         iconStackView.clearAllViews()
         iconStackView.alignment = .center
         iconStackView.distribution = .fillProportionally
-        
+
         iconStackView.spacing = 4.0
         let height: CGFloat = min(20.0, iconStackView.frame.size.height) // limiting factor is this
         let width: CGFloat = height
-        
+
         if contactGroupColors.count > 0 {
             let imageName = "contact_groups_icon"
-            
+
             let limit = 3 // we only show 3 of the groups
             for (i, contactGroupColor) in contactGroupColors.enumerated() {
                 if i < limit {
@@ -62,7 +59,7 @@ extension ContactCellShare
                             image = imageUnwrapped
                         }
                     }
-                    
+
                     // setup imageView
                     if let image = image {
                         let imageView = UIImageView.init(image: image)
@@ -86,7 +83,7 @@ extension ContactCellShare
                                                                       attribute: .notAnAttribute,
                                                                       multiplier: 1.0,
                                                                       constant: width)
-                        
+
                         // add to stack view
                         iconStackView.addArrangedSubview(imageView)
                         iconStackView.addConstraints([heightConstraint, widthConstraint])
@@ -101,7 +98,7 @@ extension ContactCellShare
                 iconStackView.addArrangedSubview(label)
             }
         }
-        
+
         cell.layoutIfNeeded()
     }
 }

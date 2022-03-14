@@ -38,8 +38,7 @@ final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
 
     func configCell(obj: ContactEditEmail,
                     callback: ContactEditCellDelegate?,
-                    becomeFirstResponder: Bool = false)
-    {
+                    becomeFirstResponder: Bool = false) {
         backgroundColor = ColorProvider.BackgroundNorm
 
         self.email = obj

@@ -20,14 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 import Crypto
 import ProtonCore_DataModel
 
 extension Message {
-    
+
     struct Attributes {
         static let entityName = "Message"
         static let isDetailDownloaded = "isDetailDownloaded"
@@ -38,17 +37,17 @@ extension Message {
         static let title = "title"
         static let labels = "labels"
         static let unread = "unread"
-        
+
         static let messageType = "messageType"
         static let messageStatus = "messageStatus"
 
         static let expirationTime = "expirationTime"
         // 1.9.1
         static let unRead = "unRead"
-        
+
         // 1.12.0
         static let userID = "userID"
-        
+
         // 1.12.9
         static let isSending = "isSending"
 
@@ -63,57 +62,57 @@ extension Message {
         let bcc: [[String: Any]] = self.bccList.parseJson() ?? []
         return to + cc + bcc
     }
-    
+
     // MARK: - variables
     var allEmails: [String] {
         var lists: [String] = []
-        
+
         if !toList.isEmpty {
             let to = Message.contactsToAddressesArray(toList)
-            if !to.isEmpty  {
+            if !to.isEmpty {
                 lists.append(contentsOf: to)
             }
         }
-        
+
         if !ccList.isEmpty {
             let cc = Message.contactsToAddressesArray(ccList)
-            if !cc.isEmpty  {
+            if !cc.isEmpty {
                 lists.append(contentsOf: cc)
             }
         }
-        
+
         if !bccList.isEmpty {
             let bcc = Message.contactsToAddressesArray(bccList)
-            if !bcc.isEmpty  {
+            if !bcc.isEmpty {
                 lists.append(contentsOf: bcc)
             }
         }
-        
+
         return lists
     }
-    
+
     func getScore() -> Message.SpamScore {
         if let e = Message.SpamScore(rawValue: self.spamScore.intValue) {
             return e
         }
         return .others
     }
-    
+
     @discardableResult
     func add(labelID: String) -> String? {
         var outLabel: String?
-        //1, 2, labels can't be in inbox,
+        // 1, 2, labels can't be in inbox,
         var addLabelID = labelID
         if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
             // move message to 1 / 8
-            addLabelID = Location.draft.rawValue //"8"
+            addLabelID = Location.draft.rawValue // "8"
         }
-        
+
         if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
             // move message to 2 / 7
-            addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue //"7"
+            addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue // "7"
         }
-        
+
         if let context = self.managedObjectContext {
             let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLabelID(addLabelID, inManagedObjectContext: context) {
@@ -132,11 +131,11 @@ extension Message {
                 }
             }
             self.setValue(labelObjs, forKey: Attributes.labels)
-            
+
         }
         return outLabel
     }
-    
+
     /// in rush , clean up later
     func setAsDraft() {
         if let context = self.managedObjectContext {
@@ -155,7 +154,7 @@ extension Message {
                     labelObjs.add(toLabel)
                 }
             }
-            
+
             if let toLabel = Label.labelForLabelID("1", inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
@@ -173,8 +172,7 @@ extension Message {
             self.setValue(labelObjs, forKey: "labels")
         }
     }
-    
-    
+
     func firstValidFolder() -> String? {
         let labelObjs = self.mutableSetValue(forKey: "labels")
         for l in labelObjs {
@@ -182,21 +180,21 @@ extension Message {
                 if label.type == 3 {
                     return label.labelID
                 }
-                
-                if !label.labelID.preg_match ("(?!^\\d+$)^.+$") {
+
+                if !label.labelID.preg_match("(?!^\\d+$)^.+$") {
                     if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
                         return label.labelID
                     }
                 }
             }
         }
-        
+
         return nil
     }
-    
+
     @discardableResult
     func remove(labelID: String) -> String? {
-        if Location.allmail.rawValue == labelID  {
+        if Location.allmail.rawValue == labelID {
             return Location.allmail.rawValue
         }
         var outLabel: String?
@@ -205,14 +203,14 @@ extension Message {
             for l in labelObjs {
                 if let label = l as? Label {
                     // can't remove label 1, 2, 5
-                    //case inbox   = "0"
-                    //case draft   = "1"
-                    //case sent    = "2"
-                    //case starred = "10"
-                    //case archive = "6"
-                    //case spam    = "4"
-                    //case trash   = "3"
-                    //case allmail = "5"
+                    // case inbox   = "0"
+                    // case draft   = "1"
+                    // case sent    = "2"
+                    // case starred = "10"
+                    // case archive = "6"
+                    // case spam    = "4"
+                    // case trash   = "3"
+                    // case allmail = "5"
                     if label.labelID == "1" || label.labelID == "2" || label.labelID == Location.allmail.rawValue {
                         continue
                     }
@@ -227,14 +225,14 @@ extension Message {
         }
         return outLabel
     }
-    
+
     func checkLabels() {
         guard let labels = self.labels.allObjects as? [Label] else {return}
         let labelIDs = labels.map {$0.labelID}
         guard labelIDs.contains(Message.Location.draft.rawValue) else {
             return
         }
-        
+
         // This is the basic labes for draft
         let basic = [Message.Location.draft.rawValue,
                      Message.Location.allmail.rawValue,
@@ -242,7 +240,7 @@ extension Message {
         for label in labels {
             let id = label.labelID
             if basic.contains(id) {continue}
-            
+
             if let _ = Int(id) {
                 // default folder
                 // The draft can't in the draft folder and another folder at the same time
@@ -250,15 +248,14 @@ extension Message {
                 self.remove(labelID: Message.Location.draft.rawValue)
                 break
             }
-            
+
             guard label.type == 3 else {continue}
-            
+
             self.remove(labelID: Message.Location.draft.rawValue)
             break
         }
     }
-    
-    
+
     func selfSent(labelID: String) -> String? {
         if let _ = self.managedObjectContext {
             let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
@@ -269,39 +266,37 @@ extension Message {
                             return Location.sent.rawValue
                         }
                     }
-                    
+
                     if labelID == Location.sent.rawValue {
                         if label.labelID == Location.inbox.rawValue {
                             return Location.inbox.rawValue
                         }
-                    
+
                     }
                 }
             }
         }
         return nil
     }
-    
-    
-    
-    func getShowLocationNameFromLabels(ignored : String) -> String? {
-        //TODO::fix me
+
+    func getShowLocationNameFromLabels(ignored: String) -> String? {
+        // TODO::fix me
         var lableOnly = false
         if ignored == Message.Location.sent.title {
             if contains(label: .trash) {
                 return Message.Location.trash.title
             }
-            
+
             if contains(label: .spam) {
                 return Message.Location.spam.title
             }
-            
+
             if contains(label: .archive) {
                 return Message.Location.archive.title
             }
             lableOnly = true
         }
-        
+
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
@@ -311,22 +306,22 @@ extension Message {
                     if let new_loc = Message.Location(rawValue: label.labelID), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
                         return new_loc.title
                     }
-                    
+
                 }
             }
         }
         return nil
     }
 
-    var subject : String {
+    var subject: String {
         return title
     }
-    
+
     // MARK: - methods
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
-    
+
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
@@ -335,15 +330,15 @@ extension Message {
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
-    
+
     class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
         return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
     }
-    
+
     class func getIDsofSendingMessage(managedObjectContext: NSManagedObjectContext) -> [String]? {
-        return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap{ $0.messageID }
+        return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap { $0.messageID }
     }
-    
+
     class func messagesForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext, shouldSort: Bool = false) -> [Message]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.conversationID, conversationID)
@@ -358,17 +353,17 @@ extension Message {
         }
         return nil
     }
-    
+
     override public func awakeFromInsert() {
         super.awakeFromInsert()
-        
+
         replaceNilAttributesWithEmptyString(option: [.string, .transformable])
     }
-    
+
     // MARK: methods
-    
+
     func decryptBody(keys: [Key], passphrase: String) throws -> String? {
-        var firstError : Error?
+        var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
@@ -384,15 +379,15 @@ extension Message {
                 }
             }
         }
-        
+
         if let error = firstError {
             throw error
         }
         return nil
     }
-    
+
     func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
-        var firstError : Error?
+        var firstError: Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
@@ -414,15 +409,15 @@ extension Message {
         }
         return nil
     }
-    
+
     func split() throws -> SplitMessage? {
         return try body.split()
     }
-    
+
     func getSessionKey(keys: [Data], passphrase: String) throws -> SymmetricKey? {
         return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
-    
+
     func bodyToHtml() -> String {
         if isPlainText {
             return "<div>" + body.ln2br() + "</div>"
@@ -431,19 +426,18 @@ extension Message {
             return "<div><pre>" + body_without_ln.lr2lrln() + "</pre></div>"
         }
     }
-    
-    
-    var isPlainText : Bool {
+
+    var isPlainText: Bool {
         get {
             if let type = mimeType, type.lowercased() == MimeType.plainText {
                 return true
             }
             return false
         }
-        
+
     }
-    
-    var isMultipartMixed : Bool {
+
+    var isMultipartMixed: Bool {
         get {
             if let type = mimeType, type.lowercased() == MimeType.mutipartMixed {
                 return true
@@ -451,15 +445,14 @@ extension Message {
             return false
         }
     }
-    
-    var senderContactVO : ContactVO! {
+
+    var senderContactVO: ContactVO! {
         var sender: Sender?
         if let senderRaw = self.sender?.data(using: .utf8),
-            let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw)
-        {
+            let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw) {
             sender = decoded
         }
-        
+
         return ContactVO(id: "",
                          name: sender?.name ?? "",
                          email: sender?.address ?? "")

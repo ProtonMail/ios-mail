@@ -68,7 +68,7 @@ final class SignInCoordinator: DefaultCoordinator {
             }
         }
     }
-    
+
     typealias VC = CoordinatorKeepingViewController<SignInCoordinator>
 
     weak var viewController: VC?
@@ -86,19 +86,19 @@ final class SignInCoordinator: DefaultCoordinator {
     private let username: String?
     private let isFirstAccountFlow: Bool
     private let onFinish: (FlowResult) -> Void
-    
+
     static func loginFlowForFirstAccount(startingPoint: WindowsCoordinator.Destination.SignInDestination,
                                          environment: SignInCoordinatorEnvironment,
                                          onFinish: @escaping (FlowResult) -> Void) -> SignInCoordinator {
         .init(username: nil, isFirstAccountFlow: true, startingPoint: startingPoint, environment: environment, onFinish: onFinish)
     }
-    
+
     static func loginFlowForSecondAndAnotherAccount(username: String?,
                                                     environment: SignInCoordinatorEnvironment,
                                                     onFinish: @escaping (FlowResult) -> Void) -> SignInCoordinator {
         .init(username: username, isFirstAccountFlow: false, startingPoint: .form, environment: environment, onFinish: onFinish)
     }
-    
+
     private init(username: String?,
                  isFirstAccountFlow: Bool,
                  startingPoint: WindowsCoordinator.Destination.SignInDestination,
@@ -202,7 +202,7 @@ final class SignInCoordinator: DefaultCoordinator {
         let alertController = LocalString._duplicate_logged_in.alertController()
         showAlertAndFinish(controller: alertController, result: .alreadyLoggedIn)
     }
-    
+
     private func showSkeletonTemplate() {
         let link = DeepLink(.skeletonTemplate)
         NotificationCenter.default.post(name: .switchView, object: link)
@@ -230,7 +230,7 @@ final class SignInCoordinator: DefaultCoordinator {
             }
         )
     }
-    
+
     // copied from old implementation of SignInViewController to keep the error presentation untact
     private func handleRequestError(_ error: Error, wrapIn flowError: (Error) -> FlowError) {
         let nsError = error as NSError
@@ -259,8 +259,8 @@ final class SignInCoordinator: DefaultCoordinator {
 
         let result: FlowResult = .errored(flowError(error as Error))
         guard environment.shouldShowAlertOnError else { onFinish(result); return true }
-        
-        //TODO:: don't use FailureReason in the future. also need clean up
+
+        // TODO:: don't use FailureReason in the future. also need clean up
         let message = error.localizedFailureReason ?? error.localizedDescription
         let alertController = UIAlertController(title: LocalString._protonmail, message: message, preferredStyle: .alert)
         alertController.addAction(
@@ -276,7 +276,7 @@ final class SignInCoordinator: DefaultCoordinator {
         DispatchQueue.main.async {
             UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
-        
+
         return true
     }
 }

@@ -20,25 +20,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import ProtonCore_UIFoundations
 
 class ContactTabBarViewController: UITabBarController, CoordinatedNew {
     typealias coordinatorType = ContactTabBarCoordinator
-    private var coordinator : ContactTabBarCoordinator?
+    private var coordinator: ContactTabBarCoordinator?
     func set(coordinator: ContactTabBarCoordinator) {
         self.coordinator = coordinator
     }
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
-    enum Tab : Int {
+
+    enum Tab: Int {
         case contacts = 0
         case group = 1
     }
-    
+
     var groupsViewController: ContactGroupsViewController? {
         get {
             let index = Tab.group.rawValue
@@ -50,7 +49,7 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
             return nil
         }
     }
-    
+
     var contactsViewController: ContactsViewController? {
         get {
             let index = Tab.contacts.rawValue
@@ -62,13 +61,13 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
             return nil
         }
     }
-    
+
     class func instance() -> ContactTabBarViewController {
         let board = UIStoryboard.Storyboard.contact.storyboard
         let vc = board.instantiateInitialViewController() as! ContactTabBarViewController
         return vc
     }
-    
+
     ///    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,4 +83,3 @@ class ContactTabBarViewController: UITabBarController, CoordinatedNew {
         self.tabBar.assignItemsAccessibilityIdentifiers()
     }
 }
-

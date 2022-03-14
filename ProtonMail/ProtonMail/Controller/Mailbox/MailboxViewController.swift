@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Alamofire
 import CoreData
 import ProtonCore_DataModel
@@ -32,22 +31,22 @@ import UIKit
 import class ProtonCore_Services.APIErrorCode
 
 class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol {
-    
+
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
     private(set) var viewModel: MailboxViewModel!
-    
+
     private var coordinator: MailboxCoordinator?
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: MailboxCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func set(viewModel: MailboxViewModel) {
         self.viewModel = viewModel
     }
@@ -55,22 +54,22 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     lazy var replacingEmails: [Email] = viewModel.allEmails
 
     var listEditing: Bool = false
-    
+
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!
-    
+
     // MARK: - Private constants
-    private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
-    
+    private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+
     // MARK: TopActions
     @IBOutlet weak var topActionsView: UIView!
     @IBOutlet weak var updateTimeLabel: UILabel!
     @IBOutlet weak var unreadFilterButton: UIButton!
     @IBOutlet weak var unreadFilterButtonWidth: NSLayoutConstraint!
-    
+
     // MARK: MailActionBar
     private var mailActionBar: PMActionBar?
-    
+
     // MARK: - Private attributes
 
     private var bannerContainer: UIView?
@@ -78,33 +77,33 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var isInternetBannerPresented = false
     private var isHidingBanner = false
 
-    private var fetchingOlder : Bool = false
+    private var fetchingOlder: Bool = false
 
     private var isCheckingHuman: Bool = false
-    
-    private var fetchingMessage : Bool = false
-    private var fetchingStopped : Bool = true
-    private var needToShowNewMessage : Bool = false
+
+    private var fetchingMessage: Bool = false
+    private var fetchingStopped: Bool = true
+    private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
     private var isFirstFetch = true
     private var isEditingMode = true
-    
+
     // MAKR : - Private views
     private var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
-    
+
     // MARK: - Left bar button
     private var menuBarButtonItem: UIBarButtonItem!
-    
+
     // MARK: - No result image and label
     @IBOutlet weak var noResultImage: UIImageView!
     @IBOutlet weak var noResultMainLabel: UILabel!
     @IBOutlet weak var noResultSecondaryLabel: UILabel!
     @IBOutlet weak var noResultFooterLabel: UILabel!
-    
-    private var lastNetworkStatus : NetworkStatus? = nil
-    
+
+    private var lastNetworkStatus: NetworkStatus?
+
     private var shouldAnimateSkeletonLoading = false
     private var shouldKeepSkeletonUntilManualDismissal = false
     private var isShowingUnreadMessageOnly: Bool {
@@ -119,12 +118,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var screenEdgeGestureRecognizer: UIScreenEdgePanGestureRecognizer?
 
     private var isSwipingCell = false
-    
+
     private var notificationsAreScheduled = false
-    
+
     /// Setting this value to `true` will schedule an user feedback sheet on the next view did appear call
     var scheduleUserFeedbackCallOnAppear = false
-        
+
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
@@ -137,12 +136,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.viewModel.resetFetchedController()
     }
-    
+
     deinit {
         self.viewModel?.resetFetchedController()
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func doEnterForeground() {
         if viewModel.reloadTable() {
             resetTableView()
@@ -152,7 +151,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         refetchAllIfNeeded()
         startAutoFetch()
-        
+
         inAppFeedbackScheduler?.markAsInForeground()
     }
 
@@ -166,7 +165,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             BackgroundTimer.shared.updateLastForegroundDate()
         }
     }
-    
+
     func resetTableView() {
         self.viewModel.resetFetchedController()
         self.viewModel.setupFetchController(self, isUnread: self.unreadFilterButton.isSelected)
@@ -176,19 +175,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override var prefersStatusBarHidden: Bool {
         false
     }
-    
+
     // MARK: - UIViewController Lifecycle
-    
+
     class func instance() -> MailboxViewController {
         let board = UIStoryboard.Storyboard.inbox.storyboard
         let vc = board.instantiateViewController(withIdentifier: "MailboxViewController") as! MailboxViewController
-        let _ = UINavigationController(rootViewController: vc)
+        _ = UINavigationController(rootViewController: vc)
         return vc
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
@@ -211,16 +210,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                             isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
 
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
-        
+
         SkeletonAppearance.default.renderSingleLineAsView = true
-        
+
         self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         if #available(iOS 15.0, *) {
             self.tableView.isPrefetchingEnabled = false
         }
-        
+
         self.addSubViews()
         if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
             self.loadDiffableDataSource()
@@ -229,7 +228,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
 
         self.updateNavigationController(listEditing)
-        
+
         #if DEBUG
         if CommandLine.arguments.contains("-skipTour") {
             userCachedStatus.resetTourValue()
@@ -239,14 +238,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             userCachedStatus.resetTourValue()
             self.coordinator?.go(to: .onboarding)
         }
-        
-        //Setup top actions
+
+        // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.updateTimeLabel.textColor = ColorProvider.TextHint
-        
+
         self.updateUnreadButton()
         self.updateLastUpdateTimeLabel()
-        
+
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         configureBannerContainer()
@@ -258,7 +257,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         setupScreenEdgeGesture()
         setupAccessibility()
-        
+
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
     }
 
@@ -284,45 +283,45 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         notificationsAreScheduled = false
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
         }
-        
+
         guard viewModel.isHavingUser else {
             return
         }
-        
+
         self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
         self.updateInterface(reachability: sharedInternetReachability)
-        
+
         let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
         if let selectedItem = selectedItem {
             if self.viewModel.isInDraftFolder {
                 // updated draft should either be deleted or moved to top, so all the rows in between should be moved 1 position down
-                let rowsToMove = (0...selectedItem.row).map{ IndexPath(row: $0, section: 0) }
+                let rowsToMove = (0...selectedItem.row).map { IndexPath(row: $0, section: 0) }
                 self.refreshCells(at: rowsToMove, animation: .top)
             } else {
                 self.refreshCells(at: [selectedItem], animation: .fade)
                 self.tableView.deselectRow(at: selectedItem, animated: true)
             }
         }
-        
+
         FileManager.default.cleanCachedAttsLegacy()
 
         checkHuman()
-        
+
         if scheduleUserFeedbackCallOnAppear {
             scheduleUserFeedbackCallOnAppear = false
             self.showFeedbackActionSheet { [weak self] completed in
@@ -331,7 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
         }
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         inAppFeedbackScheduler?.cancelScheduledPrompt()
@@ -360,33 +359,33 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                object: nil)
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
-                                                   selector:#selector(doEnterForeground),
-                                                   name:  UIWindowScene.willEnterForegroundNotification,
+                                                   selector: #selector(doEnterForeground),
+                                                   name: UIWindowScene.willEnterForegroundNotification,
                                                    object: nil)
 
             NotificationCenter.default.addObserver(self,
-                                                   selector:#selector(doEnterBackground),
-                                                   name:  UIWindowScene.didEnterBackgroundNotification,
+                                                   selector: #selector(doEnterBackground),
+                                                   name: UIWindowScene.didEnterBackgroundNotification,
                                                    object: nil)
         } else {
             NotificationCenter.default.addObserver(self,
-                                                    selector:#selector(doEnterForeground),
+                                                    selector: #selector(doEnterForeground),
                                                     name: UIApplication.willEnterForegroundNotification,
                                                     object: nil)
 
             NotificationCenter.default.addObserver(self,
-                                                    selector:#selector(doEnterBackground),
+                                                    selector: #selector(doEnterBackground),
                                                     name: UIApplication.didEnterBackgroundNotification,
                                                     object: nil)
         }
     }
-    
+
     @available(iOS 13.0, *)
     private func loadDiffableDataSource() {
         let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath) -> UITableViewCell in
             let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-            
+
             if self?.shouldAnimateSkeletonLoading == true {
                 cell.showAnimatedGradientSkeleton()
                 cell.backgroundColor = ColorProvider.BackgroundNorm
@@ -421,37 +420,37 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.navigationTitleLabel.text = self.title ?? LocalString._locations_inbox_title
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
-        
+
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = .clear
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = ColorProvider.BrandNorm
         self.refreshControl.tintColorDidChange()
-        
+
         self.view.backgroundColor = ColorProvider.BackgroundNorm
 
         self.tableView.addSubview(self.refreshControl)
         self.tableView.delegate = self
         self.tableView.noSeparatorsBelowFooter()
-        
+
         let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
-        
+
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
         self.menuBarButtonItem.tintColor = ColorProvider.IconNorm
-        
+
         self.noResultMainLabel.textColor = ColorProvider.TextNorm
         self.noResultMainLabel.isHidden = true
-        
+
         self.noResultSecondaryLabel.textColor = ColorProvider.TextWeak
         self.noResultSecondaryLabel.isHidden = true
-        
+
         self.noResultFooterLabel.textColor = ColorProvider.TextHint
         self.noResultFooterLabel.isHidden = true
         let attridutes = FontManager.CaptionHint
         self.noResultFooterLabel.attributedText = NSAttributedString(string: LocalString._mailbox_footer_no_result, attributes: attridutes)
-        
+
         self.noResultImage.isHidden = true
     }
 
@@ -473,7 +472,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                       bannerContainer as Any,
                                       tableView as Any]
     }
-    
+
     // MARK: - Public methods
     func setNavigationTitleText(_ text: String?) {
         let animation = CATransition()
@@ -489,7 +488,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.navigationTitleLabel.sizeToFit()
     }
-    
+
     func showNoEmailSelected(title: String) {
         let alert = UIAlertController(title: title, message: LocalString._message_list_no_email_selected, preferredStyle: .alert)
         alert.addOKAction()
@@ -499,9 +498,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         handleShadow(isScrolled: scrollView.contentOffset.y > 0)
     }
-    
+
     // MARK: - Button Targets
-    
+
     @objc func composeButtonTapped() {
         if checkHuman() {
             self.coordinator?.go(to: .composer)
@@ -511,7 +510,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @objc func storageExceededButtonTapped() {
         LocalString._storage_exceeded.alertToastBottom()
     }
-    
+
     @objc func searchButtonTapped() {
         self.coordinator?.go(to: .search)
     }
@@ -560,19 +559,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self?.showEmptyFolderAlert(total: Int(count.total))
         }
     }
-    
+
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
         self.viewModel.eventsService.pause()
     }
-    
+
     @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
         self.unreadFilterButton.isSelected.toggle()
         let isSelected = self.unreadFilterButton.isSelected
         if isSelected {
-            //update the predicate in fetch controller
+            // update the predicate in fetch controller
             self.viewModel.setupFetchController(self, isUnread: true)
 
             if self.viewModel.countOfFetchedObjects == 0 {
@@ -586,13 +585,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.updateUnreadButton()
         self.showNoResultLabel()
     }
-    
+
     private func beginRefreshingManually(animated: Bool) {
         if animated {
             self.refreshControl.beginRefreshing()
         }
     }
-    
+
     // MARK: - Private methods
 
     private func hideSelectionMode() {
@@ -627,9 +626,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         updateUnreadButton()
         showNoResultLabel()
     }
-    
+
     // MARK: Auto refresh methods
-    private func startAutoFetch(_ run : Bool = true) {
+    private func startAutoFetch(_ run: Bool = true) {
         viewModel.eventsService.start()
         viewModel.eventsService.begin(subscriber: self)
         fetchingStopped = false
@@ -637,35 +636,35 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.eventsService.call()
         }
     }
-    
+
     private func stopAutoFetch() {
         fetchingStopped = true
         viewModel.eventsService.pause()
     }
-    
+
     private func checkContact() {
         self.viewModel.fetchContacts()
     }
-    
+
     @discardableResult
     private func checkHuman() -> Bool {
         if self.viewModel.isRequiredHumanCheck && isCheckingHuman == false {
-            //show human check view with warning
+            // show human check view with warning
             isCheckingHuman = true
             self.coordinator?.go(to: .humanCheck)
             return false
         }
         return true
     }
-    
-    private func checkDoh(_ error : NSError) -> Bool {
+
+    private func checkDoh(_ error: NSError) -> Bool {
         let code = error.code
         guard DoHMail.default.codeCheck(code: code) else {
             return false
         }
         self.showError(error)
         return true
-        
+
     }
 
     // MARK: cell configuration methods
@@ -673,7 +672,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard let mailboxCell = inputCell as? NewMailboxMessageCell else {
             return
         }
-        
+
         switch self.viewModel.locationViewMode {
         case .singleMessage:
             guard let message: Message = self.viewModel.item(index: indexPath) else {
@@ -719,7 +718,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {
         cell.delegate = self
-        
+
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
                                                                                         isStarred: message.contains(label: .starred),
@@ -914,7 +913,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                   isFromSwipeAction: isSwipeAction)
         }
     }
-    
+
     private func archive(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
         guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
             return
@@ -923,7 +922,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         showMessageMoved(title: LocalString._inbox_swipe_to_archive_banner_title,
                          undoActionType: .archive)
     }
-    
+
     private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
         guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
               self.viewModel.labelID != Message.Location.trash.rawValue else {
@@ -935,7 +934,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         showMessageMoved(title: LocalString._inbox_swipe_to_trash_banner_title,
                          undoActionType: .trash)
     }
-    
+
     private func spam(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
         guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index) else {
             return
@@ -944,7 +943,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         showMessageMoved(title: LocalString._inbox_swipe_to_spam_banner_title,
                          undoActionType: .spam)
     }
-    
+
     private func star(_ indexPath: IndexPath, itemID: String) {
         guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: indexPath) else {
             return
@@ -1034,16 +1033,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         return stackView
     }
-    
-    private func showMessageMoved(title : String, undoActionType: UndoAction? = nil) {
+
+    private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
         if let type = undoActionType {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info)
         banner.show(at: .bottom, on: self)
     }
-    
-    private func handleRequestError(_ error : NSError) {
+
+    private func handleRequestError(_ error: NSError) {
         guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
         guard checkDoh(error) == false else {
             return
@@ -1079,16 +1078,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         forceRefreshAllMessages()
         self.showNoResultLabel()
     }
-    
+
     @objc private func goTroubleshoot() {
         self.coordinator?.go(to: .troubleShoot)
     }
-    
-    private func getLatestMessagesCompletion(task: URLSessionDataTask?, res: [String : Any]?, error: NSError?, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
+
+    private func getLatestMessagesCompletion(task: URLSessionDataTask?, res: [String: Any]?, error: NSError?, completeIsFetch: ((_ fetch: Bool) -> Void)?) {
         self.needToShowNewMessage = false
         self.newMessageCount = 0
         self.fetchingMessage = false
-        
+
         if self.fetchingStopped == true {
             self.refreshControl?.endRefreshing()
             if let _ = res?["Total"] {
@@ -1108,23 +1107,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.handleRequestError(error)
             }
         }
-        
+
         var loadMore: Int?
         if error == nil {
             self.viewModel.resetNotificationMessage()
             if let notices = res?["Notices"] as? [String] {
                 serverNotice.check(notices)
             }
-            
+
             if let more = res?["More"] as? Int {
                loadMore = more
             }
-            
+
             if let more = loadMore, more <= 0 {
                 self.viewModel.messageService.updateMessageCount()
             }
         }
-        
+
         if let more = loadMore, more > 0 {
             if self.retryCounter >= 10 {
                 completeIsFetch?(false)
@@ -1142,7 +1141,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 })
             }
         } else {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 if self.refreshControl.isRefreshing {
                     self.refreshControl.endRefreshing()
                 }
@@ -1150,17 +1149,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     self.showNoResultLabel()
                 }
             }
-            
+
             self.retryCounter = 0
             if self.fetchingStopped == true {
                 completeIsFetch?(false)
                 return
             }
-            
-            let _ = self.checkHuman()
-            //temperay to check message status and fetch metadata
+
+            _ = self.checkHuman()
+            // temperay to check message status and fetch metadata
             self.viewModel.messageService.purgeOldMessages()
-            
+
             if userCachedStatus.hasMessageFromNotification {
                 userCachedStatus.hasMessageFromNotification = false
                 self.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false, completion: nil)
@@ -1170,18 +1169,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
         }
     }
-    
+
     var retryCounter = 0
     private func getLatestMessages() {
-        self.getLatestMessagesRaw() { [weak self] _ in
+        self.getLatestMessagesRaw { [weak self] _ in
             self?.viewModel.fetchMessages(time: 0, forceClean: false, isUnread: false) { [weak self] task, res, error in
                 self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: nil)
             }
-            
+
             self?.showNoResultLabel()
         }
     }
-    
+
     internal func getLatestMessagesRaw(_ completeIsFetch: ((_ fetch: Bool) -> Void)?) {
         if !fetchingMessage {
             fetchingMessage = true
@@ -1197,7 +1196,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
             } else {
                 if viewModel.isEventIDValid() {
-                    //fetch
+                    // fetch
                     self.needToShowNewMessage = true
                     viewModel.fetchEvents(notificationMessageID: self.viewModel.notificationMessageID) { [weak self] task, res, error in
                         self?.getLatestMessagesCompletion(task: task, res: res, error: error, completeIsFetch: completeIsFetch)
@@ -1210,10 +1209,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             self.checkContact()
         }
-        
+
         self.viewModel.getLatestMessagesForOthers()
     }
-    
+
     private func forceRefreshAllMessages() {
         guard !self.fetchingMessage else { return }
         self.fetchingMessage = true
@@ -1236,12 +1235,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.viewModel.forceRefreshMessagesForOthers()
     }
-    
+
     fileprivate func showNoResultLabel() {
         delay(0.5) {
             {
                 let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
-                if (count <= 0 && !self.fetchingMessage ) {
+                if count <= 0 && !self.fetchingMessage {
                     let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.rawValue
 
                     self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
@@ -1264,20 +1263,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             } ~> .main
         }
     }
-    
+
     private func showRefreshController() {
         let height = tableView.tableFooterView?.frame.height ?? 0
         let count = tableView.visibleCells.count
         guard height == 0 && count == 0 else {return}
-        
+
         // Show refreshControl if there is no bottom loading view
         refreshControl.beginRefreshing()
         self.tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
     }
-    
+
     var messageTapped = false
     let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
-    
+
     private func getTapped() -> Bool {
         serialQueue.sync {
             let ret = self.messageTapped
@@ -1304,7 +1303,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             break
         }
     }
-    
+
     private func tappedMessage(_ message: Message) {
         if getTapped() == false {
             guard viewModel.isInDraftFolder || message.draft else {
@@ -1317,7 +1316,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             guard !message.messageID.isEmpty else {
                 if self.checkHuman() {
-                    //TODO::QA
+                    // TODO::QA
                     self.coordinator?.go(to: .composeShow)
                 }
                 self.updateTapped(status: false)
@@ -1331,7 +1330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.updateTapped(status: false)
                 return
             }
-            
+
             showProgressHud()
             self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
                 self?.hideProgressHud()
@@ -1366,21 +1365,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
             }
         }
-        
+
     }
 
     private func setupLeftButtons(_ editingMode: Bool) {
         var leftButtons: [UIBarButtonItem]
-        
-        if (!editingMode) {
+
+        if !editingMode {
             leftButtons = [self.menuBarButtonItem]
         } else {
             leftButtons = []
         }
-        
+
         self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
     }
-    
+
     private func setupNavigationTitle(showSelected: Bool) {
         if showSelected {
             let count = self.viewModel.selectedIDs.count
@@ -1410,7 +1409,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             tableView(tableView, didSelectRowAt: indexPath)
         }
     }
-    
+
     private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
@@ -1418,14 +1417,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
               longPressGestureRecognizer.state == .began && listEditing == false else { return }
         enterListEditingMode(indexPath: touchedRowIndexPath)
     }
-    
+
     private func updateNavigationController(_ editingMode: Bool) {
         self.isEditingMode = editingMode
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
         self.setupRightButtons(editingMode)
     }
-    
+
     private func retry(delay: Double = 0) {
         // When network reconnect, the DNS data seems will miss at a short time
         // Delay 5 seconds to retry can prevent some relative error
@@ -1433,7 +1432,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.getLatestMessages()
         }
     }
-    
+
     private func updateUnreadButton() {
         let unread = viewModel.lastUpdateTime()?.unread ?? 0
         let isInUnreadFilter = unreadFilterButton.isSelected
@@ -1462,7 +1461,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
     }
-    
+
     private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .NotReachable {
             var attribute = FontManager.CaptionHint
@@ -1470,7 +1469,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
             return
         }
-        
+
         let timeText = self.viewModel.getLastUpdateTimeText()
         updateTimeLabel.attributedText = NSAttributedString(string: timeText, attributes: FontManager.CaptionHint)
     }
@@ -1562,9 +1561,9 @@ extension MailboxViewController {
         }
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMActionBarItem] = []
-        
+
         for (key, action) in actions.enumerated() {
-            
+
             let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
                 guard let self = self else { return }
                 if action == .more {
@@ -1595,7 +1594,7 @@ extension MailboxViewController {
                     }
                 }
             }
-            
+
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
@@ -1621,12 +1620,12 @@ extension MailboxViewController {
                                          height: 48.0)
         self.mailActionBar?.show(at: self)
     }
-    
+
     private func hideActionBar() {
         self.mailActionBar?.dismiss()
         self.mailActionBar = nil
     }
-    
+
     private func showDeleteAlert(yesHandler: @escaping () -> Void) {
         let messagesCount = viewModel.selectedIDs.count
         let title = messagesCount > 1 ?
@@ -1748,7 +1747,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                 self?.hideSelectionMode()
             })
     }
-    
+
     private func showLabelAsActionSheet(conversations: [Conversation], isFromSwipeAction: Bool = false) {
         let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                         conversations: conversations)
@@ -1948,12 +1947,12 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
 }
 
 // MARK: - MailboxCaptchaVCDelegate
-extension MailboxViewController : MailboxCaptchaVCDelegate {
-    
+extension MailboxViewController: MailboxCaptchaVCDelegate {
+
     func cancel() {
         isCheckingHuman = false
     }
-    
+
     func done() {
         isCheckingHuman = false
         self.viewModel.isRequiredHumanCheck = false
@@ -1993,7 +1992,7 @@ extension MailboxViewController {
         banner.show(at: .top, on: self)
     }
 
-    internal func showOfflineErrorMessage(_ error : NSError?) {
+    internal func showOfflineErrorMessage(_ error: NSError?) {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
@@ -2005,7 +2004,7 @@ extension MailboxViewController {
         banner.show(at: .top, on: self)
     }
 
-    private func show503ErrorMessage(_ error : NSError?) {
+    private func show503ErrorMessage(_ error: NSError?) {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
@@ -2017,7 +2016,7 @@ extension MailboxViewController {
         banner.show(at: .top, on: self)
     }
 
-    private func showError(_ error : NSError) {
+    private func showError(_ error: NSError) {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
@@ -2028,8 +2027,8 @@ extension MailboxViewController {
         }
         banner.show(at: .top, on: self)
     }
-    
-    private func showNewMessageCount(_ count : Int) {
+
+    private func showNewMessageCount(_ count: Int) {
         guard self.needToShowNewMessage, count > 0 else { return }
         self.needToShowNewMessage = false
         self.newMessageCount = 0
@@ -2041,16 +2040,16 @@ extension MailboxViewController {
 
 // MARK: - Handle Network status changed
 extension MailboxViewController {
-    @objc private func reachabilityChanged(_ note : Notification) {
+    @objc private func reachabilityChanged(_ note: Notification) {
         if let currentReachability = note.object as? Reachability {
             self.updateInterface(reachability: currentReachability)
         } else {
             if let status = note.object as? Int, sharedInternetReachability.currentReachabilityStatus() != .NotReachable {
                 DispatchQueue.main.async {
-                    if status == 0 { //time out
+                    if status == 0 { // time out
                         self.showTimeOutErrorMessage()
                         self.hasNetworking = false
-                    } else if status == 1 { //not reachable
+                    } else if status == 1 { // not reachable
                         self.showNoInternetErrorMessage()
                         self.hasNetworking = false
                     }
@@ -2058,7 +2057,7 @@ extension MailboxViewController {
             }
         }
     }
-    
+
     private func updateInterface(reachability: Reachability) {
         let netStatus = reachability.currentReachabilityStatus()
         switch netStatus {
@@ -2079,19 +2078,19 @@ extension MailboxViewController {
             break
         }
         lastNetworkStatus = netStatus
-        
+
         self.updateLastUpdateTimeLabel()
     }
-    
+
     private func afterNetworkChange(status: NetworkStatus) {
         guard let oldStatus = lastNetworkStatus else {
             return
         }
-        
+
         guard oldStatus == .NotReachable else {
             return
         }
-        
+
         if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
             self.retry(delay: 5)
         }
@@ -2108,7 +2107,7 @@ extension MailboxViewController: UITableViewDataSource {
             return self.viewModel.sectionCount()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.shouldAnimateSkeletonLoading {
             return 10
@@ -2116,11 +2115,11 @@ extension MailboxViewController: UITableViewDataSource {
             return self.viewModel.rowCount(section: section)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = self.shouldAnimateSkeletonLoading ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        
+
         if self.shouldAnimateSkeletonLoading {
             cell.showAnimatedGradientSkeleton()
             cell.backgroundColor = ColorProvider.BackgroundNorm
@@ -2132,7 +2131,6 @@ extension MailboxViewController: UITableViewDataSource {
     }
 }
 
-
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
@@ -2141,7 +2139,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.reloadTableViewDataSource(animate: false)
             return
         }
-        
+
         if controller == self.viewModel.unreadFetchedResult {
             self.updateUnreadButton()
             return
@@ -2150,7 +2148,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         if shouldKeepSkeletonUntilManualDismissal {
             return
         }
-        
+
         if !self.isDiffableDataSourceEnabled {
             self.tableView.endUpdates()
         }
@@ -2161,12 +2159,12 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         self.updateLastUpdateTimeLabel()
         self.showNoResultLabel()
     }
-    
+
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if controller == self.viewModel.labelFetchedResults || controller == self.viewModel.unreadFetchedResult {
             return
         }
-        
+
         if self.shouldAnimateSkeletonLoading {
             if !shouldKeepSkeletonUntilManualDismissal {
                 self.shouldAnimateSkeletonLoading = false
@@ -2174,7 +2172,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.updateTimeLabel.hideSkeleton()
             self.unreadFilterButton.titleLabel?.hideSkeleton()
             self.updateUnreadButton()
-            
+
             self.reloadTableViewDataSource(animate: false)
         }
 
@@ -2194,7 +2192,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
             self.reloadTableViewDataSource(animate: true)
         } else {
-            switch(type) {
+            switch type {
             case .delete:
                 tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
             case .insert:
@@ -2211,7 +2209,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         || shouldKeepSkeletonUntilManualDismissal {
             return
         }
-        switch(type) {
+        switch type {
         case .delete:
             if self.isDiffableDataSourceEnabled, diffableDataSource != nil {
                 self.reloadTableViewDataSource(animate: true)
@@ -2314,18 +2312,17 @@ extension MailboxViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let updateTime = viewModel.lastUpdateTime(), let currentTime = viewModel.getTimeOfItem(at: indexPath) {
-            
+
             let endTime = self.isShowingUnreadMessageOnly ? updateTime.unreadEndTime : updateTime.endTime
             let totalMessage = self.isShowingUnreadMessageOnly ? Int(updateTime.unread) : Int(updateTime.total)
             let isNew = self.isShowingUnreadMessageOnly ? updateTime.isUnreadNew : updateTime.isNew
-            
-            
+
             let isOlderMessage = endTime.compare(currentTime) != ComparisonResult.orderedAscending
             let loadMore = self.viewModel.loadMore(index: indexPath)
             if  (isOlderMessage || loadMore) && !self.fetchingOlder && !isSwipingCell {
                 let sectionCount = self.viewModel.rowCount(section: indexPath.section)
                 let recordedCount = totalMessage
-                //here need add a counter to check if tried too many times make one real call in case count not right
+                // here need add a counter to check if tried too many times make one real call in case count not right
                 if isNew || recordedCount > sectionCount {
                     self.fetchingOlder = true
                     if !refreshControl.isRefreshing {
@@ -2336,7 +2333,7 @@ extension MailboxViewController: UITableViewDelegate {
                         DispatchQueue.main.async {
                             self.tableView.hideLoadingFooter()
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.showNoResultLabel()
                         }
                         self.fetchingOlder = false
@@ -2346,7 +2343,7 @@ extension MailboxViewController: UITableViewDelegate {
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if self.shouldAnimateSkeletonLoading {
             return 90.0
@@ -2358,7 +2355,7 @@ extension MailboxViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return !shouldAnimateSkeletonLoading
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.locationViewMode {
         case .singleMessage:
@@ -2553,7 +2550,7 @@ extension MailboxViewController {
     private var inAppFeedbackStorage: InAppFeedbackStorageProtocol {
         UserDefaults.standard
     }
-    
+
     private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
         let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
             guard let self = self else { return false }
@@ -2564,7 +2561,7 @@ extension MailboxViewController {
         }
         let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
             guard let self = self else { return }
-            
+
             self.showFeedbackActionSheet { completed in
                 completionHandler?(completed)
             }
@@ -2576,9 +2573,9 @@ extension MailboxViewController {
             showPromptHandler: showHandler)
         return scheduler
     }
-    
+
     typealias UserFeedbackCompletedHandler = (/* Completed or not */ Bool) -> Void
-    
+
     private func showFeedbackActionSheet(completedHandler: UserFeedbackCompletedHandler? = nil) {
         guard self.viewModel.isInAppFeedbackFeatureEnabled else {
             return
@@ -2628,8 +2625,8 @@ extension MailboxViewController: UndoActionHandlerBase {
         // Dismiss other banner after the undo banner is shown
         delay(0.25) { [weak self] in
             self?.view.subviews
-                .compactMap{ $0 as? PMBanner }
-                .filter{ $0 != banner }
+                .compactMap { $0 as? PMBanner }
+                .filter { $0 != banner }
                 .forEach({ $0.dismiss(animated: false) })
         }
     }

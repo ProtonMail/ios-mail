@@ -24,7 +24,7 @@ import WebKit
 
 class PMWebView: WKWebView, AccessibleView {
 
-    override var canBecomeFirstResponder : Bool {
+    override var canBecomeFirstResponder: Bool {
         return true
     }
 

@@ -23,16 +23,14 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-enum ContactGroupEditViewCellState
-{
+enum ContactGroupEditViewCellState {
     case detailView
     case editView
     case selectEmailView
     case none
 }
 
-struct ContactGroupEditViewCellColor
-{
+struct ContactGroupEditViewCellColor {
     static let deselected = (text: UIColor.white,
                              background: ColorProvider.BrandNorm)
     static let selected = (text: UIColor.gray,
@@ -45,27 +43,27 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var deleteButtonImage: UIImageView!
-    
+
     var emailID: String = ""
     var name: String = ""
     var email: String = ""
     var state: ContactGroupEditViewCellState = .none
-    
+
     var viewModel: ContactGroupEditViewModel?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
     }
-    
+
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
         if state == .editView,
             let viewModel = self.viewModel {
             viewModel.removeEmail(emailID: emailID)
         }
     }
-    
+
     func config(emailID: String,
                 name: String,
                 email: String,
@@ -77,7 +75,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
         self.email = email
         self.state = state
         self.viewModel = viewModel
-        
+
         // check and set the delete button
         if state != .editView {
             // the delete button is only for edit mode
@@ -89,34 +87,34 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
                 return
             }
         }
-        
+
         // set cell selectivity
         if state != .selectEmailView {
             // self.isUserInteractionEnabled = false // button won't work
             self.selectionStyle = .none
         }
-        
+
         nameLabel.attributedText = NSMutableAttributedString.highlightedString(text: name,
                                                                                search: queryString,
                                                                                font: .highlightSearchTextForTitle)
         emailLabel.attributedText = NSMutableAttributedString.highlightedString(text: email,
                                                                                 search: queryString,
                                                                                 font: .highlightSearchTextForSubtitle)
-        
+
         prepareShortName()
         generateCellAccessibilityIdentifiers(email)
     }
-    
+
     private func prepareShortName() {
         shortNameLabel.text = name.initials()
-        
+
         shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.deselected.background
-        
+
         shortNameLabel.layer.borderWidth = 0
         shortNameLabel.layer.borderColor = UIColor.white.cgColor
     }
-    
+
     private func prepareCheckmark() {
         // setup image
         let attachment = NSTextAttachment()
@@ -127,13 +125,13 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
                                                            image: image)
         }
         shortNameLabel.tintColor = ContactGroupEditViewCellColor.selected.text
-        
+
         // add image (checkmark) to label
         let attachmentString = NSAttributedString(attachment: attachment)
         let myString = NSMutableAttributedString(string: "")
         myString.append(attachmentString)
         shortNameLabel.attributedText = myString
-        
+
         // the circle
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.selected.background
 
@@ -154,5 +152,5 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
             }
         }
     }
-    
+
 }

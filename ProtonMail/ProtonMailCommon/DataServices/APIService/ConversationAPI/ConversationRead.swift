@@ -43,7 +43,7 @@ class ConversationReadRequest: Request {
         return .put
     }
 
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         return ["IDs": conversationIDs]
     }
 }
@@ -51,7 +51,7 @@ class ConversationReadRequest: Request {
 class ConversationReadResponse: Response {
     var responseDict: [String: Any]?
     var results: [ConversationReadData]?
-    
+
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         responseDict = response
 

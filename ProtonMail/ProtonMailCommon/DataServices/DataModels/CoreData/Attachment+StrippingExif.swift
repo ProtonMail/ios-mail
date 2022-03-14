@@ -19,7 +19,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 import Foundation
 import ImageIO
 
@@ -27,28 +27,27 @@ extension URL {
     func strippingExif() -> URL {
         guard let source = CGImageSourceCreateWithURL(self as CFURL, nil),
             let type = CGImageSourceGetType(source),
-            case let count = CGImageSourceGetCount(source) else
-        {
+            case let count = CGImageSourceGetCount(source) else {
             // this happens when data is not an image, which is okay
             return self
         }
-        
+
         let stripped = self
         guard let destination = CGImageDestinationCreateWithURL(stripped as CFURL, type, count, nil) else {
             assert(false, "Failed to strip EXIF from URL: could not create destination")
             return self
         }
-        
+
         let properties = Attachment.propertiesToStrip()
         for index in 0 ..< count {
             CGImageDestinationAddImageFromSource(destination, source, index, properties)
         }
-        
+
         guard CGImageDestinationFinalize(destination) else {
             assert(false, "Failed to strip EXIF from URL: could not finalize")
             return self
         }
-        
+
         return stripped as URL
     }
 }
@@ -57,38 +56,36 @@ extension Data {
     func strippingExif() -> Data {
         guard let source = CGImageSourceCreateWithData(self as CFData, nil),
             let type = CGImageSourceGetType(source),
-            case let count = CGImageSourceGetCount(source) else
-        {
+            case let count = CGImageSourceGetCount(source) else {
             // this happens when data is not an image, which is okay
             return self
         }
-        
+
         let stripped = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(stripped as CFMutableData, type, count, nil) else {
             assert(false, "Failed to strip EXIF from Data: could not create destination")
             return self
         }
-        
+
         let properties = Attachment.propertiesToStrip()
         for index in 0 ..< count {
             CGImageDestinationAddImageFromSource(destination, source, index, properties)
         }
-        
+
         guard CGImageDestinationFinalize(destination) else {
             assert(false, "Failed to strip EXIF from Data: could not finalize")
             return self
         }
-        
+
         return stripped as Data
     }
 }
 
-
 extension Attachment {
     static func propertiesToStrip() -> CFDictionary {
         /* See full list: https://developer.apple.com/documentation/imageio/cgimageproperties */
-        
-        var dict: Dictionary<CFString, Any?> = [
+
+        var dict: [CFString: Any?] = [
             // format-specific
             kCGImagePropertyExifDictionary: nil,
             kCGImagePropertyGPSDictionary: nil,
@@ -98,7 +95,7 @@ extension Attachment {
             kCGImageProperty8BIMDictionary: nil,
             kCGImagePropertyDNGDictionary: nil,
             kCGImagePropertyExifAuxDictionary: nil,
-        
+
             kCGImagePropertyTIFFDictionary: [
                 kCGImagePropertyTIFFDocumentName: nil,
                 kCGImagePropertyTIFFImageDescription: nil,
@@ -111,14 +108,14 @@ extension Attachment {
                 kCGImagePropertyTIFFSoftware: nil
             ],
 
-            kCGImagePropertyPNGDictionary : [
+            kCGImagePropertyPNGDictionary: [
                 kCGImagePropertyPNGAuthor: nil,
                 kCGImagePropertyPNGCopyright: nil,
                 kCGImagePropertyPNGSoftware: nil,
                 kCGImagePropertyPNGCreationTime: nil,
                 kCGImagePropertyPNGDescription: nil,
                 kCGImagePropertyPNGModificationTime: nil,
-                kCGImagePropertyPNGTitle: nil,
+                kCGImagePropertyPNGTitle: nil
             ],
 
             // camera makers

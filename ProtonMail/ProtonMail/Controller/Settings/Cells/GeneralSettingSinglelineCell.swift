@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var LeftText: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         if #available(iOS 10, *) {
             LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
             LeftText.adjustsFontForContentSizeCategory = true
@@ -38,7 +37,7 @@ class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
+
     func configCell(_ left: String) {
         LeftText.text = left
         self.accessibilityLabel = left

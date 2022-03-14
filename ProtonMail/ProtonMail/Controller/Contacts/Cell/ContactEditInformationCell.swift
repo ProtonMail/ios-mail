@@ -23,15 +23,15 @@
 import ProtonCore_UIFoundations
 
 final class ContactEditInformationCell: UITableViewCell {
-    
-    fileprivate var information : ContactEditInformation!
-    fileprivate var delegate : ContactEditCellDelegate?
-    
+
+    fileprivate var information: ContactEditInformation!
+    fileprivate var delegate: ContactEditCellDelegate?
+
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -40,16 +40,16 @@ final class ContactEditInformationCell: UITableViewCell {
         valueField.tintColor = ColorProvider.TextHint
         backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         sepratorView.gradient()
     }
-    
-    func configCell(obj : ContactEditInformation, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+
+    func configCell(obj: ContactEditInformation, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.information = obj
         self.delegate = callback
-        
+
         typeLabel.attributedText = NSAttributedString(string: self.information.infoType.title,
                                                       attributes: FontManager.Default)
         valueField.placeholder = self.information.infoType.title
@@ -62,9 +62,9 @@ final class ContactEditInformationCell: UITableViewCell {
             })
         }
     }
-    
+
     @IBAction func typeAction(_ sender: UIButton) {
-        //delegate?.pick(typeInterface: org, sender: self)
+        // delegate?.pick(typeInterface: org, sender: self)
     }
 }
 
@@ -72,16 +72,16 @@ extension ContactEditInformationCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         information.newValue = valueField.attributedText?.string ?? ""
     }
 }

@@ -19,14 +19,13 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import UIKit
 
 enum LinkOpener: String, CaseIterable {
     case safari, inAppSafari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion
-    
+
     private var scheme: String {
         switch self {
         case .safari, .inAppSafari: return "https" // default case
@@ -42,7 +41,7 @@ enum LinkOpener: String, CaseIterable {
         case .onion: return "onionhttp"
         }
     }
-    
+
     var title: String {
         switch self {
         case .safari: return "Safari"
@@ -59,16 +58,16 @@ enum LinkOpener: String, CaseIterable {
         case .inAppSafari: return "In-App Safari"
         }
     }
-    
+
     var isInstalled: Bool {
         guard let scheme = URL(string: "\(self.scheme)://") else {
             return false
         }
         return UIApplication.shared.canOpenURL(scheme)
     }
-    
+
     func deeplink(to url: URL) -> URL? {
-        
+
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
            components.scheme == "tel" {
             return  nil
@@ -119,7 +118,7 @@ enum LinkOpener: String, CaseIterable {
             }
         case .duckDuckGo:
             specificURL = URL(string: "ddgQuickLink://\(url)")
-            
+
         case .safari, .inAppSafari:
             specificURL = url
         }
@@ -132,10 +131,10 @@ public extension CharacterSet {
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
-        
+
         var allowed = CharacterSet.urlQueryAllowed
         allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
-        
+
         return allowed
     }()
 }

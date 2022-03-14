@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 
@@ -35,7 +34,7 @@ class HeaderData: NSObject {
     let labels: [Label]?
     let score: Message.SpamScore
     let isSent: Bool
-    
+
     init(message: Message) {
         self.title = message.subject
         self.sender = message.senderContactVO

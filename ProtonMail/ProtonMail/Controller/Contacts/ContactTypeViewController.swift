@@ -20,43 +20,41 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 
-protocol ContactTypeViewControllerDelegate : AnyObject {
+protocol ContactTypeViewControllerDelegate: AnyObject {
     func done(sectionType: ContactEditSectionType)
 }
 
 class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactTypeViewModel
     func inactiveViewModel() {
-        
+
     }
     func set(viewModel: ContactTypeViewModel) {
         self.viewModel = viewModel
     }
-    private var viewModel : ContactTypeViewModel!
-    
-    
+    private var viewModel: ContactTypeViewModel!
+
     weak var deleget: ContactTypeViewControllerDelegate?
-    
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
-    
-    var activeText : UITextField? = nil
-    
+
+    var activeText: UITextField?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
-        
+
         let type = viewModel.getPickedType()
         let types = viewModel.getDefinedTypes()
-        
+
         if let index = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
@@ -70,19 +68,19 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
             }
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
     }
 
     private func selectAndGoBack(at index: IndexPath) {
-        var type : ContactFieldType = .empty
+        var type: ContactFieldType = .empty
         if index.section == 0 {
             let types = viewModel.getDefinedTypes()
             type = types[index.row]
@@ -108,7 +106,7 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
             self.activeText = nil
         }
     }
-    
+
     func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -116,7 +114,7 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtocol {
-    
+
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         tableViewBottomOffset.constant = 0.0
@@ -124,7 +122,7 @@ extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtoco
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
@@ -141,7 +139,7 @@ extension ContactTypeViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeText = textField
     }
@@ -149,11 +147,11 @@ extension ContactTypeViewController: UITextFieldDelegate {
 
 // MARK: - UITableViewDataSource
 extension ContactTypeViewController: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             let l = viewModel.getDefinedTypes()
@@ -165,8 +163,7 @@ extension ContactTypeViewController: UITableViewDataSource {
         }
         return 0
     }
-    
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
@@ -196,15 +193,15 @@ extension ContactTypeViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ContactTypeViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44.0
     }
-    
+
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         updateSelection(selectedIndexPath: indexPath)
         selectAndGoBack(at: indexPath)
@@ -215,7 +212,7 @@ extension ContactTypeViewController {
     private func updateSelection(selectedIndexPath: IndexPath) {
         let indexPaths = tableView.indexPathsForVisibleRows ?? []
         for index in indexPaths {
-            if let cell =  self.tableView.cellForRow(at: index) {
+            if let cell = self.tableView.cellForRow(at: index) {
                 if let addCell = cell as? ContactTypeAddCustomCell {
                     addCell.unsetMark()
                 }

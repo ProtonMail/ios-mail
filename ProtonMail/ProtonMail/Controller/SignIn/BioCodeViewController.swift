@@ -19,14 +19,13 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import ProtonCore_UIFoundations
 
 class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthenticating {
-    weak var delegate : PinCodeViewControllerDelegate?
-    
+    weak var delegate: PinCodeViewControllerDelegate?
+
     func authenticateUser() {
         guard UIDevice.current.biometricType != .none else {
             let alert = UIAlertController.init(title: LocalString._unlock_required,
@@ -42,7 +41,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             self.present(alert, animated: true, completion: nil)
             return
         }
-        
+
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             if Thread.isMainThread {
                 self.delegate?.next()
@@ -53,16 +52,16 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             }
         })
     }
-    
+
     func touch_id_action(_ sender: Any) {
         self.authenticateUser()
     }
-    
+
     @IBOutlet weak var bioCodeView: BioCodeView!
-    
+
     func configureNavigationBar() {
         let original = UIImage(named: "menu_logout")?.withRenderingMode(.alwaysTemplate)
-        
+
         self.navigationItem.title = ""
         let logoutButton = UIBarButtonItem(image: original,
                                            style: .plain,
@@ -70,16 +69,16 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
                                            action: #selector(self.logoutButtonTapped))
         logoutButton.tintColor = ColorProvider.IconNorm
         self.navigationItem.leftBarButtonItem = logoutButton
-        
+
         if let bar = self.navigationController?.navigationBar {
             // this will make bar transparent
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.isTranslucent = true
-            
+
             // buttons
             navigationController?.navigationBar.tintColor = .white
-            
+
             // text
             bar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -87,12 +86,12 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             ]
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.decideOnBioAuthentication()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -101,16 +100,16 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         self.bioCodeView.delegate = self
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)
-        
+
         self.subscribeToWillEnterForegroundMessage()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func logoutButtonTapped() {
-        
+
         let alert = UIAlertController(title: nil, message: LocalString._signout_confirmation_in_bio, preferredStyle: .alert)
         let logout = UIAlertAction(title: LocalString._sign_out, style: .destructive) { _ in
             self.logout()
@@ -119,9 +118,9 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         [logout, cancel].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     private func logout() {
-        self.delegate?.cancel() {
+        self.delegate?.cancel {
             self.navigationController?.popViewController(animated: true)
         }
     }

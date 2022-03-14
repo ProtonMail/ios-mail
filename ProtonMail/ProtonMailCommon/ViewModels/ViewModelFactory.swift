@@ -20,10 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-//TODO::fixme
-//should split for different purpose
+// TODO::fixme
+// should split for different purpose
 var shareViewModelFactoy: ViewModelFactory!
 
 // need supprot dev factory live factory
@@ -31,23 +30,23 @@ class ViewModelFactory {
     func getChangeLoginPassword() -> ChangePasswordViewModel {
         fatalError("This method must be overridden")
     }
-    
+
     func getChangeMailboxPassword() -> ChangePasswordViewModel {
         fatalError("This method must be overridden")
     }
-    
+
     func getChangeDisplayName() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
-    
+
     func getChangeNotificationEmail() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
-    
+
     func getChangeSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
-    
+
     func getChangeMobileSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }

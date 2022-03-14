@@ -29,27 +29,27 @@ class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
     var apiService: APIService? {
         return sharedServices.get(by: UsersManager.self).firstUser?.apiService
     }
-    
+
     var tokenStorage: PaymentTokenStorage? {
         return nil
     }
-    
+
     var isUnlocked: Bool {
         return UnlockManager.shared.isUnlocked()
     }
-    
+
     var isSignedIn: Bool {
         return sharedServices.get(by: UsersManager.self).hasUsers()
     }
-    
+
     var activeUsername: String? {
         return sharedServices.get(by: UsersManager.self).firstUser?.defaultEmail
     }
-    
+
     var userId: String? {
         return sharedServices.get(by: UsersManager.self).firstUser?.userInfo.userId
     }
-    
+
     var payments: Payments? {
         #if !APP_EXTENSION
             return sharedServices.get(by: UsersManager.self).firstUser?.payments

@@ -23,8 +23,8 @@
 import OpenPGP
 import UIKit
 
-class ContactEditViewModelImpl : ContactEditViewModel {
-    var sections : [ContactEditSectionType] = [.emails,
+class ContactEditViewModelImpl: ContactEditViewModel {
+    var sections: [ContactEditSectionType] = [.emails,
                                                .encrypted_header,
                                                .cellphone,
                                                .home_address,
@@ -33,22 +33,22 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                .notes,
                                                .delete]
     private var contactParser: contactParserProtocol!
-    var contact : Contact? //optional if nil add new contact
-    var emails : [ContactEditEmail] = []
-    var cells : [ContactEditPhone] = []
-    var addresses : [ContactEditAddress] = []
-    var informations : [ContactEditInformation] = []
-    var fields : [ContactEditField] = []
-    var notes : ContactEditNote = ContactEditNote(note: "", isNew: false)
-    var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
-    var urls : [ContactEditUrl] = []
+    var contact: Contact? // optional if nil add new contact
+    var emails: [ContactEditEmail] = []
+    var cells: [ContactEditPhone] = []
+    var addresses: [ContactEditAddress] = []
+    var informations: [ContactEditInformation] = []
+    var fields: [ContactEditField] = []
+    var notes: ContactEditNote = ContactEditNote(note: "", isNew: false)
+    var profile: ContactEditProfile = ContactEditProfile(n_displayname: "")
+    var urls: [ContactEditUrl] = []
     var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
-    var profilePicture: UIImage? = nil
-    var origProfilePicture: UIImage? = nil
-    
-    var origvCard2 : PMNIVCard?
-    var origvCard3 : PMNIVCard?
-    
+    var profilePicture: UIImage?
+    var origProfilePicture: UIImage?
+
+    var origvCard2: PMNIVCard?
+    var origvCard3: PMNIVCard?
+
     init(c: Contact?, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
         self.contact = c
@@ -56,7 +56,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         self.prepareContactData()
         self.prepareContactGroupData()
     }
-    
+
     private func prepareContactGroupData() {
         let groups = self.user.labelService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainContext)
 
@@ -64,7 +64,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
         }
     }
-    
+
     private func prepareContactData() {
         if let c = contact, c.managedObjectContext != nil {
             profile = ContactEditProfile(o_displayname: c.name)
@@ -97,55 +97,55 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
         }
     }
-    
+
     override func getSections() -> [ContactEditSectionType] {
         return self.sections
     }
     override func sectionCount() -> Int {
         return sections.count
     }
-    
+
     ///
     override func isNew() -> Bool {
         return contact == nil || contact!.managedObjectContext == nil
     }
-    
+
     override func getEmails() -> [ContactEditEmail] {
         return emails
     }
-    
+
     override func getCells() -> [ContactEditPhone] {
         return cells
     }
-    
+
     override func getAddresses() -> [ContactEditAddress] {
         return addresses
     }
-    
+
     override func getInformations() -> [ContactEditInformation] {
         return informations
     }
-    
+
     override func getFields() -> [ContactEditField] {
         return fields
     }
-    
+
     override func getNotes() -> ContactEditNote {
         return notes
     }
-    
+
     override func getProfile() -> ContactEditProfile {
         return profile
     }
-    
+
     override func getProfilePicture() -> UIImage? {
         return self.profilePicture
     }
-    
+
     override func setProfilePicture(image: UIImage?) {
         self.profilePicture = image
     }
-    
+
     override func profilePictureNeedsUpdate() -> Bool {
         if let orig = self.origProfilePicture {
             return !orig.isEqual(self.profilePicture)
@@ -154,15 +154,15 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             return self.profilePicture != nil
         }
     }
-    
+
     override func getUrls() -> [ContactEditUrl] {
         return urls
     }
-    
-    //new functions
+
+    // new functions
     override func newUrl() -> ContactEditUrl {
         let type = pick(newType: ContactFieldType.urlTypes, pickedTypes: urls)
-        let url = ContactEditUrl(order: urls.count, type: type, url:"", isNew: true)
+        let url = ContactEditUrl(order: urls.count, type: type, url: "", isNew: true)
         urls.append(url)
         return url
     }
@@ -175,7 +175,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         let type = pick(newType: ContactFieldType.emailTypes, pickedTypes: emails)
         let email = ContactEditEmail(order: emails.count,
                                      type: type,
-                                     email:"",
+                                     email: "",
                                      isNew: true,
                                      keys: nil,
                                      contactID: self.contact?.contactID,
@@ -188,33 +188,33 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         emails.append(email)
         return email
     }
-    
+
     override func deleteEmail(at index: Int) {
         if emails.count > index {
             emails.remove(at: index)
         }
     }
-    
+
     override func newPhone() -> ContactEditPhone {
         let type = pick(newType: ContactFieldType.phoneTypes, pickedTypes: cells)
-        let cell = ContactEditPhone(order: emails.count, type: type, phone:"", isNew:true)
+        let cell = ContactEditPhone(order: emails.count, type: type, phone: "", isNew: true)
         cells.append(cell)
         return cell
     }
-    
+
     override func deletePhone(at index: Int) {
         if cells.count > index {
             cells.remove(at: index)
         }
     }
-    
+
     override func newAddress() -> ContactEditAddress {
         let type = pick(newType: ContactFieldType.addrTypes, pickedTypes: addresses)
         let addr = ContactEditAddress(order: emails.count, type: type)
         addresses.append(addr)
         return addr
     }
-    
+
     override func deleteAddress(at index: Int) {
         if addresses.count > index {
             addresses.remove(at: index)
@@ -226,77 +226,77 @@ class ContactEditViewModelImpl : ContactEditViewModel {
         self.informations.append(info)
         return info
     }
-    
+
     override func deleteInformation(at index: Int) {
         if informations.count > index {
             informations.remove(at: index)
         }
     }
-    
+
     override func newField() -> ContactEditField {
         let type = pick(newType: ContactFieldType.fieldTypes, pickedTypes: fields)
-        let field = ContactEditField(order: emails.count, type: type, field:"", isNew:true)
+        let field = ContactEditField(order: emails.count, type: type, field: "", isNew: true)
         fields.append(field)
         return field
     }
-    
+
     override func deleteField(at index: Int) {
         if fields.count > index {
             fields.remove(at: index)
         }
     }
-    
+
     override func done(complete : @escaping ContactEditSaveComplete) {
         if let c = contact, c.managedObjectContext != nil {
             for (index, mail) in self.emails.enumerated() {
                 mail.update(order: index)
             }
-            var cards : [CardData] = []
-            
+            var cards: [CardData] = []
+
             // contact group, card type 0
             let vCard0 = PMNIVCard.createInstance()
             if let vCard0 = vCard0 {
                 for (i, email) in getEmails().enumerated() {
                     let group = "ITEM\(i + 1)"
-                    
+
                     let newCategories = PMNICategories.createInstance(group,
                                                                       value: email.getContactGroupNames())
                     vCard0.add(newCategories)
                 }
-                
+
                 let vcard0Str = PMNIEzvcard.write(vCard0)
                 let card0 = CardData(t: .PlainText,
                                      d: vcard0Str,
                                      s: "")
-                
+
                 cards.append(card0)
             }
 
             if origvCard2 == nil {
                 origvCard2 = PMNIVCard.createInstance()
             }
-            
+
             let userInfo = self.user.userInfo
-            
+
             guard let userkey = userInfo.firstUserKey() else {
-                return; //with error
+                return; // with error
             }
-            
-            var uid : PMNIUid? = nil
+
+            var uid: PMNIUid?
             if let vcard2 = origvCard2 {
-                
+
                 var defaultName = LocalString._general_unknown_title
-                //TODO::need to check the old email's group id
-                var i : Int = 1;
-                var newEmails:[PMNIEmail] = []
+                // TODO::need to check the old email's group id
+                var i: Int = 1
+                var newEmails: [PMNIEmail] = []
                 vcard2.clearEmails()
                 vcard2.clearKeys()
                 vcard2.clearPMSign()
                 vcard2.clearPMEncrypt()
                 vcard2.clearPMScheme()
                 vcard2.clearPMMimeType()
-                
-                //update
+
+                // update
                 for email in getEmails() {
                     if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
                         DispatchQueue.main.async {
@@ -310,24 +310,24 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         defaultName = em
                         let m = PMNIEmail.createInstance(email.newType.vcardType, email: email.newEmail, group: group)!
                         newEmails.append(m)
-                        
+
                         if let keys = email.keys {
                             for k in keys {
                                 k.setGroup(group)
                                 vcard2.add(k)
                             }
                         }
-                        
+
                         if let sign = email.sign {
                             sign.setGroup(group)
                             vcard2.add(sign)
                         }
-                        
+
                         if let encrypt = email.encrypt {
                             encrypt.setGroup(group)
                             vcard2.add(encrypt)
                         }
-                        
+
                         if let scheme = email.scheme {
                             scheme.setGroup(group)
                             vcard2.add(scheme)
@@ -336,50 +336,50 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                             mime.setGroup(group)
                             vcard2.add(mime)
                         }
-                        
+
                         i += 1
                     }
                 }
-                
-                //replace emails
+
+                // replace emails
                 vcard2.setEmails(newEmails)
-                
+
                 if let fn = PMNIFormattedName.createInstance(profile.newDisplayName.isEmpty ? defaultName : profile.newDisplayName) {
                     vcard2.setFormattedName(fn)
                 }
-                
-                //get uid first if null create a new one
+
+                // get uid first if null create a new one
                 uid = vcard2.getUid()
-                if uid == nil || uid!.getValue() == ""  {
+                if uid == nil || uid!.getValue() == "" {
                     let newuid = "protonmail-ios-" + UUID().uuidString
                     let uuid = PMNIUid.createInstance(newuid)
                     vcard2.setUid(uuid)
                     uid = uuid
                 }
-                
+
                 // add others later
                 let vcard2Str = PMNIEzvcard.write(vcard2)
-                //TODO:: fix try later
+                // TODO:: fix try later
                 let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
                                                               privateKey: userkey.privateKey,
                                                               passphrase: user.mailboxPassword)
-                
-                //card 2 object
+
+                // card 2 object
                 let card2 = CardData(t: .SignedOnly,
                                      d: vcard2Str,
                                      s: signed_vcard2 ?? "")
 
                 cards.append(card2)
             }
-          
-            //start type 3 vcard
-            var isCard3Set : Bool = false
+
+            // start type 3 vcard
+            var isCard3Set: Bool = false
             if origvCard3 == nil {
                 origvCard3 = PMNIVCard.createInstance()
             }
-            
+
             if let vcard3 = origvCard3 {
-                var newCells:[PMNITelephone] = []
+                var newCells: [PMNITelephone] = []
                 for cell in cells {
                     if !cell.isEmpty() {
                         let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
@@ -387,14 +387,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         isCard3Set = true
                     }
                 }
-                //replace all cells
+                // replace all cells
                 if newCells.count > 0 {
                     vcard3.setTelephones(newCells)
                 } else {
                     vcard3.clearTelephones()
                 }
-                
-                var newAddrs:[PMNIAddress] = []
+
+                var newAddrs: [PMNIAddress] = []
                 for addr in addresses {
                     if !addr.isEmpty() {
                         let a = PMNIAddress.createInstance(addr.newType.vcardType,
@@ -409,19 +409,19 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         isCard3Set = true
                     }
                 }
-                //replace all addresses
+                // replace all addresses
                 if newAddrs.count > 0 {
                     vcard3.setAddresses(newAddrs)
                 } else {
                     vcard3.clearAddresses()
                 }
-                
+
                 vcard3.clearOrganizations()
                 vcard3.clearNickname()
                 vcard3.clearTitle()
                 vcard3.clearBirthdays()
                 vcard3.clearGender()
-                
+
                 for info in informations {
                     if !info.isEmpty() {
                         switch info.infoType {
@@ -453,8 +453,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         }
                     }
                 }
-                
-                var newUrls:[PMNIUrl] = []
+
+                var newUrls: [PMNIUrl] = []
                 for url in urls {
                     if !url.isEmpty() {
                         if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
@@ -463,30 +463,30 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                         }
                     }
                 }
-                //replace all urls
+                // replace all urls
                 if newUrls.count > 0 {
                     vcard3.setUrls(newUrls)
                 } else {
                     vcard3.clearUrls()
                 }
-                
+
                 let n = PMNINote.createInstance("", note: notes.newNote)!
                 vcard3.setNote(n)
                 isCard3Set = true
-                
-                for field in fields{
+
+                for field in fields {
                     let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
                     vcard3.add(f)
                     isCard3Set = true
                 }
-                
+
 //                if uid == nil || uid!.getValue() == "" {
 //                    let newuid = "protonmail-ios-" + UUID().uuidString
 //                    let uuid = PMNIUid.createInstance(newuid)
 //                    vcard3.setUid(uuid)
 //                    uid = uuid
 //                }
-                
+
                 // profile image
                 vcard3.clearPhotos()
                 if let profilePicture = profilePicture,
@@ -499,23 +499,23 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     vcard3.setPhoto(image)
                     isCard3Set = true
                 }
-                
+
                 let vcard3Str = PMNIEzvcard.write(vcard3)
-                //TODO:: fix the try! later
+                // TODO:: fix the try! later
                 let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",
                                                               passphrase: "")
                 let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
                                                                privateKey: userkey.privateKey,
                                                                passphrase: user.mailboxPassword)
-                //card 3 object
+                // card 3 object
                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3!, s: signed_vcard3)
                 if isCard3Set {
                     cards.append(card3)
                 }
             }
-            
-            let completion = { (contacts : [Contact]?, error : NSError?) in
+
+            let completion = { (contacts: [Contact]?, error: NSError?) in
                 // The data merge from operationContext to mainContext take some time
                 // Delay for better UX
                 delay(0.3) {
@@ -538,7 +538,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             // pop error
         }
     }
-    
+
     override func delete(complete: @escaping ContactEditSaveComplete) {
         if isNew() {
             complete(nil)
@@ -560,13 +560,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
         }
     }
-    
+
     override func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)] {
-        var result = self.contactGroupData.map{ return (ID:$0.key, name: $0.value.name, color: $0.value.color, count: $0.value.count) }
+        var result = self.contactGroupData.map { return (ID:$0.key, name: $0.value.name, color: $0.value.color, count: $0.value.count) }
         result.sort(by: {$0.name < $1.name})
         return result
     }
-    
+
     override func updateContactCounts(increase: Bool, contactGroups: Set<String>) {
         for group in contactGroups {
             if increase {
@@ -586,7 +586,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             }
         }
     }
-    
+
     // return the contact group that is empty after editing
     override func hasEmptyGroups() -> [String]? {
         var emptyGroupNames = [String]()
@@ -595,7 +595,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 emptyGroupNames.append(group.value.name)
             }
         }
-        
+
         return emptyGroupNames.count > 0 ? emptyGroupNames : nil
     }
 }
@@ -604,38 +604,38 @@ extension ContactEditViewModelImpl: ContactParserResultDelegate {
     func append(emails: [ContactEditEmail]) {
         self.emails.append(contentsOf: emails)
     }
-    
+
     func append(addresses: [ContactEditAddress]) {
         self.addresses.append(contentsOf: addresses)
     }
-    
+
     func append(telephones: [ContactEditPhone]) {
         self.cells.append(contentsOf: telephones)
     }
-    
+
     func append(informations: [ContactEditInformation]) {
         self.informations.append(contentsOf: informations)
     }
-    
+
     func append(fields: [ContactEditField]) {
         self.fields.append(contentsOf: fields)
     }
-    
+
     func append(notes: [ContactEditNote]) {
         guard let note = notes.first else { return }
         self.notes = note
     }
-    
+
     func append(urls: [ContactEditUrl]) {
         self.urls.append(contentsOf: urls)
     }
-    
+
     func update(verifyType2: Bool) {
     }
-    
+
     func update(verifyType3: Bool) {
     }
-    
+
     func update(decryptionError: Bool) {
     }
 

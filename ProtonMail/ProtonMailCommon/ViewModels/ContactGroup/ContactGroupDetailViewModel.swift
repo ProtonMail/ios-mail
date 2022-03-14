@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 
@@ -28,7 +27,7 @@ protocol ContactGroupDetailViewModel {
     var reloadView: (() -> Void)? { get set }
 
     var user: UserManager { get }
-    
+
     func getGroupID() -> String
     func getName() -> String
     func getColor() -> String
@@ -36,6 +35,6 @@ protocol ContactGroupDetailViewModel {
     func getEmailIDs() -> Set<Email>
     func getTotalEmailString() -> String
     func getEmail(at indexPath: IndexPath) -> (emailID: String, name: String, email: String)
-    
+
     func reload() -> Bool
 }

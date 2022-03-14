@@ -20,10 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
-
 
 extension Email {
     struct Attributes {
@@ -35,20 +33,20 @@ extension Email {
         static let name = "name"
         static let lastUsedTime = "lastUsedTime"
     }
-    
+
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-    
+
     class func EmailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
     }
-    
+
     class func EmailForAddress(_ address: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.email, matchingValue: address) as? Email
     }
-    
+
     class func EmailForAddressWithContact(_ address: String,
                                           contactID: String,
                                           inManagedObjectContext context: NSManagedObjectContext) -> Email? {
@@ -71,7 +69,7 @@ extension Email {
 //        }
 //        return out
 //    }
-    
+
     class func findEmailsController(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let controller = context.fetchedControllerEntityName(entityName: Attributes.entityName, forKey: Attributes.email, forManagedObjectIDs: emails)
         do {
@@ -90,14 +88,13 @@ extension Email {
         print("Order: \(self.order)")
         print("Type: \(self.type)")
     }
-    
+
     func emailType() -> String {
         type
     }
 }
 
-
-//Extension::Array - Email
+// Extension::Array - Email
 extension Array where Element: Email {
     func order() -> [Email] {
         return self.sorted { $0.order.compare($1.order) == .orderedAscending }

@@ -20,31 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
 public class BugDataService: Service {
-    private let apiService : APIService
+    private let apiService: APIService
     init(api: APIService) {
         self.apiService = api
     }
-    
-    func reportPhishing(messageID : String, messageBody : String, completion: ((NSError?) -> Void)?) {
+
+    func reportPhishing(messageID: String, messageBody: String, completion: ((NSError?) -> Void)?) {
         let route = ReportPhishing(msgID: messageID, mimeType: "text/html", body: messageBody)
         self.apiService.exec(route: route) { (res: Response) in
             completion?(res.error?.toNSError)
         }
     }
-    
+
     public func reportBug(_ bug: String,
                           username: String,
                           email: String,
                           lastReceivedPush: String,
                           reachabilityStatus: String,
                           completion: ((NSError?) -> Void)?) {
-        let systemVersion = UIDevice.current.systemVersion;
+        let systemVersion = UIDevice.current.systemVersion
         let model = "iOS - \(UIDevice.current.model)"
         let mainBundle = Bundle.main
         let username = username

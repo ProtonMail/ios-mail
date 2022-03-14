@@ -20,26 +20,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 extension LabelUpdate {
 
-    
-    var isNew : Bool {
-        get{
+    var isNew: Bool {
+        get {
             return self.start == self.end && self.start == self.update
         }
     }
-    
-    var startTime : Date {
+
+    var startTime: Date {
         get {
             return self.start ?? Date.distantPast
         }
     }
-    
-    var endTime : Date {
+
+    var endTime: Date {
         get {
             return self.end ?? Date.distantPast
         }

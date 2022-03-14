@@ -120,8 +120,7 @@ extension SettingsPrivacyViewController {
     private func configureAutoLoadImageCell(_ cell: UITableViewCell,
                                             _ item: SettingPrivacyItem,
                                             _ tableView: UITableView,
-                                            _ indexPath: IndexPath)
-    {
+                                            _ indexPath: IndexPath) {
         if let cellToUpdate = cell as? SwitchTableViewCell {
             cellToUpdate.configCell(item.description,
                                     bottomLine: "",

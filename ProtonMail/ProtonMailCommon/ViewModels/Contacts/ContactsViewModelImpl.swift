@@ -20,33 +20,32 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
-final class ContactsViewModelImpl : ContactsViewModel {
+final class ContactsViewModelImpl: ContactsViewModel {
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     fileprivate var isSearching: Bool = false
-    
-    lazy var contactService : ContactDataService = { [unowned self] in
+
+    lazy var contactService: ContactDataService = { [unowned self] in
         return self.user.contactService
     }()
-    
+
     override func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
-        self.correctCachedData() {
+        self.correctCachedData {
             self.fetchedResultsController?.delegate = delegate
         }
     }
-    
+
     override func resetFetchedController() {
         if let fetch = self.fetchedResultsController {
             fetch.delegate = nil
             self.fetchedResultsController = nil
         }
     }
-    
+
     func correctCachedData(completion: (() -> Void)?) {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
             let context = self.coreDataService.rootSavingContext
@@ -55,7 +54,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
                 let objectsToUpdate = objects.compactMap { obj -> Contact? in
                     return try? context.existingObject(with: obj.objectID) as? Contact
                 }
-                
+
                 for obj in objectsToUpdate {
                     if obj.fixName() {
                         needsSave = true
@@ -70,7 +69,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
             completion?()
         }
     }
-    
+
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let fetchedResultsController = contactService.resultController() {
             do {
@@ -81,11 +80,11 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         return nil
     }
-    
+
     override func set(searching isSearching: Bool) {
         self.isSearching = isSearching
     }
-    
+
     override func search(text: String) {
         var predicate: NSPredicate?
         if text.isEmpty {
@@ -94,37 +93,37 @@ final class ContactsViewModelImpl : ContactsViewModel {
             predicate = NSPredicate(format: "(name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@) AND %K == %@", argumentArray: [text, text, Contact.Attributes.userID, self.user.userInfo.userId])
         }
         fetchedResultsController?.fetchRequest.predicate = predicate
-        
+
         do {
             try fetchedResultsController?.performFetch()
         } catch {
         }
-        
+
     }
-    
+
     // MARK: - table view part
     override func sectionCount() -> Int {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
-    
+
     override func rowCount(section: Int) -> Int {
         return fetchedResultsController?.numberOfRows(in: section) ?? 0
     }
-    
+
     override func sectionIndexTitle() -> [String]? {
         if isSearching {
             return nil
         }
         return fetchedResultsController?.sectionIndexTitles
     }
-    
+
     override func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
         if isSearching {
             return -1
         }
         return fetchedResultsController?.section(forSectionIndexTitle: title, at: atIndex) ?? -1
     }
-    
+
     override func item(index: IndexPath) -> Contact? {
         guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
             return nil
@@ -134,7 +133,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         return fetchedResultsController?.object(at: index) as? Contact
     }
-    
+
     override func isExsit(uuid: String) -> Bool {
         if let contacts = fetchedResultsController?.fetchedObjects as? [Contact] {
             for c in contacts {
@@ -145,7 +144,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         return false
     }
-    
+
     // MARK: - api part
     override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
         self.contactService.delete(contactID: contactID, completion: { (error) in
@@ -156,20 +155,20 @@ final class ContactsViewModelImpl : ContactsViewModel {
             }
         })
     }
-    
-    private var isFetching : Bool = false
-    private var fetchComplete : ContactFetchComplete? = nil
+
+    private var isFetching: Bool = false
+    private var fetchComplete: ContactFetchComplete?
     override func fetchContacts(completion: ContactFetchComplete?) {
         if let c = completion {
             fetchComplete = c
         }
         if !isFetching {
             isFetching = true
-            
+
             self.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
                                                  completion: { (task, res, error) in
-                
+
             })
             self.user.contactService.fetchContacts { (_, error) in
                 self.isFetching = false

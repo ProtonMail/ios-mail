@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import PromiseKit
@@ -42,36 +41,36 @@ let sharedServices: ServiceFactory = {
 
     // push service
     helper.add(PushNotificationService.self, for: PushNotificationService())
-    
+
     // from old ServiceFactory.default
     helper.add(AddressBookService.self, for: AddressBookService())
     helper.add(BugDataService.self, for: BugDataService(api: PMAPIService.unauthorized))
-    
+
     #endif
-    
+
     return helper
 }()
 
 final class ServiceFactory {
-    
-    ///this is the a tempary.
+
+    /// this is the a tempary.
     static let `default` : ServiceFactory = sharedServices
-    
+
     private var servicesDictionary: [String: Service] = [:]
-    
+
     public func add<T>(_ type: T.Type, with name: String? = nil, constructor: () -> Service) {
         self.add(type, for: constructor(), with: name)
     }
-    
+
     public func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
         let name = name ?? String(reflecting: protocolType)
         servicesDictionary[name] = instance
     }
-    
+
     public func get<T>(by type: T.Type = T.self) -> T {
         return get(by: String(reflecting: type))
     }
-    
+
     public func get<T>(by name: String) -> T {
         guard let service = servicesDictionary[name] as? T else {
             fatalError("firstly you have to add the service")

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import CoreData
 import Foundation
 import TrustKit
@@ -32,17 +31,16 @@ extension PMAPIService {
         let unauthorized = PMAPIService(doh: DoHMail.default, sessionUID: "")
         #if !APP_EXTENSION
         if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            //TODO:: fix me
-            //unauthorized.authDelegate = delegate
+            // TODO:: fix me
+            // unauthorized.authDelegate = delegate
             unauthorized.serviceDelegate = delegate
         }
         #endif
         return unauthorized
     }()
-    
-    
+
     static var shared: APIService {
-        //TODO:: fix me -- shouldn't have gloabl access
+        // TODO:: fix me -- shouldn't have gloabl access
         if let user = sharedServices.get(by: UsersManager.self).users.first {
             return user.apiService
         }

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -36,42 +35,42 @@ import ProtonCore_Networking
  */
 struct SettingsAPI {
     /// base settings api path
-    static let path :String = "/\(Constants.App.API_PREFIXED)/settings"
-    
+    static let path: String = "/\(Constants.App.API_PREFIXED)/settings"
+
     static let settingsPath: String = "/settings"
-    
+
     static let versionPrefix: String = "/mail/v4"
 }
 
-//"News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
-struct News : OptionSet {
+// "News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
+struct News: OptionSet {
     let rawValue: Int
-    //255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
-    static let announcements = News(rawValue: 1 << 0) //1 is announcements
-    static let features      = News(rawValue: 1 << 1) //2 is features
-    static let newsletter    = News(rawValue: 1 << 2) //4 is newsletter
+    // 255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
+    static let announcements = News(rawValue: 1 << 0) // 1 is announcements
+    static let features      = News(rawValue: 1 << 1) // 2 is features
+    static let newsletter    = News(rawValue: 1 << 2) // 4 is newsletter
     static let all           = News(rawValue: 0xFF)
 }
 
 // Mark : get settings -- SettingsResponse
-final class GetUserSettings : Request {
+final class GetUserSettings: Request {
     var path: String {
         return SettingsAPI.settingsPath
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     var auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
 }
 
-final class SettingsResponse : Response {
-    var userSettings: [String : Any]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        if let settings = response["UserSettings"] as? [String : Any] {
+final class SettingsResponse: Response {
+    var userSettings: [String: Any]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        if let settings = response["UserSettings"] as? [String: Any] {
             self.userSettings = settings
         }
         return true
@@ -79,55 +78,54 @@ final class SettingsResponse : Response {
 }
 
 // Mark : get mail settings -- MailSettingsResponse
-final class GetMailSettings : Request {
+final class GetMailSettings: Request {
     var path: String {
         return SettingsAPI.path
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     var auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
 }
 
-final class MailSettingsResponse : Response {
-    var mailSettings: [String : Any]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        if let settings = response["MailSettings"] as? [String : Any] {
+final class MailSettingsResponse: Response {
+    var mailSettings: [String: Any]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        if let settings = response["MailSettings"] as? [String: Any] {
             self.mailSettings = settings
         }
         return true
     }
 }
 
-
-// MARK : update email notifiy - Response
-final class UpdateNotify : Request {
-    let notify : Int
-    init(notify : Int, authCredential: AuthCredential?) {
+// MARK: update email notifiy - Response
+final class UpdateNotify: Request {
+    let notify: Int
+    init(notify: Int, authCredential: AuthCredential?) {
         self.notify = notify
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["Notify" : self.notify]
+    var parameters: [String: Any]? {
+        let out: [String: Any] = ["Notify": self.notify]
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return SettingsAPI.settingsPath + "/email/notify"
     }
@@ -140,115 +138,114 @@ final class UpdateSignature: Request {
         self.signature = signature
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["Signature" : self.signature]
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = ["Signature": self.signature]
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return SettingsAPI.path + "/signature"
     }
 }
 
-// MARK : update notification email -- Response
-final class UpdateNotificationEmail : Request {
-    
-    let email : String
-    
-    let clientEphemeral : String //base64 encoded
-    let clientProof : String //base64 encoded
-    let SRPSession : String //hex encoded session id
-    let tfaCode : String? // optional
-    
-    
-    init(clientEphemeral : String!, clientProof : String, sRPSession: String, notificationEmail : String,
-         tfaCode : String?, authCredential: AuthCredential?) {
+// MARK: update notification email -- Response
+final class UpdateNotificationEmail: Request {
+
+    let email: String
+
+    let clientEphemeral: String // base64 encoded
+    let clientProof: String // base64 encoded
+    let SRPSession: String // hex encoded session id
+    let tfaCode: String? // optional
+
+    init(clientEphemeral: String!, clientProof: String, sRPSession: String, notificationEmail: String,
+         tfaCode: String?, authCredential: AuthCredential?) {
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
         self.SRPSession = sRPSession
         self.email = notificationEmail
         self.tfaCode = tfaCode
-        
+
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
-    var parameters: [String : Any]? {
-        
-        var out : [String : Any] = [
-            "ClientEphemeral" : self.clientEphemeral,
-            "ClientProof" : self.clientProof,
+
+    var parameters: [String: Any]? {
+
+        var out: [String: Any] = [
+            "ClientEphemeral": self.clientEphemeral,
+            "ClientProof": self.clientProof,
             "SRPSession": self.SRPSession,
-            "Email" : email
+            "Email": email
         ]
-        
+
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return SettingsAPI.settingsPath + "/email"
     }
 }
 
-// MARK : update notification email -- Response
-final class UpdateNewsRequest : Request {
-    let news : Bool
-    init(news : Bool, auth: AuthCredential? = nil) {
+// MARK: update notification email -- Response
+final class UpdateNewsRequest: Request {
+    let news: Bool
+    init(news: Bool, auth: AuthCredential? = nil) {
         self.news = news
         self.auth = auth
     }
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         let receiveNews = self.news == true ? 255 : 0
-        let out : [String : Any] = ["News" : receiveNews]
+        let out: [String: Any] = ["News": receiveNews]
         return out
     }
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return SettingsAPI.path + "/news"
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
 }
 
-final class UpdateShowImages : Request {
-    let status : Int
-    
+final class UpdateShowImages: Request {
+    let status: Int
+
     /// Initial
     ///
     /// - Parameter status: //0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
@@ -256,17 +253,17 @@ final class UpdateShowImages : Request {
         self.status = status
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["ShowImages" : status]
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = ["ShowImages": status]
         return out
     }
     var method: HTTPMethod {
@@ -277,26 +274,25 @@ final class UpdateShowImages : Request {
     }
 }
 
-
-///Response
-final class UpdateLinkConfirmation : Request {
+/// Response
+final class UpdateLinkConfirmation: Request {
     private let status: LinkOpeningMode
-    
+
     init(status: LinkOpeningMode, authCredential: AuthCredential?) {
         self.status = status
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
-    var parameters: [String : Any]? {
-        return ["ConfirmLink" : NSNumber(value: self.status == .confirmationAlert).intValue]
+
+    var parameters: [String: Any]? {
+        return ["ConfirmLink": NSNumber(value: self.status == .confirmationAlert).intValue]
     }
     var method: HTTPMethod {
         return .put
@@ -307,25 +303,25 @@ final class UpdateLinkConfirmation : Request {
 }
 
 // update login password this is only in two password mode - Response
-final class UpdateLoginPassword : Request {
-    let clientEphemeral : String //base64_encoded_ephemeral
-    let clientProof : String //base64_encoded_proof
-    let SRPSession : String //hex_encoded_session_id
-    let tfaCode : String?
-    
-    let modulusID : String //encrypted_id
-    let salt : String //base64_encoded_salt
-    let verifer : String //base64_encoded_verifier
-    
-    init(clientEphemeral : String,
-         clientProof : String,
-         SRPSession : String,
-         modulusID : String,
-         salt : String,
-         verifer : String,
-         tfaCode : String?,
+final class UpdateLoginPassword: Request {
+    let clientEphemeral: String // base64_encoded_ephemeral
+    let clientProof: String // base64_encoded_proof
+    let SRPSession: String // hex_encoded_session_id
+    let tfaCode: String?
+
+    let modulusID: String // encrypted_id
+    let salt: String // base64_encoded_salt
+    let verifer: String // base64_encoded_verifier
+
+    init(clientEphemeral: String,
+         clientProof: String,
+         SRPSession: String,
+         modulusID: String,
+         salt: String,
+         verifer: String,
+         tfaCode: String?,
          authCredential: AuthCredential?) {
-        
+
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
         self.SRPSession = SRPSession
@@ -333,34 +329,34 @@ final class UpdateLoginPassword : Request {
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
-        
+
         self.auth = authCredential
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     let auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
     }
-    
-    var parameters: [String : Any]? {
-        
-        let auth : [String : Any] = [
-            "Version" : 4,
-            "ModulusID" : self.modulusID,
-            "Salt" : self.salt,
-            "Verifier" : self.verifer
+
+    var parameters: [String: Any]? {
+
+        let auth: [String: Any] = [
+            "Version": 4,
+            "ModulusID": self.modulusID,
+            "Salt": self.salt,
+            "Verifier": self.verifer
         ]
-        
-        var out : [String : Any] = [
+
+        var out: [String: Any] = [
             "ClientEphemeral": self.clientEphemeral,
             "ClientProof": self.clientProof,
             "SRPSession": self.SRPSession,
             "Auth": auth
         ]
-        
+
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
@@ -369,7 +365,7 @@ final class UpdateLoginPassword : Request {
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return SettingsAPI.settingsPath + "/password"
     }
@@ -377,20 +373,20 @@ final class UpdateLoginPassword : Request {
 
 final class EnableFolderColorRequest: Request {
     private let isEnable: Bool
-    
+
     init(isEnable: Bool) {
         self.isEnable = isEnable
     }
-    
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         let value = self.isEnable ? 1: 0
         return ["EnableFolderColor": value]
     }
-    
+
     var path: String {
         return SettingsAPI.versionPrefix + SettingsAPI.settingsPath + "/enablefoldercolor"
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
@@ -398,20 +394,20 @@ final class EnableFolderColorRequest: Request {
 
 final class InheritParentFolderColorRequest: Request {
     private let isEnable: Bool
-    
+
     init(isEnable: Bool) {
         self.isEnable = isEnable
     }
-    
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         let value = self.isEnable ? 1: 0
         return ["InheritParentFolderColor": value]
     }
-    
+
     var path: String {
         return SettingsAPI.versionPrefix + SettingsAPI.settingsPath + "/inheritparentfoldercolor"
     }
-    
+
     var method: HTTPMethod {
         return .put
     }

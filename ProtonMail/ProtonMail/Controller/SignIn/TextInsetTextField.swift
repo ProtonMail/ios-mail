@@ -20,20 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class TextInsetTextField: UITextField {
     fileprivate let inset: CGFloat = 0
-    
+
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return super.editingRect(forBounds: bounds).insetBy(dx: inset, dy: 0)
     }
-    
+
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return super.textRect(forBounds: bounds).insetBy(dx: inset, dy: 0)
     }
-    
+
     override var isSecureTextEntry: Bool {
         didSet {
             if isFirstResponder {

@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 
@@ -28,7 +27,7 @@ public struct Sender: Codable {
     let address: String
     // Unused on iOS fields:
     //    let group: Any
-    
+
     private enum CodingKeys: String, CodingKey {
         case name = "Name"
         case address = "Address"

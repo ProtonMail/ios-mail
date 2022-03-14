@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 //
-//@objc(Address)
-//final class Address: NSObject {
+// @objc(Address)
+// final class Address: NSObject {
 //    let address_id: String
 //    let email: String   // email address name
 //    let status : Int    // 0 is disabled, 1 is enabled, can be set by user
@@ -62,10 +61,10 @@ import Foundation
 //        self.order = order ?? 0
 //    }
 //   
-//}
+// }
 //
-//// MARK: - TODO:: we'd better move to Codable or at least NSSecureCoding when will happen to refactor this part of app from Anatoly
-//extension Address: NSCoding {
+// MARK: - TODO:: we'd better move to Codable or at least NSSecureCoding when will happen to refactor this part of app from Anatoly
+// extension Address: NSCoding {
 //    func archive() -> Data {
 //        return NSKeyedArchiver.archivedData(withRootObject: self)
 //    }
@@ -121,9 +120,9 @@ import Foundation
 //        
 //        aCoder.encode(send, forKey: CoderKey.addressSend)
 //    }
-//}
+// }
 //
-//extension Array where Element : Address {
+// extension Array where Element : Address {
 //    func defaultAddress() -> Address? {
 //        for addr in self {
 //            if addr.status == 1 && addr.receive == 1 {
@@ -171,4 +170,4 @@ import Foundation
 //        }
 //        return out_array
 //    }
-//}
+// }

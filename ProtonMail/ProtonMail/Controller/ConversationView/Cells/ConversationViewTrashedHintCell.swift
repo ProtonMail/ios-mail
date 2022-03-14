@@ -29,7 +29,7 @@ protocol ConversationViewTrashedHintDelegate: AnyObject {
 class ConversationViewTrashedHintCell: UITableViewCell {
     private let customView = ConversationViewTrashedHintView()
     private weak var delegate: ConversationViewTrashedHintDelegate?
-    
+
     required init?(coder: NSCoder) {
         nil
     }
@@ -41,7 +41,7 @@ class ConversationViewTrashedHintCell: UITableViewCell {
         setUpSubviews()
         setUpLayout()
     }
-    
+
     /// Is trashed message hidden
     func setup(isTrashFolder: Bool,
                useShowButton: Bool,
@@ -56,7 +56,7 @@ class ConversationViewTrashedHintCell: UITableViewCell {
                                     action: #selector(self.clickButton),
                                     for: .touchUpInside)
     }
-    
+
     private func setUpLayout() {
         [
             customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
