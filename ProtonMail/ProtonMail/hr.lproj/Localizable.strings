@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Želite li spremiti nespremljene promjene?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
 /* Action */
 "Don't remind me again" = "Ne podsjećaj me više";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Unesite trenutni PIN kôd";
+"Enter new PIN code" = "Enter new PIN code";
 
 /* Title */
 "Enter Verification Code" = "Unesite kôd za provjeru";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Nevažeća hashirana lozinka!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Nevažeća lozinka";
-
 /* Error */
 "Invalid Password" = "Neispravna lozinka";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Učitaj sadržaj";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Load embedded images";
+
 /* No comment provided by engineer. */
 "Load images" = "Učitaj slike";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Prikaži udaljeni sadržaj";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nadimak";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No attachment found";
+
 /* Title */
 "No connectivity detected…" = "Nije otkrivena veza…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN kôd ne može biti prazan.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Planovi se mogu mijenjati u web verziji aplikacije.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Pošalji kao obični tekst, ali pohranjeno šifrirano";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Send read receipt";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Send read receipt.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Send receipt";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "This message was automatically generated";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Ova poruka istječe za %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Ova opcija će vratiti na Safari ako odabrani preglednik bude uklonjen.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Vrijeme za odmor";
 
 /* contacts talbe cell Title title */
 "Title" = "Naslov";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Otkaži pretplatu";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Unsubscribe from mailing list";
 
 /* Error message */
 "Unsupported file type" = "Nepodržana vrsta datoteke";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Nepovratno će te izbrisati poruku. Jeste li sigurni?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Vaše promjene će biti odbačene";

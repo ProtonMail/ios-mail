@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Voleu desar els canvis sense desar?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
 /* Action */
 "Don't remind me again" = "No em tornis a recordar";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduïu un codi PIN amb almenys 4 caràcters i com a màxim 21 caràcters.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Introduïu el codi PIN actual";
+"Enter new PIN code" = "Enter new PIN code";
 
 /* Title */
 "Enter Verification Code" = "Introduïu el codi de verificació";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Contrasenya amb contrasenya no vàlida!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Contrasenya incorrecta";
-
 /* Error */
 "Invalid Password" = "Contrasenya no vàlida";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Carregar contingut";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Carrega les imatges incrustades";
+
 /* No comment provided by engineer. */
 "Load images" = "Carregar imatges";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Carrega el contingut remot";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Sobrenom";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No attachment found";
+
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "El codi PIN no es pot deixar en blanc.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Els plans es poden editar a la versió web.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Enviar en text net però emmagatzemar xifrat";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Envia confirmació de lectura";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Envia confirmació de lectura.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Enviar confirmació";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Aquest missatge pot ser un intent de suplantació d’identitat. Comproveu el remitent i els continguts per assegurar-vos que són legítims.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Aquest missatge s'ha generat automàticament";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Aquest missatge caducarà d'aquí %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Aquesta preferència converteix al Safari si es desinstal·la el navegador escollit.";
-
-/* The secondary title of no result message */
-"Time to relax" = "És moment de relaxar-se";
 
 /* contacts talbe cell Title title */
 "Title" = "Títol";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Cancel·lar la subscripció";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";
 
 /* Error message */
 "Unsupported file type" = "Tipus de fitxer no suportat";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Aixó esborrarà el missatge de manera irreversible. Està segur?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Els vostres canvis es descartaran";

@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Chcete uložit provedené změny?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Chcete přesto zprávu poslat?";
+
 /* Action */
 "Don't remind me again" = "Znovu nepřípomínat";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Zadejte PIN kód o minimální délce 4 znaků. Maximální délka může být 21 znaků.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Zadejte aktuální PIN kód";
+"Enter new PIN code" = "Zadejte nový PIN kód";
 
 /* Title */
 "Enter Verification Code" = "Zadejte ověřovací kód";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Neplatný hash hesla!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Neplatné heslo";
-
 /* Error */
 "Invalid Password" = "Neplatné heslo";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Načíst obsah";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Načíst vložené obrázky";
+
 /* No comment provided by engineer. */
 "Load images" = "Načíst obrázky";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Načíst vzdálený obsah";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Přezdívka";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Žádná příloha nenalezena";
+
 /* Title */
 "No connectivity detected…" = "Bez připojení…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN kód nemůže být prázdný.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN je příliš dlouhý";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN je příliš krátký";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Plány mohou být editovány ve webové verzi.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Odeslat jako čistý text ale uložit šifrovaně";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Odeslat potvrzení o přečtení";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Odeslat potvrzení o přečtení.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Poslán účet";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Tato zpráva může být pokus o phishing. Prosím zkontrolujte odesílatele a obsah a ujistěte se, že jsou skutečné.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Tato zpráva byla vytvořena automaticky";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Platnost této zprávy vyprší za %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Tato priorita nastavení prohlížeče se vrátí zpět na Safari, pokud bude tento prohlížeč odinstalován.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Je čas relaxovat";
 
 /* contacts talbe cell Title title */
 "Title" = "Titul";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Odhlásit odběr";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Odhlásit se z odběru";
 
 /* Error message */
 "Unsupported file type" = "Nepodporovaný typ souboru";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Aktuální zpráva bude nenávratně smazána. Jste si jistý?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Všechny neuložené změny budou zahozeny";

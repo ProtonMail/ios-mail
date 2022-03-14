@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Tebɣiḍ ad teskelseḍ ibeddilen?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
 /* Action */
 "Don't remind me again" = "Ur iyi-d-smektay ara";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Sekcem tangalt PIN yesɛan gar 4 ar 21 n yisekkilen.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Sekcem tangalt PIN tamirant";
+"Enter new PIN code" = "Enter new PIN code";
 
 /* Title */
 "Enter Verification Code" = "Sekcem tangalt n uselken";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Awal uffir adwayan mačči d ameɣtu!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Yir awal uffir";
-
 /* Error */
 "Invalid Password" = "Yir awal uffir";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Sali-d agbur";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Load embedded images";
+
 /* No comment provided by engineer. */
 "Load images" = "Sali-d tugniwin";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Sali-d agbur anmeggag";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Meffer isem";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No attachment found";
+
 /* Title */
 "No connectivity detected…" = "Ulac tuqqna yettwafen…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Tangalt Pin ur tezmir ara ad tili d tilemt.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Iɣawasen zemren ad ttwaẓragen ɣef lqem web.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Azen aɣawas acu kan kles s wudem awgelhan";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Send read receipt";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Send read receipt.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Azen talɣut ɣef tuṭṭfa";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Izen-agi yezmer ad yili d aneɛruḍ n ukellex. Ttxil-k senqed amazan akked ugbur iwakken ad tḥeqqqeḍ belli d izerfanen.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "This message was automatically generated";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Izen-agi ad ifat di %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Asmenyif-a ad yuɣal ɣer Safari ma yella yettusefsex usebded n yiminig ufrin.";
-
-/* The secondary title of no result message */
-"Time to relax" = "D lawan n usgunfu";
 
 /* contacts talbe cell Title title */
 "Title" = "Azwel";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Ffeɣ seg ujerred";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Unsubscribe from mailing list";
 
 /* Error message */
 "Unsupported file type" = "Askar n ufeylu ur yettusefrak ara";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Aql-ak·akem tettedduḍ ad tekkseḍ izen ideg ulac tuɣalin ɣer deffir. Tebɣiḍ?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ibeddilen-ik•im ttwasfesxen";

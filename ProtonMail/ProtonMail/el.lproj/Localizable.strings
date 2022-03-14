@@ -815,7 +815,7 @@
 "Delete" = "Διαγραφή";
 
 /* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "Διαγράψτε %d Μηνύματα";
+"Delete %d Messages" = "Διαγραφή %d Μηνυμάτων";
 
 /* emptify folder/label confirmation alert */
 "Delete all" = "Διαγραφή όλων";
@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Θέλετε να αποθηκεύσετε τις μη αποθηκευμένες αλλαγές;";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
 /* Action */
 "Don't remind me again" = "Μην μου υπενθυμίσεις ξανά";
 
@@ -905,7 +908,7 @@
 "Draft is still uploading…" = "Το πρόχειρο εξακολουθεί να μεταφορτώνεται…";
 
 /* hint message */
-"Draft moved to trash" = "Το πρόχειρο μεταφέρθηκε στον κάδο απορριμμάτων";
+"Draft moved to trash" = "Το πρόχειρο μετακινήθηκε στα Διαγραμμένα";
 
 /* hint message */
 "Draft restored" = "Το πρόχειρο αποκαταστάθηκε";
@@ -1006,10 +1009,10 @@
 "Empty spam folder" = "Άδειασμα φακέλου ανεπιθύμητων";
 
 /* An action title shows in ellipsis menu */
-"Empty Trash" = "Άδειασμα Διαγραμμένων";
+"Empty Trash" = "Εκκαθάριση Διαγραμμένων";
 
 /* Alert title */
-"Empty trash folder" = "Άδειασμα φακέλου διαγραμμένων";
+"Empty trash folder" = "Εκκαθάριση φακέλου Διαγραμμένων";
 
 /* No comment provided by engineer. */
 "Enable conversations" = "Ενεργοποίηση συνομιλιών";
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Εισαγάγετε έναν κωδικό PIN με ελάχιστους 4 χαρακτήρες και έως 21 χαρακτήρες.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Εισαγάγετε τον τρέχοντα κωδικό PIN";
+"Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
 
 /* Title */
 "Enter Verification Code" = "Εισάγετε τον κωδικό επαλήθευσης";
@@ -1340,7 +1343,7 @@
 "Import from…" = "Εισαγωγή από…";
 
 /* Downloading attachments from cloud */
-"Importing" = "Γίνεται Εισαγωγή";
+"Importing" = "Εισαγωγή";
 
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Γίνεται εισαγωγή συνημμένου, η οποία μπορεί να πάρει λίγη ώρα";
@@ -1409,9 +1412,6 @@
 
 /* update password error */
 "Invalid hashed password!" = "Μη έγκυρος hashed κωδικός πρόσβασης!";
-
-/* The error message of entering an invalid password */
-"Invalid password" = "Μη έγκυρος κωδικός πρόσβασης";
 
 /* Error */
 "Invalid Password" = "Μη έγκυρος Κωδικός Πρόσβασης";
@@ -1507,14 +1507,18 @@
 /* No comment provided by engineer. */
 "Load content" = "Φόρτωση περιεχομένου";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Φόρτωση ενσωματωμένων εικόνων";
+
 /* No comment provided by engineer. */
 "Load images" = "Φόρτωση εικόνων";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Φόρτωση απομακρυσμένου περιεχομένου";
 
 /* (No Comment) */
-"Loading..." = "Φόρτωση...";
+"Loading..." = "Γίνεται φόρτωση...";
 
 /* No comment provided by engineer. */
 "Loading…" = "Γίνεται φόρτωση…";
@@ -1628,7 +1632,7 @@
 "Message headers" = "Επικεφαλίδες μηνύματος";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Message moved to trash";
+"Message moved to trash" = "Το μήνυμα μετακινήθηκε στα Διαγραμμένα";
 
 /* Placeholder */
 "Message Password" = "Κωδικός Πρόσβασης Μηνύματος";
@@ -1714,7 +1718,7 @@
 "Move to trash" = "Μετακίνηση στον κάδο απορριμμάτων";
 
 /* move action */
-"Move to Trash" = "Μετακίνηση στον Κάδο Απορριμμάτων";
+"Move to Trash" = "Μετακίνηση στα Διαγραμμένα";
 
 /* (No Comment) */
 "Move to..." = "Μετακίνηση σε...";
@@ -1774,6 +1778,9 @@
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Ψευδώνυμο";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No attachment found";
 
 /* Title */
 "No connectivity detected…" = "Δεν εντοπίστηκε σύνδεση…";
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Ο κωδικός PIN δεν γίνεται να είναι κενός.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Υπερβολικά μεγάλο PIN";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Υπερβολικά μικρό PIN";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Μπορείτε να επεξεργαστείτε τα πακέτα στην έκδοση web.";
@@ -2311,6 +2324,12 @@
 /* Title */
 "Send plain but stored encrypted" = "Αποστολή απλού αλλά κρυπτογραφημένη αποθήκευση";
 
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Αποστολή αποδεικτικού ανάγνωσης";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Αποστολή αποδεικτικού ανάγνωσης.";
+
 /* A button title to send read receipt */
 "Send receipt" = "Αποστολή αποδεικτικού";
 
@@ -2339,7 +2358,7 @@
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Η αποστολή μηνυμάτων από τη διεύθυνση %1$@ είναι μια λειτουργία επί πληρωμής. Το μήνυμα σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Η αποστολή θα είναι διαθέσιμη όταν αποσταλούν τα συνημμένα";
+"Sending will be available\nwhen attachments are uploaded" = "Η αποστολή θα είναι διαθέσιμη\nμετά το ανέβασμα των συνημμένων";
 
 /* menu title */
 "Sent" = "Απεσταλμένα";
@@ -2708,10 +2727,10 @@
 "There are unsent messages that will be lost if you sign out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν αποσυνδεθείτε";
 
 /* Description */
-"There was an error creating or loading the app's saved data." = "Παρουσιάστηκε σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
+"There was an error creating or loading the app's saved data." = "Προέκυψε σφάλμα κατά τη δημιουργία ή φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
 
 /* local error */
-"There was an error creating or loading the application's saved data." = "Παρουσιάστηκε ένα σφάλμα κατά τη δημιουργία ή τη φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
+"There was an error creating or loading the application's saved data." = "Προέκυψε σφάλμα κατά τη δημιουργία ή φόρτωση των αποθηκευμένων δεδομένων της εφαρμογής.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Αυτή η ενέργεια δεν γίνεται να αναιρεθεί.";
@@ -2723,7 +2742,7 @@
 "This contact belongs to your Address Book." = "Αυτή η επαφή ανήκει στο βιβλίο διευθύνσεων σας.";
 
 /* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "This conversation contains non-trashed messages.";
+"This conversation contains non-trashed messages." = "Αυτή η συνομιλία περιέχει μη διαγραμμένα μηνύματα.";
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Αυτή η συνομιλία περιέχει διαγραμμένα μηνύματα";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Αυτό το μήνυμα μπορεί να είναι απόπειρα ηλεκτρονικού \"ψαρέματος\". Ελέγξτε τον αποστολέα και το περιεχόμενο για να βεβαιωθείτε ότι είναι αυθεντικό.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Αυτό το μήνυμα παράχθηκε αυτόματα";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Αυτό το μήνυμα θα λήξει σε %1$dΜ %2$dΩ %3$dΛ";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Αυτή η προτίμηση θα επιστρέψει στο Safari εάν το πρόγραμμα περιήγησης, της επιλογής σας, θα απεγκατασταθεί.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Ώρα για χαλάρωση";
 
 /* contacts talbe cell Title title */
 "Title" = "Τίτλος";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Απεγγραφή";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Απεγγραφή από λίστα αλληλογραφίας";
 
 /* Error message */
 "Unsupported file type" = "Μη υποστηριζόμενος τύπος αρχείου";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Θα διαγράψετε το μήνυμα για πάντα. Είστε σίγουρος;";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Οι αλλαγές σας θα απορριφθούν";

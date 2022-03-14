@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Вы хотите сохранить несохранённые изменения?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Вы хотите отправить письмо в любом случае?";
+
 /* Action */
 "Don't remind me again" = "Больше не напоминать";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Введите PIN-код длиной не менее 4 символов и не более 21 символа.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Введите текущий ПИН-код";
+"Enter new PIN code" = "Введите PIN-код";
 
 /* Title */
 "Enter Verification Code" = "Введите код подтверждения";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Недопустимый хешированный пароль!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Неправильный пароль";
-
 /* Error */
 "Invalid Password" = "Неправильный пароль";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Загрузите содержимое";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Показывать встроенные изображения";
+
 /* No comment provided by engineer. */
 "Load images" = "Загрузите рисунки";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Загрузить внешнее содержимое";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Псевдоним";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Вложений не найдено";
+
 /* Title */
 "No connectivity detected…" = "Подключение не обнаружено…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN-код не может быть пустым.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-код слишком длинный";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-код слишком короткий";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Планы можно редактировать в веб-версии.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Отправляется в открытом виде, но хранится зашифрованным";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Отправить уведомление о прочтении";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Отправить уведомление о прочтении.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Отправить квитанцию";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Это сообщение может быть попыткой фишинга. Пожалуйста, проверьте отправителя и содержимое, чтобы оценить их подлинность.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Это сообщение было сгенерировано автоматически";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Это письмо будет удалено через %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Эта настройка вернётся на Safari, если выбранный браузер будет удалён.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Время отдохнуть";
 
 /* contacts talbe cell Title title */
 "Title" = "Должность";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Отписаться";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Отписаться от рассылки";
 
 /* Error message */
 "Unsupported file type" = "Неподдерживаемый тип файла";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Вы собираетесь необратимо удалить сообщение. Вы уверены?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваши изменения будут отменены";

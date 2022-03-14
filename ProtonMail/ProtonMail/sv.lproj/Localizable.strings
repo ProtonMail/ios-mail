@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[Visa hela meddelandet]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
@@ -111,7 +111,7 @@
 "A sub-folder with this name already exists in the destination folder" = "En undermapp med detta namn finns redan i målmappen";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Åtkomst till detta konto är inaktiverad på grund av utebliven betalning. Logga in via protonmail.com för att betala din obetalda faktura.";
 
 /* (No Comment) */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Åtkomst till detta konto är inaktiverat på grund av utebliven betalning.\n Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vår kunskapsbas</a> för met information.";
@@ -224,7 +224,7 @@
 "All Mail" = "All e-post";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon logging out of the app." = "All protection settings will be reset and wiped upon logging out of the app.";
+"All protection settings will be reset and wiped upon logging out of the app." = "Alla skyddsinställningar kommer att återställas och tas bort när du loggar ut från appen.";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Tillåt alternativ routing";
@@ -781,7 +781,7 @@
 "DECRYPT MAILBOX" = "AVKRYPTERA BREVLÅDA";
 
 /* Description */
-"Decrypt token failed. Please try again." = "Decrypt token failed. Please try again.";
+"Decrypt token failed. Please try again." = "Dekrypteringen av token misslyckades. Försök igen.";
 
 /* error title */
 "Decryption error" = "Dekrypteringsfel";
@@ -790,7 +790,7 @@
 "Decryption of this content failed" = "Dekryptering av innehållet misslyckades";
 
 /* error details */
-"decryption of this message's encrypted content failed." = "decryption of this message's encrypted content failed.";
+"decryption of this message's encrypted content failed." = "dekryptering av det här meddelandets krypterade innehåll misslyckades.";
 
 /* Title */
 "Default" = "Standard";
@@ -884,6 +884,9 @@
 
 /* Title */
 "Do you want to save the unsaved changes?" = "Vill du spara de osparade ändringarna?";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Vill du skicka ditt meddelande ändå?";
 
 /* Action */
 "Don't remind me again" = "Påminn mig inte igen";
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Ange en PIN-kod med minst 4 tecken och högst 21 tecken.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Ange nuvarande PIN-kod";
+"Enter new PIN code" = "Ange ny PIN-kod";
 
 /* Title */
 "Enter Verification Code" = "Ange verifieringskod";
@@ -1132,7 +1135,7 @@
 "Error sending" = "Fel vid sändning";
 
 /* lock app option */
-"Every time enter app" = "Every time enter app";
+"Every time enter app" = "Varje gång appen öppnas";
 
 /* The title of voice over action of expanding the folder */
 "Expand folder" = "Expandera mapp";
@@ -1202,7 +1205,7 @@
 "For organizations that need multi-user support and additional productivity features" = "För organisationer som behöver stöd för flera användare och ytterligare produktivitetsfunktioner";
 
 /* Service Plan description */
-"For power users and groups of people that value full anonymity and privacy" = "For power users and groups of people that value full anonymity and privacy";
+"For power users and groups of people that value full anonymity and privacy" = "För superanvändare och grupper av människor som värdesätter fullständig anonymitet och integritet";
 
 /* The title of alert that the app is not having the permission to access photo library */
 "Forbidden" = "Förbjudet";
@@ -1387,7 +1390,7 @@
 "Input Display Name…" = "Ange visningsnamn…";
 
 /* place holder */
-"Input Notification Email …" = "Input Notification Email …";
+"Input Notification Email …" = "Infoga e-postavisering…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Osäker anslutning";
@@ -1409,9 +1412,6 @@
 
 /* update password error */
 "Invalid hashed password!" = "Ogiltigt hashat lösenord!";
-
-/* The error message of entering an invalid password */
-"Invalid password" = "Ogiltigt lösenord";
 
 /* Error */
 "Invalid Password" = "Ogiltigt lösenord";
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Ladda innehåll";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Ladda inbäddade bilder";
+
 /* No comment provided by engineer. */
 "Load images" = "Ladda bilder";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Ladda fjärrinnehåll";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Smeknamn";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Ingen bilaga hittades";
+
 /* Title */
 "No connectivity detected…" = "Ingen anslutning upptäcktes…";
 
@@ -1818,10 +1825,10 @@
 "Not set" = "Inte inställd";
 
 /* Signup user name notes */
-"Note: The Username is also your ProtonMail address." = "Note: The Username is also your ProtonMail address.";
+"Note: The Username is also your ProtonMail address." = "Obs: Användarnamnet är också din ProtonMail-adress.";
 
 /* setup password notes */
-"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.";
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Obs: Detta används för att kryptera och dekryptera dina meddelanden. Tappa inte bort detta lösenord, vi kan inte återställa det.";
 
 /* setup password notes */
 "Note: This is used to log you into your account." = "Obs: Detta används för att logga in på ditt konto.";
@@ -1983,6 +1990,12 @@
 /* Description */
 "PIN code can't be empty." = "PIN-koden kan inte vara tom.";
 
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-koden är för lång";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-koden är för kort";
+
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Plans can be edited on the web version.";
 
@@ -2065,13 +2078,13 @@
 "Please upgrade your plan to continue to send and receive emails." = "Vänligen uppgradera din plan för att fortsätta skicka och ta emot e-post.";
 
 /* Description */
-"Please use ProtonMail App sign-in first." = "Please use ProtonMail App sign-in first.";
+"Please use ProtonMail App sign-in first." = "Använd ProtonMail App-inloggning först.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Använd webbapplikationen för att återställa ditt lösenord.";
 
 /* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of ProtonMail to change your mailbox password!";
+"Please use the web version of ProtonMail to change your mailbox password!" = "Använd webbversionen av ProtonMail för att ändra lösenord för din brevlåda!";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords!" = "Använd webbversionen av ProtonMail för att ändra dina lösenord!";
@@ -2113,10 +2126,10 @@
 "ProtonMail" = "ProtonMail";
 
 /* (No Comment) */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail säljer inte annonser eller missbrukar din integritet. Ditt stöd är viktigt för att hålla ProtonMail igång. Du kan uppgradera till ett betalt konto eller donera för att stödja ProtonMail.";
 
 /* Title */
-"ProtonMail encrypted emails" = "ProtonMail encrypted emails";
+"ProtonMail encrypted emails" = "ProtonMail krypterad e-post";
 
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail är f.n. offline, kolla vår twitter för aktuell status: https://twitter.com/protonmail";
@@ -2248,7 +2261,7 @@
 "Report Phishing" = "Rapportera nätfiske";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Om du rapporterar ett meddelande som ett nätfiskeförsök skickas meddelandet till oss, så att vi kan analysera det och förbättra våra filter. Det betyder att vi kommer att kunna se innehållet i meddelandet i sin helhet.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Begär länkbekräftelse";
@@ -2311,6 +2324,12 @@
 /* Title */
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
 
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Skicka läskvitto";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Skicka läskvitto.";
+
 /* A button title to send read receipt */
 "Send receipt" = "Skicka kvitto";
 
@@ -2321,7 +2340,7 @@
 "Sender details" = "Avsändardetaljer";
 
 /* encryption lock description */
-"Sender Verification Failed" = "Sender Verification Failed";
+"Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Misslyckades att skicka";
@@ -2336,7 +2355,7 @@
 "Sending message…" = "Skickar meddelande…";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Att skicka meddelanden från %1$@-adress är en betalfunktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
 
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Sending will be available\nwhen attachments are uploaded";
@@ -2351,7 +2370,7 @@
 "Sent by ProtonMail with zero access encryption" = "Sent by ProtonMail with zero access encryption";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Sent by you with end-to-end encryption";
+"Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
 
 /* Description */
 "Sent Failed" = "Kunde inte skicka";
@@ -2375,7 +2394,7 @@
 "Set PIN code" = "Ställ in PIN-kod";
 
 /* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Set up swipe gestures to access most used actions.";
+"Set up swipe gestures to access most used actions." = "Ställ in svepgester för att komma åt de mest använda åtgärderna.";
 
 /* menu title */
 "Settings" = "Inställningar";
@@ -2425,7 +2444,7 @@
 "Signed in as %@" = "Inloggad som %@";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Signed out from %1$@ and signed in with %2$@";
+"Signed out from %@ and signed in with %@" = "Loggade ut från %1$@ och loggade in med %2$@";
 
 /* Onboarding title */
 "Simply private" = "Helt enkelt privat";
@@ -2440,7 +2459,7 @@
 "Snooze Notifications" = "Skjut upp aviseringar";
 
 /* title of action sheet when quick snooze is active (Snoozed for 30min) */
-"Snoozed for" = "Snoozed for";
+"Snoozed for" = "Uppskjuten i";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Uppskjuten till";
@@ -2475,7 +2494,7 @@
 "Star" = "Stjärnmärk";
 
 /* Title */
-"Star/unstar" = "Star/unstar";
+"Star/unstar" = "Stjärnmärk/ta bort stjärnmärking";
 
 /* "Spam" */
 "Starred" = "Stjärnmärkt";
@@ -2522,7 +2541,7 @@
 "Subscription" = "Prenumeration";
 
 /* Fetch subscription data failed */
-"Subscription information temporarily unavailable. Please try again later." = "Subscription information temporarily unavailable. Please try again later.";
+"Subscription information temporarily unavailable. Please try again later." = "Prenumerationsinformation är tillfälligt otillgänglig. Försök igen senare.";
 
 /* Service plan capability; i = 2 */
 "Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. user@yourdomain.com)";
@@ -2543,7 +2562,7 @@
 "Swipe Right to Left" = "Svep höger till vänster";
 
 /* No comment provided by engineer. */
-"Swipe to set up swipable actions" = "Swipe to set up swipable actions";
+"Swipe to set up swipable actions" = "Svep för att ställa in svepbara åtgärder";
 
 /* The title of swipe banner after swiping to label conversations */
 "swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
@@ -2604,7 +2623,7 @@
 "The 2 passwords are not matching" = "De två lösenorden matchar inte";
 
 /* Description */
-"The authentication credentials are invalid." = "The authentication credentials are invalid.";
+"The authentication credentials are invalid." = "Autentiseringsuppgifterna är ogiltiga.";
 
 /* (No Comment) */
 "The authentication token has expired." = "The authentication token has expired.";
@@ -2653,7 +2672,7 @@
 "The new password not match" = "Lösenorden matchar inte";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your sign-in password if you forget it." = "The optional recovery email address allows you to reset your sign-in password if you forget it.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "Den valfria e-postadressen för återställning låter dig återställa ditt inloggningslösenord om du glömmer det.";
 
 /* update password error */
 "The Password is wrong." = "Lösenordet är fel.";
@@ -2686,7 +2705,7 @@
 "The total attachment size can't be bigger than 25MB" = "Den totala storleken på bilagan får inte vara större än 25 MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Den URL du försöker komma åt är inte standard och kanske inte laddas korrekt. Vill du öppna den med enhetens standardwebbläsare?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Användaren är redan inloggad";
@@ -2708,10 +2727,10 @@
 "There are unsent messages that will be lost if you sign out" = "Det finns osända meddelanden som går förlorade om du loggar ut";
 
 /* Description */
-"There was an error creating or loading the app's saved data." = "There was an error creating or loading the app's saved data.";
+"There was an error creating or loading the app's saved data." = "Det gick inte att skapa eller ladda appens sparade data.";
 
 /* local error */
-"There was an error creating or loading the application's saved data." = "There was an error creating or loading the application's saved data.";
+"There was an error creating or loading the application's saved data." = "Det gick inte att skapa eller ladda applikationens sparade data.";
 
 /* Alert message when user tries to delete label */
 "This action cannot be undone." = "Denna åtgärd kan inte ångras.";
@@ -2758,23 +2777,23 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Detta meddelande kan vara ett nätfiskeförsök. Kontrollera avsändaren och innehållet för att säkerställa att de är legitima.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Detta meddelande genererades automatiskt";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Detta meddelande upphör om %1$dD %2$dT %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Denna inställning kommer att falla tillbaka till Safari om den valda webbläsaren kommer att avinstalleras.";
 
-/* The secondary title of no result message */
-"Time to relax" = "Dags att koppla av";
-
 /* contacts talbe cell Title title */
 "Title" = "Titel";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "TLS-certifikatvalidering misslyckades. Din anslutning kan övervakas och appen är tillfälligt blockerad för din säkerhet.\n\n byt nätverk omedelbart";
 
 /* message To: feild
    Title */
@@ -2905,7 +2924,7 @@
 "Unable to send the email" = "Kan inte skicka e-postmeddelandet.";
 
 /* No comment provided by engineer. */
-"Undisclosed Recipients" = "Undisclosed Recipients";
+"Undisclosed Recipients" = "Icke avslöjad mottagare";
 
 /* Action */
 "Undo" = "Ångra";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Avsluta prenumeration";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Avregistrera dig från e-postlista";
 
 /* Error message */
 "Unsupported file type" = "Filtyp som inte stöds";
@@ -3034,7 +3056,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Varning: Du kan inte skicka e-post förrän du bekräftar att du inte är en robot!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Varning: Du har inte angett en e-postadress för återställning så kontoåterställning är omöjlig om du glömmer ditt lösenord. Fortsätt utan e-postadress för återställning?";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunde inte skicka ditt meddelande, p.g.a. en svag nätverksanslutning. Ditt meddelande sparades i Utkast och skickas automatiskt nästa gång du öppnar appen.";
@@ -3115,7 +3137,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Du inaktiverade Face ID i dina systeminställningar. Face ID har använts för att skydda viktig kontoinformation. För åtkomst till ditt konto, gå till inställningar och återaktivera Face ID, eller logga in igen.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Du kommer att ta bort meddelandet oåterkalleligt. Är du säker?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Your changes will be discarded";
