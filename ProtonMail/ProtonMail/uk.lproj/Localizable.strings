@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Хочете зберегти останні зміни?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Усе одно хочете надіслати повідомлення?";
+
 /* Action */
 "Don't remind me again" = "Більше не нагадувати";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Введіть ПІН-код від 4 до 21 символів.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Введіть поточний PIN-код";
+"Enter new PIN code" = "Введіть ПІН-код";
 
 /* Title */
 "Enter Verification Code" = "Введіть код перевірки";
@@ -1244,7 +1247,7 @@
 "general_conversation" = "general_conversation";
 
 /* message number */
-"general_message" = "звичайне_повідомлення";
+"general_message" = "general_message";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Отримати %@";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Неправильний хешований пароль!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Неправильний пароль";
-
 /* Error */
 "Invalid Password" = "Неправильний пароль";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Завантажити вміст";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Завантажити вбудовані зображення";
+
 /* No comment provided by engineer. */
 "Load images" = "Завантажити зображення";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Завантажувати зовнішній вміст";
 
 /* (No Comment) */
@@ -1530,7 +1534,7 @@
 
 /* *
  *  file string type */
-"Localizable.strings" = "Основні";
+"Localizable.strings" = "Base";
 
 /* menu title */
 "Lock The App" = "Замкнути програму";
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Псевдонім";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Вкладення не знайдено";
+
 /* Title */
 "No connectivity detected…" = "Не виявлено з'єднань…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "ПІН-код не може бути порожнім.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "ПІН-код задовгий";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "ПІН-код закороткий";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Тарифні плани можна змінювати у вебверсії.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Надіслано звичайним, але збережено зашифрованим";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Надіслати підтвердження прочитання";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Надіслати підтвердження прочитання.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Надіслати квитанцію";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Це повідомлення може бути спробою шахрайства. Перевірте відправника та вміст повідомлення, щоб переконатися в їх справжності.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Це повідомлення згенеровано автоматично";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Цей параметр відкриватиме Safari, якщо вибраний браузер не встановлено.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Час відпочити";
 
 /* contacts talbe cell Title title */
 "Title" = "Посада";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Відписатися";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Відписатися від розсилки";
 
 /* Error message */
 "Unsupported file type" = "Непідтримуваний тип файлу";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Ви збираєтеся остаточно видалити повідомлення. Ви впевнені?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваші зміни будуть відхилені";

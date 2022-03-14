@@ -101,7 +101,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個對話</string>
+			<string>%d 個會話</string>
 		</dict>
 	</dict>
 	<key>clean_message_warning</key>
@@ -169,7 +169,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個對話</string>
+			<string>%d 個會話</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ 已加標籤</string>
@@ -197,7 +197,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>%d 個對話</string>
+			<string>%d 個會話</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@ 已移至 %@</string>

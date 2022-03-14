@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Anda ingin menyimpan perubahan?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Apakah Anda tetap ingin mengirim surel ini?";
+
 /* Action */
 "Don't remind me again" = "Jangan ingatkan saya lagi";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Masukkan sebuah kode PIN dengan min 4 karakter dan maks 21 karakter.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Masukkan kode PIN";
+"Enter new PIN code" = "Masukkan kode PIN baru";
 
 /* Title */
 "Enter Verification Code" = "Masukkan kode verifikasi";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Sandi hash tidak valid!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Kata sandi tidak valid";
-
 /* Error */
 "Invalid Password" = "Kata Sandi tidak valid";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Muat konten";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Muat gambar-gambar yang tersemat";
+
 /* No comment provided by engineer. */
 "Load images" = "Muat gambar";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Muat remote content";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nama Panggilan";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Tidak ada lampiran yang ditemukan";
+
 /* Title */
 "No connectivity detected…" = "Konektivitas tidak terdeteksi…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Kode PIN tidak boleh kosong.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Kode PIN terlalu panjang";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Kode PIN terlalu pendek";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Paket rencana dapat disunting di versi web.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Kirim secara polosan tapi simpan dengan enkripsi";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Kirim tanda terima";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Kirim tanda terima.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Kirim bukti baca";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Pesan ini mungkin phishing. Mohon periksa pengirim dan isi pesan untuk memastikan keasliannya.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Pesan ini dihasilkan secara otomatis";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Prefensi ini akan kembali ke Safari jika peramban pilihan akan di hapus.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Waktunya bersantai";
 
 /* contacts talbe cell Title title */
 "Title" = "Gelar";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Berhenti berlangganan";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Berhenti berlangganan dari milis";
 
 /* Error message */
 "Unsupported file type" = "Tipe berkas tidak didukung";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Anda akan menghapus pesan ini secara permanen. Apakah Anda yakin?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Anda sudah menggunakan pembaruan terakhir";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Perubahan Anda akan dibatalkan";

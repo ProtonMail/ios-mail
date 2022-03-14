@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Möchten Sie die Änderungen speichern?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Möchtest du deine Nachricht dennoch senden?";
+
 /* Action */
 "Don't remind me again" = "Nicht erneut erinnern";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "PIN-Code mit min. 4 und max. 21 Zeichen eingeben.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Aktuelle PIN eingeben";
+"Enter new PIN code" = "Neuen PIN-Code eingeben";
 
 /* Title */
 "Enter Verification Code" = "Bestätigungscode eingeben";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Ungültiger Passwordhash!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Ungültiges Passwort";
-
 /* Error */
 "Invalid Password" = "Ungültiges Passwort";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Inhalt laden";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Eingebettete Bilder laden";
+
 /* No comment provided by engineer. */
 "Load images" = "Grafiken laden";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Inhalte aus externen Quellen laden";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Spitzname";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Kein Anhang gefunden";
+
 /* Title */
 "No connectivity detected…" = "Keine Verbindung gefunden…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Der PIN-Code muss angegeben werden.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN ist zu lang";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN ist zu kurz";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Pakete/Tarife/Abo können in der Web-Version angepasst werden.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Unverschlüsselt senden, aber verschlüsselt speichern";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Lesebestätigung senden";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Lesebestätigung senden.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Empfangsbestätigung senden";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfen Sie den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Diese Nachricht wurde automatisch generiert";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Diese Nachricht verfällt in %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Diese Einstellung bewirkt, dass auf Safari zurückgegriffen wird, wenn der ausgewählte Browser deinstalliert wird.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Zeit zum Entspannen";
 
 /* contacts talbe cell Title title */
 "Title" = "Titel";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Abonnement beenden";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Aus Verteilerliste austragen";
 
 /* Error message */
 "Unsupported file type" = "Nicht unterstützter Dateityp";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Die Nachricht wird unwiderruflich gelöscht. Sind Sie sicher?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Du bist auf dem aktuellsten Stand";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ihre Änderungen werden verworfen";

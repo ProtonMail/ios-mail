@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Gem ugemte ændringer?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
 /* Action */
 "Don't remind me again" = "Påmind mig ikke igen";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Indtast aktuel pinkode";
+"Enter new PIN code" = "Enter new PIN code";
 
 /* Title */
 "Enter Verification Code" = "Angiv bekræftelseskode";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Ugyldig hashet adgangskode!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Ugyldig adgangskode";
-
 /* Error */
 "Invalid Password" = "Ugyldig adgangskode";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Indlæs indhold";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Load embedded images";
+
 /* No comment provided by engineer. */
 "Load images" = "Indlæs billeder";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Indlæs fjernindhold";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Kaldenavn";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "No attachment found";
+
 /* Title */
 "No connectivity detected…" = "Ingen forbindelse fundet…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Send som simpel, men gem som krypteret";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Send read receipt";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Send read receipt.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Send kvittering";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "This message was automatically generated";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Denne besked udløber om %1$dD %2$dT %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Denne præference vil gå tilbage til Safari, hvis den valgte browser afinstalleres.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Tid til afslapning";
 
 /* contacts talbe cell Title title */
 "Title" = "Titel";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Afmeld abonnement";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Unsubscribe from mailing list";
 
 /* Error message */
 "Unsupported file type" = "Uunderstøttet filtype";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Du vil slette meddelelsen uigenkaldeligt. Er du sikker?";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Din ændringer vil blive kasseret";

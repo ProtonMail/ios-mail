@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Doriți să salvați modificările nesalvate?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Doriți să trimiteți mesajul așa?";
+
 /* Action */
 "Don't remind me again" = "Nu-mi mai reaminti";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Introduceţi codul PIN actual";
+"Enter new PIN code" = "Introduceți noul cod PIN";
 
 /* Title */
 "Enter Verification Code" = "Introducere cod de verificare";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Parolă generată nevalidă!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Parolă nevalidă";
-
 /* Error */
 "Invalid Password" = "Parolă nevalidă";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Încărcare conținut";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Încărcare imagini integrate";
+
 /* No comment provided by engineer. */
 "Load images" = "Încărcare imagini";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Încărcare conținut extern";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Porecla";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Nu s-a găsit niciun atașament";
+
 /* Title */
 "No connectivity detected…" = "Nu există conexiune…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Codul PIN nu poate fi gol.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Codul PIN este prea lung.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Codul PIN este prea scurt.";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Planurile pot fi editate pe versiunea web.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Trimitere ca text simplu, dar stocat criptat";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Trimite confirmare citire";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Trimite confirmare citire.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Trimite confirmare";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Acest mesaj poate fi o încercare de înșelăciune. Verificați expeditorul și conținutul pentru a vă asigura că acestea sunt legitime.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Acest mesaj a fost generat automat";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Acest mesaj va expira peste %1$dD %2$dH %3$dM";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Timp de relaxare";
 
 /* contacts talbe cell Title title */
 "Title" = "Adresare";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Dezabonare";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";
 
 /* Error message */
 "Unsupported file type" = "Tip de fișier nesuportat";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Veți șterge mesajul în mod ireversibil. Sunteți sigur?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Aveți ultima versiune";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Modificările vor fi anulate";

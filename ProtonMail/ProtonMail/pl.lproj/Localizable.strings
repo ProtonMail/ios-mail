@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Czy chcesz zapisać zmiany?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Czy chcesz wysłać tę wiadomość mimo to?";
+
 /* Action */
 "Don't remind me again" = "Nie przypominaj";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Wpisz kod PIN zawierający od 4 do 21 cyfr.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Wpisz obecny kod PIN";
+"Enter new PIN code" = "Wpisz nowy kod PIN";
 
 /* Title */
 "Enter Verification Code" = "Wpisz kod weryfikacyjny";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Kryptograficzny skrót hasła jest nieprawidłowy!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Hasło jest nieprawidłowe";
-
 /* Error */
 "Invalid Password" = "Hasło jest nieprawidłowe";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Załaduj zawartość";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Załaduj osadzone obrazy";
+
 /* No comment provided by engineer. */
 "Load images" = "Załaduj obrazy";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Załaduj zawartość zdalną";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Pseudonim";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Nie znaleziono załącznika";
+
 /* Title */
 "No connectivity detected…" = "Wykryto brak połączenia…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Kod PIN nie może być pusty.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Kod PIN jest zbyt długi";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Kod PIN jest zbyt krótki";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Edytowanie planów jest dostępne przez przeglądarkę.";
@@ -2248,7 +2261,7 @@
 "Report Phishing" = "Zgłoś próbę wyłudzenia informacji";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Zgłoszenie wiadomości jako próby wyłudzenia informacji, prześle ją do nas w celu dalszej analizy i ulepszania filtrów antyspamowych. Oznacza to, że będziemy mogli zobaczyć jej pełną treść.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Zgłoszenie wiadomości jako próby wyłudzenia informacji spowoduje wysłanie jej do nas w celu analizy i ulepszania filtrów antyspamowych. Oznacza to, że będziemy mogli zobaczyć pełną treść wiadomości.";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Potwierdź otwieranie linków";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Wyślij jako zwykły tekst, ale przechowuj w formie zaszyfrowanej";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Wyślij potwierdzenie odczytu";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Wyślij potwierdzenie odczytu.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Wyślij potwierdzenie";
@@ -2686,7 +2705,7 @@
 "The total attachment size can't be bigger than 25MB" = "Całkowity rozmiar załącznika nie może być większy niż 25MB";
 
 /* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp, nie jest standardowy i może nie wczytać się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp, nie jest standardowy i może nie załadować się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Użytkownik jest już zalogowany";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ta wiadomość może być próbą wyłudzenia informacji. Upewnij się, czy nadawca wiadomości i jej treść są wiarygodne.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Wiadomość została wygenerowana automatycznie";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Ta wiadomość wygaśnie za %1$dd %2$dg %3$dmin";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "To ustawienie zostanie przywrócone do przeglądarki Safari, jeśli obecnie wybrana przeglądarka zostanie odinstalowana.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Czas na odpoczynek";
 
 /* contacts talbe cell Title title */
 "Title" = "Tytuł";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Anuluj subskrypcję";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Anuluj subskrypcję z listy mailingowej";
 
 /* Error message */
 "Unsupported file type" = "Typ pliku jest nieobsługiwany";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Zamierzasz nieodwracalnie usunąć wiadomość. Czy na pewno chcesz wykonać tę akcję?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Jesteś na bieżąco";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Zmiany zostaną odrzucone";

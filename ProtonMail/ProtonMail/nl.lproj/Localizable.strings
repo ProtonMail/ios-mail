@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Wilt u de wijzigingen opslaan?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Wilt u de e-mail toch versturen?";
+
 /* Action */
 "Don't remind me again" = "Niet opnieuw herinneren";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Voer huidige PIN-code in";
+"Enter new PIN code" = "Voer nieuwe PIN-code in";
 
 /* Title */
 "Enter Verification Code" = "Voer verificatiecode in";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Ongeldige wachtwoordhash!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Ongeldig wachtwoord";
-
 /* Error */
 "Invalid Password" = "Ongeldig wachtwoord";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Inhoud laden";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Ingesloten afbeeldingen laden";
+
 /* No comment provided by engineer. */
 "Load images" = "Afbeeldingen laden";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Externe inhoud laden";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Bijnaam";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Geen bijlage gevonden";
+
 /* Title */
 "No connectivity detected…" = "Geen netwerkverbinding gedetecteerd…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is te lang";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is te kort";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementen kunnen worden bewerkt op de webversie.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Verzend plain maar opgeslagen versleuteld";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Leesbevestiging verzenden";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Leesbevestiging vernzenden.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Ontvangstbewijs versturen";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Dit bericht is mogelijk een poging tot phishing. Controleer de afzender en de inhoud om te controleren dat de afzender van het bericht van legitiem is.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Dit bericht werd automatisch gegenereerd";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Dit bericht verloopt over %1$dd %2$du %3$dm";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Deze voorkeur zal terugvallen op Safari als de browser van uw keuze wordt verwijderd.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Tijd om te ontspannen";
 
 /* contacts talbe cell Title title */
 "Title" = "Aanhef";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Afmelden";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Afmelden van mailinglijst";
 
 /* Error message */
 "Unsupported file type" = "Niet-ondersteund bestandstype";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "U gaat het bericht onherroepelijk verwijderen. Weet u het zeker?";
+
+/* The secondary title of no result message */
+"You're up to date" = "U bent helemaal bij";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Uw wijzigingen worden ongedaan gemaakt";

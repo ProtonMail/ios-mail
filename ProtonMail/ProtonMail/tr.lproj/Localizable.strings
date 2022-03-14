@@ -86,7 +86,7 @@
 "1 Message moved to archive" = "1 ileti arşive taşındı";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 ileti istenmeyenlere taşındı";
+"1 Message moved to spam" = "1 ileti istenmeyen kutusuna taşındı";
 
 /* 2fa verification failed */
 "2FA failed. Please try to sign in again." = "Kimlik iki aşamada doğrulanamadı. Yeniden oturum açmayı deneyin.";
@@ -195,7 +195,7 @@
 "Add organization" = "Kuruluş ekle";
 
 /* The button text for add profile picture */
-"Add photo" = "Fotoğraf ekle";
+"Add photo" = "Görsel ekle";
 
 /* mark message star */
 "Add Star" = "Yıldız koy";
@@ -221,7 +221,7 @@
 /* mail location desc
    mail location title
    menu title */
-"All Mail" = "Tüm postalar";
+"All Mail" = "Tüm e-postalar";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon logging out of the app." = "Uygulama oturumu kapatıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecek.";
@@ -335,7 +335,7 @@
 "At least one recipient email address is improperly formatted, please double check them." = "En az bir alıcı adresinin biçimi yanlış. Lütfen adresleri iki kez kontrol edin.";
 
 /* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi ya da etki alanı bulunamadı veya biçimi hatalı. İleti taslaklara taşındı.";
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi ya da etki alanı bulunamadı veya biçimi hatalı. İleti taslaklar kutusuna taşındı.";
 
 /* No comment provided by engineer. */
 "attachment" = "ek dosya";
@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Değişiklikleri kaydetmek istiyor musunuz?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "İletinizi yine de göndermek istiyor musunuz?";
+
 /* Action */
 "Don't remind me again" = "Bir daha hatırlatma";
 
@@ -905,7 +908,7 @@
 "Draft is still uploading…" = "Taslak hala yükleniyor…";
 
 /* hint message */
-"Draft moved to trash" = "Taslak çöp kutusuna taşındı";
+"Draft moved to trash" = "Taslak çöpe atıldı";
 
 /* hint message */
 "Draft restored" = "Taslak geri yüklendi";
@@ -1000,10 +1003,10 @@
 "Empty Label" = "Etiketi boşalt";
 
 /* An action title shows in ellipsis menu */
-"Empty Spam" = "İstenmeyenleri boşalt";
+"Empty Spam" = "İstenmeyen kutusunu boşalt";
 
 /* Alert title */
-"Empty spam folder" = "İstenmeyenler klasörünü boşalt";
+"Empty spam folder" = "İstenmeyen kutusunu boşalt";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Çöp kutusunu boşalt";
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "4 ile 21 karakter arasında bir PIN kodu yazın.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Geçerli PIN kodunu yazın";
+"Enter new PIN code" = "Yeni PIN kodunu yazın";
 
 /* Title */
 "Enter Verification Code" = "Doğrulama kodunu yazın";
@@ -1199,7 +1202,7 @@
 "for one year" = "bir yıl için";
 
 /* Service Plan description */
-"For organizations that need multi-user support and additional productivity features" = "Çoklu kullanıcı desteğine ve ek verimlilik özelliklerine gerek duyan kuruluşlar için";
+"For organizations that need multi-user support and additional productivity features" = "Çok kullanıcı desteğine ve ek verimlilik özelliklerine gerek duyan kuruluşlar için";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Tam bir anonimlik ve kişisel gizliliğe değer veren uzman kişi ve kullanıcılar için";
@@ -1256,7 +1259,7 @@
 "Get Started" = "Başlayalım";
 
 /* title of alert acton of incorrect email format error */
-"Go to drafts" = "Taslaklara git";
+"Go to drafts" = "Taslaklar kutusuna git";
 
 /* Action */
 "Go to inbox" = "Gelen kutusuna git";
@@ -1346,7 +1349,7 @@
 "Importing attachment, that can take a while" = "Ek dosya içe aktarılıyor, biraz zaman alabilir";
 
 /* import contact title */
-"Importing Contacts" = "Kişiler içe aktarılıyor";
+"Importing Contacts" = "Kişileri içe aktarma";
 
 /* network troubleshot cell title */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "Bu seçenek, Proton sitelerinin engellenmesi durumunda, uygulamanın Proton ağına ulaşmak için alternatif ağ yöneltmesini denemesini sağlar. Böylece güvenlik duvarlarını veya ağ sorunlarını aşılabilir. Daha fazla güvenilirlik için bu ayarı açık tutmanızı öneririz. [Ayrıntılı bilgi alın]";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Karılmış parola geçersiz!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Parola geçersiz";
-
 /* Error */
 "Invalid Password" = "Parola geçersiz";
 
@@ -1438,24 +1438,24 @@
 "Keep me updated about new features" = "Yeni özellikleri bana bildir";
 
 /* Error */
-"Key generation failed" = "Anahtar üretilemedi";
+"Key generation failed" = "Anahtar oluşturulamadı";
 
 /* Error */
-"Key generation failed. Please try again." = "Anahtar üretilemedi. Lütfen yeniden deneyin.";
+"Key generation failed. Please try again." = "Anahtar oluşturulamadı. Lütfen yeniden deneyin.";
 
 /* Error */
 "Key invalid. Please go back and try again." = "Anahtar geçersiz. Lütfen geri dönüp yeniden deneyin.";
 
 /* No comment provided by engineer. */
-"Label as" = "Şöyle etiketle";
+"Label as" = "Etiketle";
 
 /* *
  *  MoreOptionsView */
-"Label as..." = "Şöyle etiketle...";
+"Label as..." = "Etiketle...";
 
 /* The title of the label as action in action sheet
    Title */
-"Label as…" = "Şöyle etiketle…";
+"Label as…" = "Etiketle…";
 
 /* (No Comment) */
 "Label Management" = "Etiket yönetimi";
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "İçeriği yükle";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Gömülü görselleri yükle";
+
 /* No comment provided by engineer. */
 "Load images" = "Görselleri yükle";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Uzak içeriği yükle";
 
 /* (No Comment) */
@@ -1628,7 +1632,7 @@
 "Message headers" = "İleti üst bilgileri";
 
 /* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "İleti çöp kutusuna taşındı";
+"Message moved to trash" = "İleti çöpe atıldı";
 
 /* Placeholder */
 "Message Password" = "İleti parolası";
@@ -1680,7 +1684,7 @@
 "Move to" = "Şuraya taşı";
 
 /* move action */
-"Move to All Mail" = "Tüm postalara taşı";
+"Move to All Mail" = "Tüm e-postalar kutusuna taşı";
 
 /* Action title of move to archive */
 "Move to archive" = "Arşive taşı";
@@ -1689,7 +1693,7 @@
 "Move to Archive" = "Arşive taşı";
 
 /* move action */
-"Move to Draft" = "Taslaklara taşı";
+"Move to Draft" = "Taslaklar kutusuna taşı";
 
 /* folder apply - title */
 "Move to Folder" = "Klasöre taşı";
@@ -1705,16 +1709,16 @@
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
-"Move to spam" = "İstenmeyenlere taşı";
+"Move to spam" = "İstenmeyen kutusuna taşı";
 
 /* move action */
-"Move to Spam" = "İstenmeyenlere taşı";
+"Move to Spam" = "İstenmeyen kutusuna taşı";
 
 /* The title of the remove action in action sheet */
-"Move to trash" = "Çöp kutusuna taşı";
+"Move to trash" = "Çöpe at";
 
 /* move action */
-"Move to Trash" = "Çöp kutusuna taşı";
+"Move to Trash" = "Çöpe at";
 
 /* (No Comment) */
 "Move to..." = "Şuraya taşı...";
@@ -1724,7 +1728,7 @@
 "Move to…" = "Şuraya taşı…";
 
 /* Title */
-"Multiple Addresses" = "Çoklu adresler";
+"Multiple Addresses" = "Birden çok adres";
 
 /* title */
 "Name" = "Ad";
@@ -1774,6 +1778,9 @@
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Takma ad";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Herhangi bir ek dosya bulunamadı";
 
 /* Title */
 "No connectivity detected…" = "Herhangi bir bağlantı bulunamadı…";
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "Pin kodu boş olamaz.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN kodu çok uzun";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN kodu çok kısa";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Tarifeler masaüstü sürümünden yönetilebilir.";
@@ -2311,8 +2324,14 @@
 /* Title */
 "Send plain but stored encrypted" = "Düz gönderilsin ama şifrelenmiş saklansın";
 
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Okundu bilgisi gönderimi";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Okundu bilgisi gönderimi.";
+
 /* A button title to send read receipt */
-"Send receipt" = "Okundu bilgisi gönderilsin";
+"Send receipt" = "Okundu bilgisini gönder";
 
 /* Title */
 "Send Verification Code" = "Doğrulama kodu gönder";
@@ -2717,7 +2736,7 @@
 "This action cannot be undone." = "Bu işlem geri alınamaz.";
 
 /* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Bu işlem geri alınamaz. Bu klasöre kaydedilmiş e-postalar silinmeyecek ve Tüm postalar klasöründen erişilebilecek.";
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Bu işlem geri alınamaz. Bu klasöre kaydedilmiş e-postalar silinmeyecek ve Tüm e-postalar kutusundan erişilebilecek.";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Bu kişi adres defterinizde bulunuyor.";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen göründüğü gibi olduklarından emin olmak için gönderici adresini ve ileti içeriğini kontrol edin.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Bu ileti otomatik olarak oluşturulmuştur";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Rahatlama zamanı";
 
 /* contacts talbe cell Title title */
 "Title" = "Başlık";
@@ -2877,7 +2896,7 @@
 "Unable to edit this message offline" = "Bu ileti çevrimdışı düzenlenemedi";
 
 /* Description */
-"Unable to generate hashed password!" = "Karılmış parola üretilemedi!";
+"Unable to generate hashed password!" = "Karılmış parola oluşturulamadı!";
 
 /* Error */
 "Unable to get contacts" = "Kişiler getirilemedi";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Abonelikten ayrıl";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
 
 /* Error message */
 "Unsupported file type" = "Dosya biçimi desteklenmiyor";
@@ -3037,7 +3059,7 @@
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Uyarı: Bir kurtarma e-posta adresi belirlemediniz. Parolanızı unutursanız hesabınızı kurtaramayacaksınız. Kurtarma e-posta adresi olmadan devam edilsin mi?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklara kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklar kutusuna kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
 
 /* Message of a banner which is displayed on the messages list when offline */
 "We have trouble connecting to the servers. Please reconnect." = "Sunucularla bağlantı kurmakta sorun yaşıyoruz. Lütfen yeniden bağlanın.";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "İleti geri alınamayacak şekilde silinecek. Emin misiniz?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Posta kutunuz güncel";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Yaptığınız değişiklikler silinecek";

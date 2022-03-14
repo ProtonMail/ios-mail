@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "您要保存所作的更改吗？";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "确定要继续发送邮件吗？";
+
 /* Action */
 "Don't remind me again" = "不再提示";
 
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4-21 个字符的 PIN 码。";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "请输入当前 PIN 码";
+"Enter new PIN code" = "输入新口令";
 
 /* Title */
 "Enter Verification Code" = "输入验证码";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "无效的哈希密码 ！";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "密码无效";
-
 /* Error */
 "Invalid Password" = "密码错误";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "加载内容";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "加载嵌入图像";
+
 /* No comment provided by engineer. */
 "Load images" = "加载图片";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "加载外链内容";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "昵称";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "没有发现附件";
+
 /* Title */
 "No connectivity detected…" = "未检测到网络连接…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN 码不能为空。";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "口令太长";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "口令太短";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "账户等级可在网页端进行更改。";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "纯文本发送但加密存储";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "发送回执";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "发送回执。";
 
 /* A button title to send read receipt */
 "Send receipt" = "发送回执";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "这是一封自动生成的邮件";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "此邮件将在%1$d天%2$d小时%3$d分钟后过期";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "若所选浏览器被卸载则使用 Safari。";
-
-/* The secondary title of no result message */
-"Time to relax" = "歇会儿，该放松放松了";
 
 /* contacts talbe cell Title title */
 "Title" = "头衔";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "取消订阅";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "取消订阅";
 
 /* Error message */
 "Unsupported file type" = "不支持的文件类型";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "确定要彻底删除邮件吗？";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您做出的更改将丢失";

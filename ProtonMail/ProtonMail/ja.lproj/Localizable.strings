@@ -631,7 +631,7 @@
 "Compose" = "新規作成";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Compose message";
+"Compose message" = "メッセージの作成";
 
 /* Title */
 "Compose to" = "新規作成";
@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "未保存の変更を保存しますか？";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "とにかくメッセージを送信しますか?";
+
 /* Action */
 "Don't remind me again" = "今後このメッセージを表示しない";
 
@@ -920,7 +923,7 @@
 "DRAFTS" = "下書き";
 
 /* Onboarding title */
-"Easily up-to-date" = "Easily up-to-date";
+"Easily up-to-date" = "最新に保つのは簡単です";
 
 /* Action */
 "Edit" = "編集";
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "4 ~ 21 文字の PIN コードを入力してください。";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "現在の PIN を入力";
+"Enter new PIN code" = "新しい PIN コードを入力";
 
 /* Title */
 "Enter Verification Code" = "検証コードの入力";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "無効なハッシュ化されたパスワードです";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "無効なパスワードです";
-
 /* Error */
 "Invalid Password" = "無効なパスワードです。";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "コンテンツを読み込む";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "埋め込み画像を読み込む";
+
 /* No comment provided by engineer. */
 "Load images" = "画像を読み込む";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "外部コンテンツを読み込む";
 
 /* (No Comment) */
@@ -1542,7 +1546,7 @@
 "Log out" = "ログアウト";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Logged out of %@";
+"Logged out of %@" = "%@ からログアウトしました";
 
 /* error title */
 "Logs" = "ログ";
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "ニックネーム";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "添付ファイルがありません";
+
 /* Title */
 "No connectivity detected…" = "接続を検出できません…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "PIN コードは空欄にはできません。";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN が長すぎます";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN が短すぎます";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Web版でプランを変更できます。";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Send plain but stored encrypted";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "開封確認を送信する";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "開封確認を送信する。";
 
 /* A button title to send read receipt */
 "Send receipt" = "開封確認を送信";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "このメッセージはフィッシングの可能性があります。送信者と内容をチェックし、正当なものか確認してください。";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "メッセージは自動的に生成されました";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "このメッセージの有効期限は残り%1$d日%2$d時間%3$d分です";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "選択したブラウザがアンインストールされた場合、この設定は Safari に戻されます。";
-
-/* The secondary title of no result message */
-"Time to relax" = "メッセージはありません";
 
 /* contacts talbe cell Title title */
 "Title" = "肩書き";
@@ -2943,6 +2962,9 @@
 /* No comment provided by engineer. */
 "Unsubscribe" = "登録解除";
 
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "メーリングリストの登録を解除";
+
 /* Error message */
 "Unsupported file type" = "対応していないファイル種別です";
 
@@ -2968,7 +2990,7 @@
 "Upgrade to a paid plan to benefit from more features" = "機能を使用するには有料プランにアップグレードしてください。";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "%@アドレスから送信するには有料プランへのアップグレードが必要です。";
+"Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です。";
 
 /* Action */
 "Upload device contacts" = "デバイスの連絡先をアップロード";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
+
+/* The secondary title of no result message */
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "設定は破棄されます";

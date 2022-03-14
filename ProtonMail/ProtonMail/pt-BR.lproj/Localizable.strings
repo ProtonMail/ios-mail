@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[Mostrar mensagem completa]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "dia ,mês , ano %@";
@@ -885,6 +885,9 @@
 /* Title */
 "Do you want to save the unsaved changes?" = "Você deseja salvar as alterações não salvas?";
 
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Quer enviar sua mensagem mesmo assim?";
+
 /* Action */
 "Don't remind me again" = "Não lembrar novamente";
 
@@ -892,7 +895,7 @@
 "Don't Show Again" = "Não exibir novamente";
 
 /* Done action */
-"Done" = "Feito";
+"Done" = "Concluído";
 
 /* VoiceOver action description */
 "Double tap to setup" = "Toque duplo para configurar";
@@ -1093,7 +1096,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter current PIN code" = "Insira o código PIN atual";
+"Enter new PIN code" = "Digite o novo código PIN";
 
 /* Title */
 "Enter Verification Code" = "Digite o código de verificação";
@@ -1410,9 +1413,6 @@
 /* update password error */
 "Invalid hashed password!" = "Senha de hash inválida!";
 
-/* The error message of entering an invalid password */
-"Invalid password" = "Senha inválida";
-
 /* Error */
 "Invalid Password" = "Senha inválida";
 
@@ -1507,10 +1507,14 @@
 /* No comment provided by engineer. */
 "Load content" = "Carregar conteúdo";
 
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Carregar imagens incorporadas";
+
 /* No comment provided by engineer. */
 "Load images" = "Carregar imagem";
 
-/* Action */
+/* Action
+   The title of loading remote content banner. */
 "Load remote content" = "Carregar conteúdo remoto";
 
 /* (No Comment) */
@@ -1775,6 +1779,9 @@
 /* contacts talbe cell Nickname title */
 "Nickname" = "Apelido";
 
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Nenhum anexo encontrado";
+
 /* Title */
 "No connectivity detected…" = "Nenhuma conexão detectada…";
 
@@ -1982,6 +1989,12 @@
 
 /* Description */
 "PIN code can't be empty." = "O código Pin não pode estar vazio.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN é muito longo";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN é muito curto";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Os planos podem ser editados na versão web.";
@@ -2310,6 +2323,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Enviar texto puro mas armazenar criptografado";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Enviar recibo de leitura";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Enviar recibo de leitura.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Enviar confirmação de leitura";
@@ -2758,14 +2777,14 @@
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Esta mensagem pode ser um tentativa de phishing. Por favor, verifique o remetente e o conteúdo para certificar-se de que são legítimos.";
 
+/* The title of auto reply banner */
+"This message was automatically generated" = "Essa mensagem foi automaticamente gerada";
+
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Esta mensagem irá expirar em %1$dDia %2$dHora %3$dMês";
 
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Esta preferência será transferida para o Safari se o navegador de sua preferência for desinstalado.";
-
-/* The secondary title of no result message */
-"Time to relax" = "Hora de relaxar";
 
 /* contacts talbe cell Title title */
 "Title" = "Título";
@@ -2905,7 +2924,7 @@
 "Unable to send the email" = "Não foi possível enviar o e-mail";
 
 /* No comment provided by engineer. */
-"Undisclosed Recipients" = "Destinatários não Divulgados";
+"Undisclosed Recipients" = "Destinatários ocultos";
 
 /* Action */
 "Undo" = "Desfazer";
@@ -2942,6 +2961,9 @@
 
 /* No comment provided by engineer. */
 "Unsubscribe" = "Cancelar inscrição";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancelar a inscrição da lista de endereços";
 
 /* Error message */
 "Unsupported file type" = "Tipo de arquivo não suportado";
@@ -3157,6 +3179,9 @@
 
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Você irá excluir a mensagem irreversivelmente. Você tem certeza?";
+
+/* The secondary title of no result message */
+"You're up to date" = "Você está atualizado";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Suas alterações serão descartadas";
