@@ -1266,7 +1266,7 @@ extension EncryptedSearchService {
         emailContent = nil
 
         // add message to search index db
-        self.addMessageKewordsToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
+        self.addMessageToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent) {
             encryptedContent = nil
             completionHandler()
         }
@@ -1353,24 +1353,32 @@ extension EncryptedSearchService {
         }
     }
 
-    func addMessageKewordsToSearchIndex(userID: String,
-                                        message: ESMessage,
-                                        encryptedContent: EncryptedsearchEncryptedMessageContent?,
-                                        completionHandler: @escaping () -> Void) -> Void {
-        guard self.checkIfEnoughStorage(userID: userID) else {
-            print("Error when adding message to index. Not enough storage!")
-            completionHandler()
-            return
-        }
-
-        guard !self.checkIfStorageLimitIsExceeded(userID: userID) else {
-            print("Error when adding message to index. Storage limit exceeded!")
-            completionHandler()
-            return
-        }
-
+    func addMessageToSearchIndex(userID: String,
+                                 message: ESMessage,
+                                 encryptedContent: EncryptedsearchEncryptedMessageContent?,
+                                 completionHandler: @escaping () -> Void) -> Void {
         let ciphertext: String? = encryptedContent?.ciphertext
         let encryptedContentSize: Int = ciphertext?.count ?? 0
+
+        if self.checkIfStorageLimitIsExceeded(userID: userID) == true {
+            // Shrink search index to fit message
+            let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
+            if let sizeOfIndex = sizeOfIndex {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: sizeOfIndex - Int64(encryptedContentSize))
+                }
+            }
+        }
+
+        if self.checkIfEnoughStorage(userID: userID) == false {
+            // Shrink search index to fit message
+            let sizeOfIndex: Int64? = EncryptedSearchIndexService.shared.getSizeOfSearchIndex(for: userID).asInt64
+            if let sizeOfIndex = sizeOfIndex {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    _ = EncryptedSearchIndexService.shared.shrinkSearchIndex(userID: userID, expectedSize: sizeOfIndex - Int64(encryptedContentSize))
+                }
+            }
+        }
 
         let rowID = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
         if rowID == -1 {
@@ -2113,12 +2121,12 @@ extension EncryptedSearchService {
 
     private func checkIfEnoughStorage(userID: String) -> Bool {
         // Check if indexing is in progress
-        let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
+        let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             return true
         }
 
-        let remainingStorageSpace = self.getCurrentlyAvailableAppMemory()
+        let remainingStorageSpace = self.getFreeDiskSpace()
         if remainingStorageSpace < (100_000_000)  {    // 100 MB
             // Run on seperate thread to prevent the app from being unresponsive
             DispatchQueue.global(qos: .userInitiated).async {
@@ -2138,7 +2146,7 @@ extension EncryptedSearchService {
 
     private func checkIfStorageLimitIsExceeded(userID: String) -> Bool {
         // Check if indexing is in progress
-        let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete, .partial]
+        let expectedESStates: [EncryptedSearchIndexState] = [.undetermined, .disabled, .complete]
         if expectedESStates.contains(self.getESState(userID: userID)) {
             return false
         }
@@ -2809,6 +2817,14 @@ extension EncryptedSearchService {
             availableMemory = Double(totalMb - usedMb)
         }
         return availableMemory
+    }
+
+    private func getFreeDiskSpace() -> Int64 {
+        if let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()), let freeSpace = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value {
+            return freeSpace
+        } else {
+            return 0
+        }
     }
 
     // Returns the actual CPU usage in percent
