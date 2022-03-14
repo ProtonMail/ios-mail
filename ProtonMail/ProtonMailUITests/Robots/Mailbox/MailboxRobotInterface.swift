@@ -32,19 +32,19 @@ class MailboxRobotInterface: CoreElements {
     required init() {
         super.init()
         if XCUIApplication().exists {
-            table(id.mailboxTableViewIdentifier).firstMatch().wait(time: 15)
+            table(id.mailboxTableViewIdentifier).firstMatch().wait(time: 20)
         }
     }
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().forceTap()
+        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().waitForHittable().forceTap()
         return MessageRobot()
     }
     
     @discardableResult
     func clickMessageByIndex(_ index: Int) -> MessageRobot {
-        cell().byIndex(index).onChild(staticText().byIndex(1)).forceTap()
+        cell().byIndex(index).waitForHittable().onChild(staticText().byIndex(1)).forceTap()
         return MessageRobot()
     }
     
@@ -61,7 +61,7 @@ class MailboxRobotInterface: CoreElements {
 
     @discardableResult
     func compose() -> ComposerRobot {
-        button(id.composeButtonLabelIdentifier).firstMatch().tap()
+        button(id.composeButtonLabelIdentifier).firstMatch().waitForHittable().tap()
         return ComposerRobot()
     }
 
@@ -72,7 +72,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func selectMessage(position: Int) -> MailboxRobotInterface {
-        cell().byIndex(position).forceTap()
+        cell().byIndex(position).waitForHittable().forceTap()
         return self
     }
     
