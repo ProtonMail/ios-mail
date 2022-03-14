@@ -38,19 +38,19 @@ extension MailboxViewModel {
         var name: String {
             switch self {
             case .trash:
-                return "Trash"
+                return LocalString._action_bar_title_trash
             case .delete:
-                return "Delete"
+                return LocalString._action_bar_title_delete
             case .moveTo:
-                return "Move to Inbox"
+                return LocalString._action_bar_title_moveTo
             case .more:
-                return "More"
+                return LocalString._action_bar_title_more
             case .labelAs:
-                return "Label"
+                return LocalString._action_bar_title_labelAs
             case .reply:
-                return "Reply"
+                return LocalString._action_bar_title_reply
             case .replyAll:
-                return "Reply All"
+                return LocalString._action_bar_title_replyAll
             default:
                 return ""
             }
@@ -77,9 +77,8 @@ extension MailboxViewModel {
             }
         }
     }
-    
-    //TODO: - v4 change later
-    func getActionTypes() -> [ActionTypes] {
+
+    func getActionBarActions() -> [ActionTypes] {
         //default inbox
         if let type = Message.Location.init(rawValue: self.labelID) {
             switch type {
@@ -89,7 +88,7 @@ extension MailboxViewModel {
                 return [.delete, .moveTo, .labelAs, .more]
             }
         }
-        if let label = self.user.labelService.label(by: self.labelID) {
+        if let label = self.labelProvider.getLabel(by: labelID) {
             if label.type == 3 {
                 //custom folder
                 return [.trash, .readUnread, .moveTo, .labelAs, .more]
@@ -102,7 +101,7 @@ extension MailboxViewModel {
         }
     }
     
-    func handleBarActions(_ action: ActionTypes, selectedIDs: NSMutableSet) {
+    func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
         switch action {
         case .readUnread:
             //if all unread -> read

@@ -488,8 +488,13 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [Conversation],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             completion: (() -> Void)?) {
+        let group = DispatchGroup()
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
+            defer {
+                group.leave()
+            }
             guard let self = self else { return }
             if (try? result.get()) != nil {
                 self.eventsService.fetchEvents(labelID: self.labelId)
@@ -499,6 +504,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
                 .contains(where: { $0.labelID == label.location.labelID }) {
+                group.enter()
                 let conversationIDsToApply = findConversationIDsToApplyLabels(conversations: conversations,
                                                                               labelID: label.location.labelID)
                 conversationService.label(conversationIDs: conversationIDsToApply,
@@ -506,6 +512,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                                           isSwipeAction: false,
                                           completion: fetchEvents)
             } else {
+                group.enter()
                 let conversationIDsToRemove = findConversationIDSToRemoveLables(conversations: conversations,
                                                                                 labelID: label.location.labelID)
                 conversationService.unlabel(conversationIDs: conversationIDsToRemove,
@@ -519,12 +526,16 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
         if shouldArchive {
             if let fLabel = conversation.firstValidFolder() {
+                group.enter()
                 conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                          from: fLabel,
                                          to: Message.Location.archive.rawValue,
                                          isSwipeAction: false,
                                          completion: fetchEvents)
             }
+        }
+        group.notify(queue: .main) {
+            completion?()
         }
     }
 
@@ -701,7 +712,7 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
         user.messageService.move(messages: messages, to: destination.location.labelID, isSwipeAction: isFromSwipeAction)
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
         guard let destination = selectedMoveToFolder else { return }
         conversationService.move(conversationIDs: conversations.map(\.conversationID),
                                  from: "",

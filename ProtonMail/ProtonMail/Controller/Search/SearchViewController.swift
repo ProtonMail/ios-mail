@@ -204,7 +204,7 @@ extension SearchViewController {
     private func showActionBar() {
         guard self.actionBar == nil else { return }
 
-        let actions = self.viewModel.getActionTypes()
+        let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMActionBarItem] = []
         
         for (key, action) in actions.enumerated() {

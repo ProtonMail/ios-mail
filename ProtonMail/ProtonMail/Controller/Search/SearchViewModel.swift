@@ -42,7 +42,7 @@ protocol SearchVMProtocol {
     func addSelected(messageID: String)
     func removeSelected(messageID: String)
     func removeAllSelectedIDs()
-    func getActionTypes() -> [MailboxViewModel.ActionTypes]
+    func getActionBarActions() -> [MailboxViewModel.ActionTypes]
     func getActionSheetViewModel() -> MailListActionSheetViewModel
     func handleBarActions(_ action: MailboxViewModel.ActionTypes)
     func deleteSelectedMessage()
@@ -237,7 +237,7 @@ extension SearchViewModel: SearchVMProtocol {
         self.selectedIDs.removeAll()
     }
 
-    func getActionTypes() -> [MailboxViewModel.ActionTypes] {
+    func getActionBarActions() -> [MailboxViewModel.ActionTypes] {
         // Follow all mail folder
         return [.trash, .readUnread, .moveTo, .labelAs, .more]
     }
@@ -330,7 +330,7 @@ extension SearchViewModel: MoveToActionSheetProtocol {
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool) {
+    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
         // search view doesn't support conversation mode
     }
 }
@@ -368,8 +368,12 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
         }
     }
     
-    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(conversations: [Conversation],
+                             shouldArchive: Bool,
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             completion: (() -> Void)?) {
         // search view doesn't support conversation mode
+        fatalError("not implemented")
     }
 }
 
@@ -410,15 +414,12 @@ extension SearchViewModel {
     private func delete(IDs: NSMutableSet) {
         let messages = self.messageService.fetchMessages(withIDs: IDs, in: coreDataContextProvider.mainContext)
         for msg in messages {
-            let _ = self.delete(message: msg)
+            self.delete(message: msg)
         }
     }
 
-    private func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
-        if messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue) {
-            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, origHasStar: message.starred, newLabels: Message.Location.trash.rawValue))
-        }
-        return (.nothing, nil)
+    private func delete(message: Message) {
+        messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue)
     }
 
     private func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {

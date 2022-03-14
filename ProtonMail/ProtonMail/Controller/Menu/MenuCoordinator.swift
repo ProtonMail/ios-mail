@@ -262,7 +262,7 @@ extension MenuCoordinator {
             if labelInfo.type == .folder,
                let label = self.queryLabel(id: id) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(label: label),
+                                             label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .folder,
                                              userManager: user,
                                              pushService: pushService,
@@ -270,6 +270,12 @@ extension MenuCoordinator {
                                              lastUpdatedStore: lastUpdatedStore,
                                              humanCheckStatusProvider: self.services.get(by: QueueManager.self),
                                              conversationStateProvider: user.conversationStateService,
+                                             contactGroupProvider: user.contactGroupService,
+                                             labelProvider: user.labelService,
+                                             contactProvider: user.contactService,
+                                             conversationProvider: user.conversationService,
+                                             messageProvider: user.messageService,
+                                             eventsService: user.eventsService,
                                              totalUserCountClosure: { [weak self] in
                     return self?.usersManager.count ?? 0
                 }, getOtherUsersClosure: { [weak self] userID in
@@ -282,7 +288,7 @@ extension MenuCoordinator {
             } else if labelInfo.type == .label,
                       let label = self.queryLabel(id: id) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
-                                             label: LabelInfo(label: label),
+                                             label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .label,
                                              userManager: user,
                                              pushService: pushService,
@@ -290,6 +296,12 @@ extension MenuCoordinator {
                                              lastUpdatedStore: lastUpdatedStore,
                                              humanCheckStatusProvider: self.services.get(by: QueueManager.self),
                                              conversationStateProvider: user.conversationStateService,
+                                             contactGroupProvider: user.contactGroupService,
+                                             labelProvider: user.labelService,
+                                             contactProvider: user.contactService,
+                                             conversationProvider: user.conversationService,
+                                             messageProvider: user.messageService,
+                                             eventsService: user.eventsService,
                                              totalUserCountClosure: { [weak self] in
                     return self?.usersManager.count ?? 0
                 }, getOtherUsersClosure: { [weak self] userID in
@@ -313,6 +325,12 @@ extension MenuCoordinator {
                                          lastUpdatedStore: lastUpdatedStore,
                                          humanCheckStatusProvider: services.get(by: QueueManager.self),
                                          conversationStateProvider: user.conversationStateService,
+                                         contactGroupProvider: user.contactGroupService,
+                                         labelProvider: user.labelService,
+                                         contactProvider: user.contactService,
+                                         conversationProvider: user.conversationService,
+                                         messageProvider: user.messageService,
+                                         eventsService: user.eventsService,
                                          totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0
             }, getOtherUsersClosure: { [weak self] userID in

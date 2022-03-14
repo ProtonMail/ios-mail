@@ -44,6 +44,7 @@ protocol EventsFetching: AnyObject {
     func begin(subscriber: EventsConsumer)
 
     func fetchEvents(byLabel labelID: String, notificationMessageID : String?, completion: CompletionBlock?)
+    func fetchLatestEventID(completion: CompletionBlock?)
     func fetchEvents(labelID: String)
     func processEvents(counts: [[String : Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
@@ -293,6 +294,21 @@ extension EventsService {
             notificationMessageID: nil,
             completion: nil
         )
+    }
+
+    func fetchLatestEventID(completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest()
+        userManager.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
+            guard !IDRes.eventID.isEmpty,
+                  let self = self else {
+                completion?(task, nil, nil)
+                return
+            }
+            self.lastUpdatedStore.clear()
+            _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userinfo.userId, eventID: IDRes.eventID).ensure {
+                completion?(task, nil, nil)
+            }
+        }
     }
 }
 
