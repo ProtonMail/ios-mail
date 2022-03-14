@@ -125,7 +125,7 @@ extension EncryptedSearchIndexService {
                                   encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
 
-        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused]
+        let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial, .paused, .lowstorage]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             do {
                 let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
