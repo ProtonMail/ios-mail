@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Het aanpassen of uitschakelen van de standaard mobiele handtekening is een betaalde functie.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Meer";
 
 /* Screen header */

@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "修改或关闭预置的移动设备落款需要付费。";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "展开";
 
 /* Screen header */

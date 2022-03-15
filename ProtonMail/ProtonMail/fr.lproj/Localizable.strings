@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modifier ou désactiver la signature mobile par défaut est une fonctionnalité payante.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Plus";
 
 /* Screen header */

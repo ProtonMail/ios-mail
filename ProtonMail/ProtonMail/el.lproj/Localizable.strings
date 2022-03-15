@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Η τροποποίηση ή η απενεργοποίηση της προεπιλεγμένης υπογραφής κινητού είναι μια λειτουργία επί πληρωμής.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Περισσότερα";
 
 /* Screen header */

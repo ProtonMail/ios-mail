@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modificarea sau dezactivarea semnăturii mobilului este o funcție plătită.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Detalii";
 
 /* Screen header */

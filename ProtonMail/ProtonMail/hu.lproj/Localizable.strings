@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "A mobil aláírás szerkesztése vagy kikapcsolása csak előfizetéses csomagokban lehetséges.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Továbbiak";
 
 /* Screen header */

@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "A modificação ou desativação da assinatura móvel padrão é um recurso pago.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Mais";
 
 /* Screen header */
@@ -3119,7 +3120,7 @@
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Você está prestes a remover todas as contas. Você não poderá acessá-las a partir deste dispositivo, a menos que você as adicione novamente.\n\nDeseja remover todas as suas contas mesmo assim?";
 
 /* The main title of no result message */
-"You are all caught up" = "Vocês estão todos presos";
+"You are all caught up" = "Você lidou com tudo";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Você não está conectado. Não podemos exibir o conteúdo da sua mensagem.";

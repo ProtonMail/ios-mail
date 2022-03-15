@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Зміна чи вимкнення типового мобільного підпису є платною функцією.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Докладніше";
 
 /* Screen header */
@@ -3181,7 +3182,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Ви збираєтеся остаточно видалити повідомлення. Ви впевнені?";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "Усе в актуальному стані";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваші зміни будуть відхилені";

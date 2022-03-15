@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Varsayılan mobil imzayı değiştirmek veya kapatmak ücretli bir özelliktir.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Diğer";
 
 /* Screen header */
