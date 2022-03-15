@@ -41,7 +41,7 @@ enum ContactGroupEditError: Error {
 }
 
 extension ContactGroupEditError: LocalizedError {
-    public var errorDescription: String? {
+    var errorDescription: String? {
         switch self {
         case .noEmailInGroup:
             return LocalString._contact_groups_no_email_selected

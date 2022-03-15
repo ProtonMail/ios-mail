@@ -22,18 +22,18 @@
 
 import UIKit
 
-@objc public protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
+@objc protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
     @objc optional func keyboardWillHideNotification(_ notification: Notification)
     @objc optional func keyboardWillShowNotification(_ notificaiton: Notification)
 }
 
 extension NotificationCenter {
-    public func addKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
+    func addKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         addObserver(observer, ifRespondsToAction: .willHide)
         addObserver(observer, ifRespondsToAction: .willShow)
     }
 
-    public func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
+    func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         removeObserver(observer, ifRespondsToAction: .willHide)
         removeObserver(observer, ifRespondsToAction: .willShow)
     }

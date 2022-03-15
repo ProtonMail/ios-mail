@@ -127,7 +127,7 @@ enum LinkOpener: String, CaseIterable {
     }
 }
 
-public extension CharacterSet {
+extension CharacterSet {
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="

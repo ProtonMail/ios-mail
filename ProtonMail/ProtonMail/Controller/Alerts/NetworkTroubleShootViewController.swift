@@ -27,8 +27,8 @@ import MessageUI
 
 class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
 
-    public enum Item: Int, CustomStringConvertible {
-        public var description: String {
+    enum Item: Int, CustomStringConvertible {
+        var description: String {
             return ""
         }
 
@@ -41,7 +41,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
         case downtimeNotes = 6
         case otherNotes = 7
 
-        public var top: String {
+        var top: String {
             switch self {
             case .allowSwitch:
                 return "Allow alternative routing"
@@ -62,7 +62,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
             }
         }
 
-        public var bottom: String {
+        var bottom: String {
             switch self {
             case .allowSwitch:
                 return "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]"
@@ -83,7 +83,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
             }
         }
 
-        public var AttrString: NSMutableAttributedString {
+        var AttrString: NSMutableAttributedString {
             switch self {
             case .allowSwitch:
 

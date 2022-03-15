@@ -8,8 +8,8 @@
 
 import Foundation
 
-public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
-    public enum Kind: String {
+struct Header: CustomStringConvertible, CustomDebugStringConvertible {
+    enum Kind: String {
         case returnPath = "return-path"
         case received = "received"
         case authenticationResults = "authentication-results"
@@ -26,7 +26,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentDisposition = "content-disposition"
     }
 
-    public enum ContentDisposition: String {
+    enum ContentDisposition: String {
         case inline = "inline"
         case attachment = "attachment"
     }
@@ -93,14 +93,14 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         return nil
     }
 
-    public var description: String {
+    var description: String {
         if let kind = self.kind {
             return "\(kind.rawValue): \(self.body)"
         }
         return "\"\(self.name)\": \(self.body)"
     }
 
-    public var debugDescription: String { return self.description }
+    var debugDescription: String { return self.description }
 }
 
 extension Array where Element == Header {

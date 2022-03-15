@@ -26,7 +26,7 @@ import TrustKit
 import ProtonCore_Services
 
 extension PMAPIService {
-    public static var unauthorized: PMAPIService = {
+    static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
         let unauthorized = PMAPIService(doh: DoHMail.default, sessionUID: "")
         #if !APP_EXTENSION

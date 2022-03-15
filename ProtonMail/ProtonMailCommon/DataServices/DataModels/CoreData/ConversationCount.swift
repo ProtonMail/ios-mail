@@ -24,9 +24,9 @@
 import CoreData
 import Foundation
 
-public class ConversationCount: NSManagedObject, LabelCount {
-    @NSManaged public var userID: String
-    @NSManaged public var labelID: String
+class ConversationCount: NSManagedObject, LabelCount {
+    @NSManaged var userID: String
+    @NSManaged var labelID: String
 
     @NSManaged var start: Date?
     @NSManaged var end: Date?

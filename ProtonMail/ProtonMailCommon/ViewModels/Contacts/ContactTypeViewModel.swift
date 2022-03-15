@@ -24,7 +24,7 @@ import Foundation
 
 class ContactTypeViewModel {
 
-    public init() { }
+    init() { }
 
     func getDefinedTypes() -> [ContactFieldType] {
         fatalError("This method must be overridden")

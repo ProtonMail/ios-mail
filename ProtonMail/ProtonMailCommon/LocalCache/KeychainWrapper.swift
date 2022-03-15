@@ -25,7 +25,7 @@ import ProtonCore_Keymaker
 
 final class KeychainWrapper: Keychain {
 
-    public static var keychain = KeychainWrapper()
+    static var keychain = KeychainWrapper()
 
     init() {
         #if Enterprise

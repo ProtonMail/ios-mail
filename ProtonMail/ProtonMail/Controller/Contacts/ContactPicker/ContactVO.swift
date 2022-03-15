@@ -94,18 +94,18 @@ enum PGPType: Int {
     }
 }
 
-public class ContactVO: NSObject, ContactPickerModelProtocol {
+class ContactVO: NSObject, ContactPickerModelProtocol {
 
-    public struct Attributes {
-        static public let email = "email"
+    struct Attributes {
+        static let email = "email"
     }
 
-    public var title: String
-    public var subtitle: String
-    public var contactId: String
-    public var name: String
-    @objc public var email: String!
-    public var isProtonMailContact: Bool = false
+    var title: String
+    var subtitle: String
+    var contactId: String
+    var name: String
+    @objc var email: String!
+    var isProtonMailContact: Bool = false
 
     var modelType: ContactPickerModelState {
         get {
@@ -302,7 +302,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
 
-    public init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
+    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
         self.name = name
         self.email = email
@@ -312,11 +312,11 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         self.subtitle = email
     }
 
-    override public var description: String {
+    override var description: String {
         return "\(name) \(email ?? "")"
     }
 
-    override public func isEqual(_ object: Any?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? ContactVO else {
             return false
         }
@@ -329,7 +329,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         return self.isEqual(other)
     }
 
-    override public var hash: Int {
+    override var hash: Int {
         return (name + email).hashValue
     }
 }
@@ -349,7 +349,7 @@ extension Array where Element: ContactVO {
         }
     }
 
-    public func uniq() -> [Element] {
+    func uniq() -> [Element] {
         var arrayCopy = self
         arrayCopy.uniqInPlace()
         return arrayCopy
@@ -370,7 +370,7 @@ extension Array where Element: ContactVO {
 }
 
 extension ContactVO {
-    public func copy(with zone: NSZone? = nil) -> Any {
+    func copy(with zone: NSZone? = nil) -> Any {
         let contact = ContactVO(id: contactId, name: name, email: email, isProtonMailContact: isProtonMailContact)
         return contact
     }

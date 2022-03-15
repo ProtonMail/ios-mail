@@ -83,7 +83,7 @@ class Crypto {
     // MARK: - Message
 
     // no verify
-    public func decrypt(encrypted message: String, privateKey: String, passphrase: String) throws -> String {
+    func decrypt(encrypted message: String, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -111,7 +111,7 @@ class Crypto {
         return plainMessageString
     }
 
-    public func decrypt(encrypted message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
+    func decrypt(encrypted message: String, privateKey binKeys: [Data], passphrase: String) throws -> String {
         for binKey in binKeys {
             do {
                 var error: NSError?
@@ -146,7 +146,7 @@ class Crypto {
         return ""
     }
 
-    public func decrypt(encrypted binMessage: Data, privateKey: String, passphrase: String) throws -> String {
+    func decrypt(encrypted binMessage: Data, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -171,7 +171,7 @@ class Crypto {
         return plainMessageString
     }
 
-    public func decrypt(encrypted message: String,
+    func decrypt(encrypted message: String,
                         publicKey verifierBinKey: Data,
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
@@ -217,7 +217,7 @@ class Crypto {
         return nil
     }
 
-    public func decrypt(encrypted message: String,
+    func decrypt(encrypted message: String,
                         publicKey verifierBinKey: Data,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
@@ -255,7 +255,7 @@ class Crypto {
         return plainMessage
     }
 
-    public func decryptVerify(encrypted message: String,
+    func decryptVerify(encrypted message: String,
                         publicKey verifierBinKeys: [Data],
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -290,7 +290,7 @@ class Crypto {
         return verified
     }
 
-    public func decryptVerify(encrypted message: String,
+    func decryptVerify(encrypted message: String,
                         publicKey verifierBinKeys: [Data],
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -309,7 +309,7 @@ class Crypto {
         return verified
     }
 
-    public func decryptVerify(encrypted message: String,
+    func decryptVerify(encrypted message: String,
                         publicKey: String,
                         privateKey armorKey: String,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -353,7 +353,7 @@ class Crypto {
         return verified
     }
 
-    public func decryptVerify(encrypted message: String,
+    func decryptVerify(encrypted message: String,
                         publicKey: String,
                         privateKey binKeys: [Data],
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
@@ -404,7 +404,7 @@ class Crypto {
         return nil
     }
 
-    public func encrypt(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+    func encrypt(plainText: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
         let privateKey = CryptoNewKeyFromArmored(signerPrivateKey, &error)
         if let err = error {
@@ -440,7 +440,7 @@ class Crypto {
         return armoredMessage
     }
 
-    public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
+    func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
         var error: NSError?
         let newKey = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -483,7 +483,7 @@ class Crypto {
         return armoredMessage
     }
 
-    public func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+    func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
 
         let newKey = CryptoNewKey(binKey.mutable as Data, &error)
@@ -527,7 +527,7 @@ class Crypto {
         return armoredMessage
     }
 
-    public func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
+    func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
         var error: NSError?
 
         let newKey = CryptoNewKey(binKey.mutable as Data, &error)
@@ -556,7 +556,7 @@ class Crypto {
     }
 
     // MARK: - encrypt with password
-    public func encrypt(plainText: String, token: String) throws -> String? {
+    func encrypt(plainText: String, token: String) throws -> String? {
         let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
         let tokenBytes = token.data(using: .utf8)
         var error: NSError?
@@ -572,7 +572,7 @@ class Crypto {
         return armoredMessage
     }
 
-    public func decrypt(encrypted: String, token: String) throws -> String? {
+    func decrypt(encrypted: String, token: String) throws -> String? {
         let tokenBytes = token.data(using: .utf8)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(encrypted, &error)
@@ -588,12 +588,12 @@ class Crypto {
 
     // MARK: - Attachment
 
-    public func freeGolangMem() {
+    func freeGolangMem() {
         HelperFreeOSMemory()
     }
 
      // no verify
-    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
+    func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey: String, passphrase: String) throws -> Data? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -612,7 +612,7 @@ class Crypto {
         return plainMessage?.getBinary()
     }
 
-    public func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
+    func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -630,7 +630,7 @@ class Crypto {
         return plainMessage?.getBinary()
     }
 
-    public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data? {
+    func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data? {
         for binKey in binKeys {
             do {
                 var error: NSError?
@@ -656,7 +656,7 @@ class Crypto {
         return nil
     }
 
-    public func decryptAttachment(encrypted: String, privateKey: String, passphrase: String) throws -> Data? {
+    func decryptAttachment(encrypted: String, privateKey: String, passphrase: String) throws -> Data? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -679,7 +679,7 @@ class Crypto {
         return plainMessage?.getBinary()
     }
 
-    public func encryptAttachment(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage? {
+    func encryptAttachment(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -698,7 +698,7 @@ class Crypto {
         return splitMessage
     }
 
-    public func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: String) throws -> AttachmentProcessor {
+    func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: String) throws -> AttachmentProcessor {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -716,7 +716,7 @@ class Crypto {
 
     // MARK: - sign
 
-    public func signDetached(plainData: NSMutableData, privateKey: String, passphrase: String) throws -> String? {
+    func signDetached(plainData: NSMutableData, privateKey: String, passphrase: String) throws -> String? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -740,7 +740,7 @@ class Crypto {
         return signature
     }
 
-    public func signDetached(plainData: String, privateKey: String, passphrase: String) throws -> String {
+    func signDetached(plainData: String, privateKey: String, passphrase: String) throws -> String {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {
@@ -764,7 +764,7 @@ class Crypto {
         return signature
      }
 
-    public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
+    func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -790,7 +790,7 @@ class Crypto {
         }
     }
 
-    public func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
+    func verifyDetached(signature: String, plainText: String, binKeys: [Data], verifyTime: Int64) throws -> Bool {
         var error: NSError?
 
         guard let publicKeyRing = buildPublicKeyRing(keys: binKeys) else {
@@ -811,7 +811,7 @@ class Crypto {
         }
     }
 
-    public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
+    func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(publicKey, &error)
         if let err = error {
@@ -847,7 +847,7 @@ class Crypto {
     // MARK: - Session
 
     // key packet part
-    public func getSession(keyPacket: Data, privateKeys binKeys: [Data], passphrase: String) throws -> SymmetricKey? {
+    func getSession(keyPacket: Data, privateKeys binKeys: [Data], passphrase: String) throws -> SymmetricKey? {
         for binKey in binKeys {
             do {
                 var error: NSError?
@@ -873,7 +873,7 @@ class Crypto {
         return nil
     }
 
-    public func getSession(keyPacket: Data, privateKey: String, passphrase: String) throws -> SymmetricKey? {
+    func getSession(keyPacket: Data, privateKey: String, passphrase: String) throws -> SymmetricKey? {
         var error: NSError?
         let key = CryptoNewKeyFromArmored(privateKey, &error)
         if let err = error {

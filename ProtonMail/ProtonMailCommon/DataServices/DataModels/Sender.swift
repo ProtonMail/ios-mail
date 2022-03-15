@@ -22,7 +22,7 @@
 
 import Foundation
 
-public struct Sender: Codable {
+struct Sender: Codable {
     let name: String
     let address: String
     // Unused on iOS fields:

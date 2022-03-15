@@ -43,7 +43,7 @@ protocol LabelProviderProtocol: AnyObject {
 
 class LabelsDataService: Service, HasLocalStorage {
 
-    public let apiService: APIService
+    let apiService: APIService
     private let userID: String
     private let coreDataService: CoreDataService
     private let lastUpdatedStore: LastUpdatedStoreProtocol

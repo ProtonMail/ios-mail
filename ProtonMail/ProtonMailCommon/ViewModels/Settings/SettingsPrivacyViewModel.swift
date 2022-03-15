@@ -23,13 +23,13 @@
 import Foundation
 import ProtonCore_DataModel
 
-public enum SettingPrivacyItem: CustomStringConvertible {
+enum SettingPrivacyItem: CustomStringConvertible {
     case autoLoadRemoteContent
     case autoLoadEmbeddedImage
     case linkOpeningMode
     case metadataStripping
 
-    public var description: String {
+    var description: String {
         switch self {
         case .autoLoadRemoteContent:
             return LocalString._auto_show_images

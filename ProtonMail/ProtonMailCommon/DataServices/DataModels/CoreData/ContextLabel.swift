@@ -24,17 +24,17 @@ import CoreData
 import Foundation
 
 class ContextLabel: NSManagedObject {
-    @NSManaged public var messageCount: NSNumber
-    @NSManaged public var unreadCount: NSNumber
-    @NSManaged public var time: Date
-    @NSManaged public var size: NSNumber
-    @NSManaged public var attachmentCount: NSNumber
-    @NSManaged public var conversation: Conversation
-    @NSManaged public var conversationID: String
-    @NSManaged public var labelID: String
-    @NSManaged public var userID: String
-    @NSManaged public var order: NSNumber
-    @NSManaged public var isSoftDeleted: Bool
+    @NSManaged var messageCount: NSNumber
+    @NSManaged var unreadCount: NSNumber
+    @NSManaged var time: Date
+    @NSManaged var size: NSNumber
+    @NSManaged var attachmentCount: NSNumber
+    @NSManaged var conversation: Conversation
+    @NSManaged var conversationID: String
+    @NSManaged var labelID: String
+    @NSManaged var userID: String
+    @NSManaged var order: NSNumber
+    @NSManaged var isSoftDeleted: Bool
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)

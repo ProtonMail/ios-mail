@@ -23,7 +23,7 @@
 import Foundation
 import CoreData
 
-public class Contact: NSManagedObject {
+class Contact: NSManagedObject {
     @NSManaged var userID: String
     @NSManaged var contactID: String
     @NSManaged var name: String

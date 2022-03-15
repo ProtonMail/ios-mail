@@ -29,13 +29,13 @@ extension UInt8 {
 }
 
 /// Quoted printable encoder and decoder
-public class QuotedPrintable {
+class QuotedPrintable {
 
     /// Encode a string in quoted printable encoding
     ///
     /// - parameter string: String to encode
     /// - returns: quoted printable encoded string
-    public class func encode(string: String) -> String {
+    class func encode(string: String) -> String {
         var gen = string.utf8.makeIterator()
         var charCount = 0
 
@@ -80,7 +80,7 @@ public class QuotedPrintable {
     ///
     /// - parameter string: String to decode
     /// - returns: Decoded string
-    public class func decode(string: String) -> String {
+    class func decode(string: String) -> String {
         var state = QuotedPrintableState.Text
         var gen = string.utf8.makeIterator()
 

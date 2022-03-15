@@ -23,13 +23,13 @@
 import Foundation
 import ProtonCore_DataModel
 
-public enum SettingAccountSection: Int, CustomStringConvertible {
+enum SettingAccountSection: Int, CustomStringConvertible {
     case account
     case addresses
     case snooze
     case mailbox
 
-    public var description: String {
+    var description: String {
         switch self {
         case .account:
             return LocalString._account
@@ -43,14 +43,14 @@ public enum SettingAccountSection: Int, CustomStringConvertible {
     }
 }
 
-public enum AccountItem: Int, CustomStringConvertible {
+enum AccountItem: Int, CustomStringConvertible {
     case singlePassword
     case loginPassword
     case mailboxPassword
     case recovery
     case storage
 
-    public var description: String {
+    var description: String {
         switch self {
         case .singlePassword:
             return LocalString._single_password
@@ -66,13 +66,13 @@ public enum AccountItem: Int, CustomStringConvertible {
     }
 }
 
-public enum AddressItem: Int, CustomStringConvertible {
+enum AddressItem: Int, CustomStringConvertible {
     case addr
     case displayName
     case signature
     case mobileSignature
 
-    public var description: String {
+    var description: String {
         switch self {
         case .addr:
             return LocalString._general_default
@@ -86,7 +86,7 @@ public enum AddressItem: Int, CustomStringConvertible {
     }
 }
 
-public enum MailboxItem: Int, CustomStringConvertible, Equatable {
+enum MailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case search
@@ -94,7 +94,7 @@ public enum MailboxItem: Int, CustomStringConvertible, Equatable {
     case folders
     case storage
 
-    public var description: String {
+    var description: String {
         switch self {
         case .privacy:
             return LocalString._privacy

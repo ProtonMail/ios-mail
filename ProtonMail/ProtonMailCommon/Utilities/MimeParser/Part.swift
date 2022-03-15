@@ -8,18 +8,18 @@
 
 import Foundation
 
-public struct Part: CustomStringConvertible {
-    public enum ContentEncoding: String { case base64 }
+struct Part: CustomStringConvertible {
+    enum ContentEncoding: String { case base64 }
 
-    public let headers: [Header]
-    public let body: Data
+    let headers: [Header]
+    let body: Data
     let subParts: [Part]
 
-    public subscript(_ header: Header.Kind) -> String? {
+    subscript(_ header: Header.Kind) -> String? {
         return self.headers[header]?.cleanedBody
     }
 
-    public var bodyString: String {
+    var bodyString: String {
         var data = self.data.unwrap7BitLineBreaks()
         let ascii = String(data: data, encoding: .ascii) ?? ""
 
@@ -28,11 +28,11 @@ public struct Part: CustomStringConvertible {
         return String(data: data, encoding: .utf8) ?? String(malformedUTF8: data)
     }
 
-    public var rawBodyString: String? {
+    var rawBodyString: String? {
         return String(data: body, encoding: .utf8) ?? String(malformedUTF8: body)
     }
 
-    public func findAtts() -> [Part] {
+    func findAtts() -> [Part] {
         var ret = [Part]()
         if let cd = self.contentDisposition, cd.isAttachment() {
             ret.append(self)
@@ -44,7 +44,7 @@ public struct Part: CustomStringConvertible {
         return ret
     }
 
-    public func getFilename() -> String? {
+    func getFilename() -> String? {
         if let cd = self.contentDisposition {
             let kv = cd.keyValues
             if let name = kv["filename"] {
@@ -62,7 +62,7 @@ public struct Part: CustomStringConvertible {
         return nil
     }
 
-    public func bodyString(convertingFromUTF8: Bool) -> String {
+    func bodyString(convertingFromUTF8: Bool) -> String {
         var data = self.data.unwrap7BitLineBreaks()
         let ascii = String(data: data, encoding: .ascii) ?? ""
 
@@ -73,10 +73,10 @@ public struct Part: CustomStringConvertible {
         return string
     }
 
-    public var contentDisposition: Header? { return self.headers[.contentDisposition] }
+    var contentDisposition: Header? { return self.headers[.contentDisposition] }
 
-    public var contentCID: String? { return self.headers[.contentID]?.name }
-    public var cid: String? { return self.headers[.contentID]?.body }
+    var contentCID: String? { return self.headers[.contentID]?.name }
+    var cid: String? { return self.headers[.contentID]?.body }
     func partCID() -> Part? {
         if self.contentCID?.contains("Content-ID") == true {
             return self
@@ -101,10 +101,10 @@ public struct Part: CustomStringConvertible {
         return ret
     }
 
-    public var contentType: String? {
+    var contentType: String? {
         return self.headers[.contentType]?.body
     }
-    public var contentEncoding: ContentEncoding? {
+    var contentEncoding: ContentEncoding? {
         if let body = self.headers[.contentTransferEncoding]?.body {
             let trimmedBody = body.trimmingCharacters(in: .whitespacesAndNewlines)
              return ContentEncoding(rawValue: trimmedBody)
@@ -190,7 +190,7 @@ public struct Part: CustomStringConvertible {
         self.subParts = parts
     }
 
-    public var description: String {
+    var description: String {
         var string = ""
 
         for header in self.headers {

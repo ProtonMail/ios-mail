@@ -64,7 +64,7 @@ extension Attachment {
         return (localURL != nil) && (FileManager.default.fileExists(atPath: localURL!.path))
     }
 
-    // Mark : public functions
+    // Mark : functions
     func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, URL)? {
         do {
             if let clearData = self.fileData, localURL == nil {
