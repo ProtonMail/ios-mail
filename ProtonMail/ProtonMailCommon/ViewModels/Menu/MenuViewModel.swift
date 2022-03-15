@@ -288,9 +288,9 @@ extension MenuViewModel: MenuVMProtocol {
         guard user.userinfo.subscribed == 0 else { return true }
         switch type {
         case .folder:
-            return self.folderItems.getNumberOfRows() < 3
+            return self.folderItems.getNumberOfRows() < Constants.FreePlan.maxNumberOfFolders
         case .label:
-            return self.labelItems.getNumberOfRows() < 3
+            return self.labelItems.getNumberOfRows() < Constants.FreePlan.maxNumberOfLabels
         default:
             return false
         }

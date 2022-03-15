@@ -322,10 +322,15 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                      listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheet()
+                        guard let self = self else { return }
+                        if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                                self?.showLabelAsActionSheet()
+                            }
+                            self.coordinator.navigate(to: .addNewLabel)
+                        } else {
+                            self.showAlertLabelCreationNotAllowed()
                         }
-                        self?.coordinator.navigate(to: .addNewLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -350,6 +355,26 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
                         self?.dismissActionSheet()
                      })
     }
+
+    private func allowToCreateLabels(existingLabels: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingLabels < Constants.FreePlan.maxNumberOfLabels
+        }
+        return true
+    }
+
+    private func showAlertLabelCreationNotAllowed() {
+        let title = LocalString._creating_label_not_allowed
+        let message = LocalString._upgrade_to_create_label
+        showAlert(title: title, message: message)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
@@ -371,10 +396,15 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                      listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet()
+                        guard let self = self else { return }
+                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                                self?.showMoveToActionSheet()
+                            }
+                            self.coordinator.navigate(to: .addNewFolder)
+                        } else {
+                            self.showAlertFolderCreationNotAllowed()
                         }
-                        self?.coordinator.navigate(to: .addNewFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -400,6 +430,20 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                         self?.moveToActionHandler
                                 .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
                      })
+    }
+
+    private func allowToCreateFolders(existingFolders: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingFolders < Constants.FreePlan.maxNumberOfFolders
+        }
+        return true
+    }
+
+    private func showAlertFolderCreationNotAllowed() {
+        let title = LocalString._creating_folder_not_allowed
+        let message = LocalString._upgrade_to_create_folder
+        showAlert(title: title, message: message)
     }
 }
 
