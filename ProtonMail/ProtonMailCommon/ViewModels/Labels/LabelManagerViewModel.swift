@@ -330,8 +330,10 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func allowToCreate() -> Bool {
         guard self.user.userInfo.subscribed == 0 else { return true }
         switch self.type {
-        case .folder, .label:
-            return self.rawData.count < 3
+        case .folder:
+            return self.rawData.count < Constants.FreePlan.maxNumberOfFolders
+        case .label:
+            return self.rawData.count < Constants.FreePlan.maxNumberOfLabels
         default:
             return false
         }

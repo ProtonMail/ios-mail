@@ -719,10 +719,15 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                      listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheetForConversation()
+                        guard let self = self else { return }
+                        if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                                self?.showLabelAsActionSheetForConversation()
+                            }
+                            self.coordinator.handle(navigationAction: .addNewLabel)
+                        } else {
+                            self.showAlertLabelCreationNotAllowed()
                         }
-                        self?.coordinator.handle(navigationAction: .addNewLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -759,10 +764,15 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                      listener: self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheet(for: message)
+                        guard let self = self else { return }
+                        if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                                self?.showLabelAsActionSheet(for: message)
+                            }
+                            self.coordinator.handle(navigationAction: .addNewLabel)
+                        } else {
+                            self.showAlertLabelCreationNotAllowed()
                         }
-                        self?.coordinator.handle(navigationAction: .addNewLabel)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
@@ -784,6 +794,40 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
                                                  currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
                      })
+    }
+
+    private func allowToCreateLabels(existingLabels: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingLabels < Constants.FreePlan.maxNumberOfLabels
+        }
+        return true
+    }
+
+    private func allowToCreateFolders(existingFolders: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingFolders < Constants.FreePlan.maxNumberOfFolders
+        }
+        return true
+    }
+
+    private func showAlertLabelCreationNotAllowed() {
+        let title = LocalString._creating_label_not_allowed
+        let message = LocalString._upgrade_to_create_label
+        showAlert(title: title, message: message)
+    }
+
+    private func showAlertFolderCreationNotAllowed() {
+        let title = LocalString._creating_folder_not_allowed
+        let message = LocalString._upgrade_to_create_folder
+        showAlert(title: title, message: message)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
     }
 
     func showLabelAsActionSheet(dataSource: ActionSheetDataSource) {
@@ -826,10 +870,15 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             listener: self,
             viewModel: moveToViewModel,
             addNewFolder: { [weak self] in
-                self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                    self?.showMoveToActionSheet(for: message)
+                guard let self = self else { return }
+                if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                    self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showMoveToActionSheet(for: message)
+                    }
+                    self.coordinator.handle(navigationAction: .addNewFolder)
+                } else {
+                    self.showAlertFolderCreationNotAllowed()
                 }
-                self?.coordinator.handle(navigationAction: .addNewFolder)
             },
             selected: { [weak self] menuLabel, isOn in
                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -875,10 +924,15 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                      listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        self?.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheetForConversation()
+                        guard let self = self else { return }
+                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                                self?.showMoveToActionSheetForConversation()
+                            }
+                            self.coordinator.handle(navigationAction: .addNewFolder)
+                        } else {
+                            self.showAlertFolderCreationNotAllowed()
                         }
-                        self?.coordinator.handle(navigationAction: .addNewFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
