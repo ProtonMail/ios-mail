@@ -32,7 +32,7 @@
         "MultiuserManagementTests\/testRemoveSecondaryAccount()",
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testTurnOnAndOffPin()",
-        "SearchTests\/testSearchFromInboxBySubject()",
+        "SearchTests\/testSearchFromInboxByAddress()",
         "SendNewMessageTests\/testSendMessageToInternalContact()",
         "SpamTests\/testSwipeToSpamMessage()",
         "TrashTests\/testDeleteMessageFromDetailPage()"
