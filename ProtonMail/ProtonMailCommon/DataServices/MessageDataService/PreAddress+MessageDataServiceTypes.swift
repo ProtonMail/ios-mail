@@ -130,7 +130,7 @@ final class PreAttachment {
     /// - Parameters:
     ///   - id: att id
     ///   - key: clear encrypted attachment session key
-    public init(id: String, session: Data, algo: String, att: Attachment) {
+    init(id: String, session: Data, algo: String, att: Attachment) {
         self.attachmentId = id
         self.session = session
         self.algo = algo

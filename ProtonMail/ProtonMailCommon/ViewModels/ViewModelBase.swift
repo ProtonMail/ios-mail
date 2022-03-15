@@ -28,24 +28,24 @@ class ViewModelBase: NSObject {
     private var debugInfo: [String] = []
     private var logging: Bool = false
 
-    public func start(_ initLog: String) {
+    func start(_ initLog: String) {
         self.debugInfo.removeAll()
         self.debugInfo.append(initLog)
         self.logging = true
     }
 
-    public func log(_ log: String) {
+    func log(_ log: String) {
         if self.logging {
             self.debugInfo.append(log)
         }
     }
 
-    public func end(_ endLog: String) {
+    func end(_ endLog: String) {
         self.debugInfo.append(endLog)
         self.logging = false
     }
 
-    public var logs: String {
+    var logs: String {
         get {
             return debugInfo.joined(separator: "\r\n")
         }

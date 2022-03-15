@@ -23,13 +23,13 @@
 import Foundation
 import ProtonCore_DataModel
 
-public enum SettingDeviceSection: Int, CustomStringConvertible {
+enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
     case app = 1
     case general = 2
     case clearCache = 3
 
-    public var description: String {
+    var description: String {
         switch self {
         case .account:
             return LocalString._account_settings
@@ -43,7 +43,7 @@ public enum SettingDeviceSection: Int, CustomStringConvertible {
     }
 }
 
-public enum DeviceSectionItem: Int, CustomStringConvertible {
+enum DeviceSectionItem: Int, CustomStringConvertible {
     case darkMode = 0
     case appPIN
     case swipeAction
@@ -51,7 +51,7 @@ public enum DeviceSectionItem: Int, CustomStringConvertible {
     case alternativeRouting
     case browser
 
-    public var description: String {
+    var description: String {
         switch self {
         case .darkMode:
             return LocalString._dark_mode
@@ -69,11 +69,11 @@ public enum DeviceSectionItem: Int, CustomStringConvertible {
     }
 }
 
-public enum GeneralSectionItem: Int, CustomStringConvertible {
+enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
 
-    public var description: String {
+    var description: String {
         switch self {
         case .notification:
             return LocalString._push_notification

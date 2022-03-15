@@ -29,7 +29,7 @@ class ActionLabel: UILabel {
         static let copy = Type([])
     }
 
-    override public var canBecomeFirstResponder: Bool {
+    override var canBecomeFirstResponder: Bool {
         get {
             return true
         }

@@ -23,14 +23,14 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-public struct TempFigmaShadow {
+struct TempFigmaShadow {
     let color: UIColor
     let x: CGFloat
     let y: CGFloat
     let blur: CGFloat
     let spread: CGFloat
 
-    public init(color: UIColor, x: CGFloat, y: CGFloat, blur: CGFloat, spread: CGFloat) {
+    init(color: UIColor, x: CGFloat, y: CGFloat, blur: CGFloat, spread: CGFloat) {
         self.color = color
         self.x = x
         self.y = y
@@ -41,7 +41,7 @@ public struct TempFigmaShadow {
 
 extension CALayer {
 
-    public func apply(shadow: TempFigmaShadow) {
+    func apply(shadow: TempFigmaShadow) {
         shadowColor = shadow.color.cgColor
         shadowOpacity = 1
         shadowOffset = CGSize(width: shadow.x, height: shadow.y)
@@ -49,7 +49,7 @@ extension CALayer {
         shadowPath = shadow.path(bounds: bounds)
     }
 
-    public func clearShadow() {
+    func clearShadow() {
         shadowColor = nil
         shadowOpacity = 0
         shadowOffset = .zero
@@ -70,7 +70,7 @@ private extension TempFigmaShadow {
 
 }
 
-public extension UIView {
+extension UIView {
     func apply(shadows: [TempFigmaShadow]) {
         self.clipsToBounds = false
         for shadow in shadows {
@@ -94,7 +94,7 @@ public extension UIView {
     }
 }
 
-public extension Collection where Element == TempFigmaShadow {
+extension Collection where Element == TempFigmaShadow {
     static var shadowNorm: [Element] {
         let shadow10 = UIColor(named: "shadowNorm10") ?? UIColor.black.withAlphaComponent(0.1)
         let shadow5 = UIColor(named: "shadowGeneral5") ?? UIColor.black.withAlphaComponent(0.05)

@@ -354,7 +354,7 @@ extension Message {
         return nil
     }
 
-    override public func awakeFromInsert() {
+    override func awakeFromInsert() {
         super.awakeFromInsert()
 
         replaceNilAttributesWithEmptyString(option: [.string, .transformable])

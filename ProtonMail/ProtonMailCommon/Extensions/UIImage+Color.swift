@@ -24,7 +24,7 @@ import UIKit
 
 extension UIImage {
 
-    public static func color(_ color: UIColor) -> UIImage {
+    static func color(_ color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         return UIGraphicsImageRenderer(size: rect.size).image { context in
             color.setFill()

@@ -39,11 +39,11 @@ extension KeychainWrapper: KeyValueStoreProvider {
         assert(false, "Looks like this one is never actually used")
     }
 
-    public func set(_ intValue: Int, forKey key: String) {
+    func set(_ intValue: Int, forKey key: String) {
         assert(false, "Looks like this one is never actually used")
     }
 
-    public func int(forKey key: String) -> Int? {
+    func int(forKey key: String) -> Int? {
         assert(false, "Looks like this one is never actually used")
         return nil
     }

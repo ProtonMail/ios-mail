@@ -26,11 +26,11 @@ import ProtonCore_Services
 import class ProtonCore_Services.APIErrorCode
 
 extension APIErrorCode {
-    static public let forcePasswordChange = 2011
+    static let forcePasswordChange = 2011
 
     // Device token
-    static public let deviceTokenIsInvalid = 11200
-    static public let deviceTokenDoesNotExist = 11211
+    static let deviceTokenIsInvalid = 11200
+    static let deviceTokenDoesNotExist = 11211
 
 }
 
@@ -39,7 +39,7 @@ extension APIErrorCode {
 // localized
 extension NSError {
 
-    public class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: APIServiceErrorDomain,
             code: code,
@@ -49,13 +49,13 @@ extension NSError {
     }
 
     // FIXME: fix message content
-    public class func userLoggedOut() -> NSError {
+    class func userLoggedOut() -> NSError {
         return apiServiceError(code: 9999,
                                localizedDescription: "Sender account has been logged out!",
                                localizedFailureReason: "Sender account has been logged out!")
     }
 
-    public class func badParameter(_ parameter: Any?) -> NSError {
+    class func badParameter(_ parameter: Any?) -> NSError {
         let desc: String
         if let parameter = parameter {
             desc = String(describing: parameter)
@@ -68,27 +68,27 @@ extension NSError {
             localizedFailureReason: String(format: LocalString._error_bad_parameter_desc, "\(desc)"))
     }
 
-    public class func badResponse() -> NSError {
+    class func badResponse() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badResponse,
             localizedDescription: LocalString._error_bad_response_title,
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
     // TODO:: move to other place
-    public class func encryptionError() -> NSError {
+    class func encryptionError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: "Attachment encryption failed",
             localizedFailureReason: "Attachment encryption failed")
     }
-    public class func lockError() -> NSError {
+    class func lockError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: "App was locked",
             localizedFailureReason: "You had locked the app before it managed to finish its task. Please try again")
     }
 
-    public class func unableToParseResponse(_ response: Any?) -> NSError {
+    class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = LocalString._error_no_object
         return apiServiceError(
             code: APIErrorCode.unableToParseResponse,

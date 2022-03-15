@@ -24,7 +24,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-public class BugDataService: Service {
+class BugDataService: Service {
     private let apiService: APIService
     init(api: APIService) {
         self.apiService = api
@@ -37,7 +37,7 @@ public class BugDataService: Service {
         }
     }
 
-    public func reportBug(_ bug: String,
+    func reportBug(_ bug: String,
                           username: String,
                           email: String,
                           lastReceivedPush: String,

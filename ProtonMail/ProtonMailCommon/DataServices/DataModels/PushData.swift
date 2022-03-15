@@ -22,7 +22,7 @@
 
 import Foundation
 
-public struct PushData: Codable {
+struct PushData: Codable {
     let badge: Int
     let body: String
     let sender: Sender
@@ -44,7 +44,7 @@ public struct PushData: Codable {
     }
 }
 
-public struct Push: Codable {
+struct Push: Codable {
     let data: PushData
     // Unused on iOS fields
     //    let type: String

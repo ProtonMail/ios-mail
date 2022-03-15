@@ -38,9 +38,9 @@ class IntentHandler: INExtension {
 }
 
 @available(iOS 12.0, *)
-public class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
+class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
 
-    public func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {
+    func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {
         Keymaker(autolocker: nil, keychain: KeychainWrapper.keychain).wipeMainKey()
         PushNotificationDecryptor().wipeEncryptionKit()
 

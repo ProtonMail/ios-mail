@@ -23,10 +23,10 @@
 import Foundation
 import CoreData
 
-public class LabelUpdate: NSManagedObject, LabelCount {
+class LabelUpdate: NSManagedObject, LabelCount {
 
-    @NSManaged public var userID: String
-    @NSManaged public var labelID: String
+    @NSManaged var userID: String
+    @NSManaged var labelID: String
 
     @NSManaged var start: Date?
     @NSManaged var end: Date?

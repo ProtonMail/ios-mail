@@ -85,7 +85,7 @@ class SaverTests: XCTestCase {
             self.sub3 = sub3
             self.sub4 = sub4
         }
-        public static func == (lhs: SaverTests.CoableMockSub, rhs: SaverTests.CoableMockSub) -> Bool {
+        static func == (lhs: SaverTests.CoableMockSub, rhs: SaverTests.CoableMockSub) -> Bool {
             if lhs.sub1 != rhs.sub1 {
                 return false
             }
@@ -115,7 +115,7 @@ class SaverTests: XCTestCase {
             self.subObj = subObj
         }
         
-        public static func == (lhs: SaverTests.CoableMock, rhs: SaverTests.CoableMock) -> Bool {
+        static func == (lhs: SaverTests.CoableMock, rhs: SaverTests.CoableMock) -> Bool {
             if lhs.var2 != rhs.var2 {
                 return false
             }

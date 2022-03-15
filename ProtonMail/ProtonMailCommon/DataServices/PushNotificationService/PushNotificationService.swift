@@ -27,7 +27,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Common
 
-public class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
+class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
 
     typealias SubscriptionSettings = PushSubscriptionSettings
 
@@ -94,7 +94,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 
     // MARK: - register for notificaitons
 
-    public func registerForRemoteNotifications() {
+    func registerForRemoteNotifications() {
         /// TODO::fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             guard granted else { return }
@@ -106,7 +106,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         self.unreportOutdatedSettings()
     }
 
-    public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
+    func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         self.latestDeviceToken = deviceToken
         if self.signInProvider.isSignedIn, self.unlockProvider.isUnlocked {
             self.didUnlockAsync()
@@ -237,7 +237,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 
     // MARK: - launch options
 
-    public func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
             if let remoteNotification = launchoption[UIApplication.LaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
                 self.launchOptions = remoteNotification
@@ -245,12 +245,12 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         }
     }
 
-    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
+    func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         self.launchOptions = userInfo
         completionHandler()
     }
 
-    public func processCachedLaunchOptions() {
+    func processCachedLaunchOptions() {
         if let options = self.launchOptions {
             self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { })
         }
@@ -262,7 +262,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 
     // MARK: - notifications
 
-    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
+    func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
                                              forceProcess: Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         guard sharedServices.get(by: UsersManager.self).hasUsers(), UnlockManager.shared.isUnlocked() else {
             completionHandler()
@@ -345,7 +345,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 }
 
 extension PushNotificationService: UNUserNotificationCenterDelegate {
-    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
@@ -359,7 +359,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
         }
     }
 
-    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        willPresent notification: UNNotification,
                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let options: UNNotificationPresentationOptions = [.alert, .sound]

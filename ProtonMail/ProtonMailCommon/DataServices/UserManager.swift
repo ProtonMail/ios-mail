@@ -112,13 +112,13 @@ class UserManager: Service, HasLocalStorage {
 
     var delegate: UserManagerSave?
 
-    public var apiService: APIService
-    public var userinfo: UserInfo
-    public var auth: AuthCredential
+    var apiService: APIService
+    var userinfo: UserInfo
+    var auth: AuthCredential
 
     var isUserSelectedUnreadFilterInInbox = false
 
-    public lazy var conversationStateService: ConversationStateService = { [unowned self] in
+    lazy var conversationStateService: ConversationStateService = { [unowned self] in
         let conversationFeatureFlagService = ConversationFeatureFlagService(apiService: self.apiService)
         return ConversationStateService(
             userDefaults: SharedCacheBase.getDefault(),
@@ -126,12 +126,12 @@ class UserManager: Service, HasLocalStorage {
         )
     }()
 
-    public lazy var reportService: BugDataService = { [unowned self] in
+    lazy var reportService: BugDataService = { [unowned self] in
         let service = BugDataService(api: self.apiService)
         return service
     }()
 
-    public lazy var contactService: ContactDataService = { [unowned self] in
+    lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
                                          userID: self.userInfo.userId,
@@ -142,7 +142,7 @@ class UserManager: Service, HasLocalStorage {
         return service
     }()
 
-    public lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
+    lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
         let service = ContactGroupsDataService(api: self.apiService,
                                                labelDataService: self.labelService,
                                                coreDataService: sharedServices.get(by: CoreDataService.self),
@@ -153,7 +153,7 @@ class UserManager: Service, HasLocalStorage {
 
     weak var parentManager: UsersManager?
 
-    public lazy var messageService: MessageDataService = { [unowned self] in
+    lazy var messageService: MessageDataService = { [unowned self] in
         let service = MessageDataService(api: self.apiService,
                                          userID: self.userinfo.userId,
                                          labelDataService: self.labelService,
@@ -169,7 +169,7 @@ class UserManager: Service, HasLocalStorage {
         return service
     }()
 
-    public lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
+    lazy var mainQueueHandler: MainQueueHandler = { [unowned self] in
         let service = MainQueueHandler(cacheService: self.cacheService,
                                        coreDataService: sharedServices.get(by: CoreDataService.self),
                                        apiService: self.apiService,
@@ -184,7 +184,7 @@ class UserManager: Service, HasLocalStorage {
         return service
     }()
 
-    public lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
+    lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
         let service = ConversationDataServiceProxy(api: apiService,
                                                    userID: userinfo.userId,
                                                    coreDataService: sharedServices.get(by: CoreDataService.self),
@@ -196,40 +196,40 @@ class UserManager: Service, HasLocalStorage {
         return service
     }()
 
-    public lazy var labelService: LabelsDataService = { [unowned self] in
+    lazy var labelService: LabelsDataService = { [unowned self] in
         let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
         service.viewModeDataSource = self
         return service
     }()
 
-    public lazy var userService: UserDataService = { [unowned self] in
+    lazy var userService: UserDataService = { [unowned self] in
         let service = UserDataService(check: false, api: self.apiService)
         return service
     }()
 
-    public lazy var localNotificationService: LocalNotificationService = { [unowned self] in
+    lazy var localNotificationService: LocalNotificationService = { [unowned self] in
         let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
 
-    public lazy var cacheService: CacheService = { [unowned self] in
+    lazy var cacheService: CacheService = { [unowned self] in
         let service = CacheService(userID: self.userinfo.userId, lastUpdatedStore: self.lastUpdatedStore, coreDataService: sharedServices.get(by: CoreDataService.self))
         return service
     }()
 
-    public lazy var eventsService: EventsFetching = { [unowned self] in
+    lazy var eventsService: EventsFetching = { [unowned self] in
         let service = EventsService(userManager: self)
         return service
     }()
 
-    public lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
+    lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(apiService: self.apiService) { [weak self] in
             self?.eventsService.fetchEvents(labelID: Message.Location.allmail.rawValue)
         }
         return manager
     }()
 
-	public lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
+	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
         let service = FeatureFlagsDownloadService(apiService: self.apiService, sessionID: self.auth.sessionID)
         service.register(newSubscriber: conversationStateService)
         service.register(newSubscriber: inAppFeedbackStateService)
@@ -241,13 +241,13 @@ class UserManager: Service, HasLocalStorage {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
 
-    public lazy var inAppFeedbackStateService: InAppFeedbackStateServiceProtocol = {
+    lazy var inAppFeedbackStateService: InAppFeedbackStateServiceProtocol = {
         let service = InAppFeedbackStateService()
         return service
     }()
 
     #if !APP_EXTENSION
-    public lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+    lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                                         apiService: self.apiService,
                                         localStorage: userCachedStatus,
                                         reportBugAlertHandler: { receipt in
@@ -276,7 +276,7 @@ class UserManager: Service, HasLocalStorage {
         self.apiService.authDelegate = self
     }
 
-    public func isMatch(sessionID uid: String) -> Bool {
+    func isMatch(sessionID uid: String) -> Bool {
         return auth.sessionID == uid
     }
 

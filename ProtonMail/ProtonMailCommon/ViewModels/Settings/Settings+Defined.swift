@@ -25,7 +25,7 @@ import Foundation
 // settings language item  ***!!! this need match with LanguageManager.h
 extension ELanguage {
 
-    public var nativeDescription: String {
+    var nativeDescription: String {
         get {
             switch self {
             case .english:
@@ -86,7 +86,7 @@ extension ELanguage {
         }
     }
 
-    public var localeString: String {
+    var localeString: String {
         get {
             switch self {
             case .english:
@@ -148,7 +148,7 @@ extension ELanguage {
     }
 
     // This code needs to match the project language folder
-    public var code: String {
+    var code: String {
         get {
             switch self {
             case .english:
@@ -209,7 +209,7 @@ extension ELanguage {
         }
     }
 
-//    static public func allItemsCode() -> [String] {
+//    static func allItemsCode() -> [String] {
 //        return [ELanguage.english.code,
 //                ELanguage.german.code,
 //                ELanguage.french.code,
@@ -230,7 +230,7 @@ extension ELanguage {
 //                ELanguage.romanian.code
 //        ]
 //    }
-    static public func allItems() -> [ELanguage] {
+    static func allItems() -> [ELanguage] {
         return [
             .catalan,
             .croatian,
@@ -261,10 +261,10 @@ extension ELanguage {
     }
 }
 
-public enum SDebugItem: Int, CustomStringConvertible {
+enum SDebugItem: Int, CustomStringConvertible {
     case queue = 0
     case errorLogs = 1
-    public var description: String {
+    var description: String {
         switch self {
         case .queue:
             return LocalString._message_queue
@@ -274,7 +274,7 @@ public enum SDebugItem: Int, CustomStringConvertible {
     }
 }
 
-public enum SGItems: Int, CustomStringConvertible {
+enum SGItems: Int, CustomStringConvertible {
     case notifyEmail = 0
     //        case DisplayName = 1
     //        case Signature = 2
@@ -288,7 +288,7 @@ public enum SGItems: Int, CustomStringConvertible {
     case metadataStripping = 13
     case browser
 
-    public var description: String {
+    var description: String {
         switch self {
         case .notifyEmail:
             return LocalString._settings_notification_email
@@ -314,14 +314,14 @@ public enum SGItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SwipeActionItems: Int, CustomStringConvertible {
+enum SwipeActionItems: Int, CustomStringConvertible {
     case left = 0
     case leftActionView
     case empty
     case right
     case rightActionView
 
-    public var description: String {
+    var description: String {
         switch self {
         case .left:
             return LocalString._swipe_left_to_right
@@ -332,7 +332,7 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
         }
     }
 
-    public var actionDescription: String {
+    var actionDescription: String {
         switch self {
         case .left:
             return LocalString._change_left_swipe_action
@@ -344,7 +344,7 @@ public enum SwipeActionItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SProtectionItems: Int, CustomStringConvertible {
+enum SProtectionItems: Int, CustomStringConvertible {
     case touchID = 0
     case pinCode = 1
     case updatePin = 2
@@ -352,7 +352,7 @@ public enum SProtectionItems: Int, CustomStringConvertible {
     case enterTime = 4
     case faceID = 5
 
-    public var description: String {
+    var description: String {
         switch self {
         case .touchID:
             return LocalString._enable_touchid
@@ -370,13 +370,13 @@ public enum SProtectionItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SAddressItems: Int, CustomStringConvertible {
+enum SAddressItems: Int, CustomStringConvertible {
     case addresses = 0
     case displayName = 1
     case signature = 2
     case defaultMobilSign = 3
 
-    public var description: String {
+    var description: String {
         switch self {
         case .addresses:
             return ""
@@ -390,9 +390,9 @@ public enum SAddressItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SLabelsItems: Int, CustomStringConvertible {
+enum SLabelsItems: Int, CustomStringConvertible {
     case labelFolderManager = 0
-    public var description: String {
+    var description: String {
         switch self {
         case .labelFolderManager:
             return LocalString._labels_manage_title
@@ -400,10 +400,10 @@ public enum SLabelsItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SNetworkItems: Int, CustomStringConvertible {
+enum SNetworkItems: Int, CustomStringConvertible {
     case doh = 0
     case clear = 1
-    public var description: String {
+    var description: String {
         switch self {
         case .doh:
             return "DNS over Https"
@@ -413,7 +413,7 @@ public enum SNetworkItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SettingSections: Int, CustomStringConvertible {
+enum SettingSections: Int, CustomStringConvertible {
     case debug = 0
     case general = 1
     case multiDomain = 2
@@ -424,7 +424,7 @@ public enum SettingSections: Int, CustomStringConvertible {
     case language = 7
     case network = 8
 
-    public var description: String {
+    var description: String {
         switch self {
         case .debug:
             return LocalString._debug

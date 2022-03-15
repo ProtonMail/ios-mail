@@ -23,7 +23,7 @@
 import CoreData
 import Foundation
 
-public final class Conversation: NSManagedObject {
+final class Conversation: NSManagedObject {
     enum Errors: Error {
         case attemptToMergeUnmatchingConversations
     }
@@ -38,29 +38,29 @@ public final class Conversation: NSManagedObject {
         static let isSoftDeleted = "isSoftDeleted"
     }
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Conversation> {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<Conversation> {
         return NSFetchRequest<Conversation>(entityName: "Conversation")
     }
 
-    @NSManaged public var conversationID: String
-    @NSManaged public var expirationTime: Date?
+    @NSManaged var conversationID: String
+    @NSManaged var expirationTime: Date?
 
-    @NSManaged public var numAttachments: NSNumber
-    @NSManaged public var numMessages: NSNumber
+    @NSManaged var numAttachments: NSNumber
+    @NSManaged var numMessages: NSNumber
 
-    @NSManaged public var order: NSNumber
+    @NSManaged var order: NSNumber
 
-    @NSManaged public var senders: String
-    @NSManaged public var recipients: String
+    @NSManaged var senders: String
+    @NSManaged var recipients: String
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
-    @NSManaged public var isSoftDeleted: Bool
+    @NSManaged var isSoftDeleted: Bool
 
-    @NSManaged public var size: NSNumber?
-    @NSManaged public var subject: String
-    @NSManaged public var labels: NSSet
+    @NSManaged var size: NSNumber?
+    @NSManaged var subject: String
+    @NSManaged var labels: NSSet
 
-    @NSManaged public var userID: String
+    @NSManaged var userID: String
 
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)

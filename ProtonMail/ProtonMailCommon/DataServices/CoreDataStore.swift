@@ -43,27 +43,27 @@ class CoreDataStore {
 
     static let name: String = "ProtonMail.sqlite"
 
-    public lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
+    lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
     }()
 
-    public lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
+    lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
     }()
 
-    public lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
+    lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
     }()
 
-    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
+    lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
     }()
 
-    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
+    lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newMemoryStoreCoordinator(self.managedObjectModel)
     }()
 
-    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
+    lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.tempUrl)
     }()
 

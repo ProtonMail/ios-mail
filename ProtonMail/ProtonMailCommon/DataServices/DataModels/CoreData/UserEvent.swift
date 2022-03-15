@@ -23,11 +23,11 @@
 import Foundation
 import CoreData
 
-public class UserEvent: NSManagedObject {
+class UserEvent: NSManagedObject {
 
-    @NSManaged public var userID: String
-    @NSManaged public var eventID: String
-    @NSManaged public var updateTime: Date?
+    @NSManaged var userID: String
+    @NSManaged var eventID: String
+    @NSManaged var updateTime: Date?
 
 }
 

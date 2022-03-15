@@ -36,7 +36,7 @@ enum ComposeMessageAction: Int, CustomStringConvertible {
     case newDraftFromShare = 5
 
     /// localized description
-    public var description: String {
+    var description: String {
         get {
             switch self {
             case .reply:

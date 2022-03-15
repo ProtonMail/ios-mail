@@ -47,31 +47,31 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
         self.userManager = user
     }
 
-    public func getNavigationTitle() -> String {
+    func getNavigationTitle() -> String {
         return LocalString._setting_change_password
     }
 
-    public func getSectionTitle() -> String {
+    func getSectionTitle() -> String {
         return LocalString._change_signin_password
     }
 
-    public func getCurrentPasswordEditorTitle() -> String {
+    func getCurrentPasswordEditorTitle() -> String {
         return LocalString._current_signin_password
     }
 
-    public func getNewPasswordEditorTitle() -> String {
+    func getNewPasswordEditorTitle() -> String {
         return LocalString._new_signin_password
     }
 
-    public func getConfirmPasswordEditorTitle() -> String {
+    func getConfirmPasswordEditorTitle() -> String {
         return LocalString._confirm_new_signin_password
     }
 
-    public func needAsk2FA() -> Bool {
+    func needAsk2FA() -> Bool {
         return self.userManager.userInfo.twoFactor > 0
     }
 
-    public func setNewPassword(_ current: String,
+    func setNewPassword(_ current: String,
                                newPassword: String,
                                confirmNewPassword: String,
                                tFACode: String?,

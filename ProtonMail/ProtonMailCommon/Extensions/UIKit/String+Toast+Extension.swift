@@ -29,7 +29,7 @@ extension String {
     /// - Parameter withTitle: Should attach a default title yes/no
     /// - Parameter view: The `view` to use as the spawn point
     /// - Parameter preventCopies: Prevents multiple copies of previous huds on the same `view` yes/no
-    public func alertToast(withTitle: Bool = true, view: UIView? = nil, preventCopies: Bool = false) {
+    func alertToast(withTitle: Bool = true, view: UIView? = nil, preventCopies: Bool = false) {
         guard let view = determineSpawnView(for: view) else {
             return
         }
@@ -50,7 +50,7 @@ extension String {
         hud.hide(animated: true, afterDelay: 3)
     }
 
-    public func alertToastBottom(view: UIView? = nil) {
+    func alertToastBottom(view: UIView? = nil) {
         guard let view = determineSpawnView(for: view) else {
             return
         }
@@ -64,7 +64,7 @@ extension String {
         hud.hide(animated: true, afterDelay: 1)
     }
 
-    public func alertToastBottom(view: UIView? = nil, subtitle: String) {
+    func alertToastBottom(view: UIView? = nil, subtitle: String) {
         guard let view = determineSpawnView(for: view) else {
             return
         }

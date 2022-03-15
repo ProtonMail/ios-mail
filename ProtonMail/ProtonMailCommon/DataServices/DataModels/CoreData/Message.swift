@@ -23,107 +23,107 @@
 import Foundation
 import CoreData
 
-final public class Message: NSManagedObject {
+final class Message: NSManagedObject {
     /// Mark -- new orders
     ///
-    @NSManaged public var action: NSNumber?
+    @NSManaged var action: NSNumber?
 
     /// "AddressID":"222",
-    @NSManaged public var addressID: String?
+    @NSManaged var addressID: String?
     /// Local use, to record the addressID when user change the sender address
     /// Before executing the updateAttKeyPacket action, this variable keep holding the addressID that should show
     /// after the action finish and the message.addressID is equal nextAddressID, this variable will be reset to nil
-    @NSManaged public var nextAddressID: String?
+    @NSManaged var nextAddressID: String?
     /// "BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    @NSManaged public var bccList: String
+    @NSManaged var bccList: String
     /// "Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----",
-    @NSManaged public var body: String
+    @NSManaged var body: String
 
     /// local use and transient
-    @NSManaged public var cachedPassphraseRaw: NSData? // transient
+    @NSManaged var cachedPassphraseRaw: NSData? // transient
     /// local use and transient
-    @NSManaged public var cachedPrivateKeysRaw: NSData? // transient
+    @NSManaged var cachedPrivateKeysRaw: NSData? // transient
     /// local use and transient
     /// TODO: can this be kind of transient relatioship?
-    @NSManaged public var cachedAuthCredentialRaw: NSData? // transient
+    @NSManaged var cachedAuthCredentialRaw: NSData? // transient
     /// local use and transient
     /// TODO: addresses can also be in db, currently they are received from UserInfo singleton via message.defaultAddress getter
-    @NSManaged public var cachedAddressRaw: NSData? // transient
+    @NSManaged var cachedAddressRaw: NSData? // transient
 
     /// "CCList":[ { "Address":"", "Name":"", "Group": ""} ]
-    @NSManaged public var ccList: String
+    @NSManaged var ccList: String
     /// local use for sending set expiration offset
-    @NSManaged public var expirationOffset: Int32
+    @NSManaged var expirationOffset: Int32
     /// "ExpirationTime":0,
-    @NSManaged public var expirationTime: Date?
+    @NSManaged var expirationTime: Date?
     /// Flags : bitsets for maybe different flag. defined in [Message.Flag]
-    @NSManaged public var flags: NSNumber
+    @NSManaged var flags: NSNumber
     /// "Header":"(No Header)",
-    @NSManaged public var header: String?
+    @NSManaged var header: String?
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
-    @NSManaged public var isSoftDeleted: Bool
+    @NSManaged var isSoftDeleted: Bool
 
     /// local use, check if details downloaded
-    @NSManaged public var isDetailDownloaded: Bool
+    @NSManaged var isDetailDownloaded: Bool
 
     //// local use, to check draft latest update time to decide pick cache or remote. should use the server time.
-    @NSManaged public var lastModified: Date?
+    @NSManaged var lastModified: Date?
     /// ID : message id -- "ASnfew8asds92SDnsakr=="
-    @NSManaged public var messageID: String
+    @NSManaged var messageID: String
     /// local use, to check if message has metadata or not. some logic will fetch the metadata based on this
-    @NSManaged public var messageStatus: NSNumber  // bit 0x00000000 no metadata  0x00000001 has
+    @NSManaged var messageStatus: NSNumber  // bit 0x00000000 no metadata  0x00000001 has
     /// local use, 0 is normal messages. 1 is review/rating tempery message
-    @NSManaged public var messageType: NSNumber  // 0 message 1 rate
+    @NSManaged var messageType: NSNumber  // 0 message 1 rate
     /// "MIMEType": "text/html",
-    @NSManaged public var mimeType: String?
+    @NSManaged var mimeType: String?
     /// "NumAttachments":0,
-    @NSManaged public var numAttachments: NSNumber
+    @NSManaged var numAttachments: NSNumber
     /// local use, only when send/draft/reply/forward. to track the orginal message id
-    @NSManaged public var orginalMessageID: String?
+    @NSManaged var orginalMessageID: String?
     /// local use, for sending. orginal message time. sometimes need it in the body
-    @NSManaged public var orginalTime: Date?
+    @NSManaged var orginalTime: Date?
     /// local use, the encrypted body encrypt by password
-    @NSManaged public var passwordEncryptedBody: String
+    @NSManaged var passwordEncryptedBody: String
     /// local use, the pwd
-    @NSManaged public var password: String
+    @NSManaged var password: String
     /// local use, pwd hint
-    @NSManaged public var passwordHint: String
+    @NSManaged var passwordHint: String
 
     /// "ReplyTos": [{"Address":"", "Name":""}]
-    @NSManaged public var replyTos: String?
+    @NSManaged var replyTos: String?
     /// "Sender": { "Address":"", "Name":"" }
-    @NSManaged public var sender: String?
+    @NSManaged var sender: String?
     /// "Size":6959782,
-    @NSManaged public var size: NSNumber
+    @NSManaged var size: NSNumber
     /// "SpamScore": 101,  // 100 is PM spoofed, 101 is dmarc failed
-    @NSManaged public var spamScore: NSNumber
+    @NSManaged var spamScore: NSNumber
     /// "Time":1433649408,
-    @NSManaged public var time: Date?
+    @NSManaged var time: Date?
     /// Subject : message subject -- "Fw: test"
-    @NSManaged public var title: String
+    @NSManaged var title: String
     /// "ToList":[ { "Address":"", "Name":"", "Group": ""} ]
-    @NSManaged public var toList: String
+    @NSManaged var toList: String
     /// Unread : is message read / unread -- 0
-    @NSManaged public var unRead: Bool
+    @NSManaged var unRead: Bool
 
-    @NSManaged public var userID: String
+    @NSManaged var userID: String
 
     // Check if the message is being sent now
-    @NSManaged public var isSending: Bool
+    @NSManaged var isSending: Bool
 
-    @NSManaged public var conversationID: String
+    @NSManaged var conversationID: String
 
-    @NSManaged public var unsubscribeMethods: String?
+    @NSManaged var unsubscribeMethods: String?
 
     /// Mark -- relationship
 
     // "Attachments":[ { }, {} ]
-    @NSManaged public var attachments: NSSet
+    @NSManaged var attachments: NSSet
     // "LabelIDs":[ "1", "d3HYa3E394T_ACXDmTaBub14w==" ],
-    @NSManaged public var labels: NSSet
+    @NSManaged var labels: NSSet
 
-    @NSManaged public var order: NSNumber
+    @NSManaged var order: NSNumber
 
     /// ***Those values api returns them but client skip it
     /// "Order": 367
@@ -131,7 +131,7 @@ final public class Message: NSManagedObject {
     /// ExternalID = "a34aa56f-150f-cffc-587b-83d7ca798277@emailprivacytester.com";
     /// Mark -- Remote values
 
-    // @NSManaged public var tag: String
+    // @NSManaged var tag: String
 
     // temp cache memory only
     var checkingSign: Bool = false

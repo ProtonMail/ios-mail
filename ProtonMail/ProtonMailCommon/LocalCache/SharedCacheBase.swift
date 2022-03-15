@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class SharedCacheBase {
+class SharedCacheBase {
     fileprivate var userDefaults: UserDefaults!
 
     func getShared() -> UserDefaults! {

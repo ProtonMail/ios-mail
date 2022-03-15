@@ -84,7 +84,7 @@ extension Message {
             }
         }
 
-        public var title: String {
+        var title: String {
             switch self {
             case .inbox:
                 return LocalString._locations_inbox_title
