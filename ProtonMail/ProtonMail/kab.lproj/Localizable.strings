@@ -1180,6 +1180,13 @@
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Afaylu, tabzimt d yiznan s tengalt n yini akken ad ternuḍ tabwaṭ n tnaka tudmawant ifazen.";
 
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* VoiceOver: email belongs to folder */
 "Folder" = "Akaram";
 
@@ -1736,6 +1743,15 @@
 
 /* Onboarding title */
 "Neat and tidy" = "Zeddig yerna iseggem";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
+
+/* Onboarding title */
+"Conversations" = "Conversations";
+
+/* Onboarding title */
+"And more…" = "And more…";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "TESRAḌ AMIḌAN? JERRED";

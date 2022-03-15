@@ -239,11 +239,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         return splashVersion == Constants.App.SplashVersion
     }
 
-    func isTourOk() -> Bool {
-        let tourVersion = getShared().int(forKey: Key.lastTourViersion)
-        return tourVersion == Constants.App.TourVersion
-    }
-
     func showTourNextTime() {
         setValue(0, forKey: Key.lastTourViersion)
     }
@@ -773,6 +768,19 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 
     func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
         self.localSystemUpTime = time
+    }
+}
+
+extension UserCachedStatus {
+    func getOnboardingDestination() -> MailboxCoordinator.Destination? {
+        guard let tourVersion = getShared().int(forKey: Key.lastTourViersion) else {
+            return .onboardingForNew
+        }
+        if tourVersion == Constants.App.TourVersion {
+            return nil
+        } else {
+            return .onboardingForUpdate
+        }
     }
 }
 #endif

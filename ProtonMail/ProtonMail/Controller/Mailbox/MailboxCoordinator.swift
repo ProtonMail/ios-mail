@@ -68,7 +68,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case composeMailto = "toComposeMailto"
         case search = "toSearchViewController"
         case details = "SingleMessageViewController"
-        case onboarding = "to_onboarding_segue"
+        case onboardingForNew = "to_onboardingForNew_segue"
+        case onboardingForUpdate = "to_onboardingForUpdate_segue"
         case feedback = "to_feedback_segue"
         case feedbackView = "to_feedback_view_segue"
         case humanCheck = "toHumanCheckView"
@@ -90,8 +91,10 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 String(describing: SingleMessageViewController.self),
                 String(describing: ConversationViewController.self):
                 self = .details
-            case "to_onboarding_segue":
-                self = .onboarding
+            case "to_onboardingForNew_segue":
+                self = .onboardingForNew
+            case "to_onboardingForUpdate_segue":
+                self = .onboardingForUpdate
             case "to_feedback_segue":
                 self = .feedback
             case "to_feedback_view_segue":
@@ -174,7 +177,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             let viewModel = SearchViewModel(user: self.viewModel.user,
                                             coreDataContextProvider: self.services.get(by: CoreDataService.self), uiDelegate: next)
             next.set(viewModel: viewModel)
-        case .newFolder, .newLabel, .onboarding:
+        case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
             break
         }
         return true
@@ -188,10 +191,10 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             self.presentCreateFolder(type: .folder)
         case .newLabel:
             presentCreateFolder(type: .label)
-        case .onboarding:
-            let viewController = OnboardViewController()
-            viewController.modalPresentationStyle = .fullScreen
-            self.viewController?.present(viewController, animated: true, completion: nil)
+        case .onboardingForNew:
+            presentOnboardingView(type: .newUser)
+        case .onboardingForUpdate:
+            presentOnboardingView(type: .update)
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {
@@ -308,6 +311,12 @@ extension MailboxCoordinator {
         )
         conversationCoordinator = coordinator
         coordinator.start()
+    }
+
+    private func presentOnboardingView(type: OnboardViewController.OnboardingType) {
+        let viewController = OnboardViewController(type: type)
+        viewController.modalPresentationStyle = .fullScreen
+        self.viewController?.present(viewController, animated: true, completion: nil)
     }
 
     private func navigateToComposer(nextViewController next: ComposeContainerViewController) {

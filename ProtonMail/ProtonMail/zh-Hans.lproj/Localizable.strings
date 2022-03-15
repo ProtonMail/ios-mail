@@ -1180,6 +1180,13 @@
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "用文件夹，标签以及颜色区分的信息来创建您的完美定制收件箱。";
 
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* VoiceOver: email belongs to folder */
 "Folder" = "文件夹";
 
@@ -1736,6 +1743,15 @@
 
 /* Onboarding title */
 "Neat and tidy" = "整洁又清爽";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
+
+/* Onboarding title */
+"Conversations" = "Conversations";
+
+/* Onboarding title */
+"And more…" = "And more…";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "免费注册";
