@@ -35,22 +35,22 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var arrow: UIImageView!
     @IBOutlet private var arrowBGWdith: NSLayoutConstraint!
     @IBOutlet private var iconLeftConstraint: NSLayoutConstraint!
-    private weak var delegate: MenuItemTableViewCellDelegate? = nil
+    private weak var delegate: MenuItemTableViewCellDelegate?
     private var labelID: String = ""
     private var nameColor: String = "#FFFFFF"
     private var iconColor: String = "#FFFFFF"
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         let selectedView = UIView()
         selectedView.backgroundColor = .clear
         self.selectedBackgroundView = selectedView
-        
+
         self.badgeBGView.setCornerRadius(radius: 10)
         self.arrow.image = Asset.arrowDown.image
         self.arrow.highlightedImage = Asset.arrowUp.image
-        
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickArrow))
         self.arrowBGView.addGestureRecognizer(tap)
 
@@ -64,12 +64,12 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         super.setHighlighted(highlighted, animated: animated)
         let textColor = highlighted ? UIColor(RRGGBB: UInt(0x9CA0AA)): UIColor(hexColorCode: self.nameColor)
         let iconColor = highlighted ? UIColor(RRGGBB: UInt(0x9CA0AA)): UIColor(hexColorCode: self.iconColor)
-        
+
         self.name.textColor = textColor
         self.icon.tintColor = iconColor
         arrowBGView.accessibilityLabel = arrow.isHighlighted ? LocalString._menu_collapse_folder : LocalString._menu_expand_folder
     }
-    
+
     /// - Parameters:
     ///   - label: Data of label
     ///   - showArrow: Show expand/collapse arrow?
@@ -80,7 +80,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.name.textColor = UIColor(hexColorCode: self.nameColor)
         self.iconColor = label.iconColor
         self.icon.tintColor = UIColor(hexColorCode: self.iconColor)
-        
+
         self.labelID = label.location.labelID
         self.delegate = delegate
         self.setupIcon(label: label, useFillIcon: useFillIcon)
@@ -92,20 +92,20 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.setBackgroundColor(isSelected: label.isSelected)
         generateCellAccessibilityIdentifiers(label.name)
     }
-    
+
     func update(textColor: UIColor) {
         let hex = textColor.toHex()
         self.nameColor = hex
         self.name.textColor = textColor
     }
-    
+
     func update(iconColor: UIColor, alpha: CGFloat = 1) {
         let hex = iconColor.toHex()
         self.iconColor = hex
         self.icon.tintColor = iconColor
         self.icon.alpha = alpha
     }
-    
+
     func update(attribure: [NSAttributedString.Key: Any]) {
         self.name.attributedText = self.name.text?.apply(style: attribure)
     }
@@ -123,11 +123,11 @@ extension MenuItemTableViewCell {
             self.icon.image = icon
             return
         }
-        guard case .customize(_) = location else {
+        guard case .customize = location else {
             self.icon.image = nil
             return
         }
-        
+
         if label.type == .folder {
             if label.subLabels.count > 0 {
                 let icon = useFillIcon ? Asset.icFolderMultipleFilled.image: Asset.menuFolderMultiple.image
@@ -142,7 +142,7 @@ extension MenuItemTableViewCell {
             self.icon.image = nil
         }
     }
-    
+
     private func setup(badge: Int) {
         guard badge > 0 else {
             self.badge.text = ""
@@ -159,7 +159,7 @@ extension MenuItemTableViewCell {
             self.badge.text = "\(badge)"
         }
     }
-    
+
     private func setupArrow(label: MenuLabel, showArrow: Bool) {
         defer {
             self.arrowBGView.isAccessibilityElement = !arrow.isHidden
@@ -169,35 +169,35 @@ extension MenuItemTableViewCell {
             self.arrow.isHidden = true
             return
         }
-        
+
         switch label.location {
-        case .customize(_):
+        case .customize:
             guard label.type == .folder else {
                 self.arrowBGWdith.constant = 12
                 self.arrow.isHidden = true
                 return
             }
-            
+
             self.arrowBGWdith.constant = 38
             self.arrow.isHidden = label.subLabels.count == 0
             self.arrow.isHighlighted = label.expanded
-            
+
         default:
             self.arrowBGWdith.constant = 12
             self.arrow.isHidden = true
         }
     }
-    
+
     private func setupIndentation(level: Int) {
         let base: CGFloat = 17.5
         self.iconLeftConstraint.constant = base + 20.0 * CGFloat(level)
     }
-    
+
     private func setBackgroundColor(isSelected: Bool) {
         let color: UIColor = isSelected ? UIColor(RRGGBB: UInt(0x3C4B88)): .clear
         self.contentView.backgroundColor = color
     }
-    
+
     @objc private func clickArrow() {
         self.delegate?.clickCollapsedArrow(labelID: self.labelID)
     }

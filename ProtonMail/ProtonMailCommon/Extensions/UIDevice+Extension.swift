@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 import ProtonCore_Keymaker
@@ -28,11 +27,11 @@ extension UIDevice {
     enum StateRestorationPolicy {
         case deeplink, multiwindow
     }
-    
+
     var stateRestorationPolicy: StateRestorationPolicy {
         let iOS13: Bool = { if #available(iOS 13.0, *) { return true } else { return false } }()
         let hasSignificantProtection: Bool = keymaker.isProtectorActive(BioProtection.self) || keymaker.isProtectorActive(PinProtection.self)
-        
+
         /*
          Deeplink restoratin downside: it can not restore UI statle, scrolling offset in tableViews for example.
          NSCoders restoration downside: it does not work when mainKey is protected, it encodes only one UIWindow on multiwindow scene.
@@ -50,7 +49,7 @@ extension UIDevice {
          iOS 13     / protection        / iPad      - multiwindow
          
          */
-        
+
         switch (iOS13, hasSignificantProtection, self.userInterfaceIdiom) {
         case (_, _, .phone):    return .deeplink
         case (true, _, .pad):   return .multiwindow

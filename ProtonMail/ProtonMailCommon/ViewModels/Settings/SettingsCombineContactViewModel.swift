@@ -46,7 +46,7 @@ class SettingsCombineContactViewModel {
     init(combineContactCache: ContactCombinedCacheProtocol) {
         self.combineContactCache = combineContactCache
     }
-    
+
     var isContactCombined: Bool {
         get {
             return combineContactCache.isCombineContactOn
@@ -55,6 +55,6 @@ class SettingsCombineContactViewModel {
             combineContactCache.isCombineContactOn = newValue
         }
     }
-    
+
     var sections: [SettingSection] = [.combineContact]
 }

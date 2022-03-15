@@ -16,7 +16,7 @@ struct MarkAsUnsubscribed: Request {
         .put
     }
 
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         [
             "IDs": [messageId]
         ]

@@ -10,7 +10,7 @@ extension UIViewController {
                 controllerView.topAnchor.constraint(equalTo: targetView.topAnchor),
                 controllerView.leadingAnchor.constraint(equalTo: targetView.leadingAnchor),
                 controllerView.trailingAnchor.constraint(equalTo: targetView.trailingAnchor),
-                controllerView.bottomAnchor.constraint(equalTo: targetView.bottomAnchor),
+                controllerView.bottomAnchor.constraint(equalTo: targetView.bottomAnchor)
             ].activate()
         }
     }

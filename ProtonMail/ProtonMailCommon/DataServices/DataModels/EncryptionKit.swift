@@ -19,13 +19,10 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
-
 
 /// initally for push notification key
 struct EncryptionKit: Codable, Equatable {
     var passphrase, privateKey, publicKey: String
 }
-

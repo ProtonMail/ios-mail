@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import OpenPGP
 
 class AppCacheService: Service {
-    
+
     enum Constants {
         enum SettingsBundleKeys {
             static var clearAll = "clear_all_preference"
@@ -36,23 +35,23 @@ class AppCacheService: Service {
     private let userDefault = SharedCacheBase()
     private let coreDataCache: CoreDataCache
     private let appCache: AppCache
-    
+
     init() {
         self.coreDataCache = CoreDataCache()
         self.appCache = AppCache()
     }
-    
+
     func restoreCacheWhenAppStart() {
         self.checkSettingsBundle()
         self.coreDataCache.run()
         self.appCache.run()
     }
-    
+
     func checkSettingsBundle() {
         if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
             // core data
             try? FileManager.default.removeItem(at: CoreDataStore.dbUrl)
-            
+
             let names = [PMPersistentQueue.Constant.name,
                         PMPersistentQueue.Constant.miscName]
             for name in names {
@@ -61,19 +60,18 @@ class AppCacheService: Service {
                     .appendingPathComponent(name)
                 try? FileManager.default.removeItem(at: path)
             }
-            
+
             // user defaults
             if let domain = Bundle.main.bundleIdentifier {
                 UserDefaults.standard.removePersistentDomain(forName: domain)
                 self.userDefault.getShared().removePersistentDomain(forName: domain)
             }
-            
+
             // keychain
             KeychainWrapper.keychain.removeEverything()
         }
-        
+
         UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
         UserDefaults.standard.setValue(PMNLibVersion.getLibVersion(), forKey: Constants.SettingsBundleKeys.libVersion)
     }
 }
-

@@ -20,17 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 @IBDesignable class GeneralSettingViewCell: UITableViewCell {
     @IBOutlet weak var LeftText: UILabel!
     @IBOutlet weak var RightText: UILabel!
-    
+
     static var CellID: String {
         return "\(self)"
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -38,11 +37,11 @@ import UIKit
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
+
     func configCell(_ left: String,
-                    leftTextAttributes: [NSAttributedString.Key : Any]? = FontManager.Default,
+                    leftTextAttributes: [NSAttributedString.Key: Any]? = FontManager.Default,
                     right: String,
-                    rightTextAttributes:  [NSAttributedString.Key : Any]? = FontManager.Default) {
+                    rightTextAttributes: [NSAttributedString.Key: Any]? = FontManager.Default) {
         LeftText.attributedText = NSMutableAttributedString(string: left, attributes: leftTextAttributes)
         let rightAttribute = rightTextAttributes?.alignment(.right)
         RightText.attributedText = NSMutableAttributedString(string: right, attributes: rightAttribute)

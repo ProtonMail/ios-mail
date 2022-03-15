@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 
@@ -32,32 +31,30 @@ import ProtonCore_Networking
  - Doc: [ProtonMail Reports API]
  */
 struct ReportsAPI {
-    static let path :String = "/reports"
+    static let path: String = "/reports"
 }
 
-
-
-// MARK : Get messages part -- Response
+// MARK: Get messages part -- Response
 /// Report a bug [POST]
-final class ReportPhishing : Request {
+final class ReportPhishing: Request {
     enum ParameterKeys: String {
         case messageID = "MessageID"
         case mimeType = "MIMEType"
         case body = "Body"
     }
 
-    let msgID : String
-    let mimeType : String
-    let body : String
-    
-    init(msgID : String, mimeType : String, body : String) {
+    let msgID: String
+    let mimeType: String
+    let body: String
+
+    init(msgID: String, mimeType: String, body: String) {
         self.msgID = msgID
         self.mimeType = mimeType
         self.body = body
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = [
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = [
             ParameterKeys.messageID.rawValue: self.msgID,
             ParameterKeys.mimeType.rawValue: self.mimeType,
             ParameterKeys.body.rawValue: self.body
@@ -72,10 +69,9 @@ final class ReportPhishing : Request {
     var path: String { Self.defaultPath }
 }
 
-
-// MARK : Report a bug  -- Response
+// MARK: Report a bug  -- Response
 /// Report a bug [POST]
-final class BugReportRequest : Request {
+final class BugReportRequest: Request {
     enum ParameterKeys: String {
         case os = "OS"
         case osVersion = "OSVersion"
@@ -88,15 +84,15 @@ final class BugReportRequest : Request {
         case lastReceivedPush = "LastReceivedPush"
         case reachabilityStatus = "ReachabilityStatus"
     }
-    
-    let os : String
-    let osVersion : String
-    let clientVersion : String
-    let title : String
-    let desc : String
-    let userName : String
-    let email : String
-    
+
+    let os: String
+    let osVersion: String
+    let clientVersion: String
+    let title: String
+    let desc: String
+    let userName: String
+    let email: String
+
     init(os: String,
          osVersion: String,
          clientVersion: String,
@@ -117,11 +113,11 @@ final class BugReportRequest : Request {
         description.append(contentsOf: "\nReachability:\(reachabilityStatus)")
         self.desc = description
     }
-    
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         [
             ParameterKeys.os.rawValue: self.os,
-            ParameterKeys.osVersion.rawValue : self.osVersion,
+            ParameterKeys.osVersion.rawValue: self.osVersion,
             ParameterKeys.client.rawValue: "iOS_Native",
             ParameterKeys.clientVersion.rawValue: self.clientVersion,
             ParameterKeys.title.rawValue: self.title,
@@ -130,12 +126,10 @@ final class BugReportRequest : Request {
             ParameterKeys.email.rawValue: self.email
         ]
     }
-    
+
     static var defaultMethod: HTTPMethod { .post }
     var method: HTTPMethod { Self.defaultMethod }
-    
+
     static var defaultPath: String { ReportsAPI.path + "/bug" }
     var path: String { Self.defaultPath }
 }
-
-

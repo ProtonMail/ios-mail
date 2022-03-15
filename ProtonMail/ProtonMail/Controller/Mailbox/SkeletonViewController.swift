@@ -25,14 +25,14 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class SkeletonViewController: ProtonMailTableViewController {
-    
+
     private(set) var timeout: Int = 10
     private(set) var timer: Timer?
-    
+
     class func instance(timeout: Int = 10) -> SkeletonViewController {
         let skeletonVC = SkeletonViewController(style: .plain)
         skeletonVC.timeout = timeout
-        let _ = UINavigationController(rootViewController: skeletonVC)
+        _ = UINavigationController(rootViewController: skeletonVC)
         return skeletonVC
     }
 
@@ -44,12 +44,12 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.separatorColor = ColorProvider.InteractionWeak
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
             NotificationCenter.default.post(name: .switchView, object: nil)
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if #available(iOS 13.0, *) {
@@ -58,7 +58,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.title = LocalString._locations_inbox_title
         self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.timer?.invalidate()

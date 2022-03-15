@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class CustomHeaderView: UITableViewCell {
@@ -28,7 +27,7 @@ class CustomHeaderView: UITableViewCell {
     @IBOutlet weak var headerText: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         if #available(iOS 10, *) {
             headerText.font = UIFont.preferredFont(forTextStyle: .caption1)
             headerText.adjustsFontForContentSizeCategory = true

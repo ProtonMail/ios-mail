@@ -27,14 +27,14 @@ extension NSError {
 
     func alertController(title: String? = nil) -> UIAlertController {
         var message = localizedFailureReason
-        
+
         if localizedRecoverySuggestion != nil {
             if message != nil {
                 message = message! + "\n\n"
             } else {
                 message = ""
             }
-            
+
             message = message! + localizedRecoverySuggestion!
         }
         let _title = title ?? localizedDescription
@@ -52,22 +52,22 @@ extension NSError {
     }
 
     func alertErrorToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.label.text = NSLocalizedString(localizedDescription, comment: "Title");
+        hud.label.text = NSLocalizedString(localizedDescription, comment: "Title")
         hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
         hud.hide(animated: true, afterDelay: 3)
     }
 
     func alertHumanCheckErrorToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
@@ -77,10 +77,10 @@ extension NSError {
     }
 
     class func alertMessageSentErrorToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = LocalString._messages_sending_failed_try_again
         hud.removeFromSuperViewOnHide = true
@@ -89,11 +89,11 @@ extension NSError {
         hud.hide(animated: true, afterDelay: 2)
     }
 
-    class func alertMessageSentError(details : String) {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+    class func alertMessageSentError(details: String) {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = LocalString._messages_sending_failed_try_again + " " + details
         hud.removeFromSuperViewOnHide = true
@@ -102,7 +102,7 @@ extension NSError {
         hud.hide(animated: true, afterDelay: 2)
     }
 
-    class func alertSavingDraftError(details : String) {
+    class func alertSavingDraftError(details: String) {
         details.alertToast()
     }
 

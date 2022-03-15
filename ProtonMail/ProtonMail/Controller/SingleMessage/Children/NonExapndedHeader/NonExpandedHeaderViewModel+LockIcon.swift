@@ -23,17 +23,17 @@
 import PromiseKit
 
 extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
-    
+
     func lockIcon(complete: LockCheckComplete?) {
         guard let c = message.sender?.toContact() else { return }
-        
+
         if self.message.contains(label: .sent) {
             c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
             self.senderContact = c
             complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             return
         }
-        
+
         c.pgpType = self.message.getInboxType(email: c.displayEmail ?? "",
                                               signature: .notSigned)
         if self.message.checkedSign {
@@ -42,14 +42,14 @@ extension NonExpandedHeaderViewModel { // FIXME: - To refactor MG
             complete?(c.pgpType.lockImage, c.pgpType.rawValue)
             return
         }
-        
+
         self.message.checkingSign = true
         guard let emial = c.displayEmail else {
             self.message.checkingSign = false
             complete?(nil, -1)
             return
         }
-        
+
         let getEmail: Promise<KeysResponse> = user.apiService.run(route: UserEmailPubKeys(email: emial))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [emial])

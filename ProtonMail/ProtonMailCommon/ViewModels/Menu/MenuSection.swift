@@ -28,7 +28,7 @@ enum MenuSection {
     case labels
     case more
     case unknown
-    
+
     var title: String {
         switch self {
         case .inboxes: return LocalString._locations_inbox_title

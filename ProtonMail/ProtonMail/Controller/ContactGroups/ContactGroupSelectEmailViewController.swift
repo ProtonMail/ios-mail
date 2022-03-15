@@ -20,17 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 import UIKit
 
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupSelectEmailViewModel
-    
+
     func set(viewModel: ContactGroupSelectEmailViewModel) {
         self.viewModel = viewModel
     }
-    
+
     var viewModel: ContactGroupSelectEmailViewModel!
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
@@ -38,10 +37,10 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
     private var doneButton: UIBarButtonItem!
     private var cancelButton: UIBarButtonItem!
-    
+
     private var queryString = ""
     private var searchController: UISearchController!
-    
+
     let kContactGroupEditCellIdentifier = "ContactGroupEditCell"
 
     override func viewDidLoad() {
@@ -49,7 +48,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         view.backgroundColor = ColorProvider.BackgroundNorm
         self.definesPresentationContext = true
         title = LocalString._contact_groups_add_contacts
-        
+
         tableView.allowsMultipleSelection = true
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupEditCellIdentifier)
@@ -64,16 +63,16 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // if the user is tricky enough the hold the view using the edge geatures
         // we will need to turn this off temporarily
         self.extendedLayoutIncludesOpaqueBars = false
         NotificationCenter.default.addKeyboardObserver(self)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // set this after the layout is completed
@@ -81,18 +80,18 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         // black block underneath it
         self.extendedLayoutIncludesOpaqueBars = true
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
+
     func inactiveViewModel() {}
-    
+
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        
+
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
@@ -133,8 +132,7 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     }
 }
 
-extension ContactGroupSelectEmailViewController: UISearchBarDelegate, UISearchResultsUpdating
-{
+extension ContactGroupSelectEmailViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.search(query: searchController.searchBar.text)
         queryString = searchController.searchBar.text ?? ""
@@ -142,25 +140,23 @@ extension ContactGroupSelectEmailViewController: UISearchBarDelegate, UISearchRe
     }
 }
 
-extension ContactGroupSelectEmailViewController: UITableViewDataSource
-{
+extension ContactGroupSelectEmailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getTotalEmailCount()
     }
-    
+
     // https://medium.com/ios-os-x-development/ios-multiple-selections-in-table-view-88dc2249c3a2
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupEditCellIdentifier,
                                                  for: indexPath) as! ContactGroupEditViewCell
-        
+
         let ret = viewModel.getCellData(at: indexPath)
         cell.config(emailID: ret.ID,
                     name: ret.name,
                     email: ret.email,
                     queryString: self.queryString,
                     state: .selectEmailView)
-        
+
         cell.selectionStyle = .none
         if ret.isSelected {
             /*
@@ -172,16 +168,16 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
         } else {
             self.deselectRow(at: indexPath, cell: cell)
         }
-        
+
         return cell
     }
-    
+
     func selectRow(at indexPath: IndexPath, cell: ContactGroupEditViewCell) {
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         cell.setSelected(true, animated: true)
         viewModel.selectEmail(ID: cell.emailID)
     }
-    
+
     func deselectRow(at indexPath: IndexPath, cell: ContactGroupEditViewCell) {
         tableView.deselectRow(at: indexPath, animated: true)
         cell.setSelected(false, animated: true)
@@ -189,14 +185,13 @@ extension ContactGroupSelectEmailViewController: UITableViewDataSource
     }
 }
 
-extension ContactGroupSelectEmailViewController: UITableViewDelegate
-{
+extension ContactGroupSelectEmailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupEditViewCell {
             self.selectRow(at: indexPath, cell: cell)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupEditViewCell {
             self.deselectRow(at: indexPath, cell: cell)
@@ -216,13 +211,13 @@ extension ContactGroupSelectEmailViewController: NSNotificationCenterKeyboardObs
                         self.view.layoutIfNeeded()
         }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             self.tableViewBottomConstraint.constant = keyboardSize.height
-            
+
             UIView.animate(withDuration: keyboardInfo.duration,
                            delay: 0,
                            options: keyboardInfo.animationOption,

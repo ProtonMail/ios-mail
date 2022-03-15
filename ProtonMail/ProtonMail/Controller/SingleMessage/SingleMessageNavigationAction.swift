@@ -41,17 +41,17 @@ enum SingleMessageNavigationAction: Equatable {
 extension SingleMessageNavigationAction {
 
     var isReplyAction: Bool {
-        guard case .reply(_) = self else { return false }
+        guard case .reply = self else { return false }
         return true
     }
 
     var isReplyAllAction: Bool {
-        guard case .replyAll(_) = self else { return false }
+        guard case .replyAll = self else { return false }
         return true
     }
 
     var isForwardAction: Bool {
-        guard case .forward(_) = self else { return false }
+        guard case .forward = self else { return false }
         return true
     }
 }

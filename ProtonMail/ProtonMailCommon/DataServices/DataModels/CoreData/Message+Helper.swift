@@ -20,31 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 extension Message {
-    
-    static func contactsToAddresses (_ contacts : String!) -> String {
+
+    static func contactsToAddresses (_ contacts: String!) -> String {
         var lists: [String] = []
-        if let recipients : [[String : Any]] = contacts.parseJson() {
-            for dict:[String : Any] in recipients {
+        if let recipients: [[String: Any]] = contacts.parseJson() {
+            for dict: [String: Any] in recipients {
                 let to = dict.getAddress()
-                if !to.isEmpty  {
+                if !to.isEmpty {
                     lists.append(to)
                 }
             }
         }
         return lists.asCommaSeparatedList(trailingSpace: false)
     }
-    
-    static func contactsToAddressesArray (_ contacts : String!) -> [String] {
+
+    static func contactsToAddressesArray (_ contacts: String!) -> [String] {
         var lists: [String] = []
-        if let recipients : [[String : Any]] = contacts.parseJson() {
-            for dict:[String : Any] in recipients {
+        if let recipients: [[String: Any]] = contacts.parseJson() {
+            for dict: [String: Any] in recipients {
                 let to = dict.getAddress()
-                if !to.isEmpty  {
+                if !to.isEmpty {
                     lists.append(to)
                 }
             }

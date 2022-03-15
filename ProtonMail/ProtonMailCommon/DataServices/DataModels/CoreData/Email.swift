@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
@@ -29,13 +28,13 @@ class Email: NSManagedObject {
     @NSManaged var contactID: String
     @NSManaged var emailID: String
     @NSManaged var email: String
-    @NSManaged var name: String  //this may need remove
+    @NSManaged var name: String  // this may need remove
     @NSManaged var defaults: NSNumber
-    
-    //@NSManaged var encrypt: NSNumber
+
+    // @NSManaged var encrypt: NSNumber
     @NSManaged var order: NSNumber
     @NSManaged var type: String
-    
+
     @NSManaged var contact: Contact
     @NSManaged var labels: NSSet
 

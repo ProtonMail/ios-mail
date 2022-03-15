@@ -19,16 +19,15 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 import SideMenuSwift
 
 extension UIWindow {
-    func enumerateViewControllerHierarchy(_ handler: @escaping (UIViewController, inout Bool)->Void) {
+    func enumerateViewControllerHierarchy(_ handler: @escaping (UIViewController, inout Bool) -> Void) {
         var stop: Bool = false
         var currentController = self.rootViewController
-        
+
         while !stop {
             if let nextViewController = currentController as? SideMenuController {
                 handler(nextViewController.menuViewController, &stop)
@@ -36,35 +35,34 @@ extension UIWindow {
                 currentController = nextViewController.contentViewController
                 continue
             }
-            
+
             if let nextViewController = currentController as? UINavigationController {
                 handler(nextViewController, &stop)
                 nextViewController.viewControllers.forEach { handler($0, &stop) }
                 currentController = nextViewController.topViewController
                 continue
             }
-            
+
             if let nextViewController = currentController?.presentedViewController {
                 handler(nextViewController, &stop)
                 currentController = nextViewController
                 continue
             }
-            
+
             stop = true
         }
     }
-    
+
     func topmostViewController() -> UIViewController? {
         var topController = self.rootViewController
         while let presentedViewController = topController?.presentedViewController
             ?? (topController as? SideMenuController)?.contentViewController
-            ?? (topController as? UINavigationController)?.topViewController
-        {
+            ?? (topController as? UINavigationController)?.topViewController {
             topController = presentedViewController
         }
         return topController
     }
-    
+
     convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject?) {
         guard let root = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
             assert(false, "No initial VC in storyboard \(storyboard.restorationIdentifier)")
@@ -83,5 +81,3 @@ extension UIWindow {
         self.rootViewController = root
     }
 }
-
-

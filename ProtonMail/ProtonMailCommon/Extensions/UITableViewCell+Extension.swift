@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UITableViewCell {
@@ -28,21 +27,20 @@ extension UITableViewCell {
      reset table view cell inset and margins to .zero
      **/
     func zeroMargin() {
-        if (self.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+        if self.responds(to: #selector(setter: UITableViewCell.separatorInset)) {
             self.separatorInset = .zero
         }
-        if (self.responds(to: #selector(setter: UIView.layoutMargins))) {
+        if self.responds(to: #selector(setter: UIView.layoutMargins)) {
             self.layoutMargins = .zero
         }
     }
-    
+
     class func defaultNib() -> UINib {
         let name = String(describing: self)
         return UINib(nibName: name, bundle: Bundle.main)
     }
-    
+
     class func defaultID() -> String {
         return String(describing: self)
     }
 }
-

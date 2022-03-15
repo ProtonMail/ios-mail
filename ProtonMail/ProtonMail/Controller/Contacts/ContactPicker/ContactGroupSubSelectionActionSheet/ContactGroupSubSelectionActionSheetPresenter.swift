@@ -52,7 +52,7 @@ final class ContactGroupSubSelectionActionSheetPresenter {
         let cancelItem = PMActionSheetPlainItem(title: nil, icon: UIImage(named: "action_sheet_close")) { [weak self] _ in
             self?.actionSheet?.dismiss(animated: true)
         }
-        
+
         let applyItem = PMActionSheetPlainItem(title: LocalString._general_apply_button,
                                                icon: nil,
                                                textColor: ColorProvider.BrandNorm) { [weak self] _ in
@@ -60,7 +60,7 @@ final class ContactGroupSubSelectionActionSheetPresenter {
             self.callback?(self.viewModel.getCurrentlySelectedEmails())
             self.actionSheet?.dismiss(animated: true)
         }
-        
+
         let headerView = PMActionSheetHeaderView(
             title: viewModel.getGroupName(),
             subtitle: nil,

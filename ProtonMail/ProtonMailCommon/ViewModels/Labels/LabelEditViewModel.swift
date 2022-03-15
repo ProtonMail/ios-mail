@@ -312,7 +312,7 @@ extension LabelEditViewModel: LabelEditVMProtocol {
         guard let label = self.label,
               let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
         self.uiDelegate?.showLoadingHUD()
-        
+
         let subFolders: [NSManagedObjectID] = label.flattenSubFolders()
             .compactMap { self.user.labelService.label(by: $0.location.labelID)?.objectID }
 
@@ -336,13 +336,13 @@ extension LabelEditViewModel {
                 }
             }
         }
-        
+
         if self.type == .folder {
             self.section = [.name, .folderOptions]
 
             let isInherit = self.user.userinfo.inheritParentFolderColor
             let enableFolderColor = self.user.userinfo.enableFolderColor
-            
+
             guard enableFolderColor == 1 else { return }
             if isInherit == 1 {
                 let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited

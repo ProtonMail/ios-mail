@@ -20,12 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
 extension MessageDataService {
-    enum RuntimeError : String, Error, CustomErrorVar {
+    enum RuntimeError: String, Error, CustomErrorVar {
         case cant_decrypt = "can't decrypt message body"
         case bad_draft
         var code: Int {

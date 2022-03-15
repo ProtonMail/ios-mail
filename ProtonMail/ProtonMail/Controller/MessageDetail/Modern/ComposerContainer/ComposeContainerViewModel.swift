@@ -19,18 +19,17 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import PromiseKit
 
 class ComposeContainerViewModel: TableContainerViewModel {
     internal var childViewModel: ContainableComposeViewModel
-    
+
     // for FileImporter
     internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
-    internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
+    internal let kDefaultAttachmentFileSize: Int = 25 * 1000 * 1000 // 25 mb
     private var contactChanged: NSKeyValueObservation!
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.getUser() }
@@ -42,37 +41,37 @@ class ComposeContainerViewModel: TableContainerViewModel {
         super.init()
         self.contactChanged = obsereReicpients()
     }
-    
+
     override var numberOfSections: Int {
         return 1
     }
     override func numberOfRows(in section: Int) -> Int {
         return 3
     }
-    
+
     override func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
         guard let currentUser = usersManager.firstUser else {return}
         currentUser.messageService.syncMailSetting()
     }
-    
+
     internal func filesExceedSizeLimit() -> Bool {
         return self.childViewModel.currentAttachmentsSize >= self.kDefaultAttachmentFileSize
     }
-    
+
     internal func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
         return itemProviders.reduce(true) { $0 && $1.hasItem(types: self.filetypes) != nil }
     }
-    
+
     internal func importFiles(from itemProviders: [NSItemProvider],
-                              errorHandler: @escaping (String)->Void,
-                              successHandler: @escaping ()->Void) {
+                              errorHandler: @escaping (String) -> Void,
+                              successHandler: @escaping () -> Void) {
         for itemProvider in itemProviders {
             guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
             self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
         }
     }
-    
+
     func hasRecipients() -> Bool {
         let count = self.childViewModel.toSelectedContacts.count + self.childViewModel.ccSelectedContacts.count + self.childViewModel.bccSelectedContacts.count
         return count > 0
@@ -99,7 +98,7 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     func error(_ description: String) {
         self.showErrorBanner(description)
     }
-    
+
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < self.kDefaultAttachmentFileSize else {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)

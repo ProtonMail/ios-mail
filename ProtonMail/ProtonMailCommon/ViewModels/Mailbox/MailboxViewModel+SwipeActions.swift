@@ -27,7 +27,7 @@ extension MailboxViewModel {
             return false
         }
     }
-    
+
     func archive(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
             // Empty string as source if we don't find a valid folder
@@ -73,7 +73,7 @@ extension MailboxViewModel {
 
     func delete(index: IndexPath, isSwipeAction: Bool) {
         if let message = self.item(index: index) {
-            delete(message: message, isSwipeAction : isSwipeAction)
+            delete(message: message, isSwipeAction: isSwipeAction)
         } else if let conversation = self.itemOfConversation(index: index) {
             delete(conversation: conversation, isSwipeAction: isSwipeAction, completion: nil)
         }

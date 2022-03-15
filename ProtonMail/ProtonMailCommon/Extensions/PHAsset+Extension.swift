@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 import Photos
@@ -28,19 +27,19 @@ import Photos
 @available(*, deprecated)
 extension PHAsset {
     var originalFilename: String? {
-        
-        var fname:String?
-        
+
+        var fname: String?
+
         let resources = PHAssetResource.assetResources(for: self)
         if let resource = resources.first {
             fname = resource.originalFilename
         }
-        
+
         if fname == nil {
             // this is an undocumented workaround that works as of iOS 9.1
             fname = self.value(forKey: "filename") as? String
         }
-        
+
         return fname
     }
 }

@@ -21,13 +21,13 @@
 ////  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 //
 //
-//import Foundation
-//import CoreData
+// import Foundation
+// import CoreData
 //
-////TODO::fixme
-//let sharedMonitorSavesDataService = MonitorSavesDataService()
+//// TODO::fixme
+// let sharedMonitorSavesDataService = MonitorSavesDataService()
 //
-//class MonitorSavesDataService {
+// class MonitorSavesDataService {
 //
 //    typealias HandlerBlock = ((NSManagedObject) -> Void)
 //
@@ -144,4 +144,4 @@
 //            }
 //        }
 //    }
-//}
+// }

@@ -20,81 +20,78 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
-class ContactsViewModel : ViewModelTimer {
+class ContactsViewModel: ViewModelTimer {
     var user: UserManager
     let coreDataService: CoreDataService
-    
+
     init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
         self.coreDataService = coreDataService
         super.init()
     }
-    
+
     func paidUser() -> Bool {
         return user.hasPaidMailPlan
     }
-    
+
     func resetFetchedController() {
-        
+
     }
-    
+
     func set(searching isSearching: Bool) {
         fatalError("This method must be overridden")
     }
-    
-    func setupFetchedResults(delegate : NSFetchedResultsControllerDelegate?) {
+
+    func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }
-    
+
     func search(text: String) {
         fatalError("This method must be overridden")
     }
-    
+
     func fetchContacts(completion: ContactFetchComplete?) {
         fatalError("This method must be overridden")
     }
-    
+
     //
     func sectionCount() -> Int {
         fatalError("This method must be overridden")
     }
-    
+
     func rowCount(section: Int) -> Int {
         fatalError("This method must be overridden")
     }
-    
+
     func item(index: IndexPath) -> Contact? {
         fatalError("This method must be overridden")
     }
-    
+
     func isExsit(uuid: String) -> Bool {
         fatalError("This method must be overridden")
     }
-    
+
     /**
      section title index  ::Enable it later
      **/
     func sectionIndexTitle() -> [String]? {
         fatalError("This method must be overridden")
     }
-    
+
     func sectionForSectionIndexTitle(title: String, atIndex: Int) -> Int {
         fatalError("This method must be overridden")
     }
-    
+
     //
     func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
         fatalError("This method must be overridden")
     }
-    
-    
+
     func importContacts() {
         fatalError("This method must be overridden")
     }
-    
-    
+
 }

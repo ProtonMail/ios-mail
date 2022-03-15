@@ -27,7 +27,7 @@ import Photos
 #if APP_EXTENSION
 
 class PMImagePickerController: UIImagePickerController, AccessibleView {
-    internal func setup(withDelegate delegate: UIImagePickerControllerDelegate&UINavigationControllerDelegate) {
+    internal func setup(withDelegate delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
         self.delegate = delegate
         self.sourceType = .photoLibrary
         self.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeImage as String]
@@ -42,7 +42,7 @@ class PMImagePickerController: DKImagePickerController {
     internal func setup(withDelegate delegate: ImageProcessor) {
         self.sourceType = .photo
         self.didSelectAssets = { assets in
-            assets.compactMap{ $0.originalAsset }.forEach(delegate.process)
+            assets.compactMap { $0.originalAsset }.forEach(delegate.process)
         }
     }
 }
@@ -50,11 +50,11 @@ class PMImagePickerController: DKImagePickerController {
 #endif
 
 extension PMImagePickerController {
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.all
     }
-    
-    override var shouldAutorotate : Bool {
+
+    override var shouldAutorotate: Bool {
         return true
     }
 }

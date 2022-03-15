@@ -141,19 +141,19 @@ extension Conversation {
     class func conversationForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext) -> Conversation? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.conversationID, matchingValue: conversationID) as? Conversation
     }
-    
+
     struct Contact: Decodable {
         var Address: String
         var Name: String
     }
-    
+
     func getSenders() -> [Contact] {
         guard let senderData = senders.data(using: .utf8) else {
             return []
         }
         return (try? JSONDecoder().decode([Contact].self, from: senderData)) ?? []
     }
-    
+
     /// This method will return a string that contains the name of all senders with ',' between them.
     /// e.g Georage, Paul, Ringo
     /// - Returns: String of all name of the senders.
@@ -186,14 +186,14 @@ extension Conversation {
             }
         }
     }
-    
+
     func getRecipients() -> [Contact] {
         guard let recipientData = recipients.data(using: .utf8) else {
             return []
         }
         return (try? JSONDecoder().decode([Contact].self, from: recipientData)) ?? []
     }
-    
+
     /// This method will return a string that contains the name of all recipients with ',' between them.
     /// e.g Georage, Paul, Ringo
     /// - Returns: String of all name of the recipients.
@@ -211,15 +211,15 @@ extension Conversation {
         }
         return lists.asCommaSeparatedList(trailingSpace: true)
     }
-    
+
     /// Fetch the Label from local cache based on the labelIDs from contextLabel
     /// - Returns: array of labels
     func getLabels() -> [Label] {
         guard let context = self.managedObjectContext else {
             return []
         }
-        let labelIDs = self.labels.compactMap{ ($0 as? ContextLabel)?.labelID }
-        
+        let labelIDs = self.labels.compactMap { ($0 as? ContextLabel)?.labelID }
+
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         request.predicate = NSPredicate(format: "(labelID IN %@) AND (%K == 1) AND (%K == %@)", labelIDs, Label.Attributes.type, Label.Attributes.userID, self.userID)
         do {
@@ -241,26 +241,26 @@ extension Conversation {
     /// Apply single mark as changes for single message in conversation.
     func applySingleMarkAsChanges(unRead: Bool, labelID: String) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
-        let contextLabels = labels.compactMap{ $0 as? ContextLabel }
+        let contextLabels = labels.compactMap { $0 as? ContextLabel }
 
-        let labelsToUpdate = contextLabels.filter{ $0.labelID == labelID || $0.labelID == Message.Location.allmail.rawValue }
+        let labelsToUpdate = contextLabels.filter { $0.labelID == labelID || $0.labelID == Message.Location.allmail.rawValue }
         let offset = unRead ? 1: -1
-        
+
         for label in labelsToUpdate {
             let newUnreadCount = max(label.unreadCount.intValue + offset, 0)
             label.unreadCount = NSNumber(value: newUnreadCount)
         }
     }
-    
+
     /// Apply mark as changes to whole conversation.
     func applyMarksAsChanges(unRead: Bool, labelID: String, context: NSManagedObjectContext) {
         let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels)
-        let contextLabels = labels.compactMap{ $0 as? ContextLabel }
+        let contextLabels = labels.compactMap { $0 as? ContextLabel }
         let messages = Message
             .messagesForConversationID(self.conversationID,
                                        inManagedObjectContext: context,
                                        shouldSort: true) ?? []
-        
+
         var changedLabels: Set<String> = []
         if unRead {
             // It marks the latest message of the conversation of the current location (inbox, archive, etc...) as unread.
@@ -288,14 +288,13 @@ extension Conversation {
                 }
             }
         }
-        
+
         for label in contextLabels where changedLabels.contains(label.labelID) || label.labelID == labelID {
             let offset = unRead ? 1: -1
             var unreadCount = label.unreadCount.intValue + offset
             unreadCount = max(unreadCount, 0)
             label.unreadCount = NSNumber(value: unreadCount)
-            
-            
+
             if let contextLabelInContext = ConversationCount
                 .lastContextUpdate(by: label.labelID,
                                 userID: self.userID,
@@ -305,13 +304,13 @@ extension Conversation {
             }
         }
     }
-    
+
     /// Apply label changes on one message of a conversation.
     func applyLabelChangesOnOneMessage(labelID: String, apply: Bool) {
-        let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels).compactMap{ $0 as? ContextLabel }
+        let labels = self.mutableSetValue(forKey: Conversation.Attributes.labels).compactMap { $0 as? ContextLabel }
         let hasLabel = labels.contains(where: { $0.labelID == labelID })
         let numMessages = labels.first(where: {$0.labelID == labelID})?.messageCount.intValue ?? 0
-        
+
         if apply {
             if hasLabel {
                 if let label = labels.first(where: {$0.labelID == labelID}) {
@@ -338,8 +337,8 @@ extension Conversation {
             }
         }
     }
-    
-    ///Apply label changes of a conversation.
+
+    /// Apply label changes of a conversation.
     func applyLabelChanges(labelID: String, apply: Bool, context: NSManagedObjectContext) {
         if apply {
             if self.contains(of: labelID) {
@@ -358,7 +357,7 @@ extension Conversation {
                 newLabel.attachmentCount = self.numAttachments
                 newLabel.conversationID = self.conversationID
                 newLabel.conversation = self
-                
+
                 let messages = Message
                     .messagesForConversationID(self.conversationID,
                                                inManagedObjectContext: context) ?? []

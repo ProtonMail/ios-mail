@@ -230,7 +230,7 @@ class CacheService: Service {
     func markMessageAndConversationDeleted(labelID: String) {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
-        
+
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID)
 
@@ -253,7 +253,7 @@ class CacheService: Service {
     func cleanSoftDeletedMessagesAndConversation() {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         messageFetch.predicate = NSPredicate(format: "%K = %@", Message.Attributes.isSoftDeleted, NSNumber(true))
-        
+
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
         contextLabelFetch.predicate = NSPredicate(format: "%K = %@", ContextLabel.Attributes.isSoftDeleted, NSNumber(true))
 
@@ -446,7 +446,7 @@ extension CacheService {
         let messagesCount = response["Total"] as? Int ?? 0
 
         context.perform {
-            //Prevent the draft is overriden while sending
+            // Prevent the draft is overriden while sending
             if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: self.context) {
                 let idsSet = Set(sendingMessageIDs)
                 var msgIDsOfMessageToRemove: [String] = []
@@ -494,7 +494,7 @@ extension CacheService {
         context.performAndWait {
             let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context, type: msgType)
             if isUnread {
-                //Update unread date query time
+                // Update unread date query time
                 if updateTime.isUnreadNew {
                     updateTime.unreadStart = startTime
                 }
@@ -600,7 +600,7 @@ extension CacheService {
             completion?()
         }
     }
-    
+
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?) {
         context.perform {
             do {
@@ -618,7 +618,7 @@ extension CacheService {
             }
         }
     }
-    
+
     func updateLabel(_ label: Label, name: String, color: String, completion: (() -> Void)?) {
         context.perform {
             if let labelToUpdate = try? self.context.existingObject(with: label.objectID) as? Label {
@@ -643,7 +643,7 @@ extension CacheService {
             }
         }
     }
-    
+
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?) {
         context.perform {
             for id in objectIDs {

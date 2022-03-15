@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 
 extension UserDefaults {
-    
+
     func customObjectForKey(_ key: String) -> Any? {
         if let data = object(forKey: key) as? Data {
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
@@ -43,7 +42,7 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushService.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Address")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "PMCommon.Address")
-                        
+
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMail.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Share.Key")
@@ -51,21 +50,21 @@ extension UserDefaults {
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushService.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PMCommon.Key")
-            
+
             NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "UserInfo")
             NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "Address")
             NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "Key")
-            
+
             return NSKeyedUnarchiver.unarchiveObject(with: data)
         }
         return nil
     }
-    
+
     func setCustomValue(_ value: NSCoding?, forKey key: String) {
         let data: Data? = (value == nil) ? nil : NSKeyedArchiver.archivedData(withRootObject: value!)
         setValue(data, forKey: key)
     }
-    
+
     func stringOrEmptyStringForKey(_ key: String) -> String {
         return string(forKey: key) ?? ""
     }

@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-////TODO:: move this to core data => Labels
-//final class UpdateTime : NSObject {
+//// TODO:: move this to core data => Labels
+// final class UpdateTime : NSObject {
 //    var start : Date
 //    var end : Date
 //    var update : Date
@@ -48,9 +47,9 @@ import Foundation
 //    static func distantPast() -> UpdateTime {
 //        return UpdateTime(start: Date.distantPast , end: Date.distantPast , update: Date.distantPast , total: 0, unread: 0)
 //    }
-//}
+// }
 //
-//extension UpdateTime : NSCoding {
+// extension UpdateTime : NSCoding {
 //
 //    fileprivate struct CoderKey {
 //        static let startCode = "start"
@@ -77,7 +76,4 @@ import Foundation
 //        aCoder.encode(self.total, forKey: CoderKey.total)
 //        aCoder.encode(self.unread, forKey: CoderKey.unread)
 //    }
-//}
-
-
-
+// }

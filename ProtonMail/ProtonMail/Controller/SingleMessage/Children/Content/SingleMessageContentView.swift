@@ -57,7 +57,7 @@ class SingleMessageContentView: UIView {
 
 }
 
-private enum SubviewsFactory {    
+private enum SubviewsFactory {
     static var smallSeparatorView: UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.Shade20

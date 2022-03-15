@@ -19,37 +19,34 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import SideMenuSwift
 
-
 protocol SideMenuCoordinator: DefaultCoordinator {
     /// this will be called before push
-    var configuration: ((VC) -> ())? { get }
-    
+    var configuration: ((VC) -> Void)? { get }
+
     var navigation: UIViewController? { get set }
     var sideMenu: SideMenuController? { get set }
 }
-
 
 extension SideMenuCoordinator where VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {
             return
         }
-        configuration?(viewController) //set viewmodel and coordinator
+        configuration?(viewController) // set viewmodel and coordinator
         if self.navigation != nil, self.sideMenu != nil {
             self.sideMenu?.setContentViewController(to: self.navigation!)
             self.sideMenu?.hideMenu()
         }
         self.processDeepLink()
     }
-    
+
     func stop() {
 //        delegate?.willStop(in: self)
-        //navigationController.popViewController(animated: animated)
+        // navigationController.popViewController(animated: animated)
 //        delegate?.didStop(in: self)
     }
 }

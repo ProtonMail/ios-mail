@@ -6,12 +6,12 @@ enum NavigationViewType: Equatable {
 extension NavigationViewType {
 
     var isSimple: Bool {
-        guard case .simple(_) = self else { return false }
+        guard case .simple = self else { return false }
         return true
     }
 
     var isDetailed: Bool {
-        guard case .detailed(_, _) = self else { return false }
+        guard case .detailed = self else { return false }
         return true
     }
 

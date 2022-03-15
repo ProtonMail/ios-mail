@@ -20,19 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Message {
-    
+
     struct Constants {
-        
+
     }
-    
+
     struct MimeType {
-        static let html : String          = "text/html"
-        static let plainText : String     = "text/plain"
-        static let mutipartMixed : String = "multipart/mixed"
-        
+        static let html: String          = "text/html"
+        static let plainText: String     = "text/plain"
+        static let mutipartMixed: String = "multipart/mixed"
+
     }
 }

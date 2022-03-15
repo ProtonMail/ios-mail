@@ -20,27 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-final class AuthDeleteRequest : Request {
-    
+final class AuthDeleteRequest: Request {
+
     var method: HTTPMethod {
         return .delete
     }
-    
+
     var path: String {
         return "/auth"
     }
-    
+
     var isAuth: Bool {
         return true
     }
-    
+
     var autoRetry: Bool {
         return false
     }
 }
-

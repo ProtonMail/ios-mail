@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UIStoryboard {
@@ -38,16 +37,16 @@ extension UIStoryboard {
         var restorationIdentifier: String {
             return rawValue
         }
-        
+
         var storyboard: UIStoryboard {
             return UIStoryboard(name: rawValue, bundle: nil)
         }
-        
+
         func instantiateInitialViewController() -> UIViewController? {
             return storyboard.instantiateInitialViewController()
         }
     }
-    
+
     class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController? {
         return storyboard.instantiateInitialViewController()
     }

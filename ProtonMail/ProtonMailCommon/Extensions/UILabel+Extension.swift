@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UILabel {
@@ -30,7 +29,7 @@ extension UILabel {
         self.attributedText = attributedString
         self.sizeToFit()
     }
-    
+
     convenience init(font: UIFont, text: String, textColor: UIColor) {
         self.init()
         self.font = font

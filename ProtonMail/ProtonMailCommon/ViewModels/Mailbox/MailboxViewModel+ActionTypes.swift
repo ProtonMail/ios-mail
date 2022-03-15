@@ -23,12 +23,12 @@
 import Foundation
 
 extension MailboxViewModel {
-    ///This enum is used to indicate what types of action should this view to show in the action bar as actions.
+    /// This enum is used to indicate what types of action should this view to show in the action bar as actions.
     enum ActionTypes {
         case readUnread
         case labelAs
         case trash
-        ///permanently delete the message
+        /// permanently delete the message
         case delete
         case moveTo
         case more
@@ -55,7 +55,7 @@ extension MailboxViewModel {
                 return ""
             }
         }
-        
+
         var iconImage: ImageAsset.Image {
             switch self {
             case .delete:
@@ -79,7 +79,7 @@ extension MailboxViewModel {
     }
 
     func getActionBarActions() -> [ActionTypes] {
-        //default inbox
+        // default inbox
         if let type = Message.Location.init(rawValue: self.labelID) {
             switch type {
             case .inbox, .starred, .archive, .allmail, .sent, .draft:
@@ -90,23 +90,23 @@ extension MailboxViewModel {
         }
         if let label = self.labelProvider.getLabel(by: labelID) {
             if label.type == 3 {
-                //custom folder
+                // custom folder
                 return [.trash, .readUnread, .moveTo, .labelAs, .more]
             } else {
-                //custom label
+                // custom label
                 return [.trash, .readUnread, .moveTo, .labelAs, .more]
             }
         } else {
             return []
         }
     }
-    
+
     func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
         switch action {
         case .readUnread:
-            //if all unread -> read
-            //if all read -> unread
-            //if mixed read and unread -> unread
+            // if all unread -> read
+            // if all read -> unread
+            // if mixed read and unread -> unread
             let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID)
             self.mark(IDs: selectedIDs, unread: isAnyReadMessage)
         case .trash:

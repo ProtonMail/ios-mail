@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension URL {
@@ -33,36 +32,36 @@ extension URL {
             assert(false, " path: \(absoluteString) excludeFromBackup error: \(ex)")
         }
     }
-    
+
     struct MailtoData {
         var to: [String] = []
         var cc: [String] = []
         var bcc: [String] = []
-        var subject: String? = nil
-        var body: String? = nil
+        var subject: String?
+        var body: String?
     }
-    
+
     func parseMailtoLink() -> MailtoData? {
-        
+
         func splitMails(_ email: String) -> [String] {
             return email.split(separator: ",").map(String.init)
         }
-        
+
         guard let urlComponment = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return nil
         }
-        
+
         guard urlComponment.scheme == "mailto" else {
             return nil
         }
-        
+
         let queryItems = urlComponment.queryItems
-        
+
         var result = MailtoData()
-        
-        //to
+
+        // to
         result.to = urlComponment.path.isEmpty ? [] : splitMails(urlComponment.path)
-        
+
         queryItems?.forEach({ (queryItem) in
             guard let value = queryItem.value else {
                 return
@@ -80,8 +79,7 @@ extension URL {
                 break
             }
         })
-        
+
         return result
     }
 }
-

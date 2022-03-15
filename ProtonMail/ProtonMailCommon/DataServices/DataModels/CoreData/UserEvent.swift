@@ -20,31 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 public class UserEvent: NSManagedObject {
-    
+
     @NSManaged public var userID: String
     @NSManaged public var eventID: String
     @NSManaged public var updateTime: Date?
-    
+
 }
 
 extension UserEvent {
-    
+
     struct Attributes {
         static let entityName = "UserEvent"
         static let userID = "userID"
         static let eventID = "eventID"
         static let updateTime = "updateTime"
     }
-    
-    class func userEvent(by userID: String,  inManagedObjectContext context: NSManagedObjectContext) -> UserEvent? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.userID : userID]) as? UserEvent
+
+    class func userEvent(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> UserEvent? {
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.userID: userID]) as? UserEvent
     }
-        
+
     class func newUserEvent(userID: String, inManagedObjectContext context: NSManagedObjectContext) -> UserEvent {
         let event = UserEvent(context: context)
         event.userID = userID
@@ -52,14 +51,14 @@ extension UserEvent {
         _ = event.managedObjectContext?.saveUpstreamIfNeeded()
         return event
     }
-    
+
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-    
+
     class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {
         if let toDeletes = context.managedObjectsWithEntityName(Attributes.entityName,
-                                                                matching: [Attributes.userID : userID]) as? [UserEvent] {
+                                                                matching: [Attributes.userID: userID]) as? [UserEvent] {
             for update in toDeletes {
                 context.delete(update)
             }

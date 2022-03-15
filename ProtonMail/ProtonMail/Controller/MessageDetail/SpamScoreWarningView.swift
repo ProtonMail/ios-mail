@@ -20,21 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class SpamScoreWarningView: PMView {
-    
+
     @IBOutlet weak var messageLabel: UILabel!
-    
+
     override func getNibName() -> String {
         return "SpamScoreWarningView"
     }
-    
-    func setMessage(msg : String) {
+
+    func setMessage(msg: String) {
         messageLabel.text = msg
     }
-    
+
     func fitHeight() -> CGFloat {
         messageLabel.sizeToFit()
         var size = self.frame.size
@@ -42,7 +41,7 @@ class SpamScoreWarningView: PMView {
         let s = messageLabel.sizeThatFits(size)
         return s.height + 16
     }
-    
+
     override func setup() {
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.numberOfLines = 0

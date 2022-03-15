@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Keymaker
@@ -44,8 +43,8 @@ extension Locked where T == [AuthCredential] {
         let data = try locked.unlock(with: key)
         return try self.parse(data: data)
     }
-    
-    internal func parse(data: Data) throws -> T  {
+
+    internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
@@ -55,7 +54,7 @@ extension Locked where T == [AuthCredential] {
 
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PMCommon.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "AuthCredential")
-        
+
         guard let value = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }

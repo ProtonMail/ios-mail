@@ -19,15 +19,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import CoreServices
 import PromiseKit
 
 protocol FileImporter {
-    func importFile(_ itemProvider: NSItemProvider, type: String, errorHandler: @escaping (String)->Void, handler: @escaping ()->Void)
+    func importFile(_ itemProvider: NSItemProvider, type: String, errorHandler: @escaping (String) -> Void, handler: @escaping () -> Void)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
-    
+
     var documentAttachmentProvider: DocumentAttachmentProvider { get }
     var imageAttachmentProvider: PhotoAttachmentProvider { get }
 }
@@ -38,20 +37,19 @@ extension FileImporter {
         // https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
         return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard", "public.executable", "public.audiovisual-​content", "public.font", "com.microsoft.word.doc", "com.microsoft.excel.xls", "com.microsoft.powerpoint.​ppt", "public.audio", "public.movie"]
     }
-    
+
     func importFile(_ itemProvider: NSItemProvider,
                     type: String,
-                    errorHandler: @escaping (String)->Void,
-                    handler: @escaping ()->Void)
-    {
+                    errorHandler: @escaping (String) -> Void,
+                    handler: @escaping () -> Void) {
         itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async            
             guard error == nil else {
                 errorHandler(error?.localizedDescription ?? "")
                 handler()
                 return
             }
-            
-            //TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
+
+            // TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
             if let url = item as? URL {
                 self.documentAttachmentProvider.process(fileAt: url).ensure {
                     handler()
@@ -74,12 +72,11 @@ extension FileImporter {
                 if let name = itemProvider.suggestedName {
                     fileName = name
                 }
-                
+
                 let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
                 // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
                 guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
-                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
-                {
+                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else {
                     errorHandler(LocalString._failed_to_determine_file_type)
                     handler()
                     return

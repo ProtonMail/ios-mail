@@ -28,7 +28,7 @@ class ContactSectionHeadView: UITableViewHeaderFooterView {
 
     func configHeader(title: String, signed: Bool) {
         contentView.backgroundColor = ColorProvider.BackgroundNorm
-        headerLabel.attributedText = title.apply(style: FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.InteractionNorm)) 
+        headerLabel.attributedText = title.apply(style: FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.InteractionNorm))
         signMark.isHidden = !signed
 
         // disable for now

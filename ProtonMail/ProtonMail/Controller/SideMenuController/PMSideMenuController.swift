@@ -16,7 +16,7 @@ class PMSideMenuController: SideMenuController, SideMenuControllerDelegate {
     override var childForStatusBarHidden: UIViewController? {
         isMenuPresented ? menuViewController : contentViewController
     }
-    
+
     override var childForStatusBarStyle: UIViewController? {
         isMenuPresented ? menuViewController : contentViewController
     }
@@ -48,7 +48,7 @@ extension PMSideMenuController {
         // is 20 when it doesn't have notch
         return UIDevice.hasNotch ? 22: 10
     }
-    
+
     private func handleStatusBar(add: Bool) {
         if #available(iOS 13.0, *) {
             // iOS 13 above, the height of the status bar still keep even it is hidden
@@ -59,11 +59,11 @@ extension PMSideMenuController {
             self.hideStatusBar(hide: add)
         }
     }
-    
+
     /// add placeholder height to substitute status bar
     private func addAdditionalHeight(_ add: Bool) {
         if UIDevice.hasNotch && UIDevice.current.userInterfaceIdiom == .phone { return }
-        
+
         let navigationController = self.contentViewController as? UINavigationController
         let top: CGFloat = add ? additionalHeight: 0.0
         self.additionalSafeAreaInsets.top = top
@@ -79,7 +79,7 @@ extension PMSideMenuController {
         if #available(iOS 13, *) {
             statusBar = nil
         } else {
-            statusBar = UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+            statusBar = UIApplication.shared.value(forKey: s + b + w) as? UIWindow
         }
         statusBar?.alpha = hide ? 0: 1
     }

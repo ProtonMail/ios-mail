@@ -20,41 +20,38 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 final class ContactTypeAddCustomCell: UITableViewCell {
-    
+
     @IBOutlet weak var value: UILabel!
-    
+
     @IBOutlet weak var inputField: UITextField!
-    
-    func configCell(v : String) {
+
+    func configCell(v: String) {
         value.text = v
     }
-    
+
     func setMark() {
         inputField.becomeFirstResponder()
-        
+
         value.isHidden = true
         inputField.isHidden = false
-        
+
     }
-    
+
     func unsetMark() {
         inputField.resignFirstResponder()
-        
+
         value.isHidden = false
         inputField.isHidden = true
-        
+
         value.text = inputField.text
-        
+
     }
-    
+
     func getValue() -> String {
         return inputField.text ?? LocalString._contacts_custom_type
     }
-    
-    
-    
+
 }

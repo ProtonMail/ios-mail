@@ -20,18 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import OpenPGP
 
 func PMNBCrypt (password: String, salt: String) -> String {
-    var hash_out : String = ""
+    var hash_out: String = ""
     do {
         try ObjC.catchException {
             hash_out = PMNBCryptHash.hashString(password, salt: salt)
         }
     } catch {
-        //TODO:: log error
+        // TODO:: log error
     }
     return hash_out
 }

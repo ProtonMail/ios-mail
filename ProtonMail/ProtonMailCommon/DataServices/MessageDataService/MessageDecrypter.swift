@@ -78,7 +78,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message {
         var newMessage: Message!
-        
+
         context.performAndWait {
             newMessage = self.duplicate(message, context: context)
 
@@ -127,7 +127,7 @@ extension MessageDecrypter {
         return body
     }
 
-    func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
+    func postProcessMIME(body: String) -> (String, [MimeAttachment]) {
         guard let mimeMessage = MIMEMessage(string: body) else {
             return (body.multipartGetHtmlContent(), [])
         }
@@ -154,7 +154,7 @@ extension MessageDecrypter {
                let rawBody = attachment.rawBodyString {
                 contentID = contentID.preg_replace("<", replaceto: "")
                 contentID = contentID.preg_replace(">", replaceto: "")
-                let type = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
+                let type = "image/jpg" // cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknown.jpg\""
                 let encode = attachment.headers[.contentTransferEncoding]?.body ?? "base64"
                 body = body.preg_replace_none_regex("src=\"cid:\(contentID)\"", replaceto: "src=\"data:\(type);\(encode),\(rawBody)\"")
             }
@@ -255,21 +255,21 @@ extension MessageDecrypter {
         newMessage.title = message.title
         newMessage.time = Date()
         newMessage.body = message.body
-        
-        //newMessage.flag = message.flag
+
+        // newMessage.flag = message.flag
         newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
-        
+
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
-        
+
         newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
         newMessage.mimeType = message.mimeType
         newMessage.conversationID = message.conversationID
         newMessage.setAsDraft()
-        
+
         newMessage.userID = self.userDataSource?.userInfo.userId ?? ""
         return newMessage
     }
@@ -278,7 +278,7 @@ extension MessageDecrypter {
               to newMessage: Message,
               copyAttachment: Bool,
               decryptedBody: String?) {
-        var newAttachmentCount : Int = 0
+        var newAttachmentCount: Int = 0
         let oldAttachments = attachments
             .allObjects
             .compactMap({ $0 as? Attachment })

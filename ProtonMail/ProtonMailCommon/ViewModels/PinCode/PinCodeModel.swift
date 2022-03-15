@@ -29,52 +29,52 @@ enum PinCodeStep: Int {
     case done = 3
 }
 
-class PinCodeViewModel : NSObject {
-    
+class PinCodeViewModel: NSObject {
+
     func needsLogoutConfirmation() -> Bool {
         return false
     }
-    
+
     func backButtonIcon() -> UIImage {
         return UIImage(named: "top_back")!
     }
-    
+
     func title() -> String {
         fatalError("This method must be overridden")
     }
-    
+
     func cancel() -> String {
         fatalError("This method must be overridden")
     }
-    
+
     func showConfirm() -> Bool {
         fatalError("This method must be overridden")
     }
-    
+
     func confirmString () -> String {
         fatalError("This method must be overridden")
     }
-    
-    func setCode (_ code : String) -> PinCodeStep {
+
+    func setCode (_ code: String) -> PinCodeStep {
         fatalError("This method must be overridden")
     }
-    
-    func isPinMatched(completion: @escaping (Bool)->Void) {
+
+    func isPinMatched(completion: @escaping (Bool) -> Void) {
         fatalError("This method must be overridden")
     }
-    
+
     func getPinFailedRemainingCount() -> Int {
         fatalError("This method must be overridden")
     }
-    
+
     func getPinFailedError() -> String {
         fatalError("This method must be overridden")
     }
-    
-    func done(completion: @escaping (Bool)->Void) {
+
+    func done(completion: @escaping (Bool) -> Void) {
         completion(true)
     }
-    
+
     func checkTouchID() -> Bool {
         return false
     }

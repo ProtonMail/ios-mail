@@ -34,7 +34,7 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
          shouldShowRenderModeOption: Bool
     ) {
         self.title = title
-        
+
         items.append(.reply)
         if hasMoreThanOneRecipient {
             items.append(.replyAll)

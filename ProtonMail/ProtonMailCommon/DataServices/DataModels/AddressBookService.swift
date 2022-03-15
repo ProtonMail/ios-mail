@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import Contacts
 
 class AddressBookService: Service {
-    enum RuntimeError : Error {
+    enum RuntimeError: Error {
         case cant_get_contacts
         var desc: String {
             get {
@@ -36,21 +35,21 @@ class AddressBookService: Service {
             }
         }
     }
-    
+
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
-    
+
     private lazy var store: CNContactStore = CNContactStore()
-    
+
     func hasAccessToAddressBook() -> Bool {
         return CNContactStore.authorizationStatus(for: .contacts) == .authorized
     }
-    
+
     func requestAuthorizationWithCompletion(_ completion: @escaping AuthorizationCompletionBlock) {
         store.requestAccess(for: .contacts, completionHandler: completion)
     }
-    
+
     func getAllContacts() -> [CNContact] {
-        let keysToFetch : [CNKeyDescriptor] = [
+        let keysToFetch: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactEmailAddressesKey as CNKeyDescriptor,
             CNContactPhoneNumbersKey as CNKeyDescriptor,
@@ -65,16 +64,16 @@ class AddressBookService: Service {
             */
             // CNContactNoteKey as CNKeyDescriptor,
             CNContactVCardSerialization.descriptorForRequiredKeys()]
-        
+
         // Get all the containers
         var allContainers: [CNContainer] = []
         do {
             allContainers = try store.containers(matching: nil)
         } catch {
         }
-        
+
         var results: [CNContact] = []
-        
+
         // Iterate all containers and append their contacts to our results array
         for container in allContainers {
             let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
@@ -84,27 +83,27 @@ class AddressBookService: Service {
             } catch {
             }
         }
-        
+
         return results
     }
-    
+
     func contacts() -> [ContactVO] {
         var contactVOs: [ContactVO] = []
-        
+
         guard case let contacts = self.getAllContacts(), !contacts.isEmpty else {
-            //TODO:: refactor this later
-            //Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
+            // TODO:: refactor this later
+            // Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
             return []
         }
-        
+
         for contact in contacts {
             var name: String = [contact.givenName, contact.middleName, contact.familyName].filter { !$0.isEmpty }.joined(separator: " ")
             let emails = contact.emailAddresses
             for email in emails {
                 let emailAsString = email.value as String
-                if (emailAsString.isValidEmail()) {
+                if emailAsString.isValidEmail() {
                     let email = emailAsString
-                    if (name.isEmpty) {
+                    if name.isEmpty {
                         name = email
                     }
                     contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
@@ -114,5 +113,3 @@ class AddressBookService: Service {
         return contactVOs
     }
 }
-
-

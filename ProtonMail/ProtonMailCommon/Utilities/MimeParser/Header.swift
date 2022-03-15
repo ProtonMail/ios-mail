@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     public enum Kind: String {
         case returnPath = "return-path"
@@ -26,19 +25,19 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentID = "content-id"
         case contentDisposition = "content-disposition"
     }
-    
-    public enum ContentDisposition : String {
+
+    public enum ContentDisposition: String {
         case inline = "inline"
         case attachment = "attachment"
     }
-    
+
     let raw: String
     let name: String
     let kind: Kind?
     let body: String
-    
+
     var cleanedBody: String { return self.body.decodedFromUTF8Wrapping }
-    
+
     init(_ string: String) {
         let components = string.components(separatedBy: ":")
         self.name = components.first ?? ""
@@ -46,22 +45,22 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
     }
-    
+
     func isAttachment() -> Bool {
         return isContent(type: .attachment) || isContent(type: .inline)
     }
-    
+
     func isContent( type: ContentDisposition) -> Bool {
         return self.body.contains(check: type.rawValue)
     }
-    
+
     var keyValues: [String: String] {
         let trimThese = CharacterSet(charactersIn: "\"").union(.whitespacesAndNewlines)
         let commaComponents = self.body.components(separatedBy: ",")
         let seimcolonComponents = self.body.components(separatedBy: ";")
         let components = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
         var results: [String: String] = [:]
-        
+
         for component in components {
             let pieces = component.components(separatedBy: "=")
             guard pieces.count >= 2 else { continue }
@@ -70,7 +69,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         }
         return results
     }
-    
+
     var headerKeyValues: [String: String] {
         var results: [String: String] = [:]
         guard let normalBody = self.body.removingPercentEncoding else {
@@ -86,21 +85,21 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         }
         return results
     }
-    
+
     var boundaryValue: String? {
         for (key, value) in self.keyValues {
             if key.contains("boundary") { return value }
         }
         return nil
-    } 
-    
+    }
+
     public var description: String {
         if let kind = self.kind {
             return "\(kind.rawValue): \(self.body)"
         }
         return "\"\(self.name)\": \(self.body)"
     }
-    
+
     public var debugDescription: String { return self.description }
 }
 
@@ -110,7 +109,7 @@ extension Array where Element == Header {
             return header.kind == kind
         }
     }
-    
+
     subscript(_ kind: Header.Kind) -> Header? {
         for header in self {
             if header.kind == kind {

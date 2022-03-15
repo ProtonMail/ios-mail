@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -35,12 +34,11 @@ extension APIErrorCode {
 
 }
 
-
 // MARK: - NSError APIService extension
 
-//localized
+// localized
 extension NSError {
-    
+
     public class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: APIServiceErrorDomain,
@@ -49,14 +47,14 @@ extension NSError {
             localizedFailureReason: localizedFailureReason,
             localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
-    
-    //FIXME: fix message content
+
+    // FIXME: fix message content
     public class func userLoggedOut() -> NSError {
         return apiServiceError(code: 9999,
                                localizedDescription: "Sender account has been logged out!",
                                localizedFailureReason: "Sender account has been logged out!")
     }
-    
+
     public class func badParameter(_ parameter: Any?) -> NSError {
         let desc: String
         if let parameter = parameter {
@@ -69,14 +67,14 @@ extension NSError {
             localizedDescription: LocalString._error_bad_parameter_title,
             localizedFailureReason: String(format: LocalString._error_bad_parameter_desc, "\(desc)"))
     }
-    
+
     public class func badResponse() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badResponse,
             localizedDescription: LocalString._error_bad_response_title,
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
-    //TODO:: move to other place
+    // TODO:: move to other place
     public class func encryptionError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
@@ -89,7 +87,7 @@ extension NSError {
             localizedDescription: "App was locked",
             localizedFailureReason: "You had locked the app before it managed to finish its task. Please try again")
     }
-    
+
     public class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = LocalString._error_no_object
         return apiServiceError(

@@ -27,16 +27,16 @@ import UIKit
 class GeneralSettingActionCell: UITableViewCell {
     @IBOutlet weak var leftText: UILabel!
     @IBOutlet weak var actionButton: UIButton!
-    
+
     static var CellID: String {
         return "\(self)"
     }
-    
-    private var callBack: (() -> ())?
-    
+
+    private var callBack: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         self.actionButton.layer.cornerRadius = 4.0
         self.actionButton.layer.masksToBounds = true
     }
@@ -44,14 +44,14 @@ class GeneralSettingActionCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-    func configCell(left: String, action: String, callback: (() -> ())?) {
+
+    func configCell(left: String, action: String, callback: (() -> Void)?) {
         self.leftText.text = left
         self.callBack = callback
-        
+
         self.actionButton.setTitle(action, for: .normal)
     }
-    
+
     @IBAction func handleAction(_ sender: Any) {
         self.callBack?()
     }

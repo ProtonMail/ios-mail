@@ -281,7 +281,7 @@ struct CSSMagic {
         let inlineCSS = CSSMagic.assemble(cssDict: cssDict)
 
         let css = newStyleCSS + inlineCSS
-        return "@media (prefers-color-scheme: dark) { \(css) }" 
+        return "@media (prefers-color-scheme: dark) { \(css) }"
     }
 }
 
@@ -339,7 +339,7 @@ extension CSSMagic {
         }
         return result
     }
-    
+
     static func getDarkModeCSSDict(for colorNodes: [Element]) -> [String: [String]] {
         var darkModeCSS: [String: [String]] = [:]
         for node in colorNodes {
@@ -404,7 +404,7 @@ extension CSSMagic {
         }
         color = color.trim()
 
-        var hsla: HSLA? = nil
+        var hsla: HSLA?
         if let value = CSSMagic.definedColors[color] {
             hsla = value
         } else if color.hasPrefix("rgb") || color.hasPrefix("rgba") {
@@ -527,15 +527,15 @@ extension CSSMagic {
         var h: CGFloat = 0
         var s: CGFloat = 0
         var l = (max + min) / 2
-        
-        if (max == min) {
+
+        if max == min {
             // achromatic
             h = 0
             s = 0
         } else {
             let d = max - min
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-            switch (max) {
+            switch max {
             case r:
                 h = (g - b) / d + (g < b ? 6 : 0)
             case g:
@@ -696,7 +696,7 @@ extension CSSMagic {
     }
 
     static func assemble(cssDict: [String: [String]]) -> String {
-        var css = "";
+        var css = ""
         for (anchor, values) in cssDict {
             guard !values.isEmpty else { continue }
             let value = values.joined(separator: ";")

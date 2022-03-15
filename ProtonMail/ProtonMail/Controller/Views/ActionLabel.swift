@@ -19,35 +19,33 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class ActionLabel: UILabel {
-    
+
     internal struct `Type` : OptionSet {
         let rawValue: Int
         static let copy = Type([])
     }
-    
 
     override public var canBecomeFirstResponder: Bool {
         get {
             return true
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        
+
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
-    
+
     func setup() {
         isUserInteractionEnabled = true
         addGestureRecognizer(UILongPressGestureRecognizer(
@@ -55,12 +53,12 @@ class ActionLabel: UILabel {
             action: #selector(showMenu(sender:))
         ))
     }
-    
+
     override func copy(_ sender: Any?) {
         UIPasteboard.general.string = text
         UIMenuController.shared.setMenuVisible(false, animated: true)
     }
-    
+
     @objc func showMenu(sender: Any?) {
         becomeFirstResponder()
         let menu = UIMenuController.shared
@@ -71,11 +69,9 @@ class ActionLabel: UILabel {
             menu.setMenuVisible(true, animated: true)
         }
     }
-    
+
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return (action == #selector(copy(_:)))
     }
-    
+
 }
-
-

@@ -19,25 +19,24 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
-class ComposeCoordinator : DefaultCoordinator {
+class ComposeCoordinator: DefaultCoordinator {
     typealias VC = ComposeViewController
 
     weak var viewController: ComposeViewController?
     weak var navigationController: UINavigationController?
-    
-    let viewModel : ComposeViewModel
+
+    let viewModel: ComposeViewModel
     var services: ServiceFactory
-    
+
     init(vc: ComposeViewController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
         self.services = services
     }
-    
+
     init(navigation: UINavigationController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.navigationController = navigation
@@ -46,41 +45,41 @@ class ComposeCoordinator : DefaultCoordinator {
         let composer = rootViewController.children[0] as! ComposeViewController
         self.viewController = composer
     }
-    
+
     weak var delegate: CoordinatorDelegate?
 
-    enum Destination : String {
+    enum Destination: String {
         case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
         case subSelection      = "toContactGroupSubSelection"
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
+
         switch dest {
         case .password:
             guard let popup = destination as? ComposePasswordViewController else {
                 return false
             }
-            
+
             guard let vc = viewController else {
                 return false
             }
-            
+
             popup.pwdDelegate = self
-            //get this data from view model
+            // get this data from view model
             popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
-            
+
         case .expirationWarning:
             guard let vc = viewController else {
                 return false
             }
             let nonPMEmails = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
             let pgpEmails = vc.headerView.pgpEmails
-            guard (nonPMEmails.count > 0 || pgpEmails.count > 0) else {
+            guard nonPMEmails.count > 0 || pgpEmails.count > 0 else {
                 vc.sendMessageStepTwo()
                 return false
             }
@@ -90,16 +89,16 @@ class ComposeCoordinator : DefaultCoordinator {
         }
         return true
     }
-    
+
     func start() {
         viewController?.set(viewModel: self.viewModel)
         viewController?.set(coordinator: self)
-        
+
         if let navigation = self.navigationController, let vc = self.viewController {
             navigation.setViewControllers([vc], animated: true)
         }
     }
-    
+
     func go(to dest: Destination) {
         if dest == .subSelection {
             presentGroupSubSelectionActionSheet()
@@ -122,15 +121,12 @@ class ComposeCoordinator : DefaultCoordinator {
     }
 }
 
+extension ComposeCoordinator: ComposePasswordViewControllerDelegate {
 
-
-
-extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
-    
     func Cancelled() {
-        
+
     }
-    
+
     func Apply(_ password: String, confirmPassword: String, hint: String) {
         guard let vc = viewController else {
             return
@@ -140,7 +136,7 @@ extension ComposeCoordinator : ComposePasswordViewControllerDelegate {
         vc.encryptionPasswordHint = hint
         vc.updateEO()
     }
-    
+
     func Removed() {
         guard let vc = viewController else {
             return

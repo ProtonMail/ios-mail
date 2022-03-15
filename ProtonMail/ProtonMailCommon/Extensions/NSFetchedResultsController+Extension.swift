@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 extension NSFetchedResultsController {
-    
+
     @objc func numberOfRows(in section: Int) -> Int {
         if let sectionInfo = sections?[section] {
             return sectionInfo.numberOfObjects
@@ -33,7 +32,7 @@ extension NSFetchedResultsController {
             return 0
         }
     }
-    
+
     @objc func numberOfSections() -> Int {
         if let n = sections?.count {
             return n

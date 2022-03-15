@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import MBProgressHUD
 import ProtonCore_Networking
@@ -28,30 +27,29 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
 class SettingDetailViewController: UIViewController {
-    
+
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var switcher: UISwitch!
-    
+
     @IBOutlet weak var inputTextGroupView: UIView!
     @IBOutlet weak var inputViewTopDistance: NSLayoutConstraint!
     @IBOutlet weak var inputViewHight: NSLayoutConstraint!
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputTextField: UITextField!
-    
+
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var passwordTextField: UITextField!
-    
+
     @IBOutlet weak var textFiledSectionTitle: UILabel!
 
     @IBOutlet weak var notesLabel: UILabel!
     private let kAsk2FASegue = "password_to_twofa_code_segue"
-    
+
     fileprivate var doneButton: UIBarButtonItem!
-    fileprivate var viewModel : SettingDetailsViewModel!
+    fileprivate var viewModel: SettingDetailsViewModel!
     private var paymentsUI: PaymentsUI?
-    func setViewModel(_ vm:SettingDetailsViewModel) -> Void
-    {
+    func setViewModel(_ vm: SettingDetailsViewModel) {
         self.viewModel = vm
     }
 
@@ -61,9 +59,9 @@ class SettingDetailViewController: UIViewController {
         UIViewController.configureNavigationBar(self)
 
         switchView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         doneButton = self.editButtonItem
-        doneButton.target = self;
+        doneButton.target = self
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = LocalString._general_save_action
         var attribute = FontManager.DefaultStrong
@@ -84,23 +82,22 @@ class SettingDetailViewController: UIViewController {
         inputTextView.backgroundColor = ColorProvider.BackgroundNorm
 
         inputTextGroupView.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         self.navigationItem.title = viewModel.getNavigationTitle()
-        
+
         self.navigationItem.hidesBackButton = true
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(back(sender:)))
-        
+
         if viewModel.isDisplaySwitch() {
             switchLabel.attributedText = NSAttributedString(string: viewModel.getSwitchText(), attributes: FontManager.Default)
             switcher.isOn = viewModel.getSwitchStatus()
             switchView.isHidden = false
-        }
-        else {
+        } else {
             switchView.isHidden = true
             inputViewTopDistance.constant = 42
         }
-        
+
         if viewModel.isShowTextView() {
             inputViewHight.constant = 200.0
             inputTextField.isHidden = true
@@ -130,25 +127,23 @@ class SettingDetailViewController: UIViewController {
         passwordTextField.placeholder = LocalString._signin_password
 
         passwordView.isHidden = true
-        
+
         switcher.isEnabled = viewModel.isSwitchEnabled()
         inputTextView.isEditable = viewModel.isSwitchEnabled()
-        
+
         notesLabel.text = viewModel.getNotes()
-        
-        
-        //check Role if need a paid feature
+
+        // check Role if need a paid feature
         if !viewModel.isSwitchEnabled() {
             presentPlanUpgrade()
         }
     }
-    
+
     @objc func back(sender: UIBarButtonItem) {
         dismissKeyboard()
         if (viewModel.getCurrentValue() == getTextValue() || viewModel.getPlaceholdText() == getTextValue()) && viewModel.getSwitchStatus() == self.switcher.isOn {
             _ = self.navigationController?.popViewController(animated: true)
-        }
-        else {
+        } else {
             let alertController = UIAlertController(
                 title: LocalString._general_confirmation_title,
                 message: LocalString._you_have_unsaved_changes_do_you_want_to_save_it,
@@ -156,33 +151,32 @@ class SettingDetailViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
                 _ = self.navigationController?.popViewController(animated: true)
             }))
-            
+
             alertController.addAction(UIAlertAction(title: LocalString._save_changes, style: .default, handler: { action in
                 self.startUpdateValue()
             }))
-            
+
             self.present(alertController, animated: true, completion: nil)
         }
-        
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     @IBAction func doneAction(_ sender: AnyObject) {
         startUpdateValue()
     }
-    
+
     @IBAction func swiitchAction(_ sender: AnyObject) {
         if viewModel.getCurrentValue() == inputTextField.text && viewModel.getSwitchStatus() == self.switcher.isOn {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-        else {
+        } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == self.kAsk2FASegue {
             let popup = segue.destination as! TwoFACodeViewController
@@ -191,14 +185,13 @@ class SettingDetailViewController: UIViewController {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
-    
-    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
-    {
-        presentingController.providesPresentationContextTransitionStyle = true;
-        presentingController.definesPresentationContext = true;
+
+    internal func setPresentationStyleForSelfController(_ selfController: UIViewController, presentingController: UIViewController) {
+        presentingController.providesPresentationContextTransitionStyle = true
+        presentingController.definesPresentationContext = true
         presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
-    
+
     // MARK: private methods
 
     private func presentPlanUpgrade() {
@@ -210,48 +203,45 @@ class SettingDetailViewController: UIViewController {
 
     fileprivate func dismissKeyboard() {
         if viewModel.isShowTextView() {
-            if (self.inputTextView != nil) {
+            if self.inputTextView != nil {
                 self.inputTextView.resignFirstResponder()
             }
-        }
-        else {
-            if (self.inputTextField != nil) {
+        } else {
+            if self.inputTextField != nil {
                 self.inputTextField.resignFirstResponder()
             }
         }
     }
-    
-    fileprivate func focusTextField() -> Void {
+
+    fileprivate func focusTextField() {
         if viewModel.isShowTextView() {
-            if (self.inputTextView != nil) {
+            if self.inputTextView != nil {
                 self.inputTextView.becomeFirstResponder()
             }
-        }
-        else {
-            if (self.inputTextField != nil) {
+        } else {
+            if self.inputTextField != nil {
                 self.inputTextField.becomeFirstResponder()
             }
         }
     }
-    
+
     fileprivate func getTextValue () -> String {
         if viewModel.isShowTextView() {
             guard inputTextView.textColor != ColorProvider.TextHint else {
                 return ""
             }
             return inputTextView.text
-        }
-        else {
+        } else {
             return inputTextField.text!
         }
     }
-    
+
     fileprivate func getPasswordValue () -> String {
         return passwordTextField.text ?? ""
     }
-    
-    var cached2faCode : String?
-    fileprivate func startUpdateValue () -> Void {
+
+    var cached2faCode: String?
+    fileprivate func startUpdateValue () {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
@@ -290,7 +280,7 @@ class SettingDetailViewController: UIViewController {
                             self.showErrorAlert(error)
                         }
                     } else {
-                        let _ = self.navigationController?.popViewController(animated: true)
+                        _ = self.navigationController?.popViewController(animated: true)
                     }
                 })
             }
@@ -317,12 +307,12 @@ class SettingDetailViewController: UIViewController {
     }
 }
 
-extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
-    func confirmedCode(_ code: String, pwd : String) {
+extension SettingDetailViewController: TwoFACodeViewControllerDelegate {
+    func confirmedCode(_ code: String, pwd: String) {
         self.cached2faCode = code
         self.startUpdateValue()
     }
-    
+
     func cancel2FA() {
     }
 }
@@ -332,30 +322,28 @@ extension SettingDetailViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
+
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text! as NSString
         let changedText = text.replacingCharacters(in: range, with: string)
-        
+
         if viewModel.getCurrentValue() == changedText && viewModel.getSwitchStatus() == self.switcher.isOn {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-        else {
+        } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         startUpdateValue()
         return true
     }
 }
-
 
 extension SettingDetailViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -371,16 +359,15 @@ extension SettingDetailViewController: UITextViewDelegate {
             textView.textColor = ColorProvider.TextHint
         }
     }
-    
+
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let ctext = textView.text as NSString
-        
+
         let changedText = ctext.replacingCharacters(in: range, with: text)
-        
+
         if viewModel.getCurrentValue() == changedText {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-        else {
+        } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
         return true

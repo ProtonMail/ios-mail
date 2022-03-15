@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import ProtonCore_UIFoundations
 import UIKit
 
 @IBDesignable class SwitchTableViewCell: UITableViewCell {
-    static var CellID : String  {
+    static var CellID: String {
         return "\(self)"
     }
     typealias ActionStatus = (_ isOK: Bool) -> Void
@@ -40,21 +39,21 @@ import UIKit
         switchView.backgroundColor = ColorProvider.Shade60
         selectionStyle = .none
     }
-    
-    var callback : switchActionBlock?
-    
+
+    var callback: switchActionBlock?
+
     @IBOutlet weak var topLineBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var centerConstraint: NSLayoutConstraint!
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
-    
+
     @IBOutlet weak var switchView: UISwitch!
-    
+
     override func prepareForReuse() {
         self.switchView.isEnabled = true
         self.switchView.onTintColor = ColorProvider.BrandNorm
     }
-    
+
     @IBAction func switchAction(_ sender: UISwitch) {
         let status = sender.isOn
         callback?(self, status, { (isOK ) -> Void in
@@ -64,7 +63,7 @@ import UIKit
             }
         })
     }
-    
+
     func configCell(_ topline: String, bottomLine: String, status: Bool, complete: switchActionBlock?) {
         let leftAttributes = FontManager.Default.alignment(.left)
         topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
@@ -76,15 +75,15 @@ import UIKit
         self.accessibilityLabel = topline
         self.accessibilityElements = [switchView as Any]
         self.switchView.accessibilityLabel = topline + bottomLine
-        
+
         if bottomLine.isEmpty {
-            //topLineBottomConstraint.priority = UILayoutPriority(1000.0)
-            centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
+            // topLineBottomConstraint.priority = UILayoutPriority(1000.0)
+            centerConstraint.priority = UILayoutPriority(rawValue: 750.0)
             bottomLineLabel.isHidden = true
-            
+
         } else {
             topLineBottomConstraint.priority = UILayoutPriority(250.0)
-            centerConstraint.priority = UILayoutPriority(rawValue: 1.0);
+            centerConstraint.priority = UILayoutPriority(rawValue: 1.0)
             bottomLineLabel.isHidden = false
         }
         self.layoutIfNeeded()

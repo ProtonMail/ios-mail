@@ -20,53 +20,51 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 struct Constants {
-    
+
     /// use this to replace the version compare to decide feature on/off. this is easier to track
     enum Feature {
-        static let snoozeOn : Bool = false
+        static let snoozeOn: Bool = false
     }
-    
+
     enum App {
-        static let AuthCacheVersion : Int              = 15 //this is user info cache
-        
+        static let AuthCacheVersion: Int = 15 // this is user info cache
+
         static let SpaceWarningThreshold: Int          = 90
         static let SpaceWarningThresholdDouble: Double = 90
-        static let SplashVersion : Int                 = 1
-        static let TourVersion : Int                   = 2
-        
-        static let AskTouchID : Int              = 1
-        static var AppVersion : Int              = 1
-         
-        
+        static let SplashVersion: Int                 = 1
+        static let TourVersion: Int                   = 2
+
+        static let AskTouchID: Int              = 1
+        static var AppVersion: Int              = 1
+
         // live api
         static let domain: String = "protonmail.com"
-        static let URL_HOST : String = "api.protonmail.ch"
-        static let API_PATH : String = ""
+        static let URL_HOST: String = "api.protonmail.ch"
+        static let API_PATH: String = ""
 //        static let domain = "proton.black"
 //        static let URL_HOST : String = "proton.black"
 //        static let API_PATH : String = "/api"
-        static let DOH_ENABLE : Bool = true
-        
+        static let DOH_ENABLE: Bool = true
+
         ///
         static let URL_Protocol = "https://"
         static let API_PREFIXED = "mail/v4"
-        private static var API_HOST_URL : String {
+        private static var API_HOST_URL: String {
             get {
                 return URL_Protocol + URL_HOST
             }
         }
-        
+
         static func apiHost() -> String {
             if let apiURLOverrideString = UserDefaults.standard.string(forKey: "ch.protonmail.protonmail.APIURLOverride"), let apiURLOverride = URL(string: apiURLOverrideString) {
                 return apiURLOverride.absoluteString
             }
             return API_HOST_URL
         }
-         
+
         static func captchaHost() -> String {
             if URL_HOST.starts(with: "api.") {
                 return "https://\(URL_HOST)"
@@ -74,9 +72,9 @@ struct Constants {
                 return "https://api.\(URL_HOST)"
             }
         }
-        
-        //app share group
-        static var APP_GROUP : String {
+
+        // app share group
+        static var APP_GROUP: String {
             get {
                 #if Enterprise
                 return "group.com.protonmail.protonmail"
@@ -89,7 +87,7 @@ struct Constants {
         static var humanVerifyHost = "https://verify.\(Constants.App.domain)"
         static var accountHost = "https://account.\(Constants.App.domain)"
     }
-    
+
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
                                            "iosmail_mail2021_12_usd_non_renewing",
                                            "iosmail_bundle2021_12_usd_non_renewing"]

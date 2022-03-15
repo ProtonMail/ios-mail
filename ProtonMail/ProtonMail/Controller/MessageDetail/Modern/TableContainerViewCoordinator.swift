@@ -19,27 +19,25 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
-//can we move this to  view controller -- notes from feng.
+// can we move this to  view controller -- notes from feng.
 class TableContainerViewCoordinator: NSObject, CoordinatorNew {
     func start() {
         // ?
     }
-    
-    
+
     internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         fatalError()
     }
-    
+
     internal func embed(_ child: UIViewController,
                         onto view: UIView,
                         layoutGuide: UILayoutGuide? = nil,
                         ownedBy controller: UIViewController) {
         assert(controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
-        
+
         // remove child from old parent
         if let parent = child.parent, parent != controller {
             child.willMove(toParent: nil)
@@ -60,9 +58,9 @@ class TableContainerViewCoordinator: NSObject, CoordinatorNew {
                 view.addSubview(child.view)
             }
         }
-        
+
         child.didMove(toParent: controller)
-        
+
         // autolayout guides priority: parameter, safeArea, no guide
         if let specialLayoutGuide = layoutGuide {
             specialLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true

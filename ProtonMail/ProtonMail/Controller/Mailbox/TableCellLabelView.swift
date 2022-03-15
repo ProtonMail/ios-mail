@@ -20,19 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class TableCellLabelView: UIView, AccessibleCell {
-    fileprivate let kCoverImageViewWidth : CGFloat = 3.0
-    
-    fileprivate var textLabel:UILabel!
-    fileprivate var contentView : UIView!
+    fileprivate let kCoverImageViewWidth: CGFloat = 3.0
+
+    fileprivate var textLabel: UILabel!
+    fileprivate var contentView: UIView!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        contentView = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
-        textLabel = UILabel(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
-        
+        contentView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 13))
+        textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 13))
+
         textLabel.text = ""
         textLabel.textColor = UIColor.green
         textLabel.layer.borderWidth = 1
@@ -41,24 +40,24 @@ class TableCellLabelView: UIView, AccessibleCell {
         textLabel.font = Fonts.h7.light
         self.contentView.addSubview(textLabel)
         self.addSubview(contentView)
-        
+
         textLabel.mas_makeConstraints { (make) -> Void in
-            let _ = make?.top.equalTo()(self.contentView)
-            let _ = make?.bottom.equalTo()(self.contentView)
-            let _ = make?.right.equalTo()(self.contentView)
-            let _ = make?.left.equalTo()(self.contentView)
+            _ = make?.top.equalTo()(self.contentView)
+            _ = make?.bottom.equalTo()(self.contentView)
+            _ = make?.right.equalTo()(self.contentView)
+            _ = make?.left.equalTo()(self.contentView)
         }
-        
+
         contentView.mas_makeConstraints { (make) -> Void in
-            let _ = make?.top.equalTo()(self)
-            let _ = make?.bottom.equalTo()(self)
-            let _ = make?.left.equalTo()(self)?.offset()(self.kCoverImageViewWidth)
-            let _ = make?.right.equalTo()(self)
+            _ = make?.top.equalTo()(self)
+            _ = make?.bottom.equalTo()(self)
+            _ = make?.left.equalTo()(self)?.offset()(self.kCoverImageViewWidth)
+            _ = make?.right.equalTo()(self)
         }
         self.clipsToBounds = true
         self.contentView.clipsToBounds = true
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

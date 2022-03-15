@@ -144,7 +144,6 @@ extension URL {
     }
 }
 
-
 extension NSString {
     func mimeType() -> String {
         return MimeType(self.pathExtension)
@@ -156,13 +155,13 @@ extension String {
         return (self as NSString).mimeType()
     }
 
-    var clear : String {
+    var clear: String {
         get {
             var invalidCharacters = CharacterSet(charactersIn: ":/")
             invalidCharacters.formUnion(.newlines)
             invalidCharacters.formUnion(.illegalCharacters)
             invalidCharacters.formUnion(.controlCharacters)
-            
+
             let newFilename = self.components(separatedBy: invalidCharacters).joined(separator: "_")
             return newFilename
         }

@@ -20,28 +20,26 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
 // code start at 0x110200
-enum SignUpCreateUserError : Int, Error, CustomErrorVar {
+enum SignUpCreateUserError: Int, Error, CustomErrorVar {
     case invalidModulsID = 0x110201
     case invalidModuls = 0x110202
     case cantHashPassword = 0x110203
     case cantGenerateVerifier = 0x110204
-    
+
     case `default` = 0x110200
-    
-    var code : Int {
+
+    var code: Int {
         return self.rawValue
     }
-    
-    var desc : String {
+
+    var desc: String {
         return LocalString._update_notification_email
     }
-    
-    var reason : String {
+
+    var reason: String {
         switch self {
         case .invalidModulsID:
             return LocalString._cant_get_a_modulus_id

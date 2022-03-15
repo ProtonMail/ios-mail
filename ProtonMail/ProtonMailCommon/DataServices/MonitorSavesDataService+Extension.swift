@@ -20,10 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-//extension MonitorSavesDataService {
+// extension MonitorSavesDataService {
 //    func registerMessage(attribute: String, handler: @escaping ((Message) -> Void)) {
 //        registerEntityName(Message.Attributes.entityName, attribute: attribute, handler: { managedObject in
 //            if let message = managedObject as? Message {
@@ -31,4 +30,4 @@ import Foundation
 //            }
 //        })
 //    }
-//}
+// }

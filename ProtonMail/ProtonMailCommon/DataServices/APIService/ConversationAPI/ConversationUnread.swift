@@ -40,12 +40,12 @@ class ConversationUnreadRequest: Request {
     var path: String {
         return ConversationsAPI.path + "/unread"
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         let out: [String: Any] = ["IDs": conversationIDs, "LabelID": labelID]
         return out
     }

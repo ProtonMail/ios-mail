@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import UIKit
 import UserNotifications
@@ -31,17 +30,16 @@ import ProtonCore_Common
 public class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
 
     typealias SubscriptionSettings = PushSubscriptionSettings
-    
+
     enum Key {
         static let subscription = "pushNotificationSubscription"
     }
-    
-    fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
-    
+    fileprivate var launchOptions: [AnyHashable: Any]?
+
     /// message service
     private let messageService: MessageDataService?
-    
+
     ///
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
@@ -52,7 +50,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
     private let notificationCenter: NotificationCenter
 
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
-    
+
     init(service: MessageDataService? = nil,
          subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -74,13 +72,13 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         self.latestDeviceToken = KeychainWrapper.keychain.string(forKey: PushNotificationDecryptor.Key.deviceToken)
         self.notificationCenter = notificationCenter
         super.init()
-        
+
         defer {
             notificationCenter.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
             notificationCenter.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
         }
     }
-    
+
     fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
         willSet {
             guard latestDeviceToken != newValue else { return }
@@ -93,28 +91,28 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
     }
     fileprivate let currentSubscriptions: SubscriptionsPack
-    
+
     // MARK: - register for notificaitons
-    
+
     public func registerForRemoteNotifications() {
-        ///TODO::fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
+        /// TODO::fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             guard granted else { return }
             DispatchQueue.main.async {
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
-        
+
         self.unreportOutdatedSettings()
     }
-    
+
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         self.latestDeviceToken = deviceToken
         if self.signInProvider.isSignedIn, self.unlockProvider.isUnlocked {
             self.didUnlockAsync()
         }
     }
-    
+
     @objc private func didUnlockAsync() {
         unlockQueue.async {
             self.didUnlock()    // cuz encryption kit generation can take significant time
@@ -152,12 +150,12 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
                 return
             }
         }
-        
+
         let settingsWeNeedToHave = sessionIDs.map { SubscriptionSettings(token: deviceToken, UID: $0) }
-        
+
         let settingsToUnreport = self.currentSubscriptions.settings().subtracting(Set(settingsWeNeedToHave))
         self.currentSubscriptions.outdate(settingsToUnreport)
-        
+
         let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter {
             ($0.state == .reported || $0.state == .pending) &&
             !settingsToUnreport.contains($0.settings)
@@ -183,7 +181,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 
         finalizeReporting(settingsToReport: settingsToReport)
     }
-    
+
     @objc private func didSignOut() {
         let settingsToUnreport = self.currentSubscriptions.subscriptions.compactMap { subscription -> SubscriptionSettings? in
             return subscription.state == .notReported ? nil : subscription.settings
@@ -191,7 +189,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
         self.currentSubscriptions.outdate(Set(settingsToUnreport))
         self.unreportOutdatedSettings()
     }
-    
+
     // register on BE and validate local values
     private func report(_ settingsToReport: Set<SubscriptionSettings>) -> [SubscriptionSettings: SubscriptionState] {
         guard !Thread.isMainThread else {
@@ -215,14 +213,14 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
                 reportResult[settings] = .reported
             }
             reportResult[settings] = .pending
-            
+
             let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
         group.wait()
         return reportResult
     }
-    
+
     // unregister on BE and validate local values
     private func unreportOutdatedSettings() {
         currentSubscriptions.outdatedSettings.forEach { setting in
@@ -236,9 +234,9 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             }
         }
     }
-    
+
     // MARK: - launch options
-    
+
     public func setLaunchOptions (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let launchoption = launchOptions {
             if let remoteNotification = launchoption[UIApplication.LaunchOptionsKey.remoteNotification ] as? [AnyHashable: Any] {
@@ -246,39 +244,38 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             }
         }
     }
-    
+
     public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         self.launchOptions = userInfo
         completionHandler()
     }
-    
+
     public func processCachedLaunchOptions() {
         if let options = self.launchOptions {
             self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { })
         }
     }
-    
+
     func hasCachedLaunchOptions() -> Bool {
         return self.launchOptions != nil
     }
-    
+
     // MARK: - notifications
-    
+
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
-                                             forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
+                                             forceProcess: Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         guard sharedServices.get(by: UsersManager.self).hasUsers(), UnlockManager.shared.isUnlocked() else {
             completionHandler()
             return
         }
-        
+
         guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
-            let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else
-        {
+            let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else {
             handleLocalNoification(userInfo)
             completionHandler()
             return
         }
-        
+
         self.launchOptions = nil
 
         user.messageService.fetchNotificationMessageDetail(messageid) { [weak self] (task, response, message, error) -> Void in
@@ -319,7 +316,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
             break
         }
     }
-    
+
     // MARK: - Private methods
     private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
         if let encrypted = userInfo["encryptedMessage"] as? String,
@@ -350,8 +347,7 @@ public class PushNotificationService: NSObject, Service, PushNotificationService
 extension PushNotificationService: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
-                                       withCompletionHandler completionHandler: @escaping () -> Void)
-    {
+                                       withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if UnlockManager.shared.isUnlocked() { // unlocked
             self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
@@ -362,12 +358,11 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
             completionHandler()
         }
     }
-    
+
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        willPresent notification: UNNotification,
-                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    {
-        let options: UNNotificationPresentationOptions = [.alert, .sound]   
+                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let options: UNNotificationPresentationOptions = [.alert, .sound]
         completionHandler(options)
     }
 }
@@ -396,11 +391,11 @@ extension PushNotificationService {
 // MARK: - Dependency Injection sugar
 
 protocol SessionIdProvider {
-    var sessionIDs: Array<String> { get }
+    var sessionIDs: [String] { get }
 }
 
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
-    var sessionIDs: Array<String> {
+    var sessionIDs: [String] {
         return sharedServices.get(by: UsersManager.self).users.map { $0.auth.sessionID }
     }
 }

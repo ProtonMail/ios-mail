@@ -21,7 +21,6 @@
 
 import Foundation
 
-
 class SettingsNetworkViewModel {
     enum SettingSection {
         case alternativeRouting

@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 import PromiseKit
@@ -34,14 +33,14 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
     private var queueObservation: NSKeyValueObservation!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
         self.webView.scrollView.clipsToBounds = false
         self.webView.isAccessibilityElement = true
         self.webView.accessibilityIdentifier = "ComposerBody"
-        
+
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
 
@@ -49,18 +48,18 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
-        
+
         NotificationCenter.default.addObserver(forName: UIMenuController.willShowMenuNotification, object: nil, queue: nil) { [weak self] notification in
             guard let self = self else { return }
             let saveMenuItem = UIMenuItem(title: LocalString._clear_style, action: #selector(self.removeStyleFromSelection))
             UIMenuController.shared.menuItems = [saveMenuItem]
         }
-        
+
         // notifications
         #if APP_EXTENSION
         NotificationCenter.default.addObserver(forName: NSError.errorOccuredNotification, object: nil, queue: nil) { [weak self] notification in
             // Prevent to keep showing alert again and again
-            if (self?.step.contains(.storageExceeded) ?? false) { return }
+            if self?.step.contains(.storageExceeded) ?? false { return }
             self?.latestError = notification.userInfo?["text"] as? String
             if self?.latestError == LocalString._storage_exceeded {
                 self?.step.insert(.storageExceeded)
@@ -74,52 +73,52 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         #endif
         generateAccessibilityIdentifiers()
     }
-    
+
     @objc func removeStyleFromSelection() {
         self.htmlEditor.removeStyleFromSelection()
     }
-    
+
     override func shouldDefaultObserveContentSizeChanges() -> Bool {
         return false
     }
-    
+
     deinit {
         self.heightObservation = nil
         self.queueObservation = nil
-        
+
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func caretMovedTo(_ offset: CGPoint) {
         self.stopInertia()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
             guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
              // approx height and width of our text row
             let сaretBounds = CGSize(width: 100, height: 100)
-            
+
             // horizontal
-            let offsetAreaInWebView = CGRect(x: offset.x - сaretBounds.width/2, y: 0, width: сaretBounds.width, height: 1)
+            let offsetAreaInWebView = CGRect(x: offset.x - сaretBounds.width / 2, y: 0, width: сaretBounds.width, height: 1)
             self.webView.scrollView.scrollRectToVisible(offsetAreaInWebView, animated: true)
-            
+
             // vertical
-            let offsetAreaInCell = CGRect(x: 0, y: offset.y - сaretBounds.height/2, width: 1, height: сaretBounds.height)
+            let offsetAreaInCell = CGRect(x: 0, y: offset.y - сaretBounds.height / 2, width: 1, height: сaretBounds.height)
             let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
             enclosingScroller.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
     }
-    
+
     override func webViewPreferences() -> WKPreferences {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
         preferences.javaScriptCanOpenWindowsAutomatically = false
         return preferences
     }
-    
+
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.htmlEditor.webView(webView, didFinish: navigation)
         super.webView(webView, didFinish: navigation)
     }
-    
+
     override func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
@@ -132,14 +131,14 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 (self.view.window?.next as? UIApplication)?.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
                 #endif
             }
-            
+
             self.htmlEditor.remove(embedImage: "cid:\(sid)")
             completion?()
             return
         }
         return super.addInlineAttachment(sid, data: data, completion: completion)
     }
-    
+
     func errorBannerToPresent() -> BannerView? {
         return self.latestErrorBanner
     }
@@ -149,7 +148,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     private var latestError: String?
     private struct SendingStep: OptionSet {
         let rawValue: Int
-        
+
         static var composing = SendingStep(rawValue: 1 << 0)
         static var composingCanceled = SendingStep(rawValue: 1 << 1)
         static var sendingStarted = SendingStep(rawValue: 1 << 2)
@@ -159,7 +158,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         static var queueIsEmpty = SendingStep(rawValue: 1 << 6)
         static var storageExceeded = SendingStep(rawValue: 1 << 7)
     }
-    
+
     private var step: SendingStep = .composing {
         didSet {
             if step.contains(.storageExceeded) {
@@ -184,7 +183,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
                     self?.step.insert(.resultAcknowledged)
                 }
-                
+
                 let alert = UIAlertController(title: "✅", message: LocalString._message_sent_ok_desc, preferredStyle: .alert)
                 self.stepAlert = alert
                 return
@@ -206,7 +205,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 let alert = UIAlertController(title: LocalString._sending_message,
                                                message: LocalString._please_wait_in_foreground,
                                                preferredStyle: .alert)
-                
+
                 self.stepAlert = alert
                 return
             }
@@ -222,21 +221,21 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             }
         }
     }
-    
+
     override func cancel() {
         self.step = [.composingCanceled, .resultAcknowledged]
     }
-    
+
     override func sendMessageStepThree() {
         super.sendMessageStepThree()
         self.step = .sendingStarted
     }
-    
+
     override func dismiss() {
         [self.headerView.toContactPicker,
          self.headerView.ccContactPicker,
-         self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
-        
+         self.headerView.bccContactPicker].forEach { $0.prepareForDesctruction() }
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateStepWhenTheQueueIsEmpty), name: .queueIsEmpty, object: nil)
     }
 
@@ -244,10 +243,10 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         guard !step.contains(.queueIsEmpty) else { return }
         self.step.insert(.queueIsEmpty)
     }
-    
+
     private func dismissAnimation() {
         DispatchQueue.main.async {
-            let animationBlock: ()->Void = { [weak self] in
+            let animationBlock: () -> Void = { [weak self] in
                 if let view = self?.navigationController?.view {
                     view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
                 }
@@ -259,7 +258,6 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             }
         }
     }
-    
+
 #endif
 }
-

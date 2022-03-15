@@ -33,21 +33,20 @@ protocol ComposeContainerUIProtocol: AnyObject {
     func updateCurrentAttachmentSize()
 }
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>
-{
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem!
     private var sendButton: UIBarButtonItem!
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
-    private let timerInterval : TimeInterval = 30
+    private let timerInterval: TimeInterval = 30
     private let toolBarHeight: CGFloat = 48
     private var syncTimer: Timer?
     private var toolbarBottom: NSLayoutConstraint!
     private var toolbar: ComposeToolbar!
     private var isAddingAttachment: Bool = false
     private var attachmentsReloaded = false
-    /// MARK: Attachment variables
+    // MARK: Attachment variables
     let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
     private(set) var currentAttachmentSize: Int = 0
     lazy private(set) var attachmentProcessQueue: OperationQueue = {
@@ -80,13 +79,13 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     }
 
     private var isSendButtonTapped = false
-    
+
     deinit {
         self.childrenHeightObservations = []
         NotificationCenter.default.removeKeyboardObserver(self)
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
@@ -97,9 +96,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.tableView.dropDelegate = self
 
         view.backgroundColor = ColorProvider.BackgroundNorm
-        
+
         NotificationCenter.default.addKeyboardObserver(self)
-        
+
         self.setupBottomPadding()
         self.configureNavigationBar()
         self.setupChildViewModel()
@@ -114,14 +113,14 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         // accessibility
         generateAccessibilityIdentifiers()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let attachmentView = self.coordinator.attachmentView {
             attachmentView.addNotificationObserver()
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.startAutoSync()
@@ -130,14 +129,14 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
-        
+
         generateAccessibilityIdentifiers()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.stopAutoSync()
-        
+
         guard let vcCounts = self.navigationController?.viewControllers.count else {
             return
         }
@@ -146,7 +145,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.coordinator.attachmentView?.removeNotificationObserver()
         }
     }
-    
+
     override func configureNavigationBar() {
         super.configureNavigationBar()
 
@@ -156,7 +155,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.setupSendButton()
         self.setupCancelButton()
     }
-    
+
     // tableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
@@ -176,7 +175,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
         let areAttachmentsVisibleOnScreen = cell.frame.minY < (scrollView.contentOffset.y + scrollView.frame.height)
 
-        if !attachmentsReloaded && areAttachmentsVisibleOnScreen  {
+        if !attachmentsReloaded && areAttachmentsVisibleOnScreen {
             attachmentsReloaded = true
             children.compactMap { $0 as? ComposerAttachmentVC }.first?.refreshAttachmentsLoadingState()
         }
@@ -186,7 +185,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         }
     }
 
-    /// MARK: IBAction
+    // MARK: IBAction
     @objc
     func cancelAction(_ sender: UIBarButtonItem) {
         // FIXME: that logic should be in VM of EditorViewController
@@ -199,7 +198,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         isSendButtonTapped = true
         self.coordinator.sendAction(sender)
     }
-    
+
     #if APP_EXTENSION
     func getSharedFiles() {
         self.isAddingAttachment = true
@@ -214,7 +213,7 @@ extension ComposeContainerViewController {
         self.bottomPadding.constant = UIDevice.safeGuide.bottom + toolBarHeight
         self.bottomPadding.isActive = true
     }
-    
+
     private func setupChildViewModel() {
         let childViewModel = self.viewModel.childViewModel
         let header = self.coordinator.createHeader(childViewModel)
@@ -286,13 +285,13 @@ extension ComposeContainerViewController {
         }
         navigationItem.titleView = isUploadingAttachments ? ComposeAttachmentsAreUploadingTitleView() : nil
     }
-    
+
     private func setupCancelButton() {
         let icon = UIImage(named: "action_sheet_close")
         self.cancelButton = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
-    
+
     private func setupToolbar() {
         let bar = ComposeToolbar(delegate: self)
         bar.translatesAutoresizingMaskIntoConstraints = false
@@ -302,7 +301,7 @@ extension ComposeContainerViewController {
             bar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             bar.heightAnchor.constraint(equalToConstant: 48)
         ].activate()
-        self.toolbarBottom = bar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1*UIDevice.safeGuide.bottom)
+        self.toolbarBottom = bar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -1 * UIDevice.safeGuide.bottom)
         self.toolbarBottom.isActive = true
         self.toolbar = bar
     }
@@ -317,14 +316,14 @@ extension ComposeContainerViewController {
         ].activate()
         separatorView.isHidden = true
     }
-    
+
     private func startAutoSync() {
         self.stopAutoSync()
         self.syncTimer = Timer.scheduledTimer(withTimeInterval: self.timerInterval, repeats: true, block: { [weak self](_) in
             self?.viewModel.syncMailSetting()
         })
     }
-    
+
     private func stopAutoSync() {
         self.syncTimer?.invalidate()
         self.syncTimer = nil
@@ -343,13 +342,13 @@ extension ComposeContainerViewController: ComposeContainerUIProtocol {
     func setExpirationStatus(isSetting: Bool) {
         self.toolbar.setExpirationStatus(isSetting: isSetting)
     }
-    
+
     func updateAttachmentCount(number: Int) {
         DispatchQueue.main.async {
             self.toolbar.setAttachment(number: number)
         }
     }
-    
+
     func updateCurrentAttachmentSize() {
         self.currentAttachmentSize = self.coordinator.getAttachmentSize()
     }
@@ -360,7 +359,7 @@ extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverPr
         self.bottomPadding.constant = UIDevice.safeGuide.bottom + toolBarHeight
         self.toolbarBottom.constant = -1 * UIDevice.safeGuide.bottom
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             self.bottomPadding.constant = keyboardFrame.cgRectValue.height + toolBarHeight
@@ -368,7 +367,7 @@ extension ComposeContainerViewController: NSNotificationCenterKeyboardObserverPr
             UIView.animate(withDuration: 0.25) {
                 self.view.layoutIfNeeded()
             }
-            
+
         }
     }
 }
@@ -381,14 +380,14 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         let itemProviders = session.items.map { $0.itemProvider }
         return self.viewModel.filesAreSupported(from: itemProviders)
     }
-    
+
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    dropSessionDidUpdate session: UIDropSession,
                    withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
     }
-    
+
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnter session: UIDropSession) {
         if self.dropLandingZone == nil {
@@ -399,19 +398,19 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
             self.tableView.addSubview(dropZone)
             self.dropLandingZone = dropZone
         }
-        
+
         UIView.animate(withDuration: 0.3) {
             self.dropLandingZone?.alpha = 1.0
         }
     }
-    
+
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidExit session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
             self.dropLandingZone?.alpha = 0.0
         })
     }
-    
+
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnd session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
@@ -421,14 +420,14 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
             self.dropLandingZone = nil
         }
     }
-    
+
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    performDropWith coordinator: UITableViewDropCoordinator) {
         DispatchQueue.main.async {
             LocalString._importing_drop.alertToastBottom(view: self.view)
         }
-        
+
         let itemProviders = coordinator.items.map { $0.dragItem.itemProvider }
         self.viewModel.importFiles(from: itemProviders, errorHandler: self.error) {
             DispatchQueue.main.async {
@@ -443,12 +442,12 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
         self.view.endEditing(true)
         self.coordinator.navigateToPassword()
     }
-    
+
     func showExpireView() {
         self.view.endEditing(true)
         self.coordinator.navigateToExpiration()
     }
-    
+
     func showAttachmentView() {
         if self.viewModel.user.isStorageExceeded {
             LocalString._storage_exceeded.alertToast(withTitle: false, view: self.view)
@@ -458,10 +457,10 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
         self.coordinator.editor.view.endEditing(true)
         self.coordinator.attachmentView?.view.endEditing(true)
         self.view.endEditing(true)
-        
+
         var sheet: PMActionSheet!
         // FIXME: use asset
-        let left = PMActionSheetPlainItem(title: nil, icon: UIImage(named: "action_sheet_close")) { (_) -> (Void) in
+        let left = PMActionSheetPlainItem(title: nil, icon: UIImage(named: "action_sheet_close")) { (_) -> Void in
             sheet.dismiss(animated: true)
         }
 
@@ -471,7 +470,7 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
         let viewController = self.navigationController ?? self
         sheet.presentAt(viewController, animated: true)
     }
-    
+
     private func getActionSheetItemGroup() -> PMActionSheetItemGroup {
         let items: [PMActionSheetItem] = self.attachmentProviders.map(\.actionSheetItem)
         let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
@@ -507,22 +506,22 @@ extension ComposeContainerViewController: AttachmentController {
                     return
                 }
                 let size = fileData.contents.dataSize
-                
+
                 guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
                     self.sizeError(0)
                     seal.fulfill_()
                     return
                 }
-                
+
                 guard let message = self.coordinator.editor.viewModel.message,
                       message.managedObjectContext != nil else {
                     self.error(LocalString._system_cant_copy_the_file)
                     seal.fulfill_()
                     return
                 }
-                
+
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                
+
                 let attachment = try? `await`(fileData.contents.toAttachment(message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false))
                 guard let att = attachment else {
                     self.error(LocalString._cant_copy_the_file)
@@ -536,11 +535,11 @@ extension ComposeContainerViewController: AttachmentController {
             }
         }
     }
-    
+
     var barItem: UIBarButtonItem? {
         nil
     }
-    
+
     func error(_ description: String) {
         let alert = description.alertController()
         alert.addOKAction()
@@ -548,7 +547,7 @@ extension ComposeContainerViewController: AttachmentController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
     private func sizeError(_ size: Int) {
         DispatchQueue.main.async {
             let title = LocalString._attachment_limit

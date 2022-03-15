@@ -20,29 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Message {
-    
-    enum HiddenLocation : String {
-        case draft = "1" //1 can't be removed
-        case sent  = "2" //2 can't be removed
+
+    enum HiddenLocation: String {
+        case draft = "1" // 1 can't be removed
+        case sent  = "2" // 2 can't be removed
     }
-    
+
     /// Predefined location. matches with exclusive lable id
-    enum Location : String {
+    enum Location: String {
         case inbox   = "0"
-        case draft   = "8"  //"8"   //1 can't be removed
-        case sent    = "7"  //"7"    //2 can't be removed
+        case draft   = "8"  // "8"   //1 can't be removed
+        case sent    = "7"  // "7"    //2 can't be removed
         case starred = "10"
         case archive = "6"
         case spam    = "4"
         case trash   = "3"
         case allmail = "5"
-        //8 , 7  another type of draft,sent
-        var localizedTitle : String {
-            switch(self) {
+        // 8 , 7  another type of draft,sent
+        var localizedTitle: String {
+            switch self {
             case .inbox:
                 return LocalString._locations_inbox_title
             case .starred:
@@ -61,10 +60,10 @@ extension Message {
                 return LocalString._locations_all_mail_title
             }
         }
-        
-        var actionTitle : String {
+
+        var actionTitle: String {
             get {
-                switch(self) {
+                switch self {
                 case .inbox:
                     return LocalString._locations_move_inbox_action
                 case .draft:
@@ -84,9 +83,9 @@ extension Message {
                 }
             }
         }
-        
-        public var title : String {
-            switch(self) {
+
+        public var title: String {
+            switch self {
             case .inbox:
                 return LocalString._locations_inbox_title
             case .starred:

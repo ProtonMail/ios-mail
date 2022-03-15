@@ -83,7 +83,7 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
                 }
                 context.perform(mergeChanges)
             }
-            
+
         }
 
         return context

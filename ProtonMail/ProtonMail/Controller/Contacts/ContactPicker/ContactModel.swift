@@ -23,30 +23,28 @@
 import ProtonCore_Services
 
 typealias LockCheckProgress = (() -> Void)
-typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
+typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType: Int) -> Void)
 
-@objc enum ContactPickerModelState: Int
-{
+@objc enum ContactPickerModelState: Int {
     case contact = 1
     case contactGroup = 2
 }
 
 protocol ContactPickerModelProtocol: NSCopying {
-    
+
     var modelType: ContactPickerModelState { get }
-    var contactTitle : String { get }
-    
-    //@optional
-    var displayName : String? { get }
-    var displayEmail : String? { get }
-    var contactSubtitle : String? { get }
-    var contactImage : UIImage? {get}
+    var contactTitle: String { get }
+
+    // @optional
+    var displayName: String? { get }
+    var displayEmail: String? { get }
+    var contactSubtitle: String? { get }
+    var contactImage: UIImage? {get}
     var color: String? {get}
-    var hasPGPPined : Bool {get}
-    var hasNonePM : Bool {get}
+    var hasPGPPined: Bool {get}
+    var hasNonePM: Bool {get}
     func notes(type: Int) -> String
     func setType(type: Int)
-    
-    
+
     func equals(_ others: ContactPickerModelProtocol) -> Bool
 }

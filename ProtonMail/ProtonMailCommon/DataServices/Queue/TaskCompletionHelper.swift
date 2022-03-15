@@ -42,7 +42,7 @@ struct TaskCompletionHelper {
             }
         } else if error.domain == NSPOSIXErrorDomain &&
                     error.code == 100 {
-            //Network protocol error
+            // Network protocol error
             result = true
         } else {
             switch currentNetworkStatus {

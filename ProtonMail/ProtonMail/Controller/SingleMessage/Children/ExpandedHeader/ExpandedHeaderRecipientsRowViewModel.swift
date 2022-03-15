@@ -22,7 +22,6 @@
 
 import Foundation
 
-
 struct ExpandedHeaderRecipientsRowViewModel {
     let title: NSAttributedString
     let recipients: [ExpandedHeaderRecipientRowViewModel]

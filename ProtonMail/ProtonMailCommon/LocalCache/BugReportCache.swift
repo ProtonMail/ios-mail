@@ -20,16 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 let cachedBugReport = BugReportCache()
-final class BugReportCache : SharedCacheBase {
-    
+final class BugReportCache: SharedCacheBase {
+
     fileprivate struct Key {
         static let lastBugReport = "BugReportCache_LastBugReport"
     }
-    
+
     var cachedBug: String! {
         get {
             return getShared().string(forKey: Key.lastBugReport) ?? ""
@@ -39,7 +38,7 @@ final class BugReportCache : SharedCacheBase {
             getShared().synchronize()
         }
     }
-    
+
     func clear() {
         getShared().removeObject(forKey: Key.lastBugReport)
         getShared().synchronize()

@@ -19,32 +19,30 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import PromiseKit
 
-@objc protocol AttachmentInfo : AnyObject {
+@objc protocol AttachmentInfo: AnyObject {
     var fileName: String { get }
-    var size : Int { get }
+    var size: Int { get }
     var mimeType: String { get }
-    var localUrl : URL? { get }
-    
+    var localUrl: URL? { get }
+
     var isDownloaded: Bool { get }
-    var att : Attachment? { get }
+    var att: Attachment? { get }
     var id: String? { get }
     var isInline: Bool { get }
 }
 
-
-class MimeAttachment : AttachmentInfo {
+class MimeAttachment: AttachmentInfo {
     var isDownloaded: Bool {
         get {
             return true
         }
     }
-    
-    var att : Attachment? {
+
+    var att: Attachment? {
         get {
             return nil
         }
@@ -55,13 +53,13 @@ class MimeAttachment : AttachmentInfo {
     }
 
     let id: String? = UUID().uuidString
-    
+
     var fileName: String
-    var size : Int
+    var size: Int
     var mimeType: String
-    var localUrl : URL?
+    var localUrl: URL?
     let disposition: String?
-    
+
     init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
         self.fileName = filename
         self.size = size
@@ -69,7 +67,7 @@ class MimeAttachment : AttachmentInfo {
         self.localUrl = path
         self.disposition = disposition
     }
-    
+
     func toAttachment(message: Message?, stripMetadata: Bool) -> Promise<Attachment?> {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
@@ -80,15 +78,14 @@ class MimeAttachment : AttachmentInfo {
     }
 }
 
-
-class AttachmentNormal : AttachmentInfo {
+class AttachmentNormal: AttachmentInfo {
     var fileName: String {
         get {
             return attachment.fileName
         }
     }
-    
-    var att : Attachment? {
+
+    var att: Attachment? {
         get {
             return attachment
         }
@@ -101,14 +98,14 @@ class AttachmentNormal : AttachmentInfo {
     var isInline: Bool {
         att?.inline() ?? false
     }
-    
-    var localUrl : URL? {
+
+    var localUrl: URL? {
         get {
             return attachment.localURL
         }
     }
-    
-    var size : Int {
+
+    var size: Int {
         get {
             return self.attachment.fileSize.intValue
         }
@@ -123,9 +120,9 @@ class AttachmentNormal : AttachmentInfo {
             return attachment.downloaded
         }
     }
-    
+
     var attachment: Attachment
-    
+
     init(att: Attachment) {
         self.attachment = att
     }

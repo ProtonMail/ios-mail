@@ -20,19 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import MBProgressHUD
 
 extension NSError {
-    
+
     static var isAlertShown = false
-    
+
     class func alertMessageSentToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = LocalString._message_sent_ok_desc
         hud.removeFromSuperViewOnHide = true
@@ -42,10 +41,10 @@ extension NSError {
     }
 
     func alertSentErrorToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
@@ -55,10 +54,10 @@ extension NSError {
     }
 
     class func alertLocalCacheErrorToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.detailsLabel.text = LocalString._message_draft_cache_is_broken
         hud.removeFromSuperViewOnHide = true
@@ -73,7 +72,7 @@ extension NSError {
                 return
             }
             NSError.isAlertShown = true
-            
+
             let message = LocalString._general_invalid_access_token
             let title = LocalString._general_alert_title
             let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -85,10 +84,10 @@ extension NSError {
     }
 
     class func alertUpdatedToast() {
-        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
             return
         }
-        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = LocalString._general_force_upgrade_desc

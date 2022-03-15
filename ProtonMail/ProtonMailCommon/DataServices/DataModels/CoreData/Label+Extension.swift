@@ -20,13 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
-
 extension Label {
-    
+
     struct Attributes {
         static let entityName = "Label"
         static let labelID = "labelID"
@@ -40,17 +38,17 @@ extension Label {
         static let emails = "emails"
         static let isSoftDeleted = "isSoftDeleted"
     }
-    
+
     // MARK: - Public methods
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
-    
+
     open override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
-    
+
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
@@ -66,24 +64,24 @@ extension Label {
         let fetchedController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         return fetchedController
     }
-    
+
     class func labelForLabelID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
     }
-    
+
     class func labelForLabelName(_ name: String,
                                  inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName,
                                                    forKey: Attributes.name,
                                                    matchingValue: name) as? Label
     }
-    
+
     class func labelGroup( by name: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name : name, Attributes.type : NSNumber(value: 2)]) as? Label
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name: name, Attributes.type: NSNumber(value: 2)]) as? Label
     }
-    
+
     class func labelGroup( byID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
-        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : byID, Attributes.type : NSNumber(value: 2)]) as? Label
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID: byID, Attributes.type: NSNumber(value: 2)]) as? Label
     }
 
     class func makeGroupLabel(context: NSManagedObjectContext, userID: String, color: String, name: String, emailIDs: [String]) -> Label {
@@ -97,7 +95,7 @@ extension Label {
         label.sticky = NSNumber(value: 0)
         label.notify = NSNumber(value: 0)
         label.order = NSNumber(value: 20)
-        
+
         let mails = emailIDs
             .compactMap { Email.EmailForID($0, inManagedObjectContext: context) }
         label.emails = Set(mails) as NSSet

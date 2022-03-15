@@ -23,31 +23,31 @@
 import ProtonCore_UIFoundations
 
 final class ContactEditPhoneCell: UITableViewCell {
-    
-    fileprivate var phone : ContactEditPhone!
-    fileprivate var delegate : ContactEditCellDelegate?
-    
+
+    fileprivate var phone: ContactEditPhone!
+    fileprivate var delegate: ContactEditCellDelegate?
+
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
     @IBOutlet weak var sepratorView: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._phone_number
         backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         sepratorView.gradient()
     }
-    
-    func configCell(obj : ContactEditPhone, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+
+    func configCell(obj: ContactEditPhone, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.phone = obj
         self.delegate = callback
-        
+
         typeLabel.attributedText = NSAttributedString(string: self.phone.newType.title,
                                                       attributes: FontManager.Default)
         valueField.attributedText = NSAttributedString(string: self.phone.newPhone,
@@ -59,7 +59,7 @@ final class ContactEditPhoneCell: UITableViewCell {
             })
         }
     }
-    
+
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: phone, sender: self)
     }
@@ -69,16 +69,16 @@ extension ContactEditPhoneCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         phone.newPhone = valueField.attributedText?.string ?? ""
     }
 }

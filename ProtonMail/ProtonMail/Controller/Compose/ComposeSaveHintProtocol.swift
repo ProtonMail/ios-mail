@@ -39,7 +39,7 @@ extension ComposeSaveHintProtocol {
     func removeDraftSaveHintBanner() {
         PMBanner.dismissAll(on: self)
     }
-    
+
     func showDraftSaveHintBanner(cache: UserCachedStatus,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol) {
@@ -62,7 +62,7 @@ extension ComposeSaveHintProtocol {
                                              messageService: messageService)
         }
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
-        
+
         if let listVC = self as? MailboxViewController {
             // Since we ignore core data event when composer is presented
             // We need to refresh view when composer dismiss
@@ -92,7 +92,7 @@ extension ComposeSaveHintProtocol {
         let banner = PMBanner(message: LocalString._composer_draft_restored, style: TempPMBannerNewStyle.info)
         banner.show(at: getPosition(), on: self)
     }
-    
+
     func showMessageSendingHintBanner() {
         let banner = PMBanner(message: LocalString._messages_sending_message, style: TempPMBannerNewStyle.info)
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)

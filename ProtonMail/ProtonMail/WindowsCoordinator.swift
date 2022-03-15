@@ -20,21 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
-fileprivate class PlaceholderVC: UIViewController {
+private class PlaceholderVC: UIViewController {
     var color: UIColor = .blue
-    
+
     convenience init(color: UIColor) {
         self.init()
         self.color = color
     }
-    
+
     override func loadView() {
         view = UINib(nibName: "LaunchScreen", bundle: nil).instantiate(withOwner: nil, options: nil).first as? UIView
     }
@@ -51,7 +50,7 @@ fileprivate class PlaceholderVC: UIViewController {
 
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
-    
+
     private var deeplink: DeepLink?
 
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
@@ -64,15 +63,15 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private var lockWindow: UIWindow?
-    
+
     private var services: ServiceFactory
     private var darkModeCache: DarkModeCacheProtocol
-    
+
     var currentWindow: UIWindow? {
         didSet {
             if #available(iOS 13, *), UserInfo.isDarkModeEnable {
                 switch darkModeCache.darkModeStatus {
-   
+
                 case .followSystem:
                     self.currentWindow?.overrideUserInterfaceStyle = .unspecified
                 case .forceOn:
@@ -88,12 +87,12 @@ class WindowsCoordinator: CoordinatorNew {
     }
 
     private var arePrimaryUserSettingsFetched = false
-    
+
     enum Destination {
         enum SignInDestination: String { case form, mailboxPassword }
         case lockWindow, appWindow, signInWindow(SignInDestination)
     }
-    
+
     internal var scene: AnyObject? {
         didSet {
             // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
@@ -104,7 +103,7 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     init(services: ServiceFactory,
          darkModeCache: DarkModeCacheProtocol
     ) {
@@ -129,7 +128,7 @@ class WindowsCoordinator: CoordinatorNew {
                 // trigger the menu to follow the deeplink or show inbox
                 self?.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
             }
-            
+
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(
                     self,
@@ -150,17 +149,17 @@ class WindowsCoordinator: CoordinatorNew {
         self.services = services
         self.darkModeCache = darkModeCache
     }
-    
+
     func start() {
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder
-        
-        //some cache may need user to unlock first. so this need to move to after windows showup
-        let usersManager : UsersManager = self.services.get()
+
+        // some cache may need user to unlock first. so this need to move to after windows showup
+        let usersManager: UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
 //        usersManager.tryRestore()
-        
-        //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
+
+        // we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
 
         let unlockManager: UnlockManager = self.services.get()
@@ -176,11 +175,11 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     @objc func willEnterForeground() {
         self.snapshot.remove()
     }
-    
+
     @objc func didEnterBackground() {
         if let vc = self.currentWindow?.topmostViewController(),
            !(vc is ComposeContainerViewController) {
@@ -190,7 +189,7 @@ class WindowsCoordinator: CoordinatorNew {
             self.snapshot.show(at: window)
         }
     }
-    
+
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
@@ -199,11 +198,11 @@ class WindowsCoordinator: CoordinatorNew {
         }
         self.go(dest: .lockWindow)
     }
-    
+
     @objc func unlock() {
         self.lockWindow = nil
-        let usersManager : UsersManager = self.services.get()
-        
+        let usersManager: UsersManager = self.services.get()
+
         guard usersManager.hasUsers() else {
             self.go(dest: .signInWindow(.form))
             return
@@ -213,17 +212,17 @@ class WindowsCoordinator: CoordinatorNew {
             self.go(dest: .signInWindow(.form))
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
-            let pushService : PushNotificationService = sharedServices.get()
+            let pushService: PushNotificationService = sharedServices.get()
             UNUserNotificationCenter.current().delegate = pushService
             pushService.registerForRemoteNotifications()
             self.go(dest: .appWindow)
         }
     }
-    
+
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
         let queueManager: QueueManager = services.get()
-        
+
         if let user = usersManager.getUser(bySessionID: uid),
            !usersManager.loggingOutUserIDs.contains(user.userinfo.userId) {
             let shouldShowBadTokenAlert = usersManager.count == 1
@@ -236,7 +235,7 @@ class WindowsCoordinator: CoordinatorNew {
                 if usersManager.hasUsers() {
                     appWindow.enumerateViewControllerHierarchy { controller, stop in
                         if let menu = controller as? MenuViewController {
-                            //Work Around: trigger viewDidLoad of menu view controller
+                            // Work Around: trigger viewDidLoad of menu view controller
                             _ = menu.view
                             menu.navigateTo(label: MenuLabel(location: .inbox))
                         }
@@ -251,7 +250,7 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
@@ -353,24 +352,24 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
     }
-    
+
     @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow, animated: Bool, completion: (() -> Void)? = nil) -> Bool {
         guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
-        
+
         let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
         source?.addSubview(effectView)
         destination.alpha = 0.0
-        
+
         UIView.animate(withDuration: animated ? 0.5 : 0.0, animations: {
             effectView.effect = UIBlurEffect(style: .dark)
             destination.alpha = 1.0
         }, completion: { _ in
-            let _ = source
-            let _ = destination
+            _ = source
+            _ = destination
             effectView.removeFromSuperview()
-            
+
             // notify source's views they are disappearing
             source?.topmostViewController()?.viewWillDisappear(false)
 
@@ -387,16 +386,16 @@ class WindowsCoordinator: CoordinatorNew {
         self.currentWindow = destination
         return true
     }
-    
+
     // Preserving and Restoring State
-    
+
     func currentDeepLink() -> DeepLink? {
         let deeplink = DeepLink("Root")
         self.appWindow?.enumerateViewControllerHierarchy { controller, _ in
             guard let deeplinkable = controller as? Deeplinkable else { return }
-            
+
             deeplink.append(deeplinkable.deeplinkNode)
-            
+
             // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
             // mostly relevant in multiuser environment when two or more windows with defferent users in each one
             if let menu = controller as? MenuViewController,
@@ -410,41 +409,39 @@ class WindowsCoordinator: CoordinatorNew {
         }
         return deeplink
     }
-    
+
     internal func saveForRestoration(_ coder: NSCoder) {
         switch UIDevice.current.stateRestorationPolicy {
         case .deeplink:
             if let deeplink = self.currentDeepLink(),
-                let data = try? JSONEncoder().encode(deeplink)
-            {
+                let data = try? JSONEncoder().encode(deeplink) {
                 coder.encode(data, forKey: "deeplink")
             }
-            
+
         case .multiwindow:
             assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }
     }
-    
+
     internal func restoreState(_ coder: NSCoder) {
         switch UIDevice.current.stateRestorationPolicy {
         case .deeplink:
             if let data = coder.decodeObject(forKey: "deeplink") as? Data,
-                let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
-            {
+                let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
                 self.followDeeplink(deeplink)
             }
-            
+
         case .multiwindow:
             assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }
     }
-    
+
     internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst
         self.start()
     }
-    
+
     func followDeepDeeplinkIfNeeded(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst

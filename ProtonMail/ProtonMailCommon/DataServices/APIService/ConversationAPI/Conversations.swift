@@ -50,17 +50,17 @@ class ConversationsRequest: Request {
         struct Pair: Equatable {
             var key, value: String
         }
-        
-        var additionalPathElements: Array<Pair>? {
-            var path = Array<Pair>()
+
+        var additionalPathElements: [Pair]? {
+            var path = [Pair]()
             let mirror = Mirror(reflecting: self)
-            
+
             for case let (label?, anyValue) in mirror.children {
                 switch anyValue {
                 case Optional<Any>.none:
                     break
-                case Optional<Any>.some(let value) where value is Array<String>:
-                    if let array = value as? Array<String> {
+                case Optional<Any>.some(let value) where value is [String]:
+                    if let array = value as? [String] {
                         array.forEach {
                             path.append(.init(key: label + "[]", value: "\($0)"))
                         }

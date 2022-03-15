@@ -20,22 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import Crypto
 import CoreData
 import ProtonCore_Keymaker
 
 struct AppVersion {
-    typealias MigrationBlock = ()->Void
+    typealias MigrationBlock = () -> Void
 
     private(set) var string: String
-    private var numbers: Array<Int>
+    private var numbers: [Int]
     private var migration: MigrationBlock?
     private var model: NSManagedObjectModel?
     private var modelUrl: URL?
     private var modelName: String?
-    
+
     // TODO: CAN WE IMPTOVE THIS API?
     init(_ string: String,
          modelName: String? = nil, // every known should have
@@ -44,11 +43,10 @@ struct AppVersion {
         self.numbers = string.components(separatedBy: CharacterSet.punctuationCharacters.union(CharacterSet.whitespaces)).compactMap { Int($0) }
         self.string = self.numbers.map(String.init).joined(separator: ".")
         self.migration = migration
-        
+
         if let modelName = modelName,
             let modelUrl = CoreDataService.modelBundle.url(forResource: modelName, withExtension: "mom"),
-            let model = NSManagedObjectModel(contentsOf: modelUrl)
-        {
+            let model = NSManagedObjectModel(contentsOf: modelUrl) {
             self.modelName = modelName
             self.modelUrl = modelUrl
             self.model = model
@@ -75,8 +73,7 @@ extension AppVersion {
                 return self.current
             }
             guard let string = UserDefaultsSaver<String>(key: Keys.lastMigratedToVersion).get(),
-                let modelName = UserDefaultsSaver<String>(key: Keys.lastMigratedToModel).get() else
-            {
+                let modelName = UserDefaultsSaver<String>(key: Keys.lastMigratedToModel).get() else {
                 return AppVersion.lastVersionBeforeMigratorWasReleased
             }
             return AppVersion(string, modelName: modelName)
@@ -90,36 +87,34 @@ extension AppVersion {
     }
 
     // methods
-    
+
     static internal func migrate() {
         let knownVersions = [self.v1_12_0].sorted()
         let shouldMigrateTo = knownVersions.filter { $0 > self.lastMigratedTo && $0 <= self.current }
-        
+
         var previousModel = self.lastMigratedTo.model!
         var previousUrl = CoreDataService.dbUrl
-        
+
         shouldMigrateTo.forEach { nextKnownVersion in
             nextKnownVersion.migration?()
-            
+
             // core data
-            
+
             guard lastMigratedTo.modelName != nextKnownVersion.modelName,
-                let nextModel = nextKnownVersion.model else
-            {
+                let nextModel = nextKnownVersion.model else {
                 self.lastMigratedTo = nextKnownVersion
                 return
             }
-            
+
             guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType,
                                                                                               at: previousUrl,
                                                                                               options: nil),
-                !nextModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) else
-            {
+                !nextModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) else {
                 previousModel = nextModel
                 self.lastMigratedTo = nextKnownVersion
                 return
             }
-            
+
             let migrationManager = NSMigrationManager(sourceModel: previousModel, destinationModel: nextModel)
             guard let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: previousModel, destinationModel: nextModel) else {
                 assert(false, "No mapping model found but need one")
@@ -127,7 +122,7 @@ extension AppVersion {
                 self.lastMigratedTo = nextKnownVersion
                 return
             }
-            
+
             let destUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(UUID().uuidString, isDirectory: false)
             try? migrationManager.migrateStore(from: previousUrl,
                                               sourceType: NSSQLiteStoreType,
@@ -140,14 +135,14 @@ extension AppVersion {
             previousModel = nextModel
             self.lastMigratedTo = nextKnownVersion
         }
-        
+
         try? NSPersistentStoreCoordinator(managedObjectModel: previousModel).replacePersistentStore(at: CoreDataService.dbUrl,
                                                                                               destinationOptions: nil,
                                                                                               withPersistentStoreFrom: previousUrl,
                                                                                               sourceOptions: nil,
                                                                                               ofType: NSSQLiteStoreType)
     }
-    
+
     static func isFirstRun() -> Bool {
         return SharedCacheBase.getDefault().object(forKey: UserDataService.Key.firstRunKey) == nil
     }
@@ -168,46 +163,43 @@ extension AppVersion {
         if let mobileSignature = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature) {
             userCachedStatus.mobileSignature = mobileSignature
         }
-        
+
         // mailboxPassword
         if let triviallyProtectedMailboxPassword = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
-            let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)
-        {
+            let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword) {
             sharedUserDataService.mailboxPassword = cleartextMailboxPassword
         }
-        
+
         // AuthCredential
         if let credentialRaw = KeychainWrapper.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
-            let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
-        {
+            let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential {
             credential.storeInKeychain()
         }
-        
+
         // MainKey
         let appLockMigration = DispatchGroup()
         var appWasLocked = false
-        
+
         // via touch id
         if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled) {
             appWasLocked = true
             appLockMigration.enter()
             keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
         }
-        
+
         // via pin
         if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
-            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
-        {
+            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache) {
             appWasLocked = true
             appLockMigration.enter()
             keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
         }
-        
+
         // and lock the app afterwards
         if appWasLocked {
             appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
         }
-        
+
         // Clear up the old stuff on fresh installs also
         KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
         KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
@@ -227,20 +219,19 @@ extension AppVersion {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
-        
+
         try? FileManager.default.removeItem(at: FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("com.crashlytics"))
         try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("com.crashlytics.data"))
         try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("io.fabric.sdk.ios.data"))
     }
 }
 
-
 extension AppVersion {
     enum Keys {
         static let lastMigratedToVersion = "lastMigratedToVersion"
         static let lastMigratedToModel = "lastMigratedToModel"
     }
-    
+
     enum DeprecatedKeys {
         enum AuthCredential {
             static let keychainStore = "keychainStoreKey"
@@ -265,29 +256,28 @@ extension AppVersion {
         enum PushNotificationService {
             static let token    = "DeviceTokenKey"
             static let UID      = "DeviceUID"
-            
+
             static let badToken = "DeviceBadToken"
             static let badUID   = "DeviceBadUID"
         }
     }
 }
 
-
 extension AppVersion: Comparable, Equatable {
     static func == (lhs: AppVersion, rhs: AppVersion) -> Bool {
         return lhs.numbers == rhs.numbers
     }
-    
+
     static func < (lhs: AppVersion, rhs: AppVersion) -> Bool {
         let maxCount: Int = max(lhs.numbers.count, rhs.numbers.count)
-        
-        func normalizer(_ input: Array<Int>) -> Array<Int> {
+
+        func normalizer(_ input: [Int]) -> [Int] {
             var norm = input
-            let zeros = Array<Int>(repeating: 0, count: maxCount - input.count)
+            let zeros = [Int](repeating: 0, count: maxCount - input.count)
             norm.append(contentsOf: zeros)
             return norm
         }
-        
+
         let pairs = zip(normalizer(lhs.numbers), normalizer(rhs.numbers))
         for (l, r) in pairs {
             if l < r {

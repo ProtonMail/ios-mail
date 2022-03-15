@@ -20,33 +20,32 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 extension NSManagedObjectContext {
-    
+
     func deleteAll(_ entityName: String) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+
         do {
             try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
         } catch {
         }
     }
-    
-    func managedObjectWithEntityName(_ entityName: String, matching values : [String : CVarArg]) -> NSManagedObject? {
+
+    func managedObjectWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> NSManagedObject? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        
-        var subPredication : [NSPredicate] = []
+
+        var subPredication: [NSPredicate] = []
         for (key, value) in values {
             let predicate = NSPredicate(format: "%K == %@", key, value)
             subPredication.append(predicate)
         }
         let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
         fetchRequest.predicate = predicateCompound
-        
+
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
@@ -54,18 +53,18 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
-    func managedObjectsWithEntityName(_ entityName: String, matching values : [String : CVarArg]) -> [NSManagedObject]? {
+
+    func managedObjectsWithEntityName(_ entityName: String, matching values: [String: CVarArg]) -> [NSManagedObject]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-       
-        var subPredication : [NSPredicate] = []
+
+        var subPredication: [NSPredicate] = []
         for (key, value) in values {
             let predicate = NSPredicate(format: "%K == %@", key, value)
             subPredication.append(predicate)
         }
         let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
         fetchRequest.predicate = predicateCompound
-        
+
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
@@ -73,12 +72,11 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
-    
+
     func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
-        
+
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
@@ -86,14 +84,14 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
+
     func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg, sortKey: String? = nil, isAscending: Bool = true) -> [NSManagedObject]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
         if let sortKey = sortKey {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: isAscending)]
         }
-        
+
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
@@ -101,7 +99,7 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
+
     func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
@@ -112,7 +110,7 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
+
     func objectsWithEntityName(_ entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> [NSManagedObject]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
@@ -123,7 +121,7 @@ extension NSManagedObjectContext {
         }
         return nil
     }
-    
+
     func fetchedControllerEntityName(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
@@ -131,12 +129,12 @@ extension NSManagedObjectContext {
         fetchRequest.includesPropertyValues = false
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self, sectionNameKeyPath: nil, cacheName: nil)
     }
-    
+
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         do {
             if hasChanges {
-                //TODO: - v4 remove it later
+                // TODO: - v4 remove it later
                 if self == CoreDataService.shared.mainContext {
                     fatalError("Do not save on main context")
                 }
@@ -147,7 +145,7 @@ extension NSManagedObjectContext {
 
                 try save()
                 if let parentContext = parent {
-                    parentContext.performAndWait() { () -> Void in
+                    parentContext.performAndWait { () -> Void in
                         error = parentContext.saveUpstreamIfNeeded()
                     }
                 }
@@ -157,9 +155,9 @@ extension NSManagedObjectContext {
         }
         return error
     }
-    
+
     func find(with objectID: NSManagedObjectID) -> NSManagedObject? {
-        var msgObject : NSManagedObject?
+        var msgObject: NSManagedObject?
         do {
             msgObject = try self.existingObject(with: objectID)
         } catch {

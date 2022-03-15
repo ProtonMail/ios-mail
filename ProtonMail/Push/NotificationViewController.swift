@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import UserNotifications
 import UserNotificationsUI
@@ -28,11 +27,11 @@ import UserNotificationsUI
 class NotificationViewController: UIViewController, UNNotificationContentExtension {
 
     @IBOutlet var label: UILabel?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     func didReceive(_ notification: UNNotification) {
         self.label?.text = notification.request.content.body
     }

@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 #if !APP_EXTENSION
 import OpenPGP
@@ -33,21 +32,21 @@ import OpenPGP
 struct PushSubscriptionSettings: Hashable, Codable {
     let token, UID: String
     var encryptionKit: EncryptionKit!
-    
+
     static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
         return lhs.token == rhs.token && lhs.UID == rhs.UID
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.token)
         hasher.combine(self.UID)
     }
-    
+
     init(token: String, UID: String) {
         self.token = token
         self.UID = UID
     }
-    
+
     #if !APP_EXTENSION
     mutating func generateEncryptionKit() throws {
         SystemLogger.log(message: #function, redactedInfo: "uid \(UID)", category: .encryption)

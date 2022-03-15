@@ -19,13 +19,12 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 
-//enum LinkOpeningMode: String {
+// enum LinkOpeningMode: String {
 //    case confirmationAlert, openAtWill
-//}
+// }
 
 enum AttachmentMetadataStripping: String {
     case sendAsIs, stripMetadata

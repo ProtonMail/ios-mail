@@ -31,8 +31,8 @@ protocol LabelCount: NSManagedObject {
     var start: Date? { get set }
     var end: Date? { get set }
     var update: Date? { get set }
-    
-    //Used for unread msg filtering
+
+    // Used for unread msg filtering
     var unreadStart: Date? { get set }
     var unreadEnd: Date? { get set }
     var unreadUpdate: Date? { get set }
@@ -53,15 +53,15 @@ extension LabelCount {
     var endTime: Date {
         return end ?? Date.distantPast
     }
-    
+
     var isUnreadNew: Bool {
         return unreadStart == unreadEnd && unreadStart == unreadUpdate
     }
-    
+
     var unreadStartTime: Date {
         return unreadStart ?? Date.distantPast
     }
-    
+
     var unreadEndTime: Date {
         return unreadEnd ?? Date.distantPast
     }

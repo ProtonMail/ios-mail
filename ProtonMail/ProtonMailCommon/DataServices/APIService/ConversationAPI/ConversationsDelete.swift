@@ -45,7 +45,7 @@ class ConversationDeleteRequest: Request {
         return .put
     }
 
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         let out: [String: Any] = ["IDs": conversationIDs, "LabelID": labelID]
         return out
     }

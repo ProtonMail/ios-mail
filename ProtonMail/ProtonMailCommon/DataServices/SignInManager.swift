@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -33,13 +32,13 @@ class SignInManager: Service {
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private(set) var userInfo: UserInfo?
     private(set) var auth: AuthCredential?
-    
+
     init(usersManager: UsersManager, lastUpdatedStore: LastUpdatedStoreProtocol, queueManager: QueueManager) {
         self.usersManager = usersManager
         self.lastUpdatedStore = lastUpdatedStore
         self.queueManager = queueManager
     }
-    
+
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
@@ -71,7 +70,7 @@ class SignInManager: Service {
             existError()
             return
         }
-        
+
         guard self.usersManager.isAllowedNewUser(userInfo: userInfo) else {
             reachLimit()
             return

@@ -104,7 +104,7 @@ class ConversationStateService: ConversationStateProviderProtocol {
 }
 
 extension ConversationStateService: FeatureFlagsSubscribeProtocol {
-    func handleNewFeatureFlags(_ featureFlags: [String : Any]) {
+    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
         if let removeThreadFlag = featureFlags[FeatureFlagKey.threading.rawValue] as? Bool {
             featureFlag = removeThreadFlag
         }

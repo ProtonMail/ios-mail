@@ -26,9 +26,9 @@ enum LabelLocation: Equatable, Hashable {
     case provideFeedback
 
     case inbox
-    case hiddenDraft //1 can't be removed
+    case hiddenDraft // 1 can't be removed
     case draft
-    case hiddenSent //2 can't be removed
+    case hiddenSent // 2 can't be removed
     case sent
     case starred
     case archive
@@ -36,19 +36,19 @@ enum LabelLocation: Equatable, Hashable {
     case trash
     case allmail
     case customize(String)
-    
+
     case bugs
     case contacts
     case settings
     case signout
     case lockapp
     case subscription
-    
+
     case addLabel
     case addFolder
     case accountManger
     case addAccount
-    
+
     init(id: String) {
         switch id {
         case "Provide feedback": self = .provideFeedback
@@ -76,7 +76,7 @@ enum LabelLocation: Equatable, Hashable {
             self = .customize(id)
         }
     }
-    
+
     var labelID: String {
         switch self {
         case .provideFeedback: return "Provide feedback"
@@ -91,21 +91,21 @@ enum LabelLocation: Equatable, Hashable {
         case .trash: return "3"
         case .allmail: return "5"
         case .customize(let id): return id
-            
+
         case .bugs: return "Report a bug"
         case .contacts: return "Contacts"
         case .settings: return "Settings"
         case .signout: return "Logout"
         case .lockapp: return "Lock The App"
         case .subscription: return "Subscription"
-            
+
         case .addLabel: return "Add Label"
         case .addFolder: return "Add Folder"
         case .accountManger: return "Account Manager"
         case .addAccount: return "Add Account"
         }
     }
-    
+
     var localizedTitle: String {
         switch self {
         case .provideFeedback: return LocalString._provide_feedback
@@ -120,14 +120,14 @@ enum LabelLocation: Equatable, Hashable {
         case .trash: return LocalString._menu_trash_title
         case .allmail: return LocalString._menu_allmail_title
         case .customize(let id): return id
-            
+
         case .bugs: return LocalString._menu_bugs_title
         case .contacts: return LocalString._menu_contacts_title
         case .settings: return LocalString._menu_settings_title
         case .signout: return LocalString._menu_signout_title
         case .lockapp: return LocalString._menu_lockapp_title
         case .subscription: return LocalString._menu_service_plan_title
-        
+
         case .addLabel: return LocalString._labels_add_label_action
         case .addFolder: return LocalString._labels_add_folder_action
         case .accountManger: return LocalString._menu_manage_accounts
@@ -192,7 +192,7 @@ enum LabelLocation: Equatable, Hashable {
         default: return .inbox
         }
     }
-    
+
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.labelID == rhs.labelID
     }

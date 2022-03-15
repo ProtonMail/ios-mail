@@ -20,29 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import MBProgressHUD
 import ProtonCore_Services
 import WebKit
 
-protocol MailboxCaptchaVCDelegate : AnyObject {
+protocol MailboxCaptchaVCDelegate: AnyObject {
     func cancel()
     func done()
 }
 
-class MailboxCaptchaViewController : UIViewController, AccessibleView {
-    
-    var viewModel : HumanCheckViewModel!
-    
+class MailboxCaptchaViewController: UIViewController, AccessibleView {
+
+    var viewModel: HumanCheckViewModel!
+
     private var wkWebView: WKWebView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet var humanVerificationLabel: UILabel!
     @IBOutlet var cancelView: UIView!
-    
-    weak var delegate : MailboxCaptchaVCDelegate?
-    
+
+    weak var delegate: MailboxCaptchaVCDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4
@@ -53,28 +52,28 @@ class MailboxCaptchaViewController : UIViewController, AccessibleView {
             if let t = token {
                 self.loadWebView(t)
             } else {
-                //show errors
+                // show errors
             }
             MBProgressHUD.hide(for: self.view, animated: true)
         }
         generateAccessibilityIdentifiers()
     }
-    
+
     @IBAction private func cancelAction(_ sender: AnyObject) {
         let alertController = UIAlertController(
             title: LocalString._signup_human_check_warning_title,
             message: LocalString._signup_human_check_warning,
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: LocalString._signup_check_again_action, style: .default, handler: { action in
-            
+
         }))
         alertController.addAction(UIAlertAction(title: LocalString._signup_cancel_check_action, style: .destructive, handler: { action in
-            
+
             self.dismiss(animated: true, completion: nil)
             self.delegate?.cancel()
         }))
         self.present(alertController, animated: true, completion: nil)
-        
+
     }
 }
 
@@ -86,14 +85,14 @@ extension MailboxCaptchaViewController {
         self.wkWebView.navigationDelegate = self
         self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(self.wkWebView)
-        
+
         self.wkWebView.topAnchor.constraint(equalTo: self.humanVerificationLabel.bottomAnchor, constant: 18).isActive = true
         self.wkWebView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
         self.wkWebView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         self.wkWebView.bottomAnchor.constraint(equalTo: self.cancelView.topAnchor, constant: -8).isActive = true
     }
-    
-    private func loadWebView(_ token : String) {
+
+    private func loadWebView(_ token: String) {
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
         let doh = users.doh
         let captcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(doh.captchaHost)")!
@@ -104,12 +103,12 @@ extension MailboxCaptchaViewController {
 
 extension MailboxCaptchaViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
+
         guard let urlString = navigationAction.request.url?.absoluteString else {
             decisionHandler(.allow)
             return
         }
-     
+
         let forbiden = [
             "https://www.google.com/intl/en/policies/privacy",
             "how-to-solve-",
@@ -119,7 +118,7 @@ extension MailboxCaptchaViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        
+
         if urlString.contains("https://secure.protonmail.com/expired_recaptcha_response://") {
             webView.reload()
             decisionHandler(.cancel)
@@ -140,7 +139,7 @@ extension MailboxCaptchaViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        
+
         decisionHandler(.allow)
     }
 }

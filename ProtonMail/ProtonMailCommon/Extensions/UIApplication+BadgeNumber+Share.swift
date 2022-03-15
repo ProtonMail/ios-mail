@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UIApplication {
-    class func setBadge(badge:Int) {
-        
+    class func setBadge(badge: Int) {
+
     }
 }

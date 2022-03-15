@@ -30,70 +30,70 @@ protocol ContactCollectionViewContactCellDelegate: AnyObject {
 }
 
 class ContactCollectionViewContactCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var contactTitleLabel: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
-    
+
     @IBOutlet weak var leftConstant: NSLayoutConstraint!
     @IBOutlet weak var widthConstant: NSLayoutConstraint!
-    
-    weak var delegate : ContactCollectionViewContactCellDelegate?
-    
+
+    weak var delegate: ContactCollectionViewContactCellDelegate?
+
     /// contact model
     var _model: ContactPickerModelProtocol!
-    
+
     /// focused ?
     var _pickerFocused: Bool = false
     private var isError = false
-    
+
     @objc dynamic var font: UIFont? {
         get { return self.contactTitleLabel.font }
         set {
             self.contactTitleLabel.font = newValue
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setup()
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         self.isError = false
     }
-    
+
     func setup() {
         self.bgView.clipsToBounds = true
         self.bgView.layer.cornerRadius = 8.0
         self.bgView.translatesAutoresizingMaskIntoConstraints = false
         self.bgView.backgroundColor = ColorProvider.InteractionWeak
         self.contactTitleLabel.textColor = ColorProvider.TextNorm
-        
+
         let long = UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu(gesture:)))
         long.minimumPressDuration = 0.5
         self.addGestureRecognizer(long)
-        
+
         #if DEBUG_BORDERS
         self.contactTitleLabel.layer.borderColor = UIColor(hexColorCode: "0x6789AB").cgColor
         self.contactTitleLabel.layer.borderWidth = 1.0
         #endif
     }
-    
+
     @objc func showMenu(gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         self.pickerFocused = true
         self.delegate?.showContactMenu(contact: self._model)
     }
-    
+
     override func tintColorDidChange() {
         let p = self.pickerFocused
         self.pickerFocused = p
     }
-    
+
     var pickerFocused: Bool {
         get {
             return _pickerFocused
@@ -106,7 +106,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.bgView.backgroundColor = ColorProvider.InteractionNorm
                 return
             }
-            
+
             if isError {
                 self.bgView.backgroundColor = ColorProvider.NotificationError
                 self.contactTitleLabel.textColor = .white
@@ -114,28 +114,26 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             }
             self.bgView.backgroundColor = ColorProvider.InteractionWeak
             self.contactTitleLabel.textColor = ColorProvider.TextNorm
-            
+
             if self.model is ContactGroupVO {
                 self.lockImage.isHighlighted = false
                 self.lockImage.tintColor = ColorProvider.IconNorm
             }
         }
     }
-    
-    var model : ContactPickerModelProtocol {
+
+    var model: ContactPickerModelProtocol {
         get {
             return _model
         }
         set {
             self._model = newValue
-            
+
             if let _ = self._model as? ContactVO {
                 let title = self._model.contactTitle
                 let subTitle = self._model.contactSubtitle ?? ""
                 let text = title == subTitle ? title : "\(title) <\(subTitle)>"
-                self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle));
-                
-                {
+                self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle)); {
                     self.checkLock(caller: self.model)
                 } ~> .main
             } else if let _ = self._model as? ContactGroupVO {
@@ -143,10 +141,10 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             }
         }
     }
-    
+
     func prepareTitleForContactGroup(shouldCheckMails: Bool = true) {
         guard let contactGroup = self._model as? ContactGroupVO else { return }
-            
+
         let (selectedCount, totalCount, color) = contactGroup.getGroupInformation()
         let text = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
         self.contactTitleLabel.attributedText = text.apply(style: FontManager.Caption.lineBreakMode(.byTruncatingMiddle))
@@ -159,7 +157,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self.checkMails(in: contactGroup)
         }
     }
-    
+
     private func checkLock(caller: ContactPickerModelProtocol) {
         self.delegate?.collectionContactCell(lockCheck: self.model, progress: {
             self.leftConstant.constant = 8
@@ -180,19 +178,19 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 self.lockImage.isHidden = false
                 self.leftConstant.constant = 8
                 self.widthConstant.constant = 16
-                
+
                 self.contactTitleLabel.textAlignment = .left
             } else {
                 self.lockImage.image = nil
                 self.lockImage.isHidden = true
                 self.leftConstant.constant = 0
                 self.widthConstant.constant = 0
-                
+
                 self.contactTitleLabel.textAlignment = .center
             }
         })
     }
-    
+
     private func checkMails(in group: ContactGroupVO) {
         self.delegate?.checkMails(in: group, progress: { [weak self] in
             self?.leftConstant.constant = 8
@@ -202,7 +200,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self?.activityView.startAnimating()
         }, complete: { [weak self](_, type) in
             let (_, _, _) = group.getGroupInformation()
-            
+
             self?.activityView.isHidden = true
             self?.activityView.stopAnimating()
             self?._model.setType(type: type)
@@ -214,7 +212,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
             self?.lockImage.isHidden = false
         })
     }
-    
+
     func widthForCell() -> CGFloat {
         let text = self.contactTitleLabel.text ?? self._model.contactTitle
         let font = self.font ?? Fonts.h5.light
@@ -223,20 +221,20 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
         let rightPadding: CGFloat = 8
         return size.width.rounded(.up) + CGFloat(offset) + rightPadding
     }
-    
+
     func widthForCellWithContact(model: ContactPickerModelProtocol) -> CGFloat {
-        //TODO:: i feel it isn't good
+        // TODO:: i feel it isn't good
         if let contactGroup = model as? ContactGroupVO {
             let (selectedCount, totalCount, _) = contactGroup.getGroupInformation()
             let title = "\(contactGroup.contactTitle) (\(selectedCount)/\(totalCount))"
-            let size = title.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
+            let size = title.size(withAttributes: [NSAttributedString.Key.font: Fonts.h5.light])
             return size.width.rounded(.up) + 20 + 14 //
         }
-        
-        let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h5.light])
-        return size.width.rounded(.up) + 20 + 14 //34 //20 + self.contactTitleLabel.frame.height + 6
+
+        let size = model.contactTitle.size(withAttributes: [NSAttributedString.Key.font: Fonts.h5.light])
+        return size.width.rounded(.up) + 20 + 14 // 34 //20 + self.contactTitleLabel.frame.height + 6
     }
-    
+
     private func isEmailVerified(type: Int) -> Bool {
         self.isError = false
         // Code=33101 "Email address failed validation"

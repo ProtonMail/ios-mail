@@ -20,53 +20,52 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import UIKit
 
 protocol TwoFACodeViewControllerDelegate {
     func cancel2FA()
-    func confirmedCode(_ code : String, pwd:String)
+    func confirmedCode(_ code: String, pwd: String)
 }
 
-class TwoFACodeViewController : UIViewController, AccessibleView {
+class TwoFACodeViewController: UIViewController, AccessibleView {
     @IBOutlet weak var twoFACodeView: TwoFACodeView!
-    var delegate : TwoFACodeViewControllerDelegate?
-    
-    var mode : AuthMode!
-    
+    var delegate: TwoFACodeViewControllerDelegate?
+
+    var mode: AuthMode!
+
     @IBOutlet weak var tfaCodeCenterConstraint: NSLayoutConstraint!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         self.twoFACodeView.delegate = self
-        self.twoFACodeView.layer.cornerRadius = 8;
+        self.twoFACodeView.layer.cornerRadius = 8
         self.twoFACodeView.initViewMode(mode)
         self.twoFACodeView.showKeyboard()
         generateAccessibilityIdentifiers()
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
         self.twoFACodeView.showKeyboard()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -81,7 +80,7 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
         guard let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
@@ -93,14 +92,13 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
     }
 }
 
+extension TwoFACodeViewController: TwoFACodeViewDelegate {
 
-extension TwoFACodeViewController : TwoFACodeViewDelegate {
-
-    func ConfirmedCode(_ code: String, pwd : String) {
-        delegate?.confirmedCode(code, pwd:pwd)
+    func ConfirmedCode(_ code: String, pwd: String) {
+        delegate?.confirmedCode(code, pwd: pwd)
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     func Cancel() {
         delegate?.cancel2FA()
         self.dismiss(animated: true, completion: nil)

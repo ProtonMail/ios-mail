@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UICollectionViewFlowLayout {
@@ -33,10 +32,9 @@ extension UICollectionView {
     func register<C>(_ cellClass: C.Type) where C: UICollectionViewCell {
         self.register(cellClass, forCellWithReuseIdentifier: String(describing: cellClass))
     }
-    
+
     func dequeueReusableCell<T: UICollectionViewCell>(_ cellClass: T.Type,
-                                                      for indexPath: IndexPath) -> T?
-    {
+                                                      for indexPath: IndexPath) -> T? {
         return self.dequeueReusableCell(withReuseIdentifier: String(describing: cellClass),
                                         for: indexPath) as? T
     }

@@ -19,15 +19,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 import SideMenuSwift
 
 class SettingsDeviceCoordinator: SideMenuCoordinator {
     typealias VC = SettingsDeviceViewController
-    
-    enum Destination : String {
+
+    enum Destination: String {
         case accountSetting = "settings_account_settings"
         case autoLock       = "settings_auto_lock"
         case combineContact = "settings_combine_contact"
@@ -35,46 +34,45 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
     }
-    
-    let viewModel : SettingsDeviceViewModel
-    var services : ServiceFactory
-    
+
+    let viewModel: SettingsDeviceViewModel
+    var services: ServiceFactory
+
     internal weak var viewController: SettingsDeviceViewController?
     internal weak var navigation: UIViewController?
     internal weak var sideMenu: SideMenuController?
     internal weak var deepLink: DeepLink?
-    
-    lazy internal var configuration: ((SettingsDeviceViewController) -> ())? = { [unowned self] vc in
+
+    lazy internal var configuration: ((SettingsDeviceViewController) -> Void)? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }
-    
+
     init?(sideMenu: SideMenuController?, nav: UINavigationController,
           vm: SettingsDeviceViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = nav.firstViewController() as? VC else {
             return nil
         }
-        
+
         self.navigation = nav
         self.sideMenu = sideMenu
         self.viewController = next
         self.viewModel = vm
         self.services = services
     }
-    
+
     func processDeepLink() {
         if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
             self.go(to: dest, sender: path.value)
         }
     }
 
-    
     init(vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
         self.services = services
     }
-    
+
     init(sideMenu: SideMenuController?, nav: UIViewController?, vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
         self.sideMenu = sideMenu
@@ -83,7 +81,7 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         self.deepLink = deeplink
         self.services = services
     }
-    
+
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .alternativeRouting:
@@ -99,14 +97,14 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false
         }
         switch dest {
         case .accountSetting:
-            let users : UsersManager = sharedServices.get()
+            let users: UsersManager = sharedServices.get()
             let vm = SettingsAccountViewModelImpl(user: users.firstUser!)
             guard let accountSetting = SettingsAccountCoordinator(dest: destination, vm: vm, services: self.services) else {
                 return false
@@ -153,4 +151,3 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         self.viewController?.navigationController?.pushViewController(viewController, animated: true)
     }
 }
-

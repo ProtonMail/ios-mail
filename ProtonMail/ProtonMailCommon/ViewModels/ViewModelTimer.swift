@@ -20,17 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-//Timer for view model could merge with Base
+// Timer for view model could merge with Base
 class ViewModelTimer {
-    
-    private var timer : Timer?
-    private var fetchingStopped : Bool = true
-    
+
+    private var timer: Timer?
+    private var fetchingStopped: Bool = true
+
     // MARK: - Private methods
-    func setupTimer(_ run : Bool = true, timerInterval: TimeInterval = 30) {
+    func setupTimer(_ run: Bool = true, timerInterval: TimeInterval = 30) {
         self.timer = Timer.scheduledTimer(timeInterval: timerInterval,
                                           target: self,
                                           selector: #selector(timerAction),
@@ -41,7 +40,7 @@ class ViewModelTimer {
             self.timer?.fire()
         }
     }
-    
+
     func stopTimer() {
         fetchingStopped = true
         if let t = self.timer {
@@ -49,13 +48,13 @@ class ViewModelTimer {
             self.timer = nil
         }
     }
-    
+
     @objc private func timerAction() {
         if !fetchingStopped {
             self.fireFetch()
         }
     }
-    
+
     func fireFetch() {
         fatalError("This method must be overridden")
     }

@@ -19,7 +19,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 import Foundation
 import ProtonCore_UIFoundations
 import WebKit
@@ -39,22 +39,22 @@ import WebKit
 ///
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
-    private var heightChanged: ((CGFloat) -> ())?
-    
+    private var heightChanged: ((CGFloat) -> Void)?
+
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
     private var contents: WebContents?
-    
+
     private static var loopbackScheme: String = "pm-incoming-mail"
-    private var loopbacks: Dictionary<URL, Data> = [:]
-    
+    private var loopbacks: [URL: Data] = [:]
+
     private var addSpacerIfNeeded: Bool
-    
+
     init(addSpacerIfNeeded: Bool = true) {
         self.addSpacerIfNeeded = addSpacerIfNeeded
         super.init()
     }
-    
+
     func load(contents: WebContents, in webView: WKWebView) {
         addSpinnerIfNeeded(to: webView)
 
@@ -62,7 +62,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         self.renderedContents.invalidate()
         self.webView?.configuration.userContentController.removeAllUserScripts()
         self.webView?.loadHTMLString("", baseURL: URL(string: "about:blank")!)
-        
+
         self.webView = webView
 
         switch contents.renderStyle {
@@ -71,13 +71,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         case .dark:
             self.webView?.backgroundColor = ColorProvider.BackgroundNorm
         }
-        
+
         let urlString = (UUID().uuidString + ".proton").lowercased()
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
         let request = URLRequest(url: url)
         let data = contents.body.data(using: .unicode)
         self.loopbacks[url] = data
-        
+
         let blockRules = """
         [{
             "trigger": {
@@ -108,10 +108,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
     }
 
-    func observeHeight(_ callBack: @escaping ((CGFloat) -> ())) {
+    func observeHeight(_ callBack: @escaping ((CGFloat) -> Void)) {
         self.heightChanged = callBack
     }
-    
+
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
         var css: String
@@ -136,16 +136,16 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
-        
+
         var style = document.createElement('style');
         style.type = 'text/css';
         style.appendChild(document.createTextNode(`\(css)`));
         document.getElementsByTagName('head')[0].appendChild(style);
-        
+
         let wrapper = document.createElement('div');
         wrapper.innerHTML = messageHead;
         Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
-        
+
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
         metaWidth.content = "width=device-width";
@@ -154,7 +154,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
-        
+
         let message = """
         var items = document.body.getElementsByTagName('*');
         for (var i = items.length; i--;) {
@@ -164,21 +164,21 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         };
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody': document.documentElement.outerHTML.toString()});
         """
-        
+
         let sanitize = WKUserScript(source: sanitizeRaw + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         config.userContentController.removeAllUserScripts()
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
         config.userContentController.addUserScript(sanitize)
-        
+
         config.userContentController.add(self.blockRules!)
     }
-    
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let dict = message.body as? Dictionary<String, Any> else {
+        guard let dict = message.body as? [String: Any] else {
             assert(false, "Unexpected message sent from JS")
             return
         }
-        
+
         if let sanitized = dict["clearBody"] as? String {
             if sanitized.contains("<body></body>"),
                let content = self.contents,
@@ -189,7 +189,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             }
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
-            
+
             let message = """
         var metaWidth = document.querySelector('meta[name="viewport"]');
         metaWidth.content = "width=device-width";
@@ -208,19 +208,19 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             let bottom = last.getBoundingClientRect().bottom;
             refHeight = bottom * ratio;
         }
-        
+
         window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
 """
 
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)
-            
+
             let urlString = (UUID().uuidString + ".proton").lowercased()
             let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
             let request = URLRequest(url: url)
             let data = sanitized.data(using: .unicode)
             self.loopbacks[url] = data
-            
+
             self.webView?.load(request)
 
             removeAllSpinners()
@@ -235,7 +235,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             self.heightChanged?(res)
         }
     }
-    
+
     func inject(into config: WKWebViewConfiguration) {
         config.userContentController.add(self, name: "loaded")
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
@@ -269,13 +269,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             urlSchemeTask.didFinish()
             return
         }
-        
-        let headers: Dictionary<String, String> = [
+
+        let headers: [String: String] = [
             "Content-Type": "text/html",
             "Cross-Origin-Resource-Policy": "Same",
             "Content-Security-Policy": contents.contentSecurityPolicy
         ]
-        
+
         let response = HTTPURLResponse(url: urlSchemeTask.request.url!, statusCode: 200, httpVersion: "HTTP/2", headerFields: headers)!
         urlSchemeTask.didReceive(response)
         if let url = urlSchemeTask.request.url,
@@ -284,7 +284,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
         urlSchemeTask.didFinish()
     }
-    
+
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
     }

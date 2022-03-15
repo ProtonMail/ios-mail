@@ -20,37 +20,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class StorageViewCell: UITableViewCell {
 
     @IBOutlet weak var storageProgressBar: UIProgressView!
-    
+
     @IBOutlet weak var storageUsageDescriptionLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.accessibilityLabel = "storageCell"
-        
+
         if #available(iOS 10, *) {
             storageUsageDescriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
             storageUsageDescriptionLabel.adjustsFontForContentSizeCategory = true
         }
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-    
-    func setValue(_ usedSpace:Int64, maxSpace:Int64)
-    {
+
+    func setValue(_ usedSpace: Int64, maxSpace: Int64) {
         storageProgressBar.progress = 0.0
         let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.binary)
         let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
-        
+
         let progress: Float = Float(usedSpace) / Float(maxSpace)
-        
+
         storageProgressBar.setProgress(progress, animated: false)
         storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }

@@ -24,7 +24,7 @@ import Foundation
 import MBProgressHUD
 
 extension Error {
-    func alert(at view: UIView?) ->Void {
+    func alert(at view: UIView?) {
         guard !(self as NSError).isBadVersionError else { return }
         MBProgressHUD.alert(errorString: localizedDescription, at: view)
     }

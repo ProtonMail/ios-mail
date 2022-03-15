@@ -24,7 +24,6 @@ import ProtonCore_Foundations
 import UIKit
 import ProtonCore_UIFoundations
 
-
 extension NSAttributedString {
 
     static var empty: NSAttributedString {
@@ -59,12 +58,12 @@ extension NSAttributedString {
                     attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
                                                   value: ColorProvider.BrandNorm,
                                                   range: subRange!)
-                    
+
                     attributedString.addAttribute(NSAttributedString.Key.font,
                                                   value: font,
                                                   range: subRange!)
             })
-            
+
             return attributedString
         } catch {
             return attributedString

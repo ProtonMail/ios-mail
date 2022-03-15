@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension UIImageView {
@@ -33,7 +32,7 @@ extension UIImageView {
                     borderWidth: CGFloat = 0,
                     borderColor: CGColor? = nil) {
         self.contentMode = contentMode
-        
+
         if let image = self.image {
             self.image = UIImage.resizeWithRespectTo(box: self.frame.size,
                                                      scale: scale,
@@ -42,17 +41,17 @@ extension UIImageView {
         if makeCircleBorder {
             self.layer.cornerRadius = self.frame.size.width / 2.0
         }
-        
+
         self.image = self.image?.withRenderingMode(renderingMode)
         self.highlightedImage = self.image?.withRenderingMode(renderingMode)
-        
+
         self.tintColor = tintColor
         if let backgroundColor = backgroundColor {
             self.backgroundColor = backgroundColor
         } else {
             self.backgroundColor = nil
         }
-        
+
         self.layer.borderWidth = borderWidth
         self.layer.borderColor = borderColor
     }

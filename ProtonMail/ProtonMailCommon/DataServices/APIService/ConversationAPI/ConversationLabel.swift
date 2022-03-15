@@ -40,12 +40,12 @@ class ConversationLabelRequest: Request {
     var path: String {
         return ConversationsAPI.path + "/label"
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
 
-    var parameters: [String : Any]? {
+    var parameters: [String: Any]? {
         let out: [String: Any] = ["IDs": conversationIDs, "LabelID": labelID]
         return out
     }

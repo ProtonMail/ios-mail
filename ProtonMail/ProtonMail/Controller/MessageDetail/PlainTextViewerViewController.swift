@@ -28,7 +28,7 @@ class PlainTextViewerViewController: UIViewController {
         case headers
         case html
         case cypher
-        
+
         var title: String {
             switch self {
             case .headers:
@@ -50,7 +50,7 @@ class PlainTextViewerViewController: UIViewController {
         self.subType = subType
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented, please use init(text:) instead")
     }

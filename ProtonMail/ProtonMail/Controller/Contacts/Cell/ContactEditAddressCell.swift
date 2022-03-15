@@ -23,10 +23,10 @@
 import ProtonCore_UIFoundations
 
 final class ContactEditAddressCell: UITableViewCell {
-    
-    fileprivate var addr : ContactEditAddress!
-    fileprivate var delegate : ContactEditCellDelegate?
-    
+
+    fileprivate var addr: ContactEditAddress!
+    fileprivate var delegate: ContactEditCellDelegate?
+
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
@@ -35,14 +35,14 @@ final class ContactEditAddressCell: UITableViewCell {
     @IBOutlet weak var stateField: UITextField!
     @IBOutlet weak var zipField: UITextField!
     @IBOutlet weak var countyField: UITextField!
-    
+
     @IBOutlet weak var vline1: UIView!
     @IBOutlet weak var vline2: UIView!
     @IBOutlet weak var vline3: UIView!
     @IBOutlet weak var vline4: UIView!
     @IBOutlet weak var vline5: UIView!
     @IBOutlet weak var vline6: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
@@ -51,7 +51,7 @@ final class ContactEditAddressCell: UITableViewCell {
         self.stateField.delegate = self
         self.zipField.delegate = self
         self.countyField.delegate = self
-        
+
         self.valueField.placeholder  = LocalString._contacts_street_field_placeholder
         self.valueField.tintColor = ColorProvider.TextHint
         self.street_two.placeholder  = LocalString._contacts_street_field_placeholder
@@ -66,11 +66,10 @@ final class ContactEditAddressCell: UITableViewCell {
         self.countyField.tintColor = ColorProvider.TextHint
         self.backgroundColor = ColorProvider.BackgroundNorm
     }
-    
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         vline1.gradient()
         vline2.gradient()
         vline3.gradient()
@@ -78,11 +77,11 @@ final class ContactEditAddressCell: UITableViewCell {
         vline5.gradient()
         vline6.gradient()
     }
-    
-    func configCell(obj : ContactEditAddress, callback : ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+
+    func configCell(obj: ContactEditAddress, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.addr = obj
         self.delegate = callback
-        
+
         typeLabel.attributedText = NSAttributedString(string: self.addr.newType.title,
                                                       attributes: FontManager.Default)
         valueField.attributedText = NSAttributedString(string: self.addr.newStreet,
@@ -97,14 +96,14 @@ final class ContactEditAddressCell: UITableViewCell {
                                                      attributes: FontManager.Default)
         countyField.attributedText = NSAttributedString(string: self.addr.newCountry,
                                                         attributes: FontManager.Default)
-            
+
         if becomeFirstResponder {
             delay(0.25, closure: {
                 self.valueField.becomeFirstResponder()
             })
         }
     }
-    
+
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: addr, sender: self)
     }
@@ -114,36 +113,36 @@ extension ContactEditAddressCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == valueField {
             addr.newStreet = valueField.attributedText?.string ?? ""
         }
-        
+
         if textField == cityField {
             addr.newLocality = cityField.attributedText?.string ?? ""
         }
-        
+
         if textField == street_two {
             addr.newStreetTwo = street_two.attributedText?.string ?? ""
         }
-    
+
         if textField == stateField {
             addr.newRegion = stateField.attributedText?.string ?? ""
         }
-        
+
         if textField == zipField {
             addr.newPostal = zipField.attributedText?.string ?? ""
         }
-        
+
         if textField == countyField {
             addr.newCountry = countyField.text!
         }

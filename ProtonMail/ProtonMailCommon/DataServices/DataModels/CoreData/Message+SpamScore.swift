@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Message {
@@ -29,10 +28,10 @@ extension Message {
         case spam_101 = 101
         case spam_102 = 102
         case others = 0
-        
-        var description : String {
+
+        var description: String {
             get {
-                switch(self) {
+                switch self {
                 case .spam_100:
                     return LocalString._messages_spam_100_warning
                 case .spam_101:

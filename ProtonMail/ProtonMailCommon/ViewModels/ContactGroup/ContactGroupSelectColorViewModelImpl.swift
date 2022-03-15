@@ -20,11 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
-{
+class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel {
     let originalColor: String
     var currentColor: String
     let colors = ColorManager.forLabel
@@ -33,59 +31,54 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
     var havingUnsavedChanges: Bool {
         return originalColor != currentColor
     }
-    
+
     init(currentColor: String, refreshHandler: @escaping (String) -> Void) {
         self.originalColor = currentColor
         self.currentColor = currentColor
         self.refreshHandler = refreshHandler
     }
-    
-    func isSelectedColor(at indexPath: IndexPath) -> Bool
-    {
+
+    func isSelectedColor(at indexPath: IndexPath) -> Bool {
         guard indexPath.row < colors.count else {
             return false
         }
-        
+
         return colors[indexPath.row] == currentColor
     }
-    
-    func getCurrentColorIndex() -> Int
-    {
+
+    func getCurrentColorIndex() -> Int {
         for (i, color) in colors.enumerated() {
             if color == currentColor {
                 return i
             }
         }
-        
+
         // This should not happen
         currentColor = ColorManager.defaultColor
         return 0
     }
-    
-    func updateCurrentColor(to indexPath: IndexPath)
-    {
+
+    func updateCurrentColor(to indexPath: IndexPath) {
         guard indexPath.row < colors.count else {
             currentColor = ColorManager.getRandomColor()
-            return 
+            return
         }
-        
+
         currentColor = colors[indexPath.row]
     }
-    
-    func getTotalColors() -> Int
-    {
+
+    func getTotalColors() -> Int {
         return colors.count
     }
-    
-    func getColor(at indexPath: IndexPath) -> String
-    {
+
+    func getColor(at indexPath: IndexPath) -> String {
         guard indexPath.row < colors.count else {
             return ColorManager.defaultColor
         }
-        
+
         return colors[indexPath.row]
     }
-    
+
     func save() {
         refreshHandler(currentColor)
     }

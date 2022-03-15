@@ -20,45 +20,43 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
 public class Label: NSManagedObject {
     @NSManaged public var userID: String
-    
+
     @NSManaged public var labelID: String
     @NSManaged public var name: String
     @NSManaged public var parentID: String
     @NSManaged public var path: String
     /// label color
     @NSManaged public var color: String
-    
+
     /// 0 = show the label in the sidebar, 1 = hide label from sidebar.
     @available(*, deprecated, message: "Deprecated in v4")
     @NSManaged public var isDisplay: Bool
-    
+
     /// (v3 api)1 => Message Labels (default), 2 => Contact Groups
     /// (v4 api)1 => Message Labels, 2 => Contact Groups, 3 => Message Folders
     @NSManaged public var type: NSNumber
-    
+
     /// 0 => inclusive (label), 1 => exclusive (folder), message type only
     @available(*, deprecated, message: "Deprecated in v4")
     @NSManaged public var exclusive: Bool
-    
+
     /// 0 => not sticky, 1 => stick to the page in the sidebar
     @NSManaged public var sticky: NSNumber
     /// 0 => no desktop/email notifications, 1 => notifications, folders only, default is 1 for folders
     @NSManaged public var notify: NSNumber
-    
+
     /// start at 1 , lower number on the top
     @NSManaged public var order: NSNumber
-    
+
     @NSManaged public var messages: NSSet
     @NSManaged public var emails: NSSet
     @NSManaged var isSoftDeleted: Bool
 }
-
 
 // lableID 
 //    case draft = 1
@@ -70,22 +68,21 @@ public class Label: NSManagedObject {
 //    case allmail = 5
 //    case starred = 10
 
-
 extension Label {
-    
-    var spam : Bool {
+
+    var spam: Bool {
         get {
             return self.labelID == "4"
         }
     }
-    
-    var trash : Bool {
+
+    var trash: Bool {
         get {
             return self.labelID == "3"
         }
     }
-    
-    var draft : Bool {
+
+    var draft: Bool {
         get {
             return self.labelID == "1"
         }

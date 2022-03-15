@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 @objc public protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
@@ -33,51 +32,51 @@ extension NotificationCenter {
         addObserver(observer, ifRespondsToAction: .willHide)
         addObserver(observer, ifRespondsToAction: .willShow)
     }
-    
+
     public func removeKeyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol) {
         removeObserver(observer, ifRespondsToAction: .willHide)
         removeObserver(observer, ifRespondsToAction: .willShow)
     }
-    
+
     // MARK: - Private methods
-    
+
     fileprivate enum KeyboardAction {
         case willHide
         case willShow
-        
+
         var notificationName: String {
-            switch(self) {
+            switch self {
             case .willHide:
                 return UIResponder.keyboardWillHideNotification.rawValue
             default:
                 return UIResponder.keyboardWillShowNotification.rawValue
             }
         }
-        
+
         var selector: Selector {
-            switch(self) {
+            switch self {
             case .willHide:
                 return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillHideNotification(_:))
             default:
                 return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillShowNotification(_:))
             }
         }
-        
+
         func isObserverResponds(_ observer: NSNotificationCenterKeyboardObserverProtocol) -> Bool {
             return observer.responds(to: selector)
         }
     }
-    
+
     fileprivate func addObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol, ifRespondsToAction action: KeyboardAction) {
         if keyboardObserver(observer, respondsToAction: action) {
             addObserver(observer, selector: action.selector, name: NSNotification.Name(rawValue: action.notificationName), object: nil)
         }
     }
-    
+
     fileprivate func keyboardObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol, respondsToAction action: KeyboardAction) -> Bool {
         return observer.responds(to: action.selector)
     }
-    
+
     fileprivate func removeObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol, ifRespondsToAction action: KeyboardAction) {
         if keyboardObserver(observer, respondsToAction: action) {
             removeObserver(observer, name: NSNotification.Name(rawValue: action.notificationName), object: nil)

@@ -19,21 +19,20 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class TableContainerViewModel: NSObject {
     private var latestErrorBanner: BannerView?
-    
+
     var numberOfSections: Int {
         fatalError()
     }
-    
+
     func numberOfRows(in section: Int) -> Int {
         fatalError()
     }
-    
+
     func syncMailSetting() {
         fatalError()
     }
@@ -43,15 +42,15 @@ extension TableContainerViewModel: BannerRequester {
     internal func errorBannerToPresent() -> BannerView? {
         return self.latestErrorBanner
     }
-    
+
     internal func showErrorBanner(_ title: String,
-                                  action: (()->Void)? = nil,
+                                  action: (() -> Void)? = nil,
                                   secondConfig: BannerView.ButtonConfiguration? = nil) {
         DispatchQueue.main.async {
             let config = action == nil ? nil : BannerView.ButtonConfiguration(title: LocalString._retry, action: action)
             self.latestErrorBanner?.remove(animated: true)
             self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, button2: secondConfig, offset: 8.0)
-            
+
             #if !APP_EXTENSION
             UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
             #else
@@ -59,7 +58,7 @@ extension TableContainerViewModel: BannerRequester {
             #endif
         }
     }
-    
+
 //    internal func showErrorBanner(_ title: String, action: (()->Void)? = nil) {
 //        DispatchQueue.main.async {
 //            let config = action == nil ? nil : BannerView.ButtonConfiguration(title: LocalString._retry, action: action)

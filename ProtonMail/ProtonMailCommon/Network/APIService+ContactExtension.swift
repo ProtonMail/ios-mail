@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Services
 
 /// Contact extension
 extension APIService {
-    
+
 //    fileprivate struct ContactPath {
 //        static let base = "/contacts"
 //    }

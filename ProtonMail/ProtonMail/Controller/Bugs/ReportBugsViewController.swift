@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import MBProgressHUD
 import SideMenuSwift
@@ -35,24 +34,24 @@ class ReportBugsViewController: ProtonMailViewController {
     fileprivate var beginningVerticalPositionOfKeyboard: CGFloat = 30.0
     fileprivate let textViewInset: CGFloat = 16.0
     fileprivate let topTextViewMargin: CGFloat = 24.0
-    
+
     fileprivate var sendButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-    
-    private var kSegueToTroubleshoot : String = "toTroubleShootSegue"
+
+    private var kSegueToTroubleshoot: String = "toTroubleShootSegue"
     private var reportSent: Bool = false
-    
+
     class func instance() -> ReportBugsViewController {
         let board = UIStoryboard.Storyboard.inbox.storyboard
         let vc = board.instantiateViewController(withIdentifier: "ReportBugsViewController") as! ReportBugsViewController
-        let _ = UINavigationController(rootViewController: vc)
+        _ = UINavigationController(rootViewController: vc)
         return vc
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = ColorProvider.BackgroundSecondary
         self.sendButton = UIBarButtonItem(title: LocalString._general_send_action,
                                           style: UIBarButtonItem.Style.plain,
@@ -68,7 +67,7 @@ class ReportBugsViewController: ProtonMailViewController {
             for: .normal
         )
         self.navigationItem.rightBarButtonItem = sendButton
-        
+
         if cachedBugReport.cachedBug.isEmpty {
             addPlaceholder()
         } else {
@@ -101,14 +100,13 @@ class ReportBugsViewController: ProtonMailViewController {
         textView.becomeFirstResponder()
         resizeHeightIfNeeded()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textView.resignFirstResponder()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
-    
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         guard let keywindow = UIApplication.shared.keyWindow, self.reportSent else { return }
@@ -118,12 +116,12 @@ class ReportBugsViewController: ProtonMailViewController {
                                           message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { (_) in
-                
+
             }))
             controller.present(alert, animated: true, completion: {
-                
+
             })
-            
+
             stop = true
         }
     }
@@ -151,13 +149,13 @@ class ReportBugsViewController: ProtonMailViewController {
         resizeHeightIfNeeded()
         addPlaceholder()
     }
-    
+
     fileprivate func updateSendButtonForText(_ text: String?) {
         sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == LocalString._bug_description)
     }
-    
+
     // MARK: Actions
-    
+
     @IBAction fileprivate func sendAction(_ sender: UIBarButtonItem) {
         guard let text = textView.text, !text.isEmpty else {
             return
@@ -165,8 +163,7 @@ class ReportBugsViewController: ProtonMailViewController {
 
         let storeKitManager = self.user.payments.storeKitManager
         if storeKitManager.hasUnfinishedPurchase(),
-            let receipt = try? storeKitManager.readReceipt()
-        {
+            let receipt = try? storeKitManager.readReceipt() {
             let alert = UIAlertController(title: LocalString._iap_bugreport_title, message: LocalString._iap_bugreport_user_agreement, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._iap_bugreport_yes, style: .default, handler: { _ in
                 self.send(text + "\n\n\n --- AppStore receipt: ---\n\n\(receipt)")
@@ -179,9 +176,9 @@ class ReportBugsViewController: ProtonMailViewController {
             self.send(text)
         }
     }
-    
+
     private func send(_ text: String) {
-        let v : UIView = self.navigationController?.view ?? self.view
+        let v: UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
         let username = self.user.defaultEmail.split(separator: "@")[0]
@@ -207,13 +204,13 @@ class ReportBugsViewController: ProtonMailViewController {
             }
         }
     }
-    
-    private func checkDoh(_ error : NSError) -> Bool {
+
+    private func checkDoh(_ error: NSError) -> Bool {
         let code = error.code
         guard DoHMail.default.codeCheck(code: code) else {
             return false
         }
-        
+
         let message = error.localizedDescription
         let alertController = UIAlertController(title: LocalString._protonmail,
                                                 message: message,
@@ -222,13 +219,13 @@ class ReportBugsViewController: ProtonMailViewController {
             self.performSegue(withIdentifier: self.kSegueToTroubleshoot, sender: nil)
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
-            
+
         }))
         UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
 
         return true
     }
-    
+
     fileprivate func resizeHeightIfNeeded() {
         let maxTextViewSize = CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)
         let wantedHeightAfterVerticalGrowth = textView.sizeThatFits(maxTextViewSize).height
@@ -252,7 +249,7 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
-    
+
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         beginningVerticalPositionOfKeyboard = view.window?.convert(keyboardInfo.endFrame, to: view).origin.y ?? bottomPadding
@@ -264,7 +261,7 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
 }
 
 extension ReportBugsViewController: UITextViewDelegate {
-    
+
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let oldText = textView.text as NSString
         let changedText = oldText.replacingCharacters(in: range, with: text)

@@ -23,32 +23,32 @@
 import ProtonCore_UIFoundations
 
 final class ContactEditFieldCell: UITableViewCell {
-    
-    fileprivate var field : ContactEditField!
-    fileprivate var delegate : ContactEditCellDelegate?
-    
+
+    fileprivate var field: ContactEditField!
+    fileprivate var delegate: ContactEditCellDelegate?
+
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var valueField: UITextField!
-    
+
     @IBOutlet weak var sepratorView: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.tintColor = ColorProvider.TextHint
         backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         sepratorView.gradient()
     }
-    
-    func configCell(obj : ContactEditField, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+
+    func configCell(obj: ContactEditField, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.field = obj
         self.delegate = callback
-    
+
         typeLabel.attributedText = NSAttributedString(string: self.field.newType.title,
                                                       attributes: FontManager.Default)
         valueField.attributedText = NSAttributedString(string: self.field.newField,
@@ -60,7 +60,7 @@ final class ContactEditFieldCell: UITableViewCell {
             })
         }
     }
-    
+
     @IBAction func typeAction(_ sender: UIButton) {
         delegate?.pick(typeInterface: field, sender: self)
     }
@@ -70,16 +70,16 @@ extension ContactEditFieldCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         field.newField = valueField.attributedText?.string ?? ""
     }
 }

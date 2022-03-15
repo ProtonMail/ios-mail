@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 struct AttachmentAPI {
-    static let path :String = "/\(Constants.App.API_PREFIXED)/attachments"
+    static let path: String = "/\(Constants.App.API_PREFIXED)/attachments"
 }
 
 struct ConversationsAPI {
-    static let path : String = "/\(Constants.App.API_PREFIXED)/conversations"
+    static let path: String = "/\(Constants.App.API_PREFIXED)/conversations"
 }

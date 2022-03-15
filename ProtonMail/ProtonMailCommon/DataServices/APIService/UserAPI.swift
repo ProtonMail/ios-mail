@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import PromiseKit
 import ProtonCore_DataModel
@@ -31,39 +30,38 @@ typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (NSError?) -> Void
 
 struct UsersAPI {
-    static let path : String = "/users"
+    static let path: String = "/users"
 }
 
-///Get user info  --- GetUserInfoResponse
-final class GetUserInfoRequest : Request {
-    
+/// Get user info  --- GetUserInfoResponse
+final class GetUserInfoRequest: Request {
+
     init(authCredential: AuthCredential? = nil) {
         self.auth = authCredential
     }
-    
+
     var method: HTTPMethod {
         return .get
     }
-    
+
     var path: String {
         return UsersAPI.path
     }
-    
-    //custom auth credentical
+
+    // custom auth credentical
     var auth: AuthCredential?
-    var authCredential : AuthCredential? {
+    var authCredential: AuthCredential? {
         get {
             return self.auth
         }
-    }    
+    }
 }
 
+final class GetUserInfoResponse: Response {
+    var userInfo: UserInfo?
 
-final class GetUserInfoResponse : Response {
-    var userInfo : UserInfo?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        guard let res = response["User"] as? [String : Any] else {
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        guard let res = response["User"] as? [String: Any] else {
             return false
         }
         self.userInfo = UserInfo(response: res)
@@ -72,16 +70,16 @@ final class GetUserInfoResponse : Response {
 }
 
 /// GetHumanCheckResponse
-class GetHumanCheckToken : Request {
+class GetHumanCheckToken: Request {
     var path: String {
         return UsersAPI.path + "/human"
     }
 }
 
-class GetHumanCheckResponse : Response {
-    var token : String?
-    var type : [String]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+class GetHumanCheckResponse: Response {
+    var token: String?
+    var type: [String]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         self.type = response["VerifyMethods"] as? [String]
         self.token = response["Token"] as? String
         return true
@@ -89,36 +87,36 @@ class GetHumanCheckResponse : Response {
 }
 
 /// -- Response
-class HumanCheckRequest : Request {
-    var token : String
-    var type : String
-    
+class HumanCheckRequest: Request {
+    var token: String
+    var type: String
+
     init(type: String, token: String) {
         self.token = token
         self.type = type
     }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] =  ["Token":self.token, "TokenType":self.type ]
+
+    var parameters: [String: Any]? {
+        let out: [String: Any] = ["Token": self.token, "TokenType": self.type ]
         return out
     }
-    
+
     var method: HTTPMethod {
         return .post
     }
-    
+
     var path: String {
         return UsersAPI.path + "/human"
     }
 }
 
-enum VerifyCodeType : Int {
+enum VerifyCodeType: Int {
     case email = 0
     case recaptcha = 1
     case sms = 2
-    var toString : String {
+    var toString: String {
         get {
-            switch(self) {
+            switch self {
             case .email:
                 return "email"
             case .recaptcha:

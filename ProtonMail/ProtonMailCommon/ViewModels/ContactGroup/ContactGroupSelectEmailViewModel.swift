@@ -20,20 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-protocol ContactGroupSelectEmailViewModel
-{
+protocol ContactGroupSelectEmailViewModel {
     var havingUnsavedChanges: Bool { get }
     func getSelectionStatus(at indexPath: IndexPath) -> Bool
-    
+
     func getTotalEmailCount() -> Int
     func getCellData(at indexPath: IndexPath) -> (ID: String, name: String, email: String, isSelected: Bool)
     func save()
-    
+
     func selectEmail(ID: String)
     func deselectEmail(ID: String)
-    
+
     func search(query: String?)
 }

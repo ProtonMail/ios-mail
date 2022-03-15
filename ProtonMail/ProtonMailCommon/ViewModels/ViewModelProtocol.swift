@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 /// Notes for refactor later:
@@ -29,31 +28,28 @@ import Foundation
 /// view model impl control viewmodel navigate
 /// View model service tracking the ui flows
 
-protocol ViewModelProtocolBase : AnyObject {
+protocol ViewModelProtocolBase: AnyObject {
     func setModel(vm: Any)
-    func inactiveViewModel() -> Void
+    func inactiveViewModel()
 }
 
-protocol ViewModelProtocol : ViewModelProtocolBase {
+protocol ViewModelProtocol: ViewModelProtocolBase {
     /// typedefine - view model -- if the class name defined in set function. the sub class could ignore viewModelType
     associatedtype viewModelType
-    
-    func set(viewModel: viewModelType) -> Void
-}
 
+    func set(viewModel: viewModelType)
+}
 
 extension ViewModelProtocol {
     func setModel(vm: Any) {
         guard let viewModel = vm as? viewModelType else {
-            fatalError("This view model type doesn't match") //this shouldn't happend
+            fatalError("This view model type doesn't match") // this shouldn't happend
         }
         self.set(viewModel: viewModel)
     }
-    
+
     /// optional
     func inactiveViewModel() {
-        
+
     }
 }
-
-

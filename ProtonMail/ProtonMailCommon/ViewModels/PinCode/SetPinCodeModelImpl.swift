@@ -23,34 +23,34 @@
 import Foundation
 import ProtonCore_Keymaker
 
-class SetPinCodeModelImpl : PinCodeViewModel {
-    
-    let StepOneTitle : String = LocalString._enter_your_pin
-    let StepTwoTitle : String = LocalString._re_enter_your_pin
-    
-    var currentStep : PinCodeStep = .enterPin
-    
-    var enterPin : String = ""
-    var reEnterPin : String = "";
-    
+class SetPinCodeModelImpl: PinCodeViewModel {
+
+    let StepOneTitle: String = LocalString._enter_your_pin
+    let StepTwoTitle: String = LocalString._re_enter_your_pin
+
+    var currentStep: PinCodeStep = .enterPin
+
+    var enterPin: String = ""
+    var reEnterPin: String = ""
+
     override func title() -> String {
         return currentStep == .enterPin ? StepOneTitle : StepTwoTitle
     }
-    
+
     override func cancel() -> String {
         return currentStep == .enterPin ? LocalString._general_create_action : LocalString._general_confirm_action
     }
-    
+
     override func showConfirm() -> Bool {
         return false
     }
-    
+
     override func confirmString () -> String {
         return ""
     }
-    
-    override func setCode (_ code : String) -> PinCodeStep {
-        
+
+    override func setCode (_ code: String) -> PinCodeStep {
+
         switch currentStep {
         case .enterPin:
             enterPin = code
@@ -65,11 +65,11 @@ class SetPinCodeModelImpl : PinCodeViewModel {
             reEnterPin = ""
             currentStep = .enterPin
         }
-        
+
         return currentStep
     }
-    
-    override func isPinMatched(completion: @escaping (Bool)->Void) {
+
+    override func isPinMatched(completion: @escaping (Bool) -> Void) {
         if !enterPin.isEmpty && !reEnterPin.isEmpty && reEnterPin == enterPin {
             completion(true)
         } else {
@@ -77,20 +77,20 @@ class SetPinCodeModelImpl : PinCodeViewModel {
             completion(false)
         }
     }
-    
-    override func done(completion: @escaping (Bool)->Void) {
-        self.isPinMatched() { matched in
+
+    override func done(completion: @escaping (Bool) -> Void) {
+        self.isPinMatched { matched in
             if matched {
                 keymaker.deactivate(BioProtection())
                 keymaker.activate(PinProtection(pin: self.enterPin), completion: completion)
             }
         }
     }
-    
+
     override func getPinFailedRemainingCount() -> Int {
-        return 11;
+        return 11
     }
-    
+
     override func getPinFailedError() -> String {
         return "The PIN does not match!!!"
     }

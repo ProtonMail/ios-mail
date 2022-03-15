@@ -89,7 +89,7 @@ protocol SettingsDeviceViewModel: AnyObject {
     var appSettigns: [DeviceSectionItem] { get set }
 
     var generalSettings: [GeneralSectionItem] { get set }
-    
+
     func appVersion() -> String
 
     var userManager: UserManager { get }
@@ -108,10 +108,10 @@ protocol SettingsDeviceViewModel: AnyObject {
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?)
 }
 
-class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
+class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
 
     var sections: [SettingDeviceSection] = [ .account, .app, .general, .clearCache]
-    
+
     var appSettigns: [DeviceSectionItem] = [.appPIN, .combinContacts, .browser, .alternativeRouting, .swipeAction]
 
     var generalSettings: [GeneralSectionItem] = [.notification, .language]
@@ -188,7 +188,7 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
                         switch result {
                         case .failure(let error):
                             completion?(.failure(error as NSError))
-                        case .success(_):
+                        case .success:
                             completion?(.success(()))
                         }
                     }

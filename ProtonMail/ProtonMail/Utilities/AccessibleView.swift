@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-fileprivate let maxDeepness = 1
-fileprivate var viewIdentifiers = Set<String>()
+private let maxDeepness = 1
+private var viewIdentifiers = Set<String>()
 
 /**
  Assigns accessibility identifiers to the ViewController class members that belong to UIView, UIButton, UIBarItem and UITextField class types using reflection.
@@ -27,40 +27,40 @@ extension AccessibleView {
         assignIdentifiers(mirror, 0)
         #endif
     }
-    
+
     private func assignIdentifiers(_ mirror: Mirror, _ deepnessLevel: Int) {
-        
+
         if deepnessLevel > maxDeepness { return }
 
         for child in mirror.children {
             if let view = child.value as? UIView {
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "")
                 let viewMirror = Mirror(reflecting: view)
-                
+
                 if viewMirror.children.count > 0 {
                     assignIdentifiers(viewMirror, deepnessLevel + 1)
                 }
-                
+
                 view.accessibilityIdentifier = "\(type(of: self)).\(identifier!)"
                 viewIdentifiers.insert(view.accessibilityIdentifier!)
             } else if let view = child.value as? UIButton,
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "") {
                 let viewMirror = Mirror(reflecting: view)
-                
+
                 if viewMirror.children.count > 0 {
                     assignIdentifiers(viewMirror, deepnessLevel + 1)
                 }
-                
+
                 view.accessibilityIdentifier = "\(type(of: self)).\(identifier)"
                 viewIdentifiers.insert(view.accessibilityIdentifier!)
             } else if let view = child.value as? UITextField,
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "") {
                 let viewMirror = Mirror(reflecting: view)
-                
+
                 if viewMirror.children.count > 0 {
                     assignIdentifiers(viewMirror, deepnessLevel + 1)
                 }
-                
+
                 view.accessibilityIdentifier = "\(type(of: self)).\(identifier)"
                 viewIdentifiers.insert(view.accessibilityIdentifier!)
             } else if let view = child.value as? UIBarItem,
@@ -82,13 +82,12 @@ extension AccessibleView {
     }
 }
 
-
 extension UINavigationItem {
     func assignNavItemIndentifiers() {
         self.rightBarButtonItems?.forEach({ (button) in
             button.accessibilityIdentifier = "\(type(of: self)).\(String(describing: button.action).replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "Tapped", with: "").replacingOccurrences(of: ":", with: ""))"
         })
-        
+
         self.leftBarButtonItems?.forEach({ (button) in
             button.accessibilityIdentifier = "\(type(of: self)).\(String(describing: button.action).replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "Tapped", with: "").replacingOccurrences(of: ":", with: ""))"
         })
@@ -104,7 +103,7 @@ extension UIAlertController {
 extension UITabBar {
     func assignItemsAccessibilityIdentifiers() {
         self.items?.forEach { (item) in
-            if (item.title != nil) {
+            if item.title != nil {
                 item.accessibilityIdentifier =
                     "\(type(of: self)).\(String(describing: item.title!.replacingOccurrences(of: " ", with: "_")))"
             }

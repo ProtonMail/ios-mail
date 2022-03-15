@@ -27,7 +27,7 @@ struct UserDataServiceKeyHelper {
     }
 
     func updatePasswordV2(userKeys: [Key], oldPassword: String, newPassword: String) throws -> UpdatedKeyResult {
-        let saltOfNewPassword = try Crypto.random(byte: 16) //mailbox pwd need 128 bits
+        let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
         let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
         let result = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
         let updatedKeys = result.filter({ $0.isUpdated == true })
@@ -40,7 +40,7 @@ struct UserDataServiceKeyHelper {
     }
 
     func updatePassword(userKeys: [Key], addressKeys: [Address], oldPassword: String, newPassword: String) throws -> UpdatedKeyResult {
-        let saltOfNewPassword = try Crypto.random(byte: 16) //mailbox pwd need 128 bits
+        let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
         let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
         let userKeyResult = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
         let updatedUserKeys = userKeyResult.filter({ $0.isUpdated == true })

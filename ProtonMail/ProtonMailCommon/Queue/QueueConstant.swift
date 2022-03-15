@@ -20,18 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 struct QueueConstant {
-    
+
     #if Enterprise
     static let queueIdentifer = "com.protonmail.persistentQueue"
     #else
     static let queueIdentifer = "ch.protonmail.persistentQueue"
     #endif
-    
-    enum QueueTypes{
-        
+
+    enum QueueTypes {
+
     }
 }

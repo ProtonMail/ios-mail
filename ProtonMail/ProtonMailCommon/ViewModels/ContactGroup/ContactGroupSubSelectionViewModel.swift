@@ -20,16 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-protocol ContactGroupSubSelectionViewModelDelegate
-{
+protocol ContactGroupSubSelectionViewModelDelegate {
     func reloadTable()
 }
 
-protocol ContactGroupSubSelectionViewModelEmailCellDelegate
-{
+protocol ContactGroupSubSelectionViewModelEmailCellDelegate {
     func select(indexPath: IndexPath)
     func deselect(indexPath: IndexPath)
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
@@ -38,21 +35,19 @@ protocol ContactGroupSubSelectionViewModelEmailCellDelegate
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
-protocol ContactGroupSubSelectionViewModelHeaderCellDelegate
-{
+protocol ContactGroupSubSelectionViewModelHeaderCellDelegate {
     func selectAll()
     func deSelectAll()
     func isAllSelected() -> Bool
 }
 
-struct ContactGroupSubSelectionViewModelEmailInfomation
-{
+struct ContactGroupSubSelectionViewModelEmailInfomation {
     let email: String
     let name: String
     var isSelected: Bool
     var isEncrypted: UIImage?
     var checkEncryptedStatus: ContactGroupSubSelectionEmailLockCheckingState = .NotChecked
-    
+
     init(email: String, name: String, isSelected: Bool = false, isEncrypted: UIImage? = nil) {
         self.email = email
         self.name = name
@@ -61,18 +56,16 @@ struct ContactGroupSubSelectionViewModelEmailInfomation
     }
 }
 
-enum ContactGroupSubSelectionEmailLockCheckingState
-{
+enum ContactGroupSubSelectionEmailLockCheckingState {
     case NotChecked
     case Checking
     case Checked
 }
 
 protocol ContactGroupSubSelectionViewModel: ContactGroupSubSelectionViewModelEmailCellDelegate,
-    ContactGroupSubSelectionViewModelHeaderCellDelegate
-{
+    ContactGroupSubSelectionViewModelHeaderCellDelegate {
     func getCurrentlySelectedEmails() -> [DraftEmailData]
-    
+
     func getGroupName() -> String
     func getGroupColor() -> String?
     func getTotalRows() -> Int

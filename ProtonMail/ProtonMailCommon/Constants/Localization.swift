@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 // object for all the localization strings, this avoid some issues with xcode 9 import/export
@@ -32,7 +31,7 @@ class LocalizedString {
         LocalString = LocalizedString()
     }
 
-    //Mark Signup
+    // Mark Signup
 
     /// "(2048 bit)"
     lazy var _signup_key_2048_size = NSLocalizedString("(2048 bit)", comment: "Key size text when setup key")
@@ -46,7 +45,7 @@ class LocalizedString {
     // Mark Link Opening Confirmaiton
     lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
     lazy var _request_link_confirmation = NSLocalizedString("Request link confirmation", comment: "link opeining confirmation")
-    
+
     // Mark Settings
 
     /// "%d Minute"
@@ -102,48 +101,46 @@ class LocalizedString {
     lazy var _settings_swiping_gestures = NSLocalizedString("Swiping gestures", comment: "Swiping gestures")
 
     lazy var _networking = NSLocalizedString("Networking", comment: "section title ")
-    
-    
+
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
     /// "Report a bug"
     lazy var _menu_bugs_title     = NSLocalizedString("Report a bug", comment: "menu title")
     /// "Inbox"
-    lazy var _menu_inbox_title    =  NSLocalizedString("Inbox", comment: "menu title")
+    lazy var _menu_inbox_title = NSLocalizedString("Inbox", comment: "menu title")
     /// "Starred"
-    lazy var _menu_starred_title  =  NSLocalizedString("Starred", comment: "menu title")
+    lazy var _menu_starred_title = NSLocalizedString("Starred", comment: "menu title")
     /// "Archive"
-    lazy var _menu_archive_title  =  NSLocalizedString("Archive", comment: "menu title")
+    lazy var _menu_archive_title = NSLocalizedString("Archive", comment: "menu title")
     /// "Drafts"
-    lazy var _menu_drafts_title   =  NSLocalizedString("Drafts", comment: "menu title")
+    lazy var _menu_drafts_title = NSLocalizedString("Drafts", comment: "menu title")
     /// "All Mail"
-    lazy var _menu_allmail_title  =  NSLocalizedString("All Mail", comment: "menu title")
+    lazy var _menu_allmail_title = NSLocalizedString("All Mail", comment: "menu title")
     /// "Sent"
-    lazy var _menu_sent_title     =  NSLocalizedString("Sent", comment: "menu title")
+    lazy var _menu_sent_title = NSLocalizedString("Sent", comment: "menu title")
     /// "Trash"
-    lazy var _menu_trash_title    =  NSLocalizedString("Trash", comment: "menu title")
+    lazy var _menu_trash_title = NSLocalizedString("Trash", comment: "menu title")
     /// "Spam"
-    lazy var _menu_spam_title     =  NSLocalizedString("Spam", comment: "menu title")
+    lazy var _menu_spam_title = NSLocalizedString("Spam", comment: "menu title")
     /// "Contacts"
-    lazy var _menu_contacts_title =  NSLocalizedString("Contacts", comment: "menu title")
+    lazy var _menu_contacts_title = NSLocalizedString("Contacts", comment: "menu title")
     /// "Contact Groups"
     lazy var _menu_contact_group_title = NSLocalizedString("Groups", comment: "menu title (contact groups)")
     /// "Settings"
-    lazy var _menu_settings_title =  NSLocalizedString("Settings", comment: "menu title")
+    lazy var _menu_settings_title = NSLocalizedString("Settings", comment: "menu title")
     /// "Sign out"
-    lazy var _menu_signout_title  =  NSLocalizedString("Sign out", comment: "menu title")
+    lazy var _menu_signout_title = NSLocalizedString("Sign out", comment: "menu title")
     /// "Feedback"
-    lazy var _menu_feedback_title =  NSLocalizedString("Feedback", comment: "menu title")
+    lazy var _menu_feedback_title = NSLocalizedString("Feedback", comment: "menu title")
     /// "Lock The App"
-    lazy var _menu_lockapp_title  =  NSLocalizedString("Lock The App", comment: "menu title")
+    lazy var _menu_lockapp_title = NSLocalizedString("Lock The App", comment: "menu title")
     /// "Subscription"
-    lazy var _menu_service_plan_title  =  NSLocalizedString("Subscription", comment: "menu title")
+    lazy var _menu_service_plan_title = NSLocalizedString("Subscription", comment: "menu title")
     /// "Manage accounts"
-    lazy var _menu_manage_accounts  =  NSLocalizedString("Manage accounts", comment: "menu title")
+    lazy var _menu_manage_accounts = NSLocalizedString("Manage accounts", comment: "menu title")
     /// "Add accounts"
-    lazy var _menu_add_account  =  NSLocalizedString("Add accounts", comment: "menu title")
+    lazy var _menu_add_account = NSLocalizedString("Add accounts", comment: "menu title")
     lazy var _menu_add_attachment = NSLocalizedString("Add attachment", comment: "menu title")
-
 
     // Mark Message localtion
 
@@ -194,7 +191,7 @@ class LocalizedString {
     /// "Move to Spam"
     lazy var _locations_move_spam_action    = NSLocalizedString("Move to Spam", comment: "move action")
     /// "Add Star"
-    lazy var _locations_add_star_action     = NSLocalizedString("Add Star",  comment: "mark message star")
+    lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
     /// "Move to Archive"
     lazy var _locations_move_archive_action = NSLocalizedString("Move to Archive", comment: "move action")
     /// "Move to Trash"
@@ -213,8 +210,7 @@ class LocalizedString {
     lazy var _delete_all = NSLocalizedString("Delete all", comment: "emptify folder/label confirmation alert")
     /// "Are you sure? This can't be undone."
     lazy var _are_you_sure_this_cant_be_undone = NSLocalizedString("Are you sure? This can't be undone.", comment: "emptify folder/label confirmation alert")
-    
-    
+
     // Mark Messages
 
     /// "Message sent"
@@ -248,8 +244,6 @@ class LocalizedString {
     /// "You have %d new emails!"
     lazy var _messages_you_have_new_emails_with = NSLocalizedString("You have %d new emails!", comment: "Message")
 
-
-
     // Mark Composer
 
     /// "Re:"
@@ -259,7 +253,7 @@ class LocalizedString {
     /// "Fw:"
     lazy var _composer_short_forward_shorter = NSLocalizedString("Fw:", comment: "abbreviation of forward:")
     /// "wrote:"
-    lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
+    lazy var _composer_wrote = NSLocalizedString("wrote:", comment: "Title")
     /// "On E, MMM d, yyyy at %@"
     lazy var _composer_forward_header = NSLocalizedString("On E, MMM d, yyyy at %@", comment: "forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
 
@@ -283,14 +277,14 @@ class LocalizedString {
     /// "Get more information"
     lazy var _composer_eo_info       = NSLocalizedString("Get more information", comment: "Action")
     /// "Message Password"
-    lazy var _composer_eo_msg_pwd_placeholder     = NSLocalizedString("Message Password", comment: "Placeholder")
+    lazy var _composer_eo_msg_pwd_placeholder = NSLocalizedString("Message Password", comment: "Placeholder")
     lazy var _composer_eo_msg_pwd_hint = NSLocalizedString("8 to 21 characters long", comment: "Placeholder")
     lazy var _composer_eo_msg_pwd_length_error = NSLocalizedString("The password must be between 8 and 21 characters long", comment: "Error message")
     lazy var _composer_eo_repeat_pwd = NSLocalizedString("Repeat password", comment: "textview title")
     lazy var _composer_eo_repeat_pwd_placeholder = NSLocalizedString("Passwords must match", comment: "Placeholder")
     lazy var _composer_eo_repeat_pwd_match_error = NSLocalizedString("The 2 passwords are not matching", comment: "Error message")
     /// "Password is required."
-    lazy var _composer_eo_empty_pwd_desc          = NSLocalizedString("Password cannot be empty.", comment: "Description")
+    lazy var _composer_eo_empty_pwd_desc = NSLocalizedString("Password cannot be empty.", comment: "Description")
     lazy var _composer_eo_remove_pwd = NSLocalizedString("Remove password", comment: "action title")
     /// "Please set a password."
     lazy var _composer_eo_pls_set_password = NSLocalizedString("Please set a password.", comment: "Description")
@@ -347,7 +341,7 @@ class LocalizedString {
     lazy var _max_number_of_recipients_is_number = NSLocalizedString("The maximum number of distinct recipients is %d", comment: "Alert message")
     /// "Clear Style"
     lazy var _clear_style = NSLocalizedString("Clear Style", comment: "Menu action to remove text formatting")
-    
+
     // Mark Contacts
 
     /// "Add Organization"
@@ -443,10 +437,9 @@ class LocalizedString {
     /// "Notes"
     lazy var _contacts_info_notes = NSLocalizedString("Notes", comment: "title")
     /// "Upload Contacts"
-    lazy var _contacts_upload_device_contacts = NSLocalizedString("Upload device contacts",  comment: "Action")
+    lazy var _contacts_upload_device_contacts = NSLocalizedString("Upload device contacts", comment: "Action")
 
     lazy var _contacts_action_sheet_title = NSLocalizedString("Create", comment: "")
-
 
     // Mark Labels
 
@@ -476,7 +469,7 @@ class LocalizedString {
     // Mark General
 
     /// "API Server not reachable…"
-    lazy var _general_api_server_not_reachable     =  NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
+    lazy var _general_api_server_not_reachable = NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
     /// "Access to this account is disabled due to non-payment. Please log in through protonmail.com to pay your outstanding invoice(s)."
     lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.", comment: "error message")
     /// "Alert"
@@ -485,7 +478,7 @@ class LocalizedString {
     lazy var _general_done_button     = NSLocalizedString("Done", comment: "Done action")
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
-    
+
     lazy var _general_yes_action = NSLocalizedString("Yes", comment: "Yes action")
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
@@ -506,15 +499,15 @@ class LocalizedString {
     /// "Cc:"
     lazy var _general_cc_label        = NSLocalizedString("Cc", comment: "message Cc: feild")
     /// "Cc:"
-    lazy var _general_bcc_label        = NSLocalizedString("Bcc:", comment: "message Bcc: feild")
+    lazy var _general_bcc_label = NSLocalizedString("Bcc:", comment: "message Bcc: feild")
     /// "Delete"
     lazy var _general_delete_action   = NSLocalizedString("Delete", comment: "general delete action")
     /// "Close"
     lazy var _general_close_action    = NSLocalizedString("Close", comment: "general close action")
     /// "Cancel"
-    lazy var _general_cancel_action    = NSLocalizedString("Cancel", comment: "general cancel action")
+    lazy var _general_cancel_action = NSLocalizedString("Cancel", comment: "general cancel action")
     /// "Update"
-    lazy var _general_update_action   = NSLocalizedString("Update", comment: "like top right action text")
+    lazy var _general_update_action = NSLocalizedString("Update", comment: "like top right action text")
     /// "Invalid access token. Please try loging in again."
     lazy var _general_invalid_access_token = NSLocalizedString("Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.", comment: "Description")
     /// "A new version of ProtonMail app is available. Please update to the latest version."
@@ -535,7 +528,7 @@ class LocalizedString {
     lazy var _general_confirmation_title = NSLocalizedString("Confirmation", comment: "Title")
     /// "Draft"
     lazy var _general_draft_action = NSLocalizedString("Draft", comment: "Action")
-    
+
     /// "ProtonMail encrypted emails"
     lazy var _general_enc_pm_emails = NSLocalizedString("ProtonMail encrypted emails", comment: "Title")
     /// "Encrypted from outside"
@@ -564,18 +557,17 @@ class LocalizedString {
     lazy var _general_edit_action = NSLocalizedString("Edit", comment: "Action")
     /// "Create"
     lazy var _general_create_action = NSLocalizedString("Create", comment: "top right action text")
-    
+
     lazy var _general_ignore_action = NSLocalizedString("Ignore", comment: "Alarm action")
 
     lazy var _general_message = NSLocalizedString("general_message", comment: "message number")
     lazy var _general_conversation = NSLocalizedString("general_conversation", comment: "conversation number")
     lazy var _general_subscription = NSLocalizedString("Subscription", comment: "The title of a subscription plans screen")
-    
+
     /// "iOS 10 update error title"
     lazy var _ios10_update_title = NSLocalizedString("OS compatibility", comment: "The title of the iOS 10 upgrate alert")
     /// "iOS 10 update error body"
     lazy var _ios10_update_body = NSLocalizedString("We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future.", comment: "The body of the iOS 10 upgrate alert")
-
 
     /// Mark Error
 
@@ -599,7 +591,6 @@ class LocalizedString {
     lazy var _error_core_data_save_failed = NSLocalizedString("Failed to initialize the app's saved data", comment: "Description")
     /// "There was an error creating or loading the app's saved data."
     lazy var _error_core_data_load_failed = NSLocalizedString("There was an error creating or loading the app's saved data.", comment: "Description")
-
 
     /// "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded."
     lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
@@ -631,7 +622,7 @@ class LocalizedString {
 
     /// "Do you want to cancel the process?"
     lazy var _contacts_import_cancel_wanring = NSLocalizedString("Do you want to cancel the process?", comment: "Description")
-    
+
     lazy var _contacts_saved_offline_hint = NSLocalizedString("Contact saved, will be synced when connection is available", comment: "Hint when users create / edit contact offline ")
     lazy var _contacts_deleted_offline_hint = NSLocalizedString("Contact deleted, will be synced when connection is available", comment: "Hint when users delete contact offline ")
 
@@ -704,7 +695,7 @@ class LocalizedString {
 
     /// "Default"
     lazy var _general_default = NSLocalizedString("Default", comment: "Title")
-    
+
     lazy var _general_set = NSLocalizedString("Set", comment: "Title")
 
     /// "Please use the web version of ProtonMail to change your passwords!"
@@ -715,9 +706,9 @@ class LocalizedString {
 
     /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
     lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
-    
+
     lazy var _unsupported_url = NSLocalizedString("The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?", comment: "Unsupported url alert message")
-    
+
     /// "Auto Lock Time"
     lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
 
@@ -788,7 +779,6 @@ class LocalizedString {
     /// "signin"
     lazy var _general_signin = NSLocalizedString("Sign in", comment: "Title")
 
-
     /// "Authentication was cancelled by the system"
     lazy var _authentication_was_cancelled_by_the_system = NSLocalizedString("Authentication was cancelled by the system", comment: "Description")
 
@@ -803,9 +793,6 @@ class LocalizedString {
 
     /// "Re-Enter your PIN"
     lazy var _re_enter_your_pin = NSLocalizedString("Re-Enter your PIN", comment: "set PIN title")
-
-
-
 
     /// "Key generation failed please try again"
     lazy var _key_generation_failed_please_try_again = NSLocalizedString("Key generation failed. Please try again.", comment: "Error")
@@ -884,7 +871,6 @@ class LocalizedString {
     /// "close tour"
     lazy var _close_tour = NSLocalizedString("close tour", comment: "Action")
 
-
     // Mark : Onboarding
     lazy var _easily_up_to_date = NSLocalizedString("Easily up-to-date", comment: "Onboarding title")
 
@@ -915,13 +901,13 @@ class LocalizedString {
 
     /// "Unable to connect to the server"
     lazy var _unable_to_connect_to_the_server = NSLocalizedString("Unable to connect to the server", comment: "Description")
-    
+
     /// "Unable to edit this message offline"
     lazy var _unable_to_edit_offline = NSLocalizedString("Unable to edit this message offline", comment: "Description")
 
     /// "Unable to parse token"
     lazy var _unable_to_parse_token = NSLocalizedString("Unable to parse token", comment: "Error")
-    
+
     /// "Unable to parse token"
     lazy var _app_is_locked = NSLocalizedString("App is locked", comment: "Error")
 
@@ -954,7 +940,7 @@ class LocalizedString {
 
     /// "Unable to parse cached authentication token!"
     lazy var _unable_to_parse_cased_authentication_token = NSLocalizedString("Unable to parse cached authentication token!", comment: "Description")
-    
+
     /// "Authentication token is not accessible because the app is locked"
     lazy var _authentication_token_is_locked = NSLocalizedString("Authentication token is not accessible because the app is locked", comment: "Description")
 
@@ -977,15 +963,12 @@ class LocalizedString {
     /// "Phone number"
     lazy var _phone_number = NSLocalizedString("Phone number", comment: "contact placeholder")
 
-
-
-
     /// "Create a new account"
     lazy var _create_a_new_account = NSLocalizedString("Create a new account", comment: "Signup top title")
 
     /// "Note: The Username is also your ProtonMail address."
     lazy var _notes_the_username_is_also_your_protonmail_address = NSLocalizedString("Note: The Username is also your ProtonMail address.", comment: "Signup user name notes")
-    
+
     /// "By using ProtonMail, you agree to our (terms and conditions) and (privacy policy)."  -- for later
     lazy var _by_using_protonmail_you_agree_terms_ = NSLocalizedString("By using ProtonMail, you agree to our %@ and %@.", comment: "")
 
@@ -1006,7 +989,7 @@ class LocalizedString {
 
     /// "User is available!"
     lazy var _user_is_available = NSLocalizedString("User is available!", comment: "")
-    
+
     /// "User already exist!"
     lazy var _user_already_exist = NSLocalizedString("User already exist!", comment: "error when user already exist")
 
@@ -1023,7 +1006,7 @@ class LocalizedString {
 
     /// "Discard changes"
     lazy var _discard_changes = NSLocalizedString("Discard changes", comment: "Action")
-    
+
     lazy var _general_discard = NSLocalizedString("Discard", comment: "Action")
 
     /// "Add new url"
@@ -1063,19 +1046,19 @@ class LocalizedString {
     lazy var _protection_entire_app = NSLocalizedString("Protection Entire App", comment: "settings protection section title")
     /// "Enable Face ID"
     lazy var _enable_faceid = NSLocalizedString("Enable Face ID", comment: "settings protection section title")
-    
+
     lazy var _unlock_required = NSLocalizedString("Unlock required", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
-    
+
     lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
-    
+
     lazy var _lock_faceID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it.", comment: "A description string in pin & faceID setting page")
-    
+
     lazy var _lock_touchID_desc = NSLocalizedString("Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it.", comment: "A description string in pin & faceID setting page")
-    
+
     lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon logging out of the app.", comment: "A description string in pin & faceID setting page")
 
     lazy var _go_to_settings = NSLocalizedString("Go to settings", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
-    
+
     lazy var _go_to_signin = NSLocalizedString("Go to sign-in", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     // Mark Settings section title
@@ -1096,7 +1079,6 @@ class LocalizedString {
     lazy var _language = NSLocalizedString("Language", comment: "Title")
     /// "Labels/Folders"
     lazy var _labels_folders = NSLocalizedString("Labels/Folders", comment: "Title")
-
 
     /// "You have unsaved changes. Do you want to save it?"
     lazy var _you_have_unsaved_changes_do_you_want_to_save_it = NSLocalizedString("You have unsaved changes. Do you want to save it?", comment: "Confirmation message")
@@ -1127,7 +1109,7 @@ class LocalizedString {
 
     /// "Warning"
     lazy var _warning = NSLocalizedString("Warning", comment: "Title")
-    
+
     /// "Hide"
     lazy var _hide = NSLocalizedString("Hide", comment: "Action")
     /// "Show"
@@ -1144,7 +1126,7 @@ class LocalizedString {
 
     /// "Invalid hashed password!"
     lazy var _invalid_hashed_password = NSLocalizedString("Invalid hashed password!", comment: "update password error")
-    
+
     lazy var _password_needs_at_least_8_chars = NSLocalizedString("The new password needs to be at least 8 characters long", comment: "update password error")
 
     /// "Can't create a SRP verifier!"
@@ -1238,8 +1220,6 @@ class LocalizedString {
     /// "Can take several minutes to setup."
     lazy var _can_take_several_minutes_to_setup = NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2")
 
-
-
     /// "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer."
     lazy var _mobile_signups_are_disabled_pls_later_pm_com = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.", comment: "Description")
 
@@ -1263,7 +1243,6 @@ class LocalizedString {
 
     /// "Incorrect password"
     lazy var _incorrect_password = NSLocalizedString("Incorrect password", comment: "Title")
-
 
     /// "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com"
     lazy var _to_reset_your_mailbox_password_please_use_the_web_version_of_protonmail = NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description")
@@ -1352,10 +1331,9 @@ class LocalizedString {
 
     /// "Can't copy the file"
     lazy var _system_cant_copy_the_file = NSLocalizedString("System can't copy the file", comment: "Error")
-    
+
     /// "Can't open the file"
     lazy var _cant_open_the_file = NSLocalizedString("Can't open the file", comment: "Error")
-
 
     /// "Cell phone number"
     lazy var _cell_phone_number = NSLocalizedString("Cell phone number", comment: "place holder")
@@ -1405,8 +1383,7 @@ class LocalizedString {
 
     /// "Sign Out"
     lazy var _sign_out = NSLocalizedString("Sign Out", comment: "Action")
-    
-    
+
     /// "Log  Out all"
     lazy var _sign_out_all = NSLocalizedString("Sign Out All", comment: "Action")
 
@@ -1434,7 +1411,6 @@ class LocalizedString {
     /// "We would like to know what we can do better."
     lazy var _we_would_like_to_know_what_we_can_do_better = NSLocalizedString("We would like to know what we can do better.", comment: "Title")
 
-
     /// "USER sign in"
     lazy var _user_signin = NSLocalizedString("USER SIGN-IN", comment: "Title")
 
@@ -1443,7 +1419,7 @@ class LocalizedString {
 
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "signin page forgot pwd")
-    
+
     /// "Create new account"
     lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
 
@@ -1455,7 +1431,6 @@ class LocalizedString {
 
     // "This can take a while, please do not dismiss the app"
     lazy var _please_wait_in_foreground = NSLocalizedString("Please keep ProtonMail open until the operation is done.", comment: "Alert message")
-
 
     /// "Please use the web application to reset your password."
     lazy var _please_use_the_web_application_to_reset_your_password = NSLocalizedString("Please use the web application to reset your password.", comment: "Alert")
@@ -1548,8 +1523,7 @@ class LocalizedString {
     /// "Add to contacts"
     lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
 
-
-    ///"End-to-end encrypted"
+    /// "End-to-end encrypted"
     lazy var _end_to_end_encrypted = NSLocalizedString("End-to-end encrypted", comment: "encryption lock description")
     /// "PGP-encrypted"
     lazy var _pgp_encrypted = NSLocalizedString("PGP-encrypted", comment: "encryption lock description")
@@ -1562,7 +1536,7 @@ class LocalizedString {
     /// "Sent by you with end-to-end encryption"
     lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
     /// "Sent by ProtonMail with zero access encryption"
-    lazy var _sent_by_protonMail_with_zero_access_encryption  = NSLocalizedString("Sent by ProtonMail with zero access encryption", comment: "encryption lock description for auto reply")
+    lazy var _sent_by_protonMail_with_zero_access_encryption = NSLocalizedString("Sent by ProtonMail with zero access encryption", comment: "encryption lock description for auto reply")
     /// "PGP-encrypted message"
     lazy var _pgp_encrypted_message = NSLocalizedString("PGP-encrypted message", comment: "encryption lock description")
     /// "PGP-encrypted message from verified address"
@@ -1583,7 +1557,7 @@ class LocalizedString {
 
     // MARK: - Composer expiration warning
 
-    ///"Tap Send anyway to send without expiration to these recipients"
+    /// "Tap Send anyway to send without expiration to these recipients"
     lazy var _tap_send_anyway_to_send_without_expiration_to_these_recipients = NSLocalizedString("Tap send anyway to send without expiration to these recipients", comment: "alert description")
     /// "Learn more here"
     lazy var _learn_more_here = NSLocalizedString("Learn more here", comment: "learn more button")
@@ -1597,7 +1571,6 @@ class LocalizedString {
     lazy var _we_recommend_setting_up_a_password = NSLocalizedString("We recommend setting up a password instead for the following recipients:", comment: "alert body before list of addresses")
     lazy var _we_recommend_setting_up_a_password_or_disabling_pgp = NSLocalizedString("We recommend setting up a password instead, or disabling PGP for the following recipients:", comment: "alert body before list of addresses")
     lazy var _extra_addresses = NSLocalizedString("+%d others", comment: "alert body for how many extra mail addresses, e.g. +3 others")
-
 
     // MARK: - Notifcations Snooze feature
 
@@ -1629,8 +1602,7 @@ class LocalizedString {
     /// "Custom"
     lazy var _custom = NSLocalizedString("Custom", comment: "action sheet option")
 
-
-    // Mark: - VoiceOver
+    // MARK: - VoiceOver
 
     /// "Attachments"
     lazy var _attachments = NSLocalizedString("Attachments", comment: "VoiceOver: email has attachments")
@@ -1646,9 +1618,8 @@ class LocalizedString {
     /// "Unread"
     lazy var _unread = NSLocalizedString("Unread", comment: "VoiceOver: email is not read yet")
 
+    // MARK: - IAP
 
-    // Mark: - IAP
-    
     lazy var _iap_unavailable = NSLocalizedString("Subscription information temporarily unavailable. Please try again later.", comment: "Fetch subscription data failed")
 
     lazy var _unlimited_messages_sent = NSLocalizedString("Unlimited messages sent/day", comment: "Service plan capability;")
@@ -1671,7 +1642,7 @@ class LocalizedString {
     lazy var _support_n_domains = NSLocalizedString("Support for %i custom domains (e.g. user@yourdomain.com)", comment: "Service plan capability; i = 2")
 
     lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
-    
+
     /// "It is not possible to switch to %@ within our iOS app."
     lazy var _migrate_plan = NSLocalizedString("It is not possible to switch to %@ within our iOS app.", comment: "It is not possible to switch to `plan` within our iOS app.")
 
@@ -1706,25 +1677,25 @@ class LocalizedString {
     lazy var _free_header = NSLocalizedString("For individuals looking to benefit from secure communication at no cost", comment: "Service Plan description")
 
     lazy var _plus_header = NSLocalizedString("For individuals that need more capacity, customization and advanced features", comment: "Service Plan description")
-    
+
     lazy var _pro_header = NSLocalizedString("For organizations that need multi-user support and additional productivity features", comment: "Service Plan description")
-    
+
     lazy var _vis_header = NSLocalizedString("For power users and groups of people that value full anonymity and privacy", comment: "Service Plan description")
-    
+
     lazy var _no_dont_bypass_validation = NSLocalizedString("No, for another ProtonMail account", comment: "Warning message option when user want to resignin to another account")
-    
+
     lazy var _iap_bugreport_title = NSLocalizedString("Is this bug report about an in-app purchase?", comment: "Error message")
-    
+
     lazy var _iap_bugreport_user_agreement = NSLocalizedString("Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.", comment: "Error message")
-    
+
     lazy var _iap_bugreport_yes = NSLocalizedString("Yes, attach details of payment", comment: "Error message")
-    
+
     lazy var _iap_bugreport_no = NSLocalizedString("No, not related to in-app purchase", comment: "Error message")
 
     // contact group
     lazy var _contacts_action_select_an_option = NSLocalizedString("Select An Option",
                                                                    comment: "The title for the popup list, presenting a list of options for creating a contact or creating a contact group")
-    
+
     lazy var _contact_groups_group_name_instruction_label = NSLocalizedString("Group name",
                                                                               comment: "The instruction label for the group name textfield")
     lazy var _contact_groups_detail_view_title = NSLocalizedString("Group details",
@@ -1739,12 +1710,12 @@ class LocalizedString {
                                                                   comment: "The title for the view where user can manage emails in the contact group")
     lazy var _contact_groups_add_contacts = NSLocalizedString("Add contacts",
                                                                   comment: "The title for the view where user can manage emails in the contact group")
-    
+
     lazy var _contact_groups_edit_avartar = NSLocalizedString("Edit avatar",
                                                               comment: "The title for the view where user can select the color for the group")
     lazy var _contact_groups_delete = NSLocalizedString("Delete contact group",
                                                         comment: "The description of the button for deleting the contact group")
-    
+
     lazy var _contact_groups_member_count_description = NSLocalizedString("%d Member",
                                                                           comment: "The string that describes whether there are 0 or 1 member in the contact group")
     lazy var _contact_groups_members_count_description = NSLocalizedString("%d Members",
@@ -1753,7 +1724,7 @@ class LocalizedString {
                                                                                   comment: "The string that describes how many contact groups are currently selected")
     lazy var _contact_group_no_contact_group_associated_with_contact_email = NSLocalizedString("None",
                                                                                                comment: "A *short* description saying that there is no contact group associated with this contact email")
-    
+
     // contact group errors
     lazy var _contact_groups_save_error = NSLocalizedString("Can't save contact group",
                                                             comment: "The error message title that will be shown when the contact group being created or edited can't be saved")
@@ -1761,15 +1732,15 @@ class LocalizedString {
                                                              comment: "The error message title that will be shown when the app attempts to fetch contact groups from the server but failed")
     lazy var _contact_groups_delete_error = NSLocalizedString("Can't delete contact group",
                                                               comment: "The error message title that will be shown when the deletion of the contact group failed")
-    
+
     lazy var _contact_groups_no_email_selected = NSLocalizedString("Please select at least one email for the contact group",
                                                                    comment: "The message will show up when the user attempts to create a contact group without any email selected")
     lazy var _contact_groups_no_name_entered = NSLocalizedString("Please provide a group name",
                                                                  comment: "The message will show up when the user attempts to create a contact group without any name specified")
-    
+
     lazy var _contact_groups_api_update_error = NSLocalizedString("Can't update contact group through the API",
                                                                   comment: "The error message will be shown when the update of the contact group through API failed")
-    
+
     // general error
     lazy var _cannot_get_coredata_context = NSLocalizedString("Can't delete contact group through API",
                                                               comment: "The error message will be shown when the deletionn of the contact group through API failed")
@@ -1777,89 +1748,81 @@ class LocalizedString {
                                                      comment: "Internal type casting error")
     lazy var _internal_error = NSLocalizedString("Internal Error",
                                                  comment: "The preconditions are not met")
-    
-    
+
     // Drag and drop
     lazy var _drop_here = NSLocalizedString("+ Drop here to add as attachment", comment: "Drag and drop zone for attachments")
-    
+
     lazy var _importing = NSLocalizedString("Importing", comment: "Downloading attachments from cloud")
-    
+
     lazy var _importing_drop = NSLocalizedString("Importing attachment, that can take a while", comment: "Drag and drop zone for attachments")
-    
+
     lazy var _drop_finished = NSLocalizedString("Attachment imported", comment: "Drag and drop zone for attachments")
-    
-    
+
     /// Invalid URL
     lazy var _invalid_url = NSLocalizedString("Invalid URL",
                                               comment: "Invalid URL error when click a url in contact")
-    
+
     lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
     lazy var _general_try_again = NSLocalizedString("Try again", comment: "Try again action")
-    
+
     // Local notifications
-    
+
     lazy var _message_not_sent_title = NSLocalizedString("Problem sending message", comment: "Local notification title")
-    
+
     lazy var _message_not_sent_message = NSLocalizedString("We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.", comment: "Local notification text")
-    
+
     /// Signout
     lazy var _signout_title = NSLocalizedString("Sign out", comment: "Alert title to confirm signout")
     lazy var _signout_confirmation = NSLocalizedString("You will be switched to %@", comment: "Alert to confirm signout")
     lazy var _signout_confirmation_in_bio = NSLocalizedString("Are you sure you want to sign out?", comment: "Alert to confirm sign out")
     lazy var _signout_confirmation_one_account = NSLocalizedString("Are you sure you want to sign out %@?", comment: "Alert to confirm sign out when only one account signed in")
     lazy var _signout_confirmation_having_pending_message = NSLocalizedString("There are unsent messages that will be lost if you sign out", comment: "Alert to confirm signout with pending message in the queue")
-    
-    
-    
+
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
-    
+
     lazy var _signout_account_switched_when_token_revoked = NSLocalizedString("Signed out from %@ and signed in with %@", comment: "Alert when auth token is revoked and switch to another")
-    
+
     lazy var _signout_primary_account_from_manager_account_title = NSLocalizedString("Sign out", comment: "Alert title when sign out primary account from account manager")
-    
+
     lazy var _signout_primary_account_from_manager_account = NSLocalizedString("You will be switched to %@", comment: "Alert when signout primary account from account manager")
-    
+
     lazy var _signout_secondary_account_from_manager_account_title = NSLocalizedString("Sign out %@?", comment: "Alert title when sign out non-primary account from account manager")
-    
+
     lazy var _signout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to sign out?", comment: "Alert when sign out non-primary account from account manager")
-    
+
     // Switch Account
     lazy var _switch_account_by_click_notification = NSLocalizedString("Switched to account '%@'", comment: "Alert when switched account by clicking notification of another account")
-    
+
     // TrustKit
-    
+
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
     lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately", comment: "Cert pinning failed alert message")
-    
+
     lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n", comment: "Cert pinning failed alert message")
 
-    
     lazy var _cert_validation_failed_continue = NSLocalizedString("Disable Validation", comment: "Cert pinning failed alert message")
-    
+
     // Springboard shortcuts
     lazy var _springboard_shortcuts_search = NSLocalizedString("Search", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_starred = NSLocalizedString("Starred", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_composer = NSLocalizedString("Compose", comment: "Springboard (3D Touch) shortcuts action")
-    
-    
+
     lazy var _troubleshoot = NSLocalizedString("Troubleshoot", comment: "troubleshooting view button")
-    
+
     /// Account Manger
     lazy var _account = NSLocalizedString("Account", comment: "Account manager title")
-    
+
     lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
-    
+
     lazy var _signin_to_pm_act = NSLocalizedString("Sign in to your ProtonMail account", comment: "Account manager title")
     lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
-    
+
     lazy var _free_account_limit_reached_title = NSLocalizedString("Limit reached", comment: "Title of alert when the free account limit is reached")
     lazy var _free_account_limit_reached = NSLocalizedString("Only one free account can be added", comment: "Alert when the free account limit is reached")
-    
-    
+
     lazy var _enter_your_mailbox_password = NSLocalizedString("Enter your mailbox password", comment: "Account manager title")
-    
-    
+
     /// New Settings
     lazy var _account_settings = NSLocalizedString("Account settings", comment: "section title in settings")
     lazy var _app_settings = NSLocalizedString("App settings", comment: "section title in settings")
@@ -1876,33 +1839,32 @@ class LocalizedString {
 
     lazy var _swipe_actions = NSLocalizedString("Swipe actions", comment: "cell title in app settings")
     lazy var _alternative_routing = NSLocalizedString("Alternative routing", comment: "cell title in app settings")
-    
+
     lazy var _password_management = NSLocalizedString("Password management", comment: "cell title in device settings")
     lazy var _mailbox_storage = NSLocalizedString("Storage", comment: "cell title in device settings")
-    
+
     lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
     lazy var _snooze = NSLocalizedString("Snooze", comment: "Cell title in device settings - mute notification until a later time.")
     lazy var _mailbox = NSLocalizedString("Mailbox", comment: "cell title in device settings")
-    
+
     lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
     lazy var _label_and_folders = NSLocalizedString("Labels & Folders", comment: "cell title in device settings")
-    
+
     lazy var _swiping_gestures = NSLocalizedString("Swiping gestures", comment: "cell title in device settings")
     lazy var _local_storage_limit = NSLocalizedString("Local storage limit", comment: "cell title in device settings")
-    
+
     lazy var _push_notification = NSLocalizedString("Notifications", comment: "cell title in device settings")
     lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
     lazy var _empty_cache = NSLocalizedString("Clear local cache", comment: "cell title in device setting")
     lazy var _dark_mode = NSLocalizedString("Dark mode", comment: "cell title in app setting")
-    
+
     // Account Manager
     lazy var _logged_out = NSLocalizedString("(logged out)", comment: "Comment for disconnected account in Account Manager")
-    
+
     lazy var _you_are_about_to_remove = NSLocalizedString("You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?", comment: "Alert of removing all accounts")
-  
-    
+
     lazy var _by_removing_this_account = NSLocalizedString("By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?", comment: "Alert for removing disconnected accounts")
-    
+
     lazy var _allow_alternative_routing = NSLocalizedString("Allow alternative routing", comment: "network troubleshot cell title")
     lazy var _no_internet_connection = NSLocalizedString("No internet connection", comment: "network troubleshot cell title")
     lazy var _internet_service_provider_problem = NSLocalizedString("Internet Service Provider (ISP) problem", comment: "network troubleshot cell title")
@@ -1912,7 +1874,7 @@ class LocalizedString {
     lazy var _proton_is_down = NSLocalizedString("Proton is down", comment: "network troubleshot cell title")
     lazy var _still_cant_find_a_solution = NSLocalizedString("Still can't find a solution", comment: "network troubleshot cell title")
     lazy var _trouble_shooting = NSLocalizedString("Troubleshooting", comment: "network troubleshot view title")
-    //lazy var _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]", comment: "network troubleshot cell title")
+    // lazy var _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]", comment: "network troubleshot cell title")
     lazy var _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "network troubleshot cell title")
     lazy var _please_make_sure_that_your_internet_ = NSLocalizedString("Please make sure that your internet connection is working.", comment: "network troubleshot cell title")
     lazy var _try_connection_to_proton_from_ = NSLocalizedString( "Try connecting to Proton from a different network (or use ProtonVPN or Tor).", comment: "network troubleshot cell title")
@@ -1922,19 +1884,19 @@ class LocalizedString {
     lazy var _disable_any_proxies_or_firewalls_ = NSLocalizedString( "Disable any proxies or firewalls, or contact your network administrator.", comment: "network troubleshot cell title")
     lazy var _check_proton_status_for_our_ = NSLocalizedString("Check Proton Status for our system status.", comment: "network troubleshot cell title")
     lazy var _contact_us_dirrectly_through_our_support_ = NSLocalizedString( "Contact us directly through our support form, email (support@protonmail.com), or Twitter.", comment: "network troubleshot cell title")
-    
+
     lazy var _learn_more_ = NSLocalizedString("Learn more", comment: "network troubleshot cell title")
     lazy var _protonvpn = NSLocalizedString("ProtonVPN", comment: "network troubleshot cell title")
     lazy var _tor = NSLocalizedString("Tor", comment: "network troubleshot cell title")
 
     lazy var _proton_status = NSLocalizedString("Proton Status", comment: "network troubleshot cell title")
     lazy var _support_form = NSLocalizedString("support form", comment: "network troubleshot cell title")
-    //this used in n
+    // this used in n
     lazy var _emaile_ = NSLocalizedString("email", comment: "network troubleshot cell title")
     lazy var _twitter = NSLocalizedString("Twitter", comment: "network troubleshot cell title")
-    
+
     lazy var _there_are_still_some_messages_in_queue_ = NSLocalizedString("There are still some messages in queue. If you sign out, the draft will be deleted.", comment: "alert when sign out user if in queue still have tasks")
-    
+
     lazy var _pin = NSLocalizedString("PIN", comment: "device settings auto lock type title")
     lazy var _enable_pin = NSLocalizedString("Enable PIN", comment: "device settings auto lock type title toggle text")
 
@@ -1942,7 +1904,7 @@ class LocalizedString {
     lazy var _signle_address_invalid_error_content = NSLocalizedString("Email address is invalid", comment: "The error message is shown in composer")
     lazy var _address_invalid_error_content = NSLocalizedString("At least one recipient email address is improperly formatted, please double check them.", comment: "incorrect email format error in composer")
     lazy var _address_invalid_error_title = NSLocalizedString("Error sending", comment: "incorrect email format error in composer")
-    
+
     lazy var _address_in_group_not_found_error = NSLocalizedString("At least one email address in the group could not be found", comment: "incorrect email format error while sending")
     lazy var _address_invalid_error_sending = NSLocalizedString("At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts.", comment: "incorrect email format error while sending")
     lazy var _address_invalid_warning_sending = NSLocalizedString("You have entered at least one invalid email address. Please verify your recipients.", comment: "incorrect email format error while sending")
@@ -1950,7 +1912,7 @@ class LocalizedString {
     lazy var _address_non_exist_warning = NSLocalizedString("You have entered at least one unknown recipient. Please verify your recipients.", comment: "incorrect email format error while sending")
     lazy var _address_invalid_error_sending_title = NSLocalizedString("Sending failed", comment: "title of incorrect email format error while sending")
     lazy var _address_invalid_error_to_draft_action_title = NSLocalizedString("Go to drafts", comment: "title of alert acton of incorrect email format error")
-    
+
     lazy var _mailbox_draft_is_uploading = NSLocalizedString("Draft is still uploading…", comment: "title of toast message that user taps the message which is uploading")
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message…", comment: "content of the sending mesage that will display this text on the date label")
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
@@ -1961,38 +1923,38 @@ class LocalizedString {
     lazy var _week = NSLocalizedString("week", comment: "week")
     lazy var _day = NSLocalizedString("%d day", comment: "day")
     lazy var _days = NSLocalizedString("days", comment: "days")
-    
+
     lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
     lazy var _hours = NSLocalizedString("hours", comment: "hours")
-    
+
     lazy var _minute = NSLocalizedString("minute", comment: "minute")
-    
+
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
-    
+
     lazy var _selected_navogationTitle = NSLocalizedString("Selected", comment: "The title of navigation bar title of mailbox view while selecting the message")
-    
+
     lazy var _mailbox_no_result_main_label = NSLocalizedString("You are all caught up", comment: "The main title of no result message")
     lazy var _mailbox_no_result_secondary_label = NSLocalizedString("You're up to date", comment: "The secondary title of no result message")
-    
+
     lazy var _mailbox_folder_no_result_mail_label = NSLocalizedString("Nothing to see here", comment: "The main title of no result message")
     lazy var _mailbox_folder_no_result_secondary_label = NSLocalizedString("This folder is empty", comment: "The secondary title of no result message")
-    
+
     lazy var _mailblox_last_update_time_more_than_1_hour = NSLocalizedString("Updated >1 hour ago", comment: "The title of last update status of more than 1 hour")
     lazy var _mailblox_last_update_time_just_now = NSLocalizedString("Updated just now", comment: "The title of last update status of updated just now")
     lazy var _mailblox_last_update_time = NSLocalizedString("Updated %d min ago", comment: "The title of last update status of updated time")
-    
+
     lazy var _mailbox_offline_text = NSLocalizedString("You are offline", comment: "The text shown on the mailbox when the device is in offline mode")
-    
+
     lazy var _mailbox_footer_no_result = NSLocalizedString("Encrypted by Proton", comment: "The footer shown when there is not result in the inbox")
 
     lazy var _mailbox_no_recipient = NSLocalizedString("No Recipient", comment: "Placeholder if message sender is empty")
-    
+
     lazy var _signed_in_as = NSLocalizedString("Signed in as %@", comment: "The text shown on the mailbox when the primary user changed")
-    
+
     // MARK: - Mailbox action sheet
     lazy var _title_of_single_message_action_sheet = NSLocalizedString("%d message", comment: "The title of single selected message of action sheet in inbox")
     lazy var _title_of_multiple_messages_action_sheet = NSLocalizedString("%d messages", comment: "The title of multiple selected messages of action sheet in inbox")
-    
+
     lazy var _title_of_single_conversation_action_sheet = NSLocalizedString("%d conversation", comment: "The title of single selected conversation of action sheet in inbox")
     lazy var _title_of_multiple_conversations_action_sheet = NSLocalizedString("%d conversations", comment: "The title of multiple selected conversations of action sheet in inbox")
 
@@ -2002,19 +1964,19 @@ class LocalizedString {
     lazy var _title_of_star_action_in_action_sheet = NSLocalizedString("Star", comment: "The title of the star action in action sheet")
 
     lazy var _title_of_unstar_action_in_action_sheet = NSLocalizedString("Unstar", comment: "The title of the star action in action sheet")
-    
+
     lazy var _title_of_unread_action_in_action_sheet = NSLocalizedString("Mark as unread", comment: "The title of the unread action in action sheet")
-    
+
     lazy var _title_of_read_action_in_action_sheet = NSLocalizedString("Mark as read", comment: "The title of the read action in action sheet")
-    
+
     lazy var _title_of_remove_action_in_action_sheet = NSLocalizedString("Move to trash", comment: "The title of the remove action in action sheet")
 
     lazy var _title_of_move_inbox_action_in_action_sheet = NSLocalizedString("Move to inbox", comment: "The title of the remove action in action sheet")
 
     lazy var _title_of_delete_action_in_action_sheet = NSLocalizedString("Delete", comment: "The title of the delete action in action sheet")
-    
+
     lazy var _title_of_archive_action_in_action_sheet = NSLocalizedString("Archive", comment: "The title of the archive action in action sheet")
-    
+
     lazy var _title_of_spam_action_in_action_sheet = NSLocalizedString("Move to spam", comment: "The title of the spam action in action sheet")
 
     lazy var _title_of_viewInLightMode_action_in_action_sheet = NSLocalizedString("View message in Light mode", comment: "The title of the view message in light mode action in action sheet")
@@ -2080,7 +2042,7 @@ class LocalizedString {
 
     lazy var _setting_swipe_action_none_selection_title = NSLocalizedString("Tap here to set", comment: "")
     lazy var _setting_swipe_action_none_display_title = NSLocalizedString("Not set", comment: "")
-    
+
     lazy var _manage_folders = NSLocalizedString("Manage folders", comment: "The title of folder manager page")
     lazy var _your_folders = NSLocalizedString("Your folders", comment: "The section title of folder manager table")
     lazy var _new_folder = NSLocalizedString("New folder", comment: "The title of create folder page")
@@ -2124,7 +2086,7 @@ class LocalizedString {
 
     lazy var _banner_embedded_image_title = NSLocalizedString("This message contains embedded images.", comment: "")
     lazy var _banner_embedded_image_new_title = NSLocalizedString("Load embedded images", comment: "The title of loading embedded image banner.")
-    lazy var _banner_remote_and_embedded_title  = NSLocalizedString("This message contains remote content and embedded images", comment: "")
+    lazy var _banner_remote_and_embedded_title = NSLocalizedString("This message contains remote content and embedded images", comment: "")
     lazy var _banner_load_embedded_image = NSLocalizedString("Load images", comment: "")
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
     lazy var _banner_non_trashed_message_title = NSLocalizedString("This conversation contains non-trashed messages.", comment: "")
@@ -2159,7 +2121,7 @@ class LocalizedString {
     lazy var _label_as_also_archive = NSLocalizedString("Also archive?", comment: "Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels")
     lazy var _label_as_new_label = NSLocalizedString("New Label", comment: "")
 
-    lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "") 
+    lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "")
 
     lazy var _unsubscribe = NSLocalizedString("Unsubscribe", comment: "")
 
@@ -2224,9 +2186,9 @@ class LocalizedString {
     lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("swipe_to_move_title", comment: "The title of swipe banner after swiping to move messages")
     lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("swipe_to_move_conversation_title", comment: "The title of swipe banner after swiping to move conversations")
     lazy var _inbox_swipe_to_label_banner_title = NSLocalizedString("swipe_to_label_title", comment: "The title of swipe banner after swiping to label messages")
-    lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("swipe_to_label_conversation_title", comment: "The title of swipe banner after swiping to label conversations") 
+    lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("swipe_to_label_conversation_title", comment: "The title of swipe banner after swiping to label conversations")
 
-    lazy var _inbox_action_reverted_title = NSLocalizedString("Action reverted", comment: "The title of toast message that is shown after the undo action is done") 
+    lazy var _inbox_action_reverted_title = NSLocalizedString("Action reverted", comment: "The title of toast message that is shown after the undo action is done")
     lazy var _compose_message = NSLocalizedString("Compose message", comment: "An action title shows in ellipsis menu")
     lazy var _empty_trash = NSLocalizedString("Empty Trash", comment: "An action title shows in ellipsis menu")
     lazy var _empty_trash_folder = NSLocalizedString("Empty trash folder", comment: "Alert title")

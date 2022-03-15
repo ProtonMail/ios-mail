@@ -20,14 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
-
 extension NSManagedObject {
-    
-    struct AttributeType : OptionSet {
+
+    struct AttributeType: OptionSet {
         let rawValue: Int
 
         /// string type
@@ -35,31 +33,30 @@ extension NSManagedObject {
         /// transformable type
         static let transformable = AttributeType(rawValue: 1 << 1 )
     }
-    
+
     /// Set nil string attributes to ""
     internal func replaceNilStringAttributesWithEmptyString() {
         replaceNilAttributesWithEmptyString(option: [.string])
     }
-    
-    
+
     /// Set nil string attributes to ""
-    internal func replaceNilAttributesWithEmptyString(option : AttributeType) {
+    internal func replaceNilAttributesWithEmptyString(option: AttributeType) {
         let checkString = option.contains(.string)
         let checkTrans = option.contains(.transformable)
         for (_, attribute) in entity.attributesByName {
-            
+
             if checkString && attribute.attributeType == .stringAttributeType {
                 if value(forKey: attribute.name) == nil {
                     setValue("", forKey: attribute.name)
                 }
             }
-            
+
             if checkTrans && attribute.attributeType == .transformableAttributeType {
                 if value(forKey: attribute.name) == nil {
                     setValue("", forKey: attribute.name)
                 }
             }
-            
+
         }
     }
 }
@@ -68,7 +65,7 @@ extension NSManagedObject {
 struct ObjectBox<T: NSManagedObject> {
     let objectID: NSManagedObjectID
     private let cache: T
-    
+
     init(_ object: T) {
         self.cache = object
         self.objectID = object.objectID

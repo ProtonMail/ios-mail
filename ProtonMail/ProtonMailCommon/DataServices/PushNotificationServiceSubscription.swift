@@ -20,19 +20,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension PushNotificationService {
     enum SubscriptionState: String, Codable {
         case notReported, pending, reported
     }
-    
+
     class SubscriptionsPack {
         init(_ subSaver: Saver<Set<SubscriptionWithSettings>>,
              _ encSaver: Saver<Set<SubscriptionSettings>>,
-             _ outSaver: Saver<Set<SubscriptionSettings>>)
-        {
+             _ outSaver: Saver<Set<SubscriptionSettings>>) {
             self.subscriptionSaver = subSaver
             self.encryptionKitSaver = encSaver
             self.outdatedSaver = outSaver
@@ -40,22 +38,22 @@ extension PushNotificationService {
         private let subscriptionSaver: Saver<Set<SubscriptionWithSettings>>
         internal let encryptionKitSaver: Saver<Set<SubscriptionSettings>>
         private let outdatedSaver: Saver<Set<SubscriptionSettings>>
-        
+
         private(set) var subscriptions: Set<SubscriptionWithSettings> {
             get { return self.subscriptionSaver.get() ?? Set([])  }
             set {
                 self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
-                
+
                 let reportedSettings: [SubscriptionSettings] = newValue.compactMap { $0.state == .reported ? $0.settings : nil}
                 self.encryptionKitSaver.set(newValue: Set(reportedSettings))
             }
         }
-        
+
         private(set) var outdatedSettings: Set<SubscriptionSettings> {
             get { return self.outdatedSaver.get() ?? [] } // cuz PushNotificationDecryptor can add values to this colletion while app is running
             set { self.outdatedSaver.set(newValue: newValue) } // in keychain cuz should persist over reinstalls
         }
-        
+
         internal func removed(_ settingsToRemove: SubscriptionSettings) {
             self.outdatedSettings.remove(settingsToRemove)
         }
@@ -73,16 +71,16 @@ extension PushNotificationService {
             updated.insert(SubscriptionWithSettings.init(settings: settings, state: toState))
             self.subscriptions = updated
         }
-        
+
         internal func settings() -> Set<SubscriptionSettings> {
             return Set(self.subscriptions.map { $0.settings })
         }
-        
+
         internal func encryptionKit(forUID uid: String) -> EncryptionKit? {
             return self.encryptionKitSaver.get()?.first(where: { $0.UID == uid })?.encryptionKit
         }
     }
-    
+
     class SubscriptionWithSettings: Hashable, Codable, CustomDebugStringConvertible {
         static func == (lhs: PushNotificationService.SubscriptionWithSettings, rhs: PushNotificationService.SubscriptionWithSettings) -> Bool {
             lhs.settings == rhs.settings
@@ -93,14 +91,14 @@ extension PushNotificationService {
         var debugDescription: String {
             return "Settings: \(self.settings.token), \(self.settings.UID), \(self.settings.encryptionKit == nil ? "no encr kit" : "with encr ekit"), State: \(self.state.rawValue)"
         }
-        
+
         var state: SubscriptionState
         private(set) var settings: SubscriptionSettings
-        
+
         fileprivate func applyState(_ newState: SubscriptionState) {
             self.state = newState
         }
-        
+
         init(settings: SubscriptionSettings, state: SubscriptionState) {
             self.state = state
             self.settings = settings

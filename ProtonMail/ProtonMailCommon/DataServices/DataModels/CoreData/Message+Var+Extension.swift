@@ -20,13 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
 extension Message {
-    
+
     /// wrappers
     var cachedPassphrase: String? {
         get {
@@ -35,7 +34,7 @@ extension Message {
         }
         set { self.cachedPassphraseRaw = newValue?.data(using: .utf8) as NSData? }
     }
-    
+
     var cachedAuthCredential: AuthCredential? {
         get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
         set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
@@ -48,7 +47,7 @@ extension Message {
         get { return Address.unarchive(self.cachedAddressRaw as Data?) }
         set { self.cachedAddressRaw = newValue?.archive() as NSData? }
     }
-    
+
     /// check if contains exclusive lable
     ///
     /// - Parameter label: Location
@@ -56,12 +55,12 @@ extension Message {
     internal func contains(label: Location) -> Bool {
         return self.contains(label: label.rawValue)
     }
-    
+
     /// check if contains the lable
     ///
     /// - Parameter labelID: label id
     /// - Returns: yes or no
-    internal func contains(label labelID : String) -> Bool {
+    internal func contains(label labelID: String) -> Bool {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label, labelID == label.labelID {
@@ -70,16 +69,16 @@ extension Message {
         }
         return false
     }
-    
+
     /// check if message starred
-    var starred : Bool {
+    var starred: Bool {
         get {
             return self.contains(label: Location.starred)
         }
     }
-    
+
     /// check if message forwarded
-    var forwarded : Bool {
+    var forwarded: Bool {
         get {
             return self.flag.contains(.forwarded)
         }
@@ -93,19 +92,19 @@ extension Message {
             self.flag = flag
         }
     }
-    
-    var sentSelf : Bool {
+
+    var sentSelf: Bool {
         get {
             return self.flag.contains(.sent) && self.flag.contains(.received)
         }
     }
-    
+
     /// check if message contains a draft label
-    var draft : Bool {
+    var draft: Bool {
         contains(label: Location.draft) || contains(label: HiddenLocation.draft.rawValue)
     }
 
-    var isSent : Bool {
+    var isSent: Bool {
         contains(label: Location.sent) || contains(label: HiddenLocation.sent.rawValue)
     }
     /// get messsage label ids
@@ -121,22 +120,22 @@ extension Message {
         }
         return labelIDs
     }
-    
+
     func getNormalLabelIDs() -> [String] {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
             if let label = l as? Label, label.type == 1 {
-                if label.labelID.preg_match ("(?!^\\d+$)^.+$") {
+                if label.labelID.preg_match("(?!^\\d+$)^.+$") {
                     labelIDs.append(label.labelID )
                 }
             }
         }
         return labelIDs
     }
-    
+
     /// check if message replied
-    var replied : Bool {
+    var replied: Bool {
         get {
             return self.flag.contains(.replied)
         }
@@ -150,9 +149,9 @@ extension Message {
             self.flag = flag
         }
     }
-    
+
     /// check if message replied to all
-    var repliedAll : Bool {
+    var repliedAll: Bool {
         get {
             return self.flag.contains(.repliedAll)
         }
@@ -166,16 +165,16 @@ extension Message {
             self.flag = flag
         }
     }
-    
+
     /// this will check two type of sent folder
-    var sentHardCheck : Bool {
+    var sentHardCheck: Bool {
         get {
             return self.contains(label: Message.Location.sent) || self.contains(label: "2")
         }
     }
-    
+
     /// this will check two type of draft folder
-    var draftHardCheck : Bool {
+    var draftHardCheck: Bool {
         get {
             return self.contains(label: Message.Location.draft) || self.contains(label: "1")
         }

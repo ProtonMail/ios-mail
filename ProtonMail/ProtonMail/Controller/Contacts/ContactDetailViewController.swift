@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import PromiseKit
 import AwaitKit
@@ -29,26 +28,26 @@ import ProtonCore_PaymentsUI
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
     typealias viewModelType = ContactDetailsViewModel
-    
-    fileprivate var viewModel : ContactDetailsViewModel!
-    
+
+    fileprivate var viewModel: ContactDetailsViewModel!
+
     private let kInvalidEmailShakeTimes: Float         = 3.0
     private let kInvalidEmailShakeOffset: CGFloat      = 10.0
     private var paymentsUI: PaymentsUI?
-    
-    fileprivate let kContactDetailsHeaderView : String      = "ContactSectionHeadView"
-    fileprivate let kContactDetailsHeaderID : String        = "contact_section_head_view"
-    fileprivate let kContactDetailsDisplayCell : String     = "contacts_details_display_cell"
-    fileprivate let kContactDetailsUpgradeCell : String     = "contacts_details_upgrade_cell"
+
+    fileprivate let kContactDetailsHeaderView: String      = "ContactSectionHeadView"
+    fileprivate let kContactDetailsHeaderID: String        = "contact_section_head_view"
+    fileprivate let kContactDetailsDisplayCell: String     = "contacts_details_display_cell"
+    fileprivate let kContactDetailsUpgradeCell: String     = "contacts_details_upgrade_cell"
     fileprivate let kContactsDetailsShareCell: String       = "contacts_details_share_cell"
     fileprivate let kContactsDetailsWarningCell: String     = "contacts_details_warning_cell"
     fileprivate let kContactsDetailsEmailCell: String       = "contacts_details_display_email_cell"
-    
-    fileprivate let kEditContactSegue : String              = "toEditContactSegue"
-    fileprivate let kToComposeSegue : String                = "toCompose"
+
+    fileprivate let kEditContactSegue: String              = "toEditContactSegue"
+    fileprivate let kToComposeSegue: String                = "toCompose"
 
     @IBOutlet weak var tableView: UITableView!
-    
+
     // header view
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
@@ -63,11 +62,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     @IBOutlet weak var callContactButton: UIButton!
     @IBOutlet weak var sendToPrimaryEmailButton: UIButton!
     fileprivate var doneItem: UIBarButtonItem!
-    fileprivate var loaded : Bool = false
-    
+    fileprivate var loaded: Bool = false
+
     func inactiveViewModel() {
     }
-    
+
     func set(viewModel: ContactDetailsViewModel) {
         self.viewModel = viewModel
         self.viewModel.reloadView = { [weak self] in
@@ -91,7 +90,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         self.navigationItem.assignNavItemIndentifiers()
         self.configHeaderStyle()
         self.configureStyle()
-        
+
         viewModel.getDetails {
             self.configHeaderDefault()
             MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -118,19 +117,19 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     private func configureStyle() {
         headerContainerView.backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     /// config header style only need once
     private func configHeaderStyle() {
         // setup profile image
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
         profilePictureImageView.layer.masksToBounds = true
-        
+
         // setup short label
         shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
         shortNameLabel.textAlignment = .center
         shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
         shortNameLabel.backgroundColor = UIColor.lightGray
-        
+
         // email contact
         emailContactLabel.text = LocalString._contacts_email_contact_title
         emailContactImageView.image = Asset.envelope.image
@@ -147,7 +146,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
                                         backgroundColor: ColorProvider.BrandNorm)
         callContactButton.isUserInteractionEnabled = false
         callContactImageView.backgroundColor = UIColor.lightGray
-        
+
         // share contact
         shareContactLabel.text = LocalString._contacts_share_contact_action
         shareContactImageView.image = Asset.icArrowOutBox.image
@@ -157,13 +156,12 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         shareContactImageView.isUserInteractionEnabled = false
         shareContactImageView.backgroundColor = UIColor.lightGray
     }
-    
-    
+
     /// config header default when loading details
     private func configHeaderDefault() {
         shortNameLabel.isHidden = false
         profilePictureImageView.isHidden = true
-        
+
         let name = viewModel.getProfile().newDisplayName
         shortNameLabel.text = name.initials()
 
@@ -173,8 +171,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             .addTruncatingTail()
         fullNameLabel.attributedText = name.apply(style: attributes)
     }
-    
-    
+
     /// config header after got contact details
     private func configHeader() {
         // shortname / image
@@ -186,19 +183,19 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         } else {
             shortNameLabel.isHidden = false
             profilePictureImageView.isHidden = true
-            
+
             // show short name
             let name = viewModel.getProfile().newDisplayName
             shortNameLabel.text = name.initials()
         }
-        
+
         // full name
         let attributes = FontManager
             .Headline
             .alignment(.center)
             .addTruncatingTail()
         fullNameLabel.attributedText = viewModel.getProfile().newDisplayName.apply(style: attributes)
-        
+
         // email contact
         if viewModel.getEmails().count == 0 {
             // no email in contact, disable sending button
@@ -208,7 +205,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             sendToPrimaryEmailButton.isUserInteractionEnabled = true
             emailContactImageView.backgroundColor = ColorProvider.BrandNorm
         }
-        
+
         // call contact
         if self.viewModel.getPhones().count == 0 {
             // no tel in contact, disable
@@ -221,7 +218,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         shareContactImageView.backgroundColor = ColorProvider.BrandNorm
 
     }
-    
+
     private func systemPhoneCall(phone: ContactEditPhone) {
         var allowedCharactersSet = NSCharacterSet.decimalDigits
         allowedCharactersSet.insert("+")
@@ -231,8 +228,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         let formatedNumber = phone.newPhone.components(separatedBy: allowedCharactersSet.inverted).joined(separator: "")
         let phoneUrl = "tel://\(formatedNumber)"
         if let phoneCallURL = URL(string: phoneUrl) {
-            let application:UIApplication = UIApplication.shared
-            if (application.canOpenURL(phoneCallURL)) {
+            let application: UIApplication = UIApplication.shared
+            if application.canOpenURL(phoneCallURL) {
                 if #available(iOS 10.0, *) {
                     application.open(phoneCallURL, options: [:], completionHandler: nil)
                 } else {
@@ -241,7 +238,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             }
         }
     }
-    
+
     @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
         guard !self.viewModel.user.isStorageExceeded else {
             LocalString._storage_exceeded.alertToastBottom()
@@ -256,18 +253,17 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
                                   isProtonMailContact: false)
         self.performSegue(withIdentifier: kToComposeSegue, sender: contactVO)
     }
-    
+
     @IBAction func didTapCallContactButton(_ sender: UIButton) {
         if let phone = self.viewModel.getPhones().first {
             self.systemPhoneCall(phone: phone)
         }
     }
-    
+
     @IBAction func didTapShareContact(_ sender: UIButton) {
         shareVcard(sender)
     }
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if loaded && self.viewModel.rebuild() {
@@ -275,11 +271,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             self.tableView.reloadData()
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -287,17 +283,16 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         insets.bottom = 100
         self.tableView.contentInset = insets
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kEditContactSegue) {
+        if segue.identifier == kEditContactSegue {
             let contact = sender as! Contact
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, user: self.viewModel.user, contact: contact)
-        } else if (segue.identifier == kToComposeSegue) {
+        } else if segue.identifier == kToComposeSegue {
             guard let nav = segue.destination as? UINavigationController,
-                let next = nav.viewControllers.first as? ComposeContainerViewController else
-            {
+                let next = nav.viewControllers.first as? ComposeContainerViewController else {
                 return
             }
             let user = self.viewModel.user
@@ -312,11 +307,11 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
     }
-    
+
     @objc func didTapEditButton(sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.getContact())
     }
-    
+
     func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -336,7 +331,7 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
     }
 }
 
-extension ContactDetailViewController : ContactUpgradeCellDelegate {
+extension ContactDetailViewController: ContactUpgradeCellDelegate {
     func upgrade() {
         presentPlanUpgrade()
     }
@@ -349,15 +344,13 @@ extension ContactDetailViewController : ContactUpgradeCellDelegate {
     }
 }
 
-
-
 // MARK: - UITableViewDataSource
 extension ContactDetailViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections().count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let s = viewModel.sections()[section]
         switch s {
@@ -392,9 +385,9 @@ extension ContactDetailViewController: UITableViewDataSource {
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView       
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView
         let s = viewModel.sections()[section]
         switch s {
         case .email_header:
@@ -408,7 +401,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let s = viewModel.sections()[section]
         switch s {
@@ -424,47 +417,47 @@ extension ContactDetailViewController: UITableViewDataSource {
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let section = indexPath.section
         let row = indexPath.row
         let s = viewModel.sections()[section]
-        
+
         if s == .upgrade {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath) as! ContactDetailsUpgradeCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath) as! ContactDetailsUpgradeCell
             cell.configCell(delegate: self)
             cell.selectionStyle = .none
             return cell
         } else if s == .share {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
             cell.configCell(value: LocalString._contacts_share_contact_action)
             cell.selectionStyle = .default
             return cell
         }
-        
+
         if s == .type2_warning {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
             cell.configCell(warning: .signatureWarning)
             cell.selectionStyle = .none
             return cell
         } else if s == .type3_error {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
             cell.configCell(warning: .decryptionError)
             cell.selectionStyle = .none
             return cell
         } else if s == .type3_warning {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
             cell.configCell(warning: .signatureWarning)
             cell.selectionStyle = .none
             return cell
         } else if s == .debuginfo {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsWarningCell, for: indexPath) as! ContactsDetailsWarningCell
             cell.configCell(forlog: self.viewModel.logs)
             cell.selectionStyle = .none
             return cell
         } else if s == .emails {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsEmailCell, for: indexPath) as! ContactDetailDisplayEmailCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsEmailCell, for: indexPath) as! ContactDetailDisplayEmailCell
 
             let emails = viewModel.getEmails()
             let email = emails[row]
@@ -473,8 +466,8 @@ extension ContactDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .default
             return cell
         }
-        
-        let cell  = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: kContactDetailsDisplayCell, for: indexPath) as! ContactDetailsDisplayCell
         cell.selectionStyle = .none
         switch s {
         case .cellphone:
@@ -508,7 +501,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             let url = urls[row]
             cell.configCell(title: url.newType.title, value: url.newUrl)
             cell.selectionStyle = .default
-            
+
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
              .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name:
             break
@@ -523,16 +516,16 @@ extension ContactDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+        if action == #selector(UIResponderStandardEditActions.copy(_:)) {
             return true
         }
         return false
     }
-    
+
     func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
-        if (action == #selector(UIResponderStandardEditActions.copy(_:))) {
+        if action == #selector(UIResponderStandardEditActions.copy(_:)) {
             var copyString = ""
             let section = indexPath.section
             let row = indexPath.row
@@ -572,11 +565,11 @@ extension ContactDetailViewController: UITableViewDelegate {
             default:
                 break
             }
-            
+
             UIPasteboard.general.string = copyString
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let s = viewModel.sections()[indexPath.section]
         switch s {
@@ -592,11 +585,11 @@ extension ContactDetailViewController: UITableViewDelegate {
             return 38.0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let section = indexPath.section
@@ -640,14 +633,14 @@ extension ContactDetailViewController: UITableViewDelegate {
             let urls = viewModel.getUrls()
             let url = urls[row]
             if let urlURL = URL(string: url.origUrl),
-                var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false){
-               
+                var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false) {
+
                 if comps.scheme == nil {
                     comps.scheme = "http"
                 }
                 if let validUrl = comps.url {
-                    let application:UIApplication = UIApplication.shared
-                    if (application.canOpenURL(validUrl)) {
+                    let application: UIApplication = UIApplication.shared
+                    if application.canOpenURL(validUrl) {
                         if #available(iOS 10.0, *) {
                             application.open(validUrl, options: [:], completionHandler: nil)
                         } else {
@@ -658,7 +651,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 }
             }
             LocalString._invalid_url.alertToastBottom()
-           
+
         case .share:
             let cell = tableView.cellForRow(at: indexPath)
             shareVcard(cell)
@@ -666,15 +659,15 @@ extension ContactDetailViewController: UITableViewDelegate {
             break
         }
     }
-    
-    private func shareVcard(_ sender : UIView?) {
+
+    private func shareVcard(_ sender: UIView?) {
         let exported = viewModel.export()
         if !exported.isEmpty {
             let filename = viewModel.exportName()
             let tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-            
+
             try? exported.write(to: tempFileUri, atomically: true, encoding: String.Encoding.utf8)
-            
+
             // set up activity view controller
             let urlToShare = [ tempFileUri ]
             let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)

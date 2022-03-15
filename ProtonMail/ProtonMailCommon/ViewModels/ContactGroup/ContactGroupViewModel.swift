@@ -20,46 +20,45 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 import PromiseKit
 
-//enum ContactGroupsViewModelState
-//{
+// enum ContactGroupsViewModelState
+// {
 //    case ViewAllContactGroups
 //    case MultiSelectContactGroupsForContactEmail
-//}
+// }
 
 protocol ContactGroupsViewModel {
     var user: UserManager { get }
     var coreDataService: CoreDataService { get }
     func initEditing() -> Bool
-    
+
     func save()
     func isSelected(groupID: String) -> Bool
-    
+
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void)
     func timerStart(_ run: Bool)
     func timerStop()
-    
+
     func getSelectedCount() -> Int
-    
+
     func addSelectedGroup(ID: String, indexPath: IndexPath)
     func removeSelectedGroup(ID: String, indexPath: IndexPath)
     func removeAllSelectedGroups()
-    
-    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? 
+
+    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>?
     // search
     func search(text: String?, searchActive: Bool)
-    
+
     // contact groups deletion
     func deleteGroups() -> Promise<Void>
-    
+
     // table count
-    func searchingActive() -> Bool 
+    func searchingActive() -> Bool
     func count() -> Int
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool)
-    
+
     func labelForRow(at indexPath: IndexPath) -> Label?
 }

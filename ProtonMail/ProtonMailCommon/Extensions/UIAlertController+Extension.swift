@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import UIKit
 
@@ -28,19 +27,19 @@ extension UIAlertController {
     func addCloseAction() {
         addAction(UIAlertAction.closeAction())
     }
-    
+
     func addOKAction() {
         addAction(UIAlertAction.okAction())
     }
-    
-    func addOKAction(handler : ((UIAlertAction?) -> Void)? = nil) {
+
+    func addOKAction(handler: ((UIAlertAction?) -> Void)? = nil) {
         addAction(UIAlertAction.okAction(handler))
     }
 
-    func addCancelAction(handler : ((UIAlertAction?) -> Void)? = nil) {
+    func addCancelAction(handler: ((UIAlertAction?) -> Void)? = nil) {
         addAction(UIAlertAction.cancelAction(handler))
     }
-    
+
     func showOnTopVC() {
         var application: UIApplication?
 
@@ -50,7 +49,7 @@ extension UIAlertController {
         #else
         application = UIApplication.shared
         #endif
-        
+
         guard var vc = application?.keyWindow?.rootViewController else {
             return
         }

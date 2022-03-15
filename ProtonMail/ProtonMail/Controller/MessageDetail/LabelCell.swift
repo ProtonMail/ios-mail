@@ -19,20 +19,19 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class LabelCell: UICollectionViewCell {
 
     @IBOutlet weak var label: UILabel!
-    
+
     /// expose this later
     private static let font = Fonts.h6.light
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         self.label.sizeToFit()
         self.label.clipsToBounds = true
         self.label.layer.borderWidth = 1
@@ -45,22 +44,22 @@ class LabelCell: UICollectionViewCell {
         self.label.textColor = UIColor(hexString: color, alpha: 1.0)
         self.label.layer.borderColor = UIColor(hexString: color, alpha: 1.0).cgColor
     }
-    
+
     func size() -> CGSize {
         return self.label.sizeThatFits(CGSize.zero)
     }
-    
+
     class private func buildText(_ text: String) -> String {
         if text.isEmpty {
             return text
         }
         return "  \(text)  "
     }
-    
+
     class func estimateSize(_ text: String) -> CGSize {
          let size = buildText(text).size(withAttributes: [NSAttributedString.Key.font: font])
-        
+
         return size
     }
-    
+
 }

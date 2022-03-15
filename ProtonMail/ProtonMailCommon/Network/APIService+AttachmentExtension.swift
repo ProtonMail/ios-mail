@@ -20,20 +20,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
 extension APIService {
-    
+
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func downloadAttachment(byID attachmentID: String,
                             destinationDirectoryURL: URL,
                             customAuthCredential: AuthCredential? = nil,
                             downloadTask: ((URLSessionDownloadTask) -> Void)?,
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        
+
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
         self.download(byUrl: self.doh.getCurrentlyUsedHostUrl() + pathForAttachmentID(attachmentID),
                       destinationDirectoryURL: filepath,
@@ -51,11 +50,11 @@ extension APIService {
                      authenticated: true, autoRetry: true,
                      customAuthCredential: nil, completion: completion)
     }
-    
+
     // MARK: - Private methods
     fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
 //        return self.serverConfig.path + "/attachments/\(attachmentID)"
         return "/attachments/\(attachmentID)"
     }
-    
+
 }

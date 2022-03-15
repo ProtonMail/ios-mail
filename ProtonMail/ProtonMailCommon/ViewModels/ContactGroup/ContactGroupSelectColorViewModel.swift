@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 protocol ContactGroupSelectColorViewModel {
@@ -29,7 +28,7 @@ protocol ContactGroupSelectColorViewModel {
     func getTotalColors() -> Int
     func getColor(at indexPath: IndexPath) -> String
     func getCurrentColorIndex() -> Int
-    func updateCurrentColor(to indexPath: IndexPath) 
-    
+    func updateCurrentColor(to indexPath: IndexPath)
+
     func save()
 }

@@ -19,7 +19,7 @@ import UIKit
 
 protocol UserFeedbackSubmittableProtocol {
     typealias SubmitHandler = () -> Void
-    
+
     func submit(_ userFeedback: UserFeedback, service: UserFeedbackServiceProtocol, successHandler: @escaping SubmitHandler, failureHandler: SubmitHandler?)
 }
 
@@ -29,8 +29,7 @@ extension UserFeedbackSubmittableProtocol where Self: UIViewController {
         service.send(userFeedback) { sendError in
             if sendError != nil {
                 failureHandler?()
-            }
-            else {
+            } else {
                 successHandler()
             }
         }

@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-@objc protocol ContactCollectionViewDelegateFlowLayout : NSObjectProtocol {
-    @objc func collectionView(collectionView : UICollectionView?, willChangeContentSizeTo newSize: CGSize)
+@objc protocol ContactCollectionViewDelegateFlowLayout: NSObjectProtocol {
+    @objc func collectionView(collectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
 }
 
 class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    
+
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)
 
@@ -54,7 +53,7 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
             }
 
             leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
-            maxY = max(layoutAttribute.frame.maxY , maxY)
+            maxY = max(layoutAttribute.frame.maxY, maxY)
         }
 
         return attributes
@@ -63,7 +62,7 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
-    
+
     override func finalizeCollectionViewUpdates() {
         if let delegate = self.collectionView?.delegate as? ContactCollectionViewDelegateFlowLayout {
             if delegate.responds(to: #selector(ContactCollectionViewDelegateFlowLayout.collectionView(collectionView:willChangeContentSizeTo:))) {

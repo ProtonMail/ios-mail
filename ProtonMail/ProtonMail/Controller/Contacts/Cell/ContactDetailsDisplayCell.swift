@@ -23,17 +23,17 @@
 import ProtonCore_UIFoundations
 
 final class ContactDetailsDisplayCell: UITableViewCell {
-    
+
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
 
-    func configCell(title : String, value : String) {
+    func configCell(title: String, value: String) {
         contentView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.title.attributedText = title.apply(style: .DefaultSmallWeek)
-        
+
         let attribute = FontManager.Default.addTruncatingTail()
         self.value.attributedText = value.apply(style: attribute)
     }
-    
+
 }

@@ -19,7 +19,6 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
@@ -41,14 +40,13 @@ extension BioAuthenticating where Self: UIViewController {
             self?.decideOnBioAuthentication()
         }
     }
-    
+
     func decideOnBioAuthentication() {
         #if APP_EXTENSION
         self.authenticateUser()
         #else
         if #available(iOS 13.0, *), UIDevice.current.biometricType == .touchID,
-            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive)
-        {
+            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive) {
             // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 #if !APP_EXTENSION

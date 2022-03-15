@@ -27,7 +27,7 @@ public protocol ProtonMailAnalyticsProtocol: AnyObject {
                function: String,
                line: Int,
                colum: Int)
-    
+
     func error(event: ProtonMailAnalytics.Events,
                error: Error,
                extra: [String: Any],
@@ -38,7 +38,7 @@ public protocol ProtonMailAnalyticsProtocol: AnyObject {
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
-    
+
     public enum Events: String {
         case keychainError = "Keychain Error"
         case notificationError = "Notification Error"
@@ -62,14 +62,14 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         case decryptedMessageBodyFailed = "Decrypted Message Body Failed"
         case paymentGetProductsListError = "Payment get products list error"
     }
-    
+
     private(set) var endPoint: String
     private(set) var isEnabled = false
-    
+
     required public init(endPoint: String) {
         self.endPoint = endPoint
     }
-    
+
     public func setup(environment: String? = nil,
                       debug: Bool = false) {
         SentrySDK.start { options in
@@ -79,7 +79,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         }
         isEnabled = true
     }
-    
+
     public func debug(event: Events,
                       extra: [String: Any],
                       file: String = #file,
@@ -94,7 +94,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         eventToSend.extra = extra
         SentrySDK.capture(event: eventToSend)
     }
-    
+
     public func error(event: Events,
                       error: Error,
                       extra: [String: Any],

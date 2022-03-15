@@ -54,14 +54,14 @@ final class DecryptionErrorBannerView: UIView {
             button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             button.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                              constant: -12),
-            button.heightAnchor.constraint(equalToConstant: 32),
+            button.heightAnchor.constraint(equalToConstant: 32)
         ].activate()
 
         [
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12),
             titleLabel.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -8),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
         ].activate()
     }
 

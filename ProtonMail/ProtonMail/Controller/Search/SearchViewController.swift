@@ -36,7 +36,7 @@ protocol SearchViewUIProtocol: UIViewController {
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
-    
+
     @IBOutlet var navigationBarView: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -50,26 +50,26 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         bar.trackTintColor = .black
         bar.progressTintColor = .white
         bar.progressViewStyle = .bar
-        
+
         let label = UILabel.init(font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize), text: "Indexing local messages", textColor: .gray)
-        
+
         label.translatesAutoresizingMaskIntoConstraints = false
         bar.addSubview(label)
         bar.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
         bar.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
         bar.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
-        
+
         return bar
     }()
 
     // MARK: - Private Constants
     private let kAnimationDuration: TimeInterval = 0.3
-    private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
-    
+    private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
     private var messageTapped = false
     private(set) var listEditing: Bool = false
-    
+
     private(set) var viewModel: SearchVMProtocol!
     private var currentPage = 0
     private var query: String = ""
@@ -100,13 +100,13 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tableView.reloadData()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchBar.textField.resignFirstResponder()
@@ -116,7 +116,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
@@ -138,7 +138,7 @@ extension SearchViewController {
             searchBar.bottomAnchor.constraint(equalTo: navigationBarView.bottomAnchor)
         ].activate()
     }
-    
+
     private func setupTableview() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -153,7 +153,7 @@ extension SearchViewController {
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
-    
+
     private func setupProgressBar() {
         self.progressBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.progressBar)
@@ -162,7 +162,7 @@ extension SearchViewController {
         self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
     }
-    
+
     private func setupActivityIndicator() {
         activityIndicator.color = ColorProvider.BrandNorm
         activityIndicator.isHidden = true
@@ -206,9 +206,9 @@ extension SearchViewController {
 
         let actions = self.viewModel.getActionBarActions()
         var actionItems: [PMActionBarItem] = []
-        
+
         for (key, action) in actions.enumerated() {
-            
+
             let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
                 guard let self = self else { return }
                 if action == .more {
@@ -238,7 +238,7 @@ extension SearchViewController {
                     }
                 }
             }
-            
+
             if key == actions.startIndex {
                 let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
                                               text: action.name,
@@ -264,12 +264,12 @@ extension SearchViewController {
                                          height: 48.0)
         self.actionBar?.show(at: self)
     }
-    
+
     private func hideActionBar() {
         self.actionBar?.dismiss()
         self.actionBar = nil
     }
-    
+
     private func hideActionSheet() {
         self.actionSheet?.dismiss(animated: true)
         self.actionSheet = nil
@@ -285,7 +285,7 @@ extension SearchViewController {
             }
         )
     }
-    
+
     private func folderButtonTapped() {
         guard !self.viewModel.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
@@ -361,7 +361,7 @@ extension SearchViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    private func showMessageMoved(title : String) {
+    private func showMessageMoved(title: String) {
         guard UIApplication.shared.applicationState == .active else {
             return
         }
@@ -375,7 +375,7 @@ extension SearchViewController {
         }
         return searchVM
     }
-    
+
     private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
         guard let handler = moveToActionHandler else { return }
         let moveToViewModel =
@@ -460,7 +460,7 @@ extension SearchViewController {
                         self?.cancelButtonTapped()
                      })
     }
-    
+
     private func presentCreateFolder(type: PMLabelType) {
         let coreDataService = sharedServices.get(by: CoreDataService.self)
         let folderLabels = viewModel.user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
@@ -493,7 +493,7 @@ extension SearchViewController {
             return ret
         }
     }
-    
+
     private func prepareForDraft(_ message: Message) {
         self.updateTapped(status: true)
         self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
@@ -511,7 +511,7 @@ extension SearchViewController {
             _self.showComposer(message: message)
         }
     }
-    
+
     private func showComposer(message: Message) {
         let viewModel = self.viewModel.getComposeViewModel(message: message)
         guard let navigationController = self.navigationController else { return }
@@ -675,7 +675,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.messages.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let mailboxCell = tableView.dequeueReusableCell(
                 withIdentifier: NewMailboxMessageCell.defaultID(),
@@ -694,12 +694,12 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
         self.viewModel.loadMoreDataIfNeeded(currentRow: indexPath.row)
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = self.viewModel.messages[indexPath.row]
         guard !listEditing else {
@@ -739,13 +739,13 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
 // MARK: - UITextFieldDelegate
 
 extension SearchViewController: UITextFieldDelegate {
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         query = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         searchBar.clearButton.isHidden = query.isEmpty == true
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         self.query = self.query.trim()

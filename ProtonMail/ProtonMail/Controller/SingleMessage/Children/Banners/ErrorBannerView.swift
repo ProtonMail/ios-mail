@@ -56,7 +56,7 @@ class ErrorBannerView: UIView {
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
             titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -18),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8)
         ].activate()
     }
 

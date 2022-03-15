@@ -20,36 +20,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
-
 public class SharedCacheBase {
-    fileprivate var userDefaults : UserDefaults!
-    
+    fileprivate var userDefaults: UserDefaults!
+
     func getShared() -> UserDefaults! {
         return self.userDefaults
     }
-    
+
     init () {
         self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
-        
-    convenience init (shared : UserDefaults) {
+
+    convenience init (shared: UserDefaults) {
         self.init()
         self.userDefaults = shared
     }
-    
+
     deinit {
         //
     }
-    
+
     func setValue(_ value: Any?, forKey key: String) {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()
     }
-    
-    class func getDefault() ->UserDefaults! {
+
+    class func getDefault() -> UserDefaults! {
         return UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
 }

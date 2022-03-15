@@ -20,45 +20,44 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 extension PMView {
     @objc func getNibName() -> String {
         fatalError("This method must be overridden")
     }
-    
-    @objc func setup() -> Void {
+
+    @objc func setup() {
 
     }
 }
 
 class PMView: UIView, AccessibleView {
     var pmView: UIView!
-    
+
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
         setupView()
     }
-    
+
     required init(coder aDecoder: NSCoder) { // for using CustomView in IB
         super.init(coder: aDecoder)!
         self.setupView()
     }
-    
+
     func setupView() {
         if let pmView = loadViewFromNib() {
             pmView.frame = self.bounds
             pmView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.addSubview(pmView)
-            pmView.clipsToBounds = true;
-            self.clipsToBounds = true;
+            pmView.clipsToBounds = true
+            self.clipsToBounds = true
             self.setup()
             self.pmView = pmView
         }
         generateAccessibilityIdentifiers()
     }
-    
+
     fileprivate func loadViewFromNib () -> UIView? {
         let bundle = Bundle(for: type(of: self) )
         let nib = UINib(nibName: self.getNibName(), bundle: bundle)

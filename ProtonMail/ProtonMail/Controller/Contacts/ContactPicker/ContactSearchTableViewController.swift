@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 class ContactSearchTableViewController: UITableViewController {
     internal var queryString = ""
-    internal var onSelection: ((ContactPickerModelProtocol)->Void) = { _ in }
+    internal var onSelection: ((ContactPickerModelProtocol) -> Void) = { _ in }
     internal var filteredContacts: [ContactPickerModelProtocol] = [] {
         didSet {
             self.tableView.reloadData()
@@ -35,7 +34,7 @@ class ContactSearchTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.filteredContacts.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let outCell = tableView.dequeueReusableCell(withIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier,
                                                          for: indexPath)
@@ -48,16 +47,16 @@ class ContactSearchTableViewController: UITableViewController {
         }
         return outCell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = self.filteredContacts[indexPath.row]
         self.onSelection(model)
     }
-    
+
     override var canBecomeFirstResponder: Bool {
         return false
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return UIDevice.current.orientation == .landscapeLeft ||
                 UIDevice.current.orientation == .landscapeRight

@@ -20,15 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import ProtonCore_Networking
 
-//Labels API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
+// Labels API
+// Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
 struct LabelAPI {
-    static let path :String = "/labels"
-    
+    static let path: String = "/labels"
+
     static let versionPrefix: String = "/v4"
 }
 
@@ -37,34 +36,34 @@ final class GetV4LabelsRequest: Request {
     init(type: PMLabelType) {
         self.type = type.rawValue
     }
-    
+
     var path: String {
         return LabelAPI.versionPrefix + LabelAPI.path + "?Type=\(self.type)"
     }
-        
-    var parameters: [String : Any]? {
+
+    var parameters: [String: Any]? {
         return nil
     }
 }
 
 /// Parse the response from the server of the GetLabelsRequest() call
-final class GetLabelsResponse : Response {
-    var labels : [[String : Any]]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.labels =  response["Labels"] as? [[String : Any]]
+final class GetLabelsResponse: Response {
+    var labels: [[String: Any]]?
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.labels = response["Labels"] as? [[String: Any]]
         return true
     }
 }
 
 /// Create a label/contact group on the server -- CreateLabelRequestResponse
-final class CreateLabelRequest : Request {
+final class CreateLabelRequest: Request {
     private let name: String
     private let color: String
     private let type: Int
     private let parentID: String?
     private let notify: Int
     private let expanded: Int
-    
+
     init(name: String, color: String, type: PMLabelType, parentID: String? = nil, notify: Bool, expanded: Bool = true) {
         self.name = name
         self.color = color
@@ -77,39 +76,39 @@ final class CreateLabelRequest : Request {
         self.notify = notify ? 1: 0
         self.expanded = expanded ? 1: 0
     }
-    
-    var parameters: [String : Any]? {
-        
-        var out : [String : Any] = [
+
+    var parameters: [String: Any]? {
+
+        var out: [String: Any] = [
             "Name": self.name,
             "Color": self.color,
             "Type": self.type,
             "Notify": self.notify,
             "Expanded": self.expanded
         ]
-        
+
         if let id = self.parentID {
             out["ParentID"] = id
         }
 
         return out
     }
-    
+
     var method: HTTPMethod {
         return .post
     }
-    
+
     var path: String {
         return LabelAPI.versionPrefix + LabelAPI.path
     }
 }
 
 /// Parse the response from the server of the GetLabelsRequest() call
-final class CreateLabelRequestResponse : Response {
-    var label:[String : Any]?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.label = response["Label"] as? [String : Any]
+final class CreateLabelRequestResponse: Response {
+    var label: [String: Any]?
+
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.label = response["Label"] as? [String: Any]
         return true
     }
 }
@@ -119,15 +118,14 @@ final class CreateLabelRequestResponse : Response {
  
  Type don't need to be specified here since we have the exact labelID to work with
 */
-final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
-    private let labelID : String
+final class UpdateLabelRequest: Request {  // CreateLabelRequestResponse
+    private let labelID: String
     private let labelName: String
-    private let color:String
+    private let color: String
     private let parentID: String?
     private let notify: Int
-    
-    
-    init(id:String, name:String, color:String, parentID: String? = nil, notify: Bool = false) {
+
+    init(id: String, name: String, color: String, parentID: String? = nil, notify: Bool = false) {
         self.labelID = id
         self.labelName = name
         self.color = color
@@ -138,9 +136,9 @@ final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
         }
         self.notify = notify ? 1: 0
     }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = [
+
+    var parameters: [String: Any]? {
+        var out: [String: Any] = [
             "Name": self.labelName,
             "Color": self.color,
             "Notify": self.notify
@@ -150,11 +148,11 @@ final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
         }
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return LabelAPI.versionPrefix + LabelAPI.path + "/\(labelID)"
     }
@@ -162,10 +160,10 @@ final class UpdateLabelRequest : Request {  //CreateLabelRequestResponse
 
 /// Parse the response from the server of the UpdateLabelRequest() call
 final class UpdateLabelRequestResponse: Response {
-    var label: [String : Any]?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.label = response["Label"] as? [String : Any]
+    var label: [String: Any]?
+
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
+        self.label = response["Label"] as? [String: Any]
         return true
     }
 }
@@ -175,16 +173,16 @@ final class UpdateLabelRequestResponse: Response {
  
  Type don't need to be specified here since we have the exact labelID to work with
 */
-final class DeleteLabelRequest : Request { //DeleteLabelRequestResponse
+final class DeleteLabelRequest: Request { // DeleteLabelRequestResponse
     private let labelID: String
     init(lable_id: String) {
         labelID = lable_id
     }
-    
+
     var method: HTTPMethod {
         return .delete
     }
-    
+
     var path: String {
         return LabelAPI.versionPrefix + LabelAPI.path + "/\(labelID)"
     }
@@ -193,8 +191,8 @@ final class DeleteLabelRequest : Request { //DeleteLabelRequestResponse
 /// Parse the response from the server of the DeleteLabelRequest() call
 final class DeleteLabelRequestResponse: Response {
     var returnedCode: Int?
-    
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
+
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         self.returnedCode = response["Code"] as? Int
         return true
     }
@@ -204,15 +202,15 @@ final class LabelOrderRequest: Request {
     private let siblingLabelID: [String]
     private let parentID: String?
     private let type: PMLabelType
-    
+
     init(siblingLabelID: [String], parentID: String?, type: PMLabelType) {
         self.siblingLabelID = siblingLabelID
         self.parentID = parentID
         self.type = type
     }
-    
-    var parameters: [String : Any]? {
-        var out: [String : Any] = ["LabelIDs": self.siblingLabelID,
+
+    var parameters: [String: Any]? {
+        var out: [String: Any] = ["LabelIDs": self.siblingLabelID,
                                    "Type": self.type.rawValue]
         if let id = self.parentID {
             out["ParentID"] = id
@@ -221,11 +219,11 @@ final class LabelOrderRequest: Request {
         }
         return out
     }
-    
+
     var method: HTTPMethod {
         return .put
     }
-    
+
     var path: String {
         return LabelAPI.versionPrefix + LabelAPI.path + "/order"
     }

@@ -105,7 +105,7 @@ class LabelAsActionSheetPresenter {
             addNewLabel()
         }
         let archiveGroup = PMActionSheetItemGroup(items: [archiveButton], style: .toggle)
-        //TODO: observe item here
+        // TODO: observe item here
         let addFolderGroup = PMActionSheetItemGroup(items: [add], style: .clickable)
 
         let foldersGroup = PMActionSheetItemGroup(items: labelActions, style: .multiSelection)

@@ -45,13 +45,13 @@ extension Conversation {
 
     func firstValidFolder() -> String? {
         for labelId in getLabelIds() {
-            if !labelId.preg_match ("(?!^\\d+$)^.+$") {
+            if !labelId.preg_match("(?!^\\d+$)^.+$") {
                 if labelId != "1", labelId != "2", labelId != "10", labelId != "5" {
                     return labelId
                 }
             }
         }
-        
+
         return nil
     }
 
@@ -76,7 +76,7 @@ extension Conversation {
             .trash: 6
         ]
 
-        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String : Label] in
+        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String: Label] in
             var newValue = result
             newValue[label.labelID] = label
             return newValue

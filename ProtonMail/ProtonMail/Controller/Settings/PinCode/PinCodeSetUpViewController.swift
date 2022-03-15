@@ -47,7 +47,7 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         self.configureNavigationBar()
 
         title = LocalString._pin_code_setup1_title
-        
+
         view.backgroundColor = ColorProvider.BackgroundNorm
 
         passwordTextField.delegate = self
@@ -72,9 +72,9 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
     @IBAction func nextButtonClicked(_ sender: Any) {
         hideError()
-        
+
         let password = passwordTextField.value
-        var error: PinCodeSetUpViewController.Error? = nil
+        var error: PinCodeSetUpViewController.Error?
         if password.count < 4 {
             error = password.count < 4 ? .pinTooShort : nil
         } else if password.count > 21 {
@@ -93,12 +93,12 @@ class PinCodeSetUpViewController: ProtonMailViewController {
     private func dismissView() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    
+
     private func showError(error: PinCodeSetUpViewController.Error) {
         passwordTextField.isError = true
         passwordTextField.errorMessage = error.errorMessage
     }
-    
+
     private func hideError() {
         passwordTextField.isError = false
         passwordTextField.errorMessage = nil
@@ -107,12 +107,12 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
 extension PinCodeSetUpViewController: PMTextFieldDelegate {
     func didEndEditing(textField: PMTextField) {}
-    
+
     func didChangeValue(_ textField: PMTextField, value: String) {
         hideError()
     }
-    
+
     func textFieldShouldReturn(_ textField: PMTextField) -> Bool { true }
-    
+
     func didBeginEditing(textField: PMTextField) {}
 }

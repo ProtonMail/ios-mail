@@ -19,17 +19,16 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import Foundation
 //
 //
-////http headers key
-//struct HTTPHeader {
+//// http headers key
+// struct HTTPHeader {
 //    static let apiVersion = "x-pm-apiversion"
-//}
+// }
 //
-//enum HTTPMethod {
+// enum HTTPMethod {
 //    case delete
 //    case get
 //    case post
@@ -47,9 +46,9 @@ import Foundation
 //            return "PUT"
 //        }
 //    }
-//}
+// }
 //
-//protocol APIServerConfig  {
+// protocol APIServerConfig  {
 //    //host name    xxx.xxxxxxx.com
 //    var host : String { get }
 //    // http https ws wss etc ...
@@ -58,17 +57,17 @@ import Foundation
 //    var path : String {get}
 //    // full host with protocol, without path
 //    var hostUrl : String {get}
-//}
-//extension APIServerConfig {
+// }
+// extension APIServerConfig {
 //    var hostUrl : String {
 //        get {
 //            return self.protocol + "://" + self.host
 //        }
 //    }
-//}
+// }
 //
-////Predefined servers, could also add the serverlist load from config env later
-//enum Server : APIServerConfig {
+//// Predefined servers, could also add the serverlist load from config env later
+// enum Server : APIServerConfig {
 //    case live //"api.protonmail.ch"
 //    case testlive //"test-api.protonmail.ch"
 //
@@ -117,19 +116,16 @@ import Foundation
 //        }
 //    }
 //
-//}
+// }
 
-
-
-//enum <T> {
+// enum <T> {
 //    case failure(Error)
 //    case success(T)
-//}
-//protocol API {
+// }
+// protocol API {
 //    func request(method: HTTPMethod, path: String,
 //                 parameters: Any?, headers: [String : Any]?,
 //                 authenticated: Bool,
 //                 customAuthCredential: AuthCredential?,
 //                 completion: CompletionBlock?)
-//}
-
+// }

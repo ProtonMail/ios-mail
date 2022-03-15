@@ -20,21 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
 @IBDesignable class SettingsTwoLinesCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    static var CellID : String  {
+
+    static var CellID: String {
         return "\(self)"
     }
-    
+
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
-    
+
     func config(top tValue: String, bottom bValue: String) {
         self.topLineLabel.text = tValue
         self.bottomLineLabel.text = bValue

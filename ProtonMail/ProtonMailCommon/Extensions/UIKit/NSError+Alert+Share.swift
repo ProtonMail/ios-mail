@@ -29,7 +29,7 @@ extension NSError {
     static var noErrorNotification: NSNotification.Name {
         return NSNotification.Name("NSErrorNoError")
     }
-    
+
     class func alertMessageSentToast() {
         NotificationCenter.default.post(name: NSError.noErrorNotification, object: nil, userInfo: ["text": LocalString._message_sent_ok_desc])
     }
@@ -58,11 +58,11 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again])
     }
 
-    class func alertMessageSentError(details : String) {
+    class func alertMessageSentError(details: String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details])
     }
 
-    class func alertSavingDraftError(details : String) {
+    class func alertSavingDraftError(details: String) {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": details])
     }
 }

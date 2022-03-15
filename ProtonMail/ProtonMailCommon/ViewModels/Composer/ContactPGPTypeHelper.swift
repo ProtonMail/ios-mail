@@ -92,23 +92,19 @@ struct ContactPGPTypeHelper {
     func calculatePGPTypeWith(email: String,
                               keyRes: KeysResponse,
                               contacts: [PreContact],
-                              isMessageHavingPwd: Bool) -> PGPType
-    {
+                              isMessageHavingPwd: Bool) -> PGPType {
         if keyRes.recipientType == 1 {
             if let contact = contacts.first,
                contact.email == email,
-               contact.firstPgpKey != nil
-            {
+               contact.firstPgpKey != nil {
                 return .internal_trusted_key
             } else {
                 return .internal_normal
             }
         } else if let contact = contacts.first,
-                  contact.email == email
-        {
+                  contact.email == email {
             if contact.encrypt,
-               contact.firstPgpKey != nil
-            {
+               contact.firstPgpKey != nil {
                 return .pgp_encrypt_trusted_key
             } else if isMessageHavingPwd {
                 return .eo

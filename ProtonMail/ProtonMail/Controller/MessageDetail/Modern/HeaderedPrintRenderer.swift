@@ -19,25 +19,24 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
 import UIKit
 
 class HeaderedPrintRenderer: UIPrintPageRenderer {
     var header: CustomViewPrintRenderer?
     var attachmentView: CustomViewPrintRenderer?
-    
+
     class CustomViewPrintRenderer: UIPrintPageRenderer {
         private(set) var view: UIView
         private(set) var contentSize: CGSize
         private var image: UIImage?
-        
+
         func updateImage(in rect: CGRect) {
             self.contentSize = rect.size
-            
+
             UIGraphicsBeginImageContextWithOptions(rect.size, true, 0.0)
             defer { UIGraphicsEndImageContext() }
-            
+
             guard let context = UIGraphicsGetCurrentContext() else {
                 self.image = nil
                 return
@@ -45,12 +44,12 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
             self.view.layer.render(in: context)
             self.image = UIGraphicsGetImageFromCurrentImageContext()
         }
-        
+
         init(_ view: UIView) {
             self.view = view
             self.contentSize = view.bounds.size
         }
-        
+
         override func drawContentForPage(at pageIndex: Int, in contentRect: CGRect) {
             super.drawContentForPage(at: pageIndex, in: contentRect)
             guard pageIndex == 0 else { return }
@@ -59,7 +58,7 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
             }
         }
     }
-    
+
     override func drawContentForPage(at pageIndex: Int, in contentRect: CGRect) {
         guard pageIndex == 0,
               let headerHeight = self.header?.contentSize.height else {
@@ -79,7 +78,7 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
             super.drawContentForPage(at: pageIndex, in: longRect)
         }
     }
-    
+
     override func drawPrintFormatter(_ printFormatter: UIPrintFormatter, forPageAt pageIndex: Int) {
         guard pageIndex == 0 else {
             super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)

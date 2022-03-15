@@ -32,7 +32,7 @@ protocol MenuVMProtocol: AnyObject {
     var secondUser: UserManager? { get }
     var enableFolderColor: Bool { get }
     var reloadClosure: (() -> Void)? { get set }
-    
+
     func userDataInit()
     func menuViewInit()
     func getMenuItem(indexPath: IndexPath) -> MenuLabel?
@@ -54,7 +54,6 @@ protocol MenuVMProtocol: AnyObject {
     func getColor(of label: MenuLabel) -> UIColor
     func allowToCreate(type: PMLabelType) -> Bool
 }
-
 
 protocol MenuUIProtocol: UIViewController {
     func update(email: String)

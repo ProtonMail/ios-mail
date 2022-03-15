@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 import PromiseKit
@@ -28,10 +27,9 @@ import AwaitKit
 import Crypto
 import ProtonCore_DataModel
 
-
-//TODO::fixme import header
+// TODO::fixme import header
 extension Attachment {
-    
+
     struct Attributes {
         static let entityName   = "Attachment"
         static let attachmentID = "attachmentID"
@@ -41,7 +39,7 @@ extension Attachment {
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
-    
+
     override func prepareForDeletion() {
         super.prepareForDeletion()
         if let localURL = localURL {
@@ -55,14 +53,13 @@ extension Attachment {
     var isUploaded: Bool {
         attachmentID != "0" && attachmentID != .empty
     }
-    
+
     // MARK: - This is private functions
-    
+
     class func attachment(for attID: String, inManagedObjectContext context: NSManagedObjectContext) -> Attachment? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.attachmentID, matchingValue: attID) as? Attachment
     }
-    
-    
+
     var downloaded: Bool {
         return (localURL != nil) && (FileManager.default.fileExists(atPath: localURL!.path))
     }
@@ -77,13 +74,13 @@ extension Attachment {
             guard let localURL = self.localURL else {
                 return nil
             }
-            
+
             var error: NSError?
             let key = CryptoNewKeyFromArmored(key.publicKey, &error)
             if let err = error {
                 throw err
             }
-            
+
             let keyRing = CryptoNewKeyRing(key, &error)
             if let err = error {
                 throw err
@@ -121,51 +118,51 @@ extension Attachment {
             guard let signature = signature else {
                 return nil
             }
-            var error : NSError?
+            var error: NSError?
             let data = ArmorUnarmor(signature, &error)
             if error != nil {
                 return nil
             }
-            
+
             return data
         } catch {
             return nil
         }
     }
-    
+
     func getSession(keys: [Data], mailboxPassword: String) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket else {
-            return nil //TODO:: error throw
+            return nil // TODO:: error throw
         }
         let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         guard let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0)) else {
-            return nil //TODO:: error throw
+            return nil // TODO:: error throw
         }
-        
+
         let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
         return sessionKey
     }
-    
+
     func getSession(userKey: [Data], keys: [Key], mailboxPassword: String) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket else {
             return nil
         }
         let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
-        
+
         let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
         return sessionKey
     }
-    
+
     func base64DecryptAttachment(userInfo: UserInfo, passphrase: String) -> String {
         let userPrivKeys = userInfo.userPrivateKeysArray
         let addrPrivKeys = userInfo.addressKeys
 
         if let localURL = self.localURL {
-            if let data : Data = try? Data(contentsOf: localURL as URL) {
+            if let data: Data = try? Data(contentsOf: localURL as URL) {
                 do {
                     if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
                             if let decryptData =
                                 userInfo.isKeyV2 ?
                                     try data.decryptAttachment(keyPackage: keydata,
@@ -175,7 +172,7 @@ extension Attachment {
                                     try data.decryptAttachment(keydata,
                                                                passphrase: passphrase,
                                                                privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
                         }
@@ -185,7 +182,7 @@ extension Attachment {
             } else if let data = self.fileData, data.count > 0 {
                 do {
                     if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                        if let keydata: Data = Data(base64Encoded: key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
                             if let decryptData =
                                 userInfo.isKeyV2 ?
                                     try data.decryptAttachment(keyPackage: keydata,
@@ -195,7 +192,7 @@ extension Attachment {
                                     try data.decryptAttachment(keydata,
                                                                passphrase: passphrase,
                                                                privKeys: addrPrivKeys.binPrivKeysArray) {
-                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+                                let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
                         }
@@ -205,60 +202,59 @@ extension Attachment {
             }
         }
 
-
         if let data = self.fileData {
-            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
+            let strBase64: String = data.base64EncodedString(options: .lineLength64Characters)
             return strBase64
         }
         return ""
     }
-    
+
     func inline() -> Bool {
         guard let headerInfo = self.headerInfo else {
             return false
         }
-        
+
         let headerObject = headerInfo.parseObject()
         guard let inlineCheckString = headerObject["content-disposition"] else {
             return false
         }
-        
+
         if inlineCheckString.contains("inline") {
             return true
         }
         return false
     }
-    
+
     func contentID() -> String? {
         guard let headerInfo = self.headerInfo else {
             return nil
         }
-        
+
         let headerObject = headerInfo.parseObject()
         guard let inlineCheckString = headerObject["content-id"] else {
             return nil
         }
-        
+
         let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
-        
+
         return outString
     }
-    
+
     func disposition() -> String {
         guard let headerInfo = self.headerInfo else {
             return "attachment"
         }
-        
+
         let headerObject = headerInfo.parseObject()
         guard let inlineCheckString = headerObject["content-disposition"] else {
             return "attachment"
         }
-        
+
         let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
-        
+
         return outString
     }
-    
+
     func setupHeaderInfo(isInline: Bool, contentID: String?) {
         let disposition = isInline ? "inline": "attachment"
         let id = contentID ?? UUID().uuidString
@@ -296,7 +292,7 @@ extension Collection where Element == Attachment {
 
 protocol AttachmentConvertible {
     var dataSize: Int { get }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?>
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?>
 }
 
 // THIS IS CALLED FOR CAMERA
@@ -307,7 +303,7 @@ extension UIImage: AttachmentConvertible {
     private func toData() -> Data! {
         return self.jpegData(compressionQuality: 0)
     }
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?> {
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?> {
         return Promise { seal in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
@@ -355,11 +351,11 @@ extension Data: AttachmentConvertible {
     var dataSize: Int {
         return self.count
     }
-    func toAttachment (_ message:Message, fileName : String, stripMetadata: Bool) -> Promise<Attachment?> {
+    func toAttachment (_ message: Message, fileName: String, stripMetadata: Bool) -> Promise<Attachment?> {
         return self.toAttachment(message, fileName: fileName, type: "image/jpg", stripMetadata: stripMetadata)
     }
-    
-    func toAttachment (_ message:Message, fileName : String, type:String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
+
+    func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {
         return Promise { seal in
             guard let context = message.managedObjectContext else {
                 assert(false, "Context improperly destroyed")
@@ -437,11 +433,10 @@ extension URL: AttachmentConvertible {
             }
         }
     }
-    
+
     var dataSize: Int {
         guard let attributes = try? FileManager.default.attributesOfItem(atPath: self.path),
-            let size = attributes[.size] as? NSNumber else
-        {
+            let size = attributes[.size] as? NSNumber else {
             return 0
         }
         return size.intValue
