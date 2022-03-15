@@ -1719,10 +1719,15 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                    self?.showLabelAsActionSheet(messages: messages)
+                guard let self = self else { return }
+                if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                    self.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                        self?.showLabelAsActionSheet(messages: messages)
+                    }
+                    self.coordinator?.go(to: .newLabel)
+                } else {
+                    self.showAlertLabelCreationNotAllowed()
                 }
-                self?.coordinator?.go(to: .newLabel)
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
             }, cancel: { [weak self] isHavingUnsavedChanges in
@@ -1765,10 +1770,15 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: labelAsViewModel,
                      addNewLabel: { [weak self] in
-                self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                    self?.showLabelAsActionSheet(conversations: conversations)
+                guard let self = self else { return }
+                if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                    self.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                        self?.showLabelAsActionSheet(conversations: conversations)
+                    }
+                    self.coordinator?.go(to: .newLabel)
+                } else {
+                    self.showAlertLabelCreationNotAllowed()
                 }
-                self?.coordinator?.go(to: .newLabel)
             }, selected: { [weak self] menuLabel, isOn in
                 self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
             }, cancel: { [weak self] isHavingUnsavedChanges in
@@ -1801,6 +1811,26 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                 self?.dismissActionSheet()
                 self?.cancelButtonTapped()
             })
+    }
+
+    private func allowToCreateLabels(existingLabels: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingLabels < Constants.FreePlan.maxNumberOfLabels
+        }
+        return true
+    }
+
+    private func showAlertLabelCreationNotAllowed() {
+        let title = LocalString._creating_label_not_allowed
+        let message = LocalString._upgrade_to_create_label
+        showAlert(title: title, message: message)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -1841,10 +1871,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                        guard let self = self else { return }
+                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                            self.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                                self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                            }
+                            self.coordinator?.go(to: .newFolder)
+                        } else {
+                            self.showAlertFolderCreationNotAllowed()
                         }
-                        self?.coordinator?.go(to: .newFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1892,10 +1927,15 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        self?.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet(conversations: conversations, isEnableColor: isEnableColor, isInherit: isInherit)
+                        guard let self = self else { return }
+                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                            self.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                                self?.showMoveToActionSheet(conversations: conversations, isEnableColor: isEnableColor, isInherit: isInherit)
+                            }
+                            self.coordinator?.go(to: .newFolder)
+                        } else {
+                            self.showAlertFolderCreationNotAllowed()
                         }
-                        self?.coordinator?.go(to: .newFolder)
                      },
                      selected: { [weak self] menuLabel, isOn in
                         self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
@@ -1930,6 +1970,20 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                                                    undoActionType: .custom(destination.location.labelID))
                         }
                      })
+    }
+
+    private func allowToCreateFolders(existingFolders: Int) -> Bool {
+        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        if isFreeAccount {
+            return existingFolders < Constants.FreePlan.maxNumberOfFolders
+        }
+        return true
+    }
+
+    private func showAlertFolderCreationNotAllowed() {
+        let title = LocalString._creating_folder_not_allowed
+        let message = LocalString._upgrade_to_create_folder
+        showAlert(title: title, message: message)
     }
 
     private func handleActionSheetAction(_ action: MailListSheetAction) {
