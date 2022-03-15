@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Alterar ou desligar a assinatura predefinida do telemóvel é uma funcionalidade paga.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Mais";
 
 /* Screen header */

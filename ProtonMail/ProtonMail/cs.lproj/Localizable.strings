@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Úprava nebo vypnutí výchozího mobilního podpisu je dostupné v placené funkci.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Více";
 
 /* Screen header */
@@ -3181,7 +3182,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Aktuální zpráva bude nenávratně smazána. Jste si jistý?";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "Všechno máte aktuální";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Všechny neuložené změny budou zahozeny";

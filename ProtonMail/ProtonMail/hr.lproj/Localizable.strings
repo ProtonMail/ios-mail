@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Izmjena ili isključivanje zadanog mobilnog potpisa je plaćena značajka.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Više";
 
 /* Screen header */

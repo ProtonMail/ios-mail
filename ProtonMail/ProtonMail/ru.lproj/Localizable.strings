@@ -1674,7 +1674,8 @@
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Изменение или отключение мобильной подписи по умолчанию – это платная функция.";
 
-/* More actions button */
+/* More actions button
+   The title of first button in the action bar */
 "More" = "Ещё";
 
 /* Screen header */
@@ -3181,7 +3182,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Вы собираетесь необратимо удалить сообщение. Вы уверены?";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "Вы в курсе всех событий";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Ваши изменения будут отменены";
