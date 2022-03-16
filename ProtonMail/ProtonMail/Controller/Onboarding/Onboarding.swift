@@ -26,6 +26,9 @@ enum Onboarding: Int, CustomStringConvertible {
     case page1 = 0
     case page2 = 1
     case page3 = 2
+    case updateIntro1 = 3
+    case updateIntro2 = 4
+    case updateIntro3 = 5
 
     var image: UIImage? {
         switch self {
@@ -35,6 +38,12 @@ enum Onboarding: Int, CustomStringConvertible {
             return Asset.welcome2.image
         case .page3:
             return Asset.welcome3.image
+        case .updateIntro1:
+            return Asset.welcome2.image
+        case .updateIntro2:
+            return Asset.welcome1.image
+        case .updateIntro3:
+            return Asset.welcome4.image
         }
     }
 
@@ -46,6 +55,12 @@ enum Onboarding: Int, CustomStringConvertible {
             return LocalString._simply_private
         case .page3:
             return LocalString._neat_and_tidy
+        case .updateIntro1:
+            return LocalString._brand_new_look
+        case .updateIntro2:
+            return LocalString._onboarding_conversations
+        case .updateIntro3:
+            return LocalString._and_more
         }
     }
 
@@ -57,6 +72,16 @@ enum Onboarding: Int, CustomStringConvertible {
             return LocalString._simply_private_content
         case .page3:
             return LocalString._neat_and_tidy_content
+        case .updateIntro1:
+            return LocalString._brand_new_look_content
+        case .updateIntro2:
+            return LocalString._onboarding_conversations_content
+        case .updateIntro3:
+            return LocalString._and_more_content
         }
+    }
+
+    var needsDarkBGView: Bool {
+        return self == .updateIntro3
     }
 }

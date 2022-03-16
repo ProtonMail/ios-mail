@@ -1177,6 +1177,13 @@
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Classez, labellisez et appliquez un code couleur aux messages pour créer votre boîte de réception parfaite et personnalisée.";
 
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* VoiceOver: email belongs to folder */
 "Folder" = "Dossier";
 
@@ -1731,6 +1738,15 @@
 
 /* Onboarding title */
 "Neat and tidy" = "Soignée et ordonnée";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
+
+/* Onboarding title */
+"Conversations" = "Conversations";
+
+/* Onboarding title */
+"And more…" = "And more…";
 
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Inscrivez-vous gratuitement";
