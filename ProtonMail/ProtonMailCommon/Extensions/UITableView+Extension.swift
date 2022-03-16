@@ -80,6 +80,16 @@ extension UITableView {
             self.layoutMargins = .zero
         }
     }
+
+    func indexPathExists(_ indexPath: IndexPath) -> Bool {
+        if indexPath.section >= self.numberOfSections {
+            return false
+        }
+        if indexPath.row >= self.numberOfRows(inSection: indexPath.section) {
+            return false
+        }
+        return true
+    }
 }
 
 extension UITableView {
