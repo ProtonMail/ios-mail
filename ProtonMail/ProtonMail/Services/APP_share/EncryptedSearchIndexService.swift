@@ -17,6 +17,7 @@ public class EncryptedSearchIndexService {
 
     // set initializer to private - Singleton
     private init() {
+        searchIndexSemaphore = DispatchSemaphore(value: 1)  // Semaphore to lock access to database
         databaseSchema = DatabaseEntries()
         searchableMessages = Table(DatabaseConstants.Table_Searchable_Messages)
         fileByteCountFormatter = ByteCountFormatter()
@@ -38,6 +39,7 @@ public class EncryptedSearchIndexService {
     internal var searchableMessages: Table
 
     private var fileByteCountFormatter: ByteCountFormatter? = nil
+    internal let searchIndexSemaphore: DispatchSemaphore
 }
 
 extension EncryptedSearchIndexService {
@@ -52,6 +54,7 @@ extension EncryptedSearchIndexService {
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
         do {
             let handleToSQliteDB = try Connection(pathToDB)
+            handleToSQliteDB.busyTimeout = 5 // Retry multiple times - database is locked error after 5 seconds
             self.databaseConnections[userID] = handleToSQliteDB
             print("path to database: ", pathToDB)
         } catch {
@@ -98,6 +101,7 @@ extension EncryptedSearchIndexService {
                                               encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size))
 
         do {
+            self.searchIndexSemaphore.wait()
             try handleToSQliteDB.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
                 t.column(self.databaseSchema.messageID, primaryKey: true)
@@ -109,7 +113,9 @@ extension EncryptedSearchIndexService {
                 t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContentSize, defaultValue: -1)
             })
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Create Table. Unexpected error: \(error).")
         }
     }
@@ -137,8 +143,11 @@ extension EncryptedSearchIndexService {
                                                                      self.databaseSchema.encryptedContentFile <- encryptedContentFile,
                                                                      self.databaseSchema.encryptedContentSize <- encryptedContentSize)
                 let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
+                self.searchIndexSemaphore.wait()
                 rowID = try handleToSQliteDB?.run(insert!)
+                self.searchIndexSemaphore.signal()
             } catch {
+                self.searchIndexSemaphore.signal()
                 print("Insert in Table. Unexpected error: \(error).")
             }
         }
@@ -155,8 +164,11 @@ extension EncryptedSearchIndexService {
         var rowID:Int? = -1
         do {
             let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
+            self.searchIndexSemaphore.wait()
             rowID = try handleToSQLiteDB?.run(filter.delete())
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error: deleting messages from search index failed: \(error)")
         }
         return rowID
@@ -221,8 +233,11 @@ extension EncryptedSearchIndexService {
 
         let handleToDB: Connection? = self.connectToSearchIndex(for: userID)
         do {
+            self.searchIndexSemaphore.wait()
             numberOfEntries = try handleToDB?.scalar(self.searchableMessages.count)
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error when getting the number of entries in the search index: \(error)")
         }
 
@@ -299,6 +314,7 @@ extension EncryptedSearchIndexService {
             let time: Expression<CLong> = self.databaseSchema.time
             let query = self.searchableMessages.select(time).order(time.asc).limit(1)
             // SELECT "time" FROM "SearchableMessages" ORDER BY "time" ASC LIMIT 1
+            self.searchIndexSemaphore.wait()
             rowID = try handleToDB?.run(query.delete())
 
             try handleToDB?.run("VACUUM")
@@ -306,7 +322,9 @@ extension EncryptedSearchIndexService {
             // Blocks all write statements until delete is done
             // Details here: https://sqlite.org/pragma.html#pragma_wal_checkpoint
             try handleToDB?.run("pragma wal_checkpoint(full)")
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("deleting the oldest message from search index failed: \(error)")
         }
         return rowID!
@@ -319,10 +337,13 @@ extension EncryptedSearchIndexService {
             let size: Expression<Int> = self.databaseSchema.encryptedContentSize
             let query = self.searchableMessages.select(size).order(time.asc).limit(1)
             // SELECT "Size" FROM "SearchableMessages" ORDER BY "Time" ASC LIMIT 1
+            self.searchIndexSemaphore.wait()
             for result in try handleToDB!.prepare(query) {
                 sizeOfRow = result[size]
             }
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("deleting the oldest message from search index failed: \(error)")
         }
         return sizeOfRow
@@ -360,10 +381,13 @@ extension EncryptedSearchIndexService {
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var oldestMessage: CLong = 0
         do {
+            self.searchIndexSemaphore.wait()
             for result in try handleToSQLiteDB!.prepare(query) {
                 oldestMessage = result[time]
             }
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error when querying oldest message in search index: \(error)")
         }
         return (Int(oldestMessage), self.timeToDateString(time: oldestMessage))
@@ -383,10 +407,13 @@ extension EncryptedSearchIndexService {
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var newestMessage: CLong = 0
         do {
+            self.searchIndexSemaphore.wait()
             for result in try handleToSQLiteDB!.prepare(query) {
                 newestMessage = result[time]
             }
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error when querying newest message in search index: \(error)")
         }
         return Int(newestMessage)
@@ -407,10 +434,13 @@ extension EncryptedSearchIndexService {
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var idOfOldestMessage: String? = nil
         do {
+            self.searchIndexSemaphore.wait()
             for result in try handleToSQLiteDB!.prepare(query) {
                 idOfOldestMessage = result[id]
             }
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error when querying oldest message in search index: \(error)")
         }
         return idOfOldestMessage
@@ -431,10 +461,13 @@ extension EncryptedSearchIndexService {
         let handleToSQLiteDB: Connection? = self.connectToSearchIndex(for: userID)
         var idOfNewestMessage: String? = nil
         do {
+            self.searchIndexSemaphore.wait()
             for result in try handleToSQLiteDB!.prepare(query) {
                 idOfNewestMessage = result[id]
             }
+            self.searchIndexSemaphore.signal()
         } catch {
+            self.searchIndexSemaphore.signal()
             print("Error when querying newest message in search index: \(error)")
         }
         return idOfNewestMessage
@@ -460,7 +493,9 @@ extension EncryptedSearchIndexService {
         // Check if db table exists
         let table = Table(DatabaseConstants.Table_Searchable_Messages)
         do {
+            self.searchIndexSemaphore.wait()
             let _ = try handle?.scalar(table.exists)
+            self.searchIndexSemaphore.signal()
         } catch {
             self.createSearchIndexTable(using: handle!)
         }
@@ -476,7 +511,9 @@ extension EncryptedSearchIndexService {
 
         let handle: Connection? = self.connectToSearchIndex(for: userID)
         do {
+            self.searchIndexSemaphore.wait()
             try handle?.run("VACUUM")
+            self.searchIndexSemaphore.signal()
         } catch {
             print("Error when compressing the search index db: \(error)")
         }
