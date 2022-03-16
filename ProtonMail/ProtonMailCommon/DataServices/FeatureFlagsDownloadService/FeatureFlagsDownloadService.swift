@@ -63,6 +63,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     enum FeatureFlagFetchingError: Error {
         case fetchingTooOften
         case networkError(Error)
+        case selfIsReleased
     }
 
     func getFeatureFlags(completion: (FeatureFlagsDownloadCompletion)?) {
@@ -73,7 +74,11 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         }
 
         let request = FeatureFlagsRequest()
-        apiService.exec(route: request) { [unowned self] (task, response: FeatureFlagsResponse) in
+        apiService.exec(route: request) { [weak self] (task, response: FeatureFlagsResponse) in
+            guard let self = self else {
+                completion?(.failure(.selfIsReleased))
+                return
+            }
             if let error = task?.error {
                 completion?(.failure(.networkError(error)))
                 return
