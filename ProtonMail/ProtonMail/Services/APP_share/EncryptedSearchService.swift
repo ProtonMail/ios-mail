@@ -457,9 +457,9 @@ extension EncryptedSearchService {
             self.sendIndexingMetrics(indexTime: indexingTime, userID: userID)
 
             // Compress sqlite database
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3){
-                EncryptedSearchIndexService.shared.compressSearchIndex(for: userID)
-            }
+            //DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+            //    EncryptedSearchIndexService.shared.compressSearchIndex(for: userID)
+            //}
 
             // Update UI
             self.updateUIWithIndexingStatus(userID: userID)
@@ -1614,8 +1614,11 @@ extension EncryptedSearchService {
         let startIndexSearch: Double = CFAbsoluteTimeGetCurrent()
         let index: EncryptedsearchIndex = self.getIndex(userID: userID)
         do {
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.openDBConnection()
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error when opening DB connection: \(error)")
         }
 
@@ -1632,9 +1635,12 @@ extension EncryptedSearchService {
 
             var newResults: EncryptedsearchResultList? = EncryptedsearchResultList()
             do {
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 newResults = try index.searchNewBatch(fromDB: searcher, cipher: cipher, state: self.searchState, batchSize: batchSize)
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 resultsFound += newResults!.length()
             } catch {
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error while searching... ", error)
             }
 
@@ -1664,8 +1670,11 @@ extension EncryptedSearchService {
         }
 
         do {
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
             try index.closeDBConnection()
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
         } catch {
+            EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             print("Error while closing database Connection: \(error)")
         }
 
