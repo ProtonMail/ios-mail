@@ -45,8 +45,11 @@ extension EncryptedSearchCacheService {
         if currentUserID != userId || !(self.cache?.isBuilt())! {
             self.cache?.deleteAll()
             do {
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.wait()
                 try self.cache?.cacheIndex(dbParams, cipher: cipher, batchSize: Int(self.batchSize))
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
             } catch {
+                EncryptedSearchIndexService.shared.searchIndexSemaphore.signal()
                 print("Error when building the cache: ", error)
             }
             self.currentUserID = userId
