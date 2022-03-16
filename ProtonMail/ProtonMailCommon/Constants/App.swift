@@ -36,8 +36,8 @@ struct Constants {
         static let SpaceWarningThreshold: Int          = 90
         static let SpaceWarningThresholdDouble: Double = 90
         static let SplashVersion : Int                 = 1
-        static let TourVersion : Int                   = 2
-        
+        static let TourVersion : Int                   = 3
+
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
          

@@ -21,6 +21,7 @@
 //  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import UIKit
 
 class OnboardView: UIView {
     let scrollView = SubviewsFactory.scrollView

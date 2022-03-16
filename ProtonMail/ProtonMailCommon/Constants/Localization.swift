@@ -892,11 +892,23 @@ class LocalizedString {
 
     lazy var _neat_and_tidy = NSLocalizedString("Neat and tidy", comment: "Onboarding title")
 
+    lazy var _brand_new_look = NSLocalizedString("New look, same protection", comment: "Onboarding title")
+
+    lazy var _onboarding_conversations = NSLocalizedString("Conversations", comment: "Onboarding title")
+
+    lazy var _and_more = NSLocalizedString("And more…", comment: "Onboarding title")
+
     lazy var _easily_up_to_date_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
 
     lazy var _simply_private_content = NSLocalizedString("Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.", comment: "Onboarding content")
 
     lazy var _neat_and_tidy_content = NSLocalizedString("File, label, and color code messages to create your perfect, custom inbox.", comment: "Onboarding content")
+
+    lazy var _brand_new_look_content = NSLocalizedString("Your encrypted email has been entirely redesigned for ease of use.", comment: "Onboarding content")
+
+    lazy var _onboarding_conversations_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
+
+    lazy var _and_more_content = NSLocalizedString("Enjoy improvements like dark mode, an unread messages filter, and subfolders.", comment: "Onboarding content")
 
     lazy var _skip_btn_title = NSLocalizedString("Skip", comment: "skip button title in onboarding page")
 

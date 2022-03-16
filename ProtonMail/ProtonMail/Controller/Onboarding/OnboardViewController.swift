@@ -22,7 +22,13 @@
 
 import UIKit
 
-class OnboardViewController: UIViewController, UIScrollViewDelegate {
+extension OnboardViewController {
+    enum OnboardingType {
+        case newUser, update
+    }
+}
+
+final class OnboardViewController: UIViewController, UIScrollViewDelegate {
     private let pageWidth: CGFloat = UIScreen.main.bounds.size.width
     private(set) lazy var customView = OnboardView()
 
@@ -33,7 +39,22 @@ class OnboardViewController: UIViewController, UIScrollViewDelegate {
         return .lightContent
     }
 
-    private let onboardingList: [Onboarding] = [.page1, .page2, .page3]
+    private let onboardingList: [Onboarding]
+
+    init(type: OnboardingType) {
+        switch type {
+        case .newUser:
+            self.onboardingList = [.page1, .page2, .page3]
+        case .update:
+            self.onboardingList = [.updateIntro1, .updateIntro2, .updateIntro3]
+        }
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func loadView() {
         view = customView
