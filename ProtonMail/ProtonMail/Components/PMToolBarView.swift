@@ -101,15 +101,29 @@ class PMToolBarView: UIView {
 
     private func setUpViews() {
         btnStackView.alignment = .center
-        btnStackView.distribution = .fillEqually
+        btnStackView.distribution = .fill
         btnStackView.axis = .horizontal
+        let initialSpacer = UIView()
+        btnStackView.addArrangedSubview(initialSpacer)
         btnStackView.addArrangedSubview(unreadButtonView)
+        btnStackView.addArrangedSubview(UIView())
         btnStackView.addArrangedSubview(deleteButtonView)
+        // Do not need a spacer here since the delete and trash button will not appear at the same time.
         btnStackView.addArrangedSubview(trashButtonView)
+        btnStackView.addArrangedSubview(UIView())
         btnStackView.addArrangedSubview(moveToButtonView)
+        btnStackView.addArrangedSubview(UIView())
         btnStackView.addArrangedSubview(labelAsButtonView)
+        btnStackView.addArrangedSubview(UIView())
         btnStackView.addArrangedSubview(moreButtonView)
+        btnStackView.addArrangedSubview(UIView())
         backgroundColor = ColorProvider.BackgroundNorm
+
+        btnStackView.arrangedSubviews.forEach { view in
+            [
+                view.widthAnchor.constraint(equalTo: initialSpacer.widthAnchor)
+            ].activate()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -182,7 +196,10 @@ class PMToolBarView: UIView {
                 btn.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 btn.topAnchor.constraint(equalTo: view.topAnchor),
                 btn.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                btn.heightAnchor.constraint(equalToConstant: 40.0)
+                btn.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                btn.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                btn.heightAnchor.constraint(equalToConstant: 40.0),
+                btn.widthAnchor.constraint(equalToConstant: 48.0),
             ].activate()
             return view
         }
