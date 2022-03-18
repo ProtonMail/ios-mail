@@ -180,4 +180,22 @@ class SingleMessageContentViewModel {
         nonExapndedHeaderViewModel = NonExpandedHeaderViewModel(labelId: context.labelId, message: message, user: user)
     }
 
+    func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
+                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
+        internetStatusProvider.getConnectionStatuses { [weak self] networkStatus in
+            guard self?.message.body.isEmpty == true else {
+                return
+            }
+            let isApplicationActive = isApplicationActive()
+            switch isApplicationActive {
+            case true where networkStatus == .NotReachable:
+                break
+            case true:
+                self?.downloadDetails()
+            default:
+                reloadWhenAppIsActive(true)
+            }
+        }
+    }
+
 }

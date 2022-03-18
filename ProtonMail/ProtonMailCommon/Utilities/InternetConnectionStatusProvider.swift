@@ -2,7 +2,7 @@ class InternetConnectionStatusProvider {
 
     private let notificationCenter: NotificationCenter
     private var reachability: Reachability
-    private var currentStatusHasChanged: ((NetworkStatus) -> Void)?
+    private(set) var currentStatusHasChanged: ((NetworkStatus) -> Void)?
 
     init(notificationCenter: NotificationCenter = .default,
          reachability: Reachability = .forInternetConnection()) {

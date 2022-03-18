@@ -19,11 +19,11 @@ import CoreData
 
 class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
     private let conversationID: String
-    private let coreDataService: CoreDataService
+    private let contextProvider: CoreDataContextProviderProtocol
     private var conversationDidUpdate: (() -> Void)?
 
     private lazy var fetchedController: NSFetchedResultsController<NSFetchRequestResult>? = {
-        let context = coreDataService.mainContext
+        let context = contextProvider.mainContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
@@ -41,9 +41,9 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         )
     }()
 
-    init(conversationID: String, coreDataService: CoreDataService) {
+    init(conversationID: String, contextProvider: CoreDataContextProviderProtocol) {
         self.conversationID = conversationID
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
     }
 
     func observe(conversationDidUpdate: @escaping () -> Void) {
