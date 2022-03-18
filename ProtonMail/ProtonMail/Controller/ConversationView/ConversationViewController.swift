@@ -6,7 +6,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                   UIScrollViewDelegate, ComposeSaveHintProtocol {
 
     let viewModel: ConversationViewModel
-    let coordinator: ConversationCoordinator
+    let coordinator: ConversationCoordinatorProtocol
+    private let applicationStateProvider: ApplicationStateProvider
     private(set) lazy var customView = ConversationView()
     private var selectedMessageID: String?
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
@@ -19,10 +20,14 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private var autoScrollIndexPath: IndexPath?
     private var autoScrollPosition: UITableView.ScrollPosition?
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
+    private(set) var shouldReloadWhenAppIsActive = false
 
-    init(coordinator: ConversationCoordinator, viewModel: ConversationViewModel) {
+    init(coordinator: ConversationCoordinatorProtocol,
+         viewModel: ConversationViewModel,
+         applicationStateProvider: ApplicationStateProvider = UIApplication.shared) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
         self.viewModel.conversationViewController = self
     }
@@ -39,56 +44,28 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
         starButtonSetUp(starred: viewModel.conversation.starred)
 
-        viewModel.refreshView = { [weak self] in
-            guard let self = self else { return }
-            self.refreshNavigationViewIfNeeded()
-            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
-            let isNewMessageFloatyPresented = self.customView.subviews
-                .contains(where: { $0 is ConversationNewMessageFloatyView })
-            guard !isNewMessageFloatyPresented else { return }
-
-            // Prevent the banner being covered by the action bar
-            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
-        }
-
-        viewModel.dismissView = { [weak self] in
-            DispatchQueue.main.async {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-
-        viewModel.reloadRows = { [weak self] rows in
-            DispatchQueue.main.async {
-                self?.customView.tableView.reloadRows(at: rows, with: .automatic)
-                self?.checkNavigationTitle()
-            }
-        }
-
-        viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
-            guard messageID == self?.selectedMessageID else { return }
-            self?.dismissActionSheet()
-        }
-
-        viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
-            self?.showNewMessageFloatyView(messageId: messageId)
-        }
+        setupViewModel()
 
         conversationNavigationViewPresenter.present(viewType: viewModel.simpleNavigationViewType, in: navigationItem)
         customView.separator.isHidden = true
 
-        viewModel.fetchConversationDetails { [weak self] in
+        viewModel.fetchConversationDetails(completion: ) { [weak self] in
+            self?.viewModel.isInitialDataFetchCalled = true
             delay(0.5) { // wait a bit for the UI to update
                 self?.viewModel.messagesDataSource
-                .compactMap {
-                    $0.messageViewModel?.state.expandedViewModel?.messageContent
-                }.forEach {
-                    $0.markReadIfNeeded()
-                }
+                    .compactMap {
+                        $0.messageViewModel?.state.expandedViewModel?.messageContent
+                    }.forEach {
+                        $0.markReadIfNeeded()
+                    }
             }
         }
+
         viewModel.observeConversationUpdate()
         viewModel.observeConversationMessages(tableView: customView.tableView)
         setUpToolBar()
+
+        registerNotification()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -247,6 +224,72 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+    }
+
+    private func registerNotification() {
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIScene.willEnterForegroundNotification,
+                             object: nil)
+        } else {
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIApplication.willEnterForegroundNotification,
+                             object: nil)
+        }
+    }
+
+    private func setupViewModel() {
+        viewModel.refreshView = { [weak self] in
+            guard let self = self else { return }
+            self.refreshNavigationViewIfNeeded()
+            self.starButtonSetUp(starred: self.viewModel.conversation.starred)
+            let isNewMessageFloatyPresented = self.customView.subviews
+                .contains(where: { $0 is ConversationNewMessageFloatyView })
+            guard !isNewMessageFloatyPresented else { return }
+
+            // Prevent the banner being covered by the action bar
+            self.view.subviews.compactMap({ $0 as? PMBanner }).forEach({ self.view.bringSubviewToFront($0) })
+        }
+
+        viewModel.dismissView = { [weak self] in
+            DispatchQueue.main.async {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+
+        viewModel.reloadRows = { [weak self] rows in
+            DispatchQueue.main.async {
+                self?.customView.tableView.reloadRows(at: rows, with: .automatic)
+                self?.checkNavigationTitle()
+            }
+        }
+
+        viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
+            guard messageID == self?.selectedMessageID else { return }
+            self?.dismissActionSheet()
+        }
+
+        viewModel.showNewMessageArrivedFloaty = { [weak self] messageId in
+            self?.showNewMessageFloatyView(messageId: messageId)
+        }
+
+        viewModel.startMonitorConnectionStatus { [weak self] in
+            return self?.applicationStateProvider.applicationState == .active
+        } reloadWhenAppIsActive: { [weak self] value in
+            self?.shouldReloadWhenAppIsActive = value
+        }
+    }
+
+    @objc
+    private func willBecomeActive(_ notification: Notification) {
+        if shouldReloadWhenAppIsActive {
+            viewModel.fetchConversationDetails(completion: nil)
+            shouldReloadWhenAppIsActive = false
+        }
     }
 
     required init?(coder: NSCoder) { nil }

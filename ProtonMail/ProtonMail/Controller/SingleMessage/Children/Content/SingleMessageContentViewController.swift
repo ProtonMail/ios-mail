@@ -23,17 +23,22 @@ class SingleMessageContentViewController: UIViewController {
     private(set) var messageBodyViewController: NewMessageBodyViewController!
     private(set) var bannerViewController: BannerViewController?
     private(set) var attachmentViewController: AttachmentViewController?
+    private let applicationStateProvider: ApplicationStateProvider
+
+    private(set) var shouldReloadWhenAppIsActive = false
 
     init(viewModel: SingleMessageContentViewModel,
          parentScrollView: UIScrollView,
          viewMode: ViewMode,
-         navigationAction: @escaping (SingleMessageNavigationAction) -> Void) {
+         navigationAction: @escaping (SingleMessageNavigationAction) -> Void,
+         applicationStateProvider: ApplicationStateProvider = UIApplication.shared) {
         self.viewModel = viewModel
         self.parentScrollView = parentScrollView
         self.navigationAction = navigationAction
         let moreThanOneContact = viewModel.message.isHavingMoreThanOneContact
         let replyState = HeaderContainerView.ReplyState.from(moreThanOneContact: moreThanOneContact)
-        self.customView = SingleMessageContentView(replyState: replyState)
+        self.customView =  SingleMessageContentView(replyState: replyState)
+        self.applicationStateProvider = applicationStateProvider
         super.init(nibName: nil, bundle: nil)
 
         self.messageBodyViewController =
@@ -74,6 +79,13 @@ class SingleMessageContentViewController: UIViewController {
             guard let self = self else { return }
             self.embedAttachmentViewIfNeeded()
         }
+
+        viewModel.startMonitorConnectionStatus { [weak self] in
+            return self?.applicationStateProvider.applicationState == .active
+        } reloadWhenAppIsActive: { [weak self] value in
+            self?.shouldReloadWhenAppIsActive = value
+        }
+
 
         addObservations()
         setUpHeaderActions()
@@ -229,6 +241,11 @@ class SingleMessageContentViewController: UIViewController {
                                                    selector: #selector(saveOffset),
                                                    name: UIWindowScene.didEnterBackgroundNotification,
                                                    object: nil)
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIScene.willEnterForegroundNotification,
+                             object: nil)
         } else {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(restoreOffset),
@@ -238,12 +255,12 @@ class SingleMessageContentViewController: UIViewController {
                                                    selector: #selector(saveOffset),
                                                    name: UIApplication.didEnterBackgroundNotification,
                                                    object: nil)
+            NotificationCenter.default
+                .addObserver(self,
+                             selector: #selector(willBecomeActive),
+                             name: UIApplication.willEnterForegroundNotification,
+                             object: nil)
         }
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(networkStatusUpdated(_:)),
-                                               name: NSNotification.Name.reachabilityChanged,
-                                               object: nil)
     }
 
     @objc
@@ -342,6 +359,13 @@ class SingleMessageContentViewController: UIViewController {
         }
     }
 
+    @objc
+    private func willBecomeActive(_ notification: Notification) {
+        if shouldReloadWhenAppIsActive {
+            viewModel.downloadDetails()
+            shouldReloadWhenAppIsActive = false
+        }
+    }
 }
 
 extension SingleMessageContentViewController: NewMessageBodyViewControllerDelegate {
@@ -408,16 +432,6 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
 
     func hideDecryptionErrorBanner() {
         bannerViewController?.hideDecryptionBanner()
-    }
-
-    @objc
-    private func networkStatusUpdated(_ note: Notification) {
-        guard let currentReachability = note.object as? Reachability else { return }
-        if currentReachability.currentReachabilityStatus() == .NotReachable && viewModel.message.body.isEmpty {
-            messageBodyViewController.showReloadError()
-        } else if currentReachability.currentReachabilityStatus() != .NotReachable && viewModel.message.body.isEmpty {
-            viewModel.downloadDetails()
-        }
     }
 
     @objc

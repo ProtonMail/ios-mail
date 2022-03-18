@@ -48,7 +48,7 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
-    private let coreDataService: CoreDataService
+    private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmails: [Email]
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
@@ -78,13 +78,16 @@ class ConversationViewModel {
     }
 
     let isDarkModeEnableClosure: () -> Bool
+    let connectionStatusProvider: InternetConnectionStatusProvider
+    var isInitialDataFetchCalled = false
 
     init(labelId: String,
          conversation: Conversation,
          user: UserManager,
          openFromNotification: Bool = false,
-         coreDataService: CoreDataService,
+         contextProvider: CoreDataContextProviderProtocol,
          isDarkModeEnableClosure: @escaping () -> Bool,
+         connectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
          targetID: String? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -92,11 +95,12 @@ class ConversationViewModel {
         self.conversationService = user.conversationService
         self.contactService = user.contactService
         self.eventsService = user.eventsService
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
-                                                                     coreDataService: coreDataService)
+                                                                     contextProvider: contextProvider)
+        self.connectionStatusProvider = connectionStatusProvider
         self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
@@ -181,6 +185,24 @@ class ConversationViewModel {
             return self.displayRule == .showTrashedOnly ? true: false
         } else {
             return self.displayRule == .showNonTrashedOnly ? true: false
+        }
+    }
+
+    func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
+                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
+        connectionStatusProvider.getConnectionStatuses { [weak self] networkStatus in
+            guard self?.isInitialDataFetchCalled == true else {
+                return
+            }
+            let isApplicationActive = isApplicationActive()
+            switch isApplicationActive {
+            case true where networkStatus == .NotReachable:
+                break
+            case true:
+                self?.fetchConversationDetails(completion: nil)
+            default:
+                reloadWhenAppIsActive(true)
+            }
         }
     }
 
@@ -273,7 +295,7 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            let context = self.coreDataService.operationContext
+            let context = contextProvider.rootSavingContext
             context.perform { [weak self] in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID) else {

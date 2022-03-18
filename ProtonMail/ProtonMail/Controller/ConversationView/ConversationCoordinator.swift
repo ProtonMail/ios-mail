@@ -1,6 +1,15 @@
 import SafariServices
 
-class ConversationCoordinator: CoordinatorDismissalObserver {
+protocol ConversationCoordinatorProtocol: AnyObject {
+    var viewController: ConversationViewController? { get set }
+    var conversation: Conversation { get }
+    var pendingActionAfterDismissal: (() -> Void)? { get set }
+
+    func start(openFromNotification: Bool)
+    func handle(navigationAction: ConversationNavigationAction)
+}
+
+class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordinatorProtocol {
 
     weak var viewController: ConversationViewController?
 
@@ -29,7 +38,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
             conversation: conversation,
             user: user,
             openFromNotification: openFromNotification,
-            coreDataService: CoreDataService.shared,
+            contextProvider: CoreDataService.shared,
             isDarkModeEnableClosure: { [weak self] in
                 if #available(iOS 12.0, *) {
                     return self?.viewController?.traitCollection.userInterfaceStyle == .dark
@@ -42,28 +51,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         let viewController = ConversationViewController(coordinator: self, viewModel: viewModel)
         self.viewController = viewController
         navigationController.pushViewController(viewController, animated: true)
-    }
-
-    private func presentCreateFolder(type: PMLabelType) {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
-        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
-        let viewController = LabelEditViewController.instance()
-        let coordinator = LabelEditCoordinator(services: sharedServices,
-                                               viewController: viewController,
-                                               viewModel: viewModel,
-                                               coordinatorDismissalObserver: self)
-        coordinator.start()
-        if let navigation = viewController.navigationController {
-            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
-        }
-    }
-
-    private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
-        guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
-        let viewer = PlainTextViewerViewController(text: text, subType: subType)
-        try? FileManager.default.removeItem(at: fileUrl)
-        self.navigationController.pushViewController(viewer, animated: true)
     }
 
     func handle(navigationAction: ConversationNavigationAction) {
@@ -99,6 +86,30 @@ class ConversationCoordinator: CoordinatorDismissalObserver {
         case .inAppSafari(let url):
             presentInAppSafari(url: url)
         }
+    }
+
+    // MARK: - Private methods
+
+    private func presentCreateFolder(type: PMLabelType) {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
+        let viewController = LabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: sharedServices,
+                                               viewController: viewController,
+                                               viewModel: viewModel,
+                                               coordinatorDismissalObserver: self)
+        coordinator.start()
+        if let navigation = viewController.navigationController {
+            self.viewController?.navigationController?.present(navigation, animated: true, completion: nil)
+        }
+    }
+
+    private func presentQuickLookView(url: URL?, subType: PlainTextViewerViewController.ViewerSubType) {
+        guard let fileUrl = url, let text = try? String(contentsOf: fileUrl) else { return }
+        let viewer = PlainTextViewerViewController(text: text, subType: subType)
+        try? FileManager.default.removeItem(at: fileUrl)
+        self.navigationController.pushViewController(viewer, animated: true)
     }
 
     private func presentCompose(with contact: ContactVO) {
