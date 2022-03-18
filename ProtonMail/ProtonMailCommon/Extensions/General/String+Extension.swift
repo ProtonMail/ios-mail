@@ -324,6 +324,18 @@ extension String {
         return escaped
     }
 
+    // This is function only for composer
+    // If we have chance to refactor, move this to the composer
+    func removeMailToIfNeeded() -> String {
+        let trimedString = self.trim()
+        if trimedString.starts(with: "mailto:") {
+            return trimedString.preg_replace_none_regex("mailto:", replaceto: "")
+        }
+        // Contact name could contain white space
+        // If the string doesn't start with mailto
+        // should return the original string
+        return self
+    }
 }
 
 extension Array where Element == String {

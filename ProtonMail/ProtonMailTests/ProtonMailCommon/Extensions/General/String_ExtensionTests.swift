@@ -265,6 +265,32 @@ final class String_ExtensionTests: XCTestCase {
     func testCommaSeparatedListShouldIgnoreEmptyStringElements() {
         XCTAssertEqual(["", "foo", "", "bar"].asCommaSeparatedList(trailingSpace: true), "foo, bar")
     }
+
+    func testRemoveMailToIfNeeded() {
+        var str = "mailto:abc@test.com"
+        var result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, "abc@test.com")
+
+        str = "     mailto:abc@test.com"
+        result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, "abc@test.com")
+
+        str = "prefix.mailto:abc@test.com"
+        result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, str)
+
+        str = "abc@test.com"
+        result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, str)
+
+        str = "mapto:abc@test.com"
+        result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, str)
+
+        str = "Tester name "
+        result = str.removeMailToIfNeeded()
+        XCTAssertEqual(result, str)
+    }
 }
 
 extension String_ExtensionTests {
