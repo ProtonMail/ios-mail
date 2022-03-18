@@ -704,6 +704,7 @@
 		3E724EF52DDD6B35673BF9F8E3B72E62 /* PMPersistentQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A05398C79EAECBC2E82E416B095FC49 /* PMPersistentQueueTests.swift */; };
 		3E7E85EBEB902C372627E989FCEBBCA6 /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
 		3E82044001396820D1AB44C18F556191 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
+		3E98DB8827E4670B002F1F86 /* URLExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98DB8727E4670B002F1F86 /* URLExtensionTests.swift */; };
 		3E9D6672ECABDD2B0EAB0D7BE50A2E5B /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D394383D98A5D6AEB90D77A4143AF /* UIImage+Color.swift */; };
 		3EA9BE501A613DA294BEED8B5F74D86E /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
 		3EC6534B99A311E7D4DEA29AF63BE530 /* LabelInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60CC66A0BE0E1546684A7EFAA99D14D /* LabelInfoCell.xib */; };
@@ -3313,6 +3314,7 @@
 		3E08B8C80244FDBD275865A7C7214F59 /* UsersManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsersManagerTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/UsersManager/UsersManagerTests.swift; sourceTree = SOURCE_ROOT; };
 		3E34C84EA9D69134A34A7E1F81876135 /* TaskCompletionHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TaskCompletionHelperTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/TaskCompletionHelperTests.swift; sourceTree = SOURCE_ROOT; };
 		3E494605B2B07C12F16F1F186BC45977 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = tr; path = ../../ProtonMail/tr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		3E98DB8727E4670B002F1F86 /* URLExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtensionTests.swift; sourceTree = "<group>"; };
 		3E9C644BCCC51C9E7EC5933C97B4E629 /* MBProgressHUD+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+Helper.swift"; sourceTree = "<group>"; };
 		3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		3EE042A9690E3ECA5AD9CE5B95C14901 /* ActionSheetPresentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetPresentProtocol.swift; sourceTree = "<group>"; };
@@ -6259,6 +6261,7 @@
 		9B77069927AACE5CA4A08B9A308AD30D /* General */ = {
 			isa = PBXGroup;
 			children = (
+				3E98DB8727E4670B002F1F86 /* URLExtensionTests.swift */,
 				8DCD832B7D80F8578CDE77AE75A2DEE0 /* Collection_ExtensionTests.swift */,
 				5E78A83BDEB778319CEB813234F03DEC /* Date+ExtensionTests.swift */,
 				DD201ADF118C4EEE263A4B1845063065 /* Dictionary_ExtensionTests.swift */,
@@ -9126,6 +9129,7 @@
 				4A5476F91FA5F32A2CA57438A7E208B2 /* ConversationTestData.swift in Sources */,
 				41FBBBE0A1108D0DC466791CD99E4498 /* ConversationViewControllerTests.swift in Sources */,
 				DC4251607837327F5E9C6EDF20086344 /* CryptoTests+Message.swift in Sources */,
+				3E98DB8827E4670B002F1F86 /* URLExtensionTests.swift in Sources */,
 				A55972FD7F3C7011E816C380375E3F13 /* CryptoTests+Signature.swift in Sources */,
 				DB08C4BECEB3F565B940EB75DD362D0C /* CryptoTests.swift in Sources */,
 				06E538711B164D43DEAD54D773838C6C /* DarkModeStatusStub.swift in Sources */,

@@ -403,12 +403,12 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
 
         case .linkActivated where navigationAction.request.url != nil:
             defer { decisionHandler(.cancel) }
-            guard let url = navigationAction.request.url else { return }
+            guard var url = navigationAction.request.url else { return }
             if url.absoluteString == String.fullDecryptionFailedViewLink {
                 self.delegate?.openFullCryptoPage()
                 return
             }
-
+            url = url.removeProtonSchemeIfNeeded()
             self.validateNotPhishing(url) { [weak self] allowedToOpen in
                 guard let self = self else { return }
                 if allowedToOpen {
