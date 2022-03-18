@@ -82,4 +82,20 @@ extension URL {
 
         return result
     }
+
+    func removeProtonSchemeIfNeeded() -> URL {
+        guard self.scheme == "pm-incoming-mail" else {
+            return self
+        }
+
+        var link = "https:/\(self.path)"
+        if let query = self.query {
+            link = "\(link)?\(query)"
+        }
+        if let newURL = URL(string: link) {
+            return newURL
+        }
+        // Not sure how this situation could happen
+        return self
+    }
 }
