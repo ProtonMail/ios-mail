@@ -554,7 +554,7 @@ extension ContactCollectionView: UITextFieldDelegateImproved {
                 if cell.frame.minX > 0 &&
                     (self.frame.width - cell.frame.minX) <= (10 + width) &&
                     width < self.frame.width {
-                    self.searchText = newString
+                    self.searchText = newString?.removeMailToIfNeeded()
                     isEntryCellRefreshing = true
                     self.reloadItems(at: [self.entryCellIndexPath])
                     isEntryCellRefreshing = false
@@ -600,7 +600,8 @@ extension ContactCollectionView: UITextFieldDelegateImproved {
         guard !isEntryCellRefreshing else {
             return
         }
-        self.searchText = self.searchText.preg_replace_none_regex("mailto:", replaceto: "")
+        self.searchText = self.searchText.removeMailToIfNeeded()
+
         textField.text = self.searchText
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
