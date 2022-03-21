@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "och";
 
+/* Onboarding title */
+"And more…" = "Och mer…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Konversationsläge";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "Kopiera";
 
@@ -1086,6 +1092,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "Ange";
 
@@ -1176,13 +1185,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Fil-, etikett- och färgkodsmeddelanden för att skapa din perfekta, anpassade inkorg.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Mapp";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Nyckel ogiltig. Gå tillbaka och försök igen.";
+
+/* The title of first button in the action bar */
+"Label" = "Etikett";
 
 /* No comment provided by engineer. */
 "Label as" = "Märk som";
@@ -1739,15 +1744,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Rent och snyggt";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Registrera dig gratis";
 
@@ -1772,6 +1768,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Ny etikett";
+
+/* Onboarding title */
+"New look, same protection" = "Nytt utseende, samma skydd";
 
 /* Title */
 "New mailbox password" = "Nytt lösenord för brevlådan";
@@ -2247,6 +2246,9 @@
 
 /* reply all action */
 "Reply all" = "Svara alla";
+
+/* The title of first button in the action bar */
+"Reply All" = "Svara alla";
 
 /* composer view model impl */
 "Reply message" = "Svara meddelande";
@@ -3174,6 +3176,9 @@
 /* Confirmation message before deleting a message */
 "You're going to delete the message irreversibly. Are you sure?" = "Du kommer att ta bort meddelandet oåterkalleligt. Är du säker?";
 
+/* The secondary title of no result message */
+"You're up to date" = "Du är uppdaterad";
+
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Your changes will be discarded";
 
@@ -3185,6 +3190,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda ProtonVPN (eller någon annan VPN) eller Tor för att komma åt Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";

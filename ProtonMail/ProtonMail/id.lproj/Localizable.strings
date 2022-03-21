@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "dan";
 
+/* Onboarding title */
+"And more…" = "Dan lainnya…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Hari Pernikahan";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Mode percakapan";
 
+/* Onboarding title */
+"Conversations" = "Percakapan";
+
 /* Title */
 "Copy" = "Salin";
 
@@ -1086,6 +1092,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Nikmati enkripsi dua arah bersama kontak di luar Proton: Ajak mereka pakai ProtonMail atau enkripsi pesan mereka secara manual.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Nikmati peningkatan mutu seperti mode gelap, filter pesan tidak terbaca, dan subfolder.";
+
 /* Action in 2fa popup view */
 "Enter" = "Masukkan";
 
@@ -1176,13 +1185,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Sortir, tandai, dan warnai pesan di kotak masuk sesuai selera Anda.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Folder";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Kunci tidak valid. Silakan kembali dan coba lagi.";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "Beri label sebagai";
@@ -1739,15 +1744,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Rapi";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Daftar gratis";
 
@@ -1772,6 +1768,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Label Baru";
+
+/* Onboarding title */
+"New look, same protection" = "Tampilan baru, perlindungan yang sama";
 
 /* Title */
 "New mailbox password" = "Kata sandi baru untuk kotak masuk";
@@ -2247,6 +2246,9 @@
 
 /* reply all action */
 "Reply all" = "Balas semua";
+
+/* The title of first button in the action bar */
+"Reply All" = "Balas Semua";
 
 /* composer view model impl */
 "Reply message" = "Balas pesan";
@@ -3185,6 +3187,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Negara anda mungkin memblokir akses ke Proton. Coba gunakan ProtonVPN (atau VPN lainnya) atau Tor untuk mengakses Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Email terenkripsi Anda telah sepenuhnya dirancang ulang untuk kemudahan penggunaan.";
 
 /* Title of user feedback view */
 "Your feedback" = "Tanggapan Anda";
