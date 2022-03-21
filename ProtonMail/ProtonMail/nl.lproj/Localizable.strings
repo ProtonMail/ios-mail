@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "en";
 
+/* Onboarding title */
+"And more…" = "En meer…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Jubileum";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Gesprek modus";
 
+/* Onboarding title */
+"Conversations" = "Gesprekken";
+
 /* Title */
 "Copy" = "Kopie";
 
@@ -1086,6 +1092,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Geniet van end-to-end versleuteling met zelfs niet-Proton contacten: Nodig ze uit voor ProtonMail of codeer hun berichten handmatig.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Geniet van verbeteringen zoals donkere modus, een ongelezen berichten-filter en submappen.";
+
 /* Action in 2fa popup view */
 "Enter" = "Invoeren";
 
@@ -1176,13 +1185,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Bestand, label en kleurcode berichten om uw perfecte, aangepaste inbox te creëren.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Map";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Sleutel ongeldig. Ga terug en probeer het opnieuw.";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "Label als";
@@ -1739,15 +1744,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Netjes en opgeruimd";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Meld u gratis aan";
 
@@ -1772,6 +1768,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Nieuw Label";
+
+/* Onboarding title */
+"New look, same protection" = "Nieuwe look, zelfde beveiliging";
 
 /* Title */
 "New mailbox password" = "Nieuw mailbox-wachtwoord";
@@ -2248,6 +2247,9 @@
 /* reply all action */
 "Reply all" = "Allen beantwoorden";
 
+/* The title of first button in the action bar */
+"Reply All" = "Allen beantwoorden";
+
 /* composer view model impl */
 "Reply message" = "Bericht beantwoorden";
 
@@ -2326,6 +2328,12 @@
 
 /* Title */
 "Send plain but stored encrypted" = "Verzend plain maar opgeslagen versleuteld";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Leesbevestiging verzenden";
+
+/* Message of a banner which is displayed when sender request a read receipt */
+"Send read receipt." = "Leesbevestiging verzenden.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Ontvangstbewijs versturen";
@@ -3185,6 +3193,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer ProtonVPN (of een andere VPN) of Tor te gebruiken voor toegang tot Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Uw versleutelde e-mail werd volledig herontworpen voor gebruiksvriendelijkheid.";
 
 /* Title of user feedback view */
 "Your feedback" = "Uw feedback";

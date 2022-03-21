@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "και";
 
+/* Onboarding title */
+"And more…" = "And more…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Επέτειος";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Λειτουργία συνομιλίας";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "Αντιγραφή";
 
@@ -884,6 +890,9 @@
 
 /* Title */
 "Do you want to save the unsaved changes?" = "Θέλετε να αποθηκεύσετε τις μη αποθηκευμένες αλλαγές;";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Θέλετε να αποστείλετε το μήνυμα ως έχει;";
 
 /* Action */
 "Don't remind me again" = "Μην μου υπενθυμίσεις ξανά";
@@ -1086,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Απολαύστε κρυπτογράφηση από άκρο σε άκρο με ακόμη και μη Proton επαφές: Προσκαλέστε τους στο ProtonMail ή κρυπτογραφήστε με μη αυτόματο τρόπο τα μηνύματά τους.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "Εισαγωγή";
 
@@ -1126,7 +1138,7 @@
 "Error Logs" = "Αρχεία καταγραφής των σφαλμάτων";
 
 /* Error alert title */
-"Error occurred" = "Παρουσιάστηκε σφάλμα";
+"Error occurred" = "Προέκυψε σφάλμα";
 
 /* incorrect email format error in composer */
 "Error sending" = "Σφάλμα αποστολής";
@@ -1176,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Αρχειοθετήστε, εφαρμόσετε ετικέτες και χρώματα στα μηνύματά σας, για να δημιουργήσετε τα τέλεια, προσαρμοσμένα εισερχόμενά σας.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Φάκελος";
@@ -1452,6 +1457,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Το κλειδί δεν είναι έγκυρο. Επιστρέψτε και δοκιμάστε ξανά.";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "Σήμανση με ετικέτα ως";
@@ -1739,15 +1747,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Τακτοποιημένα";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Εγγραφείτε δωρεάν";
 
@@ -1773,6 +1772,9 @@
 /* No comment provided by engineer. */
 "New Label" = "Νέα Ετικέτα";
 
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
+
 /* Title */
 "New mailbox password" = "Νέος κωδικός πρόσβασης θυρίδας";
 
@@ -1790,6 +1792,9 @@
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Ψευδώνυμο";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Κανένα συνημμένο";
 
 /* Title */
 "No connectivity detected…" = "Δεν εντοπίστηκε σύνδεση…";
@@ -2247,6 +2252,9 @@
 
 /* reply all action */
 "Reply all" = "Απάντηση σε όλους";
+
+/* The title of first button in the action bar */
+"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "Μήνυμα απάντησης";
@@ -3185,6 +3193,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε το ProtonVPN (ή οποιοδήποτε άλλο VPN) ή το Tor για πρόσβαση στο Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "Η γνώμη σας";

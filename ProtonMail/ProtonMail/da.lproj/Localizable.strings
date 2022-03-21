@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "og";
 
+/* Onboarding title */
+"And more…" = "And more…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Samtaletilstand";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "Kopiér";
 
@@ -1086,6 +1092,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til ProtonMail eller kryptere deres beskeder manuelt.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
 
@@ -1176,13 +1185,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Arkivér, etikettér og farvekod beskeder for at skabe din perfekte, tilpassede indbakke.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Mapppe";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Nøgle ugyldig, gå tilbage og forsøg igen.";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "Tilføj etiket";
@@ -1739,15 +1744,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Pæn og ryddelig";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "BEHOV FOR EN KONTO? TILMELD DIG.";
 
@@ -1772,6 +1768,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Ny etiket";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
 
 /* Title */
 "New mailbox password" = "Ny postkasseadgangskode";
@@ -2247,6 +2246,9 @@
 
 /* reply all action */
 "Reply all" = "Svar alle";
+
+/* The title of first button in the action bar */
+"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "Svar på besked";
@@ -3185,6 +3187,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Dit land blokerer muligvis for adgangen til Proton. Prøv at bruge ProtonVPN (eller enhver anden VPN) eller Tor for at tilgå Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";

@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "és";
 
+/* Onboarding title */
+"And more…" = "És több…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Évforduló";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Conversation mode";
 
+/* Onboarding title */
+"Conversations" = "Beszélgetések";
+
 /* Title */
 "Copy" = "Copy";
 
@@ -1086,6 +1092,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Élvezze az olyan újításokat, mint a sötét mód, az olvasatlan levelek szűrése és az almappák.";
+
 /* Action in 2fa popup view */
 "Enter" = "Belépés";
 
@@ -1176,13 +1185,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Mappa";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Érvénytelen kulcs. Kérjük, menjen vissza és próbálja meg újra.";
+
+/* The title of first button in the action bar */
+"Label" = "Címke";
 
 /* No comment provided by engineer. */
 "Label as" = "Label as";
@@ -1739,15 +1744,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Neat and tidy";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Regisztráljon ingyenesen";
 
@@ -1772,6 +1768,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "New Label";
+
+/* Onboarding title */
+"New look, same protection" = "Új kinézet, ugyanaz a védelem";
 
 /* Title */
 "New mailbox password" = "Új e-mail jelszó";
@@ -2247,6 +2246,9 @@
 
 /* reply all action */
 "Reply all" = "Válasz mindenkinek";
+
+/* The title of first button in the action bar */
+"Reply All" = "Válasz mindenkinek";
 
 /* composer view model impl */
 "Reply message" = "Válasz üzenet";
@@ -3185,6 +3187,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Az ön országában a Proton elérése korlátozott lehet. Használjon ProtonVPN-t (vagy bármely más VPN-t) vagy Tor-t a Proton eléréshez.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "A titkosított emailje teljesen újra lett tervezve a könnyebb kezelhetőségért.";
 
 /* Title of user feedback view */
 "Your feedback" = "Your feedback";
