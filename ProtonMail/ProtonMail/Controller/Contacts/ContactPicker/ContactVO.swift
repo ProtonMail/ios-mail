@@ -190,13 +190,15 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
             switch self.pgpType {
             case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
                 return LocalString._stored_with_zero_access_encryption
-            case .eo, .internal_normal: // PM --> PM (encrypted+signed)
+            case .eo:
                 return LocalString._end_to_end_encrypted_message
+            case .internal_normal: // PM --> PM (encrypted+signed)
+                return LocalString._end_to_end_encrypted_signed_message
             case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
                 return LocalString._end_to_end_encrypted_message_from_verified_address
 
             case .pgp_encrypted:
-                return LocalString._pgp_encrypted_message
+                return LocalString._pgp_encrypted_signed_message
             case .pgp_encrypt_trusted_key:
                 return LocalString._pgp_encrypted_message_from_verified_address
             case .pgp_signed:// non-PM signed PGP --> PM (pinned)
@@ -208,9 +210,9 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
                  .pgp_signed_verify_failed:
                 return LocalString._sender_verification_failed
             case .sent_sender_out_side:
-                return LocalString._end_to_end_encrypted_message
+                return LocalString._stored_with_zero_access_encryption
             case .sent_sender_encrypted:
-                return LocalString._end_to_end_encrypted_message
+                return LocalString._sent_by_you_with_end_to_end_encryption
             case .zero_access_store:
                 return LocalString._stored_with_zero_access_encryption
             case .sent_sender_server:
