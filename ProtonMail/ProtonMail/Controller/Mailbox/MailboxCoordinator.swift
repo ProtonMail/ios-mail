@@ -307,7 +307,8 @@ extension MailboxCoordinator {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: self.viewModel.user
+            user: self.viewModel.user,
+            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self)
         )
         conversationCoordinator = coordinator
         coordinator.start()
@@ -369,7 +370,7 @@ extension MailboxCoordinator {
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: String, goToDetailPage: @escaping () -> Void) {
-        guard internetStatusProvider.currentStatus != .NotReachable else {
+        guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
             return
         }
@@ -401,6 +402,7 @@ extension MailboxCoordinator {
                                                       navigationController: navigationController,
                                                       conversation: conversation,
                                                       user: self.viewModel.user,
+                                                      internetStatusProvider: InternetConnectionStatusProvider(),
                                                       targetID: targetID)
             coordinator.start(openFromNotification: true)
         }

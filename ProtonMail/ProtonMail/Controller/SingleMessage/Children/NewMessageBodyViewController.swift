@@ -113,7 +113,7 @@ class NewMessageBodyViewController: UIViewController {
                 self?.updateViewHeight(to: height)
                 self?.viewModel.recalculateCellHeight?(true)
             }
-        } else if viewModel.internetStatusProvider.currentStatus == .NotReachable &&
+        } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
                     !viewModel.message.isDetailDownloaded {
             prepareReloadView()
         } else {

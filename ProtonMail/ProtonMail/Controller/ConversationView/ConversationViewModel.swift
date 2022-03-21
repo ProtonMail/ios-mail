@@ -86,8 +86,8 @@ class ConversationViewModel {
          user: UserManager,
          openFromNotification: Bool = false,
          contextProvider: CoreDataContextProviderProtocol,
+         internetStatusProvider: InternetConnectionStatusProvider,
          isDarkModeEnableClosure: @escaping () -> Bool,
-         connectionStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
          targetID: String? = nil) {
         self.labelId = labelId
         self.conversation = conversation
@@ -100,7 +100,6 @@ class ConversationViewModel {
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
-        self.connectionStatusProvider = connectionStatusProvider
         self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
@@ -108,6 +107,7 @@ class ConversationViewModel {
         headerSectionDataSource = [.header(subject: conversation.subject)]
 
         recordNumOfMessages = conversation.numMessages.intValue
+        self.connectionStatusProvider = internetStatusProvider
         self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
     }
 
@@ -155,6 +155,7 @@ class ConversationViewModel {
                                                      message: message,
                                                      user: user,
                                                      replacingEmails: sharedReplacingEmails,
+                                                     internetStatusProvider: connectionStatusProvider,
                                                      isDarkModeEnableClosure: isDarkModeEnableClosure)
         return .message(viewModel: viewModel)
     }
@@ -190,13 +191,13 @@ class ConversationViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        connectionStatusProvider.getConnectionStatuses { [weak self] networkStatus in
+        connectionStatusProvider.registerConnectionStatus { [weak self] networkStatus in
             guard self?.isInitialDataFetchCalled == true else {
                 return
             }
             let isApplicationActive = isApplicationActive()
             switch isApplicationActive {
-            case true where networkStatus == .NotReachable:
+            case true where networkStatus == .notConnected:
                 break
             case true:
                 self?.fetchConversationDetails(completion: nil)

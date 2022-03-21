@@ -29,6 +29,8 @@ class ConversationViewControllerTests: XCTestCase {
     var apiMock: APIServiceMock!
     var fakeUser: UserManager!
     var applicationStateMock: MockApplicationStateProvider!
+    var internetStatusProviderMock: InternetConnectionStatusProvider!
+    var reachabilityStub: ReachabilityStub!
 
     override func setUp() {
         super.setUp()
@@ -37,11 +39,14 @@ class ConversationViewControllerTests: XCTestCase {
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         apiMock = APIServiceMock()
         fakeUser = UserManager(api: apiMock, role: .none)
+        reachabilityStub = ReachabilityStub()
+        internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
                                                   user: fakeUser,
                                                   contextProvider: contextProvider,
+                                                  internetStatusProvider: internetStatusProviderMock,
                                                   isDarkModeEnableClosure: {
             return false
         })
@@ -77,7 +82,7 @@ class ConversationViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 1)
 
         // Connection status changed
-        viewModelMock.connectionStatusProvider.currentStatusHasChanged?(.ReachableViaWWAN)
+        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaCellular)
         XCTAssertTrue(sut.shouldReloadWhenAppIsActive)
 
         // Simulate app brings to foreground
@@ -100,15 +105,15 @@ class ConversationViewControllerTests: XCTestCase {
 
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 1)
         // Connection status changed
-        viewModelMock.connectionStatusProvider.currentStatusHasChanged?(.ReachableViaWWAN)
+        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaCellular)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 2)
 
-        viewModelMock.connectionStatusProvider.currentStatusHasChanged?(.ReachableViaWiFi)
+        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaWiFi)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 3)
 
-        viewModelMock.connectionStatusProvider.currentStatusHasChanged?(.NotReachable)
+        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.notConnected)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         // No call api when there is no connection
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 3)

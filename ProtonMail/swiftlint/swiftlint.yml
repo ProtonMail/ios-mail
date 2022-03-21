@@ -263,6 +263,7 @@ included:
   - ${PWD}/ProtonMail/Controller/Views/CompactBannerView.swift
   - ${PWD}/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelper.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageProvider.swift
+  - ${PWD}/ProtonMailCommon/Utilities/ConnectionStatus/ConnectionMonitor.swift
 
 excluded:
   - ${PWD}/Pods

@@ -561,6 +561,7 @@ extension SearchViewController {
                 navigationController: navigation,
                 conversation: conversation,
                 user: self.viewModel.user,
+                internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
                 targetID: messageID
             )
             coordinator.start()

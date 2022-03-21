@@ -27,15 +27,15 @@ struct ContactPGPTypeHelper {
     typealias PGPTypeCheckCompletionBlock = (PGPType, Int?, String?) -> Void
 
     func calculatePGPType(email: String, isMessageHavingPwd: Bool, completion: @escaping PGPTypeCheckCompletionBlock) {
-        internetConnectionStatusProvider.getConnectionStatuses(currentStatus: { status in
-            if status == .NotReachable {
+        internetConnectionStatusProvider.registerConnectionStatus { status in
+            if status == .notConnected {
                 getPGPTypeLocally(email: email, completion: completion)
             } else {
                 getPGPType(email: email,
                            isMessageHavingPwd: isMessageHavingPwd,
                            completion: completion)
             }
-        })
+        }
     }
 
     func getPGPTypeLocally(email: String, completion: @escaping PGPTypeCheckCompletionBlock) {

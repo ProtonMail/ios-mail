@@ -430,7 +430,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     }
 
     private func observeInternetConnectionStatus() {
-        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
             guard status.isConnected else {
                 self?.isConnected = false
                 return

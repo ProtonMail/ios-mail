@@ -714,7 +714,7 @@ extension UsersManager: APIServiceDelegate {
     }
 
     func isReachable() -> Bool {
-        return internetConnectionStatusProvider.currentStatus != NetworkStatus.NotReachable
+        return internetConnectionStatusProvider.currentStatus != .notConnected
     }
 
     func onUpdate(serverTime: Int64) {

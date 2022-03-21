@@ -1,3 +1,6 @@
+
+import Foundation
+
 struct SingleMessageContentViewContext {
     let labelId: String
     let message: Message
@@ -116,7 +119,7 @@ class SingleMessageContentViewModel {
             }
             return
         }
-        guard internetStatusProvider.currentStatus != .NotReachable else {
+        guard internetStatusProvider.currentStatus != .notConnected else {
             self.messageBodyViewModel.messageHasChanged(message: self.message, isError: true)
             return
         }
@@ -182,13 +185,13 @@ class SingleMessageContentViewModel {
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
                                       reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        internetStatusProvider.getConnectionStatuses { [weak self] networkStatus in
+        internetStatusProvider.registerConnectionStatus { [weak self] networkStatus in
             guard self?.message.body.isEmpty == true else {
                 return
             }
             let isApplicationActive = isApplicationActive()
             switch isApplicationActive {
-            case true where networkStatus == .NotReachable:
+            case true where networkStatus == .notConnected:
                 break
             case true:
                 self?.downloadDetails()
