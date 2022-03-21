@@ -65,38 +65,34 @@ extension Attachment {
     }
 
     // Mark : functions
-    func encrypt(byKey key: Key, mailbox_pwd: String) -> (Data, URL)? {
-        do {
-            if let clearData = self.fileData, localURL == nil {
-                try writeToLocalURL(data: clearData)
-                self.fileData = nil
-            }
-            guard let localURL = self.localURL else {
-                return nil
-            }
-
-            var error: NSError?
-            let key = CryptoNewKeyFromArmored(key.publicKey, &error)
-            if let err = error {
-                throw err
-            }
-
-            let keyRing = CryptoNewKeyRing(key, &error)
-            if let err = error {
-                throw err
-            }
-
-            guard let aKeyRing = keyRing else {
-                return nil
-            }
-
-            let cipherURL = localURL.appendingPathExtension("cipher")
-            let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
-
-            return (keyPacket, cipherURL)
-        } catch {
+    func encrypt(byKey key: Key, mailbox_pwd: String) throws -> (Data, URL)? {
+        if let clearData = self.fileData, localURL == nil {
+            try writeToLocalURL(data: clearData)
+            self.fileData = nil
+        }
+        guard let localURL = self.localURL else {
             return nil
         }
+
+        var error: NSError?
+        let key = CryptoNewKeyFromArmored(key.publicKey, &error)
+        if let err = error {
+            throw err
+        }
+
+        let keyRing = CryptoNewKeyRing(key, &error)
+        if let err = error {
+            throw err
+        }
+
+        guard let aKeyRing = keyRing else {
+            return nil
+        }
+
+        let cipherURL = localURL.appendingPathExtension("cipher")
+        let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
+
+        return (keyPacket, cipherURL)
     }
 
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {

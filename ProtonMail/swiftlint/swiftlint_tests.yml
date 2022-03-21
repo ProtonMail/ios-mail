@@ -91,6 +91,7 @@ included:
   - ${PWD}/ProtonMailTests/Mocks/MockConversationProvider.swift
   - ${PWD}/ProtonMailTests/Mocks/MockMessageProvider.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
 
 excluded:
   - ${PWD}/Pods
