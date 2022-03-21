@@ -101,9 +101,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var noResultMainLabel: UILabel!
     @IBOutlet weak var noResultSecondaryLabel: UILabel!
     @IBOutlet weak var noResultFooterLabel: UILabel!
-
-    private var lastNetworkStatus: NetworkStatus?
-
+    
+    private var lastNetworkStatus: ConnectionStatus? = nil
+    
     private var shouldAnimateSkeletonLoading = false
     private var shouldKeepSkeletonUntilManualDismissal = false
     private var isShowingUnreadMessageOnly: Bool {
@@ -129,6 +129,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
     private var isDiffableDataSourceEnabled: Bool = false
+
+    let connectionStatusProvider = InternetConnectionStatusProvider()
 
     func inactiveViewModel() {
         guard self.viewModel != nil else {
@@ -259,6 +261,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         setupAccessibility()
 
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
+
+        connectionStatusProvider.registerConnectionStatus { newStatus in
+            self.updateInterface(connectionStatus: newStatus)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -304,8 +310,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
-        self.updateInterface(reachability: sharedInternetReachability)
-
+        self.updateInterface(connectionStatus: connectionStatusProvider.currentStatus)
+        
         let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
         if let selectedItem = selectedItem {
             if self.viewModel.isInDraftFolder {
@@ -353,10 +359,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func scheduleNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reachabilityChanged(_:)),
-                                               name: NSNotification.Name.reachabilityChanged,
-                                               object: nil)
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(doEnterForeground),
@@ -1331,6 +1333,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 return
             }
 
+            guard connectionStatusProvider.currentStatus.isConnected else {
+                defer {
+                    self.updateTapped(status: false)
+                }
+                guard message.body.isEmpty else {
+                    openCachedDraft(message)
+                    return
+                }
+                let alert = LocalString._unable_to_edit_offline.alertController()
+                alert.addOKAction()
+                present(alert, animated: true, completion: nil)
+                return
+            }
+            
             showProgressHud()
             self.viewModel.messageService.ForcefetchDetailForMessage(message, runInQueue: false) { [weak self] _, _, msg, error in
                 self?.hideProgressHud()
@@ -1365,7 +1381,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
             }
         }
+    }
 
+    private func openCachedDraft(_ message: Message) {
+        coordinator?.go(to: .composeShow, sender: message)
+        tableView.indexPathsForSelectedRows?.forEach {
+            tableView.deselectRow(at: $0, animated: true)
+        }
+        updateTapped(status: false)
     }
 
     private func setupLeftButtons(_ editingMode: Bool) {
@@ -1463,7 +1486,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func updateLastUpdateTimeLabel() {
-        if let status = self.lastNetworkStatus, status == .NotReachable {
+        if let status = self.lastNetworkStatus, status == .notConnected {
             var attribute = FontManager.CaptionHint
             attribute[.foregroundColor] = ColorProvider.NotificationError
             updateTimeLabel.attributedText = NSAttributedString(string: LocalString._mailbox_offline_text, attributes: attribute)
@@ -2094,58 +2117,33 @@ extension MailboxViewController {
 
 // MARK: - Handle Network status changed
 extension MailboxViewController {
-    @objc private func reachabilityChanged(_ note: Notification) {
-        if let currentReachability = note.object as? Reachability {
-            self.updateInterface(reachability: currentReachability)
-        } else {
-            if let status = note.object as? Int, sharedInternetReachability.currentReachabilityStatus() != .NotReachable {
-                DispatchQueue.main.async {
-                    if status == 0 { // time out
-                        self.showTimeOutErrorMessage()
-                        self.hasNetworking = false
-                    } else if status == 1 { // not reachable
-                        self.showNoInternetErrorMessage()
-                        self.hasNetworking = false
-                    }
-                }
-            }
-        }
-    }
-
-    private func updateInterface(reachability: Reachability) {
-        let netStatus = reachability.currentReachabilityStatus()
-        switch netStatus {
-        case .NotReachable:
+    private func updateInterface(connectionStatus: ConnectionStatus) {
+        switch connectionStatus {
+        case .notConnected:
             self.showNoInternetErrorMessage()
             self.hasNetworking = false
             self.showInternetConnectionBanner()
             self.hasNetworking = false
-        case .ReachableViaWWAN:
-            self.hideInternetConnectionBanner()
-            self.afterNetworkChange(status: netStatus)
-            self.hasNetworking = true
-        case .ReachableViaWiFi:
-            self.hideInternetConnectionBanner()
-            self.afterNetworkChange(status: netStatus)
-            self.hasNetworking = true
         default:
-            break
+            self.hideInternetConnectionBanner()
+            self.afterNetworkChange(status: connectionStatus)
+            self.hasNetworking = true
         }
-        lastNetworkStatus = netStatus
-
+        lastNetworkStatus = connectionStatus
+        
         self.updateLastUpdateTimeLabel()
     }
-
-    private func afterNetworkChange(status: NetworkStatus) {
+    
+    private func afterNetworkChange(status: ConnectionStatus) {
         guard let oldStatus = lastNetworkStatus else {
             return
         }
-
-        guard oldStatus == .NotReachable else {
+        
+        guard oldStatus == .notConnected else {
             return
         }
-
-        if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
+        
+        if status == .connectedViaCellular || status == .connectedViaEthernet || status == .connectedViaWiFi {
             self.retry(delay: 5)
         }
     }
@@ -2378,6 +2376,9 @@ extension MailboxViewController: UITableViewDelegate {
                 let recordedCount = totalMessage
                 // here need add a counter to check if tried too many times make one real call in case count not right
                 if isNew || recordedCount > sectionCount {
+                    guard connectionStatusProvider.currentStatus.isConnected else {
+                        return
+                    }
                     self.fetchingOlder = true
                     if !refreshControl.isRefreshing {
                         self.tableView.showLoadingFooter()

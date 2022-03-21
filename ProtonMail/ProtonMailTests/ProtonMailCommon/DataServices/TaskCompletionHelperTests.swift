@@ -33,10 +33,11 @@ class TaskCompletionHelperTests: XCTestCase {
 
     func testCalculateIsInternetIssue_normalError() {
         let error = NSError.encryptionError()
-        XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .ReachableViaWWAN))
-        XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .ReachableViaWiFi))
+        XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaCellular))
+        XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaWiFi))
+        XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaEthernet))
 
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .NotReachable))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .notConnected))
     }
 
     func testCalculateIsInternetIssue_NSURLError() {
@@ -44,67 +45,67 @@ class TaskCompletionHelperTests: XCTestCase {
                                         code: NSURLErrorTimedOut,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error1, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error1, currentNetworkStatus: .connectedViaCellular))
 
         let error2 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorCannotConnectToHost,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error2, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error2, currentNetworkStatus: .connectedViaCellular))
 
         let error3 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorCannotFindHost,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error3, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error3, currentNetworkStatus: .connectedViaCellular))
 
         let error4 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorDNSLookupFailed,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error4, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error4, currentNetworkStatus: .connectedViaCellular))
 
         let error5 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorNotConnectedToInternet,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error5, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error5, currentNetworkStatus: .connectedViaCellular))
 
         let error6 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorSecureConnectionFailed,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error6, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error6, currentNetworkStatus: .connectedViaCellular))
 
         let error7 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorDataNotAllowed,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error7, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error7, currentNetworkStatus: .connectedViaCellular))
 
         let error8 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorCannotFindHost,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error8, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error8, currentNetworkStatus: .connectedViaCellular))
 
         let error9 = NSError.CreateError(NSURLErrorDomain,
                                         code: NSURLErrorHTTPTooManyRedirects,
                                         localizedDescription: "Test",
                                         localizedFailureReason: "Test")
-        XCTAssertFalse(sut.calculateIsInternetIssue(error: error9, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertFalse(sut.calculateIsInternetIssue(error: error9, currentNetworkStatus: .connectedViaCellular))
     }
 
     func testCalculateIsInternetIssue_withNSPOSIXError() {
         let error = NSError.CreateError(NSPOSIXErrorDomain,
                                        code: 100,
                                        localizedDescription: "", localizedFailureReason: "")
-        XCTAssertTrue(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertTrue(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaCellular))
 
         let error1 = NSError.CreateError(NSPOSIXErrorDomain,
                                        code: 1000,
                                        localizedDescription: "", localizedFailureReason: "")
-        XCTAssertFalse(sut.calculateIsInternetIssue(error: error1, currentNetworkStatus: .ReachableViaWWAN))
+        XCTAssertFalse(sut.calculateIsInternetIssue(error: error1, currentNetworkStatus: .connectedViaCellular))
     }
 
     func testHandleReachabilityChangedNotification_timeoutError() {

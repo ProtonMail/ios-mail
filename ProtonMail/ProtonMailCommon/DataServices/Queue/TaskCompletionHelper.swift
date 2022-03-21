@@ -23,7 +23,7 @@ struct TaskCompletionHelper {
         static let networkResponseErrorKey = "com.alamofire.serialization.response.error.response"
     }
 
-    func calculateIsInternetIssue(error: NSError, currentNetworkStatus: NetworkStatus) -> Bool {
+    func calculateIsInternetIssue(error: NSError, currentNetworkStatus: ConnectionStatus) -> Bool {
         var result = false
 
         if error.domain == NSURLErrorDomain {
@@ -46,7 +46,7 @@ struct TaskCompletionHelper {
             result = true
         } else {
             switch currentNetworkStatus {
-            case .NotReachable:
+            case .notConnected:
                 result = true
             default: break
             }

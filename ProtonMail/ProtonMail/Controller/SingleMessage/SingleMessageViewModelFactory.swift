@@ -25,6 +25,7 @@ class SingleMessageContentViewModelFactory {
     func createViewModel(
         context: SingleMessageContentViewContext,
         user: UserManager,
+        internetStatusProvider: InternetConnectionStatusProvider,
         isDarkModeEnableClosure: @escaping () -> Bool
     ) -> SingleMessageContentViewModel {
         let childViewModels = SingleMessageChildViewModels(
@@ -33,7 +34,7 @@ class SingleMessageContentViewModelFactory {
             bannerViewModel: banner(labelId: context.labelId, message: context.message, user: user),
             attachments: attachments(message: context.message)
         )
-        return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: .init())
+        return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: internetStatusProvider)
     }
 
     private func messageBody(message: Message,

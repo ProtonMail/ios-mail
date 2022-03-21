@@ -145,9 +145,9 @@ extension AppDelegate: TrustKitUIDelegate {
     }
 }
 
-// move to a manager class later
+//move to a manager class later
 let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
-// let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
+//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
@@ -167,6 +167,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
+        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         return true
     }
 

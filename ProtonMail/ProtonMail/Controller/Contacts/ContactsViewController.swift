@@ -200,8 +200,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     }
 
     @objc internal func fireFetch() {
-        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
-            guard status != .NotReachable else {
+        internetConnectionStatusProvider.registerConnectionStatus { [weak self] status in
+            guard status.isConnected else {
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
                 }

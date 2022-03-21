@@ -18,18 +18,21 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     let conversation: Conversation
     private let user: UserManager
     private let targetID: String?
+    private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
 
     init(labelId: String,
          navigationController: UINavigationController,
          conversation: Conversation,
          user: UserManager,
+         internetStatusProvider: InternetConnectionStatusProvider,
          targetID: String? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
         self.user = user
         self.targetID = targetID
+        self.internetStatusProvider = internetStatusProvider
     }
 
     func start(openFromNotification: Bool = false) {
@@ -39,6 +42,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             user: user,
             openFromNotification: openFromNotification,
             contextProvider: CoreDataService.shared,
+            internetStatusProvider: internetStatusProvider,
             isDarkModeEnableClosure: { [weak self] in
                 if #available(iOS 12.0, *) {
                     return self?.viewController?.traitCollection.userInterfaceStyle == .dark

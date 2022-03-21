@@ -312,7 +312,7 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard internetStatusProvider.currentStatus != .NotReachable,
+        guard internetStatusProvider.currentStatus != .notConnected,
               self.checkQueueStatus() == .running,
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {
