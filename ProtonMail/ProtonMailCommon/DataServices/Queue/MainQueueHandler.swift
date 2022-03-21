@@ -410,10 +410,58 @@ extension MainQueueHandler {
         self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
         return
     }
+    
+    private func handleAttachmentResponse(error: NSError?,
+                                          response: [String : Any]?,
+                                          task: URLSessionDataTask?,
+                                          context: NSManagedObjectContext,
+                                          attachment: Attachment,
+                                          keyPacket: Data,
+                                          completion: CompletionBlock?) {
+        if error == nil,
+           let attDict = response?["Attachment"] as? [String : Any],
+           let id = attDict["ID"] as? String
+        {
+            self.coreDataService.enqueue(context: context) { (context) in
+                attachment.attachmentID = id
+                attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+                attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+
+                // proper headers from BE - important for inline attachments
+                if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
+                    attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+                }
+                attachment.cleanLocalURLs()
+
+                _ = context.saveUpstreamIfNeeded()
+                NotificationCenter
+                    .default
+                    .post(name: .attachmentUploaded,
+                          object: nil,
+                          userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                     "attachmentID": attachment.attachmentID])
+                completion?(task, response, error)
+            }
+        } else {
+            defer {
+                completion?(task, response, error)
+            }
+            guard let err = error else { return }
+
+            let reason = err.localizedDescription
+            NotificationCenter
+                .default
+                .post(name: .attachmentUploadFailed,
+                      object: nil,
+                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
+                                 "reason": reason,
+                                 "code": err.code])
+        }
+    }
 
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        context.perform {
             guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(managedObjectID),
                   let managedObject = try? context.existingObject(with: objectID),
                   let attachment = managedObject as? Attachment else {
@@ -455,71 +503,53 @@ extension MainQueueHandler {
                 completion?(nil, nil, NSError.encryptionError())
                 return
             }
+            
+            autoreleasepool(){
+                do {
+                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else
+                    {
+                        MainQueueHandlerHelper
+                            .removeAllAttachmentsNotUploaded(of: attachment.message,
+                                                             context: context)
+                        completion?(nil, nil, NSError.encryptionError())
+                        return
+                    }
 
-            autoreleasepool {
-                guard let (keyPacket, dataPacketURL) = attachment.encrypt(byKey: key, mailbox_pwd: passphrase) else {
-                    completion?(nil, nil, NSError.encryptionError())
+                    Crypto().freeGolangMem()
+                    let signed = attachment.sign(byKey: key,
+                                                 userKeys: userKeys,
+                                                 passphrase: passphrase)
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        self.handleAttachmentResponse(error: error,
+                                                      response: response,
+                                                      task: task,
+                                                      context: context,
+                                                      attachment: attachment,
+                                                      keyPacket: keyPacket,
+                                                      completion: completion)
+                    }
+
+                    ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
+                    self.user?.apiService.uploadFromFile(byPath: "/attachments",
+                                                         parameters: params,
+                                                         keyPackets: keyPacket,
+                                                         dataPacketSourceFileURL: dataPacketURL,
+                                                         signature: signed,
+                                                         headers: .empty,
+                                                         authenticated: true,
+                                                         customAuthCredential: attachment.message.cachedAuthCredential,
+                                                         completion: completionWrapper)
+
+                } catch let error {
+                    MainQueueHandlerHelper
+                        .removeAllAttachmentsNotUploaded(of: attachment.message,
+                                                         context: context)
+                    let err = error as NSError
+                    completion?(nil, nil, err)
                     return
                 }
-                Crypto().freeGolangMem()
-                let signed = attachment.sign(byKey: key,
-                                             userKeys: userKeys,
-                                             passphrase: passphrase)
-                let completionWrapper: CompletionBlock = { task, response, error in
-                    if error == nil,
-                       let attDict = response?["Attachment"] as? [String: Any],
-                       let id = attDict["ID"] as? String {
-                        self.coreDataService.enqueue(context: context) { (context) in
-                            attachment.attachmentID = id
-                            attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                            attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
-
-                            // proper headers from BE - important for inline attachments
-                            if let headerInfoDict = attDict["Headers"] as? [String: String] {
-                                attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
-                            }
-                            attachment.cleanLocalURLs()
-
-                            _ = context.saveUpstreamIfNeeded()
-                            NotificationCenter
-                                .default
-                                .post(name: .attachmentUploaded,
-                                      object: nil,
-                                      userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
-                                                 "attachmentID": attachment.attachmentID])
-                            completion?(task, response, error)
-                        }
-                    } else {
-                        defer {
-                            completion?(task, response, error)
-                        }
-                        guard let err = error else { return }
-
-                        let reason = err.localizedDescription
-                        NotificationCenter
-                            .default
-                            .post(name: .attachmentUploadFailed,
-                                  object: nil,
-                                  userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
-                                             "reason": reason,
-                                             "code": err.code])
-                    }
-                }
-
-                /// sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                self.user?.apiService.uploadFromFile(byPath: "/attachments",
-                                                     parameters: params,
-                                                     keyPackets: keyPacket,
-                                                     dataPacketSourceFileURL: dataPacketURL,
-                                                     signature: signed,
-                                                     headers: .empty,
-                                                     authenticated: true,
-                                                     customAuthCredential: attachment.message.cachedAuthCredential,
-                                                     nonDefaultTimeout: 60,
-                                                     completion: completionWrapper)
             }
         }
-
     }
 
     fileprivate func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
@@ -946,5 +976,22 @@ extension MainQueueHandler {
         conversationDataService.unlabel(conversationIDs: conversationIds, as: labelID, isSwipeAction: isSwipeAction) { result in
             completion?(nil, nil, result.nsError)
         }
+    }
+}
+
+enum MainQueueHandlerHelper {
+    static func removeAllAttachmentsNotUploaded(of message: Message,
+                                                context: NSManagedObjectContext) {
+        let toBeDeleted = message.attachments
+            .compactMap({ $0 as? Attachment })
+            .filter({ !$0.isUploaded })
+
+        toBeDeleted.forEach { attachment in
+            context.delete(attachment)
+        }
+        let attachmentCount = message.numAttachments.intValue
+        message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
+        _ = context.saveUpstreamIfNeeded()
+        context.refreshAllObjects()
     }
 }

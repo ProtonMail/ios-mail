@@ -2224,6 +2224,7 @@
 		C998BF9FC169B1810CE2EE034E614DAB /* ContactDetailsDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539074996CE23757D22112375FC84A40 /* ContactDetailsDisplayCell.swift */; };
 		C9B8E5E3C5B8C9AEB8F16B2819DB196A /* Pods_SiriDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B874B017458C7227D9E2D4617DD04D /* Pods_SiriDev.framework */; };
 		C9DB28A73D18FD2B3CC778D36B51E3E0 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0274395474CC1045787FCCB2815446EB /* APIResponse.swift */; };
+		C9F86AF2CE6093B6AD52A420A26575FB /* MainQueueHandlerHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3CB718C7B4FB81C177FFA22BF6DCA5 /* MainQueueHandlerHelperTests.swift */; };
 		C9FDA003EC894499994AA18C9F16B11D /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA9F4BAA358B9863B99D1FEDF582CD /* LoginTests.swift */; };
 		CA0833457D9A9A193832C37FC79CC6DA /* ApplicationStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396699C9954DEAB1C84763A8018B93B /* ApplicationStateProvider.swift */; };
 		CA4F2196C4ED76829194A8DBA8E2194D /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
@@ -3565,6 +3566,7 @@
 		6CA5BFC27D1E519D2AD5859FDAA37D18 /* MailboxViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MailboxViewModelTests.swift; path = ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/MailboxViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		6CB9C874239834B5F1B59146FB97B46A /* ConversationDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationDataService.swift; sourceTree = "<group>"; };
 		6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpirationWarningHeaderCell.xib; sourceTree = "<group>"; };
+		6D3CB718C7B4FB81C177FFA22BF6DCA5 /* MainQueueHandlerHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainQueueHandlerHelperTests.swift; path = DataServices/CacheService/MainQueueHandlerHelperTests.swift; sourceTree = "<group>"; };
 		6D6C64FE049CCAB116A41B87B7BC1195 /* ContactTypeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTypeViewModelImpl.swift; sourceTree = "<group>"; };
 		6D83506BBDC6E44B57939DD37118B91A /* LoginTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = LoginTests.xctestplan; sourceTree = "<group>"; };
 		6DC05E56DFDAE67F25DF1412A96C9F30 /* PushNotificationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceProtocol.swift; sourceTree = "<group>"; };
@@ -4691,6 +4693,7 @@
 				480F273763648FD7698B2501262450D4 /* Utilities */,
 				E66FBCA901B160366EEE7396742BF201 /* ViewModels */,
 				ECC8D4A8A9272FE785054B9FA34A0833 /* FetchMessagesByIDTests.swift */,
+				6D3CB718C7B4FB81C177FFA22BF6DCA5 /* MainQueueHandlerHelperTests.swift */,
 			);
 			path = ProtonMailCommon;
 			sourceTree = "<group>";
@@ -9188,6 +9191,7 @@
 				02BFDC37A50F978EAFB2D8CBBE7C8535 /* MailboxCoordinatorTests.swift in Sources */,
 				50BECA313EB68894A5A148AB1D79C8AC /* MailboxViewModelTests+Fetching.swift in Sources */,
 				30CB6A27B0FD3B2AFE6CFE10D82C3A36 /* MailboxViewModelTests.swift in Sources */,
+				C9F86AF2CE6093B6AD52A420A26575FB /* MainQueueHandlerHelperTests.swift in Sources */,
 				94C6F6FF22C6E01F99BD8C405F6BFDEF /* MenuLabelTests.swift in Sources */,
 				2AC8B6C8CFFF2677B76923532476DD7A /* MenuViewControllerUnitTest.swift in Sources */,
 				07DC3D5277BAFB5B1E8AF7E044AD9146 /* MenuViewModelTests.swift in Sources */,
