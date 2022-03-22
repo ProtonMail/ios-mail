@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 3/17/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -61,7 +61,7 @@ class SettingsGesturesViewController: ProtonMailViewController {
         self.tableView.separatorStyle = .none
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
-        self.infoIconImage.image = Asset.infoIcon.image
+        self.infoIconImage.image = IconProvider.infoCircle
         self.infoIconImage.tintColor = ColorProvider.TextWeak
         self.topInfoTitle.attributedText = LocalString._setting_swipe_action_info_title
             .apply(style: FontManager.CaptionWeak)
@@ -91,7 +91,7 @@ class SettingsGesturesViewController: ProtonMailViewController {
     }
 
     private func setupDismissButton() {
-        let dismissBtn = Asset.actionSheetClose.image
+        let dismissBtn = IconProvider.cross
             .toUIBarButtonItem(target: self,
                                action: #selector(self.dismissView),
                                style: .done,

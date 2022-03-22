@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Dodaj rocznicę";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Dodaj załącznik";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Tryb wątku";
 
-/* Onboarding title */
-"Conversations" = "Wątki";
-
 /* Title */
 "Copy" = "Kopiuj";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Ciesz się szyfrowaniem end-to-end nawet z kontaktami spoza Proton: Zaproś ich do poczty ProtonMail lub ręcznie zaszyfruj wiadomości.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Ciesz się ulepszeniami, takimi jak ciemny motyw, filtr nieprzeczytanych wiadomości i podfolderami.";
 
 /* Action in 2fa popup view */
 "Enter" = "Wpisz";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Nowa etykieta";
 
-/* Onboarding title */
-"New look, same protection" = "Nowy wygląd, ta sama ochrona";
-
 /* Title */
 "New mailbox password" = "Nowe hasło skrzynki pocztowej";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Potwierdzenie odczytu zostało wysłane";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Szczegóły odbiorcy";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Odbiorca nie został znaleziony";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Odzyskiwanie zostało włączone";
+
+/* No comment provided by engineer. */
+"Reload" = "Odśwież";
 
 /* Title */
 "Remind Me Later" = "Przypomnij później";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Odpowiedz wszystkim";
-
-/* The title of first button in the action bar */
-"Reply All" = "Odpowiedz wszystkim";
 
 /* composer view model impl */
 "Reply message" = "Odpowiedz na wiadomość";

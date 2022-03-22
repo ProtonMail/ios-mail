@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import CoreData
@@ -351,6 +351,18 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         }
     }
 
+    override func showImportView() {
+        self.isOnMainView = true
+        let popup = ContactImportViewController(user: viewModel.user)
+        self.setPresentationStyleForSelfController(self,
+                                                   presentingController: popup,
+                                                   style: .overFullScreen)
+        popup.reloadAllContact = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        self.present(popup, animated: true, completion: nil)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
         let viewController = segue.destination
@@ -370,17 +382,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         } else if segue.identifier == kAddContactGroupSugue {
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
-        } else if segue.identifier == kSegueToImportView {
-            self.isOnMainView = true
-            let popup = segue.destination as! ContactImportViewController
-            // TODO: inject it via ViewModel when ContactImportViewController will have one
-            popup.user = self.viewModel.user
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
-            popup.reloadAllContact = { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
 
         if #available(iOS 13, *) { // detect view dismiss above iOS 13

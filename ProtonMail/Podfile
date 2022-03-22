@@ -26,13 +26,13 @@ def pm_shared_pods
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
   pod 'ProtonCore-Services', proton_core_version, :subspecs => ['AwaitKit+PromiseKit', 'Alamofire']
   pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-PaymentsUI-V5/UsingCrypto+Alamofire', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
-  pod 'ProtonCore-UIFoundations', proton_core_version
-  pod 'ProtonCore-Common/Alamofire', proton_core_version
+  pod 'ProtonCore-UIFoundations-V5', proton_core_version
+  pod 'ProtonCore-Common-V5/Alamofire', proton_core_version
   pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', proton_core_version
   pod 'Groot', '3.0.1'
   pod 'Masonry', '1.1.0'
@@ -51,12 +51,13 @@ def pm_pods
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
   pod 'ProtonCore-Challenge', proton_core_version
   pod 'ProtonCore-CoreTranslation', proton_core_version
+  pod 'ProtonCore-CoreTranslation-V5', proton_core_version
   pod 'ProtonCore-Log', proton_core_version
-  pod 'ProtonCore-AccountSwitcher', proton_core_version
-  pod 'ProtonCore-ForceUpgrade/Alamofire', proton_core_version
-  pod 'ProtonCore-HumanVerification/Alamofire', proton_core_version
+  pod 'ProtonCore-AccountSwitcher-V5', proton_core_version
+  pod 'ProtonCore-ForceUpgrade-V5/Alamofire', proton_core_version
+  pod 'ProtonCore-HumanVerification-V5/Alamofire', proton_core_version
   pod 'ProtonCore-Login/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-LoginUI/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-LoginUI-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'SideMenuSwift', '2.0.6'
   pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
@@ -104,10 +105,10 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Services/Alamofire', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto+Alamofire', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI-V5/UsingCrypto+Alamofire', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification-V5/Alamofire', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto+Alamofire', proton_core_version
   pm_pods
 end

@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Додати річницю";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Додати вкладення";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим розмов";
 
-/* Onboarding title */
-"Conversations" = "Розмови";
-
 /* Title */
 "Copy" = "Копіювати";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наскрізне шифрування навіть з контактами, які не користуються Proton. Запросіть їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Насолоджуйтесь такими покращеннями, як темний режим, фільтр непрочитаних повідомлень та підтеки.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Нова мітка";
 
-/* Onboarding title */
-"New look, same protection" = "Новий вигляд, той самий захист";
-
 /* Title */
 "New mailbox password" = "Новий пароль поштової скриньки";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Квитанцію надіслано";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Подробиці отримувача";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Отримувача не знайдено";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Відновлення активовано";
+
+/* No comment provided by engineer. */
+"Reload" = "Перезавантажити";
 
 /* Title */
 "Remind Me Later" = "Нагадати пізніше";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Відповісти усім";
-
-/* The title of first button in the action bar */
-"Reply All" = "Відповісти всім";
 
 /* composer view model impl */
 "Reply message" = "Відповісти на повідомлення";

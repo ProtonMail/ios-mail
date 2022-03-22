@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adăugare aniversare";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Adăugare atașament";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Mod conversație";
 
-/* Onboarding title */
-"Conversations" = "Conversații";
-
 /* Title */
 "Copy" = "Copiere";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Bucurați-vă de criptare în ambele părți chiar și cu contactele care nu sunt în Proton: Invitați-le în ProtonMail sau criptați manual mesajele acestora.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Bucurați-vă de îmbunătățiri precum modul întunecat, un filtru de mesaje necitite și subfoldere.";
 
 /* Action in 2fa popup view */
 "Enter" = "Introducere";
@@ -1673,6 +1666,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmare de citire trimisă";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Detalii destinatar";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatarul nu a fost găsit";
 
@@ -1688,6 +1684,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperare activată";
+
+/* No comment provided by engineer. */
+"Reload" = "Reîncărcare";
 
 /* Title */
 "Remind Me Later" = "Amintește-mi mai târziu";
@@ -1717,9 +1716,6 @@
 
 /* reply all action */
 "Reply all" = "Răspuns tuturor";
-
-/* The title of first button in the action bar */
-"Reply All" = "Răspuns tuturor";
 
 /* composer view model impl */
 "Reply message" = "Răspuns la mesaj";

@@ -1,0 +1,6 @@
+framework module ProtonCore_CoreTranslation_V5 {
+  umbrella header "ProtonCore-CoreTranslation-V5-umbrella.h"
+
+  export *
+  module * { export * }
+}

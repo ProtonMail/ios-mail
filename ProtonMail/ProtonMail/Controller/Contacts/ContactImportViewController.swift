@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 2/7/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import Contacts
@@ -27,13 +27,22 @@ import OpenPGP
 import ProtonCore_DataModel
 
 class ContactImportViewController: UIViewController {
-    var user: UserManager!
+    var user: UserManager
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var progressView: UIProgressView!
+    private(set) lazy var customView = ContactImportView()
+
+    override func loadView() {
+        self.view = customView
+    }
+
+    init(user: UserManager) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     private var cancelled: Bool = false
     private var showedCancel: Bool = false
@@ -60,19 +69,14 @@ class ContactImportViewController: UIViewController {
         super.viewDidLoad()
         self.appleContactParser = AppleContactParser(delegate: self,
                                                      coreDataService: sharedServices.get(by: CoreDataService.self))
-        progressView.progress = 0.0
-        titleLabel.text = LocalString._contacts_import_title
+        customView.progressView.progress = 0.0
+        customView.titleLabel.attributedText = LocalString._contacts_import_title.apply(style: .Headline.alignment(.center))
 
         delay(0.5) {
             self.fetchedResultsController = self.getFetchedResultsController()
-            self.messageLabel.text = LocalString._contacts_reading_contacts_data
+            self.customView.messageLabel.attributedText = LocalString._contacts_reading_contacts_data.apply(style: .CaptionWeak.alignment(.center))
             self.getContacts()
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -152,13 +156,13 @@ class ContactImportViewController: UIViewController {
 extension ContactImportViewController: AppleContactParserDelegate {
     func update(progress: Double) {
         DispatchQueue.main.async {
-            self.progressView.progress = Float(progress)
+            self.customView.progressView.progress = Float(progress)
         }
     }
 
     func update(message: String) {
         DispatchQueue.main.async {
-            self.messageLabel.text = message
+            self.customView.messageLabel.attributedText = message.apply(style: .CaptionWeak.alignment(.center))
         }
     }
 
@@ -176,7 +180,7 @@ extension ContactImportViewController: AppleContactParserDelegate {
 
     func disableCancel() {
         DispatchQueue.main.async {
-            self.cancelButton.isEnabled = false
+            self.customView.cancelButton.isEnabled = false
         }
     }
 

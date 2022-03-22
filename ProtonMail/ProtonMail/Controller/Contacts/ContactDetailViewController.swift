@@ -2,22 +2,22 @@
 //  ContactDetailViewController.swift
 //  ProtonMail
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import PromiseKit
@@ -128,7 +128,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
         // email contact
         emailContactLabel.text = LocalString._contacts_email_contact_title
-        emailContactImageView.image = Asset.envelope.image
+        emailContactImageView.image = IconProvider.envelope
         emailContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: ColorProvider.BrandNorm)
@@ -136,7 +136,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         emailContactImageView.backgroundColor = UIColor.lightGray
         // call contact
         callContactLabel.text = LocalString._contacts_call_contact_title
-        callContactImageView.image = UIImage.init(named: "Phone-28px-#ffffff")
+        callContactImageView.image = IconProvider.phone
         callContactImageView.setupImage(scale: 0.5,
                                         tintColor: UIColor.white,
                                         backgroundColor: ColorProvider.BrandNorm)
@@ -145,7 +145,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
 
         // share contact
         shareContactLabel.text = LocalString._contacts_share_contact_action
-        shareContactImageView.image = Asset.icArrowOutBox.image
+        shareContactImageView.image = IconProvider.arrowUpFromSquare
         shareContactImageView.setupImage(scale: 0.5,
                                          tintColor: UIColor.white,
                                          backgroundColor: ColorProvider.BrandNorm)

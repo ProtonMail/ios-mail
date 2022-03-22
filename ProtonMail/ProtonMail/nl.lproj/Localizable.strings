@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Verjaardag toevoegen";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Bijlage toevoegen";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Gesprek modus";
 
-/* Onboarding title */
-"Conversations" = "Gesprekken";
-
 /* Title */
 "Copy" = "Kopie";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Geniet van end-to-end versleuteling met zelfs niet-Proton contacten: Nodig ze uit voor ProtonMail of codeer hun berichten handmatig.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Geniet van verbeteringen zoals donkere modus, een ongelezen berichten-filter en submappen.";
 
 /* Action in 2fa popup view */
 "Enter" = "Invoeren";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Nieuw Label";
 
-/* Onboarding title */
-"New look, same protection" = "Nieuwe look, zelfde beveiliging";
-
 /* Title */
 "New mailbox password" = "Nieuw mailbox-wachtwoord";
 
@@ -1578,7 +1568,7 @@
 "Please set a password." = "Stel een wachtwoord in.";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Geef een herstel / notificatie e-mailadres op";
+"Please set a recovery / notification email" = "Geef alstublieft een herstel / notificatie e-mailadres op";
 
 /* (No Comment) */
 "Please try a different domain." = "Probeer een andere domeinnaam.";
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Ontvangstbewijs verzonden";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Ontvangergegevens";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Geadresseerde niet gevonden";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Herstel ingeschakeld";
+
+/* No comment provided by engineer. */
+"Reload" = "Opnieuw laden";
 
 /* Title */
 "Remind Me Later" = "Herinner mij later";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Allen beantwoorden";
-
-/* The title of first button in the action bar */
-"Reply All" = "Allen beantwoorden";
 
 /* composer view model impl */
 "Reply message" = "Bericht beantwoorden";

@@ -3,24 +3,25 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 protocol MenuItemTableViewCellDelegate: AnyObject {
     func clickCollapsedArrow(labelID: String)
@@ -37,8 +38,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet private var iconLeftConstraint: NSLayoutConstraint!
     private weak var delegate: MenuItemTableViewCellDelegate?
     private var labelID: String = ""
-    private var nameColor: String = "#FFFFFF"
-    private var iconColor: String = "#FFFFFF"
+    private var originalBackgroundColor: UIColor = .clear
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,8 +48,9 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.selectedBackgroundView = selectedView
 
         self.badgeBGView.setCornerRadius(radius: 10)
-        self.arrow.image = Asset.arrowDown.image
-        self.arrow.highlightedImage = Asset.arrowUp.image
+        self.arrow.image = IconProvider.chevronDown
+        self.arrow.highlightedImage = IconProvider.chevronUp
+        self.arrow.tintColor = ColorProvider.IconNorm
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickArrow))
         self.arrowBGView.addGestureRecognizer(tap)
@@ -62,11 +63,8 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        let textColor = highlighted ? UIColor(RRGGBB: UInt(0x9CA0AA)): UIColor(hexColorCode: self.nameColor)
-        let iconColor = highlighted ? UIColor(RRGGBB: UInt(0x9CA0AA)): UIColor(hexColorCode: self.iconColor)
-
-        self.name.textColor = textColor
-        self.icon.tintColor = iconColor
+        let bgColor = highlighted ? ColorProvider.SidebarInteractionWeakPressed : originalBackgroundColor
+        self.contentView.backgroundColor = bgColor
         arrowBGView.accessibilityLabel = arrow.isHighlighted ? LocalString._menu_collapse_folder : LocalString._menu_expand_folder
     }
 
@@ -76,32 +74,25 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
     ///   - useFillIcon: Use fill icon for custom folder or not?
     ///   - delegate: delegate
     func config(by label: MenuLabel, showArrow: Bool = true, useFillIcon: Bool = false, delegate: MenuItemTableViewCellDelegate?) {
-        self.nameColor = label.textColor
-        self.name.textColor = UIColor(hexColorCode: self.nameColor)
-        self.iconColor = label.iconColor
-        self.icon.tintColor = UIColor(hexColorCode: self.iconColor)
-
         self.labelID = label.location.labelID
         self.delegate = delegate
-        self.setupIcon(label: label, useFillIcon: useFillIcon)
+        self.setupIcon(label: label, useFillIcon: useFillIcon, isSelected: label.isSelected)
         let num = label.expanded ? label.unread: label.aggreateUnread
         self.setup(badge: num)
         self.setupArrow(label: label, showArrow: showArrow)
+        self.setupArrowColor()
         self.name.text = label.name
+        self.setNameColor(label: label, isSelected: label.isSelected)
         self.setupIndentation(level: label.indentationLevel)
         self.setBackgroundColor(isSelected: label.isSelected)
         generateCellAccessibilityIdentifiers(label.name)
     }
 
     func update(textColor: UIColor) {
-        let hex = textColor.toHex()
-        self.nameColor = hex
         self.name.textColor = textColor
     }
 
     func update(iconColor: UIColor, alpha: CGFloat = 1) {
-        let hex = iconColor.toHex()
-        self.iconColor = hex
         self.icon.tintColor = iconColor
         self.icon.alpha = alpha
     }
@@ -117,7 +108,7 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
 
 // MARK: Private functions
 extension MenuItemTableViewCell {
-    private func setupIcon(label: MenuLabel, useFillIcon: Bool) {
+    private func setupIcon(label: MenuLabel, useFillIcon: Bool, isSelected: Bool) {
         let location = label.location
         if let icon = location.icon {
             self.icon.image = icon
@@ -130,14 +121,14 @@ extension MenuItemTableViewCell {
 
         if label.type == .folder {
             if label.subLabels.count > 0 {
-                let icon = useFillIcon ? Asset.icFolderMultipleFilled.image: Asset.menuFolderMultiple.image
+                let icon = useFillIcon ? IconProvider.foldersFilled: IconProvider.folders
                 self.icon.image = icon
             } else {
-                let icon = useFillIcon ? Asset.icFolderFilled.image: Asset.menuFolder.image
+                let icon = useFillIcon ? IconProvider.folderFilled: IconProvider.folder
                 self.icon.image = icon
             }
         } else if label.type == .label {
-            self.icon.image = Asset.mailUnreadIcon.image
+            self.icon.image = IconProvider.circleFilled
         } else {
             self.icon.image = nil
         }
@@ -188,14 +179,29 @@ extension MenuItemTableViewCell {
         }
     }
 
+    private func setupArrowColor() {
+        self.arrow.tintColor = ColorProvider.SidebarIconNorm
+    }
+
     private func setupIndentation(level: Int) {
         let base: CGFloat = 17.5
         self.iconLeftConstraint.constant = base + 20.0 * CGFloat(level)
     }
 
     private func setBackgroundColor(isSelected: Bool) {
-        let color: UIColor = isSelected ? UIColor(RRGGBB: UInt(0x3C4B88)): .clear
+        let color: UIColor = isSelected ? ColorProvider.SidebarInteractionPressed : .clear
+        originalBackgroundColor = color
         self.contentView.backgroundColor = color
+    }
+
+    private func setNameColor(label: MenuLabel, isSelected: Bool) {
+        if isSelected {
+            self.name.textColor = ColorProvider.SidebarTextNorm
+        } else if let nameColor = label.textColor {
+            self.name.textColor = UIColor(hexColorCode: nameColor)
+        } else {
+            self.name.textColor = ColorProvider.SidebarTextNorm
+        }
     }
 
     @objc private func clickArrow() {
