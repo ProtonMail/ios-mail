@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adicionar aniversário";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Adicionar anexo";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Modo de conversa";
 
-/* Onboarding title */
-"Conversations" = "Conversas";
-
 /* Title */
 "Copy" = "Copiar";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Desfrute da criptografia de ponta a ponta até mesmo com contatos que não sejam da Proton: Convide-os para o ProtonMail ou criptografe manualmente suas mensagens.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Aproveite melhorias como modo escuro, filtro de mensagens não lidas e subpastas.";
 
 /* Action in 2fa popup view */
 "Enter" = "Entrar";
@@ -1166,13 +1159,13 @@
 "Lock The App" = "Bloquear o aplicativo";
 
 /* The body of notification that will show when the token of one account is revoked */
-"Log in again to keep receiving updates" = "Faça login novamente para continuar recebendo atualizações";
+"Log in again to keep receiving updates" = "Log in again to keep receiving updates";
 
 /* comment */
 "Log out" = "Encerrar seção";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Desconectado de %@";
+"Logged out of %@" = "Logged out of %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1359,9 +1352,6 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Novo marcador";
-
-/* Onboarding title */
-"New look, same protection" = "Nova aparência, mesma proteção";
 
 /* Title */
 "New mailbox password" = "Nova senha da caixa de correio";
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmação de leitura enviada";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Dados do destinatário";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatário não encontrado";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação ativada";
+
+/* No comment provided by engineer. */
+"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Lembre-me mais tarde";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Responder a todos";
-
-/* The title of first button in the action bar */
-"Reply All" = "Responder a todos";
 
 /* composer view model impl */
 "Reply message" = "Responder mensagem";

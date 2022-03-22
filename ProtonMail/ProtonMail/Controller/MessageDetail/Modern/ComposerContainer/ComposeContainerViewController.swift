@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 12/04/2019.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
 import ProtonCore_UIFoundations
@@ -256,12 +256,9 @@ extension ComposeContainerViewController {
     }
 
     private func setupSendButton() {
-        guard let icon = UIImage(named: "menu_sent") else {
-            return
-        }
         let isEnabled = viewModel.hasRecipients() && !isUploadingAttachments
         let tintColor = isEnabled ? ColorProvider.IconNorm : ColorProvider.IconDisabled
-        self.sendButton = icon.toUIBarButtonItem(
+        self.sendButton = IconProvider.paperPlaneHorizontal.toUIBarButtonItem(
             target: self,
             action: isEnabled ? #selector(sendAction) : nil,
             style: .plain,
@@ -286,8 +283,7 @@ extension ComposeContainerViewController {
     }
 
     private func setupCancelButton() {
-        let icon = UIImage(named: "action_sheet_close")
-        self.cancelButton = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(cancelAction))
+        self.cancelButton = UIBarButtonItem(image: IconProvider.cross, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = self.cancelButton
     }
 
@@ -458,8 +454,8 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
         self.view.endEditing(true)
 
         var sheet: PMActionSheet!
-        // FIXME: use asset
-        let left = PMActionSheetPlainItem(title: nil, icon: UIImage(named: "action_sheet_close")) { (_) -> Void in
+
+        let left = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { (_) -> Void in
             sheet.dismiss(animated: true)
         }
 

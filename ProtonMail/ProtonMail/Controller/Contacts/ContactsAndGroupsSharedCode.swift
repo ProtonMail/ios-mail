@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 2018/9/13.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
@@ -33,7 +33,6 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
 
     let kAddContactSugue = "toAddContact"
     let kAddContactGroupSugue = "toAddContactGroup"
-    let kSegueToImportView = "toImportContacts"
 
     var isOnMainView = true {
         didSet {
@@ -47,7 +46,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
 
     func prepareNavigationItemRightDefault(_ user: UserManager) {
         self.user = user
-        self.addBarButtonItem = Asset.menuPlus.image.toUIBarButtonItem(
+        self.addBarButtonItem = IconProvider.plus.toUIBarButtonItem(
             target: self,
             action: #selector(addButtonTapped),
             tintColor: ColorProvider.IconNorm,
@@ -66,7 +65,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     @objc private func addButtonTapped() {
-        let cancelItem = PMActionSheetPlainItem(title: nil, icon: Asset.actionSheetClose.image) { [weak self] _ in
+        let cancelItem = PMActionSheetPlainItem(title: nil, icon: IconProvider.cross) { [weak self] _ in
             let viewController = self?.tabBarController ?? self
             let subViews = viewController?.view.subviews
             let actionSheet = subViews?.compactMap { $0 as? PMActionSheet }.last
@@ -79,19 +78,19 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
                                     rightItem: nil)
         let newContactAction =
             PMActionSheetPlainItem(title: LocalString._contacts_new_contact,
-                                   icon: Asset.contactsNew.image,
+                                   icon: IconProvider.userPlus,
                                    iconColor: ColorProvider.IconNorm) { _ in
                 self.addContactTapped()
             }
         let newContactGroupAction =
             PMActionSheetPlainItem(title: LocalString._contact_groups_new,
-                                   icon: Asset.contactGroupsNew.image,
+                                   icon: IconProvider.usersPlus,
                                    iconColor: ColorProvider.IconNorm) { _ in
                 self.addContactGroupTapped()
             }
         let uploadDeviceContactAction =
             PMActionSheetPlainItem(title: LocalString._contacts_upload_device_contacts,
-                                   icon: Asset.contactDeviceUpload.image,
+                                   icon: IconProvider.mobilePlus,
                                    iconColor: ColorProvider.IconNorm) { _ in
                 self.importButtonTapped()
             }
@@ -110,13 +109,16 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         alertController.addAction(UIAlertAction(title: LocalString._general_confirm_action,
                                                 style: .default,
                                                 handler: { (action) -> Void in
-                                                    self.performSegue(withIdentifier: self.kSegueToImportView,
-                                                                      sender: self)
+            self.showImportView()
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
                                                 style: .cancel,
                                                 handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+
+    func showImportView() {
+        fatalError("Needs implementation in subclass")
     }
 
     private func addContactTapped() {

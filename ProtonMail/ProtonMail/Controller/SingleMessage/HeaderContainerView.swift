@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -143,21 +143,21 @@ class HeaderContainerView: UIView {
 private enum SubviewsFactory {
     static var moreImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = Asset.dotsButtonIcon.image
+        imageView.image = IconProvider.threeDotsHorizontal
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
     static var replyImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = Asset.replyButtonIcon.image
+        imageView.image = IconProvider.arrowUpAndLeft
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
     static var replyAllImageView: UIImageView {
         let imageView = UIImageView()
-        imageView.image = Asset.replyAllButtonIcon.image
+        imageView.image = IconProvider.arrowsUpAndLeft
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }

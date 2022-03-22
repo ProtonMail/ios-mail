@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 import ProtonCore_AccountSwitcher
@@ -120,8 +120,12 @@ extension MenuViewController {
         self.tableView.tableFooterView = self.createTableFooter()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        //self.tableView.contentInset = .init(top: 28.0, left: 0.0, bottom: 0.0, right: 0.0)
 
         self.setPrimaryUserview(highlight: false)
+        self.displayName.textColor = ColorProvider.SidebarTextNorm
+        self.addressLabel.textColor = ColorProvider.SidebarTextWeak
+        self.arrowBtn.imageView?.tintColor = ColorProvider.SidebarIconNorm
         self.primaryUserview.setCornerRadius(radius: 12)
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
@@ -223,12 +227,7 @@ extension MenuViewController {
     }
 
     private func setPrimaryUserview(highlight: Bool) {
-        // This is a temporary workaround of color
-        // Should be deleted after upgrading to the correct core library
-        // 3.4.0, depends on the situation
-        let normalColor = UIColor(named: "sidebarInteractionWeakNorm")
-        let pressedColor = UIColor(named: "sidebarInteractionweakPressed")
-        let color = highlight ? pressedColor: normalColor
+        let color = highlight ? ColorProvider.SidebarInteractionWeakPressed : ColorProvider.SidebarInteractionWeakNorm
         self.primaryUserview.backgroundColor = color
         self.arrowBtn.isHighlighted = highlight
     }
@@ -311,7 +310,7 @@ extension MenuViewController: MenuUIProtocol {
                 continue
             }
             cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
-            cell.update(iconColor: self.viewModel.getColor(of: label))
+            cell.update(iconColor: self.viewModel.getIconColor(of: label))
         }
 
         self.tableView.insertRows(at: insertRows, with: .fade)
@@ -358,7 +357,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             fatalError("Shouldn't be nil")
         }
         cell.config(by: label, useFillIcon: self.viewModel.enableFolderColor, delegate: self)
-        cell.update(iconColor: self.viewModel.getColor(of: label))
+        cell.update(iconColor: self.viewModel.getIconColor(of: label))
         return cell
     }
 
@@ -408,7 +407,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         if section == .inboxes { return vi }
 
         let line = UIView()
-        line.backgroundColor = UIColor(hexColorCode: "#303239")
+        line.backgroundColor = ColorProvider.SidebarSeparator
         vi.addSubview(line)
         [
             line.topAnchor.constraint(equalTo: vi.topAnchor),
@@ -417,7 +416,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
             line.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
 
-        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: UIColor(RRGGBB: UInt(0x9ca0aa)))
+        let label = UILabel(font: .systemFont(ofSize: 14), text: section.title, textColor: ColorProvider.SidebarTextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
 
         vi.addSubview(label)
@@ -454,8 +453,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         let tapGesture = UITapGestureRecognizer(target: self, action: selector)
         plusView.addGestureRecognizer(tapGesture)
 
-        let plusIcon = UIImageView(image: Asset.menuPlus.image)
-        plusIcon.tintColor = UIColor(hexColorCode: "#9CA0AA")
+        let plusIcon = UIImageView(image: IconProvider.plus)
+        plusIcon.tintColor = ColorProvider.SidebarIconWeak
 
         plusView.addSubview(plusIcon)
         [
@@ -485,8 +484,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
     private func createTableFooter() -> UIView {
         let version = self.viewModel.appVersion()
-        let label = UILabel(font: .systemFont(ofSize: 13), text: "ProtonMail \(version)", textColor: UIColor(RRGGBB: UInt(0x727680)))
-        label.frame = CGRect(x: 0, y: 0, width: self.menuWidth.constant, height: 80)
+        let label = UILabel(font: .systemFont(ofSize: 13), text: "Proton Mail \(version)", textColor: ColorProvider.SidebarTextWeak)
+        label.frame = CGRect(x: 0, y: 0, width: self.menuWidth.constant, height: 64)
         label.textAlignment = .center
         return label
     }

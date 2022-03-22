@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "添加周年纪念日";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "添加附件";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "会话模式";
 
-/* Onboarding title */
-"Conversations" = "会话分组";
-
 /* Title */
 "Copy" = "复制";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "同非 Proton 用户一起享受端到端加密：邀请他们使用 ProtonMail 或手动加密他们的邮件。";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "畅享深色模式、未读邮件筛选、子文件夹等新功能。";
 
 /* Action in 2fa popup view */
 "Enter" = "进入";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "新建标签";
 
-/* Onboarding title */
-"New look, same protection" = "界面革新，安全不变";
-
 /* Title */
 "New mailbox password" = "新的邮箱密码";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "回执已发送";
 
+/* No comment provided by engineer. */
+"Recipient details" = "收件人详细信息";
+
 /* The error message is shown in composer */
 "Recipient not found" = "未找到收件人";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "已启用恢复";
+
+/* No comment provided by engineer. */
+"Reload" = "重新加载";
 
 /* Title */
 "Remind Me Later" = "稍后提醒我";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "回复所有人";
-
-/* The title of first button in the action bar */
-"Reply All" = "回复所有人";
 
 /* composer view model impl */
 "Reply message" = "回复邮件";
@@ -2453,7 +2446,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "确定要彻底删除邮件吗？";
 
 /* The secondary title of no result message */
-"You're up to date" = "一切就绪";
+"You're up to date" = "You're up to date";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "您做出的更改将丢失";

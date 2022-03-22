@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -33,9 +33,11 @@ final class LabelPaletteCell: UITableViewCell {
     @IBOutlet private var collectionHeight: NSLayoutConstraint!
     private weak var delegate: LabelPaletteCellDelegate?
     private var colors: [String] = []
+    private var intenseColors: [String] = []
     private var selectedColor: String = ""
     private var type: PMLabelType = .unknown
-    private let itemSize = CGSize(width: 48, height: 48)
+    private let itemSize = CGSize(width: 32, height: 32)
+    private var verticalPadding: CGFloat = 24
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,24 +46,34 @@ final class LabelPaletteCell: UITableViewCell {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(LabelColorCell.defaultNib(), forCellWithReuseIdentifier: LabelColorCell.identifier)
-
-        let padding: CGFloat = 35
-        let screenSize = UIScreen.main.bounds.width
-        let space: CGFloat = (screenSize - 2 * padding - 4 * self.itemSize.width) / 3
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = self.itemSize
-        layout.minimumLineSpacing = self.itemSize.height
-        layout.minimumInteritemSpacing = floor(space)
-        self.collectionView.collectionViewLayout = layout
     }
 
-    func config(colors: [String], selected: String, type: PMLabelType, delegate: LabelPaletteCellDelegate?) {
+    func config(colors: [String],
+                intenseColors: [String],
+                selected: String,
+                type: PMLabelType,
+                delegate: LabelPaletteCellDelegate?) {
         self.colors = colors
+        self.intenseColors = intenseColors
         self.selectedColor = selected
         self.type = type
+        self.configSpacing(type: type)
         self.collectionView.reloadData()
-        self.collectionHeight.constant = self.itemSize.height * 9
+        self.collectionHeight.constant = self.itemSize.height * 2 + self.verticalPadding
         self.delegate = delegate
+    }
+
+    private func configSpacing(type: PMLabelType) {
+        self.verticalPadding = type == .label ? 24: 32
+        // left / right padding to the screen edge
+        let padding: CGFloat = 28
+        let screenSize = UIScreen.main.bounds.width
+        let space: CGFloat = (screenSize - 2 * padding - 5 * self.itemSize.width) / 4
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = self.itemSize
+        layout.minimumLineSpacing = self.verticalPadding
+        layout.minimumInteritemSpacing = floor(space)
+        self.collectionView.collectionViewLayout = layout
     }
 }
 
@@ -79,8 +91,13 @@ extension LabelPaletteCell: UICollectionViewDelegate, UICollectionViewDataSource
         }
         let colorHex = self.colors[indexPath.row]
         let color = UIColor(hexColorCode: colorHex)
+        let intenseHex = self.intenseColors[indexPath.row]
+        let intenseColor = UIColor(hexColorCode: intenseHex)
         let isSelected = colorHex == self.selectedColor
-        cell.config(color: color, type: self.type, isSelected: isSelected)
+        cell.config(color: color,
+                    intenseColor: intenseColor,
+                    type: self.type,
+                    isSelected: isSelected)
         return cell
     }
 

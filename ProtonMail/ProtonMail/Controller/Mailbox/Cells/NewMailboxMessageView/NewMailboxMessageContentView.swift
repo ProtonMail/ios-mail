@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -100,6 +100,21 @@ class NewMailboxMessageContentView: UIView {
         [heightConstraint].activate()
 
         [
+            starImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            starImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            attachmentImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            attachmentImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            forwardImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            forwardImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            replyImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            replyImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            replyAllImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            replyAllImageView.heightAnchor.constraint(equalToConstant: 16.0),
+            draftImageView.widthAnchor.constraint(equalToConstant: 16.0),
+            draftImageView.heightAnchor.constraint(equalToConstant: 16.0)
+        ].activate()
+
+        [
             originalImagesStackView,
             timeLabel,
             replyImageView,
@@ -134,15 +149,15 @@ private enum SubviewsFactory {
     }
 
     static var forwardImageView: UIImageView {
-        imageView(Asset.mailForward.image)
+        imageView(IconProvider.arrowRight)
     }
 
     static var replyImageView: UIImageView {
-        imageView(Asset.mailReply.image)
+        imageView(IconProvider.arrowUpAndLeft)
     }
 
     static var replyAllImageView: UIImageView {
-        imageView(Asset.mailReplyAll.image)
+        imageView(IconProvider.arrowsUpAndLeft)
     }
 
     static var senderLabel: UILabel {
@@ -154,19 +169,21 @@ private enum SubviewsFactory {
     static var attachmentImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = Asset.mailAttachment.image.toTemplateUIImage()
+        imageView.image = IconProvider.paperClip.toTemplateUIImage()
         imageView.tintColor = ColorProvider.IconWeak
         return imageView
     }
 
     static var startImageView: UIImageView {
-        imageView(Asset.mailStar.image)
+        let view = imageView(IconProvider.starFilled.toTemplateUIImage())
+        view.tintColor = ColorProvider.NotificationWarning
+        return view
     }
 
     static var draftImageView: UIImageView {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = Asset.mailDraftIcon.image
+        imageView.image = IconProvider.pencil
         imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
@@ -181,6 +198,7 @@ private enum SubviewsFactory {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
+        imageView.tintColor = ColorProvider.IconNorm
         return imageView
     }
 

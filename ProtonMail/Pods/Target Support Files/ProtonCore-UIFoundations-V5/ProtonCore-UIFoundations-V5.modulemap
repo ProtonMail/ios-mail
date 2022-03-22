@@ -1,0 +1,6 @@
+framework module ProtonCore_UIFoundations {
+  umbrella header "ProtonCore-UIFoundations-V5-umbrella.h"
+
+  export *
+  module * { export * }
+}

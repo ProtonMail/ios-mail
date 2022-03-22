@@ -1,19 +1,19 @@
-// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2021 Proton AG
 //
-// This file is part of ProtonMail.
+// This file is part of Proton Mail.
 //
-// ProtonMail is free software: you can redistribute it and/or modify
+// Proton Mail is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// ProtonMail is distributed in the hope that it will be useful,
+// Proton Mail is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
 import ProtonCore_UIFoundations
@@ -161,7 +161,7 @@ class PMToolBarView: UIView {
         static var unreadButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarReadUnread.image, for: .normal)
+            button.setImage(IconProvider.envelopeDot, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             return button
         }
@@ -169,7 +169,7 @@ class PMToolBarView: UIView {
         static var deleteButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarDelete.image, for: .normal)
+            button.setImage(IconProvider.trashCross, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             return button
         }
@@ -177,7 +177,7 @@ class PMToolBarView: UIView {
         static var trashButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarTrash.image, for: .normal)
+            button.setImage(IconProvider.trash, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             return button
         }
@@ -185,7 +185,7 @@ class PMToolBarView: UIView {
         static var moveToButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarMoveTo.image, for: .normal)
+            button.setImage(IconProvider.folderArrowIn, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             button.accessibilityIdentifier = "PMToolBarView.moveToButton"
             return button
@@ -194,7 +194,7 @@ class PMToolBarView: UIView {
         static var labelAsButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarLabel.image, for: .normal)
+            button.setImage(IconProvider.tag, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             button.accessibilityIdentifier = "PMToolBarView.labelAsButton"
             return button
@@ -203,7 +203,7 @@ class PMToolBarView: UIView {
         static var moreButton: UIButton {
             let button = UIButton(type: .system)
             button.imageView?.contentMode = .scaleAspectFit
-            button.setImage(Asset.actionBarMore.image, for: .normal)
+            button.setImage(IconProvider.threeDotsHorizontal, for: .normal)
             button.tintColor = ColorProvider.IconNorm
             return button
         }

@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 7/27/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
@@ -70,6 +70,11 @@ extension EmailHeaderView {
 
 // TODO: Used in printer mode. Removed this after the improvement of print format
 class EmailHeaderView: UIView, AccessibleView {
+
+    private struct Color {
+        static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4))
+        static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
+    }
 
     weak var viewDelegate: EmailHeaderViewProtocol?
     private weak var _delegate: EmailHeaderActionsProtocol?
@@ -510,16 +515,16 @@ class EmailHeaderView: UIView, AccessibleView {
 
     fileprivate func createSeparator() {
         self.separatorHeader = UIView()
-        self.separatorHeader.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.separatorHeader.backgroundColor = Color.Gray_C9CED4
         self.addSubview(separatorHeader)
         self.separatorExpiration = UIView()
-        self.separatorExpiration.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.separatorExpiration.backgroundColor = Color.Gray_C9CED4
         self.addSubview(separatorExpiration)
         self.separatorAttachment = UIView()
-        self.separatorAttachment.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.separatorAttachment.backgroundColor = Color.Gray_C9CED4
         self.addSubview(separatorAttachment)
         self.separatorShowImage = UIView()
-        self.separatorShowImage.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.separatorShowImage.backgroundColor = Color.Gray_C9CED4
         self.addSubview(separatorShowImage)
     }
 
@@ -616,7 +621,7 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailAttachmentsAmount.font = Fonts.h4.regular
         self.emailAttachmentsAmount.numberOfLines = 1
         self.emailAttachmentsAmount.text = "\(self.attachmentCount)"
-        self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailAttachmentsAmount.textColor = Color.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
 

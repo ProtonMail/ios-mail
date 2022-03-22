@@ -213,7 +213,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     private func starButtonSetUp(starred: Bool) {
         starBarButton.image = starred ?
-            Asset.messageDeatilsStarActive.image : Asset.messageDetailsStarInactive.image
+        IconProvider.starFilled : IconProvider.star
         starBarButton.tintColor = starred ? ColorProvider.NotificationWarning : ColorProvider.IconWeak
     }
 

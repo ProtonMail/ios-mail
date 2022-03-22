@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 import UIKit
@@ -129,7 +129,7 @@ class ExpandedHeaderViewController: UIViewController {
     private func presentTags() {
         let tagsRow = ExpandedHeaderRowView()
         tagsRow.titleLabel.isHidden = true
-        tagsRow.iconImageView.image = Asset.mailTagIcon.image
+        tagsRow.iconImageView.image = IconProvider.tag
         let tagsView = MultiRowsTagsView()
         tagsPresneter.presentTags(tags: viewModel.tags, in: tagsView)
         tagsRow.contentStackView.addArrangedSubview(StackViewContainer(view: tagsView))
@@ -184,7 +184,7 @@ class ExpandedHeaderViewController: UIViewController {
     private func presentFullDateRow(stringDate: NSAttributedString) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
-        row.iconImageView.image = Asset.mailCalendarIcon.image
+        row.iconImageView.image = IconProvider.calendarToday
         let dateLabel = UILabel(frame: .zero)
         dateLabel.attributedText = stringDate
         row.contentStackView.addArrangedSubview(dateLabel)
@@ -204,7 +204,7 @@ class ExpandedHeaderViewController: UIViewController {
     private func presentSizeRow(size: NSAttributedString) {
         let row = ExpandedHeaderRowView()
         row.titleLabel.isHidden = true
-        row.iconImageView.image = Asset.icUserStorage.image
+        row.iconImageView.image = IconProvider.filingCabinet
         let titleLabel = UILabel()
         titleLabel.attributedText = size
         row.contentStackView.addArrangedSubview(titleLabel)

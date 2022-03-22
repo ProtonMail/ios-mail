@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 8/16/15.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Alamofire
 import CoreData
@@ -194,6 +194,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
+
+        menuButton.image = IconProvider.hamburger
 
         self.isDiffableDataSourceEnabled = UserInfo.isDiffableDataSourceEnabled
         self.viewModel.viewModeIsChanged = { [weak self] in
@@ -1190,10 +1192,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
                     self.noResultImage.isHidden = false
 
-                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: LocalString._messages_no_messages, attributes: FontManager.Headline)
+                    let mainText = isNotInInbox ? LocalString._folder_no_message : LocalString._inbox_no_message
+                    self.noResultMainLabel.attributedText = NSMutableAttributedString(string: mainText, attributes: FontManager.Headline)
                     self.noResultMainLabel.isHidden = false
 
-                    self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: isNotInInbox ? LocalString._mailbox_folder_no_result_secondary_label : LocalString._mailbox_no_result_secondary_label, attributes: FontManager.DefaultWeak)
+                    let subText = isNotInInbox ? LocalString._folder_is_empty : LocalString._inbox_time_to_relax
+                    self.noResultSecondaryLabel.attributedText = NSMutableAttributedString(string: subText, attributes: FontManager.DefaultWeak)
                     self.noResultSecondaryLabel.isHidden = false
 
                     self.noResultFooterLabel.isHidden = false
@@ -2435,6 +2439,7 @@ extension MailboxViewController {
     private func configureUnreadFilterButton() {
         self.unreadFilterButton.setTitleColor(ColorProvider.BrandNorm, for: .normal)
         self.unreadFilterButton.setTitleColor(ColorProvider.TextInverted, for: .selected)
+        // Use local icon to prevent UI glitch
         self.unreadFilterButton.setImage(Asset.mailLabelCrossIcon.image, for: .selected)
         self.unreadFilterButton.semanticContentAttribute = .forceRightToLeft
         self.unreadFilterButton.titleLabel?.isSkeletonable = true
