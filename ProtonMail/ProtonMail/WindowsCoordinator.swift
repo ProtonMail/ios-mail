@@ -222,9 +222,9 @@ class WindowsCoordinator: CoordinatorNew {
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
         let queueManager: QueueManager = services.get()
-
-        if let user = usersManager.getUser(bySessionID: uid),
-           !usersManager.loggingOutUserIDs.contains(user.userinfo.userId) {
+        
+        if let user = usersManager.getUser(by: uid),
+           !usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = usersManager.count == 1
 
             queueManager.unregisterHandler(user.mainQueueHandler)

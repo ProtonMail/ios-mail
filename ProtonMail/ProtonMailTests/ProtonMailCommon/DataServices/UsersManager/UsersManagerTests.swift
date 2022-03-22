@@ -201,7 +201,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     func testActive() {
-        sut.active(uid: "")
+        sut.active(by: "")
         XCTAssertTrue(sut.users.isEmpty)
 
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
@@ -211,38 +211,40 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user2)
 
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1"])
-        sut.active(uid: user1.auth.sessionID)
+        sut.active(by: user1.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2"])
         sut.add(newUser: user3)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["1", "2", "3"])
-        sut.active(uid: user2.auth.sessionID)
+        sut.active(by: user2.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["2", "1", "3"])
-        sut.active(uid: user3.auth.sessionID)
+        sut.active(by: user3.auth.sessionID)
         XCTAssertEqual(sut.users.map{ $0.userinfo.userId }, ["3", "2", "1"])
     }
 
     func testGetUserBySessionID() {
-        XCTAssertNil(sut.getUser(bySessionID: "hello"))
-        XCTAssertNil(sut.getUser(bySessionID: "1"))
+        XCTAssertNil(sut.getUser(by: "hello"))
+        XCTAssertNil(sut.getUser(by: "1"))
 
         let user1 = createUserManagerMock(userID: "1", isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(bySessionID: "SessionID_1")?.userinfo, user1.userinfo)
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
+        XCTAssertEqual(sut.getUser(by: "SessionID_1")?.userinfo, user1.userinfo)
+        XCTAssertNil(sut.getUser(by: UserID(rawValue: "Hello")))
     }
 
     func testGetUserByUserID() {
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
-        XCTAssertNil(sut.getUser(byUserId: "1"))
+        let id1 = UserID(rawValue: String.randomString(20))
+        let id2 = UserID(rawValue: String.randomString(20))
+        XCTAssertNil(sut.getUser(by: id1))
+        XCTAssertNil(sut.getUser(by: id2))
 
-        let user1 = createUserManagerMock(userID: "1", isPaid: false)
+        let user1 = createUserManagerMock(userID: id1.rawValue, isPaid: false)
         sut.add(newUser: user1)
-        XCTAssertEqual(sut.getUser(byUserId: "1")?.userinfo, user1.userinfo)
-        XCTAssertNil(sut.getUser(byUserId: "Hello"))
+        XCTAssertEqual(sut.getUser(by: id1)?.userinfo, user1.userinfo)
+        XCTAssertNil(sut.getUser(by: id2))
     }
 
     func testRemoveUser() {

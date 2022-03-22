@@ -213,8 +213,8 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
                 reportResult[settings] = .reported
             }
             reportResult[settings] = .pending
-
-            let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
+            
+            let auth = sharedServices.get(by: UsersManager.self).getUser(by: settings.UID)?.auth
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
         group.wait()
@@ -270,7 +270,8 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         }
 
         guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
-            let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else {
+            let user = sharedServices.get(by: UsersManager.self).getUser(by: uidFromPush) else
+        {
             handleLocalNoification(userInfo)
             completionHandler()
             return

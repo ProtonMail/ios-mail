@@ -95,7 +95,7 @@ class UsersManager: Service {
     let internetConnectionStatusProvider: InternetConnectionStatusProvider
 
     // Used to check if the account is already being deleted.
-    private(set) var loggingOutUserIDs: Set<String> = Set()
+    private(set) var loggingOutUserIDs: Set<UserID> = Set()
 
     init(doh: DoH & ServerConfig,
          delegate: UsersManagerDelegate?,
@@ -131,10 +131,9 @@ class UsersManager: Service {
 
     func add(newUser: UserManager) {
         newUser.delegate = self
-        let userID = newUser.userInfo.userId
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                                           defaultEmail: newUser.defaultEmail,
-                                          userID: userID))
+                                          userID: newUser.userID.rawValue))
         self.users.append(newUser)
 
         self.save()
@@ -160,15 +159,15 @@ class UsersManager: Service {
     }
 
     func getUsersWithoutTheActiveOne() -> [UserManager] {
-        return self.users.filter { $0.userinfo.userId != users.first?.userinfo.userId }
+        return self.users.filter { $0.userID != users.first?.userID }
     }
 
     func user(at index: Int) -> UserManager? {
         return users[safe: index]
     }
 
-    func active(uid: String) {
-        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: uid) }) else {
+    func active(by sessionID: String) {
+        guard let index = self.users.firstIndex(where: { $0.isMatch(sessionID: sessionID) }) else {
             return
         }
         let user = self.users.remove(at: index)
@@ -178,9 +177,9 @@ class UsersManager: Service {
         self.firstUser?.activatePayments()
     }
 
-    func getUser(bySessionID uid: String) -> UserManager? {
+    func getUser(by sessionID: String) -> UserManager? {
         let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: uid)
+            user.isMatch(sessionID: sessionID)
         }
         guard let user = found.first else {
             return nil
@@ -188,9 +187,9 @@ class UsersManager: Service {
         return user
     }
 
-    func getUser(byUserId userId: String) -> UserManager? {
+    func getUser(by userId: UserID) -> UserManager? {
         let found = self.users.filter { user -> Bool in
-            user.userInfo.userId == userId
+            user.userID == userId
         }
         guard let user = found.first else {
             return nil
@@ -198,8 +197,8 @@ class UsersManager: Service {
         return user
     }
 
-    func isExist(userID: String) -> Bool {
-        return getUser(byUserId: userID) != nil
+    func isExist(userID: UserID) -> Bool {
+        return getUser(by: userID) != nil
     }
 
     // tempery mirgration. will change this to version check
@@ -369,12 +368,12 @@ extension UsersManager {
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
         var isPrimaryAccountLogout = false
-        loggingOutUserIDs.insert(user.userinfo.userId)
+        loggingOutUserIDs.insert(user.userID)
         user.cleanUp().ensure {
             defer {
-                self.loggingOutUserIDs.remove(user.userinfo.userId)
+                self.loggingOutUserIDs.remove(user.userID)
             }
-            guard let userToDelete = self.users.first(where: { $0.userinfo.userId == user.userinfo.userId }) else {
+            guard let userToDelete = self.users.first(where: { $0.userID == user.userID }) else {
                 self.addDisconnectedUserIfNeeded(user: user)
                 completion?()
                 return
@@ -417,7 +416,7 @@ extension UsersManager {
 
     func remove(user: UserManager) {
         if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
-            self.active(uid: nextFirst)
+            self.active(by: nextFirst)
         }
         if !disconnectedUsers.contains(where: { $0.userID == user.userinfo.userId }) {
             let logoutUser = DisconnectedUserHandle(defaultDisplayName: user.defaultDisplayName,

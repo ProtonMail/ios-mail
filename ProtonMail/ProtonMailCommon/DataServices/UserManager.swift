@@ -54,8 +54,11 @@ protocol UserManagerSave: AnyObject {
     func onSave(userManger: UserManager)
 }
 
-///
 class UserManager: Service, HasLocalStorage {
+    var userID: UserID {
+        return UserID(rawValue: self.userinfo.userId)
+    }
+
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.eventsService.stop()
