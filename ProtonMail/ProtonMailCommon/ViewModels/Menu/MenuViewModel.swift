@@ -171,7 +171,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func signOut(userID: String, completion: (() -> Void)?) {
-        guard let user = self.usersManager.getUser(byUserId: userID) else {
+        guard let user = self.usersManager.getUser(by: UserID(rawValue: userID)) else {
             completion?()
             return
         }
@@ -224,16 +224,16 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func getUnread(of userID: String) -> Int {
-        guard let user = usersManager.getUser(byUserId: userID) else { return 0 }
+        guard let user = usersManager.getUser(by: UserID(rawValue: userID)) else { return 0 }
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
 
     func activateUser(id: String) {
-        guard let user = self.usersManager.getUser(byUserId: id) else {
+        guard let user = self.usersManager.getUser(by: UserID(rawValue: id)) else {
             return
         }
-        self.usersManager.active(uid: user.auth.sessionID)
+        self.usersManager.active(by: user.auth.sessionID)
         self.userDataInit()
         self.menuViewInit()
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))

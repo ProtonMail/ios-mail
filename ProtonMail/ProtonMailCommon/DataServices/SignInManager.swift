@@ -66,7 +66,7 @@ class SignInManager: Service {
             userInfo = .init(response: [:])
         }
 
-        if self.usersManager.isExist(userID: userInfo.userId) {
+        if self.usersManager.isExist(userID: UserID(rawValue: userInfo.userId)) {
             existError()
             return
         }
@@ -80,7 +80,7 @@ class SignInManager: Service {
         self.auth = nil
         self.userInfo = nil
 
-        let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
+        let user = self.usersManager.getUser(by: auth.sessionID)!
         self.queueManager.registerHandler(user.mainQueueHandler)
 
         showSkeleton()
@@ -99,7 +99,7 @@ class SignInManager: Service {
             }
 
             self.usersManager.loggedIn()
-            self.usersManager.active(uid: auth.sessionID)
+            self.usersManager.active(by: auth.sessionID)
             self.lastUpdatedStore.contactsCached = 0
             UserTempCachedStatus.restore()
 
