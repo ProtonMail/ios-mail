@@ -1,5 +1,5 @@
 // HtmlEditor.css
-// Proton Technologies AG
+// Proton AG
 
 "use strict";
 var html_editor = {};

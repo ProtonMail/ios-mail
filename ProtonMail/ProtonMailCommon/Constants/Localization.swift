@@ -3,22 +3,22 @@
 //  ProtonMail - Created on 4/18/18.
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
 
@@ -152,8 +152,13 @@ class LocalizedString {
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
     /// "The draft cache is broken please try again"
     lazy var _message_draft_cache_is_broken = NSLocalizedString("The draft cache is broken. Please try again.", comment: "Description")
-    /// "No Messages"
-    lazy var _messages_no_messages = NSLocalizedString("No Messages", comment: "message when mailbox doesnt have emailsß")
+
+    lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
+    lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")
+
+    lazy var _inbox_no_message = NSLocalizedString("You are all caught up!", comment: "The title of empty inbox")
+    lazy var _inbox_time_to_relax = NSLocalizedString("Time to relax", comment: "The subtitle of empty inbox")
+
     /// "Undo"
     lazy var _messages_undo_action = NSLocalizedString("Undo", comment: "Action")
     /// "Message has been deleted."
@@ -360,6 +365,9 @@ class LocalizedString {
     lazy var _general_done_button     = NSLocalizedString("Done", comment: "Done action")
     /// "Cancel"
     lazy var _general_cancel_button   = NSLocalizedString("Cancel", comment: "Cancel action")
+
+    lazy var _general_gotIt_button = NSLocalizedString("Got it", comment: "Got it action")
+
     /// "Open"
     lazy var _general_open_button     = NSLocalizedString("Open", comment: "Open action")
     /// "Remove"
@@ -610,27 +618,19 @@ class LocalizedString {
     // Mark : Onboarding
     lazy var _easily_up_to_date = NSLocalizedString("Easily up-to-date", comment: "Onboarding title")
 
-    lazy var _simply_private = NSLocalizedString("Simply private", comment: "Onboarding title")
+    lazy var _privacy_for_all = NSLocalizedString("Privacy for all", comment: "Onboarding title")
 
     lazy var _neat_and_tidy = NSLocalizedString("Neat and tidy", comment: "Onboarding title")
 
-    lazy var _brand_new_look = NSLocalizedString("New look, same protection", comment: "Onboarding title")
-
-    lazy var _onboarding_conversations = NSLocalizedString("Conversations", comment: "Onboarding title")
-
-    lazy var _and_more = NSLocalizedString("And more…", comment: "Onboarding title")
+    lazy var _brand_new_proton = NSLocalizedString("Updated Proton, unified protection", comment: "Welcome to rebranding title")
 
     lazy var _easily_up_to_date_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
 
-    lazy var _simply_private_content = NSLocalizedString("Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.", comment: "Onboarding content")
+    lazy var _privacy_for_all_content = NSLocalizedString("Invite your contacts to ProtonMail to enjoy seamless end-to-end encryption, or add password protection to messages you send them. ", comment: "Onboarding content")
 
     lazy var _neat_and_tidy_content = NSLocalizedString("File, label, and color code messages to create your perfect, custom inbox.", comment: "Onboarding content")
 
-    lazy var _brand_new_look_content = NSLocalizedString("Your encrypted email has been entirely redesigned for ease of use.", comment: "Onboarding content")
-
-    lazy var _onboarding_conversations_content = NSLocalizedString("Breeze through threaded messages in conversation mode.", comment: "Onboarding content")
-
-    lazy var _and_more_content = NSLocalizedString("Enjoy improvements like dark mode, an unread messages filter, and subfolders.", comment: "Onboarding content")
+    lazy var _brand_new_proton_content = NSLocalizedString("Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.", comment: "Welcome to rebranding content")
 
     lazy var _skip_btn_title = NSLocalizedString("Skip", comment: "skip button title in onboarding page")
 
@@ -1186,6 +1186,10 @@ class LocalizedString {
     lazy var _selected_navogationTitle = NSLocalizedString("Selected", comment: "The title of navigation bar title of mailbox view while selecting the message")
     lazy var _mailbox_no_result_secondary_label = NSLocalizedString("You're up to date", comment: "The secondary title of no result message")
     lazy var _mailbox_folder_no_result_secondary_label = NSLocalizedString("This folder is empty", comment: "The secondary title of no result message")
+
+    lazy var _mailbox_no_result_main_label = NSLocalizedString("You are all caught up", comment: "The main title of no result message")
+
+    lazy var _mailbox_folder_no_result_mail_label = NSLocalizedString("Nothing to see here", comment: "The main title of no result message")
 
     lazy var _mailblox_last_update_time_more_than_1_hour = NSLocalizedString("Updated >1 hour ago", comment: "The title of last update status of more than 1 hour")
     lazy var _mailblox_last_update_time_just_now = NSLocalizedString("Updated just now", comment: "The title of last update status of updated just now")

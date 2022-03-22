@@ -3,22 +3,22 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2019 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
 
@@ -59,7 +59,7 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = ColorProvider.BackgroundNorm
-        sendButtonImage.image = UIImage(named: "mail_send_icon")
+        sendButtonImage.image = IconProvider.paperPlaneHorizontal
         sendButtonImage.tintColor = ColorProvider.IconWeak
     }
 
@@ -123,7 +123,7 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
     private func reset() {
         self.selectionStyle = .default
 
-        groupImage.image = UIImage(named: "contact_groups_icon")
+        groupImage.image = IconProvider.users
         groupImage.setupImage(contentMode: .center,
                               renderingMode: .alwaysTemplate,
                               scale: 0.5,
@@ -146,7 +146,7 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
                 // in multi-selection
                 self.selectionStyle = .none
 
-                groupImage.image = UIImage(named: "contact_groups_check")
+                groupImage.image = IconProvider.checkmark
                 groupImage.setupImage(contentMode: .center,
                                       renderingMode: .alwaysOriginal,
                                       scale: 0.5,

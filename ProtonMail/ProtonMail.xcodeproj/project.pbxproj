@@ -375,6 +375,7 @@
 		2234B5637B079ED9D93926E8778D70EE /* OpenPGPDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7367FEA62FD3BC6409047F164033C09E /* OpenPGPDefines.swift */; };
 		22525A0B070282B8ECC472862DF1DA42 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725761D634B18B26A40AECAE90E517B7 /* ComposeContainerViewCoordinator.swift */; };
 		2261FD68733AFD33ED2FFEAD6C08AFA5 /* SettingsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5430DBF2FDD531A57B9CC2748B8E9F7 /* SettingsRobot.swift */; };
+		22BBDCA56BEDB3FD346E8F961C8669E6 /* NewBrandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A136C9B4E1079DA8E99600DCA52D5D4F /* NewBrandingViewController.swift */; };
 		22E51CC13BE265CEF63DFFBF743C2540 /* PaymentsUIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8DDEAE8E0325C321A000EDDDC52146 /* PaymentsUIMock.swift */; };
 		22ECAA10E2EEA333387D13253F9D2B4D /* MarkLegitimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2309E24B13B1278F5F4BD5A34B9C0B48 /* MarkLegitimate.swift */; };
 		22EE4AAECD30E01A849D63310D67AC8D /* PGPMimeAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB274E7AC7516891D1938CF3BEA40049 /* PGPMimeAddressBuilder.swift */; };
@@ -560,6 +561,7 @@
 		324BD206936B30F6E38FB44F6F4B42BC /* dataPacket in Resources */ = {isa = PBXBuildFile; fileRef = 796DF6375454959DD2A4CEC8B491C575 /* dataPacket */; };
 		325B398ED413CE7E8EC98D919139347F /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB44CB6D5A2E50712713374FC6B482C /* BioAuthenticating.swift */; };
 		32803916BCD5CAB0A8824000DC5C9B0A /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
+		32A9D0F14DD610B25B8EB3B318A450A8 /* MailLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFFBDF3F4180F75A9DA70DD0D8CEAC6C /* MailLaunchScreen.storyboard */; };
 		32C4FC7DD6C92E15706B20BD6675C811 /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56CB21690473306AE3DD3AFD29EB08A /* BackgroundTimer.swift */; };
 		32E49CFF5BBCADB820E2A661F3A81616 /* ConversationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BC2D2B9048F4DC041071B97731E4B1 /* ConversationLabel.swift */; };
 		32EA973950257F2A8A6511B7D69ED2D7 /* UsersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CEEDA43C22C3E26A7A182640617F70 /* UsersManager.swift */; };
@@ -1073,6 +1075,7 @@
 		5FF42E76574EBABB2444CA29074D12DC /* SettingsDeviceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DE5130DFF37447412B9D7629971531 /* SettingsDeviceCoordinator.swift */; };
 		6017FBCDB6CA51AA23F76FA5AE5B4E61 /* ConversationNavigationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5C8FEA6FB5C595419B1DDD8C5A2DC /* ConversationNavigationDetailView.swift */; };
 		6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */; };
+		607639091B7E273F993CDAF298361B8F /* MailLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFFBDF3F4180F75A9DA70DD0D8CEAC6C /* MailLaunchScreen.storyboard */; };
 		6080CC905675688240A1158FD0157DE1 /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892FCF187AFEC42762863D4C7CBE7C40 /* SpamScoreWarningView.swift */; };
 		608D4D6C0356CAEC0309D8BC07A0263C /* ComposerAttachmentCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C685D655562CB2BE439A61C87FF0D /* ComposerAttachmentCellTableViewCell.swift */; };
 		609DE3EC0CA993B8521524E1E5F22192 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */; };
@@ -1081,6 +1084,7 @@
 		60D9798EC2CB971D95531C1E4D62D11E /* UserFeedbackSubmittableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E55503728E2835950B9E78B7182C26 /* UserFeedbackSubmittableProtocol.swift */; };
 		60E80F65A7E5C57D2FEAF77BFBC0F139 /* UndoActionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B080ECA55315E290D23F6AE1759C27 /* UndoActionRequest.swift */; };
 		60F95241EC733A8763097CA61A5FD606 /* MBProgressHUD+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9C644BCCC51C9E7EC5933C97B4E629 /* MBProgressHUD+Helper.swift */; };
+		610B84D234811C42CB5B47FA3606A363 /* NewBrandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2592BC4BC26AA22D3D1905F0E593331 /* NewBrandingViewController.xib */; };
 		611508EE286DFE83A1FDDC11F212FB20 /* ContactEditPhoneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6AC93EA817E53F80A6B7F61686052 /* ContactEditPhoneCell.swift */; };
 		611B705D8210806CBB9FEFBD436C98BF /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
 		611D7DDDB53AD7EA8B0B2FA2B2A0AB27 /* MessageDataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BC8ECA9DF75A4D4E93607F9FB2F4F8 /* MessageDataService+Error.swift */; };
@@ -1191,6 +1195,7 @@
 		6A25D4621BD0EA344CA63038F536C166 /* SettingsLockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557EDDD2F75D3AD64D8574EC4EF51077 /* SettingsLockCoordinator.swift */; };
 		6A2D3AEA2C684B44920B1DA86A869983 /* PMDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4891AB6EE024AC2EEB26E77303F6F238 /* PMDateFormatterTests.swift */; };
 		6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
+		6A90E25DC68062A7DE7BA150292B922D /* ContactImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */; };
 		6AA45CE8B2CADE7B9866A948B43FD596 /* MailListActionSheetItemViewModel+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50B139F016FF4881760DD51216378B6 /* MailListActionSheetItemViewModel+Actions.swift */; };
 		6AA4EEFF001A666819732F8CF26CD3AB /* Collection+SafeElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04C3DA1A0AE2D4650C574C884F3A6F /* Collection+SafeElement.swift */; };
 		6AA8029DD3BDD60699A88A5C2DBE0D44 /* MockBackupExcluder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79EAD3DEF84E66A57B92906851917A9 /* MockBackupExcluder.swift */; };
@@ -1953,6 +1958,7 @@
 		B250BBE5318E416226D4D1144303F630 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9158F589E1E0F02DE1CD6F6D51CB8C3 /* Crypto.swift */; };
 		B256B60DF97ACB072D49C2E68375E46B /* LinkOpeningValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4EFAD3914CECAEACD64A81A54B0C40 /* LinkOpeningValidator.swift */; };
 		B266A3271DA4CFE114CF2733267DF6D2 /* InternalAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A091E9E2AE54CF08DF9B4DA2677EF8 /* InternalAddressBuilder.swift */; };
+		B27DC767F50ACB9208408CE8E434C1A9 /* ContactImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */; };
 		B2884BF22AFF285CD99199327510D00D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836AD45DDC190793CED07F21A64C8AA /* UIButton+Extension.swift */; };
 		B29B7BB5B889B66166D17C6C0E8E25BE /* NavigationViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B175003744E4BA4BA8129E721D99E3F /* NavigationViewType.swift */; };
 		B2A7B291D7EFA3D608CB412E53F9288A /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9181DDC8FF1AB2969CEF4E6F8EE391 /* DateFormatter+VCardBirthdayTextFormatter.swift */; };
@@ -1964,6 +1970,7 @@
 		B331F09FE83167D78D7C54D3D92650C3 /* UndoActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE922CDAAC1F72D4BF99842123E91078 /* UndoActionManager.swift */; };
 		B3544228853CEBE8E36E7983D08A59E8 /* AuthCredential+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD7FD10D95137C336E30D587C14514 /* AuthCredential+Locked.swift */; };
 		B3AF969EDB50A1350D19B78B11507B89 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BE8E07473AF7C2E41B59A2900B2CE /* ContextLabel.swift */; };
+		B3B51062684B79C68D432357A60A9387 /* NewBrandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2592BC4BC26AA22D3D1905F0E593331 /* NewBrandingViewController.xib */; };
 		B3BADAD407CEF068CE87B078CE3C3B0F /* SettingsNetworkTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22135448719FFBECDA4DC86515575E88 /* SettingsNetworkTableViewController.xib */; };
 		B3FB9570A38051A03E3C0214A146C6F0 /* AuthCredential+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDD7FD10D95137C336E30D587C14514 /* AuthCredential+Locked.swift */; };
 		B40E29E5D2CA7DE9CE4989E8EFB42BD1 /* UsersManager+Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C8311EFD148B485C3978EC5DF48D0 /* UsersManager+Migrate.swift */; };
@@ -2803,6 +2810,7 @@
 		FBD154FF4B0B69E99CBDD4198249C049 /* MenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9EE0061E06E9C87EA5A957C97C0D51 /* MenuTests.swift */; };
 		FBDCF01A4F770C5ABBC710D3003D202B /* ContactGroupEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7266396D1BA7B60590CB76B8AF09831 /* ContactGroupEditViewModel.swift */; };
 		FBF5913180D50A250CF3479BEF57645D /* DateFormatter+VCardBirthdayTextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9181DDC8FF1AB2969CEF4E6F8EE391 /* DateFormatter+VCardBirthdayTextFormatter.swift */; };
+		FC35AA278A94DE8D55EAF464AAF17275 /* NewBrandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A136C9B4E1079DA8E99600DCA52D5D4F /* NewBrandingViewController.swift */; };
 		FC38D160CDE3AE443074D71D7F32CF9D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		FC512606212D0EA8441A077C46AB9F4E /* Notification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DC8A3502A5F9890337FE2FBB9B2EA8 /* Notification+KeyboardExtension.swift */; };
 		FC901786DAEB6794F2720AC06A43A548 /* TempBannerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D41EF6822488FB971FDDA710B0572B /* TempBannerStyle.swift */; };
@@ -3528,6 +3536,7 @@
 		68EAE2B13C2E682DCC41F9421A0E1832 /* ExpandedHeaderRecipientRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedHeaderRecipientRowViewModel.swift; sourceTree = "<group>"; };
 		693A0EBA954C738ABDD467B5E0291BE7 /* StorefrontNavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorefrontNavigationAction.swift; sourceTree = "<group>"; };
 		697C075C03AED0DAFC36D0AD06CAA079 /* SwipeableItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableItemTests.swift; sourceTree = "<group>"; };
+		698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactImportView.swift; sourceTree = "<group>"; };
 		69A3F237F354027F5849B79009233900 /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		69B00613CF07440C11DE39FDE1ECCAA5 /* MailBoxSwipeActionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBoxSwipeActionHelper.swift; sourceTree = "<group>"; };
 		69D6C2DA6EACD51B7BE3A812DB41C74D /* UIBarButtonItem+Plain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Plain.swift"; sourceTree = "<group>"; };
@@ -3712,7 +3721,6 @@
 		8E18D799D5B797B2EF98DBFAD0E688DA /* AppleContactParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleContactParserTest.swift; sourceTree = "<group>"; };
 		8E3F0FD5FD7AE35ED2F4ADCC1CF31AE2 /* PushNotificationServiceSubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationServiceSubscriptionTests.swift; sourceTree = "<group>"; };
 		8E561FFC6EE3D10D991F54294F0A87E4 /* SettingsAccountCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountCoordinator.swift; sourceTree = "<group>"; };
-		8E8BA8858D7D089C5633A70564A9961B /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8ECCA238C7CF05DF037DEE0C49F1E385 /* InfoDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		8ED74BB5412B24D36973513E2112C7A4 /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		8F0205F61E56D42F08CD8AE77850D4A6 /* ContactParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactParser.swift; sourceTree = "<group>"; };
@@ -3775,7 +3783,6 @@
 		98BD66C9EFFAF5D548DAD8881B24F620 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		98D329B904F35B11133082B8BEE4C46C /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		98E6A80C18138733FD87225E00965184 /* userKey */ = {isa = PBXFileReference; lastKnownFileType = file; path = userKey; sourceTree = "<group>"; };
-		98EABD866EED806D7007D4C5584DD05C /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-US"; path = "../en-US.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		98F6DBEFE48775817E6EBAA4BD63F9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		992C0ABB744AE5961492E220659F0425 /* ConversationExpandedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationExpandedMessageView.swift; sourceTree = "<group>"; };
 		99498D0AAFDBA306C8569EAC3640B7A8 /* PushDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3831,6 +3838,7 @@
 		A076C738684BFFC293CBA3752782EA09 /* Pods_Siri.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Siri.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E2B149D3F490ABB632620AB7CB1248 /* ClearAddressBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearAddressBuilder.swift; sourceTree = "<group>"; };
 		A0FFBFC2C8C8F31598B00A85625B0E79 /* ComposeHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHeaderViewController.swift; sourceTree = "<group>"; };
+		A136C9B4E1079DA8E99600DCA52D5D4F /* NewBrandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBrandingViewController.swift; sourceTree = "<group>"; };
 		A15A32EFCD58FF1DBC64A3F0D7E7074D /* MailboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModel.swift; sourceTree = "<group>"; };
 		A1683E88F2B7F1FCE35BA6AD99BCA5B9 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		A27D9CDB3CD5BAF7F1BBE926C4B956A4 /* InAppFeedbackPromptScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppFeedbackPromptScheduler.swift; sourceTree = "<group>"; };
@@ -3868,7 +3876,6 @@
 		A952CBAC7F7843F236D028295F9BA140 /* ConversationMessagesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationMessagesProvider.swift; sourceTree = "<group>"; };
 		A97D1453C18F6E410834D38F5AAFCFC7 /* SignInCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinatorTests.swift; sourceTree = "<group>"; };
 		A9B0B4CCDF297F1A8EA1AE98741B9951 /* LabelManagerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelManagerCoordinator.swift; sourceTree = "<group>"; };
-		AA02F239AFD81B58BAE792988C6CC349 /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		AA3CB5353C922CC8855F66E11B152A74 /* UndoTokenResponseProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UndoTokenResponseProtocolTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/ApiService/UndoTokenResponseProtocolTests.swift; sourceTree = SOURCE_ROOT; };
 		AA66852CB9BDBA5E864BF9166EA0EFA8 /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
@@ -3900,6 +3907,7 @@
 		AEED05C7EADA3DD772CA5DF3FDEC0155 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
 		AEF8652494259911D0211BDDDF658159 /* MessageViewActionSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessageViewActionSheetViewModelTests.swift; path = ProtonMailTests/ProtonMail/Controller/ActionSheet/MessageViewActionSheetViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentRobot.swift; sourceTree = "<group>"; };
+		AFFBDF3F4180F75A9DA70DD0D8CEAC6C /* MailLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MailLaunchScreen.storyboard; path = "Pods/ProtonCore-UIFoundations-V5/libraries/UIFoundations/LaunchScreens/MailLaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
 		B04E6785F72AA267E3308DCABCAECF83 /* FeatureFlagsResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeatureFlagsResponseTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/APIService/FeatureFlagsResponseTests.swift; sourceTree = SOURCE_ROOT; };
 		B070CDFCF9E3E2A25CD4062DECEBC482 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3909,6 +3917,7 @@
 		B137A765D86C92D0E3B9007AE1FDE92B /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B157A470A28E896B884EDB128644439F /* AccountSettingsLabelsAndFoldersRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsLabelsAndFoldersRobot.swift; sourceTree = "<group>"; };
 		B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseTestCase.swift; path = ProtonMailUITests/Tests/BaseTestCase.swift; sourceTree = SOURCE_ROOT; };
+		B2592BC4BC26AA22D3D1905F0E593331 /* NewBrandingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewBrandingViewController.xib; sourceTree = "<group>"; };
 		B27F719084CBED3C8378774F2715B50D /* NSError+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+Extension.swift"; sourceTree = "<group>"; };
 		B313E00338666A47BD3E341D05C6DCF3 /* ViewModeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModeDataSource.swift; sourceTree = "<group>"; };
 		B3221DC867E35D1A0AEF46F584A41502 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
@@ -5449,6 +5458,7 @@
 		584EBD1A509014BE4C941BF52896640E /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				EDB60FB66CD1A333915C0D7BA7E773DA /* NewBranding */,
 				2021E61B58E29C596D156834A6F2BF17 /* NewOnboardView.swift */,
 				F1DAF94419961652FDD5E8C13A0AC3E1 /* OnboardView.swift */,
 				1231C4993C5F0850DCEA87BE7183A19D /* OnboardViewController.swift */,
@@ -5490,6 +5500,7 @@
 				66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */,
 				F998300BF1488833A537930F5E9187A4 /* Contact.storyboard */,
 				235775AD83A1552B74E4185C2702107F /* LaunchScreen.xib */,
+				AFFBDF3F4180F75A9DA70DD0D8CEAC6C /* MailLaunchScreen.storyboard */,
 				262F367D949D94238B158C679184B520 /* Menu.storyboard */,
 			);
 			path = StoryBoard;
@@ -5787,6 +5798,7 @@
 				9C8AB0FAE49A23923B824A9E7EBB5804 /* ContactPicker */,
 				93883D12D7CAC56167961DFB8D30257A /* ContactDetailViewController.swift */,
 				8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */,
+				698C8685EEEF9B48F56C181D8E76DC1F /* ContactImportView.swift */,
 				FABD90FD7F268087D8A77E2982FF3E8D /* ContactImportViewController.swift */,
 				F99D5281217B34E826FFC6A0675002F4 /* ContactTabBarCoordinator.swift */,
 				51A3198023DBD0405C3E352E8B749E33 /* ContactTabBarViewController.swift */,
@@ -7408,6 +7420,15 @@
 			path = UndoToken;
 			sourceTree = "<group>";
 		};
+		EDB60FB66CD1A333915C0D7BA7E773DA /* NewBranding */ = {
+			isa = PBXGroup;
+			children = (
+				A136C9B4E1079DA8E99600DCA52D5D4F /* NewBrandingViewController.swift */,
+				B2592BC4BC26AA22D3D1905F0E593331 /* NewBrandingViewController.xib */,
+			);
+			path = NewBranding;
+			sourceTree = "<group>";
+		};
 		EE7B73E7CC8A4AFFE863669102693F09 /* Attachment */ = {
 			isa = PBXGroup;
 			children = (
@@ -8066,7 +8087,6 @@
 				ru,
 				uk,
 				el,
-				"en-US",
 			);
 			mainGroup = C17EB90EF5076A849C4E2A0A715035BA;
 			productRefGroup = 7828F3448BB043564580FD2E6E5D5A54 /* Products */;
@@ -8236,10 +8256,12 @@
 				43E064A834A18827A899967F3EA0AA6D /* Localizable.strings in Resources */,
 				D899D73ED3F6B51795DC7636D85A610D /* Localizable.stringsdict in Resources */,
 				C3C1C470E3E0F6D91F2211D849E5ABC0 /* MailBoxSkeletonLoadingCell.xib in Resources */,
+				607639091B7E273F993CDAF298361B8F /* MailLaunchScreen.storyboard in Resources */,
 				7A7CFA2309F2FB3FA6E32F2872A93FEF /* Menu.storyboard in Resources */,
 				316E3E745ACF05E24CEB05BC06CA0DAD /* MenuItemTableViewCell.xib in Resources */,
 				C0206138E59E0156DD2CFEDEB3AF47D6 /* MessageDetailBottomView.xib in Resources */,
 				21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */,
+				B3B51062684B79C68D432357A60A9387 /* NewBrandingViewController.xib in Resources */,
 				EB6F42153AB28F3A84144A60A12AE75A /* PinCodeConfirmationViewController.xib in Resources */,
 				CFF0031F9C1AD4EB611D62F08D9A71FC /* PinCodeSetUpViewController.xib in Resources */,
 				CE2165155EF9AFC8784F1902ED7A2E4D /* PinCodeView.xib in Resources */,
@@ -8312,10 +8334,12 @@
 				C6BB1053BD4ECF210D9603A19E96D604 /* Localizable.strings in Resources */,
 				D0E81079A24B6C01FB37C2AC89E6E993 /* Localizable.stringsdict in Resources */,
 				1BCA3E36B3218F816ABF13825C091CFE /* MailBoxSkeletonLoadingCell.xib in Resources */,
+				32A9D0F14DD610B25B8EB3B318A450A8 /* MailLaunchScreen.storyboard in Resources */,
 				1B48289179EA1CF65F86620F7CFCD40D /* Menu.storyboard in Resources */,
 				EE164AAAAA15CD44E755ED56931C130E /* MenuItemTableViewCell.xib in Resources */,
 				88AF0A78EE71F93D2D2A4F58CB7A8DCD /* MessageDetailBottomView.xib in Resources */,
 				D06C8E40AB7932124738AA83520E1614 /* MultiLabelDisplayView.xib in Resources */,
+				610B84D234811C42CB5B47FA3606A363 /* NewBrandingViewController.xib in Resources */,
 				6D3EA429B5E5C2AD4A088AA5F90EBD4A /* PinCodeConfirmationViewController.xib in Resources */,
 				47B7790142C0CE6F93D47F6D387ADF93 /* PinCodeSetUpViewController.xib in Resources */,
 				DED4543642C29F57B82AB63EA52398D7 /* PinCodeView.xib in Resources */,
@@ -8570,28 +8594,29 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCore_AccountSwitcher.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common/ProtonCore_Common.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common-V5/ProtonCore_Common.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation-V5/ProtonCore_CoreTranslation_V5.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCore_ForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification/ProtonCore_HumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI/ProtonCore_LoginUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI-V5/ProtonCore_LoginUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -8625,6 +8650,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Challenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Common.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation_V5.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Doh.framework",
@@ -8715,28 +8741,29 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCore_AccountSwitcher.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common/ProtonCore_Common.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common-V5/ProtonCore_Common.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation-V5/ProtonCore_CoreTranslation_V5.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCore_ForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification/ProtonCore_HumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI/ProtonCore_LoginUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI-V5/ProtonCore_LoginUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -8769,6 +8796,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Challenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Common.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation_V5.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Doh.framework",
@@ -8821,28 +8849,29 @@
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCore_APIClient.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCore_AccountSwitcher.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher-V5/ProtonCore_AccountSwitcher.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common/ProtonCore_Common.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-Common-V5/ProtonCore_Common.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation-V5/ProtonCore_CoreTranslation_V5.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Crypto/ProtonCore_Crypto.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCore_ForceUpgrade.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade-V5/ProtonCore_ForceUpgrade.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCore_Foundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCore_Hash.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification/ProtonCore_HumanVerification.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification-V5/ProtonCore_HumanVerification.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Keymaker/ProtonCore_Keymaker.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Log/ProtonCore_Log.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Login/ProtonCore_Login.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI/ProtonCore_LoginUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-LoginUI-V5/ProtonCore_LoginUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Networking/ProtonCore_Networking.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCore_Payments.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCore_PaymentsUI.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI-V5/ProtonCore_PaymentsUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCore_Services.framework",
-				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCore_UIFoundations.framework",
+				"${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations-V5/ProtonCore_UIFoundations.framework",
 				"${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCore_Utilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -8876,6 +8905,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Challenge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Common.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_CoreTranslation_V5.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Crypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_DataModel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtonCore_Doh.framework",
@@ -9518,6 +9548,7 @@
 				C082BD051C76935D5D3BC3BF8B0CCF11 /* ContactGroupViewModel.swift in Sources */,
 				10159D8FA61DFAF925AEDE5E09DE2490 /* ContactGroupViewModelImpl.swift in Sources */,
 				D610F1ABD15DEB3BD3A1C9C98F4DDFB7 /* ContactGroupsViewCell.swift in Sources */,
+				6A90E25DC68062A7DE7BA150292B922D /* ContactImportView.swift in Sources */,
 				FBBEEC5D833E0C2231D3C5E55A4A921C /* ContactImportViewController.swift in Sources */,
 				413DCFED4BAF8787646B2892B9F831A4 /* ContactModel.swift in Sources */,
 				E231BBC438CA3C099E6DB406CF59D52B /* ContactPGPTypeHelper.swift in Sources */,
@@ -9827,6 +9858,7 @@
 				9B245C3415CC8C5E96D4358350A7BE65 /* NetworkTroubleShootCoordinator.swift in Sources */,
 				5034927DA2DD0DAB2638D017809F8375 /* NetworkTroubleShootViewController.swift in Sources */,
 				DD6E0B8A3DDBB688D2E5470FDE462C76 /* NetworkTroubleShootViewModel.swift in Sources */,
+				FC35AA278A94DE8D55EAF464AAF17275 /* NewBrandingViewController.swift in Sources */,
 				7787C265CAB755512147A2013DA8216F /* NewMailboxMessageCell.swift in Sources */,
 				58320F8E3B6E2E17093FE5DE4AD86B39 /* NewMailboxMessageCellContentView.swift in Sources */,
 				BF1D9270032F06168FCAA0B437D3F609 /* NewMailboxMessageCellPresenter.swift in Sources */,
@@ -10268,6 +10300,7 @@
 				6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */,
 				D5680476E4D22D8C0B895AB7DF8E33F3 /* ContactGroupViewModelImpl.swift in Sources */,
 				83F7F619BCD60251AEFA381A40B76F36 /* ContactGroupsViewCell.swift in Sources */,
+				B27DC767F50ACB9208408CE8E434C1A9 /* ContactImportView.swift in Sources */,
 				4BB3EDFC2C9B6A4B21F791666E354BF6 /* ContactImportViewController.swift in Sources */,
 				9BFFAF8C3F49CFDB874CC27B586366AA /* ContactModel.swift in Sources */,
 				DAD4DB2CA6839E9F42993BD97550D017 /* ContactPGPTypeHelper.swift in Sources */,
@@ -10575,6 +10608,7 @@
 				F0C8761690450AF631C4F92503A714D0 /* NetworkTroubleShootCoordinator.swift in Sources */,
 				0524DEB994E2ACB55CF1A9D64BA2D19E /* NetworkTroubleShootViewController.swift in Sources */,
 				81C23DED20E1242E9EB95C390442A83E /* NetworkTroubleShootViewModel.swift in Sources */,
+				22BBDCA56BEDB3FD346E8F961C8669E6 /* NewBrandingViewController.swift in Sources */,
 				41E1B8D55BE7EC35466F18B23B8DE3B2 /* NewMailboxMessageCell.swift in Sources */,
 				A2750C08FB77EEE2788483062129BCB2 /* NewMailboxMessageCellContentView.swift in Sources */,
 				C5272DDD661549E206069B146CEC36FF /* NewMailboxMessageCellPresenter.swift in Sources */,
@@ -11833,7 +11867,6 @@
 				10540E9AFB359D3F20458471D5DD16FE /* de */,
 				9541C9AB55A196E76EB4A8EE72ECBDEA /* el */,
 				CEAFC4D23B2C4B8DE08F0D227F8C3505 /* en */,
-				AA02F239AFD81B58BAE792988C6CC349 /* en-US */,
 				AB275A21CF390F559BC01F46A9D5B244 /* es */,
 				276D5D0D0DF462C20A4420FB25780CE4 /* fr */,
 				035BFF9AFA90B021BE0E9EBAD1236F39 /* hr */,
@@ -11869,7 +11902,6 @@
 				272B3A68D1124816CFCD0178DC0F8BA0 /* de */,
 				7985898EEFF038E933145945102FEA3F /* el */,
 				B764527DCF1D33D6AA5057011A5FB7C4 /* en */,
-				98EABD866EED806D7007D4C5584DD05C /* en-US */,
 				9400F1E9A1B75279FEC65CC4B9BE6DBF /* es */,
 				05C6E12206D69C69A62D8CAEBD3F22A6 /* fr */,
 				EEC434C8A7779F50FDA59B2FC5D11799 /* hr */,
@@ -11904,7 +11936,6 @@
 				F9A652392048271130CA3D52CD685F9B /* de */,
 				22B381DF7A3CEDF0462F747BD355FBE9 /* el */,
 				82061900AD00D062F230AFE4937B3B1E /* en */,
-				8E8BA8858D7D089C5633A70564A9961B /* en-US */,
 				2DF961B555DF4FBC7EEB1A85C1616C4A /* es */,
 				BFB5CCCB0EA86A485AFF69337731EF2D /* fr */,
 				FB6FE969D6FCB1AE93F5B3400848BD18 /* hr */,
@@ -12747,6 +12778,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 ProtonMail. All rights reserved.";
@@ -12759,6 +12791,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.ProtonMailAnalytics;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -13078,6 +13111,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 ProtonMail. All rights reserved.";
@@ -13558,6 +13592,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 ProtonMail. All rights reserved.";
@@ -13570,6 +13605,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.ProtonMailAnalytics;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

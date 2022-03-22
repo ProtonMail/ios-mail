@@ -29,4 +29,8 @@ extension String {
     static var fullDecryptionFailedViewLink: String {
         return "https://protonmail.local/decryption-failed-detail"
     }
+
+    static var rebrandingReadMoreLink: String {
+        "https://proton.me/news/updated-proton"
+    }
 }

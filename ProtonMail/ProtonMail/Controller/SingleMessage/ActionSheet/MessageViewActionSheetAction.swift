@@ -3,22 +3,24 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
+
+import ProtonCore_UIFoundations
 
 enum MessageViewActionSheetAction: Equatable {
     case reply
@@ -96,45 +98,45 @@ enum MessageViewActionSheetAction: Equatable {
     var icon: ImageAsset.Image {
         switch self {
         case .reply:
-            return Asset.actionBarReply.image
+            return IconProvider.arrowUpAndLeft
         case .replyAll:
-            return Asset.actionBarReplyAll.image
+            return IconProvider.arrowsUpAndLeft
         case .forward:
-            return Asset.mailForward.image
+            return IconProvider.arrowRight
         case .markUnread, .markRead:
-            return Asset.actionSheetUnread.image
+            return IconProvider.envelopeDot
         case .labelAs:
-            return Asset.swipeLabelAs.image
+            return IconProvider.tag
         case .trash:
-            return Asset.actionBarTrash.image
+            return IconProvider.trash
         case .archive:
-            return Asset.actionBarArchive.image
+            return IconProvider.archiveBox
         case .spam:
-            return Asset.actionBarSpam.image
+            return IconProvider.fire
         case .delete:
-            return Asset.actionBarDelete.image
+            return IconProvider.trashCross
         case .moveTo:
-            return Asset.actionBarMoveTo.image
+            return IconProvider.folderArrowIn
         case .print:
-            return Asset.actionSheetPrint.image
+            return IconProvider.printer
         case .viewHeaders:
-            return Asset.actionSheetHeader.image
+            return IconProvider.fileLines
         case .viewHTML:
-            return Asset.actionSheetHtml.image
+            return IconProvider.code
         case .reportPhishing:
-            return Asset.actionSheetPhishing.image
+            return IconProvider.hook
         case .dismiss:
-            return Asset.actionSheetClose.image
+            return IconProvider.cross
         case .inbox, .spamMoveToInbox:
-            return Asset.mailInboxIcon.image
+            return IconProvider.inbox
         case .star:
-            return Asset.actionSheetStar.image
+            return IconProvider.star
         case .unstar:
-            return Asset.actionSheetUnstar.image
+            return IconProvider.starSlash
         case .viewInLightMode:
-            return Asset.actionSheetLight.image
+            return IconProvider.sun
         case .viewInDarkMode:
-            return Asset.actionSheetDark.image
+            return IconProvider.moon
         }
     }
 }

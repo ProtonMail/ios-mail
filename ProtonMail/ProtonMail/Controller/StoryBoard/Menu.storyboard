@@ -148,7 +148,7 @@
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" name="TextNorm"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address@protonmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQv-1p-oTK">
@@ -157,7 +157,7 @@
                                                     <bool key="isElement" value="NO"/>
                                                 </accessibility>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.61176470589999998" green="0.62745098040000002" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" name="TextWeak"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DjK-92-oDv" userLabel="Arrow Button">
@@ -169,8 +169,10 @@
                                                     <constraint firstAttribute="height" constant="24" id="huE-7c-5JO"/>
                                                     <constraint firstAttribute="width" constant="24" id="plS-5z-kHW"/>
                                                 </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="arrow_down"/>
+                                                <color key="tintColor" name="IconNorm"/>
+                                                <state key="normal" image="arrow_down">
+                                                    <color key="titleColor" name="IconNorm"/>
+                                                </state>
                                                 <state key="selected" image="menu_snooze-active"/>
                                                 <state key="highlighted" image="arrow_up"/>
                                             </button>
@@ -179,13 +181,12 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="98f-eY-mC2" userLabel="avatar">
                                                         <rect key="frame" x="2" y="0.0" width="24" height="28"/>
-                                                        <color key="backgroundColor" red="0.39607843139999999" green="0.4941176471" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.39607843139999999" green="0.4941176471" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" name="MobileBrandNorm"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="28" id="6Kx-Oi-2ke"/>
                                                     <constraint firstAttribute="trailing" secondItem="98f-eY-mC2" secondAttribute="trailing" constant="2" id="6ga-bR-cbp"/>
@@ -196,7 +197,7 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.23137254901960785" green="0.23921568627450979" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" name="InteractionWeak"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <bool key="isElement" value="YES"/>
                                         </accessibility>
@@ -1170,6 +1171,21 @@
         <image name="top_menu" width="24" height="24"/>
         <namedColor name="CornflowerBlue">
             <color red="0.39599999785423279" green="0.49399998784065247" blue="0.89399999380111694" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="IconNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="InteractionWeak">
+            <color red="0.9179999828338623" green="0.92500001192092896" blue="0.94499999284744263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MobileBrandNorm">
+            <color red="0.42699998617172241" green="0.28999999165534973" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextWeak">
+            <color red="0.44699999690055847" green="0.46299999952316284" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

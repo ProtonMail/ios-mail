@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Добавить годовщину";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Добавить вложение";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим цепочки писем";
 
-/* Onboarding title */
-"Conversations" = "Цепочки писем";
-
 /* Title */
 "Copy" = "Копировать";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наслаждайтесь сквозным шифрованием даже с контактами, у которых нет Proton: Приглашайте их в ProtonMail или шифруйте сообщения вручную.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Пользуйтесь такими улучшениями, как темная тема, фильтр непрочитанных сообщений и подпапки.";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Новый ярлык";
 
-/* Onboarding title */
-"New look, same protection" = "Новый внешний вид, та же защита";
-
 /* Title */
 "New mailbox password" = "Новый пароль почтового ящика";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Квитанция отправлена";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Информация о получателе";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Получатель не найден";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Восстановление включено";
+
+/* No comment provided by engineer. */
+"Reload" = "Перезагрузить";
 
 /* Title */
 "Remind Me Later" = "Напомнить позже";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Ответить всем";
-
-/* The title of first button in the action bar */
-"Reply All" = "Ответить всем";
 
 /* composer view model impl */
 "Reply message" = "Ответить на сообщение";

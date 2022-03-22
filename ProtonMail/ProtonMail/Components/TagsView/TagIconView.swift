@@ -28,7 +28,9 @@ class TagIconView: UIView {
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 3),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -3),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-            imageView.trailingAnchor.constraint(equalTo: tagLabel.leadingAnchor, constant: -2)
+            imageView.trailingAnchor.constraint(equalTo: tagLabel.leadingAnchor, constant: -2),
+            imageView.widthAnchor.constraint(equalToConstant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 12)
         ].activate()
 
         [

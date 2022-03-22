@@ -3,23 +3,24 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol BannerViewControllerDelegate: AnyObject {
@@ -157,7 +158,7 @@ class BannerViewController: UIViewController {
     private func showAutoReplyBanner() {
         let banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._autoreply_compact_banner_description,
-                                       icon: Asset.lightbulb.image,
+                                       icon: IconProvider.lightbulb,
                                        action: nil)
         autoReplyBanner = banner
         addBannerView(type: .autoReply, shouldAddContainer: true, bannerView: banner)
@@ -181,7 +182,7 @@ class BannerViewController: UIViewController {
     private func showRemoteContentBanner() {
         let banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._banner_remote_content_new_title,
-                                       icon: Asset.mailRemoteContentIcon.image,
+                                       icon: IconProvider.fileImage,
                                        action: { [weak self] in
             self?.loadRemoteContent()
         })
@@ -192,7 +193,7 @@ class BannerViewController: UIViewController {
     private func showEmbeddedImageBanner() {
         let banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._banner_embedded_image_new_title,
-                                       icon: Asset.mailRemoteContentIcon.image) { [weak self] in
+                                       icon: IconProvider.fileShapes) { [weak self] in
             self?.loadEmbeddedImages()
         }
         embeddedImageBanner = banner
@@ -203,7 +204,7 @@ class BannerViewController: UIViewController {
         let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
         let banner = CompactBannerView(appearance: .expiration,
                                        title: title,
-                                       icon: Asset.mailHourglass.image,
+                                       icon: IconProvider.hourglass,
                                        action: nil)
         expirationBanner = banner
         addBannerView(type: .expiration, shouldAddContainer: true, bannerView: banner)
@@ -212,7 +213,7 @@ class BannerViewController: UIViewController {
     private func showUnsubscribeBanner() {
         let banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._unsubscribe_compact_banner_description,
-                                       icon: Asset.unsubscribe.image) { [weak self] in
+                                       icon: IconProvider.envelopeCross) { [weak self] in
             self?.viewModel.unsubscribe()
         }
         unsubscribeBanner = banner
@@ -224,12 +225,12 @@ class BannerViewController: UIViewController {
         if viewModel.hasSentReceipt {
             banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._receipt_sent,
-                                       icon: Asset.icBell.image,
+                                       icon: IconProvider.bell,
                                        action: nil)
         } else {
             banner = CompactBannerView(appearance: .normal,
                                        title: LocalString._banner_title_send_read_receipt,
-                                       icon: Asset.icBell.image) { [weak self] in
+                                       icon: IconProvider.bell) { [weak self] in
                 self?.sendReceipt()
             }
         }
@@ -326,7 +327,7 @@ extension BannerViewController {
     func showErrorBanner(error: NSError) {
         let banner = CompactBannerView(appearance: .alert,
                                        title: error.localizedDescription,
-                                       icon: Asset.icExclamationCircleFilled.image,
+                                       icon: IconProvider.exclamationCircleFilled,
                                        action: nil)
         errorBanner = banner
         addBannerView(type: .error, shouldAddContainer: true, bannerView: banner)
@@ -340,7 +341,7 @@ extension BannerViewController {
         let title = "\(LocalString._decryption_error): \(LocalString._decryption_of_this_message_failed)"
         let banner = CompactBannerView(appearance: .alert,
                                        title: title,
-                                       icon: Asset.icExclamationCircleFilled.image,
+                                       icon: IconProvider.exclamationCircleFilled,
                                        action: action)
         decryptionErrorBanner = banner
         addBannerView(type: .decryptionError,

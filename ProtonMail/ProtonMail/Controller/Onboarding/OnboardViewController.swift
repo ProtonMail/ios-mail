@@ -3,30 +3,24 @@
 //  ProtonMail
 //
 //
-//  Copyright (c) 2021 Proton Technologies AG
+//  Copyright (c) 2021 Proton AG
 //
-//  This file is part of ProtonMail.
+//  This file is part of Proton Mail.
 //
-//  ProtonMail is free software: you can redistribute it and/or modify
+//  Proton Mail is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
-//  ProtonMail is distributed in the hope that it will be useful,
+//  Proton Mail is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
-//  along with ProtonMail. If not, see <https://www.gnu.org/licenses/>.
+//  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-
-extension OnboardViewController {
-    enum OnboardingType {
-        case newUser, update
-    }
-}
 
 final class OnboardViewController: UIViewController, UIScrollViewDelegate {
     private let pageWidth: CGFloat = UIScreen.main.bounds.size.width
@@ -41,14 +35,8 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
 
     private let onboardingList: [Onboarding]
 
-    init(type: OnboardingType) {
-        switch type {
-        case .newUser:
-            self.onboardingList = [.page1, .page2, .page3]
-        case .update:
-            self.onboardingList = [.updateIntro1, .updateIntro2, .updateIntro3]
-        }
-
+    init() {
+            self.onboardingList = [.page2, .page1, .page3]
         super.init(nibName: nil, bundle: nil)
     }
 

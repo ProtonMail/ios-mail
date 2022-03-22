@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Add anniversary";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Add attachment";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Conversation mode";
 
-/* Onboarding title */
-"Conversations" = "Conversations";
-
 /* Title */
 "Copy" = "Copy";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* Action in 2fa popup view */
 "Enter" = "Setja inn";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "New Label";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
 /* Title */
 "New mailbox password" = "Nýtt lykilorð á pósthólfi";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Receipt sent";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Recipient details";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Gat ekki fundið viðtakanda";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recovery enabled";
+
+/* No comment provided by engineer. */
+"Reload" = "Reload";
 
 /* Title */
 "Remind Me Later" = "Áminna mig síðar";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Svara öllum";
-
-/* The title of first button in the action bar */
-"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "Svara skilaboðum";

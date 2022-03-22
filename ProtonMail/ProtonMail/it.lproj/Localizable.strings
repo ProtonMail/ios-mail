@@ -89,8 +89,7 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Aggiungi anniversario";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
+/* menu title */
 "Add attachment" = "Aggiungi allegato";
 
 /* new contacts add Birthday */
@@ -541,9 +540,6 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Modalità conversazione";
 
-/* Onboarding title */
-"Conversations" = "Conversazioni";
-
 /* Title */
 "Copy" = "Copia";
 
@@ -837,9 +833,6 @@
 
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Goditi la crittografia end-to-end persino coi contratti non di Proton: invitali a ProtonMail o crittografa manualmente i loro messaggi.";
-
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Goditi miglioramenti come la modalità scura, un filtro per i messaggi non letti e le sottocartelle.";
 
 /* Action in 2fa popup view */
 "Enter" = "Inserisci";
@@ -1360,9 +1353,6 @@
 /* No comment provided by engineer. */
 "New Label" = "Nuova Etichetta";
 
-/* Onboarding title */
-"New look, same protection" = "Nuovo aspetto, stessa protezione";
-
 /* Title */
 "New mailbox password" = "Nuova password della casella di posta";
 
@@ -1673,6 +1663,9 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Ricevuta inviata";
 
+/* No comment provided by engineer. */
+"Recipient details" = "Dettagli del destinatario";
+
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatario non trovato";
 
@@ -1688,6 +1681,9 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recupero abilitato";
+
+/* No comment provided by engineer. */
+"Reload" = "Ricarica";
 
 /* Title */
 "Remind Me Later" = "Ricordamelo più tardi";
@@ -1717,9 +1713,6 @@
 
 /* reply all action */
 "Reply all" = "Rispondi a tutti";
-
-/* The title of first button in the action bar */
-"Reply All" = "Rispondi a tutti";
 
 /* composer view model impl */
 "Reply message" = "Rispondi al messaggio";

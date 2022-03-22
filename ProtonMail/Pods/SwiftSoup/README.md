@@ -48,7 +48,7 @@ To install it, simply add the dependency to your Package.Swift file:
 ```swift
 ...
 dependencies: [
-    .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "1.7.4"),
+    .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.4.0"),
 ],
 targets: [
     .target( name: "YourTarget", dependencies: ["SwiftSoup"]),
@@ -551,7 +551,7 @@ Output:
 "?foo=bar<qux&lg=1"
 ```
 
-## Escape and Enescape
+## Escape and Unescape
 
 ```swift
 let text = "Hello &<> Å å π 新 there ¾ © »"
