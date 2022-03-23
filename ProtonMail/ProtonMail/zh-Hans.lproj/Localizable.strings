@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "和";
 
+/* Onboarding title */
+"And more…" = "And more…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "纪念日";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "会话模式";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "复制";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "同非 Proton 用户一起享受端到端加密：邀请他们使用 ProtonMail 或手动加密他们的邮件。";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "进入";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "用文件夹，标签以及颜色区分的信息来创建您的完美定制收件箱。";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "文件夹";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "密钥无效。请重试。";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "标记为";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "整洁又清爽";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "免费注册";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "新建标签";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
 
 /* Title */
 "New mailbox password" = "新的邮箱密码";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "回复所有人";
+
+/* The title of first button in the action bar */
+"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "回复邮件";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "您所在的国家可能屏蔽了 Proton。尝试使用 ProtonVPN（或其他 VPN）或 Tor 连接 Proton。";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "意见反馈";

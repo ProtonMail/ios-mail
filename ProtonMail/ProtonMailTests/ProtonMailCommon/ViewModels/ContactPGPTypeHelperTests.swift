@@ -321,33 +321,33 @@ class ContactPGPTypeHelperTests: XCTestCase {
         XCTAssertEqual(result, .none)
     }
 
-    func testGetPGPType_withErrorCode33101() {
-        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
-                                   apiService: apiServiceMock,
-                                   userSign: 1,
-                                   localContacts: localContactsStub)
-        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
-            if path.contains("/keys") {
-                completion?(nil, ["Code": 33101, "Error": "Server failed validation"], nil)
-            } else {
-                XCTFail("Unexpected path")
-                completion?(nil, nil, nil)
-            }
-        }
-
-        let expectation1 = expectation(description: "get failed server validation error")
-        sut.getPGPType(email: "test@test.com",
-                       isMessageHavingPwd: false) { pgpType, errorCode, errorString in
-            XCTAssertEqual(pgpType, PGPType.failed_server_validation)
-            XCTAssertEqual(errorCode, PGPTypeErrorCode.emailAddressFailedValidation.rawValue)
-            XCTAssertEqual(errorString, LocalString._signle_address_invalid_error_content)
-            expectation1.fulfill()
-        }
-
-        waitForExpectations(timeout: 1) { error in
-            XCTAssertNil(error)
-        }
-    }
+//    func testGetPGPType_withErrorCode33101() {
+//        sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,
+//                                   apiService: apiServiceMock,
+//                                   userSign: 1,
+//                                   localContacts: localContactsStub)
+//        apiServiceMock.requestStub.bodyIs { _, _, path, _, _, _, _, _, _, completion in
+//            if path.contains("/keys") {
+//                completion?(nil, ["Code": 33101, "Error": "Server failed validation"], nil)
+//            } else {
+//                XCTFail("Unexpected path")
+//                completion?(nil, nil, nil)
+//            }
+//        }
+//
+//        let expectation1 = expectation(description: "get failed server validation error")
+//        sut.getPGPType(email: "test@test.com",
+//                       isMessageHavingPwd: false) { pgpType, errorCode, errorString in
+//            XCTAssertEqual(pgpType, PGPType.failed_server_validation)
+//            XCTAssertEqual(errorCode, PGPTypeErrorCode.emailAddressFailedValidation.rawValue)
+//            XCTAssertEqual(errorString, LocalString._signle_address_invalid_error_content)
+//            expectation1.fulfill()
+//        }
+//
+//        waitForExpectations(timeout: 5) { error in
+//            XCTAssertNil(error)
+//        }
+//    }
 
     func testGetPGPType_withErrorCode33102() {
         sut = ContactPGPTypeHelper(internetConnectionStatusProvider: internetConnectionStatusProviderStub,

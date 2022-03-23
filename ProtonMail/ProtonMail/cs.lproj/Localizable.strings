@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "a";
 
+/* Onboarding title */
+"And more…" = "A další…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Výročí";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Režim konverzace";
 
+/* Onboarding title */
+"Conversations" = "Konverzace";
+
 /* Title */
 "Copy" = "Kopírovat";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Užijte si koncové šifrování i u kontaktů, které nejsou ve spojení se službou Proton: Můžete je pozvat k používání služby ProtonMail nebo jejich zprávy zašifrovat v systému pomocí ručního nastavení.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Užijte si vylepšení, jako je tmavý režim, filtr nepřečtených zpráv a podsložky.";
+
 /* Action in 2fa popup view */
 "Enter" = "Zadejte";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Pomocí souboru, štítku a barevného kódu zpráv, si můžete vytvořit perfektní schránku s vlastním nastavením.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Složka";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Neplatný klíč. Přejděte prosím zpět a zkuste to znova.";
+
+/* The title of first button in the action bar */
+"Label" = "Štítek";
 
 /* No comment provided by engineer. */
 "Label as" = "Označit jako";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Upravený a organizovaný";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Zaregistrujte se zdarma";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Nový štítek";
+
+/* Onboarding title */
+"New look, same protection" = "Nový vzhled, stejná ochrana";
 
 /* Title */
 "New mailbox password" = "Nové heslo k poštovní schránce";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "Odpovědět všem";
+
+/* The title of first button in the action bar */
+"Reply All" = "Odpovědět všem";
 
 /* composer view model impl */
 "Reply message" = "Odpověď";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Vaše země možná blokuje přístup ke službě Proton. Zkuste pro přístup k Protonu použít ProtonVPN (nebo jinou VPN) Popřípadě Tor.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Váš šifrovaný e-mail byl zcela přepracován pro snadnější používání.";
 
 /* Title of user feedback view */
 "Your feedback" = "Vaše zpětná vazba";

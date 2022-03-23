@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "і";
 
+/* Onboarding title */
+"And more…" = "Та інше…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Річниця";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Режим розмов";
 
+/* Onboarding title */
+"Conversations" = "Розмови";
+
 /* Title */
 "Copy" = "Копіювати";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Наскрізне шифрування навіть з контактами, які не користуються Proton. Запросіть їх до ProtonMail, або вручну шифруйте їхні повідомлення.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Насолоджуйтесь такими покращеннями, як темний режим, фільтр непрочитаних повідомлень та підтеки.";
+
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Файли, мітки та позначення повідомлень кольором для досконалої, індивідуальної поштової скриньки.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Тека";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Ключ недійсний. Будь ласка, поверніться назад і спробуйте знову.";
+
+/* The title of first button in the action bar */
+"Label" = "Мітка";
 
 /* No comment provided by engineer. */
 "Label as" = "Позначити міткою";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Простота й лаконічність";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Зареєструватися безплатно";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Нова мітка";
+
+/* Onboarding title */
+"New look, same protection" = "Новий вигляд, той самий захист";
 
 /* Title */
 "New mailbox password" = "Новий пароль поштової скриньки";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "Відповісти усім";
+
+/* The title of first button in the action bar */
+"Reply All" = "Відповісти всім";
 
 /* composer view model impl */
 "Reply message" = "Відповісти на повідомлення";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ваша країна може блокувати доступ до Proton. Спробуйте скористатися ProtonVPN (чи будь-який інший VPN) або Tor для доступу до Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Ваша зашифрована е-пошта була повністю перероблена для зручності користування.";
 
 /* Title of user feedback view */
 "Your feedback" = "Ваш відгук";

@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "y";
 
+/* Onboarding title */
+"And more…" = "Y más…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversario";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Vista de conversación";
 
+/* Onboarding title */
+"Conversations" = "Conversaciones";
+
 /* Title */
 "Copy" = "Copiar";
 
@@ -886,7 +892,7 @@
 "Do you want to save the unsaved changes?" = "¿Quieres guardar los cambios no guardados?";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+"Do you want to send your message anyway?" = "¿Quieres enviar tu mensaje de todos modos?";
 
 /* Action */
 "Don't remind me again" = "No volver a recordarme";
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Disfruta de cifrado de extremo a extremo incluso con contactos ajenos a Proton: Invítales a Protonmail o encripta manualmente sus mensajes.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Disfruta de mejoras como el modo oscuro, el filtro de mensajes no leídos y las subcarpetas.";
+
 /* Action in 2fa popup view */
 "Enter" = "Ingresar";
 
@@ -1096,7 +1105,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduce un código PIN entre 4 y 12 caracteres.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Enter new PIN code";
+"Enter new PIN code" = "Introduzca un nuevo código PIN";
 
 /* Title */
 "Enter Verification Code" = "Introduce el código de verificación";
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Archiva, etiqueta y clasifica por colores los mensajes para crear una perfecta y personalizada bandeja de entrada.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Carpeta";
@@ -1453,6 +1455,9 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Clave no válida, regresa e intenta de nuevo.";
 
+/* The title of first button in the action bar */
+"Label" = "Etiqueta";
+
 /* No comment provided by engineer. */
 "Label as" = "Etiquetar como";
 
@@ -1515,7 +1520,7 @@
 "Load content" = "Cargar contenido";
 
 /* The title of loading embedded image banner. */
-"Load embedded images" = "Load embedded images";
+"Load embedded images" = "Cargar imágenes incrustadas";
 
 /* No comment provided by engineer. */
 "Load images" = "Cargar imágenes";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Aseado y ordenado";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Regístrate gratis";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Nueva etiqueta";
+
+/* Onboarding title */
+"New look, same protection" = "Nuevo aspecto, misma protección";
 
 /* Title */
 "New mailbox password" = "Nueva contraseña del buzón";
@@ -2008,10 +2007,10 @@
 "PIN code can't be empty." = "El código PIN no puede estar vacío.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "PIN is too long";
+"PIN is too long" = "El PIN es demasiado largo";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "PIN is too short";
+"PIN is too short" = "El PIN es demasiado corto";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Los planes pueden editarse en la versión web.";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "Responder a todos";
+
+/* The title of first button in the action bar */
+"Reply All" = "Responder a todo";
 
 /* composer view model impl */
 "Reply message" = "Responder mensaje";
@@ -2795,7 +2797,7 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Este mensaje puede ser un intento de suplantación. Comprueba el remitente y el contenido y asegúrate que sean legítimos.";
 
 /* The title of auto reply banner */
-"This message was automatically generated" = "This message was automatically generated";
+"This message was automatically generated" = "Este mensaje se generó automáticamente";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Este mensaje caducará en %1$dD %2$dH %3$dM";
@@ -2980,7 +2982,7 @@
 "Unsubscribe" = "Cancelar suscripción";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Unsubscribe from mailing list";
+"Unsubscribe from mailing list" = "Darse de baja de la lista de correo";
 
 /* Error message */
 "Unsupported file type" = "Tipo de archivo no soportado";
@@ -3198,7 +3200,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Vas a eliminar el mensaje de manera irreversible. ¿Estás seguro?";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "Estás al día";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Tus cambios serán descartados";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Tu país puede estar bloqueando el acceso a Proton. Prueba utilizando ProtonVPN (u otra VPN) o Tor para acceder a Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Su correo electrónico encriptado ha sido completamente rediseñado para facilitar su uso.";
 
 /* Title of user feedback view */
 "Your feedback" = "Tus comentarios";
