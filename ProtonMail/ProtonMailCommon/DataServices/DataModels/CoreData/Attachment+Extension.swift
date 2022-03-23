@@ -65,6 +65,7 @@ extension Attachment {
     }
 
     // Mark : functions
+    // note: `mailbox_pwd` is unused, should we remove it?
     func encrypt(byKey key: Key, mailbox_pwd: String) throws -> (Data, URL)? {
         if let clearData = self.fileData, localURL == nil {
             try writeToLocalURL(data: clearData)
@@ -279,13 +280,6 @@ extension Attachment {
     }
 }
 
-extension Collection where Element == Attachment {
-
-    var areUploaded: Bool {
-        allSatisfy { $0.isUploaded }
-    }
-}
-
 protocol AttachmentConvertible {
     var dataSize: Int { get }
     func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool) -> Promise<Attachment?>
@@ -346,9 +340,6 @@ extension UIImage: AttachmentConvertible {
 extension Data: AttachmentConvertible {
     var dataSize: Int {
         return self.count
-    }
-    func toAttachment (_ message: Message, fileName: String, stripMetadata: Bool) -> Promise<Attachment?> {
-        return self.toAttachment(message, fileName: fileName, type: "image/jpg", stripMetadata: stripMetadata)
     }
 
     func toAttachment (_ message: Message, fileName: String, type: String, stripMetadata: Bool, isInline: Bool = false) -> Promise<Attachment?> {

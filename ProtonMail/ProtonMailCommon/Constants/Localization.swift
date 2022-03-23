@@ -2084,7 +2084,6 @@ class LocalizedString {
     lazy var _select_colour = NSLocalizedString("Select colour", comment: "section title")
 
     lazy var _message_body_view_not_connected_text = NSLocalizedString("You are not connected. We cannot display the content of your message.", comment: "")
-    lazy var _message_body_view_reload_button_title = NSLocalizedString("Reload", comment: "")
 
     lazy var _banner_remote_content_title = NSLocalizedString("This message contains remote content.", comment: "")
     lazy var _banner_remote_content_new_title = NSLocalizedString("Load remote content", comment: "The title of loading remote content banner.")
@@ -2103,7 +2102,6 @@ class LocalizedString {
     lazy var _banner_trashed_message_title = NSLocalizedString("This conversation contains trashed messages", comment: "")
     lazy var _banner_non_trashed_message_title = NSLocalizedString("This conversation contains non-trashed messages.", comment: "")
 
-    lazy var _message_action_sheet_title_recipient = NSLocalizedString("Recipient details", comment: "")
     lazy var _message_action_sheet_title_sender = NSLocalizedString("Sender details", comment: "")
 
     // MARK: Action sheet action title

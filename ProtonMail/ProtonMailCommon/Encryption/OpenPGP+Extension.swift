@@ -136,23 +136,6 @@ extension Crypto {
 
 }
 
-//
-extension PMNOpenPgp {
-    func generateKey(_ passphrase: String, userName: String, domain: String, bits: Int32) throws -> PMNOpenPgpKey? {
-        var out_new_key: PMNOpenPgpKey?
-        try ObjC.catchException {
-            let timeinterval = CryptoGetUnixTime()
-            let int32Value = NSNumber(value: timeinterval).int32Value
-            let email = userName + "@" + domain
-            out_new_key = self.generateKey(email, domain: email, passphrase: passphrase, bits: bits, time: int32Value)
-            if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
-                out_new_key = nil
-            }
-        }
-        return out_new_key
-    }
-}
-
 protocol AttachmentDecryptor {
     func decryptAttachment(keyPacket: Data,
                            dataPacket: Data,
@@ -196,19 +179,6 @@ extension Data {
 
     func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: [Data]) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privKeys, passphrase: passphrase)
-    }
-
-    func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data? {
-        return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
-    }
-
-    func encryptAttachment(fileName: String, pubKey: String) throws -> SplitMessage? {
-        return try Crypto().encryptAttachment(plainData: self, fileName: fileName, publicKey: pubKey)
-    }
-
-    // could remove and dirrectly use Crypto()
-    static func makeEncryptAttachmentProcessor(fileName: String, totalSize: Int, pubKey: String) throws -> AttachmentProcessor {
-        return try Crypto().encryptAttachmentLowMemory(fileName: fileName, totalSize: totalSize, publicKey: pubKey)
     }
 
     // key packet part

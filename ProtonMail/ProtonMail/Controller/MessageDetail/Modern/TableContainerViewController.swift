@@ -28,7 +28,6 @@ protocol ScrollableContainer: AnyObject {
     var scroller: UIScrollView { get }
 
     func saveOffset()
-    func restoreOffset()
 }
 
 private enum ComposerCell: String {

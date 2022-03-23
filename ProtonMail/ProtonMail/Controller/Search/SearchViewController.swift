@@ -29,10 +29,8 @@ protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
     func update(progress: Float)
     func setupProgressBar(isHidden: Bool)
-    func checkNoResultView()
     func activityIndicator(isAnimating: Bool)
     func reloadTable()
-    func reloadRows(rows: [IndexPath])
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
@@ -63,7 +61,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     }()
 
     // MARK: - Private Constants
-    private let kAnimationDuration: TimeInterval = 0.3
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
 
     private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
@@ -382,8 +379,7 @@ extension SearchViewController {
             MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
                                                messages: messages,
                                                isEnableColor: isEnableColor,
-                                               isInherit: isInherit,
-                                               labelId: viewModel.labelID)
+                                               isInherit: isInherit)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
@@ -658,12 +654,6 @@ extension SearchViewController: SearchViewUIProtocol {
     func reloadTable() {
         self.checkNoResultView()
         self.tableView.reloadData()
-    }
-
-    func reloadRows(rows: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: rows, with: .automatic)
-        self.tableView.endUpdates()
     }
 }
 

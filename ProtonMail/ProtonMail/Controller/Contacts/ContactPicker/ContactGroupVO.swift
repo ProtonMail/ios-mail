@@ -85,10 +85,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
     }
 
-    func notes(type: Int) -> String {
-        return ""
-    }
-
     func setType(type: Int) {
         if let pgp = PGPType(rawValue: type) {
             let badTypes: [PGPType] = [.failed_validation,
@@ -174,26 +170,6 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
 
     private var groupSize: Int?
     private var groupColor: String?
-    /**
-     For the composer's autocomplete
-     Note that groupSize and groupColor are cached!
-     - Returns: the current group size and group color
-    */
-    func getContactGroupInfo() -> (total: Int, color: String) {
-        if let size = groupSize, let color = groupColor {
-            return (size, color)
-        }
-
-        let context = CoreDataService.shared.mainContext
-        if let label = Label.labelForLabelName(contactTitle,
-                                               inManagedObjectContext: context) {
-            groupColor = label.color
-            groupSize = label.emails.count
-            return (label.emails.count, label.color)
-        }
-
-        return (0, ColorManager.defaultColor)
-    }
 
     var contactCount: Int {
         get {

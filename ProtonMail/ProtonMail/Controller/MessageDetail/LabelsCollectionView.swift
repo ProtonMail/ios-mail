@@ -22,10 +22,6 @@
 
 import UIKit
 
-protocol LabelsCollectionViewDelegate: RecipientCellDelegate {
-
-}
-
 class LabelsCollectionView: PMView {
     override func getNibName() -> String {
         return "LabelsCollectionView"

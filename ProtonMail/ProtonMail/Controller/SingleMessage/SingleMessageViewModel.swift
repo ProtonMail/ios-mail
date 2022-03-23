@@ -256,11 +256,3 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
         fatalError("Not implemented")
     }
 }
-
-private extension MessageDataService {
-
-    func fetchMessage(messageId: String) -> Message? {
-        fetchMessages(withIDs: .init(array: [messageId]), in: CoreDataService.shared.mainContext).first
-    }
-
-}

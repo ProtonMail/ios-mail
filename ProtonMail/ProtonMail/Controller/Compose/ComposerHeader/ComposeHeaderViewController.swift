@@ -57,25 +57,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         }
     }
 
-    var hasOutSideEmails: Bool {
-        let toHas = toContactPicker.hasOutsideEmails
-        if toHas {
-            return true
-        }
-
-        let ccHas = ccContactPicker.hasOutsideEmails
-        if ccHas {
-            return true
-        }
-
-        let bccHas = bccContactPicker.hasOutsideEmails
-        if bccHas {
-            return true
-        }
-
-        return false
-    }
-
     var hasNonePMEmails: Bool {
         let toHas = toContactPicker.hasNonePM
         if toHas {
@@ -130,29 +111,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         return out
     }
 
-    var allEmails: String {  // email,email,email
-        var emails: [String] = []
-
-        let toEmails = toContactPicker.contactList
-        if !toEmails.isEmpty {
-            emails.append(toEmails)
-        }
-
-        let ccEmails = ccContactPicker.contactList
-        if !ccEmails.isEmpty {
-            emails.append(ccEmails)
-        }
-
-        let bccEmails = bccContactPicker.contactList
-        if !bccEmails.isEmpty {
-            emails.append(bccEmails)
-        }
-        if emails.isEmpty {
-            return ""
-        }
-        return emails.asCommaSeparatedList(trailingSpace: false)
-    }
-
     var ccContacts: String {
         return ccContactPicker.contactList
     }
@@ -180,16 +138,10 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     // MARK: - Constants
     fileprivate let kDefaultRecipientHeight: Int = 28
-    fileprivate let kErrorMessageHeight: CGFloat = 48.0
-    fileprivate let kNumberOfColumnsInTimePicker: Int = 2
-    fileprivate let kNumberOfDaysInTimePicker: Int = 30
-    fileprivate let kNumberOfHoursInTimePicker: Int = 24
-    fileprivate let kCcBccContainerViewHeight: CGFloat = 96.0
     fileprivate let kAnimationDuration = 0.25
 
     //
     fileprivate var isShowingCcBccView: Bool = false
-    fileprivate var hasExpirationSchedule: Bool = false
 
     /// Use this flag to control the email validation action
     var shouldValidateTheEmail = true
@@ -309,12 +261,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             _ = self.toContactPicker.resignFirstResponder()
         })
-    }
-
-    // MARK: - - Private Methods
-    fileprivate func includeButtonBorder(_ view: UIView) {
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = ColorProvider.SeparatorNorm.cgColor
     }
 
     fileprivate func configureContactPickerTemplate() {

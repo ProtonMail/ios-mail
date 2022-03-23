@@ -35,10 +35,6 @@ import ProtonCore_Services
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 
-typealias ContactImportComplete = (([Contact]?, String) -> Void)
-typealias ContactImportUpdate = ((Int) -> Void)
-typealias ContactImportCancel = (() -> Bool)
-
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
@@ -571,66 +567,6 @@ class ContactDataService: Service, HasLocalStorage {
         } catch {
         }
         return []
-    }
-
-    /**
-     The function that checks if the current dest contactVO (emailID) is an e2e encrypted
-     
-     - Parameters:
-     - model: ContactPickerModelProtocol
-     - progress: the closure that contains the actions required before and during the email status is being checked
-     - complete: the closure that contains the actions required after the email status is checked
-     */
-    func lockerCheck(model: ContactPickerModelProtocol,
-                     message: Message? = nil,
-                     progress: () -> Void,
-                     complete: ((UIImage?, Int) -> Void)?) {
-        guard let c = model as? ContactVO else {
-            complete?(nil, -1)
-            return
-        }
-
-        guard let email = model.displayEmail else {
-            complete?(nil, -1)
-            return
-        }
-
-        progress()
-
-        let context = self.coreDataService.mainContext // VALIDATE
-        async {
-            let getEmail: Promise<KeysResponse> = self.apiService.run(route: UserEmailPubKeys(email: email))
-            let getContact = self.fetch(byEmails: [email], context: context)
-            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-                if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        c.pgpType = .internal_trusted_key
-                    } else {
-                        c.pgpType = .internal_normal
-                    }
-                } else {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        if contact.encrypt {
-                            c.pgpType = .pgp_encrypt_trusted_key
-                        } else if contact.sign {
-                            c.pgpType = .pgp_signed
-                            if let pwd = message?.password, pwd != "" {
-                                c.pgpType = .eo
-                            }
-                        }
-                    } else {
-                        if let pwd = message?.password, pwd != "" {
-                            c.pgpType = .eo
-                        } else {
-                            c.pgpType = .none
-                        }
-                    }
-                }
-                complete?(c.pgpType.lockImage, c.pgpType.rawValue)
-            }.catch(policy: .allErrors) { _ in
-                complete?(nil, -1)
-            }
-        }
     }
 }
 

@@ -25,15 +25,12 @@ import UIKit
 extension UIStoryboard {
     /// The raw value must match the restorationIdentifier for the initialViewController
     enum Storyboard: String {
-        case attachments = "Attachments"
         case inbox = "Menu"
         case signIn = "SignIn"
         case composer = "Composer"
-        case message = "Message"
         case alert = "Alerts"
         case settings = "Settings"
         case contact = "Contact"
-        case accountManager = "AccountManager"
         var restorationIdentifier: String {
             return rawValue
         }

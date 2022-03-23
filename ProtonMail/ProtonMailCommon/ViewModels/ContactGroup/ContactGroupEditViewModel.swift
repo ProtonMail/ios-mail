@@ -124,7 +124,6 @@ protocol ContactGroupEditViewModel {
     // get operations
     func getViewTitle() -> String
     func getName() -> String
-    func getContactGroupID() -> String?
     func getColor() -> String
     func getEmails() -> Set<Email>
     func getSectionTitle(for: Int) -> String

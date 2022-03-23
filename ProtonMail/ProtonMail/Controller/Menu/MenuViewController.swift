@@ -302,24 +302,6 @@ extension MenuViewController: MenuUIProtocol {
 
     }
 
-    func reloadRow(indexPath: IndexPath) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: [indexPath], with: .fade)
-        self.tableView.endUpdates()
-    }
-
-    func insertRows(indexPaths: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.insertRows(at: indexPaths, with: .fade)
-        self.tableView.endUpdates()
-    }
-
-    func deleteRows(indexPaths: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.deleteRows(at: indexPaths, with: .fade)
-        self.tableView.endUpdates()
-    }
-
     func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {
 
         self.tableView.beginUpdates()

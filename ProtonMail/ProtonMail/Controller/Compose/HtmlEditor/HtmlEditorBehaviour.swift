@@ -59,15 +59,6 @@ class HtmlEditorBehaviour: NSObject {
 
     //
     weak var delegate: HtmlEditorBehaviourDelegate?
-    //
-    func responderCheck() -> Bool {
-        for v in self.webView.scrollView.subviews {
-            if v.isFirstResponder {
-                return true
-            }
-        }
-        return false
-    }
 
     // fixes retain cycle: userContentController retains his message handlers
     internal func eject() {
@@ -155,22 +146,6 @@ class HtmlEditorBehaviour: NSObject {
                         method_getImplementation(originalMethod),
                         method_getTypeEncoding(originalMethod))
         object_setClass(target, noInputAccessoryClass)
-    }
-
-    /// clean website cache for wkwebview. not sure if this still necessary
-    internal func cleanCache() {
-        let websiteDataTypes = Set<String>([WKWebsiteDataTypeDiskCache,
-                                            WKWebsiteDataTypeOfflineWebApplicationCache,
-                                            WKWebsiteDataTypeMemoryCache,
-                                            WKWebsiteDataTypeLocalStorage,
-                                            WKWebsiteDataTypeCookies,
-                                            WKWebsiteDataTypeSessionStorage,
-                                            WKWebsiteDataTypeIndexedDBDatabases,
-                                            WKWebsiteDataTypeWebSQLDatabases])
-        let date = Date(timeIntervalSince1970: 0)
-        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes,
-                                                modifiedSince: date,
-                                                completionHandler: { })
     }
 
     private func run<T>(with jsCommand: String) -> Promise<T> {
@@ -303,17 +278,6 @@ class HtmlEditorBehaviour: NSObject {
 }
 
 extension HtmlEditorBehaviour {
-
-    /// Called when actions are received from JavaScript
-    /// - parameter method: String with the name of the method and optional parameters that were passed in
-    private func performCommand(_ method: String) {
-        if method.hasPrefix("ready") {
-            // If loading for the first time, we have to set the content HTML to be displayed
-            if !isEditorLoaded {
-                isEditorLoaded = true
-            }
-        }
-    }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if !isEditorLoaded {

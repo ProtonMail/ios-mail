@@ -84,18 +84,4 @@ class SettingsLockViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.biometricType, .faceID)
     }
-
-    func testBioProtectionSectionTitle() {
-        biometricStub.biometricTypeStub = .faceID
-
-        XCTAssertEqual(sut.getBioProtectionSectionTitle()?.string, "Face ID")
-
-        biometricStub.biometricTypeStub = .touchID
-
-        XCTAssertEqual(sut.getBioProtectionSectionTitle()?.string, "Touch ID")
-
-        biometricStub.biometricTypeStub = .none
-
-        XCTAssertEqual(sut.getBioProtectionSectionTitle(), nil)
-    }
 }

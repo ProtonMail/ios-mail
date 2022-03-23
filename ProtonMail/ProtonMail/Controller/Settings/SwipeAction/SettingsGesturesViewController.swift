@@ -33,8 +33,6 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
 
     private(set) var selectedAction: SwipeActionItems?
 
-    private var actionSheet: PMActionSheet?
-
     func set(viewModel: SettingsGestureViewModel) {
         self.viewModel = viewModel
     }
@@ -113,11 +111,6 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
     private func showSwipeActionList(selected: SwipeActionItems) {
         self.selectedAction = selected
         self.coordinator?.go(to: .actionSelection)
-    }
-
-    private func hideActionSheet() {
-        self.actionSheet?.dismiss(animated: true)
-        self.actionSheet = nil
     }
 
     @objc

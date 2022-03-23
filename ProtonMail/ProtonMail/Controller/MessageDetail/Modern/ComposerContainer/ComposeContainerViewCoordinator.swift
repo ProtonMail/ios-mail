@@ -23,9 +23,7 @@
 import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
-    typealias VC = ComposeContainerViewController
     var viewController: UINavigationController?
-    var configuration: ((ComposeContainerViewCoordinator.VC) -> Void)?
 
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!

@@ -77,17 +77,6 @@ struct Part: CustomStringConvertible {
 
     var contentCID: String? { return self.headers[.contentID]?.name }
     var cid: String? { return self.headers[.contentID]?.body }
-    func partCID() -> Part? {
-        if self.contentCID?.contains("Content-ID") == true {
-            return self
-        }
-        for part in self.subParts {
-            if let sub = part.partCID() {
-                return sub
-            }
-        }
-        return nil
-    }
 
     func partCIDs() -> [Part] {
         var ret = [Part]()

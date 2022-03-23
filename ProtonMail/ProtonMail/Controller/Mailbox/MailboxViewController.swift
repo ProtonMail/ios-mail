@@ -1880,8 +1880,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             MoveToActionSheetViewModelMessages(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                messages: messages,
                                                isEnableColor: isEnableColor,
-                                               isInherit: isInherit,
-                                               labelId: viewModel.labelId)
+                                               isInherit: isInherit)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
@@ -1936,8 +1935,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             MoveToActionSheetViewModelConversations(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                     conversations: conversations,
                                                     isEnableColor: isEnableColor,
-                                                    isInherit: isInherit,
-                                                    labelId: viewModel.labelId)
+                                                    isInherit: isInherit)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,

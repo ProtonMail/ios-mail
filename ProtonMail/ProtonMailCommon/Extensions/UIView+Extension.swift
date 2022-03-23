@@ -23,28 +23,6 @@
 import UIKit
 
 extension UIView {
-    @discardableResult func loadFromNib<T: UIView>() -> T? {
-        let name = String(describing: type(of: self))
-        let nib = UINib(nibName: name, bundle: Bundle(for: type(of: self)))
-
-        guard let subview = nib.instantiate(withOwner: self, options: nil).first as? T else {
-            return nil
-        }
-        subview.translatesAutoresizingMaskIntoConstraints = false
-
-        self.addSubview(subview)
-        subview.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        subview.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        subview.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        subview.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-
-        return subview
-    }
-
-    enum BorderSide: String {
-        case top, bottom, left, right
-    }
-
     func roundCorners() {
         layer.cornerRadius = 4.0
         clipsToBounds = true
@@ -65,34 +43,6 @@ extension UIView {
             shakeAnimation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + offset, y: self.center.y))
             self.layer.add(shakeAnimation, forKey: "position")
         })
-    }
-
-    func add(border side: BorderSide, color: UIColor, borderWidth: CGFloat, at level: CGFloat? = nil) {
-        let border = CALayer()
-        border.name = side.rawValue
-        border.backgroundColor = color.cgColor
-        switch side {
-        case .top:
-            let level = level ?? 0
-            border.frame = CGRect(x: 0, y: level, width: self.frame.size.width, height: borderWidth)
-        case .bottom:
-            let level = level ?? self.frame.size.height
-            border.frame = CGRect(x: 0, y: level - borderWidth, width: self.frame.size.width, height: borderWidth)
-        case .left:
-            let level = level ?? 0
-            border.frame = CGRect(x: level, y: 0, width: borderWidth, height: self.frame.size.height)
-        case .right:
-            let level = level ?? self.frame.size.width
-            border.frame = CGRect(x: level - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
-        }
-        //// TODO:: change when switch to swift 4.2
-        // self.layer.sublayers?.removeAll(where: { $0.name == border.name })
-
-        // swift 4
-        while let index = self.layer.sublayers?.firstIndex(where: { $0.name == border.name }) {
-            self.layer.sublayers?.remove(at: index)
-        }
-        self.layer.addSublayer(border)
     }
 
     func gradient() {

@@ -50,15 +50,6 @@ class SharedUserDefaultsTests: XCTestCase {
         sut = nil
     }
 
-    func testSetTimestampShouldSaveItAsRoundedIntString() {
-        let ts = Date().timeIntervalSince1970
-        let intValue = Int(ts)
-        let stringValue = String(intValue)
-
-        sut.setLastReceivedPush(at: ts)
-        XCTAssertEqual(sut.lastReceivedPushTimestamp, stringValue)
-    }
-
     func testEmptyShouldReturnUndefined() {
         XCTAssertEqual(sut.lastReceivedPushTimestamp, "Undefined")
     }

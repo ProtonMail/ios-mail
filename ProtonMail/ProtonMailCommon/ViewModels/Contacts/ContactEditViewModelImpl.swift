@@ -586,18 +586,6 @@ class ContactEditViewModelImpl: ContactEditViewModel {
             }
         }
     }
-
-    // return the contact group that is empty after editing
-    override func hasEmptyGroups() -> [String]? {
-        var emptyGroupNames = [String]()
-        for group in contactGroupData {
-            if group.value.count == 0 {
-                emptyGroupNames.append(group.value.name)
-            }
-        }
-
-        return emptyGroupNames.count > 0 ? emptyGroupNames : nil
-    }
 }
 
 extension ContactEditViewModelImpl: ContactParserResultDelegate {
@@ -628,9 +616,6 @@ extension ContactEditViewModelImpl: ContactParserResultDelegate {
 
     func append(urls: [ContactEditUrl]) {
         self.urls.append(contentsOf: urls)
-    }
-
-    func update(verifyType2: Bool) {
     }
 
     func update(verifyType3: Bool) {

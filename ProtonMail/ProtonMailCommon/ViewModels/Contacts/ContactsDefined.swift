@@ -29,13 +29,9 @@ protocol ContactEditTypeInterface {
     func getSectionType() -> ContactEditSectionType
     func updateType(type: ContactFieldType)
     func types() -> [ContactFieldType]
-    func needsUpdate() -> Bool
-
-    func isEmpty() -> Bool
 }
 
 protocol ContactEditNoTypeInterface {
-    func getSectionType() -> ContactEditSectionType
     func needsUpdate() -> Bool
     func isEmpty() -> Bool
 }
@@ -245,10 +241,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
             return false
         }
         return true
-    }
-
-    func isEmpty() -> Bool {
-        return newEmail.isEmpty
     }
 
     func makeTempEmail(context: NSManagedObjectContext, contact: Contact) -> Email {
@@ -531,10 +523,6 @@ final class ContactEditInformation: ContactEditNoTypeInterface {
         if !self.isNew {
             self.origValue = self.newValue
         }
-    }
-
-    func getSectionType() -> ContactEditSectionType {
-        return .information
     }
 
     func needsUpdate() -> Bool {

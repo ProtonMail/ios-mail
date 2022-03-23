@@ -27,7 +27,6 @@ enum MenuSection {
     case folders
     case labels
     case more
-    case unknown
 
     var title: String {
         switch self {
@@ -36,8 +35,6 @@ enum MenuSection {
         case .labels: return LocalString._labels
         // todo: the translation title could be wrong
         case .more: return LocalString._general_more
-        default:
-            return ""
         }
     }
 }

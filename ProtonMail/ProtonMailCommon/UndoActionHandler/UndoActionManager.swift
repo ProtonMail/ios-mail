@@ -35,7 +35,6 @@ enum UndoAction: Equatable {
     case spam
     case trash
     case archive
-    case move
     case custom(String)
 }
 

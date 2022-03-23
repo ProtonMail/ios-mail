@@ -67,12 +67,6 @@ class SettingsDeviceCoordinator: SideMenuCoordinator {
         }
     }
 
-    init(vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory) {
-        self.viewModel = vm
-        self.viewController = vc
-        self.services = services
-    }
-
     init(sideMenu: SideMenuController?, nav: UIViewController?, vc: SettingsDeviceViewController, vm: SettingsDeviceViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
         self.sideMenu = sideMenu

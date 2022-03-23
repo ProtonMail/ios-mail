@@ -128,57 +128,6 @@ EQr2Mx42THr260IFYp5E/rIA
         }
     }
     
-    
-    func testCryptoAttachmentProcessor() {
-        let testData = """
-        This file, its contents, concepts, methods, behavior, and operation
-        (collectively the "Software") are protected by trade secret, patent,
-        and copyright laws. The use of the Software is governed by a license
-        agreement. Disclosure of the Software to third parties, in any form,
-        in whole or in part, is expressly prohibited except as authorized by
-        the license agreement.
-        """
-            
-        let data = testData.data(using: .utf8)!
-        let totalSize : Int = data.count
-        do {
-            let pgp = Crypto()
-            // encrypt
-            let processor = try pgp.encryptAttachmentLowMemory(fileName: "testData",
-                                                               totalSize: totalSize,
-                                                               publicKey: OpenPGPDefines.publicKey)
-            let chunkSize : Int = 10
-            var offset : Int = 0
-            while offset < totalSize {
-                let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
-                let currentChunk = data.subdata(in: Range(uncheckedBounds: (lower: offset, upper: offset + currentChunkSize)))
-                offset += currentChunkSize
-                processor.process(currentChunk)
-            }
-            
-            let result = try processor.finish()
-            guard let keyPacket = result.keyPacket,
-                let dataPacket = result.dataPacket else {
-                    XCTFail("can't be null")
-                    return
-            }
-    
-            // decrypt
-            let decrypted = try pgp.decryptAttachment(keyPacket: keyPacket,
-                                                      dataPacket: dataPacket,
-                                                      privateKey: OpenPGPDefines.privateKey,
-                                                      passphrase: OpenPGPDefines.passphrase)
-            guard let clearData = decrypted else {
-                 XCTFail("can't be null")
-                 return
-             }
-            //match
-            XCTAssertEqual(data, clearData)
-        } catch let error {
-            XCTFail("thrown" + "\(error.localizedDescription)")
-        }
-    }
-    
     func testInGeneral() {
         let feng100_fingerprint = "F62F2E37580F4DFAD46200936DC999B146234F40".lowercased()
 

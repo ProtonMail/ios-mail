@@ -44,7 +44,6 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     private(set) var user: UserManager
-    let labelsDataService: LabelsDataService
     private var fetchedController: NSFetchedResultsController<NSFetchRequestResult>?
 
     var reloadView: (() -> Void)?
@@ -54,7 +53,6 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
         self.groupID = groupID
         self.name = name
         self.color = color
-        self.labelsDataService = labelsDataService
         emailIDsArray = []
         self.emailIDs = emailIDs
 

@@ -14,21 +14,12 @@ extension Data {
         var ranges: [Range<Data.Index>]
         var count: Int { return self.ranges.count }
 
-        static let empty = Components(data: Data(), ranges: [])
-
         subscript(_ index: Int) -> String {
             let range = self.ranges[index]
             var data = self.data[range]
 
             if data.contains(string: "?utf-8?") { data = data.convertFromMangledUTF8() }
             return String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) ?? ""
-        }
-
-        func index(of string: String) -> Int? {
-            for i in 0..<self.count {
-                if self[i] == string { return i }
-            }
-            return nil
         }
 
         subscript(_ range: Range<Int>) -> [String] {
@@ -42,46 +33,6 @@ extension Data {
 
         var all: [String] {
             return self[0..<self.count]
-        }
-
-        var string: String {
-            return self.all.joined(separator: "\n")
-        }
-
-        subscript(_ range: Range<Int>) -> Data {
-            let lower = self.ranges[range.lowerBound].lowerBound
-            let upper = self.ranges[range.upperBound - 1].upperBound
-
-            return self.data[lower..<upper]
-            //            var result = Data()
-            //
-            //            for i in range.lowerBound..<range.upperBound {
-            //                let chunk = self.ranges[i]
-            //                result.append(self.data[chunk])
-            //            }
-            //
-            //            return result
-        }
-
-        subscript(_ range: Range<Int>) -> Components {
-            return Components(data: self.data, ranges: Array(self.ranges[range]))
-        }
-
-        func separated(by boundary: String) -> [Components] {
-            var results: [Components] = []
-            var start = 0
-            let fullBoundary = "--" + boundary
-
-            for i in 0..<self.count {
-                let line = self[i]
-
-                if line.hasPrefix(fullBoundary) {
-                    if i > start { results.append(self[start..<i]) }
-                    start = i + 1
-                }
-            }
-
-            return results
         }
     }
 
@@ -178,55 +129,6 @@ extension Data {
                 }
             }
             return nil
-        }
-    }
-
-    var usesCRLF: Bool {
-        return self.withUnsafeBytes { (ptr) in
-            let length = self.count
-            let cr = UInt8(firstCharacterOf: "\r")
-            let newline = UInt8(firstCharacterOf: "\n")
-
-            if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
-                let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-
-                for i in 0..<(length - 1) {
-                    if pointer[i] == cr {
-                        return pointer[i + 1] == newline
-                    } else if pointer[i] == newline {
-                        return false
-                    }
-                }
-            }
-
-            return false
-        }
-    }
-
-    func unwrapFoldedHeadersAndStripOutCarriageReturns() -> Data {
-        return self.withUnsafeBytes { (ptr) in
-            let length = self.count
-            let output = UnsafeMutablePointer<UInt8>.allocate(capacity: length)
-            var count = 0, i = 0
-            let space = UInt8(firstCharacterOf: " ")
-            let tab = UInt8(firstCharacterOf: "\t")
-            let newline = UInt8(firstCharacterOf: "\n")
-
-            if let ptrAddress = ptr.baseAddress, ptr.count > 0 {
-                let pointer = ptrAddress.assumingMemoryBound(to: UInt8.self)
-
-                while i < length {
-                    if pointer[i] == newline, (pointer[i + 1] == space || pointer[i + 1] == tab) {
-                        i += 2
-                    } else {
-                        output[count] = pointer[i]
-                        count += 1
-                    }
-                    i += 1
-                }
-            }
-
-            return Data(bytes: output, count: count)
         }
     }
 

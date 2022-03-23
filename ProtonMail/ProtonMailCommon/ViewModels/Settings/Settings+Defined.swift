@@ -86,67 +86,6 @@ extension ELanguage {
         }
     }
 
-    var localeString: String {
-        get {
-            switch self {
-            case .english:
-                return "en_US"
-            case .german:
-                return "de_DE"
-            case .french:
-                return "fr_FR"
-            case .russian:
-                return "ru_RU"
-            case .spanish:
-                return "es_ES"
-            case .turkish:
-                return "tr_TR"
-            case .polish:
-                return "pl_PL"
-            case .ukrainian:
-                return "uk_UA"
-            case .dutch:
-                return "nl_NL"
-            case .italian:
-                return "it_IT"
-            case .portugueseBrazil:
-                return "pt_BR"
-            case .chineseSimplified:
-                return "zh_CN"
-            case .chineseTraditional:
-                return "zh_TW"
-            case .catalan:
-                return "ca_ES"
-            case .danish:
-                return "da_DK"
-            case .czech:
-                return "cs_CZ"
-            case .portuguese:
-                return "pt_PT"
-            case .romanian:
-                return "ro_RO"
-            case .croatian:
-                return "hr-HR"
-            case .hungarian:
-                return "hu_HU"
-            case .icelandic:
-                return "is-rIS"
-            case .kabyle:
-                return "kab-DZ"
-            case .swedish:
-                return "sv_SE"
-            case .japanese:
-                return "ja_JP"
-            case .indonesian:
-                return "in_ID"
-            case .count:
-                return "en_US"
-            @unknown default:
-                return "en_US"
-            }
-        }
-    }
-
     // This code needs to match the project language folder
     var code: String {
         get {
@@ -331,17 +270,6 @@ enum SwipeActionItems: Int, CustomStringConvertible {
             return ""
         }
     }
-
-    var actionDescription: String {
-        switch self {
-        case .left:
-            return LocalString._change_left_swipe_action
-        case .right:
-            return LocalString._change_right_swipe_action
-        case .leftActionView, .empty, .rightActionView:
-            return ""
-        }
-    }
 }
 
 enum SProtectionItems: Int, CustomStringConvertible {
@@ -386,16 +314,6 @@ enum SAddressItems: Int, CustomStringConvertible {
             return LocalString._settings_signature_title
         case .defaultMobilSign:
             return LocalString._settings_mobile_signature_title
-        }
-    }
-}
-
-enum SLabelsItems: Int, CustomStringConvertible {
-    case labelFolderManager = 0
-    var description: String {
-        switch self {
-        case .labelFolderManager:
-            return LocalString._labels_manage_title
         }
     }
 }

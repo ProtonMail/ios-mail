@@ -99,15 +99,6 @@ class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView
 }
 
 extension PinCodeViewController: PinCodeViewDelegate {
-    func touchID() {
-        if self.viewModel.checkTouchID() {
-            if userCachedStatus.isTouchIDEnabled {
-                self.authenticateUser()
-                return
-            }
-        }
-    }
-
     func cancel() {
         guard self.viewModel.needsLogoutConfirmation() else {
             self.proceedCancel()

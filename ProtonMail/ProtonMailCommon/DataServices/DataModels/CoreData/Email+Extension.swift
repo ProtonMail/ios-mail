@@ -43,10 +43,6 @@ extension Email {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
     }
 
-    class func EmailForAddress(_ address: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
-        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.email, matchingValue: address) as? Email
-    }
-
     class func EmailForAddressWithContact(_ address: String,
                                           contactID: String,
                                           inManagedObjectContext context: NSManagedObjectContext) -> Email? {
@@ -78,19 +74,6 @@ extension Email {
             return nil
         }
         return controller
-    }
-
-    func log() {
-        print("EmailID: \(self.emailID)")
-        print("ContactID: \(self.contactID)")
-        print("Email: \(self.email)")
-        print("Name: \(self.name)")
-        print("Order: \(self.order)")
-        print("Type: \(self.type)")
-    }
-
-    func emailType() -> String {
-        type
     }
 }
 

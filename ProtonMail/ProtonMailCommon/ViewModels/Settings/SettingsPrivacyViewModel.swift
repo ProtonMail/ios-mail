@@ -46,7 +46,6 @@ enum SettingPrivacyItem: CustomStringConvertible {
 protocol SettingsPrivacyViewModel: AnyObject {
     var privacySections: [SettingPrivacyItem] { get set }
     var userInfo: UserInfo { get }
-    var user: UserManager { get }
     var isMetadataStripping: Bool { get set }
 
     func updateAutoLoadEmbeddedImageStatus(newStatus: Bool, completion: ((NSError?) -> Void)?)

@@ -37,15 +37,6 @@ class ComposeCoordinator: DefaultCoordinator {
         self.services = services
     }
 
-    init(navigation: UINavigationController, vm: ComposeViewModel, services: ServiceFactory) {
-        self.viewModel = vm
-        self.navigationController = navigation
-        self.services = services
-        let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
-        let composer = rootViewController.children[0] as! ComposeViewController
-        self.viewController = composer
-    }
-
     weak var delegate: CoordinatorDelegate?
 
     enum Destination: String {

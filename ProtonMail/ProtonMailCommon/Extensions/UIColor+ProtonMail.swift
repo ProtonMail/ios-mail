@@ -25,15 +25,6 @@ import UIKit
 
 extension UIColor {
 
-    convenience init(RRGGBB: UInt, alpha: CGFloat) {
-        self.init(
-            red: CGFloat((RRGGBB & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((RRGGBB & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(RRGGBB & 0x0000FF) / 255.0,
-            alpha: alpha
-        )
-    }
-
     convenience init(RRGGBB: UInt) {
         self.init(
             red: CGFloat((RRGGBB & 0xFF0000) >> 16) / 255.0,
@@ -184,21 +175,5 @@ extension UIColor {
         Scanner(string: blueHex).scanHexInt32(&blueInt)
 
         self.init(red: CGFloat(redInt) / 255.0, green: CGFloat(greenInt) / 255.0, blue: CGFloat(blueInt) / 255.0, alpha: CGFloat(alpha))
-    }
-
-    /**
-     Create non-autoreleased color with in the given hex value and alpha
-     
-     :param:   hex
-     :param:   alpha
-     :returns: color with the given hex value and alpha
-     
-     Example:
-     let secondColor: UIColor = UIColor(hex: 0xff8942, alpha: 0.5)
-     
-     */
-    convenience init(hex: Int, alpha: Float) {
-        let hexString = NSString(format: "%2X", hex)
-        self.init(hexString: hexString as String, alpha: alpha)
     }
 }

@@ -14,7 +14,6 @@ class SingleMessageContentViewModel {
     }
 
     let linkOpener: LinkOpener = userCachedStatus.browser
-    let shouldAutoLoadRemoteImage: Bool
 
     let messageBodyViewModel: NewMessageBodyViewModel
     let attachmentViewModel: AttachmentViewModel
@@ -78,7 +77,6 @@ class SingleMessageContentViewModel {
          internetStatusProvider: InternetConnectionStatusProvider) {
         self.context = context
         self.user = user
-        self.shouldAutoLoadRemoteImage = user.autoLoadRemoteImages
         self.message = context.message
         self.messageBodyViewModel = childViewModels.messageBody
         self.nonExapndedHeaderViewModel = childViewModels.nonExpandedHeader

@@ -24,7 +24,6 @@ import Foundation
 
 protocol ContactGroupSelectEmailViewModel {
     var havingUnsavedChanges: Bool { get }
-    func getSelectionStatus(at indexPath: IndexPath) -> Bool
 
     func getTotalEmailCount() -> Int
     func getCellData(at indexPath: IndexPath) -> (ID: String, name: String, email: String, isSelected: Bool)

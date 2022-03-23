@@ -234,28 +234,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    func isSplashOk() -> Bool {
-        let splashVersion = getShared().int(forKey: Key.lastSplashViersion)
-        return splashVersion == Constants.App.SplashVersion
-    }
-
-    func showTourNextTime() {
-        setValue(0, forKey: Key.lastTourViersion)
-    }
-
-    func isAuthCacheOk() -> Bool {
-        let cachedVersion = getShared().int(forKey: Key.lastAuthCacheVersion)
-        return cachedVersion == Constants.App.AuthCacheVersion
-    }
-
-    func resetAuthCache() {
-        setValue(Constants.App.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
-    }
-
-    func resetSplashCache() {
-        setValue(Constants.App.SplashVersion, forKey: Key.lastSplashViersion)
-    }
-
     func resetTourValue() {
         setValue(Constants.App.TourVersion, forKey: Key.lastTourViersion)
     }
@@ -307,11 +285,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             SharedCacheBase.getDefault()?.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
             SharedCacheBase.getDefault().synchronize()
         }
-    }
-
-    func resetMobileSignature() {
-        getShared().removeObject(forKey: Key.lastLocalMobileSignature)
-        getShared().synchronize()
     }
 
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
@@ -525,15 +498,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
 // touch id part
 extension UserCachedStatus: CacheStatusInject {
-    var isUserCredentialStored: Bool {
-//        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.mailboxPassword) != nil
-        return KeychainWrapper.keychain.string(forKey: CoderKey.mailboxPassword) != nil
-    }
-
-    var isMailboxPasswordStored: Bool {
-        return KeychainWrapper.keychain.string(forKey: CoderKey.mailboxPassword) != nil
-    }
-
     var isTouchIDEnabled: Bool {
         return keymaker.isProtectorActive(BioProtection.self)
     }
@@ -567,28 +531,6 @@ extension UserCachedStatus: CacheStatusInject {
             KeychainWrapper.keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
             keymaker.resetAutolock()
         }
-    }
-
-    var lastLoggedInUser: String? {
-        get {
-            return KeychainWrapper.keychain.string(forKey: Key.lastLoggedInUser)
-        }
-        set {
-            if let value = newValue {
-                KeychainWrapper.keychain.set(value, forKey: Key.lastLoggedInUser)
-            } else {
-                KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
-            }
-        }
-    }
-
-    func alreadyAskedEnableTouchID () -> Bool {
-        let code = getShared().int(forKey: Key.askEnableTouchID)
-        return code == Constants.App.AskTouchID
-    }
-
-    func resetAskedEnableTouchID() {
-        setValue(Constants.App.AskTouchID, forKey: Key.askEnableTouchID)
     }
 }
 

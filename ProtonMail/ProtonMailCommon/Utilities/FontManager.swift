@@ -68,20 +68,6 @@ struct FontManager {
         return attributes
     }()
 
-    static let HeadlineHint: [NSAttributedString.Key: Any] = {
-        let font = UIFont.boldSystemFont(ofSize: 22)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.35,
-            .font: font,
-            .foregroundColor: ColorProvider.TextWeak,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }()
-
     static let HeadlineSmall: [NSAttributedString.Key: Any] = {
         let font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         var paragraphStyle = NSMutableParagraphStyle()
@@ -345,20 +331,6 @@ struct FontManager {
             .kern: -0.08,
             .font: font,
             .foregroundColor: ColorProvider.TextHint,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }()
-
-    static let OverlineStrong: [NSAttributedString.Key: Any] = {
-        let font = UIFont.systemFont(ofSize: 11.0)
-        var paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.07,
-            .font: font,
-            .foregroundColor: ColorProvider.TextNorm,
             .paragraphStyle: paragraphStyle
         ]
         return attributes

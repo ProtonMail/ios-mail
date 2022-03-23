@@ -27,7 +27,6 @@ typealias ChangePasswordComplete = (Bool, NSError?) -> Void
 protocol ChangePasswordViewModel {
 
     func getNavigationTitle() -> String
-    func getSectionTitle() -> String
     func getCurrentPasswordEditorTitle() -> String
     func getNewPasswordEditorTitle() -> String
     func getConfirmPasswordEditorTitle() -> String
@@ -49,10 +48,6 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
 
     func getNavigationTitle() -> String {
         return LocalString._setting_change_password
-    }
-
-    func getSectionTitle() -> String {
-        return LocalString._change_signin_password
     }
 
     func getCurrentPasswordEditorTitle() -> String {
@@ -112,9 +107,6 @@ class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
     func getNavigationTitle() -> String {
         return LocalString._setting_change_password
     }
-    func getSectionTitle() -> String {
-        return LocalString._change_mailbox_password
-    }
 
     func getCurrentPasswordEditorTitle() -> String {
         return LocalString._current_signin_password
@@ -172,9 +164,6 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
 
     func getNavigationTitle() -> String {
         return LocalString._setting_change_password
-    }
-    func getSectionTitle() -> String {
-        return LocalString._change_single_password
     }
 
     func getCurrentPasswordEditorTitle() -> String {

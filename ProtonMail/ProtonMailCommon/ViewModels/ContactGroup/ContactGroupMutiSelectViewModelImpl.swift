@@ -36,7 +36,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private var filtered : [(ID: String, name: String, color: String, count: Int)] = []
 
     private let contactGroupService: ContactGroupsDataService
-    private let messageService: MessageDataService
     private(set) var user: UserManager
     let coreDataService: CoreDataService
     private let eventsService: EventsFetching
@@ -53,7 +52,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
          refreshHandler: ((Set<String>) -> Void)? = nil) {
         self.user = user
         self.contactGroupService = user.contactGroupService
-        self.messageService = user.messageService
         self.coreDataService = coreDateService
         self.eventsService = user.eventsService
         if let groupCountInformation = groupCountInformation {
@@ -80,19 +78,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
      */
     func isSelected(groupID: String) -> Bool {
         return selectedGroupIDs.contains(groupID)
-    }
-
-    /**
-     Gets the cell data for the multi-select contact group view
-     */
-    func cellForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int) {
-        let row = indexPath.row
-
-        guard row < self.groupCountInformation.count else {
-            return ("", "", "", 0)
-        }
-
-        return self.groupCountInformation[row]
     }
 
     /**

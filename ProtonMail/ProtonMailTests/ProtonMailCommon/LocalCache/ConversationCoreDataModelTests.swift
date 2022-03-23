@@ -81,21 +81,6 @@ class ConversationCoreDataModelTests: XCTestCase {
         XCTAssertNotEqual(conversation.recipients, "")
     }
     
-    func testGetNumAttachments() {
-        let sut = self.conversation!
-        XCTAssertEqual(sut.getNumAttachments(labelID: "0"), 5)
-        XCTAssertEqual(sut.getNumAttachments(labelID: "5"), 4)
-        XCTAssertEqual(sut.getNumAttachments(labelID: "9"), 0)
-    }
-    
-    func testHasAttachments() {
-        let sut = self.conversation!
-        XCTAssertTrue(sut.hasAttachments(labelID: "0"))
-        XCTAssertTrue(sut.hasAttachments(labelID: "5"))
-        XCTAssertFalse(sut.hasAttachments(labelID: "9"))
-        XCTAssertFalse(sut.hasAttachments(labelID: "sdfljsfljsldijvlsdin"))
-    }
-    
     func testGetNumUnread() {
         let sut = self.conversation
         XCTAssertEqual(sut?.getNumUnread(labelID: "0"), 0)
@@ -122,13 +107,6 @@ class ConversationCoreDataModelTests: XCTestCase {
         XCTAssertEqual(sut.getTime(labelID: "0"), Date(timeIntervalSince1970: 1605861149))
         XCTAssertEqual(sut.getTime(labelID: "5"), Date(timeIntervalSince1970: 1605861149))
         XCTAssertNil(sut.getTime(labelID: "9"))
-    }
-    
-    func testGetSize() {
-        let sut = self.conversation!
-        XCTAssertEqual(sut.getSize(labelID: "0"), 17711047)
-        XCTAssertEqual(sut.getSize(labelID: "5"), 17711047)
-        XCTAssertEqual(sut.getSize(labelID: "9"), 0)
     }
     
     func testSingleMarkAsChangesUnread() {

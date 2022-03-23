@@ -24,10 +24,6 @@ import Foundation
 
 extension Message {
 
-    struct Constants {
-
-    }
-
     struct MimeType {
         static let html: String          = "text/html"
         static let plainText: String     = "text/plain"

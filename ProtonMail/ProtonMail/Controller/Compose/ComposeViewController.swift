@@ -837,10 +837,6 @@ extension ComposeViewController: ComposeViewDelegate {
         // FIXME
     }
 
-    func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
-        // FIXME
-    }
-
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {

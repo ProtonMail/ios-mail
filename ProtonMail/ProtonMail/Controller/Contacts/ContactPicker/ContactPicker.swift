@@ -399,18 +399,6 @@ class ContactPicker: UIView, AccessibleView {
         self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
 
-    private var frameForContactSearch: CGRect {
-        guard let superview = self.delegate?.view, let window = superview.window else {
-            return .zero
-        }
-
-        var topLine = self.convert(CGPoint.zero, to: window)
-        topLine.y += self.frame.size.height
-        let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
-        let intersection = CGRect(origin: .zero, size: size).intersection(superview.frame.insetBy(dx: 0, dy: -1 * window.frame.height))
-        return CGRect(origin: topLine, size: intersection.size)
-    }
-
     private func filteredContacts(by query: String) -> [ContactPickerModelProtocol] {
         let predicate: NSPredicate!
 

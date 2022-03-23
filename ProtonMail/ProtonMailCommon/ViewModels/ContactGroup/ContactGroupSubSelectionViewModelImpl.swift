@@ -23,16 +23,11 @@
 import UIKit
 
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
-    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
-        self.user.contactService.lockerCheck(model: model, progress: progress, complete: complete)
-    }
-
     private let user: UserManager
     private let groupName: String
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
     private var delegate: ContactGroupSubSelectionViewModelDelegate?
-    private let labelsDataService: LabelsDataService
 
     /**
      Setup the sub-selection view of a specific group, at a specific state
@@ -53,7 +48,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         self.user = user
         self.groupName = contactGroupName
         self.delegate = delegate
-        self.labelsDataService = labelsDataService
 
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
 
@@ -131,16 +125,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
     }
 
     /**
-     Select all email addresses
-    */
-    func selectAll() {
-        for i in emailArray.indices {
-            emailArray[i].isSelected = true
-        }
-        delegate?.reloadTable()
-    }
-
-    /**
      Deselect the given email data
     */
     func deselect(indexPath: IndexPath) {
@@ -152,16 +136,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         if performDeselectInHeader {
              delegate?.reloadTable()
         }
-    }
-
-    /**
-     Deselect all email addresses
-    */
-    func deSelectAll() {
-        for i in emailArray.indices {
-            emailArray[i].isSelected = false
-        }
-        delegate?.reloadTable()
     }
 
     /**
@@ -180,10 +154,6 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         return self.groupName
     }
 
-    func getGroupColor() -> String? {
-        return self.groupColor
-    }
-
     func getTotalRows() -> Int {
         self.emailArray.count
     }
@@ -194,16 +164,5 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         }
 
         return self.emailArray[indexPath.row]
-    }
-
-    func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
-                                         to status: ContactGroupSubSelectionEmailLockCheckingState,
-                                         isEncrypted: UIImage?) {
-        guard indexPath.row < self.getTotalRows() else {
-            return
-        }
-
-        self.emailArray[indexPath.row].isEncrypted = isEncrypted
-        self.emailArray[indexPath.row].checkEncryptedStatus = status
     }
 }

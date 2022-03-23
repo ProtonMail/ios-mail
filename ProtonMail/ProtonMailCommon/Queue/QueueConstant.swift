@@ -29,8 +29,4 @@ struct QueueConstant {
     #else
     static let queueIdentifer = "ch.protonmail.persistentQueue"
     #endif
-
-    enum QueueTypes {
-
-    }
 }

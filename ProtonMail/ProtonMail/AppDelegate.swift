@@ -474,16 +474,6 @@ extension AppDelegate: UsersManagerDelegate {
 }
 
 extension AppDelegate: UnlockManagerDelegate {
-    var isUserCredentialStored: Bool {
-        get {
-            let users = sharedServices.get(by: UsersManager.self)
-            if users.isMailboxPasswordStored || users.hasUsers() {
-                return true
-            }
-            return false
-        }
-    }
-
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         if users.hasUserName() || users.hasUsers() {
@@ -505,10 +495,6 @@ extension AppDelegate: UnlockManagerDelegate {
         sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
-    }
-
-    func unlocked() {
-        // should work via messages
     }
 }
 

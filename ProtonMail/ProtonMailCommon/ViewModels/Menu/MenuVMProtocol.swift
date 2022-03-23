@@ -42,7 +42,6 @@ protocol MenuVMProtocol: AnyObject {
     func removeAllQueuedMessageOfCurrentUser()
     func signOut(userID: String, completion: (() -> Void)?)
     func removeDisconnectAccount(userID: String)
-    func subscriptionUnavailable()
     func highlight(label: MenuLabel)
     func appVersion() -> String
     func getAccountList() -> [AccountSwitcher.AccountData]
@@ -60,13 +59,9 @@ protocol MenuUIProtocol: UIViewController {
     func update(displayName: String)
     func update(avatar: String)
     func showToast(message: String)
-    func showAlert(title: String, message: String)
     func updateMenu(section: Int?)
     func update(rows: [IndexPath],
                 insertRows: [IndexPath],
                 deleteRows: [IndexPath])
-    func reloadRow(indexPath: IndexPath)
-    func insertRows(indexPaths: [IndexPath])
-    func deleteRows(indexPaths: [IndexPath])
     func navigateTo(label: MenuLabel)
 }

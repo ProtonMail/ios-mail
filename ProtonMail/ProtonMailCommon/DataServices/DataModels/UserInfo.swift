@@ -26,19 +26,6 @@ import ProtonCore_DataModel
 
 extension UserInfo {
 
-    var addressPrivateKeys: Data {
-        var out = Data()
-        var error: NSError?
-        for addr in userAddresses {
-            for key in addr.keys {
-                if let privK = ArmorUnarmor(key.privateKey, &error) {
-                    out.append(privK)
-                }
-            }
-        }
-        return out
-    }
-
     var addressPrivateKeysArray: [Data] {
         var out: [Data] = []
         var error: NSError?

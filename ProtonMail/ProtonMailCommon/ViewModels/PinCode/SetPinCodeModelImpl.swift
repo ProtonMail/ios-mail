@@ -25,28 +25,13 @@ import ProtonCore_Keymaker
 
 class SetPinCodeModelImpl: PinCodeViewModel {
 
-    let StepOneTitle: String = LocalString._enter_your_pin
-    let StepTwoTitle: String = LocalString._re_enter_your_pin
-
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""
     var reEnterPin: String = ""
 
-    override func title() -> String {
-        return currentStep == .enterPin ? StepOneTitle : StepTwoTitle
-    }
-
     override func cancel() -> String {
         return currentStep == .enterPin ? LocalString._general_create_action : LocalString._general_confirm_action
-    }
-
-    override func showConfirm() -> Bool {
-        return false
-    }
-
-    override func confirmString () -> String {
-        return ""
     }
 
     override func setCode (_ code: String) -> PinCodeStep {

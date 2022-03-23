@@ -43,14 +43,6 @@ extension APIService {
                       completion: completion)
     }
 
-    func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
-        self.request(method: .delete, path: pathForAttachmentID(attachmentID),
-                     parameters: nil,
-                     headers: .empty,
-                     authenticated: true, autoRetry: true,
-                     customAuthCredential: nil, completion: completion)
-    }
-
     // MARK: - Private methods
     fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
 //        return self.serverConfig.path + "/attachments/\(attachmentID)"

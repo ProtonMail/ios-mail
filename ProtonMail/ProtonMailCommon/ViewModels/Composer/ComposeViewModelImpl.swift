@@ -27,29 +27,6 @@ import ProtonCore_Networking
 import ProtonCore_DataModel
 
 class ComposeViewModelImpl: ComposeViewModel {
-
-    enum RuntimeError: String, Error, CustomErrorVar {
-        case no_address = "Can't find the public key for this address"
-        var code: Int {
-            get {
-                return -1010
-            }
-        }
-
-        var desc: String {
-            get {
-                return self.rawValue
-            }
-        }
-
-        var reason: String {
-            get {
-                return self.rawValue
-            }
-        }
-
-    }
-
     let messageService: MessageDataService
     let coreDataContextProvider: CoreDataContextProviderProtocol
     let user: UserManager
@@ -424,10 +401,6 @@ class ComposeViewModelImpl: ComposeViewModel {
         return nil
     }
 
-    override func hasAttachment() -> Bool {
-        return true
-    }
-
     /**
      Load the contacts and groups back for the message
      
@@ -645,7 +618,6 @@ class ComposeViewModelImpl: ComposeViewModel {
                     self.messageService.updateMessage(msg,
                                                       expirationTimeInterval: expir,
                                                       body: body,
-                                                      attachments: nil,
                                                       mailbox_pwd: mailboxPassword)
                 }
 
@@ -671,12 +643,6 @@ class ComposeViewModelImpl: ComposeViewModel {
 
     override func updateDraft() {
         messageService.saveDraft(self.message)
-    }
-
-    override func deleteDraft() {
-        guard let _message = self.message else {return}
-        messageService.delete(messages: [_message], label: Message.Location.draft.rawValue)
-
     }
 
     override func markAsRead() {

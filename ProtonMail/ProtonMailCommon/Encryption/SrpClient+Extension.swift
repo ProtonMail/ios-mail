@@ -45,12 +45,3 @@ func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: 
     }
     return outAuth
 }
-
-extension PMNSrpProofs {
-    func isValid() -> Bool {
-        guard self.clientEphemeral.count > 0 && self.clientProof.count > 0 && self.expectedServerProof.count > 0  else {
-            return false
-        }
-        return true
-    }
-}

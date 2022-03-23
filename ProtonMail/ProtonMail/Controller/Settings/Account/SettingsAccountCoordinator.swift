@@ -32,11 +32,6 @@ class SettingsAccountCoordinator: DefaultCoordinator {
     internal weak var viewController: SettingsAccountViewController?
     internal weak var deepLink: DeepLink?
 
-    lazy internal var configuration: ((SettingsAccountViewController) -> Void)? = { [unowned self] vc in
-        vc.set(coordinator: self)
-        vc.set(viewModel: self.viewModel)
-    }
-
     func processDeepLink() {
         if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
             self.go(to: dest, sender: path.value)

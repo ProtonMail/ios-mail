@@ -73,11 +73,6 @@ struct SharedUserDefaults {
         self.registrationRequiredPersistable = registrationRequiredPersistable
     }
 
-    func setLastReceivedPush(at timestamp: TimeInterval) {
-        let timestampString = String(Int(timestamp))
-        timestampPushPersistable?.set(timestampString, forKey: Key.lastReceivedPushTimestamp.rawValue)
-    }
-
     var lastReceivedPushTimestamp: String {
         timestampPushPersistable?.string(forKey: Key.lastReceivedPushTimestamp.rawValue) ?? "Undefined"
     }

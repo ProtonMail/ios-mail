@@ -39,20 +39,8 @@ class UnlockPinCodeModelImpl: PinCodeViewModel {
         return original
     }
 
-    override func title() -> String {
-        return titleText
-    }
-
     override func cancel() -> String {
         return LocalString._general_confirm_action
-    }
-
-    override func showConfirm() -> Bool {
-        return false
-    }
-
-    override func confirmString () -> String {
-        return ""
     }
 
     override func setCode (_ code: String) -> PinCodeStep {

@@ -58,10 +58,6 @@ final class ServiceFactory {
 
     private var servicesDictionary: [String: Service] = [:]
 
-    func add<T>(_ type: T.Type, with name: String? = nil, constructor: () -> Service) {
-        self.add(type, for: constructor(), with: name)
-    }
-
     func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
         let name = name ?? String(reflecting: protocolType)
         servicesDictionary[name] = instance

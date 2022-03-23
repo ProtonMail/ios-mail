@@ -61,10 +61,6 @@ extension NotificationCenter {
                 return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillShowNotification(_:))
             }
         }
-
-        func isObserverResponds(_ observer: NSNotificationCenterKeyboardObserverProtocol) -> Bool {
-            return observer.responds(to: selector)
-        }
     }
 
     fileprivate func addObserver(_ observer: NSNotificationCenterKeyboardObserverProtocol, ifRespondsToAction action: KeyboardAction) {

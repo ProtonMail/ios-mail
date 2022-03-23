@@ -29,7 +29,6 @@ protocol LabelManagerUIProtocol: AnyObject {
     func hideLoadingHUD()
     func reloadData()
     func reload(section: Int)
-    func reload(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath])
     func showToast(message: String)
 }
 
@@ -147,14 +146,6 @@ extension LabelManagerViewController: LabelManagerUIProtocol {
         self.tableView.beginUpdates()
         let set = IndexSet(integer: section)
         self.tableView.reloadSections(set, with: .fade)
-        self.tableView.endUpdates()
-    }
-
-    func reload(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: rows, with: .fade)
-        self.tableView.insertRows(at: insertRows, with: .fade)
-        self.tableView.deleteRows(at: deleteRows, with: .fade)
         self.tableView.endUpdates()
     }
 

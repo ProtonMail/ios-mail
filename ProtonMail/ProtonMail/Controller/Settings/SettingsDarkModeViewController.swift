@@ -21,7 +21,6 @@ import UIKit
 class SettingsDarkModeViewController: UITableViewController {
     private enum Key {
         static let headerCell: String = "header_cell"
-        static let headerCellHeight: CGFloat = 36.0
         static let cell: String = "select_cell"
     }
 

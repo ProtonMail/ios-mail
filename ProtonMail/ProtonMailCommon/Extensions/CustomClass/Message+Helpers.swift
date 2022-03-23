@@ -38,22 +38,6 @@ extension Message {
         return try? JSONDecoder().decode(UnsubscribeMethods?.self, from: data)
     }
 
-    func recipients(userContacts: [ContactVO]) -> [String] {
-        let allMessageRecipients = toList.toContacts() + ccList.toContacts() + bccList.toContacts()
-
-        return allEmails.map { email in
-            if let emailFromContacts = userContacts.first(where: { $0.email == email }),
-               !emailFromContacts.name.isEmpty {
-                return emailFromContacts.name
-            }
-            if let messageRecipient = allMessageRecipients.first(where: { $0.email == email }),
-               !messageRecipient.name.isEmpty {
-                return messageRecipient.name
-            }
-            return email
-        }
-    }
-
     var tagViewModels: [TagViewModel] {
         orderedLabels.map { label in
             TagViewModel(
@@ -62,11 +46,6 @@ extension Message {
                 color: UIColor(hexString: label.color, alpha: 1.0)
             )
         }
-    }
-
-    func senderContact(userContacts: [ContactVO]) -> ContactVO? {
-        guard let sender = sender?.toContact() else { return nil }
-        return userContacts.first(where: { $0.email == sender.email }) ?? sender
     }
 
     var isCustomFolder: Bool {

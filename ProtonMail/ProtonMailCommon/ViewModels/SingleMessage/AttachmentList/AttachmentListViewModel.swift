@@ -54,7 +54,6 @@ class AttachmentListViewModel {
     let attachmentSections: [AttachmentSection] = [.normal, .inline]
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
-    private(set) var inlineCIDS: [String]?
     private var downloadingTask: [String: URLSessionDownloadTask] = [:]
     let user: UserManager
 
@@ -66,7 +65,6 @@ class AttachmentListViewModel {
 
     init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?) {
         self.user = user
-        self.inlineCIDS = inlineCIDS
         self.inlineAttachments = attachments.inlineAttachments(inlineCIDS: inlineCIDS)
         self.normalAttachments = attachments.normalAttachments(inlineCIDS: inlineCIDS)
     }

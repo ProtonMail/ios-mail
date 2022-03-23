@@ -183,12 +183,6 @@ extension MenuViewModel: MenuVMProtocol {
         self.usersManager.removeDisconnectedUser(user)
     }
 
-    /// Remove subscription item after get error response from `StorefrontCollectionViewController`
-    func subscriptionUnavailable() {
-        self.subscriptionAvailable = false
-        self.updateMoreItems()
-    }
-
     func highlight(label: MenuLabel) {
         let tmp = self.inboxItems + self.rawData + self.moreItems
         tmp.forEach({$0.isSelected = false})

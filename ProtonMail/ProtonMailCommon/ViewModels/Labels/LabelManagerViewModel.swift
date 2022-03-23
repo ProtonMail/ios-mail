@@ -30,7 +30,6 @@ protocol LabelManagerProtocol: AnyObject {
     var type: PMLabelType { get }
     var user: UserManager { get }
     var section: [LabelManagerViewModel.SectionType] { get }
-    var HEIGHTWITHTITLE: CGFloat { get }
     var HEIGHTWITHOUTTITLE: CGFloat { get }
     var useFolderColor: Bool { get }
     var inheritParentFolderColor: Bool { get }

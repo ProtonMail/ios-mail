@@ -30,7 +30,6 @@ protocol LabelParentSelctVMProtocol {
     var parentID: String { get }
     var useFolderColor: Bool { get }
 
-    func update(parentID: String)
     func selectRow(row: Int)
     func isAllowToSelect(row: Int) -> Bool
     func getFolderColor(label: MenuLabel) -> UIColor

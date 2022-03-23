@@ -26,24 +26,6 @@ import Foundation
 class ViewModelBase: NSObject {
 
     private var debugInfo: [String] = []
-    private var logging: Bool = false
-
-    func start(_ initLog: String) {
-        self.debugInfo.removeAll()
-        self.debugInfo.append(initLog)
-        self.logging = true
-    }
-
-    func log(_ log: String) {
-        if self.logging {
-            self.debugInfo.append(log)
-        }
-    }
-
-    func end(_ endLog: String) {
-        self.debugInfo.append(endLog)
-        self.logging = false
-    }
 
     var logs: String {
         get {

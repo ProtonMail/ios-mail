@@ -155,16 +155,6 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
 
-    func notes(type: Int) -> String {
-        // 0 composer, 1 inbox 2 sent
-        if type == 1 {
-            return self.inboxNotes
-        } else if type == 2 {
-            return self.sentNotes
-        }
-        return self.composerNotes
-    }
-
     var hasPGPPined: Bool {
         get {
             switch self.pgpType {
@@ -191,77 +181,6 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
                 return false
             default:
                 return true
-            }
-        }
-    }
-
-    var composerNotes: String {
-        get {
-            switch self.pgpType {
-            case .eo:
-                return LocalString._end_to_end_encrypted
-            case .pgp_encrypt_trusted_key: // PM --> non-PM PGP (encrypted+signed/pinned)
-                return LocalString._pgp_encrypted
-            case .pgp_signed:// PM --> non-PM PGP (signed)
-                return LocalString._pgp_signed
-            case .pgp_encrypted: // not for composer but in case
-                return LocalString._pgp_encrypted
-
-            case .internal_normal: // PM --> PM (encrypted+signed)
-                return LocalString._end_to_end_encrypted
-            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
-                return LocalString._end_to_end_encrypted_to_verified_address
-
-            case .pgp_encrypt_trusted_key_verify_failed,
-                 .internal_trusted_key_verify_failed,
-                 .internal_normal_verify_failed,
-                 .pgp_signed_verify_failed,
-                 .sent_sender_out_side,
-                 .sent_sender_encrypted,
-                 .zero_access_store,
-                 .sent_sender_server,
-                 .pgp_signed_verified,
-                 .none,
-                 .failed_server_validation,
-                 .failed_validation,
-                 .failed_non_exist:
-                return ""
-            }
-        }
-    }
-
-    var sentNotes: String {
-        get {
-            switch self.pgpType {
-            case .none, .failed_server_validation, .failed_validation, .failed_non_exist:
-                return LocalString._stored_with_zero_access_encryption
-            case .eo:
-                return LocalString._end_to_end_encrypted
-            case .internal_normal: // PM --> PM (encrypted+signed)
-                return LocalString._end_to_end_encrypted
-            case .internal_trusted_key: // PM --> PM (encrypted+signed/pinned)
-                return LocalString._end_to_end_encrypted_to_verified_address
-            case .pgp_encrypted:
-                return LocalString._pgp_encrypted_message
-            case .pgp_encrypt_trusted_key:
-                return LocalString._pgp_encrypted
-            case .pgp_signed:// non-PM signed PGP --> PM (pinned)
-                return LocalString._pgp_signed
-            case .pgp_encrypt_trusted_key_verify_failed,
-                 .internal_trusted_key_verify_failed,
-                 .internal_normal_verify_failed,
-                 .pgp_signed_verify_failed:
-                return LocalString._sender_verification_failed
-            case .sent_sender_out_side:
-                return LocalString._stored_with_zero_access_encryption
-            case .sent_sender_encrypted:
-                return LocalString._sent_by_you_with_end_to_end_encryption
-            case .zero_access_store:
-                return LocalString._stored_with_zero_access_encryption
-            case .sent_sender_server:
-                return LocalString._sent_by_protonMail_with_zero_access_encryption
-            case .pgp_signed_verified:
-                return LocalString._pgp_signed_message_from_verified_address
             }
         }
     }
@@ -331,41 +250,6 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
 
     override var hash: Int {
         return (name + email).hashValue
-    }
-}
-
-// Extension::Array - contact vo
-extension Array where Element: ContactVO {
-    mutating func distinctMerge(_ check: [Element]) {
-        var objectToIgnore: [Element] = []
-        for element in self {
-            objectToIgnore.append(contentsOf: check.filter { $0 == element })
-        }
-
-        for element in check {
-            if !objectToIgnore.contains(element) {
-                self.append(element)
-            }
-        }
-    }
-
-    func uniq() -> [Element] {
-        var arrayCopy = self
-        arrayCopy.uniqInPlace()
-        return arrayCopy
-    }
-
-    mutating internal func uniqInPlace() {
-        var seen = [Element]()
-        var index = 0
-        for element in self {
-            if seen.contains(element) {
-                remove(at: index)
-            } else {
-                seen.append(element)
-                index += 1
-            }
-        }
     }
 }
 

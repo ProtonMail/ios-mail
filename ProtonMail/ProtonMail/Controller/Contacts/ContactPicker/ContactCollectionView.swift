@@ -39,12 +39,6 @@ protocol ContactCollectionViewDelegate: NSObjectProtocol, ContactCollectionViewC
     func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool
 }
 
-enum ContactCollectionViewSection: Int {
-    case prompt
-    case contact
-    case entry
-}
-
 class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
 
     var _prompt: String!
