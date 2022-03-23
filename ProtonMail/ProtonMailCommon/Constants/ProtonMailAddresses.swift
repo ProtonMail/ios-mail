@@ -21,8 +21,4 @@ enum ProtonMailAddresses: String, CaseIterable {
     case protonmailCom = "protonmail.com"
     case protonmailCh = "protonmail.ch"
     case pmMe = "pm.me"
-
-    func create(prefix: String) -> String {
-        return "\(prefix)@\(self)"
-    }
 }

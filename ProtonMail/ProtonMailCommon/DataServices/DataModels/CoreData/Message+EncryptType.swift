@@ -24,45 +24,6 @@ import Foundation
 
 extension Message {
 
-    // TODO:: reneame
-    enum EncryptType: Int, CustomStringConvertible {
-        // case plain = 0          //Plain text
-        case inner = 1       // ProtonMail encrypted emails
-        case external = 2       // Encrypted from outside
-        case outEnc = 3         // Encrypted for outside
-        case outPlain = 4       // Send plain but stored enc
-        case draftStoreEnc = 5  // Draft
-        case outEncReply = 6    // Encrypted for outside reply
-
-        case outPGPInline = 7    // out side pgp inline
-        case outPGPMime = 8    // out pgp mime
-        case outSignedPGPMime = 9 // PGP/MIME signed message
-
-        // didn't in localizable string because no place show this yet
-        var description: String {
-            switch self {
-            case .inner:
-                return LocalString._general_enc_pm_emails
-            case .external:
-                return LocalString._general_enc_from_outside
-            case .outEnc:
-                return LocalString._general_enc_for_outside
-            case .outPlain:
-                return LocalString._general_send_plain_but_stored_enc
-            case .draftStoreEnc:
-                return LocalString._general_draft_action
-            case .outEncReply:
-                return LocalString._general_encrypted_for_outside_reply
-            case .outPGPInline:
-                return LocalString._general_enc_from_outside_pgp_inline
-            case .outPGPMime:
-                return LocalString._general_enc_from_outside_pgp_mime
-            case .outSignedPGPMime:
-                return LocalString._general_enc_from_outside_signed_pgp_mime
-            }
-        }
-    }
-
     /// received and from protonmail internal
     var isInternal: Bool {
         get {

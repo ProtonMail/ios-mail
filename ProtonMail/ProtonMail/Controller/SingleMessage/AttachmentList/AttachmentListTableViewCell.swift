@@ -29,34 +29,6 @@ class AttachmentListTableViewCell: UITableViewCell {
         return "\(self)"
     }
 
-    enum FileType {
-        case general
-        case pdf
-        case jpg
-
-        var image: UIImage {
-            switch self {
-            case .general:
-                return Asset.mailAttachmentGeneral.image
-            case .pdf:
-                return Asset.mailAttachmentPdfNew.image
-            case .jpg:
-                return Asset.mailAttachmentJpg.image
-            }
-        }
-
-        init(mimeType: String) {
-            switch mimeType {
-            case "image/jpeg", "image/jpg":
-                self = .jpg
-            case "application/pdf":
-                self = .pdf
-            default:
-                self = .general
-            }
-        }
-    }
-
     @IBOutlet private weak var fileIconView: UIImageView!
     @IBOutlet private weak var fileNameLabel: UILabel!
     @IBOutlet private weak var fileSizeLabel: UILabel!

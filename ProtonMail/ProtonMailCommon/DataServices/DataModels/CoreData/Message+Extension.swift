@@ -279,40 +279,6 @@ extension Message {
         return nil
     }
 
-    func getShowLocationNameFromLabels(ignored: String) -> String? {
-        // TODO::fix me
-        var lableOnly = false
-        if ignored == Message.Location.sent.title {
-            if contains(label: .trash) {
-                return Message.Location.trash.title
-            }
-
-            if contains(label: .spam) {
-                return Message.Location.spam.title
-            }
-
-            if contains(label: .archive) {
-                return Message.Location.archive.title
-            }
-            lableOnly = true
-        }
-
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                if label.type == 3 && label.name != ignored {
-                    return label.name
-                } else if !lableOnly {
-                    if let new_loc = Message.Location(rawValue: label.labelID), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
-                        return new_loc.title
-                    }
-
-                }
-            }
-        }
-        return nil
-    }
-
     var subject: String {
         return title
     }
@@ -329,10 +295,6 @@ extension Message {
 
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
-    }
-
-    class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
-        return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
     }
 
     class func getIDsofSendingMessage(managedObjectContext: NSManagedObjectContext) -> [String]? {

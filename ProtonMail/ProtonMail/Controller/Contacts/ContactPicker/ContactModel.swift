@@ -22,7 +22,6 @@
 
 import ProtonCore_Services
 
-typealias LockCheckProgress = (() -> Void)
 typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType: Int) -> Void)
 
 @objc enum ContactPickerModelState: Int {
@@ -43,7 +42,6 @@ protocol ContactPickerModelProtocol: NSCopying {
     var color: String? {get}
     var hasPGPPined: Bool {get}
     var hasNonePM: Bool {get}
-    func notes(type: Int) -> String
     func setType(type: Int)
 
     func equals(_ others: ContactPickerModelProtocol) -> Bool

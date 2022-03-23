@@ -24,28 +24,9 @@ import Foundation
 import Dispatch
 import UIKit
 
-enum MainThread {
-    static func auto(_ block: @escaping (() -> Void)) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.async {
-                block()
-            }
-        }
-
-    }
-}
-
 enum ThreadType {
     case main
     case async
-}
-
-func main(_ left: @escaping () -> Void) {
-    OperationQueue.main.addOperation {
-        left()
-    }
 }
 
 /** Serial dispatch queue used by the ~> operator. */

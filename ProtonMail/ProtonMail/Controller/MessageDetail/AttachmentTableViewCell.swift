@@ -40,18 +40,6 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
     }
 
-    func configCell ( _ filename: String, fileSize: Int, showDownload: Bool = false) {
-        self.filename = filename
-        let byteCountFormatter = ByteCountFormatter()
-        fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
-
-        if showDownload {
-            downloadIcon.isHidden = false
-        } else {
-            downloadIcon.isHidden = true
-        }
-    }
-
     func configAttachmentIcon (_ mimeType: String) {
         // TODO:: sometime see general mime type like "application/octet-stream" then need parse the extention to get types
         var image: UIImage

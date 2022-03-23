@@ -23,11 +23,6 @@
 import ProtonCore_PaymentsUI
 
 protocol PaymentsUIProtocol {
-    func showSignupPlans(
-        viewController: UIViewController,
-        completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
-    )
-
     func showCurrentPlan(
         presentationType: PaymentsUIPresentationType,
         backendFetch: Bool,

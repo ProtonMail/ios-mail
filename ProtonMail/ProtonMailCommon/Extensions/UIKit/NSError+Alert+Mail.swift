@@ -82,16 +82,4 @@ extension NSError {
             window.topmostViewController()?.present(alertVC, animated: true, completion: nil)
         }
     }
-
-    class func alertUpdatedToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.label.text = LocalString._general_alert_title
-        hud.detailsLabel.text = LocalString._general_force_upgrade_desc
-        hud.removeFromSuperViewOnHide = true
-        hud.hide(animated: true, afterDelay: 3)
-    }
 }

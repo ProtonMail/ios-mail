@@ -13,7 +13,6 @@ class ConversationViewModel {
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet { refreshView?() }
     }
-    private(set) var shouldShowTrashedHintBanner = false
     private(set) var displayRule = MessageDisplayRule.showNonTrashedOnly
     var refreshView: (() -> Void)?
     var dismissView: (() -> Void)?
@@ -61,9 +60,6 @@ class ConversationViewModel {
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
     private(set) var isExpandedAtLaunch = false
-
-    /// Used to find out if there is any changes of the items of action types
-    var actionTypeSnapshot: [MailboxViewModel.ActionTypes] = []
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

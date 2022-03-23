@@ -45,10 +45,6 @@ extension EmailHeaderView {
         self.emailBccTable.delegate = recepientDelegate
     }
 
-    func inject(delegate: EmailHeaderActionsProtocol) {
-        self._delegate = delegate
-    }
-
     override func prepareForInterfaceBuilder() {
         self.backgroundColor = .orange
     }
@@ -142,14 +138,11 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate let kEmailHeaderViewMarginLeft: CGFloat = 16.0
     fileprivate let kEmailHeaderViewMarginRight: CGFloat = -16.0
 
-    fileprivate let kEmailHeaderViewHeight: CGFloat = 70.0
     fileprivate let kEmailTitleViewMarginRight: CGFloat = -8.0
     fileprivate let kEmailFavoriteButtonHeight: CGFloat = 44
     fileprivate let kEmailFavoriteButtonWidth: CGFloat = 52
     fileprivate let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     fileprivate let kEmailTimeViewMarginTop: CGFloat = 6.0
-    fileprivate let kEmailDetailToWidth: CGFloat = 40.0
-    fileprivate let kEmailDetailCCLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
@@ -463,20 +456,6 @@ class EmailHeaderView: UIView, AccessibleView {
         self.spamScoreView.setMessage(msg: self.spamScore.description)
 
         self.layoutIfNeeded()
-    }
-
-    func update(attachments: [AttachmentInfo]) {
-        self.attachmentCount = attachments.count
-        self.attachments = attachments
-        if self.attachmentCount > 0 {
-            self.emailAttachmentsAmount.text = "\(self.attachmentCount)"
-            self.emailAttachmentsAmount.isHidden = false
-            self.emailHasAttachmentsImageView.isHidden = false
-        } else {
-            self.emailAttachmentsAmount.isHidden = true
-            self.emailHasAttachmentsImageView.isHidden = true
-        }
-        self.emailAttachmentsAmount.sizeToFit()
     }
 
     func updateHeaderLayout () {

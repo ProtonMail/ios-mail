@@ -27,7 +27,6 @@ protocol ComposeViewDelegate: AnyObject {
     func composeViewWillDismissSubview()
 
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
-    func ComposeViewDidOffsetChanged(_ offset: CGPoint)
     func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))

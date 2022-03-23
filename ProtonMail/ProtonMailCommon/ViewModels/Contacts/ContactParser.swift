@@ -36,7 +36,6 @@ protocol ContactParserResultDelegate: AnyObject {
     func append(notes: [ContactEditNote])
     func append(urls: [ContactEditUrl])
 
-    func update(verifyType2: Bool)
     func update(verifyType3: Bool)
     func update(decryptionError: Bool)
     func update(profilePicture: UIImage?)

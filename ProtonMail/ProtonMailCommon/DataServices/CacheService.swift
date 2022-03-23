@@ -274,40 +274,6 @@ class CacheService: Service {
         }
     }
 
-    func deleteMessage(by labelID: String) -> Bool {
-        var result = false
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        context.performAndWait {
-            do {
-                if let oldMessages = try context.fetch(fetchRequest) as? [Message] {
-                    for message in oldMessages {
-                        context.delete(message)
-                    }
-                    if context.saveUpstreamIfNeeded() == nil {
-                        result = true
-                    }
-                }
-            } catch {
-            }
-        }
-        return result
-    }
-
-    func deleteMessage(messageID: String, completion: (() -> Void)? = nil) {
-        context.perform {
-            if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: self.context) {
-                let labelObjs = msg.mutableSetValue(forKey: Message.Attributes.labels)
-                labelObjs.removeAllObjects()
-                self.context.delete(msg)
-            }
-            _ = self.context.saveUpstreamIfNeeded()
-            completion?()
-        }
-    }
-
     func cleanReviewItems(completion: (() -> Void)? = nil) {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)

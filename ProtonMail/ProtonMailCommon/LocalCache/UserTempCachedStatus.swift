@@ -22,7 +22,6 @@
 
 import Foundation
 
-let userDebugCached = SharedCacheBase.getDefault()
 class UserTempCachedStatus: NSObject, NSCoding {
     struct Key {
         static let keychainStore = "UserTempCachedStatusKey"

@@ -24,11 +24,6 @@ import CoreData
 import Foundation
 import ProtonCore_Services
 
-enum ReadState {
-    case unread
-    case read
-}
-
 enum ConversationError: Error {
     case emptyConversationIDS
     case emptyLabel

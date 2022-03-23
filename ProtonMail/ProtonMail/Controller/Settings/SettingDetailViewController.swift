@@ -213,18 +213,6 @@ class SettingDetailViewController: UIViewController {
         }
     }
 
-    fileprivate func focusTextField() {
-        if viewModel.isShowTextView() {
-            if self.inputTextView != nil {
-                self.inputTextView.becomeFirstResponder()
-            }
-        } else {
-            if self.inputTextField != nil {
-                self.inputTextField.becomeFirstResponder()
-            }
-        }
-    }
-
     fileprivate func getTextValue () -> String {
         if viewModel.isShowTextView() {
             guard inputTextView.textColor != ColorProvider.TextHint else {
@@ -234,10 +222,6 @@ class SettingDetailViewController: UIViewController {
         } else {
             return inputTextField.text!
         }
-    }
-
-    fileprivate func getPasswordValue () -> String {
-        return passwordTextField.text ?? ""
     }
 
     var cached2faCode: String?

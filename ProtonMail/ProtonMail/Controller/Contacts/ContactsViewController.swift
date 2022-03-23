@@ -35,7 +35,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.viewModel = viewModel
     }
 
-    private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
     private let kContactDetailsSugue: String = "toContactDetailsSegue"
     private var searchString: String = ""
 

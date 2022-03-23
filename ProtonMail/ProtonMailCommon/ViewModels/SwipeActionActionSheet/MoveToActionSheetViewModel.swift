@@ -52,18 +52,15 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
-    let labelId: String
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
          messages: [Message],
          isEnableColor: Bool,
-         isInherit: Bool,
-         labelId: String) {
+         isInherit: Bool) {
         self.isInherit = isInherit
         self.isEnableColor = isEnableColor
-        self.labelId = labelId
         self.menuLabels = menuLabels
 
         let labelCount = menuLabels.getNumberOfRows()
@@ -100,18 +97,15 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
     let menuLabels: [MenuLabel]
     let isEnableColor: Bool
     let isInherit: Bool
-    let labelId: String
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel],
          conversations: [Conversation],
          isEnableColor: Bool,
-         isInherit: Bool,
-         labelId: String) {
+         isInherit: Bool) {
         self.isInherit = isInherit
         self.isEnableColor = isEnableColor
-        self.labelId = labelId
         self.menuLabels = menuLabels
 
         let labelCount = menuLabels.getNumberOfRows()

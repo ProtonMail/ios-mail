@@ -236,25 +236,6 @@ class CacheServiceTest: XCTestCase {
         XCTAssertFalse(newLabels.contains(labelIDToAdd))
     }
 
-    func testDeleteMessageByLabelID() {
-        let msgID = self.testMessage.messageID
-        let labelToDelete: String? = self.testMessage.getLabelIDs().first
-        XCTAssertTrue(sut.deleteMessage(by: labelToDelete!))
-
-        XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: testContext))
-    }
-
-    func testDeleteMessageByMessageID() {
-        let msgID = self.testMessage.messageID
-
-        let expect = expectation(description: "Delete")
-        sut.deleteMessage(messageID: msgID) {
-            XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1)
-    }
-
     func testCleanReviewItems() {
         let msgID = self.testMessage.messageID
         self.testMessage.messageType = NSNumber(value: 1)

@@ -33,12 +33,6 @@ import UIKit
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-    func configCell(_ left: String, right: String) {
-        LeftText.text = left
-        RightText.text = right
-        self.accessibilityLabel = left
-    }
 }
 
 extension SettingsDeviceGeneralCell: IBDesignableLabeled {

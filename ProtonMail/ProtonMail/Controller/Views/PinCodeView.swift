@@ -28,7 +28,6 @@ import UIKit
 protocol PinCodeViewDelegate: AnyObject {
     func cancel()
     func next(_ code: String)
-    func touchID()
 }
 
 class PinCodeView: PMView {

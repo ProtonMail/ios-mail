@@ -118,11 +118,4 @@ private enum SubViewsFactory {
         label.textAlignment = .center
         return label
     }
-
-    static var reloadButton: ProtonButton {
-        let button = ProtonButton(frame: .zero)
-        button.setMode(mode: .solid)
-        button.tintColor = ColorProvider.InteractionNorm
-        return button
-    }
 }

@@ -40,9 +40,7 @@ protocol CacheStatusInject {
 
 protocol UnlockManagerDelegate: AnyObject {
     func cleanAll()
-    func unlocked()
     func isUserStored() -> Bool
-    var isUserCredentialStored: Bool { get }
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
 }
 
@@ -188,9 +186,4 @@ class UnlockManager: Service {
 
         unlocked?()
     }
-
-    #if !APP_EXTENSION
-    func updateCommonUserData() {
-    }
-    #endif
 }

@@ -103,10 +103,6 @@ class AppCache: Migrate {
         #endif
     }
 
-    func logout() {
-        self.versionSaver.set(newValue: nil)
-    }
-
     func migrate(from verfrom: Int, to verto: Int) -> Bool {
         switch (verfrom, verto) {
         case (110, 111):

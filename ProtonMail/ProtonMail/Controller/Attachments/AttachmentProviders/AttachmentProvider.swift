@@ -35,7 +35,4 @@ protocol AttachmentController: AnyObject {
     func error(_ description: String)
     func error(title: String, description: String)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
-
-    @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
-    var barItem: UIBarButtonItem? {get}
 }

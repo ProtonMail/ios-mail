@@ -33,10 +33,6 @@ protocol CoordinatedNew: CoordinatedNewBase where coordinatorType: CoordinatorNe
     func set(coordinator: coordinatorType)
 }
 
-protocol CoordinatedAlerts {
-    func controller(notFount dest: String)
-}
-
 protocol CoordinatedNewBase: AnyObject {
     func getCoordinator() -> CoordinatorNew?
 }
@@ -130,12 +126,6 @@ extension ModalCoordinator where VC: CoordinatedNew {
             self.delegate?.didStop(in: self)
         })
     }
-}
-
-protocol PushModalCoordinator: DefaultCoordinator {
-    var configuration: ((VC) -> Void)? { get }
-    var navigationController: UINavigationController? { get }
-    var destinationNavigationController: UINavigationController? { get }
 }
 
 extension DefaultCoordinator {

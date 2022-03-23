@@ -207,16 +207,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     }
 
     /**
-     - Returns: the contact group ID
-     */
-    func getContactGroupID() -> String? {
-        if state == .create {
-            return nil
-        }
-        return contactGroup.ID
-    }
-
-    /**
      - Returns: the color of the contact group
      */
     func getColor() -> String {
@@ -357,45 +347,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             return Promise.init(error: ContactGroupEditError.InternalError)
         }
         return self.contactGroupService.queueDelete(groupID: id)
-    }
-
-    /**
-     Add the current email listing to the contact group on the server
-     
-     - Parameter emailList: Emails to add to the contact group
-     
-     - Returns: Promise<Void>
-     */
-    func addEmailsToContactGroup(emailList: Set<Email>) -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            let emails = emailList.map {$0}
-            if let ID = contactGroup.ID {
-                return self.contactGroupService.addEmailsToContactGroup(groupID: ID, emailList: emails)
-            } else {
-                return Promise.init(error: ContactGroupEditError.InternalError)
-            }
-        }
-    }
-
-    /**
-     Delete the current email listing to the contact group on the server
-     
-     - Parameter emailList: Emails to delete from the contact group
-     
-     - Returns: Promise<Void>
-     */
-    func removeEmailsFromContactGroup(emailList: Set<Email>) -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-
-            let emails = emailList.map {$0}
-            if let ID = contactGroup.ID {
-                return self.contactGroupService.removeEmailsFromContactGroup(groupID: ID, emailList: emails)
-            } else {
-                return Promise.init(error: ContactGroupEditError.InternalError)
-            }
-        }
     }
 
     /* table operation */

@@ -100,11 +100,6 @@ extension UIViewController {
         #endif
     }
 
-    func removePresentedViewController() {
-        guard let vc = self.presentedViewController else {return}
-        vc.dismiss(animated: true, completion: nil)
-    }
-
     func emptyBackButtonTitleForNextView() {
         let backItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backItem

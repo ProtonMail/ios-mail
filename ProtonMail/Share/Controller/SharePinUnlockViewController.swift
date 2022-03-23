@@ -25,7 +25,6 @@ import UIKit
 protocol SharePinUnlockViewControllerDelegate: AnyObject {
     func cancel()
     func next()
-    func failed()
 }
 
 class SharePinUnlockViewController: UIViewController, CoordinatedNew {
@@ -80,8 +79,6 @@ class SharePinUnlockViewController: UIViewController, CoordinatedNew {
 }
 
 extension SharePinUnlockViewController: PinCodeViewDelegate {
-    func touchID() {}
-
     func cancel() {
         // TODO: use the coordinator delegated
         self.dismiss(animated: true) {

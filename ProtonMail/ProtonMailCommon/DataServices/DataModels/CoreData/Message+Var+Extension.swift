@@ -173,13 +173,6 @@ extension Message {
         }
     }
 
-    /// this will check two type of draft folder
-    var draftHardCheck: Bool {
-        get {
-            return self.contains(label: Message.Location.draft) || self.contains(label: "1")
-        }
-    }
-
     var hasReceiptRequest: Bool {
         guard let headerString = self.header,
               let data = headerString.data(using: .utf8),

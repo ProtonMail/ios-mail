@@ -196,43 +196,6 @@ extension String {
         return false
     }
 
-    func stringByPurifyImages () -> String {
-        // src=\"(?!cid:)(.*?)(^|>|\"|\\s)
-        // let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
-
-        var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
-        out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
-        out = out.preg_replace("srcset=", replaceto: " data-srcset=")
-        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=")
-        out = out.preg_replace("poster=", replaceto: " data-poster=")
-        out = out.preg_replace("background=", replaceto: " data-background=")
-        out = out.preg_replace("url\\(|url&#40;|url&#x28;|url&lpar;", replaceto: " data-url(")
-        return out
-    }
-
-    func stringFixImages () -> String {
-        var out = self.preg_replace(" data-src='", replaceto: " src='")
-        out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
-        out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
-        out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=")
-        out = out.preg_replace(" data-poster=", replaceto: " poster=")
-        out = out.preg_replace(" data-background=", replaceto: " background=")
-        out = out.preg_replace(" data-url\\(", replaceto: " url(")
-        return out
-    }
-
-    func stringBySetupInlineImage(_ from: String, to: String) -> String {
-        return self.preg_replace_none_regex(from, replaceto: to)
-    }
-
-    func stringByEscapeHTML() -> String {
-        var out = self.preg_replace("\'", replaceto: "\\\'")
-        out = out.preg_replace("\"", replaceto: "\\\"")
-        out = out.preg_replace("\n", replaceto: "\\n")
-        out = out.preg_replace("\r", replaceto: "\\r")
-        return out
-    }
-
     static func randomString(_ len: Int) -> String {
         let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let randomString: NSMutableString = NSMutableString(capacity: len)
@@ -259,16 +222,6 @@ extension String {
             randomString.appendFormat("%C", letters.character(at: Int(rand)))
         }
         return randomString as String
-    }
-
-    func range(from nsRange: NSRange) -> Range<String.Index>? {
-        guard
-            let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
-            let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
-            let from = from16.samePosition(in: self),
-            let to = to16.samePosition(in: self)
-            else { return nil }
-        return from ..< to
     }
 
     func encodeBase64() -> String {

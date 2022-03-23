@@ -45,7 +45,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     //
     var inputSubject: String! = ""
     var inputContent: String! = ""
-    fileprivate var inputAttachments: String! = ""
     var files = [FileData]()
     fileprivate let kDefaultAttachmentFileSize: Int = 25 * 1000 * 1000
     fileprivate var currentAttachmentSize: Int = 0
@@ -196,10 +195,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         self.authenticateUser()
     }
 
-    func pin_unlock_action(_ sender: Any) {
-        self.coordinator?.go(dest: .pin)
-    }
-
     func authenticateUser() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
@@ -233,10 +228,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
 extension ShareUnlockViewController: AttachmentController, FileImporter {
     func error(title: String, description: String) {
         self.localized_errors.append(description)
-    }
-
-    var barItem: UIBarButtonItem? {
-        return nil
     }
 
     func error(_ description: String) {

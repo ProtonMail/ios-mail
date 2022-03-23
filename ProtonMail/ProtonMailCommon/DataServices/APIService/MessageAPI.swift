@@ -212,16 +212,6 @@ final class MessageActionRequest: Request {
     var ids: [String] = [String]()
     private var currentLabelID: Int?
 
-    init(action: String, messages: [Message]) {
-        self.messages = messages
-        self.action = action
-        for message in messages {
-            if message.isDetailDownloaded {
-                ids.append(message.messageID)
-            }
-        }
-    }
-
     init(action: String, ids: [String], labelID: String? = nil) {
         self.action = action
         self.ids = ids

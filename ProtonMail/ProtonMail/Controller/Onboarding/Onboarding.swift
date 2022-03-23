@@ -80,8 +80,4 @@ enum Onboarding: Int, CustomStringConvertible {
             return LocalString._and_more_content
         }
     }
-
-    var needsDarkBGView: Bool {
-        return self == .updateIntro3
-    }
 }

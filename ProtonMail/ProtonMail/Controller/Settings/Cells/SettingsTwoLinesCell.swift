@@ -33,12 +33,6 @@ import UIKit
 
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
-
-    func config(top tValue: String, bottom bValue: String) {
-        self.topLineLabel.text = tValue
-        self.bottomLineLabel.text = bValue
-        generateCellAccessibilityIdentifiers(bValue)
-    }
 }
 
 extension SettingsTwoLinesCell: IBDesignableLabeled {

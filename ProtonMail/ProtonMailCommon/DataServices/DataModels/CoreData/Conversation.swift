@@ -24,10 +24,6 @@ import CoreData
 import Foundation
 
 final class Conversation: NSManagedObject {
-    enum Errors: Error {
-        case attemptToMergeUnmatchingConversations
-    }
-
     enum Attributes {
         static let entityName = String(describing: Conversation.self)
         static let conversationID = "conversationID"
@@ -68,21 +64,6 @@ final class Conversation: NSManagedObject {
 }
 
 extension Conversation {
-    func getNumAttachments(labelID: String) -> Int {
-        guard let contextLabels = self.labels.allObjects as? [ContextLabel] else {
-            return 0
-        }
-        let matchingLabel = contextLabels.filter { $0.labelID == labelID }.first
-        guard let matched = matchingLabel else {
-            return 0
-        }
-        return matched.attachmentCount.intValue
-    }
-
-    func hasAttachments(labelID: String) -> Bool {
-        return getNumAttachments(labelID: labelID) > 0
-    }
-
     func getNumUnread(labelID: String) -> Int {
         guard let contextLabels = self.labels.allObjects as? [ContextLabel] else {
             return 0
@@ -118,17 +99,6 @@ extension Conversation {
             return nil
         }
         return matched.time
-    }
-
-    func getSize(labelID: String) -> Int {
-        guard let contextLabels = self.labels.allObjects as? [ContextLabel] else {
-            return 0
-        }
-        let matchingLabel = contextLabels.filter { $0.labelID == labelID }.first
-        guard let matched = matchingLabel else {
-            return 0
-        }
-        return matched.size.intValue
     }
 
     func contains(of labelID: String) -> Bool {
@@ -185,31 +155,6 @@ extension Conversation {
                 return contact.Address
             }
         }
-    }
-
-    func getRecipients() -> [Contact] {
-        guard let recipientData = recipients.data(using: .utf8) else {
-            return []
-        }
-        return (try? JSONDecoder().decode([Contact].self, from: recipientData)) ?? []
-    }
-
-    /// This method will return a string that contains the name of all recipients with ',' between them.
-    /// e.g Georage, Paul, Ringo
-    /// - Returns: String of all name of the recipients.
-    func getRecipientsName(_ replacingEmails: [Email]) -> String {
-        let lists: [String] = self.getRecipients().map { contact in
-            if let name = replacingEmails.first(where: {$0.email == contact.Address})?.name,
-               !name.isEmpty {
-                return name
-            } else {
-                return contact.Name
-            }
-        }
-        if lists.isEmpty {
-            return ""
-        }
-        return lists.asCommaSeparatedList(trailingSpace: true)
     }
 
     /// Fetch the Label from local cache based on the labelIDs from contextLabel

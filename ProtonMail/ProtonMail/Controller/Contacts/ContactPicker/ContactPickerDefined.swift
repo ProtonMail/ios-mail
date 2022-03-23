@@ -30,8 +30,6 @@ class ContactPickerDefined {
 
     static let ContactsTableViewCellName                = "ContactsTableViewCell"
     static let ContactsTableViewCellIdentifier          = "ContactCell"
-    static let ContactGroupTableViewCellName            = "ContactGroupsViewCell"
-    static let ContactGroupTableViewCellIdentifier      = "ContactGroupCustomCell"
 
     // localized prompt string //_prompt = NSLocalizedStringWithDefaultValue(@"MBContactPickerPrompt", nil, [NSBundle mainBundle], kPrompt, @"Default Prompt text shown in the prompt cell")
     static let kPrompt: String                         = "To"

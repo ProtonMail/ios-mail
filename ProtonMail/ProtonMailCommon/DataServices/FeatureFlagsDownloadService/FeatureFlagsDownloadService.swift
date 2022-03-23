@@ -34,9 +34,6 @@ protocol FeatureFlagsDownloadServiceProtocol {
 
     typealias FeatureFlagsDownloadCompletion =
         (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
-
-    func register(newSubscriber: FeatureFlagsSubscribeProtocol)
-    func getFeatureFlags(completion: (FeatureFlagsDownloadCompletion)?)
 }
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.

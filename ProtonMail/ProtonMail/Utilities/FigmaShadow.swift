@@ -70,41 +70,6 @@ private extension TempFigmaShadow {
 
 }
 
-extension UIView {
-    func apply(shadows: [TempFigmaShadow]) {
-        self.clipsToBounds = false
-        for shadow in shadows {
-            let layer = CALayer()
-            layer.frame = self.layer.bounds
-            layer.shadowColor = shadow.color.cgColor
-            layer.shadowOpacity = 1
-            layer.shadowOffset = CGSize(width: shadow.x, height: shadow.y)
-            layer.shadowRadius = shadow.blur
-            let shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: 0)
-            layer.shadowPath = shadowPath.cgPath
-            self.layer.addSublayer(layer)
-        }
-
-    }
-
-    func clearShadow() {
-        layer.sublayers?
-            .filter({ $0.shadowColor != nil })
-            .forEach({ $0.removeFromSuperlayer() })
-    }
-}
-
-extension Collection where Element == TempFigmaShadow {
-    static var shadowNorm: [Element] {
-        let shadow10 = UIColor(named: "shadowNorm10") ?? UIColor.black.withAlphaComponent(0.1)
-        let shadow5 = UIColor(named: "shadowGeneral5") ?? UIColor.black.withAlphaComponent(0.05)
-        return [
-            TempFigmaShadow.init(color: shadow10, x: 0, y: 1, blur: 2, spread: 0),
-            TempFigmaShadow.init(color: shadow5, x: 0, y: 0, blur: 1, spread: 0)
-        ]
-    }
-}
-
 extension TempFigmaShadow {
 
     static var `default`: TempFigmaShadow {

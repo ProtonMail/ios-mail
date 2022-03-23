@@ -87,13 +87,6 @@ extension Contact {
         return ""
     }
 
-    func getEmail(at i: Int) -> Email? {
-        if let emailArray = getEmailsArray(), i < emails.count {
-            return emailArray[i]
-        }
-        return nil
-    }
-
     func log() {
         print("ContactID: \(self.contactID)")
         print("Name: \(self.name)")

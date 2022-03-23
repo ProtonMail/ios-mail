@@ -81,7 +81,6 @@ protocol SettingsLockViewModel: AnyObject {
     func enableBioProtection( completion: @escaping () -> Void)
     func disableProtection()
     func getBioProtectionTitle() -> String
-    func getBioProtectionSectionTitle() -> NSAttributedString?
 }
 
 class SettingsLockViewModelImpl: SettingsLockViewModel {
@@ -185,20 +184,6 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
         }
     }
 
-    func enableRandomPinProtection( completion: @escaping () -> Void) {
-        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { _ in
-            completion()
-        }
-    }
-
-    func disableRandomPinProtection() {
-        keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-        keymaker.activate(BioProtection()) { _ in
-
-        }
-    }
-
     func disableProtection() {
         if userCachedStatus.isPinCodeEnabled {
             keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
@@ -221,12 +206,5 @@ class SettingsLockViewModelImpl: SettingsLockViewModel {
         default:
             return ""
         }
-    }
-
-    func getBioProtectionSectionTitle() -> NSAttributedString? {
-        guard !getBioProtectionTitle().isEmpty else {
-            return nil
-        }
-        return getBioProtectionTitle().apply(style: .DefaultSmallWeek)
     }
 }

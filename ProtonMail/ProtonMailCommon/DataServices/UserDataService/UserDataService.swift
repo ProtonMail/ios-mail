@@ -40,8 +40,6 @@ protocol UserDataServiceDelegate {
 
 /// Stores information related to the user
 class UserDataService: Service, HasLocalStorage {
-    typealias UpdatePasswordComplete = (_ task: URLSessionDataTask?, _ response: [String: Any]?, _ error: NSError?) -> Void
-
     let apiService: APIService
     var delegate: UserDataServiceDelegate?
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)

@@ -24,8 +24,6 @@ import Foundation
 
 class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
 
-    let titleText: String = LocalString._enter_pin_to_unlock_inbox
-
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""
@@ -36,20 +34,8 @@ class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
         self.unlockManager = unlock
     }
 
-    override func title() -> String {
-        return titleText
-    }
-
     override func cancel() -> String {
         return LocalString._general_confirm_action
-    }
-
-    override func showConfirm() -> Bool {
-        return false
-    }
-
-    override func confirmString () -> String {
-        return ""
     }
 
     override func setCode (_ code: String) -> PinCodeStep {

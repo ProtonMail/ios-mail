@@ -95,13 +95,6 @@ extension NSError {
             localizedDescription: LocalString._error_unable_to_parse_response_title,
             localizedFailureReason: String(format: LocalString._error_unable_to_parse_response_desc, "\(response ?? noObject)"))
     }
-
-    class func internetError() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.AuthErrorCode.networkIusse,
-            localizedDescription: LocalString._general_alert_title,
-            localizedFailureReason: LocalString._unable_to_connect_to_the_server)
-    }
 }
 
 extension ResponseError {

@@ -25,10 +25,6 @@ import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
-typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
-typealias GenerateKey = (Bool, String?, NSError?) -> Void
-typealias SendVerificationCodeBlock = (NSError?) -> Void
-
 struct UsersAPI {
     static let path: String = "/users"
 }
@@ -107,23 +103,5 @@ class HumanCheckRequest: Request {
 
     var path: String {
         return UsersAPI.path + "/human"
-    }
-}
-
-enum VerifyCodeType: Int {
-    case email = 0
-    case recaptcha = 1
-    case sms = 2
-    var toString: String {
-        get {
-            switch self {
-            case .email:
-                return "email"
-            case .recaptcha:
-                return "captcha"
-            case .sms:
-                return "sms"
-            }
-        }
     }
 }

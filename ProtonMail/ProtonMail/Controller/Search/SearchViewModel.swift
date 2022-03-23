@@ -92,7 +92,6 @@ final class SearchViewModel: NSObject {
     var selectedMessages: [Message] {
         self.messages.filter { selectedIDs.contains($0.messageID) }
     }
-    var selectedConversations: [Conversation] { [] }
 
     init(user: UserManager,
          coreDataContextProvider: CoreDataContextProviderProtocol,

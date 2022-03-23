@@ -118,9 +118,6 @@ protocol SettingsAccountViewModel: AnyObject {
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
 
-    var setting_swipe_action_items: [SwipeActionItems] { get set}
-    var setting_swipe_actions: [MessageSwipeAction] { get set }
-
     var storageText: String { get }
     var recoveryEmail: String { get }
 
@@ -144,9 +141,6 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
     var mailboxItems: [MailboxItem] = [.privacy, /* .search,*/ .labels, .folders]
 
-    var setting_swipe_action_items: [SwipeActionItems] = [.left, .right]
-    var setting_swipe_actions: [MessageSwipeAction] = [.trash, .spam,
-                                                            .star, .archive, .unread]
     var userManager: UserManager
 
     var reloadTable: (() -> Void)?

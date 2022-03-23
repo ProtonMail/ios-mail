@@ -99,10 +99,6 @@ class ComposeViewModel: NSObject {
         }
     }
 
-    func isValidNumberOfRecipients() -> Bool {
-        return true
-    }
-
     func getSubject() -> String {
         return self._subject
     }
@@ -148,10 +144,6 @@ class ComposeViewModel: NSObject {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
 
-    func deleteDraft() {
-        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-    }
-
     func uploadAtt(_ att: Attachment!) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
@@ -166,10 +158,6 @@ class ComposeViewModel: NSObject {
     }
 
     func markAsRead() {
-        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
-    }
-
-    func getDefaultComposeBody() {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
 
@@ -208,10 +196,6 @@ class ComposeViewModel: NSObject {
     }
 
     func getCurrrentSignature(_ addr_id: String) -> String? {
-        fatalError("This method must be overridden")
-    }
-
-    func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }
 

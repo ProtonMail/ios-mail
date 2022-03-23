@@ -26,11 +26,6 @@ import CoreData
 import OpenPGP
 import ProtonCore_DataModel
 
-protocol ContactImportVCDelegate {
-    func cancel()
-    func done(error: String)
-}
-
 class ContactImportViewController: UIViewController {
     var user: UserManager!
 
@@ -49,7 +44,6 @@ class ContactImportViewController: UIViewController {
 
     // MARK: - fetch controller
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    fileprivate var isSearching: Bool = false
 
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let fetchedResultsController = self.user.contactService.resultController() {
@@ -60,17 +54,6 @@ class ContactImportViewController: UIViewController {
             return fetchedResultsController
         }
         return nil
-    }
-
-    func isExsit(uuid: String) -> Bool {
-        if let contacts = fetchedResultsController?.fetchedObjects as? [Contact] {
-            for c in contacts {
-                if c.uuid == uuid {
-                    return true
-                }
-            }
-        }
-        return false
     }
 
     override func viewDidLoad() {

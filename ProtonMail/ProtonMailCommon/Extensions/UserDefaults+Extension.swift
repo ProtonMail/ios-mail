@@ -59,13 +59,4 @@ extension UserDefaults {
         }
         return nil
     }
-
-    func setCustomValue(_ value: NSCoding?, forKey key: String) {
-        let data: Data? = (value == nil) ? nil : NSKeyedArchiver.archivedData(withRootObject: value!)
-        setValue(data, forKey: key)
-    }
-
-    func stringOrEmptyStringForKey(_ key: String) -> String {
-        return string(forKey: key) ?? ""
-    }
 }

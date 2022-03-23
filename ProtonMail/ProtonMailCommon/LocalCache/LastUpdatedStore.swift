@@ -52,8 +52,6 @@ protocol LastUpdatedStoreProtocol {
 }
 
 final class LastUpdatedStore: SharedCacheBase, HasLocalStorage, LastUpdatedStoreProtocol, Service {
-    typealias LabelType = ViewMode
-
     fileprivate struct Key {
 
         static let unreadMessageCount  = "unreadMessageCount"  // total unread

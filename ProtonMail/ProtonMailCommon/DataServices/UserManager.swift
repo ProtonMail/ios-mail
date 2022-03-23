@@ -122,7 +122,6 @@ class UserManager: Service, HasLocalStorage {
     var isUserSelectedUnreadFilterInInbox = false
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
-        let conversationFeatureFlagService = ConversationFeatureFlagService(apiService: self.apiService)
         return ConversationStateService(
             userDefaults: SharedCacheBase.getDefault(),
             viewMode: self.userinfo.viewMode
@@ -283,13 +282,6 @@ class UserManager: Service, HasLocalStorage {
         return auth.sessionID == uid
     }
 
-    func isExist(userName: String) -> Bool {
-        for addr in self.userinfo.userAddresses {
-            return addr.email.starts(with: userName)
-        }
-        return false
-    }
-
     func save() {
         DispatchQueue.main.async {
             self.conversationStateService.userInfoHasChanged(viewMode: self.userinfo.viewMode)
@@ -374,10 +366,6 @@ extension UserManager: AuthDelegate {
                 complete(nil, error)
             }
         }
-    }
-
-    func onForceUpgrade() {
-        // TODO::
     }
 }
 

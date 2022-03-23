@@ -904,8 +904,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             menuLabels: viewModel.getFolderMenuItems(),
             messages: [message],
             isEnableColor: isEnableColor,
-            isInherit: isInherit,
-            labelId: message.messageLocation?.rawValue ?? ""
+            isInherit: isInherit
         )
 
         moveToActionSheetPresenter.present(
@@ -958,8 +957,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             menuLabels: viewModel.getFolderMenuItems(),
             messages: messagesOfConversation,
             isEnableColor: isEnableColor,
-            isInherit: isInherit,
-            labelId: viewModel.labelId
+            isInherit: isInherit
         )
 
         moveToActionSheetPresenter

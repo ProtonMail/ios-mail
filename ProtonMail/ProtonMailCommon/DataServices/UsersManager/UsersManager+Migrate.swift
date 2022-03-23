@@ -49,10 +49,6 @@ extension UsersManager: Migrate {
         // Clear up the old stuff on fresh installs also
     }
 
-    func logout() {
-        self.versionSaver.set(newValue: nil)
-    }
-
     func migrate(from verfrom: Int, to verto: Int) -> Bool {
         switch (verfrom, verto) {
         case (0, 1):

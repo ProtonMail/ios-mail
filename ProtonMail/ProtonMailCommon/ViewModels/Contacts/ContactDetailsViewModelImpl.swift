@@ -400,10 +400,6 @@ extension ContactDetailsViewModelImpl: ContactParserResultDelegate {
         self.origUrls.append(contentsOf: urls)
     }
 
-    func update(verifyType2: Bool) {
-        self.verifyType2 = verifyType2
-    }
-
     func update(verifyType3: Bool) {
         self.verifyType3 = verifyType3
     }

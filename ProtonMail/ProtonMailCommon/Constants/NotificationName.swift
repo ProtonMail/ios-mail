@@ -54,10 +54,6 @@ extension Notification.Name {
         return .init(rawValue: "UserDataServiceDidUnlockNotification")
     }
 
-    static var didObtainMailboxPassword: Notification.Name {
-        return .init(rawValue: "UserDataServiceDidObtainMailboxPasswordNotification")
-    }
-
     /// notify token revoke
     static var didRevoke: Notification.Name {
         return .init("ApiTokenRevoked")

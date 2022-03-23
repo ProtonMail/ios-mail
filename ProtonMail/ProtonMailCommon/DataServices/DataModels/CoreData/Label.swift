@@ -67,24 +67,3 @@ class Label: NSManagedObject {
 //    case trash = 3
 //    case allmail = 5
 //    case starred = 10
-
-extension Label {
-
-    var spam: Bool {
-        get {
-            return self.labelID == "4"
-        }
-    }
-
-    var trash: Bool {
-        get {
-            return self.labelID == "3"
-        }
-    }
-
-    var draft: Bool {
-        get {
-            return self.labelID == "1"
-        }
-    }
-}

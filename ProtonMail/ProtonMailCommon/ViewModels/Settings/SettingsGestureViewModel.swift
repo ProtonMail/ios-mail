@@ -24,7 +24,6 @@ import Foundation
 
 protocol SettingsGestureViewModel: AnyObject {
     var settingSwipeActionItems: [SwipeActionItems] { get set }
-    var settingSwipeActions: [SwipeActionSettingType] { get set }
     var leftToRightAction: SwipeActionSettingType { get set }
     var rightToLeftAction: SwipeActionSettingType { get set }
 }
@@ -32,13 +31,6 @@ protocol SettingsGestureViewModel: AnyObject {
 class SettingsGestureViewModelImpl: SettingsGestureViewModel {
 
     var settingSwipeActionItems: [SwipeActionItems] = [.leftActionView, .left, .empty, .rightActionView, .right]
-    var settingSwipeActions: [SwipeActionSettingType] = [.none,
-                                                         .readAndUnread,
-                                                         .starAndUnstar,
-                                                         .trash,
-                                                         /*.labelAs, .moveTo,*/
-                                                         .archive,
-                                                         .spam]
 
     private var swipeActionsCache: SwipeActionCacheProtocol
 

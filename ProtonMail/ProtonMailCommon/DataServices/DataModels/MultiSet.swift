@@ -61,33 +61,10 @@ class MultiSet<T: Hashable> {
     }
 
     /**
-     Remove all specified elements
-     */
-    func removeAll(of removeData: T) {
-        if let _ = data[removeData] {
-            data.removeValue(forKey: removeData)
-        }
-    }
-
-    /**
      Clears the multiset
      */
     func removeAll() {
         data.removeAll()
-    }
-
-    func allObjectsWithDuplicates() -> [T] {
-        var result: [T] = []
-        for member in data {
-            for _ in 0..<member.value {
-                result.append(member.key)
-            }
-        }
-        return result
-    }
-
-    func allObjectsWithoutDuplicates() -> [T] {
-        return data.map {$0.key}
     }
 }
 

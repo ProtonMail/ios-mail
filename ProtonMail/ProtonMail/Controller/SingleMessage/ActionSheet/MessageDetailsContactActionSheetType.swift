@@ -24,16 +24,3 @@ enum MessageDetailsContactActionSheetType {
     case recipient
     case sender
 }
-
-extension MessageDetailsContactActionSheetType {
-
-    var title: String {
-        switch self {
-        case .recipient:
-            return LocalString._message_action_sheet_title_recipient
-        case .sender:
-            return LocalString._message_action_sheet_title_sender
-        }
-    }
-
-}

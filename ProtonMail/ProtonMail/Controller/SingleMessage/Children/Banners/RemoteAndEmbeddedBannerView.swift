@@ -38,16 +38,6 @@ class RemoteAndEmbeddedBannerView: UIView {
     let iconView = SubviewsFactory.iconImageView
     let titleLabel = SubviewsFactory.titleLabel
 
-    var areBothButtonDisabled: Bool {
-        if loadContentButton.isEnabled {
-            return false
-        } else if loadImagesButton.isEnabled {
-            return false
-        } else {
-            return true
-        }
-    }
-
     required init?(coder: NSCoder) {
         nil
     }

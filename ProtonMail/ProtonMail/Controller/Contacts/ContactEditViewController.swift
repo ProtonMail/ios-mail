@@ -36,11 +36,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
 
     fileprivate var viewModel: ContactEditViewModel!
 
-    //
-    private let kInvalidEmailShakeTimes: Float        = 3.0
-    private let kInvalidEmailShakeOffset: CGFloat     = 10.0
-    fileprivate var origFrameHeight: CGFloat = 0.0
-
     fileprivate let kContactDetailsHeaderView: String      = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID: String        = "contact_section_head_view"
 
@@ -326,11 +321,6 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
 
     func beginEditing(textView: UITextView) {
         self.activeText = textView
-    }
-
-    func featureBlocked() {
-        self.dismissKeyboard()
-        self.upgrade()
     }
 
     func featureBlocked(textView: UITextView) {

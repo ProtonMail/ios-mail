@@ -39,23 +39,4 @@ extension UIAlertController {
     func addCancelAction(handler: ((UIAlertAction?) -> Void)? = nil) {
         addAction(UIAlertAction.cancelAction(handler))
     }
-
-    func showOnTopVC() {
-        var application: UIApplication?
-
-        #if APP_EXTENSION
-        let obj = UIApplication.perform(Selector(("sharedApplication")))
-        application = obj?.takeRetainedValue() as? UIApplication
-        #else
-        application = UIApplication.shared
-        #endif
-
-        guard var vc = application?.keyWindow?.rootViewController else {
-            return
-        }
-        while let presentedViewController = vc.presentedViewController {
-            vc = presentedViewController
-        }
-        vc.present(self, animated: true, completion: nil)
-    }
 }

@@ -512,10 +512,6 @@ extension QueueManager {
 }
 
 extension QueueManager {
-    enum TaskError: Error {
-        case unSupportAction
-    }
-
     enum TaskAction {
         case none
         /// Queue is not block and readqueue > 0
@@ -529,14 +525,12 @@ extension QueueManager {
     }
 
     struct TaskResult {
-        var error: TaskError?
         var response: [[String: Any]]?
         var action: TaskAction
         /// The update won't be written into disk
         var retry: Int = 0
 
-        init(error: TaskError? = nil, response: [[String: Any]]? = nil, action: TaskAction = .none) {
-            self.error = error
+        init(response: [[String: Any]]? = nil, action: TaskAction = .none) {
             self.response = response
             self.action = action
         }

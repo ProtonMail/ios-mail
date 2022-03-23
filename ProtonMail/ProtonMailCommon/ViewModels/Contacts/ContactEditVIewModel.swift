@@ -122,10 +122,6 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
         self.coreDataService = coreDataService
     }
 
-    func paidUser() -> Bool {
-        return user.hasPaidMailPlan
-    }
-
     // table view 
     func getSections() -> [ContactEditSectionType] {
         fatalError("This method must be overridden")
@@ -329,14 +325,8 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     func updateContactCounts(increase: Bool, contactGroups: Set<String>) {
         fatalError("This method must be overridden")
     }
-
-    func hasEmptyGroups() -> [String]? {
-        fatalError("This method must be overridden")
-    }
 }
 
 protocol ContactEditViewModelContactGroupDelegate {
-    // contact group
-    func getAllContactGroupCounts() -> [(ID: String, name: String, color: String, count: Int)]
     func updateContactCounts(increase: Bool, contactGroups: Set<String>)
 }

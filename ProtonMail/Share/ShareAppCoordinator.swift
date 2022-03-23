@@ -70,10 +70,6 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
         keymaker.mainKeyExists()
     }
 
-    func unlocked() {
-
-    }
-
     var isUserCredentialStored: Bool {
         sharedServices.get(by: UsersManager.self).hasUsers()
     }

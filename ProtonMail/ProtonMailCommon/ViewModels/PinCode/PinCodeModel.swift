@@ -39,19 +39,7 @@ class PinCodeViewModel: NSObject {
         return UIImage(named: "top_back")!
     }
 
-    func title() -> String {
-        fatalError("This method must be overridden")
-    }
-
     func cancel() -> String {
-        fatalError("This method must be overridden")
-    }
-
-    func showConfirm() -> Bool {
-        fatalError("This method must be overridden")
-    }
-
-    func confirmString () -> String {
         fatalError("This method must be overridden")
     }
 

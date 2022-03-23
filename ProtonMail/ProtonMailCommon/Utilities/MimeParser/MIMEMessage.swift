@@ -30,8 +30,6 @@ class MIMEMessage: Equatable {
         return self[.messageID] ?? self[.dkimSignature]
     }
 
-    enum BoundaryType: String { case alternative, related }
-
     init?(data: Data) {
         guard let string = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .ascii) else {
             self.data = Data()

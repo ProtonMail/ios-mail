@@ -27,14 +27,9 @@ import ProtonCore_DataModel
 
 typealias KeyRing             = CryptoKeyRing
 typealias SplitMessage        = CryptoPGPSplitMessage
-typealias PlainMessage        = CryptoPlainMessage
-typealias PGPMessage          = CryptoPGPMessage
-typealias PGPSignature        = CryptoPGPSignature
-typealias AttachmentProcessor = CryptoAttachmentProcessor
 typealias SymmetricKey        = CryptoSessionKey
 
 typealias ExplicitVerifyMessage = HelperExplicitVerifyMessage
-typealias SignatureVerification = CryptoSignatureVerificationError
 
 extension Data { /// need follow the gomobile fixes
     /// This computed value is only needed because of [this](https://github.com/golang/go/issues/33745) issue in the
@@ -58,25 +53,6 @@ class Crypto {
         case unexpectedNil
         case decryptionFailed
     }
-
-    private enum Algo: String {
-        case ThreeDES  = "3des"
-        case TripleDES = "tripledes" // Both "3des" and "tripledes" refer to 3DES.
-        case CAST5     = "cast5"
-        case AES128    = "aes128"
-        case AES192    = "aes192"
-        case AES256    = "aes256"
-
-        var value: String {
-            return self.rawValue
-        }
-    }
-//    enum SignatureStatus {
-//        SIGNATURE_OK          int = 0
-//        SIGNATURE_NOT_SIGNED  int = 1
-//        SIGNATURE_NO_VERIFIER int = 2
-//        SIGNATURE_FAILED      int = 3
-//    }
 
     private let EXPECTED_TOKEN_LENGTH: Int = 64
 
@@ -169,90 +145,6 @@ class Crypto {
 
         let plainMessageString = try privateKeyRing?.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0).getString() ?? ""
         return plainMessageString
-    }
-
-    func decrypt(encrypted message: String,
-                        publicKey verifierBinKey: Data,
-                        privateKey binKeys: [Data],
-                        passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-
-        for binKey in binKeys {
-            do {
-                var error: NSError?
-                let newKey = CryptoNewKey(binKey.mutable as Data, &error)
-                if error != nil {
-                    continue
-                }
-
-                guard let key = newKey else {
-                    continue
-                }
-
-                let passSlic = passphrase.data(using: .utf8)
-                let unlockedKey = try key.unlock(passSlic)
-
-                let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
-                if error != nil {
-                    continue
-                }
-
-                let verifierKey = CryptoNewKey(verifierBinKey.mutable as Data, &error)
-                if error != nil {
-                    continue
-                }
-
-                let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
-                if error != nil {
-                    continue
-                }
-
-                let pgpMsg = CryptoPGPMessage(fromArmored: message)
-
-                let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime)
-                return plainMessage
-            } catch {
-                continue
-            }
-        }
-        return nil
-    }
-
-    func decrypt(encrypted message: String,
-                        publicKey verifierBinKey: Data,
-                        privateKey armorKey: String,
-                        passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
-        var error: NSError?
-        let newKey = CryptoNewKeyFromArmored(armorKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        guard let key = newKey else {
-            return nil
-        }
-
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key.unlock(passSlic)
-
-        let privateKeyRing = CryptoNewKeyRing(unlockedKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let verifierKey = CryptoNewKey(verifierBinKey.mutable as Data, &error)
-        if let err = error {
-            throw err
-        }
-
-        let verifierKeyRing = CryptoNewKeyRing(verifierKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
-
-        let plainMessage = try privateKeyRing?.decrypt(pgpMsg, verifyKey: verifierKeyRing, verifyTime: verifyTime)
-        return plainMessage
     }
 
     func decryptVerify(encrypted message: String,
@@ -612,24 +504,6 @@ class Crypto {
         return plainMessage?.getBinary()
     }
 
-    func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
-        var error: NSError?
-        let key = CryptoNewKeyFromArmored(privateKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let passSlic = passphrase.data(using: .utf8)
-        let unlockedKey = try key?.unlock(passSlic)
-        let keyRing = CryptoNewKeyRing(unlockedKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let plainMessage = try keyRing?.decryptAttachment(splitMessage)
-        return plainMessage?.getBinary()
-    }
-
     func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: [Data], passphrase: String) throws -> Data? {
         for binKey in binKeys {
             do {
@@ -696,22 +570,6 @@ class Crypto {
             throw err
         }
         return splitMessage
-    }
-
-    func encryptAttachmentLowMemory(fileName: String, totalSize: Int, publicKey: String) throws -> AttachmentProcessor {
-        var error: NSError?
-        let key = CryptoNewKeyFromArmored(publicKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let keyRing = CryptoNewKeyRing(key, &error)
-        if let err = error {
-            throw err
-        }
-
-        let processor = try keyRing!.newLowMemoryAttachmentProcessor(totalSize, filename: fileName)
-        return processor
     }
 
     // MARK: - sign
@@ -1071,32 +929,8 @@ extension String {
         return key?.getFingerprint() ?? ""
     }
 
-    var SHA256fingerprints: [String] {
-        var error: NSError?
-        let fingerprints = HelperGetJsonSHA256Fingerprints(self, &error)
-        if error != nil {
-            return []
-        }
-        let parsedObject: Any? = try! JSONSerialization.jsonObject(with: fingerprints!, options: JSONSerialization.ReadingOptions.allowFragments) as Any?
-        if let objects = parsedObject as? [String] {
-            return objects
-        }
-        return []
-    }
-
     var unArmor: Data? {
         return ArmorUnarmor(self, nil)
-    }
-
-    func getSignature() throws -> String? {
-        var error: NSError?
-        let clearTextMessage = CryptoNewClearTextMessageFromArmored(self, &error)
-        if let err = error {
-            throw err
-        }
-        let dec_out_att: String? = clearTextMessage?.getString()
-
-        return dec_out_att
     }
 
     func split() throws -> SplitMessage? {

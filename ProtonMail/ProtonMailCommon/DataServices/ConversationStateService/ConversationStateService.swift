@@ -23,7 +23,6 @@ class ConversationStateService: ConversationStateProviderProtocol {
     private let userDefaults: KeyValueStoreProvider
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     private let featureFlagKey = "conversation_feature_flag"
-    private var isFetchingFlag = false
 
     private var delegates: [ConversationStateServiceDelegate] {
         delegatesStore.allObjects

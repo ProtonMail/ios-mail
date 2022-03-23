@@ -92,8 +92,6 @@ protocol SettingsDeviceViewModel: AnyObject {
 
     func appVersion() -> String
 
-    var userManager: UserManager { get }
-
     var email: String { get }
     var name: String { get }
 

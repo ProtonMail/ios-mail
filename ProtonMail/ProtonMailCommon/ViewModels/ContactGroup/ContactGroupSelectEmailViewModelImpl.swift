@@ -74,17 +74,6 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     }
 
     /**
-     For the given indexPath, returns if it is in the email list or not
-     
-     - Parameter indexPath: IndexPath
-     - Returns: true if the given indexPath is in the email list, false otherwise
-     */
-    func getSelectionStatus(at indexPath: IndexPath) -> Bool {
-        let selectedEmail = allEmails[indexPath.row]
-        return selectedEmails.contains(selectedEmail)
-    }
-
-    /**
      Return the total number of emails in the email list
      
      - Returns: total email in the list

@@ -33,11 +33,6 @@ class SharedCacheBase {
         self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
 
-    convenience init (shared: UserDefaults) {
-        self.init()
-        self.userDefaults = shared
-    }
-
     deinit {
         //
     }

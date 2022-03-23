@@ -25,13 +25,6 @@ import ProtonCore_UIFoundations
 protocol LabelAsActionSheetViewModel {
     var menuLabels: [MenuLabel] { get }
     var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] { get }
-    func getColor(of label: MenuLabel) -> UIColor
-}
-
-extension LabelAsActionSheetViewModel {
-    func getColor(of label: MenuLabel) -> UIColor {
-        return UIColor(hexColorCode: label.iconColor)
-    }
 }
 
 struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {

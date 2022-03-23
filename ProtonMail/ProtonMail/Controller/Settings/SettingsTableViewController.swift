@@ -57,16 +57,12 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     var setting_debug_items: [SDebugItem]               = [.queue, .errorLogs]
 
     var setting_swipe_action_items: [SwipeActionItems] = [.left, .right]
-    var setting_swipe_actions: [MessageSwipeAction] = [.trash, .spam,
-                                                            .star, .archive, .unread]
 
     var setting_protection_items: [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     var setting_addresses_items: [SAddressItems]        = [.addresses,
                                                             .displayName,
                                                             .signature,
                                                             .defaultMobilSign]
-
-    var setting_labels_items: [SLabelsItems] = [.labelFolderManager]
 
     var setting_network_items: [SNetworkItems] = [.doh]
 
@@ -91,7 +87,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     let SettingDomainsCell            = "setting_domains"
     let SettingStorageCell            = "setting_storage_cell"
     let HeaderCell                    = "header_cell"
-    let SingleTextCell                = "single_text_cell"
     let SwitchCell                    = "switch_table_view_cell"
     let SwitchTwolineCell             = "switch_two_line_cell"
 

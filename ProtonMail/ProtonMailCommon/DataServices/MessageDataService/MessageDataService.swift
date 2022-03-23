@@ -79,56 +79,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         NotificationCenter.default.removeObserver(self)
     }
 
-    func createLabel(name: String, color: String, isFolder: Bool) -> Bool {
-        self.queue(.createLabel(name: name, color: color, isFolder: isFolder), isConversation: false)
-        return true
-    }
-
-    func update(label: Label, name: String, color: String) -> Bool {
-        guard let context = label.managedObjectContext else {
-            return false
-        }
-        var hasError = false
-        context.performAndWait {
-            label.name = name
-            label.color = color
-
-            let error = context.saveUpstreamIfNeeded()
-            if error != nil {
-                hasError = true
-            }
-        }
-
-        if hasError { return false }
-
-        self.queue(.updateLabel(labelID: label.labelID, name: name, color: color), isConversation: false)
-        return true
-    }
-
-    func delete(labels: [Label]) -> Bool {
-        guard !labels.isEmpty,
-              let context = labels.first?.managedObjectContext else {
-            return false
-        }
-        let ids = labels.map { $0.labelID }
-        var hasError = false
-        context.performAndWait {
-            labels.forEach(context.delete)
-
-            let error = context.saveUpstreamIfNeeded()
-            if error != nil {
-                hasError = true
-            }
-        }
-
-        if hasError { return false }
-        ids.forEach { id in
-            self.queue(.deleteLabel(labelID: id), isConversation: false)
-        }
-
-        return true
-    }
-
     // MAKR : upload attachment
 
     // MARK: - - Refactored functions
@@ -384,17 +334,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         }
     }
 
-    func messageFromPush() -> Message? {
-        guard let msgID = self.pushNotificationMessageID else {
-            return nil
-        }
-        let context = self.coreDataService.mainContext
-        guard let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) else {
-            return nil
-        }
-        return message
-    }
-
     /// TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = queueManager?.queuedMessageIds() ?? []
@@ -434,12 +373,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         self.labelDataService.resetCounter(labelID: labelID)
         queue(.empty(currentLabelID: labelID), isConversation: false)
     }
-
-    func updateEO(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
-        self.cacheService.updateExpirationOffset(of: message, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint, completion: completion)
-    }
-
-    let reportTitle = "FetchMetadata"
     /// fetch message meta data with message obj
     ///
     /// - Parameter messages: Message
@@ -1744,7 +1677,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     func updateMessage (_ message: Message ,
                         expirationTimeInterval: TimeInterval,
                         body: String,
-                        attachments: [Any]?,
                         mailbox_pwd: String) {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

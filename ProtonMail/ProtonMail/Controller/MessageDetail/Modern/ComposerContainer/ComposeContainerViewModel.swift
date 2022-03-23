@@ -55,10 +55,6 @@ class ComposeContainerViewModel: TableContainerViewModel {
         currentUser.messageService.syncMailSetting()
     }
 
-    internal func filesExceedSizeLimit() -> Bool {
-        return self.childViewModel.currentAttachmentsSize >= self.kDefaultAttachmentFileSize
-    }
-
     internal func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
         return itemProviders.reduce(true) { $0 && $1.hasItem(types: self.filetypes) != nil }
     }
@@ -92,9 +88,7 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
         fatalError()
     }
-    var barItem: UIBarButtonItem? {
-        return nil
-    }
+
     func error(_ description: String) {
         self.showErrorBanner(description)
     }

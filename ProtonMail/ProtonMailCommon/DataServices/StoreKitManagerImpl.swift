@@ -49,12 +49,4 @@ class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
     var userId: String? {
         return sharedServices.get(by: UsersManager.self).firstUser?.userInfo.userId
     }
-
-    var payments: Payments? {
-        #if !APP_EXTENSION
-            return sharedServices.get(by: UsersManager.self).firstUser?.payments
-        #else
-            return nil
-        #endif
-    }
 }

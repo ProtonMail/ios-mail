@@ -95,10 +95,6 @@ extension PushNotificationService {
         var state: SubscriptionState
         private(set) var settings: SubscriptionSettings
 
-        fileprivate func applyState(_ newState: SubscriptionState) {
-            self.state = newState
-        }
-
         init(settings: SubscriptionSettings, state: SubscriptionState) {
             self.state = state
             self.settings = settings

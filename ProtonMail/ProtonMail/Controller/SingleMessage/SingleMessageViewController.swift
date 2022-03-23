@@ -399,8 +399,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
             MoveToActionSheetViewModelMessages(menuLabels: viewModel.getFolderMenuItems(),
                                                messages: [viewModel.message],
                                                isEnableColor: isEnableColor,
-                                               isInherit: isInherit,
-                                               labelId: viewModel.labelId)
+                                               isInherit: isInherit)
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      listener: self,

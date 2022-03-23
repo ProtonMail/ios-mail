@@ -32,7 +32,6 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private(set) var user: UserManager
     private let contactGroupService: ContactGroupsDataService
     private let labelDataService: LabelsDataService
-    private let messageService: MessageDataService
     private let eventsService: EventsFetching
 
     private var selectedGroupIDs: Set<String> = Set<String>()
@@ -51,7 +50,6 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         self.coreDataService = coreDataService
         self.contactGroupService = user.contactGroupService
         self.labelDataService = user.labelService
-        self.messageService = user.messageService
         self.eventsService = user.eventsService
     }
 

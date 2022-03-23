@@ -153,15 +153,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return rootSavingContext
     }
 
-    func childBackgroundManagedObjectContext(forUseIn thread: Thread) -> NSManagedObjectContext {
-        if Thread.current.isMainThread {
-            assert(false, "This object is not supposed to be used on main thread")
-        }
-        let background = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        background.parent = self.rootSavingContext
-        return background
-    }
-
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
@@ -169,15 +160,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             return psc.managedObjectID(forURIRepresentation: url)
         }
         return nil
-    }
-
-    func cleanLegacy() {
-        // the old code data file
-        let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
-        do {
-            try FileManager.default.removeItem(at: url)
-        } catch {
-        }
     }
 
     func enqueue(context: NSManagedObjectContext? = nil,

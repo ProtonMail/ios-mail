@@ -536,10 +536,6 @@ extension ComposeContainerViewController: AttachmentController {
         }
     }
 
-    var barItem: UIBarButtonItem? {
-        nil
-    }
-
     func error(_ description: String) {
         let alert = description.alertController()
         alert.addOKAction()

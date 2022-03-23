@@ -45,10 +45,6 @@ class LabelCell: UICollectionViewCell {
         self.label.layer.borderColor = UIColor(hexString: color, alpha: 1.0).cgColor
     }
 
-    func size() -> CGSize {
-        return self.label.sizeThatFits(CGSize.zero)
-    }
-
     class private func buildText(_ text: String) -> String {
         if text.isEmpty {
             return text
