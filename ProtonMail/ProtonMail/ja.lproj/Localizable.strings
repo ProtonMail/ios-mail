@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "かつ";
 
+/* Onboarding title */
+"And more…" = "And more…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "記念日";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "会話モード";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "コピー";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Proton の連絡先ではない人でもエンドツーエンド暗号化を使用には ProtonMail に招待するか、手動でメッセージを暗号化します。";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "入力";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "File, label, and color code messages to create your perfect, custom inbox.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "フォルダー";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "鍵が無効です。戻ってもう一度やり直してください。";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "ラベル付け";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Neat and tidy";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "無料登録&#13; r210321";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "新しいラベル";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
 
 /* Title */
 "New mailbox password" = "メールボックスの新しいパスワード";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "全員に返信";
+
+/* The title of first button in the action bar */
+"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "メッセージを返信";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "あなたの国の政府が、 Proton への接続を検閲(遮断)している可能性があります。 Proton にアクセスするには ProtonVPN （または他社のVPN）もしくは Tor を試してみてください。";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "あなたのフィードバック";

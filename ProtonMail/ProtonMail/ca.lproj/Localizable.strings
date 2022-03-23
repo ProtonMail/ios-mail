@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "i";
 
+/* Onboarding title */
+"And more…" = "And more…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversari";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Mode de conversa";
 
+/* Onboarding title */
+"Conversations" = "Conversations";
+
 /* Title */
 "Copy" = "Copia";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Gaudiu del xifrat extrem a extrem fins it to amb contactes sense Proton: Convideu-los a ProtonMail o xifreu manualment els seus missatges.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+
 /* Action in 2fa popup view */
 "Enter" = "Entrar";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Classifiqueu, etiqueteu, i codifiqueu amb colors els missatges per crear la vostra perfecta i personalitzada safata d'entrada.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Carpeta";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "La clau no és vàlida. Si su plau, torneu-ho a provar.";
+
+/* The title of first button in the action bar */
+"Label" = "Label";
 
 /* No comment provided by engineer. */
 "Label as" = "Etiquetar com";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Polit i endreçat";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Necessita Un Compte? Registra'T";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Etiqueta nova";
+
+/* Onboarding title */
+"New look, same protection" = "New look, same protection";
 
 /* Title */
 "New mailbox password" = "Nova contrasenya de la bústia de correu";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "Respondre a tothom";
+
+/* The title of first button in the action bar */
+"Reply All" = "Reply All";
 
 /* composer view model impl */
 "Reply message" = "Respondre al missatge";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "El teu país pot bloquetgar l’accés a Proton. Provi utilitzar ProtonVPN (o altre VPN) o Tor per accedir a Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
 
 /* Title of user feedback view */
 "Your feedback" = "Els teus comentaris";

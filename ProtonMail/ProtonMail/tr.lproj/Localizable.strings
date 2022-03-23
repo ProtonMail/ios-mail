@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "ve";
 
+/* Onboarding title */
+"And more…" = "Ve daha fazlası…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Yıl dönümü";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Yazışma kipi";
 
+/* Onboarding title */
+"Conversations" = "Yazışmalar";
+
 /* Title */
 "Copy" = "Kopyala";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Proton kullanmayan kişilerinizle bile uçtan uca şifrelemenin tadını çıkarın: Onları ProtonMail kullanmaya çağırın ya da iletileri el ile şifreleyin.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Koyu tema, okunmamış ileti süzgeci ve alt klasörler gibi yeniliklerin tadını çıkarın.";
+
 /* Action in 2fa popup view */
 "Enter" = "Yazın";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Klasör";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Anahtar geçersiz. Lütfen geri dönüp yeniden deneyin.";
+
+/* The title of first button in the action bar */
+"Label" = "Etiket";
 
 /* No comment provided by engineer. */
 "Label as" = "Etiketle";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Temiz ve düzenli";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Ücretsiz hesap açın";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Yeni etiket";
+
+/* Onboarding title */
+"New look, same protection" = "Yeni görünüm, aynı koruma";
 
 /* Title */
 "New mailbox password" = "Yeni posta kutusu parolası";
@@ -2005,7 +2004,7 @@
 "PIN code" = "PIN kodu";
 
 /* Description */
-"PIN code can't be empty." = "Pin kodu boş olamaz.";
+"PIN code can't be empty." = "PIN kodu boş olamaz.";
 
 /* The error message of entering a long pin */
 "PIN is too long" = "PIN kodu çok uzun";
@@ -2262,6 +2261,9 @@
 /* reply all action */
 "Reply all" = "Tümünü yanıtla";
 
+/* The title of first button in the action bar */
+"Reply All" = "Tümünü yanıtla";
+
 /* composer view model impl */
 "Reply message" = "İletiyi yanıtla";
 
@@ -2281,7 +2283,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Bağlantı onayı iste";
+"Request link confirmation" = "Bağlantı onayı istensin";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "POSTA KUTUSU PAROLASINI SIFIRLA";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Ülkeniz Proton ağına erişimi engelliyor olabilir. Proton ağına erişmek için ProtonVPN (ya da başka bir VPN) ya da Tor kullanmayı deneyin.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "Şifrelenmiş e-postanız daha kolay kullanım için yeniden tasarlandı.";
 
 /* Title of user feedback view */
 "Your feedback" = "Geri bildiriminiz";

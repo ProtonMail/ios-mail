@@ -17,8 +17,8 @@
 "NSFaceIDUsageDescription" = "讓您快速安全地解鎖您的應用程式。";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "允許ProtonMail將圖片附件保存到照片庫";
+"NSPhotoLibraryAddUsageDescription" = "允許ProtonMail將圖片附件保存到您的「相片」。";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "允許ProtonMail存取您相機膠卷中的照片及影片，以讓您將媒體檔附加到電子郵件內。";
+"NSPhotoLibraryUsageDescription" = "允許ProtonMail存取您的「相片」，以讓您將照片附加至電子郵件內。";
 

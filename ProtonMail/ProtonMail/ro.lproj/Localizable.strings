@@ -250,6 +250,9 @@
 /* agree check box middle word */
 "and" = "și";
 
+/* Onboarding title */
+"And more…" = "Și mai mult…";
+
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversare";
 
@@ -699,6 +702,9 @@
 /* No comment provided by engineer. */
 "Conversation mode" = "Mod conversație";
 
+/* Onboarding title */
+"Conversations" = "Conversații";
+
 /* Title */
 "Copy" = "Copiere";
 
@@ -1089,6 +1095,9 @@
 /* Onboarding content */
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Bucurați-vă de criptare în ambele părți chiar și cu contactele care nu sunt în Proton: Invitați-le în ProtonMail sau criptați manual mesajele acestora.";
 
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Bucurați-vă de îmbunătățiri precum modul întunecat, un filtru de mesaje necitite și subfoldere.";
+
 /* Action in 2fa popup view */
 "Enter" = "Introducere";
 
@@ -1179,13 +1188,6 @@
 
 /* Onboarding content */
 "File, label, and color code messages to create your perfect, custom inbox." = "Clasificați, etichetați și codificați prin culori mesajele pentru a vă crea o experiență personală de utilizare.";
-
-/* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
-/* Onboarding content */
-"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
-/* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Folder";
@@ -1452,6 +1454,9 @@
 
 /* Error */
 "Key invalid. Please go back and try again." = "Cheie nevalidă. Reveniți și reîncercați.";
+
+/* The title of first button in the action bar */
+"Label" = "Eticheta";
 
 /* No comment provided by engineer. */
 "Label as" = "Etichetare ca";
@@ -1744,15 +1749,6 @@
 /* Onboarding title */
 "Neat and tidy" = "Curată și ordonată";
 
-/* Onboarding title */
-"New look, same protection" = "New look, same protection";
-
-/* Onboarding title */
-"Conversations" = "Conversations";
-
-/* Onboarding title */
-"And more…" = "And more…";
-
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Înscriere gratuită";
 
@@ -1777,6 +1773,9 @@
 
 /* No comment provided by engineer. */
 "New Label" = "Etichetă nouă";
+
+/* Onboarding title */
+"New look, same protection" = "Un aspect nou, aceeași protecție";
 
 /* Title */
 "New mailbox password" = "Parola nouă mesaje";
@@ -2261,6 +2260,9 @@
 
 /* reply all action */
 "Reply all" = "Răspuns tuturor";
+
+/* The title of first button in the action bar */
+"Reply All" = "Răspuns tuturor";
 
 /* composer view model impl */
 "Reply message" = "Răspuns la mesaj";
@@ -3211,6 +3213,9 @@
 
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți ProtonVPN (sau orice alt VPN) sau Tor pentru a accesa Proton.";
+
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "E-mailul dumneavoastră criptat a fost reproiectat în întregime pentru a fi mai ușor de utilizat.";
 
 /* Title of user feedback view */
 "Your feedback" = "Experiența personală";
