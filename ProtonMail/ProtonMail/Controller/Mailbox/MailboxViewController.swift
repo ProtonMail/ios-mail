@@ -2630,9 +2630,6 @@ extension MailboxViewController {
     typealias UserFeedbackCompletedHandler = (/* Completed or not */ Bool) -> Void
 
     private func showFeedbackActionSheet(completedHandler: UserFeedbackCompletedHandler? = nil) {
-        guard self.viewModel.isInAppFeedbackFeatureEnabled else {
-            return
-        }
         let delayTime = 0.1
         let viewModel = InAppFeedbackViewModel { [weak self] result in
             guard let self = self else {
