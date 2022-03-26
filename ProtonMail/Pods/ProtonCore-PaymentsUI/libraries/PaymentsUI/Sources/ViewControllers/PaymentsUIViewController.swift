@@ -201,6 +201,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         guard isDataLoaded, let linkString = model?.linkString else { return }
         switch model?.footerType {
         case .withPlans:
+            hideFooter = true
             tableFooterTextLabel.text = nil
         case .withoutPlans, .none:
             tableFooterTextLabel.textWithLink(text: String(format: CoreString._pu_plan_footer_desc_purchased, linkString), link: linkString, handler: model?.openLink)
