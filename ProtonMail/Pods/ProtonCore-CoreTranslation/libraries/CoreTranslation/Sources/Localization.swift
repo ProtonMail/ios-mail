@@ -588,9 +588,6 @@ public class LocalizedString {
     /// Upgrade plan title
     public lazy var _pu_upgrade_plan_title = NSLocalizedString("Upgrade your plan", bundle: Common.bundle, comment: "Plan selection title")
     
-    /// Plan footer description
-    public lazy var _pu_plan_footer_desc = NSLocalizedString("Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@.", bundle: Common.bundle, comment: "Plan footer description")
-
     /// Plan footer description purchased
     public lazy var _pu_plan_footer_desc_purchased = NSLocalizedString("Manage your subscription at %@.", bundle: Common.bundle, comment: "Plan footer purchased description")
     
