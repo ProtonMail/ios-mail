@@ -45,8 +45,8 @@ final class MultipartUpload {
 
     func build() throws -> UploadRequest.Uploadable {
         let uploadable: UploadRequest.Uploadable
-        if $multipartFormData.contentLength < encodingMemoryThreshold {
-            let data = try $multipartFormData.read { try $0.encode() }
+        if multipartFormData.contentLength < encodingMemoryThreshold {
+            let data = try multipartFormData.encode()
 
             uploadable = .data(data)
         } else {
@@ -58,7 +58,7 @@ final class MultipartUpload {
             try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
 
             do {
-                try $multipartFormData.read { try $0.writeEncodedData(to: fileURL) }
+                try multipartFormData.writeEncodedData(to: fileURL)
             } catch {
                 // Cleanup after attempted write if it fails.
                 try? fileManager.removeItem(at: fileURL)

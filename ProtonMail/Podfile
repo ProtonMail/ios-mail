@@ -18,6 +18,7 @@ def proton_core_version
 end
 
 def pm_shared_pods
+  pod 'Alamofire', '5.4.4'
   pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Crypto', proton_core_version
   pod 'ProtonCore-SRP', proton_core_version

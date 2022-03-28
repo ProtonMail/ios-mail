@@ -8492,7 +8492,7 @@
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -8636,7 +8636,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwipyCell/SwipyCell.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -8743,7 +8743,7 @@
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework/OpenPGP",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenPGP/OpenPGP.framework/OpenPGP",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
