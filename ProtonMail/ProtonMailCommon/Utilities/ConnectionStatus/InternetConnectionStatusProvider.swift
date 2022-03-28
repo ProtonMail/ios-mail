@@ -121,6 +121,9 @@ extension InternetConnectionStatusProvider {
 
     @available(iOS 12.0, *)
     func status(from path: NWPath) -> ConnectionStatus {
+        guard path.status == .satisfied else {
+            return .notConnected
+        }
         if path.usesInterfaceType(.wifi) {
             return .connectedViaWiFi
         } else if path.usesInterfaceType(.wiredEthernet) {
@@ -128,7 +131,7 @@ extension InternetConnectionStatusProvider {
         } else if path.usesInterfaceType(.cellular) {
             return .connectedViaCellular
         } else {
-            return .notConnected
+            return .connected
         }
     }
 
