@@ -24,20 +24,19 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsAccountViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
-    internal var viewModel: SettingsAccountViewModel!
-    internal var coordinator: SettingsAccountCoordinator?
+class SettingsAccountViewController: UITableViewController, AccessibleView {
+    private let viewModel: SettingsAccountViewModel
+    private let coordinator: SettingsAccountCoordinator
 
-    func set(viewModel: SettingsAccountViewModel) {
+    init(viewModel: SettingsAccountViewModel, coordinator: SettingsAccountCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsAccountCoordinator) {
         self.coordinator = coordinator
+
+        super.init(style: .grouped)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     struct CellKey {
@@ -46,12 +45,11 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         static let cellHeight: CGFloat = 48.0
     }
 
-    private var cleaning: Bool = false
-
-    @IBOutlet private var settingTableView: UITableView!
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        emptyBackButtonTitleForNextView()
+
         updateTitle()
 
         viewModel.reloadTable = { [weak self] in
@@ -255,13 +253,13 @@ extension SettingsAccountViewController {
         let item = self.viewModel.accountItems[row]
         switch item {
         case .singlePassword:
-            self.coordinator?.go(to: .singlePwd)
+            self.coordinator.go(to: .singlePwd)
         case .loginPassword:
-            self.coordinator?.go(to: .loginPwd)
+            self.coordinator.go(to: .loginPwd)
         case .mailboxPassword:
-            self.coordinator?.go(to: .mailboxPwd)
+            self.coordinator.go(to: .mailboxPwd)
         case .recovery:
-            self.coordinator?.go(to: .recoveryEmail)
+            self.coordinator.go(to: .recoveryEmail)
         case .storage:
             break
         }
@@ -312,11 +310,11 @@ extension SettingsAccountViewController {
                 present(alertController, animated: true, completion: nil)
             }
         case .displayName:
-            self.coordinator?.go(to: .displayName)
+            self.coordinator.go(to: .displayName)
         case .signature:
-            self.coordinator?.go(to: .signature)
+            self.coordinator.go(to: .signature)
         case .mobileSignature:
-            self.coordinator?.go(to: .mobileSignature)
+            self.coordinator.go(to: .mobileSignature)
         }
     }
 
@@ -324,23 +322,23 @@ extension SettingsAccountViewController {
         let item = self.viewModel.mailboxItems[row]
         switch item {
         case .privacy:
-            self.coordinator?.go(to: .privacy)
+            self.coordinator.go(to: .privacy)
         case .search:
             break
         case .labels:
-            self.coordinator?.go(to: .labels)
+            self.coordinator.go(to: .labels)
         case .folders:
-            self.coordinator?.go(to: .folders)
+            self.coordinator.go(to: .folders)
         case .storage:
             break
         case .conversation:
-            self.coordinator?.go(to: .conversation)
+            self.coordinator.go(to: .conversation)
         }
     }
 }
 
 extension SettingsAccountViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
+        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
     }
 }

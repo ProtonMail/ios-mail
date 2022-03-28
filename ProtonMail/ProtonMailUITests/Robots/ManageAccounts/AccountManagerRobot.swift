@@ -35,7 +35,7 @@ class AccountManagerRobot: CoreElements {
     var verify = Verify()
     
     func addAccount() -> ConnectAccountRobot {
-        button(id.addAccountButtonIdentifier).tap()
+        button(id.addAccountButtonIdentifier).firstMatch().tap()
         return ConnectAccountRobot()
     }
 
@@ -63,7 +63,7 @@ class AccountManagerRobot: CoreElements {
     }
     
     func closeManageAccounts() -> InboxRobot {
-        button(id.closeManageAccountsButtonIdentifier).tap()
+        button(id.closeManageAccountsButtonIdentifier).firstMatch().tap()
         return InboxRobot()
     }
     

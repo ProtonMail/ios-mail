@@ -23,9 +23,8 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsContactCombineViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel: SettingsCombineContactViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+class SettingsContactCombineViewController: ProtonMailTableViewController {
+    private let viewModel: SettingsCombineContactViewModel
 
     struct Key {
         static let cellHeight: CGFloat = 48.0
@@ -33,6 +32,16 @@ class SettingsContactCombineViewController: ProtonMailTableViewController, ViewM
         static let headerCell: String = "header_cell"
     }
 
+    init(viewModel: SettingsCombineContactViewModel, coordinator: SettingsDeviceCoordinator) {
+        self.viewModel = viewModel
+
+        super.init(style: .grouped)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -47,18 +56,6 @@ class SettingsContactCombineViewController: ProtonMailTableViewController, ViewM
 
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
-        self.coordinator = coordinator
-    }
-
-    func set(viewModel: SettingsCombineContactViewModel) {
-        self.viewModel = viewModel
     }
 
     private func updateTitle() {

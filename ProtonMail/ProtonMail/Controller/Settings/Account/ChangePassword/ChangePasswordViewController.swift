@@ -37,13 +37,16 @@ class ChangePasswordViewController: UIViewController {
     var keyboardHeight: CGFloat = 0.0
     var textFieldPoint: CGFloat = 0.0
 
-    let kAsk2FASegue = "password_to_twofa_code_segue"
+    private let viewModel: ChangePasswordViewModel
 
-    private var doneButton: UIBarButtonItem!
-    private var viewModel: ChangePasswordViewModel!
-
-    func setViewModel(_ viewModel: ChangePasswordViewModel) {
+    init(viewModel: ChangePasswordViewModel) {
         self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -83,14 +86,6 @@ class ChangePasswordViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kAsk2FASegue, let next = segue.destination as? TwoFACodeViewController {
-            next.delegate = self
-            next.mode = .twoFactorCode
-            self.setPresentationStyleForSelfController(self, presentingController: next)
-        }
     }
 
     func setPresentationStyleForSelfController(_ selfController: UIViewController,
@@ -158,7 +153,7 @@ class ChangePasswordViewController: UIViewController {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
             NotificationCenter.default.removeKeyboardObserver(self)
-            self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
+            open2FA()
         } else {
             MBProgressHUD.showAdded(to: view, animated: true)
             viewModel.setNewPassword(currentPasswordEditor.value ,
@@ -185,6 +180,14 @@ class ChangePasswordViewController: UIViewController {
                 }
             })
         }
+    }
+
+    private func open2FA() {
+        let viewController = TwoFACodeViewController(nibName: nil, bundle: nil)
+        viewController.delegate = self
+        viewController.mode = .twoFactorCode
+        self.setPresentationStyleForSelfController(self, presentingController: viewController)
+        self.present(viewController, animated: true)
     }
 
     // MARK: - Actions

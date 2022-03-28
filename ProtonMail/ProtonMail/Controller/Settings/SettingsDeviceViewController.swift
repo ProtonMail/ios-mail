@@ -24,42 +24,36 @@ import UIKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
 
-class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsDeviceViewController: ProtonMailTableViewController {
     struct Key {
         static let headerCell = "header_cell"
         static let footerCell = "footer_cell"
         static let headerCellHeight: CGFloat = 52.0
-        static let accountCell = "AccountSwitcherCell"
         static let cellHeight: CGFloat = 48.0
         static let accountCellHeight: CGFloat = 64.0
     }
 
-    internal var viewModel: SettingsDeviceViewModel!
-    internal var coordinator: SettingsDeviceCoordinator?
+    private let viewModel: SettingsDeviceViewModel
+    private let coordinator: SettingsDeviceCoordinator?
 
     var cleaning: Bool = false
 
-    func set(viewModel: SettingsDeviceViewModel) {
+    init(viewModel: SettingsDeviceViewModel, coordinator: SettingsDeviceCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
+
+        super.init(style: .grouped)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    class func instance() -> SettingsDeviceViewController {
-        let board = UIStoryboard.Storyboard.settings.storyboard
-        let vc = board.instantiateViewController(withIdentifier: "SettingsDeviceViewController") as! SettingsDeviceViewController
-        _ = UINavigationController(rootViewController: vc)
-        return vc
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        emptyBackButtonTitleForNextView()
+
         self.updateTitle()
 
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
@@ -76,6 +70,20 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         }
 
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
+
+        // the original call to `setup` relies on `menuButton` being connected via an IBOutlet
+        // which doesn't make much sense if there is no xib involved
+        // building the button by hand seems to be the least hacky solution
+        let menuButton = UIBarButtonItem(
+            image: Asset.topMenu.image,
+            style: .plain,
+            target: self,
+            action: #selector(self.openMenu)
+        )
+        menuButton.accessibilityLabel = LocalString._menu_button
+        //Self.setup(self, menuButton, shouldShowSideMenu())
+        navigationItem.leftBarButtonItem = menuButton
+        menuButton.action = #selector(self.openMenu)
     }
 
     deinit {
@@ -84,10 +92,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
 
     private func updateTitle() {
         self.title = LocalString._menu_settings_title
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -432,6 +436,6 @@ extension SettingsDeviceViewController {
 
 extension SettingsDeviceViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
+        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SettingsLockCoordinator.swift
+//  SettingsPrivacyCoordinator.swift
 //  ProtonMail - Created on 12/12/18.
 //
 //
@@ -22,14 +22,10 @@
 
 import UIKit
 
-class SettingsLockCoordinator {
-    private let services: ServiceFactory
+class SettingsPrivacyCoordinator {
+    private var services: ServiceFactory
 
     private weak var navigationController: UINavigationController?
-
-    enum Destination: String {
-        case pinCodeSetup = "pincode_setup"
-    }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
         self.navigationController = navigationController
@@ -37,22 +33,9 @@ class SettingsLockCoordinator {
     }
 
     func start() {
-        let viewModel = SettingsLockViewModelImpl(biometricStatus: UIDevice.current, userCacheStatus: userCachedStatus)
-        let viewController = SettingsLockViewController(viewModel: viewModel, coordinator: self)
+        let users: UsersManager = services.get()
+        let viewModel = SettingsPrivacyViewModelImpl(user: users.firstUser!)
+        let viewController = SettingsPrivacyViewController(viewModel: viewModel, coordinator: self)
         self.navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    func go(to dest: Destination, sender: Any? = nil) {
-        switch dest {
-        case .pinCodeSetup:
-            let nav = UINavigationController()
-            nav.modalPresentationStyle = .fullScreen
-            let coordinator = PinCodeSetupCoordinator(nav: nav, services: self.services)
-            coordinator.configuration = { vc in
-                vc.viewModel = SetPinCodeModelImpl()
-            }
-            coordinator.start()
-            self.navigationController?.present(nav, animated: true, completion: nil)
-        }
     }
 }

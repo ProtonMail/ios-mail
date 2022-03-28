@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PFh-fl-VGv">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -247,7 +247,6 @@
                         <outlet property="primaryUserview" destination="TX6-HM-gJ2" id="kNM-Dz-gNj"/>
                         <outlet property="shortNameView" destination="bmi-aw-Fr6" id="vQW-t5-aPn"/>
                         <outlet property="tableView" destination="njC-bj-9R7" id="pGv-kB-NRI"/>
-                        <segue destination="mxg-Ie-lCn" kind="custom" identifier="toSettingsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="kJT-hx-m6S"/>
                         <segue destination="9an-Gq-bcn" kind="custom" identifier="toContactsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="Jjs-2n-bbi"/>
                         <segue destination="8dN-79-EXg" kind="presentation" identifier="toBugPop" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="tgC-Ba-c8Y"/>
                         <segue destination="8dN-79-EXg" kind="custom" identifier="toBugsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="7ov-E7-GfU"/>

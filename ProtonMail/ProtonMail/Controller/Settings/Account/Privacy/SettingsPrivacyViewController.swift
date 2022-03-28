@@ -24,20 +24,19 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel: SettingsPrivacyViewModel!
-    internal var coordinator: SettingsPrivacyCoordinator?
+class SettingsPrivacyViewController: UITableViewController {
+    private let viewModel: SettingsPrivacyViewModel
+    private let coordinator: SettingsPrivacyCoordinator
 
-    func set(viewModel: SettingsPrivacyViewModel) {
+    init(viewModel: SettingsPrivacyViewModel, coordinator: SettingsPrivacyCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsPrivacyCoordinator) {
         self.coordinator = coordinator
+
+        super.init(style: .grouped)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     struct Key {
@@ -207,6 +206,6 @@ extension SettingsPrivacyViewController {
 
 extension SettingsPrivacyViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
+        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
     }
 }

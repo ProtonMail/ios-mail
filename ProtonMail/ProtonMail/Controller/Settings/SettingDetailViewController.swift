@@ -44,7 +44,6 @@ class SettingDetailViewController: UIViewController {
     @IBOutlet weak var textFiledSectionTitle: UILabel!
 
     @IBOutlet weak var notesLabel: UILabel!
-    private let kAsk2FASegue = "password_to_twofa_code_segue"
 
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var viewModel: SettingDetailsViewModel!
@@ -161,10 +160,6 @@ class SettingDetailViewController: UIViewController {
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     @IBAction func doneAction(_ sender: AnyObject) {
         startUpdateValue()
     }
@@ -174,15 +169,6 @@ class SettingDetailViewController: UIViewController {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == self.kAsk2FASegue {
-            let popup = segue.destination as! TwoFACodeViewController
-            popup.delegate = self
-            popup.mode = .twoFactorCode
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
 
@@ -225,10 +211,11 @@ class SettingDetailViewController: UIViewController {
     }
 
     var cached2faCode: String?
+
     fileprivate func startUpdateValue () {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
-            self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
+            open2FA()
         } else if viewModel.isRequireLoginPassword() {
             let alert = UIAlertController(title: LocalString._settings_detail_re_auth_alert_title,
                                           message: LocalString._settings_detail_re_auth_alert_content,
@@ -269,6 +256,14 @@ class SettingDetailViewController: UIViewController {
                 })
             }
         })
+    }
+
+    private func open2FA() {
+        let viewController = TwoFACodeViewController(nibName: nil, bundle: nil)
+        viewController.delegate = self
+        viewController.mode = .twoFactorCode
+        self.setPresentationStyleForSelfController(self, presentingController: viewController)
+        self.present(viewController, animated: true)
     }
 
     private func showErrorAlert(_ error: NSError) {

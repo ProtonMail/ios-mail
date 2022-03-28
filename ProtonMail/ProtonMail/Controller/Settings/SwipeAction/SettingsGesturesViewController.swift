@@ -23,26 +23,25 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
+class SettingsGesturesViewController: ProtonMailViewController {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var infoIconImage: UIImageView!
     @IBOutlet private var topInfoTitle: UILabel!
 
-    private var viewModel: SettingsGestureViewModel!
-    private var coordinator: SettingsGesturesCoordinator?
+    private let viewModel: SettingsGestureViewModel
+    private let coordinator: SettingsGesturesCoordinator
 
     private(set) var selectedAction: SwipeActionItems?
 
-    func set(viewModel: SettingsGestureViewModel) {
+    init(viewModel: SettingsGestureViewModel, coordinator: SettingsGesturesCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsGesturesCoordinator) {
         self.coordinator = coordinator
+
+        super.init(nibName: nil, bundle: nil)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     enum CellKey {
@@ -60,9 +59,6 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.separatorStyle = .none
-
-        precondition(viewModel != nil)
-        precondition(coordinator != nil)
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.infoIconImage.image = Asset.infoIcon.image
@@ -110,7 +106,7 @@ class SettingsGesturesViewController: ProtonMailViewController, ViewModelProtoco
 
     private func showSwipeActionList(selected: SwipeActionItems) {
         self.selectedAction = selected
-        self.coordinator?.go(to: .actionSelection)
+        self.coordinator.go(to: .actionSelection)
     }
 
     @objc

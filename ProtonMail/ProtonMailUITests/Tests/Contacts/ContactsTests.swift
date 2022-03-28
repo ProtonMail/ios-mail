@@ -35,7 +35,7 @@ class ContactsTests : BaseTestCase {
     func testEditContact() {
         let name = testData.alphaNumericString
         let email = testData.newEmailAddress
-        let editedName = testData.alphaNumericString
+        let editedName = testData.alphaNumericStringStartingFromX
         let editedEmail = testData.newEmailAddress
         contactsRobot
             .addContact()

@@ -132,7 +132,7 @@ class ConnectAccountRobot: CoreElements {
     }
     
     private func signInWithMailboxPasswordOrTwoFa() -> ConnectAccountRobot {
-        button(id.loginButtonIdentifier).tap()
+        button(id.loginButtonIdentifier).firstMatch().tap()
         return self
     }
 
