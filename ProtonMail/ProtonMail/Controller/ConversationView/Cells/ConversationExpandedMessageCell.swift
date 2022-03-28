@@ -21,6 +21,7 @@ class ConversationExpandedMessageCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        container.subviews.forEach { $0.removeFromSuperview() }
         messageId = nil
         prepareForReuseBlock?()
     }
@@ -30,11 +31,12 @@ class ConversationExpandedMessageCell: UITableViewCell {
     }
 
     private func setUpLayout() {
+        // To remove contrast warning, set priority to 999
         [
             container.topAnchor.constraint(equalTo: contentView.topAnchor),
             container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            container.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            container.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).setPriority(as: .init(rawValue: 999)),
+            container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).setPriority(as: .init(rawValue: 999))
         ].activate()
     }
 

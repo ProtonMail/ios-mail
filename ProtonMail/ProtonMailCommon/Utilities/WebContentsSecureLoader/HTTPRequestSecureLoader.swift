@@ -202,12 +202,14 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let body = document.body;
         let height = ratio * document.body.scrollHeight;
         var refHeight = height;
-        var tag = 1;
-        if (body.children.length > 1) {
-            let last = body.children[body.children.length - 1];
-            let bottom = last.getBoundingClientRect().bottom;
-            refHeight = bottom * ratio;
-        }
+        let lowest = 32;
+        Array.from(body.children).forEach(element => {
+            let bottom = element.getBoundingClientRect().bottom + 32;
+            if (bottom > lowest) {
+                lowest = bottom;
+                refHeight = bottom * ratio;
+            }
+        });
 
         window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
 """
@@ -231,7 +233,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         if let height = dict["height"] as? Double {
             self.renderedContents.height = CGFloat(height)
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
-            let res = refHeight > 0 ? refHeight: CGFloat(height)
+            let res = refHeight > 32 ? refHeight: CGFloat(height)
             self.heightChanged?(res)
         }
     }

@@ -226,6 +226,7 @@ class ExpandedHeaderViewController: UIViewController {
         button.setTitle(LocalString._hide_details, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
+        button.setContentCompressionResistancePriority(.required, for: .vertical)
         let stack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
         let padding = UIView(frame: .zero)
         stack.addArrangedSubview(padding)

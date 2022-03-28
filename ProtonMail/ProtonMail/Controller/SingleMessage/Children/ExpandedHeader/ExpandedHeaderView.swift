@@ -66,23 +66,29 @@ class ExpandedHeaderView: UIView {
         [
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
+            initialsLabel.topAnchor.constraint(equalTo: initialsContainer.topAnchor, constant: 2),
+            initialsLabel.bottomAnchor.constraint(equalTo: initialsContainer.bottomAnchor, constant: -2),
             initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
 
         [
             senderNameLabel.leadingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: 10),
             senderNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            senderNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: starImageView.leadingAnchor, constant: -8)
+            senderNameLabel.trailingAnchor.constraint(equalTo: starImageView.leadingAnchor, constant: -8),
+            senderNameLabel.heightAnchor.constraint(equalToConstant: 20)
         ].activate()
 
         [
             timeLabel.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
         ].activate()
+        timeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         [
             starImageView.centerYAnchor.constraint(equalTo: senderNameLabel.centerYAnchor),
-            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4)
+            starImageView.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -4),
+            starImageView.widthAnchor.constraint(equalToConstant: 17.0),
+            starImageView.heightAnchor.constraint(equalToConstant: 17.0)
         ].activate()
 
         [

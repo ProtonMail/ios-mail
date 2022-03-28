@@ -173,10 +173,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
             return
         }
-        cachedViewControllers.removeAll()
+
         if messageViewModel.isDraft {
             self.update(draft: messageViewModel.message)
         } else {
+            let indexPath = IndexPath(row: index, section: 1)
+            cachedViewControllers[indexPath] = nil
             messageViewModel.toggleState()
             customView.tableView.reloadRows(at: [.init(row: index, section: 1)], with: .automatic)
             checkNavigationTitle()
@@ -355,8 +357,7 @@ private extension ConversationViewController {
         if estimated {
             return storedHeightInfo.height
         }
-
-        return storedHeightInfo.loaded ? storedHeightInfo.height : UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
@@ -471,6 +472,7 @@ private extension ConversationViewController {
                                             loaded: isLoaded)
         if storedSizeHelper
             .calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
+            cell.setNeedsLayout()
             UIView.setAnimationsEnabled(false)
             customView.tableView.beginUpdates()
             customView.tableView.endUpdates()

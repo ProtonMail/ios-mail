@@ -70,10 +70,10 @@ class SingleMessageContentViewController: UIViewController {
                 self?.bannerViewController?.hideBanner(type: .error)
             }
         }
-        customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
+        customView.showHideHistoryButtonContainer.isHidden = !viewModel.messageBodyViewModel.hasStrippedVersion
         customView.showHideHistoryButtonContainer.showHideHistoryButton.addTarget(self, action: #selector(showHide), for: .touchUpInside)
         viewModel.messageBodyViewModel.hasStrippedVersionObserver = { [customView] hasStrippedVersion in
-            customView.showHideHistoryButtonContainer.showHideHistoryButton.isHidden = !hasStrippedVersion
+            customView.showHideHistoryButtonContainer.isHidden = !hasStrippedVersion
         }
         viewModel.messageHadChanged = { [weak self] in
             guard let self = self else { return }
@@ -208,25 +208,23 @@ class SingleMessageContentViewController: UIViewController {
             newController.view.leadingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.leadingAnchor),
             newController.view.trailingAnchor.constraint(equalTo: customView.messageHeaderContainer.contentContainer.trailingAnchor)
         ].activate()
-
+        
         let bottomConstraint = newController.view.bottomAnchor
             .constraint(equalTo: customView.messageHeaderContainer.contentContainer.bottomAnchor)
-
-        oldBottomConstraint?.isActive = !(newController is ExpandedHeaderViewController)
-        bottomConstraint.isActive = newController is ExpandedHeaderViewController
-
-        viewModel.recalculateCellHeight?(false)
-
+        
         UIView.setAnimationsEnabled(true)
-
+        
+        oldBottomConstraint?.isActive = false
+        bottomConstraint.isActive = true
+        
         UIView.animate(withDuration: 0.25) {
             newController.view.alpha = 1
             oldController.view.alpha = 0
         } completion: { [weak self] _ in
+            newController.view.layoutIfNeeded()
             oldController.view.removeFromSuperview()
             oldController.removeFromParent()
             newController.didMove(toParent: self)
-            bottomConstraint.isActive = true
             self?.viewModel.recalculateCellHeight?(false)
         }
     }
