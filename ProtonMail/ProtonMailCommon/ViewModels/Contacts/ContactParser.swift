@@ -15,10 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import AwaitKit
 import Foundation
 import OpenPGP
-import PromiseKit
 import ProtonCore_DataModel
 
 struct ContactDecryptionResult {
@@ -41,20 +39,25 @@ protocol ContactParserResultDelegate: AnyObject {
     func update(profilePicture: UIImage?)
 }
 
-protocol contactParserProtocol {
+protocol ContactParserProtocol {
     func parsePlainTextContact(data: String, coreDataService: CoreDataService, contactID: String)
-    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) -> Promise<Void>?
+    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) throws
     func parseSignAndEncryptContact(card: CardData,
                                     passphrase: String,
                                     firstUserKey: Key?,
-                                    userKeys: [Key]) -> Promise<Void>?
+                                    userKeys: [Key]) throws
     func verifySignature(signature: String,
                          plainText: String,
                          userKeys: [Key],
                          passphrase: String) -> Bool
 }
 
-final class ContactParser: contactParserProtocol {
+final class ContactParser: ContactParserProtocol {
+    private enum ParserError: Error {
+        case decryptionFailed
+        case userKeyNotProvided
+    }
+
     private weak var resultDelegate: ContactParserResultDelegate?
 
     init(resultDelegate: ContactParserResultDelegate) {
@@ -90,23 +93,23 @@ final class ContactParser: contactParserProtocol {
         self.resultDelegate?.append(emails: contactEmails)
     }
 
-    /// - Returns: Return Promise when an error occurs, return nil when success
-    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) -> Promise<Void>? {
+    func parseEncryptedOnlyContact(card: CardData, passphrase: String, userKeys: [Key]) throws {
         let decryptionResult = self.decryptMessage(encryptedText: card.data,
                                                    passphrase: passphrase,
                                                    userKeys: userKeys)
         self.resultDelegate?.update(decryptionError: decryptionResult.decryptError)
-        guard let decryptedText = decryptionResult.decryptedText else { return Promise.value(()) }
-        return self.parseDecryptedContact(data: decryptedText)
+        guard let decryptedText = decryptionResult.decryptedText else {
+            throw ParserError.decryptionFailed
+        }
+        try self.parseDecryptedContact(data: decryptedText)
     }
 
-    /// - Returns: Return Promise when an error occurs, return nil when success
     func parseSignAndEncryptContact(card: CardData,
                                     passphrase: String,
                                     firstUserKey: Key?,
-                                    userKeys: [Key]) -> Promise<Void>? {
+                                    userKeys: [Key]) throws {
         guard let firstUserKey = firstUserKey else {
-            return Promise.value(())
+            throw ParserError.userKeyNotProvided
         }
 
         let decryptionResult = self.decryptMessage(encryptedText: card.data,
@@ -114,14 +117,16 @@ final class ContactParser: contactParserProtocol {
                                                    userKeys: userKeys)
         self.resultDelegate?.update(decryptionError: decryptionResult.decryptError)
         let key = decryptionResult.signKey ?? firstUserKey
-        guard let decryptedText = decryptionResult.decryptedText else { return Promise.value(()) }
+        guard let decryptedText = decryptionResult.decryptedText else {
+            throw ParserError.decryptionFailed
+        }
 
         let verifyType3 = self.verifyDetached(signature: card.sign,
                                               plainText: decryptedText,
                                               key: key)
         self.resultDelegate?.update(verifyType3: verifyType3)
 
-        return self.parseDecryptedContact(data: decryptedText)
+        try self.parseDecryptedContact(data: decryptedText)
     }
 
     func verifySignature(signature: String,
@@ -198,20 +203,14 @@ extension ContactParser {
         return ContactDecryptionResult(decryptedText: decryptedText, signKey: signKey, decryptError: decryptError)
     }
 
-    /// - Returns: When error occurs, return Promise
-    private func parseDecryptedContact(data: String) -> Promise<Void>? {
-        do {
-            try ObjC.catchException { [weak self] in
-                guard let self = self,
-                      let vCard = PMNIEzvcard.parseFirst(data) else { return }
-                self.parse(types: vCard.getPropertyTypes(), vCard: vCard)
-                self.parse(customs: vCard.getCustoms())
-                self.parse(note: vCard.getNote())
-            }
-        } catch {
-            return Promise(error: error)
+    private func parseDecryptedContact(data: String) throws {
+        try ObjC.catchException { [weak self] in
+            guard let self = self,
+                  let vCard = PMNIEzvcard.parseFirst(data) else { return }
+            self.parse(types: vCard.getPropertyTypes(), vCard: vCard)
+            self.parse(customs: vCard.getCustoms())
+            self.parse(note: vCard.getNote())
         }
-        return nil
     }
 
     private func parse(types: [String], vCard: PMNIVCard) {
