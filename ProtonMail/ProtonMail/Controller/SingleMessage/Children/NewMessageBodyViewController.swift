@@ -108,17 +108,16 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-
-            self.loader.observeHeight { [weak self] height in
-                self?.updateViewHeight(to: height)
-                self?.viewModel.recalculateCellHeight?(true)
-            }
         } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
                     !viewModel.message.isDetailDownloaded {
             prepareReloadView()
         } else {
             placeholder = true
             webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
+        }
+        self.loader.observeHeight { [weak self] height in
+            self?.updateViewHeight(to: height)
+            self?.viewModel.recalculateCellHeight?(true)
         }
 
         setupContentSizeObservation()

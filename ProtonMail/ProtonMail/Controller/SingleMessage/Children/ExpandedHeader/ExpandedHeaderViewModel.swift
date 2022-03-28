@@ -149,7 +149,7 @@ class ExpandedHeaderViewModel {
             )
         }
         return ExpandedHeaderRecipientsRowViewModel(
-            title: title.apply(style: FontManager.body3RegularNorm),
+            title: title.apply(style: FontManager.body3RegularNorm.alignment(.center)),
             recipients: recipients
         )
     }

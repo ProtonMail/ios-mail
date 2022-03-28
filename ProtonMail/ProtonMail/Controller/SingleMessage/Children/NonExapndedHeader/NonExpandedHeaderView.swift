@@ -109,7 +109,9 @@ class NonExpandedHeaderView: UIView {
         [
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            // 56 = 20 (1st line) + 16 (2st) + 20 (3st)
+            contentStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
         ].activate()
 
         [
@@ -131,7 +133,12 @@ class NonExpandedHeaderView: UIView {
             showDetailsControl.trailingAnchor.constraint(equalTo: recipientLabel.trailingAnchor),
             showDetailsControl.bottomAnchor.constraint(equalTo: recipientLabel.bottomAnchor)
         ].activate()
+
+        [
+            senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
+        ].activate()
         senderLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        senderLabel.setContentHuggingPriority(.required, for: .vertical)
 
         timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)

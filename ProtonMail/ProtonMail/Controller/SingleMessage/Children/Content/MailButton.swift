@@ -21,7 +21,6 @@ import ProtonCore_UIFoundations
 class MailButton: UIControl {
     let titleLabel = SubviewsFactory.titleView
     let iconView = SubviewsFactory.iconImageView
-    private let stackView = SubviewsFactory.stackView
     private let containerView = UIView()
 
     var title: String? {
@@ -60,24 +59,23 @@ class MailButton: UIControl {
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 6),
             containerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -6),
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 24.0)
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ].activate()
+        containerView.setContentHuggingPriority(.required, for: .vertical)
 
         [
             iconView.widthAnchor.constraint(equalToConstant: 24),
+            iconView.heightAnchor.constraint(equalToConstant: 24),
             iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             iconView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -6.0),
-            iconView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            iconView.topAnchor.constraint(equalTo: containerView.topAnchor)
+            iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ].activate()
 
         [
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0),
+            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ].activate()
-
         titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         layer.borderWidth = 1.0
@@ -112,16 +110,8 @@ class MailButton: UIControl {
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 14.0)
             label.numberOfLines = 2
+            label.preferredMaxLayoutWidth = 200
             return label
         }
-
-        static var stackView: UIStackView {
-            let view = UIStackView()
-            view.axis = .horizontal
-            view.spacing = 6
-            view.isUserInteractionEnabled = false
-            return view
-        }
-
     }
 }

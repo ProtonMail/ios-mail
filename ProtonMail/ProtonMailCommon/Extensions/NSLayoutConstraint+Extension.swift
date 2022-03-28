@@ -27,12 +27,20 @@ extension Array where Element == NSLayoutConstraint {
     @discardableResult
     func activate() -> [NSLayoutConstraint] {
         forEach { constraint in
+            if let view = constraint.firstItem as? UIView,
+               view.translatesAutoresizingMaskIntoConstraints {
+                view.translatesAutoresizingMaskIntoConstraints = false
+            }
             constraint.isActive = true
-            guard let view = constraint.firstItem as? UIView,
-                  view.translatesAutoresizingMaskIntoConstraints else { return }
-            view.translatesAutoresizingMaskIntoConstraints = false
         }
         return self
     }
 
+}
+
+extension NSLayoutConstraint {
+    func setPriority(as priority: UILayoutPriority) -> NSLayoutConstraint {
+        self.priority = priority
+        return self
+    }
 }

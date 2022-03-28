@@ -54,21 +54,16 @@ class ExpandedHeaderRowView: UIView {
             titleContainer.heightAnchor.constraint(equalToConstant: 28)
         ].activate()
 
-        [iconImageView, titleLabel].forEach { view in
-            [
-                view.centerXAnchor.constraint(equalTo: titleContainer.centerXAnchor),
-                view.centerYAnchor.constraint(equalTo: titleContainer.centerYAnchor),
-                view.topAnchor.constraint(greaterThanOrEqualTo: titleContainer.topAnchor),
-                view.leadingAnchor.constraint(greaterThanOrEqualTo: titleContainer.leadingAnchor),
-                view.trailingAnchor.constraint(lessThanOrEqualTo: titleContainer.trailingAnchor),
-                view.bottomAnchor.constraint(lessThanOrEqualTo: titleContainer.bottomAnchor)
-            ].activate()
-        }
+        [
+            iconImageView.centerXAnchor.constraint(equalTo: titleContainer.centerXAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: titleContainer.centerYAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 18),
+            iconImageView.heightAnchor.constraint(equalToConstant: 18)
+        ].activate()
+        titleLabel.fillSuperview()
 
         [
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ].activate()
     }
