@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +15,7 @@
                 <outlet property="ccContactPickerHeight" destination="D3t-Bl-TA3" id="2hJ-dz-r1y"/>
                 <outlet property="fromAddress" destination="Ilt-bS-8Pw" id="GBU-Pz-zPv"/>
                 <outlet property="fromGrayView" destination="8d8-Tv-c5P" id="uxW-BR-rei"/>
-                <outlet property="fromLable" destination="N1Q-LP-p4d" id="Wbt-N4-7Ib"/>
+                <outlet property="fromLabel" destination="N1Q-LP-p4d" id="Wbt-N4-7Ib"/>
                 <outlet property="fromPickerButton" destination="hKt-vn-DC9" id="2uw-Wn-Oiu"/>
                 <outlet property="fromView" destination="lId-3P-n4a" id="gE8-LW-qDX"/>
                 <outlet property="showCcBccButton" destination="chC-fW-E4g" id="nEi-tN-jKt"/>
@@ -33,32 +33,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="241"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWx-4S-hlX" userLabel="To Contact Picker" customClass="ContactPicker" customModule="ProtonMail" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="48" width="375" height="48"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="48" id="sdc-Ad-iWb"/>
-                    </constraints>
-                </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
-                    <rect key="frame" x="321" y="48" width="44" height="44"/>
-                    <accessibility key="accessibilityConfiguration" identifier="showCcBccButton"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
-                            <variation key="widthClass=compact" constant="44"/>
-                        </constraint>
-                        <constraint firstAttribute="width" constant="49" id="rnH-Q4-xMI">
-                            <variation key="widthClass=compact" constant="44"/>
-                        </constraint>
-                    </constraints>
-                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" image="arrow_down">
-                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="contactPlusButtonTapped:" destination="-1" eventType="touchUpInside" id="G3X-mf-cRu"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lId-3P-n4a">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                     <subviews>
@@ -113,13 +87,32 @@
                         <constraint firstItem="Ilt-bS-8Pw" firstAttribute="leading" secondItem="N1Q-LP-p4d" secondAttribute="trailing" constant="8" id="vLV-tZ-5Rx"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJd-U5-xJL" userLabel="subjectGrayView">
-                    <rect key="frame" x="0.0" y="240" width="375" height="1"/>
-                    <color key="backgroundColor" red="0.78823529410000004" green="0.80784313730000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWx-4S-hlX" userLabel="To Contact Picker" customClass="ContactPicker" customModule="ProtonMail" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="48" width="375" height="48"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="1" id="YvV-2U-u96"/>
+                        <constraint firstAttribute="height" constant="48" id="sdc-Ad-iWb"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
+                    <rect key="frame" x="321" y="48" width="44" height="44"/>
+                    <accessibility key="accessibilityConfiguration" identifier="showCcBccButton"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
+                            <variation key="widthClass=compact" constant="44"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="49" id="rnH-Q4-xMI">
+                            <variation key="widthClass=compact" constant="44"/>
+                        </constraint>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" image="arrow_down">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="contactPlusButtonTapped:" destination="-1" eventType="touchUpInside" id="G3X-mf-cRu"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7aF-E7-jWA" userLabel="ccContactPicker" customClass="ContactPicker" customModule="ProtonMail" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="96" width="375" height="48"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -147,6 +140,13 @@
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJd-U5-xJL" userLabel="subjectGrayView">
+                    <rect key="frame" x="0.0" y="240" width="375" height="1"/>
+                    <color key="backgroundColor" red="0.78823529410000004" green="0.80784313730000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="YvV-2U-u96"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>

@@ -36,7 +36,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBOutlet private(set) var fromView: UIView!
     @IBOutlet private var fromAddress: UILabel!
     @IBOutlet private var fromPickerButton: UIButton!
-    @IBOutlet private var fromLable: UILabel!
+    @IBOutlet private var fromLabel: UILabel!
     @IBOutlet private var fromGrayView: UIView!
     @IBOutlet private weak var subjectGrayView: UIView!
 
@@ -155,8 +155,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)
         self.height.isActive = true
-
-        self.fromLable.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
+        
+        self.fromLabel.attributedText = "\(LocalString._composer_from_label): ".apply(style: .DefaultSmallWeek)
         self.fromPickerButton.tintColor = ColorProvider.IconWeak
         if #available(iOS 14.0, *) {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
@@ -181,14 +181,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         ccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         bccContactPicker.backgroundColor = ColorProvider.BackgroundNorm
         toContactPicker.backgroundColor = ColorProvider.BackgroundNorm
-
-        // accessibility
-        self.view.isAccessibilityElement = false
-        self.accessibilityElements = [ self.fromPickerButton!,
-                                       self.toContactPicker!,
-                                       self.ccContactPicker!, self.bccContactPicker!,
-                                       self.subject!
-        ]
+        
+        setUpAccessibility()
         generateAccessibilityIdentifiers()
         if let showCcBcc = self.datasource?.ccBccIsShownInitially(),
            showCcBcc {
@@ -243,6 +237,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     @IBAction func contactPlusButtonTapped(_ sender: UIButton) {
         self.plusButtonHandle()
         self.notifyViewSize(true)
+        sender.accessibilityLabel = isShowingCcBccView ? LocalString._composer_voiceover_close_cc_bcc : LocalString._composer_voiceover_show_cc_bcc
     }
 
     @IBAction func fromPickerAction(_ sender: AnyObject) {
@@ -284,6 +279,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         let label = UILabel(frame: .zero)
         label.attributedText = "\(LocalString._composer_subject_placeholder):".apply(style: .DefaultSmallWeek)
         label.sizeToFit()
+        label.isAccessibilityElement = false
         label.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.focusSubject))
         label.addGestureRecognizer(tap)
@@ -301,7 +297,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.subject.autocapitalizationType = .sentences
         self.subject.delegate = self
         self.subject.textColor = ColorProvider.TextNorm
-
+        self.subject.accessibilityLabel = LocalString._composer_subject_placeholder
+        
         self.view.removeConstraint(self.subjectTopToBccContactPicker)
         self.view.addConstraint(self.subjectTopToToContactPicker)
     }
@@ -723,4 +720,22 @@ extension ComposeHeaderViewController: PMActionSheetEventsListener {
     }
 
     func didDismiss() {}
+}
+
+// MARK: - Setup accessibility label
+extension ComposeHeaderViewController {
+    private func setUpAccessibility() {
+        showCcBccButton.accessibilityLabel = LocalString._composer_voiceover_show_cc_bcc
+        fromPickerButton.accessibilityLabel = LocalString._composer_voiceover_select_other_sender
+        self.view.accessibilityElements = [
+            fromLabel!,
+            fromAddress!,
+            self.fromPickerButton!,
+            self.toContactPicker!,
+            self.showCcBccButton!,
+            self.ccContactPicker!,
+            self.bccContactPicker!,
+            self.subject!
+        ]
+    }
 }

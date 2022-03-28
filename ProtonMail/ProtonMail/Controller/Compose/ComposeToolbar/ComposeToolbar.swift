@@ -121,6 +121,7 @@ extension ComposeToolbar {
         self.attachmentNumView.backgroundColor = .clear
         self.attachmentNumLabel.textColor = .white
         self.numContainer.backgroundColor = ColorProvider.InteractionNorm
+        setupAccessibility()
     }
 
     private func addTopBorder() {
@@ -134,5 +135,11 @@ extension ComposeToolbar {
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             view.heightAnchor.constraint(equalToConstant: 1)
         ].activate()
+    }
+
+    private func setupAccessibility() {
+        lockButton.accessibilityLabel = LocalString._composer_voiceover_add_pwd
+        hourButton.accessibilityLabel = LocalString._composer_voiceover_add_exp
+        attachmentButton.accessibilityLabel = LocalString._composer_voiceover_add_attachment
     }
 }

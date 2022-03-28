@@ -122,6 +122,7 @@ extension ComposePasswordVC {
         self.setupPasswordHintView()
         self.setupApplyButton()
         self.setupRemoveView()
+        self.setupVoiceOver()
     }
 
     private func setupNavigation() {
@@ -207,6 +208,19 @@ extension ComposePasswordVC {
         let cancelBtn = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
         [discardBtn, cancelBtn].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func setupVoiceOver() {
+        view.accessibilityElements = [infoText as Any,
+                                      passwordText as Any,
+                                      confirmText as Any,
+                                      passwordHintLabel as Any,
+                                      passwordHintText as Any,
+                                      applyButton as Any]
+        let dismissKeyboardAction = UIAccessibilityCustomAction(name: LocalString._composer_voiceover_dismiss_keyboard,
+                                                                target: self,
+                                                                selector: #selector(dismissMyKeyboard))
+        passwordHintText.accessibilityCustomActions = [dismissKeyboardAction]
     }
 }
 
@@ -324,8 +338,14 @@ extension ComposePasswordVC: PMTextFieldDelegate {
     func textFieldShouldReturn(_ textField: PMTextField) -> Bool {
         if textField == self.passwordText {
             _ = self.confirmText.becomeFirstResponder()
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: self.confirmText)
+            }
         } else if textField == self.confirmText {
             self.passwordHintText.becomeFirstResponder()
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: self.passwordHintText)
+            }
         }
         return true
     }

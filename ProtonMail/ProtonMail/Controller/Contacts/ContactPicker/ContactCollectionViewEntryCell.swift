@@ -183,4 +183,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         return size.width.rounded(.up) + 10
     }
 
+    func setEntryAccessibilityLabel(_ input: String) {
+        contactEntryTextField?.accessibilityLabel = input
+    }
 }
