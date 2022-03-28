@@ -183,8 +183,7 @@ extension MenuCoordinator {
             let value = value ?? "0"
             let location = LabelLocation(id: value)
             return MenuLabel(location: location)
-        case "toSettingsSegue",
-             String(describing: SettingsTableViewController.self):
+        case String(describing: SettingsDeviceViewController.self):
             return MenuLabel(location: .settings)
         case "toBugsSegue": return MenuLabel(location: .bugs)
         case "toContactsSegue": return MenuLabel(location: .contacts)
@@ -368,26 +367,9 @@ extension MenuCoordinator {
     }
 
     private func navigateToSettings(deepLink: DeepLink?) {
-        let vc = SettingsDeviceViewController.instance()
-        guard let user = self.usersManager.firstUser,
-              let navigation = vc.navigationController else {
-            return
-        }
-        let vm = SettingsDeviceViewModelImpl(user: user,
-                                             users: self.usersManager,
-                                             dohSetting: DoHMail.default,
-                                             biometricStatus: UIDevice.current)
-        guard let settings = SettingsDeviceCoordinator(sideMenu: self.viewController?.sideMenuController,
-                                                       nav: navigation,
-                                                       vm: vm,
-                                                       services: self.services,
-                                                       scene: nil) else {
-            return
-        }
+        let navigation = UINavigationController()
+        let settings = SettingsDeviceCoordinator(navigationController: navigation, services: self.services)
         settings.start()
-        if let deeplink = deepLink {
-            settings.follow(deeplink)
-        }
         self.setupContentVC(destination: navigation)
     }
 

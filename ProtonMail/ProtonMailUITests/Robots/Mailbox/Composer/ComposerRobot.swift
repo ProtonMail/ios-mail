@@ -200,7 +200,7 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        button(id.sendButtonLabel).waitForEnabled().waitForHittable().tap()
+        navigationBar().byIndex(1).onChild(button(id.sendButtonLabel)).waitForHittable().tap()
         return InboxRobot()
     }
     

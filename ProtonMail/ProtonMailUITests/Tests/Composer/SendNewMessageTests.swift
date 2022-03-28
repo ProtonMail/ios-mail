@@ -28,7 +28,6 @@ class SendNewMessageTests: BaseTestCase {
             .sendMessage(recipient.email, subject)
             .menuDrawer()
             .sent()
-            .refreshMailbox()
             .verify.messageWithSubjectExists(subject)
     }
     

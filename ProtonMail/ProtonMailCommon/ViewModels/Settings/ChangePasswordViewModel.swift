@@ -25,7 +25,7 @@ import Foundation
 typealias ChangePasswordComplete = (Bool, NSError?) -> Void
 
 protocol ChangePasswordViewModel {
-
+    init(user: UserManager)
     func getNavigationTitle() -> String
     func getCurrentPasswordEditorTitle() -> String
     func getNewPasswordEditorTitle() -> String
@@ -42,7 +42,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
 
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 
@@ -100,7 +100,7 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
 class ChangeMailboxPWDViewModel: ChangePasswordViewModel {
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 
@@ -158,7 +158,7 @@ class ChangeSinglePasswordViewModel: ChangePasswordViewModel {
 
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 

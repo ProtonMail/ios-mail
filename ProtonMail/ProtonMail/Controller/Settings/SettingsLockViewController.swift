@@ -26,9 +26,9 @@ import Masonry
 import ProtonCore_Keymaker
 import ProtonCore_UIFoundations
 
-class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
-    internal var viewModel: SettingsLockViewModel!
-    internal var coordinator: SettingsLockCoordinator?
+class SettingsLockViewController: UITableViewController, AccessibleView {
+    private let viewModel: SettingsLockViewModel
+    private let coordinator: SettingsLockCoordinator
 
     struct Key {
         static let headerCell: String = "header_cell"
@@ -39,16 +39,15 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         static let switchCell: String = "switch_table_view_cell"
     }
 
-    func set(viewModel: SettingsLockViewModel) {
+    init(viewModel: SettingsLockViewModel, coordinator: SettingsLockCoordinator) {
         self.viewModel = viewModel
-    }
-
-    func set(coordinator: SettingsLockCoordinator) {
         self.coordinator = coordinator
+
+        super.init(style: .grouped)
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -224,7 +223,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 self.viewModel.disableProtection()
                 self.updateTableProtectionSection()
             case .pinCode:
-                self.coordinator?.go(to: .pinCodeSetup)
+                self.coordinator.go(to: .pinCodeSetup)
                 // add call back or check in view will appear
             case .faceId:
                 self.viewModel.enableBioProtection { [weak self] in
@@ -232,7 +231,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 }
             }
         case .changePin:
-            self.coordinator?.go(to: .pinCodeSetup)
+            self.coordinator.go(to: .pinCodeSetup)
         case .timing:
             let alertController = UIAlertController(title: LocalString._settings_auto_lock_time,
                                                     message: nil,
@@ -276,6 +275,6 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
 
 extension SettingsLockViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
+        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
     }
 }

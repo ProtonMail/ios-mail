@@ -103,7 +103,7 @@ class ContactsRobot: CoreElements {
         class Verify: CoreElements {
 
             func contactExists(_ name: String) {
-                cell(id.contactCellIdentifier(name)).wait().checkExists()
+                cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().checkExists()
             }
 
             func contactDoesNotExists(_ name: String) {

@@ -500,9 +500,13 @@ extension AppDelegate: UnlockManagerDelegate {
 
 // MARK: Appearance
 extension AppDelegate {
+    private var backArrowImage: UIImage? {
+        UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+    }
+
     private func configureAppearance() {
-        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        UINavigationBar.appearance().backIndicatorImage = backArrowImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backArrowImage
         if #available(iOS 15.0, *) {
             setupNavigationBarAppearance()
         }
@@ -514,6 +518,7 @@ extension AppDelegate {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = ColorProvider.BackgroundNorm
         appearance.shadowColor = .clear
+        appearance.setBackIndicatorImage(backArrowImage, transitionMaskImage: backArrowImage)
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance

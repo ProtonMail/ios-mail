@@ -25,6 +25,7 @@ class TestData {
     var messageBody: String { return "Body: \(Date().millisecondsSince1970)" }
     
     var alphaNumericString: String { return "_\(StringUtils().randomAlphanumericString())\(Date().millisecondsSince1970)" }
+    var alphaNumericStringStartingFromX: String { return "x_\(StringUtils().randomAlphanumericString())\(Date().millisecondsSince1970)" }
     var newEmailAddress: String { return "\(StringUtils().randomEmail())@pm.me" }
     
     let editedPassword = "P@ssw0rd!"

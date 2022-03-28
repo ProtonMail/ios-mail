@@ -25,6 +25,7 @@ import Foundation
 protocol SettingDetailsViewModel {
     var userManager: UserManager { get }
     var sectionTitle2: String { get }
+    init(user: UserManager)
     func getNavigationTitle() -> String
     func isDisplaySwitch() -> Bool
     func getSwitchText() -> String
@@ -43,7 +44,7 @@ protocol SettingDetailsViewModel {
 class ChangeDisplayNameViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 
@@ -124,7 +125,7 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
 class ChangeSignatureViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 
@@ -216,7 +217,7 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
 class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    init(user: UserManager) {
+    required init(user: UserManager) {
         self.userManager = user
     }
 
@@ -301,7 +302,8 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
 
 class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
     let userManager: UserManager
-    init(user: UserManager) {
+
+    required init(user: UserManager) {
         self.userManager = user
     }
 
