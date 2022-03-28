@@ -2221,4 +2221,13 @@ class LocalizedString {
     lazy var _action_bar_title_labelAs = NSLocalizedString("Label", comment: "The title of first button in the action bar")
     lazy var _action_bar_title_reply = NSLocalizedString("Reply", comment: "The title of first button in the action bar")
     lazy var _action_bar_title_replyAll = NSLocalizedString("Reply All", comment: "The title of first button in the action bar")
+    lazy var _composer_voiceover_show_cc_bcc = NSLocalizedString("Add cc and bcc", comment: "The title of the button in the composer that will show the cc/bcc field when voiceover is on.")
+    lazy var _composer_voiceover_close_cc_bcc = NSLocalizedString("Close cc and bcc", comment: "The title of the button in the composer that will close the cc/bcc field when voiceover is on.")
+    lazy var _composer_voiceover_select_other_sender = NSLocalizedString("Choose different sender address", comment: "The title of the button in the composer that can select different sender address.")
+    lazy var _composer_voiceover_message_content = NSLocalizedString("Message content", comment: "The title of content of message in the composer that suggests the current selection is the content of the message.")
+
+    lazy var _composer_voiceover_add_pwd = NSLocalizedString("Set mail password", comment: "The voiceiver title of the add password button in the tool bar of composer.")
+    lazy var _composer_voiceover_add_exp = NSLocalizedString("Set mail expiration", comment: "The voiceiver title of the add expiration button in the tool bar of composer")
+    lazy var _composer_voiceover_add_attachment = NSLocalizedString("Add attachment", comment: "The voiceiver title of the add attachment button in the tool bar of composer")
+    lazy var _composer_voiceover_dismiss_keyboard = NSLocalizedString("Dismiss keyboard", comment: "The voiceover title of the dismiss keyboard action")
 }

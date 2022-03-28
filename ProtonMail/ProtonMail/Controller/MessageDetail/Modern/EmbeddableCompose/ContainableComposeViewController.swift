@@ -40,7 +40,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         self.webView.scrollView.clipsToBounds = false
         self.webView.isAccessibilityElement = true
         self.webView.accessibilityIdentifier = "ComposerBody"
-
+        self.webView.accessibilityLabel = LocalString._composer_voiceover_message_content
+        
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
 

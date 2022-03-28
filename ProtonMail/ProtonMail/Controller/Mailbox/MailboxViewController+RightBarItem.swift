@@ -74,7 +74,11 @@ extension MailboxViewController {
             tintColor: ColorProvider.IconNorm,
             backgroundSquareSize: 40
         )
+        #if DEBUG
         item.accessibilityLabel = "MailboxViewController.searchBarButtonItem"
+        #else
+        item.accessibilityLabel = LocalString._general_search_placeholder
+        #endif
         item.tag = BarButtonType.search.rawValue
         return item
     }
@@ -98,7 +102,11 @@ extension MailboxViewController {
             tintColor: ColorProvider.IconNorm,
             backgroundSquareSize: 40
         )
+        #if DEBUG
         item.accessibilityLabel = "MailboxViewController.composeBarButtonItem"
+        #else
+        item.accessibilityLabel = LocalString._composer_compose_action
+        #endif
         item.tag = BarButtonType.composer.rawValue
         return item
     }

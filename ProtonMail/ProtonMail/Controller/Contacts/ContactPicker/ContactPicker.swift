@@ -172,6 +172,7 @@ class ContactPicker: UIView, AccessibleView {
         guard self.promptLabel == nil else { return }
         self.promptLabel = UILabel()
         self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.promptLabel.accessibilityTraits = .staticText
         self.addSubview(self.promptLabel)
         [
             self.promptLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
