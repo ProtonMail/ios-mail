@@ -26,7 +26,7 @@ import Foundation
 class ContextLabel: NSManagedObject {
     @NSManaged var messageCount: NSNumber
     @NSManaged var unreadCount: NSNumber
-    @NSManaged var time: Date
+    @NSManaged var time: Date?
     @NSManaged var size: NSNumber
     @NSManaged var attachmentCount: NSNumber
     @NSManaged var conversation: Conversation

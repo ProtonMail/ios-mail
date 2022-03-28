@@ -1188,7 +1188,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
             self.showRefreshController()
-            if isFirstFetch {
+            if isFirstFetch && viewModel.isEventIDValid() {
                 isFirstFetch = false
                 if viewModel.currentViewMode == .conversation {
                     viewModel.fetchConversationCount(completion: nil)
