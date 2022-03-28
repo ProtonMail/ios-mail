@@ -714,6 +714,7 @@
 		3FC009592FCFF1270C0CD3CC67656F9B /* MonitorSavesDataService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */; };
 		3FC8DF986980E5ECD03DCCFBD8057840 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7B483BFC5126931EBF18544C883D03 /* Link.swift */; };
 		3FCCDB93E56A1E0904BC416E13A306C3 /* PGPAddressBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECCCC1890CAA97DC2145B2AB999D4C6 /* PGPAddressBuilder.swift */; };
+		3FCFCAF827E462B50049231F /* ContextLabelCoreDataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A0079D6D9F5F457FE0983738C3B30A /* ContextLabelCoreDataModelTests.swift */; };
 		3FD2FBA26D58848F6406513C015AB5E5 /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
 		3FE3890938A3C1BFAA66E5D5A4F44B0E /* DarkModeCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43963201D0455756266D886E91D2010B /* DarkModeCacheProtocol.swift */; };
 		3FF6D74BF456BA74FA29DA0C445BA136 /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27F719084CBED3C8378774F2715B50D /* NSError+Extension.swift */; };
@@ -9159,6 +9160,7 @@
 				A9111B2B650A41F3FD9BDA22EBFAFF4D /* MockMailBoxViewModel.swift in Sources */,
 				B5D28FBCD8EE71B09199AB36C834E187 /* MockMessageProvider.swift in Sources */,
 				E962383A765CCB6330CFA84A5FBBB81B /* MockNotificationHandler.swift in Sources */,
+				3FCFCAF827E462B50049231F /* ContextLabelCoreDataModelTests.swift in Sources */,
 				7EE6C9A416D1913E42D85BE0E98192B8 /* MockProtonMailAnalytics.swift in Sources */,
 				575ED8BBED90E3D1E37C944DCACCA02E /* MockPushNotificationService.swift in Sources */,
 				3A7A0B8EB1BEB5E8600400F8B84DE918 /* MockQueueHandler.swift in Sources */,

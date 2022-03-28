@@ -81,7 +81,7 @@ class ContactsRobot: CoreElements {
         }
 
         func clickContact(_ name: String) -> ContactDetailsRobot {
-            cell(id.contactCellIdentifier(name)).waitForHittable().tap()
+            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().waitForHittable().tap()
             return ContactDetailsRobot()
         }
         

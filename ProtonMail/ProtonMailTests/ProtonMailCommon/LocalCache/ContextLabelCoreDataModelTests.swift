@@ -54,7 +54,7 @@ class ContextLabelCoreDataModelTests: XCTestCase {
         let contextLabel = managedObj!
         XCTAssertEqual(contextLabel.messageCount, 1)
         XCTAssertEqual(contextLabel.unreadCount, 0)
-        XCTAssertEqual(contextLabel.time.timeIntervalSince1970, 1605861149)
+        XCTAssertEqual(contextLabel.time?.timeIntervalSince1970, 1605861149)
         XCTAssertEqual(contextLabel.size, 17711047)
         XCTAssertEqual(contextLabel.attachmentCount, 5)
         XCTAssertEqual(contextLabel.labelID, "0")
