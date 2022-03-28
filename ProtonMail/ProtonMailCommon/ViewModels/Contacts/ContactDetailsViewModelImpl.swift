@@ -33,7 +33,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
     private let contact: Contact
     private let contactService: ContactDataService
-    private var contactParser: contactParserProtocol!
+    private var contactParser: ContactParserProtocol!
 
     private var origEmails: [ContactEditEmail] = []
     private var origAddresses: [ContactEditAddress] = []
@@ -183,13 +183,10 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                                                coreDataService: self.coreDataService,
                                                contactID: self.contact.contactID)
                 case .EncryptedOnly:
-                    let hasError = self.contactParser
+                    try self.contactParser
                         .parseEncryptedOnlyContact(card: card,
                                                    passphrase: user.mailboxPassword,
                                                    userKeys: userInfo.userKeys)
-                    if let hasError = hasError {
-                        return hasError
-                    }
                 case .SignedOnly:
                     self.verifyType2 = self.contactParser.verifySignature(
                         signature: card.sign,
@@ -201,14 +198,11 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                                                coreDataService: self.coreDataService,
                                                contactID: self.contact.contactID)
                 case .SignAndEncrypt:
-                    let hasError = self.contactParser
+                    try self.contactParser
                         .parseSignAndEncryptContact(card: card,
                                                     passphrase: user.mailboxPassword,
                                                     firstUserKey: userInfo.firstUserKey(),
                                                     userKeys: userInfo.userKeys)
-                    if let hasError = hasError {
-                        return hasError
-                    }
                 }
             }
 

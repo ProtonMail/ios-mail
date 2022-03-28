@@ -32,7 +32,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                                                .information,
                                                .notes,
                                                .delete]
-    private var contactParser: contactParserProtocol!
+    private var contactParser: ContactParserProtocol!
     var contact: Contact? // optional if nil add new contact
     var emails: [ContactEditEmail] = []
     var cells: [ContactEditPhone] = []
@@ -77,7 +77,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                                                coreDataService: self.coreDataService,
                                                contactID: self.contact?.contactID ?? "")
                 case .EncryptedOnly:
-                    _ = self.contactParser
+                    try? self.contactParser
                         .parseEncryptedOnlyContact(card: c,
                                                    passphrase: user.mailboxPassword,
                                                    userKeys: user.userInfo.userKeys)
@@ -88,7 +88,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                                                contactID: self.contact?.contactID ?? "")
                 case .SignAndEncrypt:
                     let userInfo = user.userInfo
-                    _ = self.contactParser
+                    try? self.contactParser
                         .parseSignAndEncryptContact(card: c,
                                                     passphrase: user.mailboxPassword,
                                                     firstUserKey: userInfo.firstUserKey(),
