@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Tilføj årsdag";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Tilføj vedhæftning";
 
 /* new contacts add Birthday */
@@ -251,7 +252,7 @@
 "and" = "og";
 
 /* Onboarding title */
-"And more…" = "And more…";
+"And more…" = "Og mere…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Årsdag";
@@ -703,7 +704,7 @@
 "Conversation mode" = "Samtaletilstand";
 
 /* Onboarding title */
-"Conversations" = "Conversations";
+"Conversations" = "Samtaler";
 
 /* Title */
 "Copy" = "Kopiér";
@@ -892,7 +893,7 @@
 "Do you want to save the unsaved changes?" = "Gem ugemte ændringer?";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+"Do you want to send your message anyway?" = "Vil du sende din besked alligevel?";
 
 /* Action */
 "Don't remind me again" = "Påmind mig ikke igen";
@@ -1096,7 +1097,7 @@
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Få glæde af end-to-end-kryptering, selv med ikke-Proton-kontakter: Inviter dem til ProtonMail eller kryptere deres beskeder manuelt.";
 
 /* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Du kan nyde godt af forbedringer som mørk tilstand, et filter for ulæste meddelelser og undermapper.";
 
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
@@ -1105,7 +1106,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Enter new PIN code";
+"Enter new PIN code" = "Indtast ny pinkode";
 
 /* Title */
 "Enter Verification Code" = "Angiv bekræftelseskode";
@@ -1456,7 +1457,7 @@
 "Key invalid. Please go back and try again." = "Nøgle ugyldig, gå tilbage og forsøg igen.";
 
 /* The title of first button in the action bar */
-"Label" = "Label";
+"Label" = "Etiket";
 
 /* No comment provided by engineer. */
 "Label as" = "Tilføj etiket";
@@ -1520,7 +1521,7 @@
 "Load content" = "Indlæs indhold";
 
 /* The title of loading embedded image banner. */
-"Load embedded images" = "Load embedded images";
+"Load embedded images" = "Indlæs indlejrede billeder";
 
 /* No comment provided by engineer. */
 "Load images" = "Indlæs billeder";
@@ -1775,7 +1776,7 @@
 "New Label" = "Ny etiket";
 
 /* Onboarding title */
-"New look, same protection" = "New look, same protection";
+"New look, same protection" = "Nyt udseende, samme beskyttelse";
 
 /* Title */
 "New mailbox password" = "Ny postkasseadgangskode";
@@ -1796,7 +1797,7 @@
 "Nickname" = "Kaldenavn";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "No attachment found";
+"No attachment found" = "Ingen vedhæftning fundet";
 
 /* Title */
 "No connectivity detected…" = "Ingen forbindelse fundet…";
@@ -2007,10 +2008,10 @@
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "PIN is too long";
+"PIN is too long" = "Pinkode for lang";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "PIN is too short";
+"PIN is too short" = "Pinkode for kort";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Abonnementer kan redigeres på webversionen.";
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Kvittering sendt";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Modtageroplysninger";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Modtager ikke fundet";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Gendannelse aktiveret";
-
-/* No comment provided by engineer. */
-"Reload" = "Genindlæs";
 
 /* Title */
 "Remind Me Later" = "Påmind mig senere";
@@ -2262,7 +2257,7 @@
 "Reply all" = "Svar alle";
 
 /* The title of first button in the action bar */
-"Reply All" = "Reply All";
+"Reply All" = "Svar alle";
 
 /* composer view model impl */
 "Reply message" = "Svar på besked";
@@ -2344,10 +2339,10 @@
 "Send plain but stored encrypted" = "Send som simpel, men gem som krypteret";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "Send read receipt";
+"Send read receipt" = "Send læsekvittering";
 
 /* Message of a banner which is displayed when sender request a read receipt */
-"Send read receipt." = "Send read receipt.";
+"Send read receipt." = "Send læsekvittering.";
 
 /* A button title to send read receipt */
 "Send receipt" = "Send kvittering";
@@ -2797,7 +2792,7 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Denne besked kan være et phishing-forsøg. Tjek afsenderen og indholdet for at sikre, at de er legitime.";
 
 /* The title of auto reply banner */
-"This message was automatically generated" = "This message was automatically generated";
+"This message was automatically generated" = "Denne besked blev automatisk genereret";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Denne besked udløber om %1$dD %2$dT %3$dM";
@@ -2982,7 +2977,7 @@
 "Unsubscribe" = "Afmeld abonnement";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Unsubscribe from mailing list";
+"Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";
 
 /* Error message */
 "Unsupported file type" = "Uunderstøttet filtype";
@@ -3200,7 +3195,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "Du vil slette meddelelsen uigenkaldeligt. Er du sikker?";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "Du er ajour";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "Din ændringer vil blive kasseret";
@@ -3215,7 +3210,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Dit land blokerer muligvis for adgangen til Proton. Prøv at bruge ProtonVPN (eller enhver anden VPN) eller Tor for at tilgå Proton.";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+"Your encrypted email has been entirely redesigned for ease of use." = "Din krypterede e-mail er blevet fuldstændig redesignet for at gøre den nemmere at bruge.";
 
 /* Title of user feedback view */
 "Your feedback" = "Din feedback";

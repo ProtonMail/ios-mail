@@ -1,5 +1,5 @@
 /* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[Show full message]";
+"…[Show full message]" = "…[すべてのメッセージを表示]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
 "'On' E, MMM d, yyyy 'at' %@" = "'On' E, MMM d, yyyy 'at' %@";
@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "記念日を追加";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "添付ファイルを追加";
 
 /* new contacts add Birthday */
@@ -251,7 +252,7 @@
 "and" = "かつ";
 
 /* Onboarding title */
-"And more…" = "And more…";
+"And more…" = "さらに…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "記念日";
@@ -703,7 +704,7 @@
 "Conversation mode" = "会話モード";
 
 /* Onboarding title */
-"Conversations" = "Conversations";
+"Conversations" = "会話";
 
 /* Title */
 "Copy" = "コピー";
@@ -1096,7 +1097,7 @@
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Proton の連絡先ではない人でもエンドツーエンド暗号化を使用には ProtonMail に招待するか、手動でメッセージを暗号化します。";
 
 /* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "ダークモード、未読メッセージフィルター、サブフォルダーなどの改善された機能をお楽しみください。";
 
 /* Action in 2fa popup view */
 "Enter" = "入力";
@@ -1456,7 +1457,7 @@
 "Key invalid. Please go back and try again." = "鍵が無効です。戻ってもう一度やり直してください。";
 
 /* The title of first button in the action bar */
-"Label" = "Label";
+"Label" = "ラベル";
 
 /* No comment provided by engineer. */
 "Label as" = "ラベル付け";
@@ -1775,7 +1776,7 @@
 "New Label" = "新しいラベル";
 
 /* Onboarding title */
-"New look, same protection" = "New look, same protection";
+"New look, same protection" = "新しい外観、変わらない保護";
 
 /* Title */
 "New mailbox password" = "メールボックスの新しいパスワード";
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "開封確認が送信されました";
 
-/* No comment provided by engineer. */
-"Recipient details" = "宛先の詳細";
-
 /* The error message is shown in composer */
 "Recipient not found" = "宛先が見つかりません";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "回復は有効です";
-
-/* No comment provided by engineer. */
-"Reload" = "再読み込み";
 
 /* Title */
 "Remind Me Later" = "後で通知する";
@@ -2262,7 +2257,7 @@
 "Reply all" = "全員に返信";
 
 /* The title of first button in the action bar */
-"Reply All" = "Reply All";
+"Reply All" = "全員に返信";
 
 /* composer view model impl */
 "Reply message" = "メッセージを返信";
@@ -3200,7 +3195,7 @@
 "You're going to delete the message irreversibly. Are you sure?" = "このメッセージを永久に削除します。よろしいですか？";
 
 /* The secondary title of no result message */
-"You're up to date" = "You're up to date";
+"You're up to date" = "最新です";
 
 /* No comment provided by engineer. */
 "Your changes will be discarded" = "設定は破棄されます";
@@ -3215,7 +3210,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "あなたの国の政府が、 Proton への接続を検閲(遮断)している可能性があります。 Proton にアクセスするには ProtonVPN （または他社のVPN）もしくは Tor を試してみてください。";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+"Your encrypted email has been entirely redesigned for ease of use." = "暗号化されたメールは使いやさを追求するために、デザインを一新しました。";
 
 /* Title of user feedback view */
 "Your feedback" = "あなたのフィードバック";
