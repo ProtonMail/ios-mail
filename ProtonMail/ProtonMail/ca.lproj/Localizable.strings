@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Afegir aniversari";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Afegir adjunt";
 
 /* new contacts add Birthday */
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmació enviada";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Detalls del destinatari";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatari no trobat";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperació habilitada";
-
-/* No comment provided by engineer. */
-"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Recorda-m'ho més tard";

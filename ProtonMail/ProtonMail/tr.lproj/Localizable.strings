@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Yıl dönümü ekle";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Dosya ekle";
 
 /* new contacts add Birthday */
@@ -1694,7 +1695,7 @@
 "More Credits" = "Daha fazla kredi";
 
 /* No comment provided by engineer. */
-"Move to" = "Şuraya taşı";
+"Move to" = "Taşı";
 
 /* move action */
 "Move to All Mail" = "Tüm e-postalar kutusuna taşı";
@@ -1734,11 +1735,11 @@
 "Move to Trash" = "Çöpe at";
 
 /* (No Comment) */
-"Move to..." = "Şuraya taşı...";
+"Move to..." = "Taşı...";
 
 /* The title of the move to action in action sheet
    Title */
-"Move to…" = "Şuraya taşı…";
+"Move to…" = "Taşı…";
 
 /* Title */
 "Multiple Addresses" = "Birden çok adres";
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Okundu bilgisi gönderildi";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Alıcı bilgileri";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Alıcı bulunamadı";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Kurtarma etkileştirildi";
-
-/* No comment provided by engineer. */
-"Reload" = "Yenile";
 
 /* Title */
 "Remind Me Later" = "Daha sonra hatırlat";

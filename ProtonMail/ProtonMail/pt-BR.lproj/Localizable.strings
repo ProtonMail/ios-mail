@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Adicionar aniversário";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Adicionar anexo";
 
 /* new contacts add Birthday */
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Confirmação de leitura enviada";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Dados do destinatário";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatário não encontrado";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperação ativada";
-
-/* No comment provided by engineer. */
-"Reload" = "Recarregar";
 
 /* Title */
 "Remind Me Later" = "Lembre-me mais tarde";

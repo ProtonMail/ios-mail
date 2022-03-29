@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Добавить годовщину";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Добавить вложение";
 
 /* new contacts add Birthday */
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Квитанция отправлена";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Информация о получателе";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Получатель не найден";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Восстановление включено";
-
-/* No comment provided by engineer. */
-"Reload" = "Перезагрузить";
 
 /* Title */
 "Remind Me Later" = "Напомнить позже";

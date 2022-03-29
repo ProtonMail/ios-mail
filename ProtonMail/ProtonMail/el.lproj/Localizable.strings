@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Προσθήκη Επετείου";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Προσθήκη συνημμένου";
 
 /* new contacts add Birthday */
@@ -251,7 +252,7 @@
 "and" = "και";
 
 /* Onboarding title */
-"And more…" = "And more…";
+"And more…" = "Και άλλα…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Επέτειος";
@@ -310,20 +311,20 @@
 "Archived" = "Αρχειοθετημένα";
 
 /* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete permanently these %d messages?" = "Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά αυτά τα %d μηνύματα;";
+"Are you sure you want to delete permanently these %d messages?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτά τα %d μηνύματα;";
 
 /* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά αυτό το μήνυμα;";
+"Are you sure you want to delete permanently this message?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτό το μήνυμα;";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε %@;";
+"Are you sure you want to sign out %@?" = "Θέλετε σίγουρα έξοδο του %@;";
 
 /* Alert to confirm sign out
    Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;";
+"Are you sure you want to sign out?" = "Θέλετε σίγουρα να εξέλθετε;";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Είστε βέβαιοι? Αυτό δεν μπορεί να αναιρεθεί.";
+"Are you sure? This can't be undone." = "Είστε βέβαιοι; Αυτό δεν μπορεί να αναιρεθεί.";
 
 /* At {time}, e.g.: At 19:00 */
 "At %@" = "Στις %@";
@@ -703,7 +704,7 @@
 "Conversation mode" = "Λειτουργία συνομιλίας";
 
 /* Onboarding title */
-"Conversations" = "Conversations";
+"Conversations" = "Συνομιλίες";
 
 /* Title */
 "Copy" = "Αντιγραφή";
@@ -1096,7 +1097,7 @@
 "Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Απολαύστε κρυπτογράφηση από άκρο σε άκρο με ακόμη και μη Proton επαφές: Προσκαλέστε τους στο ProtonMail ή κρυπτογραφήστε με μη αυτόματο τρόπο τα μηνύματά τους.";
 
 /* Onboarding content */
-"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Enjoy improvements like dark mode, an unread messages filter, and subfolders.";
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Απολαύστε βελτιώσεις όπως σκούρα λειτουργία, φίλτρο μη διαβασμένων μηνυμάτων, και υποφακέλους.";
 
 /* Action in 2fa popup view */
 "Enter" = "Εισαγωγή";
@@ -1456,7 +1457,7 @@
 "Key invalid. Please go back and try again." = "Το κλειδί δεν είναι έγκυρο. Επιστρέψτε και δοκιμάστε ξανά.";
 
 /* The title of first button in the action bar */
-"Label" = "Label";
+"Label" = "Ετικέτα";
 
 /* No comment provided by engineer. */
 "Label as" = "Σήμανση με ετικέτα ως";
@@ -1728,7 +1729,7 @@
 "Move to Spam" = "Μετακίνηση στα Ενοχλητικά";
 
 /* The title of the remove action in action sheet */
-"Move to trash" = "Μετακίνηση στον κάδο απορριμμάτων";
+"Move to trash" = "Μετακίνηση στα Διαγραμμένα";
 
 /* move action */
 "Move to Trash" = "Μετακίνηση στα Διαγραμμένα";
@@ -1775,7 +1776,7 @@
 "New Label" = "Νέα Ετικέτα";
 
 /* Onboarding title */
-"New look, same protection" = "New look, same protection";
+"New look, same protection" = "Νέα όψη, ίδια προστασία";
 
 /* Title */
 "New mailbox password" = "Νέος κωδικός πρόσβασης θυρίδας";
@@ -1900,7 +1901,7 @@
 "On E, MMM d, yyyy at %@" = "Στις ΗΜ, ΜΗΝ η, χρον στις %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε σίγουροι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. \n\n Είστε βέβαιοι ότι θέλετε να αγνοήσετε την ενεργοποίηση;";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Αγνοήστε την ενεργοποίηση αγοράς μόνο αν είστε βέβαιοι ότι όλες οι συνδρομές σας είναι ενημερωμένες. Για περαιτέρω βοήθεια, παρακαλούμε επικοινωνήστε με την υποστήριξη πελατών. \n\n Θέλετε σίγουρα να αγνοήσετε την ενεργοποίηση;";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Μόνο ένας δωρεάν λογαριασμός μπορεί να προστεθεί";
@@ -2040,7 +2041,7 @@
 "Please keep ProtonMail open until the operation is done." = "Παρακαλούμε κρατήστε το ProtonMail ανοιχτό μέχρι να ολοκληρωθεί η λειτουργία.";
 
 /* network troubleshot cell title */
-"Please make sure that your internet connection is working." = "Βεβαιωθείτε ότι η σύνδεση σας στο διαδίκτυο λειτουργεί.";
+"Please make sure that your internet connection is working." = "Παρακαλούμε βεβαιωθείτε ότι η σύνδεσή σας στο διαδίκτυο λειτουργεί.";
 
 /* Error */
 "Please pick a user name first!" = "Παρακαλώ επιλέξτε πρώτα ένα όνομα χρήστη!";
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Έγινε αποστολή αποδεικτικού";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Στοιχεία παραλήπτη";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Ο παραλήπτης δεν βρέθηκε";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Η ανάκτηση ενεργοποιήθηκε";
-
-/* No comment provided by engineer. */
-"Reload" = "Ανανέωση";
 
 /* Title */
 "Remind Me Later" = "Υπενθύμιση αργότερα";
@@ -2262,7 +2257,7 @@
 "Reply all" = "Απάντηση σε όλους";
 
 /* The title of first button in the action bar */
-"Reply All" = "Reply All";
+"Reply All" = "Απάντηση προς όλους";
 
 /* composer view model impl */
 "Reply message" = "Μήνυμα απάντησης";
@@ -2855,10 +2850,10 @@
 
 /* *
  *  MessageAction */
-"Trash" = "Κάδος Απορριμμάτων";
+"Trash" = "Διαγραμμένα";
 
 /* mail location title */
-"TRASH" = "Κάδος Απορριμμάτων";
+"TRASH" = "Διαγραμμένα";
 
 /* troubleshooting view button */
 "Troubleshoot" = "Αντιμετώπιση προβλημάτων";
@@ -3197,7 +3192,7 @@
 "You will be switched to %@" = "Θα αλλάξετε σε %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Θα διαγράψετε το μήνυμα για πάντα. Είστε σίγουρος;";
+"You're going to delete the message irreversibly. Are you sure?" = "Πρόκειται να εξαλείψετε το μήνυμα ανεπιστρεπτί. Είστε βέβαιος;";
 
 /* The secondary title of no result message */
 "You're up to date" = "You're up to date";
@@ -3215,7 +3210,7 @@
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Η χώρα σας ενδέχεται να μπλοκάρει την πρόσβαση στο Proton. Δοκιμάστε να χρησιμοποιήσετε το ProtonVPN (ή οποιοδήποτε άλλο VPN) ή το Tor για πρόσβαση στο Proton.";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "Your encrypted email has been entirely redesigned for ease of use.";
+"Your encrypted email has been entirely redesigned for ease of use." = "Το κρυπτογραφημένο ταχυδρομείο σας επανασχεδιάστηκε προς ευκολία χρήσεως, εξ ολοκλήρου.";
 
 /* Title of user feedback view */
 "Your feedback" = "Η γνώμη σας";

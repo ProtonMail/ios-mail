@@ -137,7 +137,8 @@
 /* new contacts add Anniversary */
 "Add anniversary" = "Add anniversary";
 
-/* menu title */
+/* menu title
+   The voiceiver title of the add attachment button in the tool bar of composer */
 "Add attachment" = "Add attachment";
 
 /* new contacts add Birthday */
@@ -2198,9 +2199,6 @@
 /* A label text which is displayed after sending read receipt to sender */
 "Receipt sent" = "Receipt sent";
 
-/* No comment provided by engineer. */
-"Recipient details" = "Recipient details";
-
 /* The error message is shown in composer */
 "Recipient not found" = "Címzett nem található";
 
@@ -2219,9 +2217,6 @@
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recovery enabled";
-
-/* No comment provided by engineer. */
-"Reload" = "Reload";
 
 /* Title */
 "Remind Me Later" = "Emlékeztessen később";

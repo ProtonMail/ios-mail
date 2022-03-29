@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "ProtonMail";
 
 /* Bundle name */
-"CFBundleName" = "PushServiceDev";
+"CFBundleName" = "ProtonMail";
 
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "允許ProtonMail存取您相機膠卷中的照片及影片，以讓您將媒體檔附加到電子郵件內。";
