@@ -26,14 +26,6 @@ import Contacts
 class AddressBookService: Service {
     enum RuntimeError: Error {
         case cant_get_contacts
-        var desc: String {
-            get {
-                switch self {
-                case .cant_get_contacts:
-                    return LocalString._unable_to_get_contacts
-                }
-            }
-        }
     }
 
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void

@@ -61,29 +61,6 @@ extension Message {
             }
         }
 
-        var actionTitle: String {
-            get {
-                switch self {
-                case .inbox:
-                    return LocalString._locations_move_inbox_action
-                case .draft:
-                    return LocalString._locations_move_draft_action
-                case .sent:
-                    return LocalString._locations_move_outbox_action
-                case .spam:
-                    return LocalString._locations_move_spam_action
-                case .starred:
-                    return LocalString._locations_add_star_action
-                case .archive:
-                    return LocalString._locations_move_archive_action
-                case .trash:
-                    return LocalString._locations_move_trash_action
-                case .allmail:
-                    return LocalString._locations_move_allmail_action
-                }
-            }
-        }
-
         var title: String {
             switch self {
             case .inbox:
