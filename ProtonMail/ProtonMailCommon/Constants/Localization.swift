@@ -1550,7 +1550,7 @@ class LocalizedString {
     /// "Sent by ProtonMail with zero access encryption"
     lazy var _sent_by_protonMail_with_zero_access_encryption = NSLocalizedString("Sent by ProtonMail with zero access encryption", comment: "encryption lock description for auto reply")
     /// "PGP-encrypted message"
-    lazy var _pgp_encrypted_message = NSLocalizedString("PGP-encrypted message", comment: "encryption lock description")
+    lazy var _pgp_encrypted_signed_message = NSLocalizedString("PGP-encrypted and signed message", comment: "encryption lock description")
     /// "PGP-encrypted message from verified address"
     lazy var _pgp_encrypted_message_from_verified_address = NSLocalizedString("PGP-encrypted message from verified address", comment: "encryption lock description")
     /// "PGP-signed message from verified address"
@@ -1559,6 +1559,7 @@ class LocalizedString {
     lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
     /// "End-to-end encrypted message"
     lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")
+    lazy var _end_to_end_encrypted_signed_message = NSLocalizedString("End-to-end encrypted and signed message", comment: "encryption lock description")
     /// "End-to-end encrypted message from verified address"
     lazy var _end_to_end_encrypted_message_from_verified_address = NSLocalizedString("End-to-end encrypted message from verified address", comment: "encryption lock description")
 
