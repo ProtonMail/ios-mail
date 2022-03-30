@@ -348,8 +348,20 @@ extension AttachmentListViewController: QLPreviewControllerDataSource, QLPreview
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         if let url = self.tempClearFileURL {
             return url as QLPreviewItem
-        } else {
-            fatalError("Should not reach here")
+        }
+
+        let placeholder = Asset.placeholderBoundBox.image
+        guard let data = placeholder.pngData() else {
+            return URL(fileURLWithPath: LocalString._unknown_error) as QLPreviewItem
+        }
+        // other way to get file URL in the xcassets?
+        let tempURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("Placeholder.png")
+        do {
+            try data.write(to: tempURL)
+            self.tempClearFileURL = tempURL
+            return tempURL as QLPreviewItem
+        } catch {
+            return URL(fileURLWithPath: LocalString._unknown_error) as QLPreviewItem
         }
     }
 
