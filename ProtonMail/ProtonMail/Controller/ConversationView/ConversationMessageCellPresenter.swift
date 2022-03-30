@@ -67,6 +67,7 @@ class ConversationMessageCellPresenter {
             view.expirationView.tagLabel.attributedText = expirationTag.title
             view.expirationView.backgroundColor = expirationTag.color
             view.expirationView.imageView.image = expirationTag.icon
+            view.expirationView.imageView.tintColor = ColorProvider.IconNorm
         }
         tagsPresenter.presentTags(tags: model.tags, in: view.tagsView)
     }
