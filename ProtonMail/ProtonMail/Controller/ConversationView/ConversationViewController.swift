@@ -17,10 +17,16 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let storedSizeHelper = ConversationStoredSizeHelper()
-    private var autoScrollIndexPath: IndexPath?
-    private var autoScrollPosition: UITableView.ScrollPosition?
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
+
+    private var autoScrollState: AutoScrollState = .notRequested
+
+    private enum AutoScrollState {
+        case notRequested
+        case pendingRequest(IndexPath, UITableView.ScrollPosition)
+        case disabledByUserInitiatedScroll
+    }
 
     init(coordinator: ConversationCoordinatorProtocol,
          viewModel: ConversationViewModel,
@@ -77,9 +83,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         if let row = viewModel.messagesDataSource
             .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
             viewModel.setCellIsExpandedAtLaunch()
-            delay(1) { [weak self] in
-                self?.scrollTableView(to: IndexPath(row: row, section: 1), position: .top)
-            }
+            self.scheduleAutoScroll(to: IndexPath(row: row, section: 1), position: .top)
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
@@ -151,20 +155,21 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.checkNavigationTitle()
-    }
 
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        if let indexPath = autoScrollIndexPath, let position = autoScrollPosition {
-            delay(0.1) {
-                self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
-            }
+        if scrollView.isTracking {
+            self.autoScrollState = .disabledByUserInitiatedScroll
         }
     }
 
-    func scrollTableView(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
-        autoScrollIndexPath = indexPath
-        autoScrollPosition = position
+    func scheduleAutoScroll(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
         self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+
+        switch self.autoScrollState {
+        case .notRequested, .pendingRequest:
+            self.autoScrollState = .pendingRequest(indexPath, position)
+        case .disabledByUserInitiatedScroll:
+            break
+        }
     }
 
     func cellTapped(messageId: String) {
@@ -477,6 +482,20 @@ private extension ConversationViewController {
             customView.tableView.beginUpdates()
             customView.tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
+
+            if isLoaded {
+                self.attemptAutoScroll()
+            }
+        }
+    }
+
+    private func attemptAutoScroll() {
+        switch self.autoScrollState {
+        case let .pendingRequest(indexPath, position):
+            self.autoScrollState = .notRequested
+            self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+        default:
+            break
         }
     }
 
@@ -1021,9 +1040,7 @@ extension ConversationViewController {
 
             self?.cellTapped(messageId: messageId)
             let indexPath = IndexPath(row: Int(index), section: 1)
-            delay(1) { [weak self] in
-                self?.scrollTableView(to: indexPath, position: .top)
-            }
+            self?.scheduleAutoScroll(to: indexPath, position: .top)
         }
     }
 
@@ -1033,7 +1050,7 @@ extension ConversationViewController {
         }
         cellTapped(messageId: messageId)
         let indexPath = IndexPath(row: index, section: 1)
-        self.scrollTableView(to: indexPath, position: .top)
+        self.scheduleAutoScroll(to: indexPath, position: .top)
     }
 }
 

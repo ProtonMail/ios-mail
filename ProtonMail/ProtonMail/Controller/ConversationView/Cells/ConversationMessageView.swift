@@ -84,10 +84,8 @@ class ConversationMessageView: UIView {
         ].activate()
 
         [
-            initialsContainer.topAnchor.constraint(greaterThanOrEqualTo: initialsView.topAnchor),
-            initialsContainer.leadingAnchor.constraint(greaterThanOrEqualTo: initialsView.leadingAnchor),
-            initialsContainer.trailingAnchor.constraint(lessThanOrEqualTo: initialsView.trailingAnchor),
-            initialsContainer.bottomAnchor.constraint(lessThanOrEqualTo: initialsView.bottomAnchor),
+            initialsContainer.centerXAnchor.constraint(equalTo: initialsView.centerXAnchor),
+            initialsContainer.centerYAnchor.constraint(equalTo: initialsView.centerYAnchor),
             initialsContainer.heightAnchor.constraint(equalToConstant: 28),
             initialsContainer.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
@@ -104,7 +102,7 @@ class ConversationMessageView: UIView {
         ].activate()
 
         [
-            initialsView.heightAnchor.constraint(equalToConstant: 28),
+            initialsView.heightAnchor.constraint(equalToConstant: 28).setPriority(as: .defaultHigh),
             initialsView.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
 
