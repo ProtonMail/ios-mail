@@ -199,7 +199,7 @@ class PMToolBarView: UIView {
                 btn.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 btn.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 btn.heightAnchor.constraint(equalToConstant: 40.0),
-                btn.widthAnchor.constraint(equalToConstant: 48.0),
+                btn.widthAnchor.constraint(equalToConstant: 48.0).setPriority(as: .defaultHigh),
             ].activate()
             return view
         }

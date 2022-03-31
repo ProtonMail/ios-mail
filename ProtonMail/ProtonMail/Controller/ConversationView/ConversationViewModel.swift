@@ -321,9 +321,7 @@ extension ConversationViewModel {
             if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
-                    delay(1) { [weak self] in
-                        self?.conversationViewController?.scrollTableView(to: path, position: .top)
-                    }
+                    self.conversationViewController?.scheduleAutoScroll(to: path, position: .top)
                     setCellIsExpandedAtLaunch()
                 }
             }
