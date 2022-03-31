@@ -680,6 +680,7 @@
 		3D332310EB46A9288430FDEE4ABC8A80 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218348D8D5386E202A585F3C1D3CF0A8 /* UITextField+Extension.swift */; };
 		3D3D324A5CCF99885BB0CF20A8316767 /* MultiLabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */; };
 		3D3EC5B0E3BD9CC0A2E231458DA6CF32 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB2C8C70329A749308561A4CE0D54D /* NSBundle+Language.m */; };
+		3D8CE6BA312DF3FFAFC7747FD3574910 /* AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */; };
 		3D9158D96E4384A04D198D3CE3BE2E18 /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A733EC2F11186707BB778E7B1E91729 /* UserDataService.swift */; };
 		3D9BD1674A59090C82876DA8AFDFA215 /* StorefrontViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002553CEF42BEC5EC8F4E03A7EBEF403 /* StorefrontViewController.swift */; };
 		3D9F3CE433274727A4E1D3245D831122 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
@@ -1339,6 +1340,7 @@
 		77FA61E5A274F02A98876EA49975CB57 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46F72AFDE901F2582A2569BFBC7E6EC /* MailboxViewController.swift */; };
 		780C99C4C808DB76F9928C7E9AB3816D /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
 		780EB305D0A53D6EE7628455D503C4E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2B30596AAF8E074761BB843DB404ED /* FileManager+Extension.swift */; };
+		78510082A7D1B66AEF11420243839296 /* AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */; };
 		785CDD38FAE24DDAA4D3920D29446992 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7675B70FB25523778C6D0AA2BBC0D9 /* API.swift */; };
 		7862FEDDC5DC83A448A489125931FA48 /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C488F429960C863BD52CBAE22E09A9A8 /* CoreDataStore.swift */; };
 		78A54C56E61D34416CF70E59E346CA74 /* LabelAsActionSheetPresentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA26B1DED365640497B3A425C5AD672 /* LabelAsActionSheetPresentProtocol.swift */; };
@@ -1795,6 +1797,7 @@
 		A4B864A0110756258C51C4B768D0F1E4 /* AppCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */; };
 		A4BA0A399B45445BA78ADB098872305E /* AutoReplyBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520064B6A738C5A8086E2CD2613120D8 /* AutoReplyBanner.swift */; };
 		A4DA41785059AAB98336443515C0B631 /* MockConversationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E310EC3BA4CCC99E650FBDA0881FA712 /* MockConversationCoordinator.swift */; };
+		A4DD0434EE54BEA5657F51DD4F2E3A98 /* AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */; };
 		A55972FD7F3C7011E816C380375E3F13 /* CryptoTests+Signature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FF81C7877846ED3BFEAE525C8470DE /* CryptoTests+Signature.swift */; };
 		A578131E99AD5D6137A5C3B75B30355D /* PushNotificationDecryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */; };
 		A588495B5F7F11B3F293E4FD297F1C22 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */; };
@@ -2142,6 +2145,7 @@
 		C571E2465500D72D245C12E723DEF1FF /* LabelInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16F0F1D340DFD0D7B88605704432B1D /* LabelInfoCell.swift */; };
 		C599A937F49490719F6B10F6C4E8D9B7 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F921C9918B518B23D3AFA6E47844069 /* AddressBookService.swift */; };
 		C5A48F0C6013C19C007CA7B2E9F6F814 /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
+		C5A9917EFABD66D0CD02C9C5F982F1E0 /* AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */; };
 		C5D1E1029A2029E2A5A6DEFF1D88A74F /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
 		C5D9AC6A30D50B3C22DA6953C66B8337 /* ConversationExpandedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992C0ABB744AE5961492E220659F0425 /* ConversationExpandedMessageView.swift */; };
 		C5DD026C61CD8E3D2097EE2258DEC095 /* ComposeHeaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5A367CDEE326A7DED0F525F8C346A0 /* ComposeHeaderProtocol.swift */; };
@@ -3969,6 +3973,7 @@
 		C5DBCA2BDFD6322722168FC66F136AEA /* ConversationMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMessageView.swift; sourceTree = "<group>"; };
 		C612FEC33DD748F24424BABBEE050C71 /* InAppFeedbackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppFeedbackViewModel.swift; sourceTree = "<group>"; };
 		C668BF69D71F9F6450C79B1EDCDF1D79 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAwait.swift; sourceTree = "<group>"; };
 		C6FC2D303C438A6A11045E7AFA6C2335 /* 2.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.1.xcdatamodel; sourceTree = "<group>"; };
 		C70ED44C24D130CA8ABA7510638F08F0 /* SingleMessageFooterButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMessageFooterButtons.swift; sourceTree = "<group>"; };
 		C76DA18715EBABEC10B12CAAD05D454B /* ContactGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewController.swift; sourceTree = "<group>"; };
@@ -4755,6 +4760,7 @@
 				E303E8BB5DAE4353E54FFF9BDC3481F3 /* MimeParser */,
 				30E2F8F01D4D6E188F931A297BC000CB /* SRP */,
 				4C91BD8609ADB81573AEA85D7AC655CC /* WebContentsSecureLoader */,
+				C6DA084DB2AABB317247968E2703691E /* AsyncAwait.swift */,
 				CF7737039039B0057CB8287F7A03624B /* Compare.swift */,
 				012019256845ED1C91A2E45F04734CF3 /* FontManager.swift */,
 				77669C3C0F15ACBCAC5071A59F5E57F0 /* Threading.swift */,
@@ -9314,6 +9320,7 @@
 				84F83BD9523841865D8C69CC26D300B0 /* AppleContactParser.swift in Sources */,
 				86B4809C6A8D701F18E311763415F529 /* ApplicationStateProvider.swift in Sources */,
 				89297538DB62046E207DC8EEE7E5D146 /* ApplyLabelToMessagesRequest.swift in Sources */,
+				78510082A7D1B66AEF11420243839296 /* AsyncAwait.swift in Sources */,
 				01A1386B265738407A1A6468BD8BDA35 /* AttachReminderHelper.swift in Sources */,
 				F57CD585C83CEC483CBA24A6729EE409 /* Attachment+Extension.swift in Sources */,
 				70154D16907CAABABAB04D7EA2545F07 /* Attachment+Info.swift in Sources */,
@@ -10058,6 +10065,7 @@
 				C71B3806304451E979B989D239EDDCC7 /* AppleContactParser.swift in Sources */,
 				CA0833457D9A9A193832C37FC79CC6DA /* ApplicationStateProvider.swift in Sources */,
 				6AC04D9D12EE11DBDA19C17814AAED59 /* ApplyLabelToMessagesRequest.swift in Sources */,
+				C5A9917EFABD66D0CD02C9C5F982F1E0 /* AsyncAwait.swift in Sources */,
 				CA500BF99C4A1C398990F4596D92FF37 /* AttachReminderHelper.swift in Sources */,
 				3EA9BE501A613DA294BEED8B5F74D86E /* Attachment+Extension.swift in Sources */,
 				1CF54FB5158C1C706999F0AE6E6DA0BE /* Attachment+Info.swift in Sources */,
@@ -10837,6 +10845,7 @@
 				BB4623DAB163C9301B3339DF4E4F0640 /* AppCacheService.swift in Sources */,
 				0473FFED006B8C8CCC9C237B37713F82 /* AppleContactParser.swift in Sources */,
 				F922FA725C49D977D41938D4A96C96D9 /* ApplyLabelToMessagesRequest.swift in Sources */,
+				A4DD0434EE54BEA5657F51DD4F2E3A98 /* AsyncAwait.swift in Sources */,
 				D0232FA051C98311DAC40AE65E3AA5C6 /* AttachReminderHelper.swift in Sources */,
 				56BA566B46E01696F935E3F7C1106250 /* Attachment+Extension.swift in Sources */,
 				F9F55A1A84E5D818B7BF136CF6E45706 /* Attachment+Info.swift in Sources */,
@@ -11226,6 +11235,7 @@
 				A940CA56D22DCAECC20E0A619E8BFF65 /* AppCacheService.swift in Sources */,
 				189344B9955651DA236E3B9CA263BE77 /* AppleContactParser.swift in Sources */,
 				6E43D51854C197799688C304503C69C1 /* ApplyLabelToMessagesRequest.swift in Sources */,
+				3D8CE6BA312DF3FFAFC7747FD3574910 /* AsyncAwait.swift in Sources */,
 				45202D51B05E2C5471E642798A238509 /* AttachReminderHelper.swift in Sources */,
 				C5A48F0C6013C19C007CA7B2E9F6F814 /* Attachment+Extension.swift in Sources */,
 				5F58BBC265469C1C14456DDD84C68D42 /* Attachment+Info.swift in Sources */,

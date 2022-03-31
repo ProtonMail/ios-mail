@@ -23,7 +23,6 @@
 import Foundation
 import CoreData
 import Groot
-import AwaitKit
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Networking

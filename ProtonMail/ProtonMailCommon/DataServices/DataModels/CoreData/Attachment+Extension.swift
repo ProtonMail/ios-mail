@@ -23,7 +23,6 @@
 import Foundation
 import CoreData
 import PromiseKit
-import AwaitKit
 import Crypto
 import ProtonCore_DataModel
 

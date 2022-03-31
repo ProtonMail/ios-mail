@@ -21,7 +21,6 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import AwaitKit
 import PromiseKit
 import Crypto
 import OpenPGP

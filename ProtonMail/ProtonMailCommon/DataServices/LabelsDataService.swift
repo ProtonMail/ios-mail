@@ -24,7 +24,6 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
-import AwaitKit
 import ProtonCore_Services
 
 enum LabelFetchType: Int {

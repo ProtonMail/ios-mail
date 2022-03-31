@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import AwaitKit
 import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_SRP
@@ -340,7 +339,6 @@ extension MessageSendingRequestBuilder {
                         userKeys: [Data],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
-        return Promise { seal in
             async {
                 let plainText = self.generatePlainTextBody()
 
@@ -367,8 +365,7 @@ extension MessageSendingRequestBuilder {
 
                 self.clearPlainTextBody = plainText
 
-                seal.fulfill(self)
-            }
+                return self
         }
     }
 

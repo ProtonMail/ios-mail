@@ -21,7 +21,6 @@
 
 import UIKit
 import PromiseKit
-import AwaitKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI

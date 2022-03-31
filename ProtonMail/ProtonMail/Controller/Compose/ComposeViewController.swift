@@ -22,7 +22,6 @@
 
 import UIKit
 import PromiseKit
-import AwaitKit
 import MBProgressHUD
 #if !APP_EXTENSION
 import SideMenuSwift

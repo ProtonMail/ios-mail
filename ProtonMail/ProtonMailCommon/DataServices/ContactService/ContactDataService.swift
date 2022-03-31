@@ -25,7 +25,6 @@ import CoreData
 import Contacts
 import Groot
 import PromiseKit
-import AwaitKit
 import Crypto
 import OpenPGP
 import ProtonCore_DataModel
