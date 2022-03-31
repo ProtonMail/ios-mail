@@ -22,7 +22,6 @@
 
 import Foundation
 import PromiseKit
-import AwaitKit
 import ProtonCore_Networking
 import ProtonCore_DataModel
 
