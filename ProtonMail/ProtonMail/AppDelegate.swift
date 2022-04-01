@@ -320,11 +320,7 @@ extension AppDelegate: UIApplicationDelegate {
             taskID = .invalid
         }
 
-        if let user = users.firstUser {
-            user.messageService.purgeOldMessages()
-            user.cacheService.cleanOldAttachment()
-            user.messageService.updateMessageCount()
-
+        if users.firstUser != nil {
             queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
             }, notify: {
@@ -362,9 +358,12 @@ extension AppDelegate: UIApplicationDelegate {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
-        if users.firstUser != nil {
+        if let user = users.firstUser {
             queueManager.enterForeground()
-            users.firstUser?.refreshFeatureFlags()
+            user.refreshFeatureFlags()
+            user.messageService.purgeOldMessages()
+            user.cacheService.cleanOldAttachment()
+            user.messageService.updateMessageCount()
         }
     }
 
