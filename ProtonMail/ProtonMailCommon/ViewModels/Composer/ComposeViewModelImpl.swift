@@ -114,13 +114,13 @@ class ComposeViewModelImpl: ComposeViewModel {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                // TODO: -v4 change to composer context
-                guard let m = msg, let msgToCopy = try? self.composerContext?.existingObject(with: m.objectID) as? Message else {
+                //TODO: -v4 change to composer context
+                guard let m = msg else {
                     self.message = nil
                     fatalError("This should not happened.")
                 }
-
-                self.message = messageService.messageDecrypter.copy(message: msgToCopy, copyAttachments: action == ComposeMessageAction.forward, context: self.composerContext!)
+                
+                self.message = messageService.messageDecrypter.copy(message: m, copyAttachments: action == .forward, context: self.composerContext!)
                 self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     self.message?.action = action.rawValue as NSNumber?
