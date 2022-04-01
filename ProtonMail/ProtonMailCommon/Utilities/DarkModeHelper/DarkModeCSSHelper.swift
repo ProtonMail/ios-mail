@@ -44,6 +44,14 @@ struct HSLA {
     let l: Int
     // alpha, [0%, 100%] or [0.0, 1.0]
     let a: CGFloat
+
+    var isDark: Bool {
+        l < 50
+    }
+
+    var isLight: Bool {
+        !isDark
+    }
 }
 
 struct CSSMagic {
@@ -230,6 +238,10 @@ struct CSSMagic {
             return .notSupport
         }
 
+        if htmlString.contains(check: "!important") {
+            return .notSupport
+        }
+
         guard let document = CSSMagic.parse(htmlString: htmlString) else {
             return .notSupport
         }
@@ -251,17 +263,9 @@ struct CSSMagic {
            content.contains(check: "color-scheme") {
             return .nativeSupport
         }
-        // If the message contains a table, we assume that the message content is complex and not supporting dark mode
-        if let table = try? document.body()?.select("table"),
-           let content = try? table.outerHtml(),
-           !content.isEmpty {
-            return .notSupport
-        }
-        // If the HTML content is deep, we assume that the message content is complex and not supporting dark mode
-        if let maxDepth = document.body()?.getMaxDepth(),
-           maxDepth > 15 {
-            return .notSupport
-        }
+        // The last condition is contrast between foreground and background
+        // But the calculation is not easy to do here
+        // Move the check to `hasGoodContrast(attributes:)` during generate dark mode css
         return .protonSupport
     }
 
@@ -273,11 +277,15 @@ struct CSSMagic {
             return ""
         }
         let styleCSS = CSSMagic.getStyleCSS(from: document)
-        let styleDict = CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS)
+        guard let styleDict = CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS) else {
+            return ""
+        }
         let newStyleCSS = CSSMagic.assemble(cssDict: styleDict)
 
         let colorNodes = CSSMagic.getColorNodes(from: document)
-        let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes)
+        guard let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes) else {
+            return ""
+        }
         let inlineCSS = CSSMagic.assemble(cssDict: cssDict)
 
         let css = newStyleCSS + inlineCSS
@@ -324,7 +332,10 @@ extension CSSMagic {
         return nodes
     }
 
-    static func getDarkModeCSSDictFrom(styleCSS: [String]) -> [String: [String]] {
+    /// Get dark mode style css from <style> contents
+    /// - Parameter styleCSS: <style> contents
+    /// - Returns: dark mode style css or `nil` if it doesn't have good contrast
+    static func getDarkModeCSSDictFrom(styleCSS: [String]) -> [String: [String]]? {
         var result: [String: [String]] = [:]
         let flattenCSS = styleCSS.flatMap({ $0.split(separator: "}") })
         for css in flattenCSS {
@@ -334,25 +345,41 @@ extension CSSMagic {
                   let selectorKey = data.first,
                   let selectorValue = data.last else { continue }
             let attributes = CSSMagic.splitInline(attributes: selectorValue)
+            guard hasGoodContrast(attributes: attributes) else {
+                return nil
+            }
             let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
             result[selectorKey] = newAttributes
         }
         return result
     }
 
-    static func getDarkModeCSSDict(for colorNodes: [Element]) -> [String: [String]] {
+    /// Get dark mode style css for each html nodes
+    /// - Parameter colorNodes: nodes that contains color related attributes
+    /// - Returns: dark mode css style or `nil` if one of nodes doesn't have good contrast
+    static func getDarkModeCSSDict(for colorNodes: [Element]) -> [String: [String]]? {
         var darkModeCSS: [String: [String]] = [:]
+        var hasBadContrast = false
         for node in colorNodes {
-            let styleCSS = CSSMagic.getDarkModeCSS(from: node)
+            guard let styleCSS = CSSMagic.getDarkModeCSS(from: node) else {
+                hasBadContrast = true
+                break
+            }
             let anchor = CSSMagic.getCSSAnchor(of: node)
             guard styleCSS.isEmpty == false,
                   anchor.isEmpty == false else { continue }
             darkModeCSS[anchor] = styleCSS
         }
+        if hasBadContrast {
+            return nil
+        }
         return darkModeCSS
     }
-
-    static func getDarkModeCSS(from node: Element) -> [String] {
+    
+    /// Get dark mode css for the given html node
+    /// - Parameter node: html node
+    /// - Returns: dark mode css style or `nil` if it doesn't have good contrast
+    static func getDarkModeCSS(from node: Element) -> [String]? {
         do {
             let bgStyle = try node.attr(CSSKeys.bgColor.rawValue)
             let colorStyle = try node.attr(CSSKeys.color.rawValue)
@@ -364,10 +391,33 @@ extension CSSMagic {
             if colorStyle.isEmpty == false {
                 attributes.append((CSSKeys.color.rawValue, colorStyle))
             }
+            guard hasGoodContrast(attributes: attributes) else {
+                return nil
+            }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
             return []
         }
+    }
+
+    /// Check if the background and foreground has good contrast
+    /// Only see the brightness
+    /// Less than 128 is dark, equal or greater is light
+    /// - Parameter attributes: attributes array
+    /// - Returns: bool result
+    static func hasGoodContrast(attributes: [CSSMagic.CSSAttribute]) -> Bool {
+        let foregroundKey = CSSKeys.color.rawValue
+        let backgroundKeys = [CSSKeys.backgroundColor.rawValue,
+                              CSSKeys.bgColor.rawValue,
+                              CSSKeys.background.rawValue]
+        let foregroundStyle = attributes.first(where: {$0.key == foregroundKey})?.value ?? "#000"
+        let backgroundStyle = attributes.first(where: {backgroundKeys.contains($0.key)})?.value ?? "#fff"
+
+        let color = getHSLA(attribute: foregroundStyle) ?? HSLA(h: 0, s: 0, l: 100, a: 1)
+        let background = getHSLA(attribute: backgroundStyle) ?? HSLA(h: 0, s: 0, l: 0, a: 1)
+        let result = (color.isDark && (background.isLight || background.a == 0)) ||
+        (color.isLight && background.isDark)
+        return result
     }
 
     static func switchToDarkModeStyle(attributes: [CSSMagic.CSSAttribute]) -> [String] {
@@ -395,10 +445,8 @@ extension CSSMagic {
         return cssDict.map({ "\($0.key): \($0.value)"})
     }
 
-    /// - Parameter color: CSS color representation, could be rgba, hex...etc
-    /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
-    static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
-        var color = color
+    static func getHSLA(attribute: String) -> HSLA? {
+        var color = attribute
         if color.contains("!important") {
             color = color.preg_replace("!important", replaceto: "")
         }
@@ -420,12 +468,15 @@ extension CSSMagic {
             }
             hsla = CSSMagic.getHSLA(from: r, g: g, b: b, a: a)
         }
+        return hsla
+    }
 
-        if let hsla = hsla {
-            return CSSMagic.hslaForDarkMode(hsla: hsla,
-                                            isForeground: isForeground)
-        }
-        return nil
+    /// - Parameter color: CSS color representation, could be rgba, hex...etc
+    /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
+    static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
+        guard let hsla = getHSLA(attribute: color) else { return nil }
+        return CSSMagic.hslaForDarkMode(hsla: hsla,
+                                        isForeground: isForeground)
     }
 }
 
@@ -571,8 +622,8 @@ extension CSSMagic {
      - Parameter hsl: hsl(128, 100%, 100%), hsla(128, 100%, 100%, 0.5)
      - Returns: HSLA
      */
-    static func getHSLA(from hsl: String) -> HSLA? {
-        guard let values = CSSMagic.split(from: hsl) else { return nil }
+    static func getHSLA(from hslString: String) -> HSLA? {
+        guard let values = CSSMagic.split(from: hslString) else { return nil }
 
         guard let h = Int(values[safe: 0] ?? ""),
               let sValue = CSSMagic.getNormalizeFloat(from: values[safe: 1] ?? ""),
@@ -718,16 +769,5 @@ extension SwiftSoup.Node {
             childNodes.append(contentsOf: subNodes)
         }
         return result.compactMap({ $0 as? Element })
-    }
-
-    func getMaxDepth() -> Int {
-        var maxDepth = 0
-        for node in self.getChildNodes() {
-            let depth = node.getMaxDepth()
-            if depth > maxDepth {
-                maxDepth = depth
-            }
-        }
-        return maxDepth + 1
     }
 }
