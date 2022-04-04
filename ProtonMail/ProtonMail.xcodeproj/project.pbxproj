@@ -20,6 +20,7 @@
 		00EFE45C8B2948B4637C83827EC8D1EB /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED74BB5412B24D36973513E2112C7A4 /* Snapshot.swift */; };
 		00FBD94F0674FE0C9BFEC63333854621 /* ComposeToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FF4627458C0ABD67AA4C1C07A4DA3B /* ComposeToolbar.swift */; };
 		014660B812ED7A6C427DB25310D7E2DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */; };
+		01587467F6903181BC48FDEE7DF30F1C /* DocumentAttachmentProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05031F221BD51C0CDF8F03FD910AA4 /* DocumentAttachmentProviderTests.swift */; };
 		01A003E22FA8A27A8BFCA02B1958BF8A /* UserInfo+LocalFeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F9223976A3BCE789D7C5F4CF945F98 /* UserInfo+LocalFeatureFlags.swift */; };
 		01A1386B265738407A1A6468BD8BDA35 /* AttachReminderHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC83ED41CB6A233342137A6D4E14750D /* AttachReminderHelper.swift */; };
 		01A4B564ADBEDA3585ACC96D90BF2824 /* AccessibleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3013005B4B7D91E90B2977862424351 /* AccessibleCell.swift */; };
@@ -3915,6 +3916,7 @@
 		B8E0D2B5CF12579C2B54BCEB3F3000A8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B9641B0F5DFC7197F7EE10F8BDB23543 /* HumanCheckStatusProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanCheckStatusProviderProtocol.swift; sourceTree = "<group>"; };
 		B9B225A3C4678DA7A1ECC7ACCE601B71 /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
+		BA05031F221BD51C0CDF8F03FD910AA4 /* DocumentAttachmentProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProviderTests.swift; sourceTree = "<group>"; };
 		BA2AD6935E03E7F5A62A7F6A2EA6F875 /* ContactGroupMutiSelectViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupMutiSelectViewModelImpl.swift; sourceTree = "<group>"; };
 		BA2CE38D76CFB682CFC1607938540EF8 /* MockQueueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockQueueHandler.swift; sourceTree = "<group>"; };
 		BA3D307B748054D9D0DBE3C0067E5C53 /* SettingsGeneralCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneralCell.swift; sourceTree = "<group>"; };
@@ -6404,6 +6406,14 @@
 			path = Mailbox;
 			sourceTree = "<group>";
 		};
+		04DDC6422A8CD97A0F43681F783ACF19 /* Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				BA05031F221BD51C0CDF8F03FD910AA4 /* DocumentAttachmentProviderTests.swift */,
+			);
+			path = Attachments;
+			sourceTree = "<group>";
+		};
 		A4E6950CC27E649B63D5F2E0DA207348 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -7142,6 +7152,7 @@
 		E1651AE2B8EE9AB5BB9021B46B586ADC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				04DDC6422A8CD97A0F43681F783ACF19 /* Attachments */,
 				A9B19BEE5245E24F7E9530A46B09706D /* Composer */,
 				F4890F10F2BD6B401EBD5BEC23C42CA4 /* IAP */,
 				22FAE090B3BF2C29B0C3E799352D02D7 /* ConversationViewControllerTests.swift */,
@@ -9114,6 +9125,7 @@
 				C8D9D4E495D8D4C1811258A659D668C4 /* DateFormatter+VCardBirthdayTextFormatterTests.swift in Sources */,
 				74EC73F47EF051863D1007C6DF2A1055 /* DeepLinkTest.swift in Sources */,
 				69621C82AFE0EEB8C05EC1D4299C1925 /* Dictionary_ExtensionTests.swift in Sources */,
+				01587467F6903181BC48FDEE7DF30F1C /* DocumentAttachmentProviderTests.swift in Sources */,
 				A13CF12EACAEFDC06CD59EB4B91E5B03 /* DohStub.swift in Sources */,
 				C73BF57E9E8333A74C0FEC98C9E58F94 /* EmailListTestData.swift in Sources */,
 				B42607E6F9DEB156FF62EEB6BA546990 /* EncryptionKitProviderMock.swift in Sources */,
