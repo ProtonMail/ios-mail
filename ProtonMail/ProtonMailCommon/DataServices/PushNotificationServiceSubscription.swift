@@ -22,12 +22,16 @@
 
 import Foundation
 
+protocol SubscriptionsPackProtocol {
+    func encryptionKit(forUID uid: String) -> EncryptionKit?
+}
+
 extension PushNotificationService {
     enum SubscriptionState: String, Codable {
         case notReported, pending, reported
     }
 
-    class SubscriptionsPack {
+    class SubscriptionsPack: SubscriptionsPackProtocol {
         init(_ subSaver: Saver<Set<SubscriptionWithSettings>>,
              _ encSaver: Saver<Set<SubscriptionSettings>>,
              _ outSaver: Saver<Set<SubscriptionSettings>>) {

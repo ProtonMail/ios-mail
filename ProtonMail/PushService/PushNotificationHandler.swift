@@ -25,69 +25,49 @@ protocol EncryptionKitProvider {
 extension PushNotificationDecryptor: EncryptionKitProvider {}
 
 final class PushNotificationHandler {
-    var contentHandler: ((UNNotificationContent) -> Void)?
-    var bestContent: UNMutableNotificationContent?
-    var pingBody: NotificationPingBackBody?
 
-    func handle(session: URLSessionProtocol = URLSession.shared,
-                request: UNNotificationRequest,
-                encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor(),
-                contentHandler: @escaping (UNNotificationContent) -> Void) {
-        (bestContent, pingBody) = prepareForHandling(session: session, request: request, contentHandler: contentHandler)
-        let deviceToken = "\(pingBody?.deviceToken ?? "")"
-        SystemLogger.log(message: #function, redactedInfo: "device token \(deviceToken)", category: .pushNotification)
+    private enum PushManagementUnexpected: Error {
+        case error(description: String, sensitiveInfo: String?)
+    }
 
+    private var contentHandler: ((UNNotificationContent) -> Void)?
+    private var bestContent: UNMutableNotificationContent?
+    private var pingBody: NotificationPingBackBody?
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies = Dependencies()) {
+        self.dependencies = dependencies
+    }
+
+    func handle(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
+        SystemLogger.log(message: #function, category: .pushNotification)
+
+        (bestContent, pingBody) = prepareForHandling(request: request, contentHandler: contentHandler)
         guard let bestContent = bestContent else { return }
 
-        guard let UID = bestContent.userInfo["UID"] as? String else {
-            #if Enterprise
-            bestContent.body = "without UID"
-            #endif
-            sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
-            return
-        }
-
-        bestContent.threadIdentifier = UID
-
-        userCachedStatus.hasMessageFromNotification = true
-
-        guard let encryptionKit = encryptionKitProvider.encryptionKit(forSession: UID) else {
-//            encryptionKitProvider.markForUnsubscribing(uid: UID)  // Uncomment when the APN decryption bug is fixed MAILIOS-2230
-            SharedUserDefaults().setNeedsToRegisterAgain(for: UID)
-            #if Enterprise
-            bestContent.body = "no encryption kit for UID"
-            #endif
-            sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
-            return
-        }
-
-        guard let encrypted = bestContent.userInfo["encryptedMessage"] as? String else {
-            #if Enterprise
-            bestContent.body = "no encrypted message in push"
-            #endif
-            sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
-            return
-        }
-
         do {
-            let plaintext = try Crypto().decrypt(encrypted: encrypted,
-                                                 privateKey: encryptionKit.privateKey,
-                                                 passphrase: encryptionKit.passphrase)
-            guard let push = PushData.parse(with: plaintext) else {
-                #if Enterprise
-                bestContent.body = "failed to decrypt"
-                #endif
-                sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
-                return
-            }
+            let payload = try pushNotificationPayload(userInfo: bestContent.userInfo)
+            let uid = try uid(in: payload)
+            bestContent.threadIdentifier = uid
+            userCachedStatus.hasMessageFromNotification = true
+
+            let encryptionKit = try encryptionKit(for: uid)
+            let decryptedMessage = try decryptMessage(in: payload, encryptionKit: encryptionKit)
+            let pushContent = try parseContent(with: decryptedMessage)
             pingBody?.decrypted = true
-            populateNotification(content: bestContent, pushData: push, userId: UID)
+
+            populateNotification(content: bestContent, pushContent: pushContent)
+            updateBadge(content: bestContent, payload: payload, pushData: pushContent.data, userId: uid)
+
+        } catch let PushManagementUnexpected.error(message, redacted) {
+            logPushNotificationError(message: message, redactedInfo: redacted)
+
         } catch {
-            #if Enterprise
-            bestContent.body = "error: \(error.localizedDescription)"
-            #endif
+            logPushNotificationError(message: "unknown error handling push")
+
         }
-        sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
+        sendPushPingBack(with: dependencies.urlSession, body: pingBody) { contentHandler(bestContent) }
     }
 
     func willTerminate(session: URLSessionProtocol = URLSession.shared) {
@@ -98,18 +78,73 @@ final class PushNotificationHandler {
             sendPushPingBack(with: session, body: pingBody) { contentHandler(bestContent) }
         }
     }
+}
 
-    private func prepareForHandling(session: URLSessionProtocol,
-                                    request: UNNotificationRequest,
-                                    contentHandler: @escaping (UNNotificationContent) -> Void)
-    -> (UNMutableNotificationContent?, NotificationPingBackBody) {
+// MARK: Private
+
+private extension PushNotificationHandler {
+
+    private func pushNotificationPayload(userInfo: [AnyHashable: Any]) throws -> PushNotificationPayload {
+        do {
+            return try PushNotificationPayload(userInfo: userInfo)
+        } catch {
+            let redactedInfo = String(describing: error)
+            throw PushManagementUnexpected.error(description: "Fail parsing push payload.", sensitiveInfo: redactedInfo)
+        }
+    }
+
+    private func uid(in payload: PushNotificationPayload) throws -> String {
+        guard let uid = payload.uid else {
+            throw PushManagementUnexpected.error(description: "uid not found in payload", sensitiveInfo: nil)
+        }
+        return uid
+    }
+
+    private func encryptionKit(for uid: String) throws -> EncryptionKit {
+        guard let encryptionKit = dependencies.encryptionKitProvider.encryptionKit(forSession: uid) else {
+            // encryptionKitProvider.markForUnsubscribing(uid: UID) // Uncomment when decryption bug fixed MAILIOS-2230
+            SharedUserDefaults().setNeedsToRegisterAgain(for: uid)
+            throw PushManagementUnexpected.error(description: "no encryption kit for uid", sensitiveInfo: "uid \(uid)")
+        }
+        return encryptionKit
+    }
+
+    private func decryptMessage(in payload: PushNotificationPayload, encryptionKit: EncryptionKit) throws -> String {
+        guard let encryptedMessage = payload.encryptedMessage else {
+            throw PushManagementUnexpected.error(description: "no encrypted message in payload", sensitiveInfo: nil)
+        }
+        do {
+            return try Crypto().decrypt(
+                encrypted: encryptedMessage,
+                privateKey: encryptionKit.privateKey,
+                passphrase: encryptionKit.passphrase
+            )
+        } catch {
+            let sensitiveInfo = "error: \(error.localizedDescription)"
+            throw PushManagementUnexpected.error(description: "fail decrypting data", sensitiveInfo: sensitiveInfo)
+        }
+    }
+
+    private func parseContent(with decryptedText: String) throws -> PushContent {
+        do {
+            return try PushContent(json: decryptedText)
+        } catch {
+            let redactedInfo = String(describing: error)
+            throw PushManagementUnexpected.error(description: "fail parsing push content", sensitiveInfo: redactedInfo)
+        }
+    }
+
+    private func prepareForHandling(
+        request: UNNotificationRequest,
+        contentHandler: @escaping (UNNotificationContent) -> Void
+    ) -> (UNMutableNotificationContent?, NotificationPingBackBody) {
         let deviceToken = PushNotificationDecryptor.deviceTokenSaver.get() ?? "unknown"
         let pingBackBody = NotificationPingBackBody(notificationId: request.identifier,
                                                     deviceToken: deviceToken,
                                                     decrypted: false)
         self.contentHandler = contentHandler
         guard let mutableContent = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
-            sendPushPingBack(with: session, body: pingBackBody) { contentHandler(request.content) }
+            sendPushPingBack(with: dependencies.urlSession, body: pingBackBody) { contentHandler(request.content) }
             return (nil, pingBackBody)
         }
         mutableContent.body = "You received a new message!"
@@ -120,16 +155,22 @@ final class PushNotificationHandler {
         return (mutableContent, pingBackBody)
     }
 
-    private func populateNotification(content: UNMutableNotificationContent, pushData: PushData, userId UID: String) {
+    private func populateNotification(content: UNMutableNotificationContent, pushContent: PushContent) {
+        let pushData = pushContent.data
         content.title = pushData.sender.name.isEmpty ? pushData.sender.address : pushData.sender.name
         content.body = pushData.body
+    }
 
-        if userCachedStatus.primaryUserSessionId == UID {
-            if content.userInfo["viewMode"] as? Int == 0,
-               let unread = content.userInfo["unreadConversations"] as? Int { // conversation
+    private func updateBadge(
+        content: UNMutableNotificationContent,
+        payload: PushNotificationPayload,
+        pushData: PushData,
+        userId: String
+    ) {
+        if userCachedStatus.primaryUserSessionId == userId {
+            if payload.viewMode == 0, let unread = payload.unreadConversations { // conversation
                 content.badge = NSNumber(value: unread)
-            } else if content.userInfo["viewMode"] as? Int == 1,
-                      let unread = content.userInfo["unreadMessages"] as? Int { // single message
+            } else if payload.viewMode == 1, let unread = payload.unreadMessages { // single message
                 content.badge = NSNumber(value: unread)
             } else if pushData.badge > 0 {
                 content.badge = NSNumber(value: pushData.badge)
@@ -151,6 +192,25 @@ final class PushNotificationHandler {
         session.dataTask(with: request) { _, _, _ in
             completion()
         }.resume()
+    }
+
+    private func logPushNotificationError(message: String, redactedInfo: String? = nil) {
+        SystemLogger.log(message: message, redactedInfo: redactedInfo, category: .pushNotification, isError: true)
+    }
+}
+
+extension PushNotificationHandler {
+    struct Dependencies {
+        let urlSession: URLSessionProtocol
+        let encryptionKitProvider: EncryptionKitProvider
+
+        init(
+            urlSession: URLSessionProtocol = URLSession.shared,
+            encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor()
+        ) {
+            self.urlSession = urlSession
+            self.encryptionKitProvider = encryptionKitProvider
+        }
     }
 }
 

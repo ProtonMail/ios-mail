@@ -46,6 +46,19 @@ class LocalNotificationService: LocalNotificationHandler, Service {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
         case sessionRevoked = "LocalNotificationService.Categories.sessionRevoked"
+
+        func payload() -> [AnyHashable: Any] {
+            return [
+                "localNotification": true,
+                "category": self.rawValue
+            ]
+        }
+
+        func payload(with messageId: String) -> [AnyHashable: Any] {
+            var payload = payload()
+            payload["message_id"] = messageId
+            return payload
+        }
     }
 
     struct MessageSendingDetails {
@@ -81,8 +94,7 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         content.subtitle = details.subtitle
         content.body = details.error
         content.categoryIdentifier = Categories.failedToSend.rawValue
-        content.userInfo = ["message_id": details.messageID,
-                            "category": Categories.failedToSend.rawValue]
+        content.userInfo = Categories.failedToSend.payload(with: details.messageID)
 
         let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: details.messageID, content: content, trigger: timeout)
@@ -107,7 +119,7 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         let content = UNMutableNotificationContent()
         content.title = String(format: LocalString._token_revoke_noti_title, email)
         content.body = LocalString._token_revoke_noti_body
-        content.userInfo = ["category": Categories.sessionRevoked.rawValue]
+        content.userInfo = Categories.sessionRevoked.payload()
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         notificationHandler.add(request, withCompletionHandler: nil)

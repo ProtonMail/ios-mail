@@ -48,6 +48,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     private let deviceTokenSaver: Saver<String>
     private let sharedUserDefaults = SharedUserDefaults()
     private let notificationCenter: NotificationCenter
+    private let navigationResolver: PushNavigationResolver
 
     private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
 
@@ -71,6 +72,10 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         self.unlockProvider = unlockProvider
         self.latestDeviceToken = KeychainWrapper.keychain.string(forKey: PushNotificationDecryptor.Key.deviceToken)
         self.notificationCenter = notificationCenter
+        self.navigationResolver = PushNavigationResolver(
+            dependencies: PushNavigationResolver.Dependencies(subscriptionsPack: currentSubscriptions)
+        )
+
         super.init()
 
         defer {
@@ -252,7 +257,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     func processCachedLaunchOptions() {
         if let options = self.launchOptions {
-            self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { })
+            self.didReceiveRemoteNotification(options, completionHandler: { })
         }
     }
 
@@ -262,86 +267,47 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
     // MARK: - notifications
 
-    func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
-                                             forceProcess: Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
-        guard sharedServices.get(by: UsersManager.self).hasUsers(), UnlockManager.shared.isUnlocked() else {
+    private func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
+        guard
+            let payload = pushNotificationPayload(userInfo: userInfo),
+            shouldHandleNotification(payload: payload)
+        else {
             completionHandler()
             return
         }
-
-        guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
-            let user = sharedServices.get(by: UsersManager.self).getUser(by: uidFromPush) else
-        {
-            handleLocalNoification(userInfo)
+        launchOptions = nil
+        navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
+            self?.notificationCenter.post(name: .switchView, object: deeplink)
             completionHandler()
-            return
-        }
-
-        self.launchOptions = nil
-
-        user.messageService.fetchNotificationMessageDetail(messageid) { [weak self] (task, response, message, error) -> Void in
-            guard error == nil else {
-                completionHandler()
-                return
-            }
-
-            switch userInfo["category"] as? String {
-            case .some(LocalNotificationService.Categories.sessionRevoked.rawValue):
-                break
-            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
-                self?.notificationCenter.post(name: .switchView, object: link)
-            default:
-                let coreDataService = sharedServices.get(by: CoreDataService.self)
-                let message = Message.messageForMessageID(messageid, inManagedObjectContext: coreDataService.mainContext)
-                let firstValidFolder = message?.firstValidFolder()
-
-                user.messageService.pushNotificationMessageID = messageid
-                let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
-                link.append(.init(name: String(describing: MailboxViewController.self), value: firstValidFolder))
-                link.append(.init(name: MailboxCoordinator.Destination.details.rawValue, value: messageid))
-                self?.notificationCenter.post(name: .switchView, object: link)
-            }
-            completionHandler()
-        }
-    }
-
-    private func handleLocalNoification(_ userInfo: [AnyHashable: Any]) {
-        switch userInfo["category"] as? String {
-        case .some(LocalNotificationService.Categories.sessionRevoked.rawValue):
-            let link = DeepLink("toAccountManager", sender: nil)
-            notificationCenter.post(name: .switchView, object: link)
-            break
-        default:
-            break
         }
     }
 
     // MARK: - Private methods
-    private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        if let encrypted = userInfo["encryptedMessage"] as? String,
-            let uid = userInfo["UID"] as? String { // new pushes
-            guard let encryptionKit = self.currentSubscriptions.encryptionKit(forUID: uid) else {
-                assert(false, "no encryption kit fround")
-                return nil
-            }
-            do {
-                guard let plaintext = try encrypted.decryptMessageWithSinglKey(encryptionKit.privateKey, passphrase: encryptionKit.passphrase) else {
-                    return nil
-                }
-                guard let push = PushData.parse(with: plaintext) else {
-                    return nil
-                }
-                return push.messageId
-            } catch {
-                return nil
-            }
-        } else if let messageArray = userInfo["message_id"] as? NSArray { // old pushes
-            return messageArray.firstObject as? String
-        } else { // local notifications
-            return userInfo["message_id"] as? String
+
+    private func pushNotificationPayload(userInfo: [AnyHashable: Any]) -> PushNotificationPayload? {
+        do {
+            return try PushNotificationPayload(userInfo: userInfo)
+        } catch {
+            let message = "Fail parsing push payload."
+            let info = String(describing: error)
+            SystemLogger.log(message: message, redactedInfo: info, category: .pushNotification, isError: true)
+            return nil
         }
+    }
+
+    private func shouldHandleNotification(payload: PushNotificationPayload) -> Bool {
+        guard sharedServices.get(by: UsersManager.self).hasUsers() && UnlockManager.shared.isUnlocked() else {
+            return false
+        }
+        return payload.isLocalNotification || (!payload.isLocalNotification && isUserManagerReady(payload: payload))
+    }
+
+    /// Given how the application logic sets up some services at launch time, when a push notification awakes the app, UserManager might
+    /// not be set up yet, even with an authenticated user. This function is a patch to be sure UserManager is ready when the app has been
+    /// launched by a remote notification being tapped by the user.
+    private func isUserManagerReady(payload: PushNotificationPayload) -> Bool {
+        guard let uid = payload.uid else { return false }
+        return sharedServices.get(by: UsersManager.self).getUser(by: uid) != nil
     }
 }
 
@@ -351,7 +317,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if UnlockManager.shared.isUnlocked() { // unlocked
-            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+            self.didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
         } else if UIApplication.shared.applicationState == .inactive { // opened by push
             self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
         } else {

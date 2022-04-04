@@ -22,11 +22,33 @@
 
 import Foundation
 
+enum RemoteNotificationType: String, Codable {
+    case email
+    case openUrl = "open_url"
+}
+
+/// This model represents the part of a remote push notification that comes encrypted
+struct PushContent: Codable {
+    let data: PushData
+    let type: String?
+    let version: Int?
+
+    var remoteNotificationType: RemoteNotificationType? {
+        guard let type = type else { return nil }
+        return RemoteNotificationType(rawValue: type)
+    }
+
+    init(json: String) throws {
+        self = try JSONDecoder().decode(PushContent.self, from: Data(json.utf8))
+    }
+}
+
 struct PushData: Codable {
     let badge: Int
     let body: String
     let sender: Sender
     let messageId: String
+    let url: URL?
     // Unused on iOS fields:
     //    let title: String
     //    let subtitle: String
@@ -34,19 +56,4 @@ struct PushData: Codable {
     //    let sound: Int
     //    let largeIcon: String
     //    let smallIcon: String
-
-    static func parse(with json: String) -> PushData? {
-        guard let data = json.data(using: .utf8),
-            let push = try? JSONDecoder().decode(Push.self, from: data) else {
-            return nil
-        }
-        return push.data
-    }
-}
-
-struct Push: Codable {
-    let data: PushData
-    // Unused on iOS fields
-    //    let type: String
-    //    let version: Int
 }
