@@ -45,6 +45,7 @@ class LocalNotificationServiceTests: XCTestCase {
         XCTAssertEqual(content.title, String(format: LocalString._token_revoke_noti_title, "test@test.com"))
         XCTAssertEqual(content.body, LocalString._token_revoke_noti_body)
         XCTAssertEqual(content.userInfo["category"] as? String, LocalNotificationService.Categories.sessionRevoked.rawValue)
+        XCTAssertEqual(content.userInfo["localNotification"] as? Bool, true)
     }
 
     func testScheduleMessageSendingFailedNotification() throws {
@@ -60,6 +61,7 @@ class LocalNotificationServiceTests: XCTestCase {
         XCTAssertEqual(content.categoryIdentifier, LocalNotificationService.Categories.failedToSend.rawValue)
         XCTAssertEqual(content.userInfo["message_id"] as? String, detail.messageID)
         XCTAssertEqual(content.userInfo["category"] as? String, LocalNotificationService.Categories.failedToSend.rawValue)
+        XCTAssertEqual(content.userInfo["localNotification"] as? Bool, true)
 
         let trigger = try XCTUnwrap(argument.first.trigger as? UNTimeIntervalNotificationTrigger)
         XCTAssertFalse(trigger.repeats)

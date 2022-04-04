@@ -18,6 +18,10 @@ extension String {
         return "toWebSupportForm"
     }
 
+    static var toWebBrowser: String {
+        return "toWebBrowser"
+    }
+
     static var webSupportFormLink: String {
         return "https://protonmail.com/support-form"
     }

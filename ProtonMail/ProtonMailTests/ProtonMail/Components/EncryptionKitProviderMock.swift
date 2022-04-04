@@ -20,6 +20,7 @@ import Foundation
 
 final class EncryptionKitProviderMock: EncryptionKitProvider {
     static let UID = "mockUID"
+    var UID: String { EncryptionKitProviderMock.UID }
     private let passphrase = "39FA7B74-C560-4E56-A427-B3B2D59FCC5C"
     private let privateKey = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----

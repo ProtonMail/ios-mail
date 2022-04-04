@@ -24,6 +24,7 @@ import Foundation
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
+import SafariServices
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
 private class PlaceholderVC: UIViewController {
@@ -462,15 +463,52 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
 
+    private func shouldOpenURL(deepLink: DeepLink?) -> URL? {
+        guard let headNode = deepLink?.head else { return nil }
+
+        if headNode.name == .toWebSupportForm {
+            return URL(string: .webSupportFormLink)
+        }
+        if headNode.name == .toWebBrowser {
+            guard let urlString = headNode.value else {
+                return nil
+            }
+            return URL(string: urlString)
+        }
+        return nil
+    }
+
+    private func handleWebUrl(url: URL) {
+        let linkOpener: LinkOpener = userCachedStatus.browser
+        if linkOpener == .inAppSafari, let url = linkOpener.deeplink(to: url) {
+            presentInAppSafari(url: url)
+        } else {
+            openUrl(url)
+        }
+    }
+
+    private func openUrl(_ url: URL) {
+        guard UIApplication.shared.canOpenURL(url) else {
+            SystemLogger.log(message: "url can't be opened by the system", redactedInfo: url.absoluteString, isError: true)
+            return
+        }
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    private func presentInAppSafari(url: URL) {
+        let safari = SFSafariViewController(url: url)
+        DispatchQueue.main.async { [weak self] in
+            self?.appWindow.topmostViewController()?.present(safari, animated: true)
+        }
+    }
+
     private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
         self.deeplink = deepLink
-        if let head = deepLink?.head,
-           head.name == .toWebSupportForm,
-           let url = URL(string: .webSupportFormLink) {
+        if let url = shouldOpenURL(deepLink: deepLink) {
             self.deeplink = nil
-            DispatchQueue.main.async {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
+            handleWebUrl(url: url)
             return
         }
         guard arePrimaryUserSettingsFetched && appWindow != nil else {
