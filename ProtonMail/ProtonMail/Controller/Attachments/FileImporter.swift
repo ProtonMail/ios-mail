@@ -51,9 +51,9 @@ extension FileImporter {
 
             // TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
             if let url = item as? URL {
-                self.documentAttachmentProvider.process(fileAt: url).ensure {
+                documentAttachmentProvider.process(fileAt: url) {
                     handler()
-                }.cauterize()
+                }
             } else if let img = item as? UIImage {
                 self.imageAttachmentProvider.process(original: img).ensure {
                     handler()
