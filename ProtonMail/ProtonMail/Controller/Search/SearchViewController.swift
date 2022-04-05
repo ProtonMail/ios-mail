@@ -511,10 +511,8 @@ extension SearchViewController {
     private func showComposer(message: Message) {
         let viewModel = self.viewModel.getComposeViewModel(message: message)
         guard let navigationController = self.navigationController else { return }
-        let composerVM = ComposeContainerViewModel(editorViewModel: viewModel,
-                                                   uiDelegate: nil)
-        let coordinator = ComposeContainerViewCoordinator(nav: navigationController,
-                                                          viewModel: composerVM,
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
+                                                          editorViewModel: viewModel,
                                                           services: ServiceFactory.default)
         coordinator.start()
     }

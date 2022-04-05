@@ -102,11 +102,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentCompose(with contact: ContactVO) {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
         let viewModel = ContainableComposeViewModel(
             msg: nil,
             action: .newDraft,
@@ -116,9 +111,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         )
         viewModel.addToContacts(contact)
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
     }
 
     private func presentAddContacts(with contact: ContactVO) {
@@ -142,12 +135,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private func presentCompose(action: SingleMessageNavigationAction) {
         guard action.isReplyAllAction || action.isReplyAction || action.isForwardAction else { return }
 
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
-
         let composeAction: ComposeMessageAction
         switch action {
         case .reply:
@@ -168,17 +155,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
     }
 
     private func presentExistedCompose(messageID: String) {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
         let context = coreDataService.mainContext
         guard let message = user.messageService.fetchMessages(withIDs: [messageID], in: context).first else {
             return
@@ -192,10 +172,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
         delay(1) {
-            self.viewController?.present(destination, animated: true, completion: nil)
+            self.presentCompose(viewModel: viewModel)
         }
     }
 
@@ -225,11 +203,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     private func presentCompose(mailToURL: URL) {
         guard let mailToData = mailToURL.parseMailtoLink() else { return }
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
 
         let coreDataService = sharedServices.get(by: CoreDataService.self)
         let viewModel = ContainableComposeViewModel(msg: nil,
@@ -258,9 +231,13 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             viewModel.setBody(body)
         }
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
+    }
+
+    private func presentCompose(viewModel: ContainableComposeViewModel) {
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
+                                                          editorViewModel: viewModel)
+        coordinator.start()
     }
 
     private func presentCreateFolder(type: PMLabelType) {

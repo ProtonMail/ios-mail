@@ -90,6 +90,11 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         NotificationCenter.default.removeObserver(self)
     }
 
+    // for some reason this is needed; otherwise the setter crashes on unrecognized selector
+    override func set(viewModel: ComposeViewModel) {
+        super.set(viewModel: viewModel)
+    }
+
     override func caretMovedTo(_ offset: CGPoint) {
         self.stopInertia()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in

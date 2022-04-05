@@ -68,11 +68,10 @@ class ShareUnlockCoordinator: PushCoordinator {
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataContextProvider: coreDataService)
-        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
-        navigationController.setViewControllers([next], animated: true)
+        let editorViewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user, coreDataContextProvider: coreDataService)
+
+        let coordinator = ComposeContainerViewCoordinator(embeddingController: navigationController, editorViewModel: editorViewModel, services: self.services)
+        coordinator.start()
     }
 
     func go(dest: Destination) {

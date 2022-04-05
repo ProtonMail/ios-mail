@@ -43,8 +43,6 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
     @IBOutlet private var removeView: UIView!
     @IBOutlet private var removeIcon: UIImageView!
     @IBOutlet private var removeLabel: UILabel!
-    @IBOutlet private var removeViewbottom: NSLayoutConstraint!
-    @IBOutlet private var scrollViewBottom: NSLayoutConstraint!
     @IBOutlet private weak var scrollView: UIScrollView!
 
     private weak var delegate: ComposePasswordDelegate?
@@ -56,11 +54,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
                          confirmPassword: String,
                          hint: String,
                          delegate: ComposePasswordDelegate?) -> ComposePasswordVC {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        let identifier = String(describing: ComposePasswordVC.self)
-        guard let passwordVC = board.instantiateViewController(withIdentifier: identifier) as? ComposePasswordVC else {
-            return ComposePasswordVC()
-        }
+        let passwordVC = Self(nibName: nil, bundle: nil)
         passwordVC.encryptionPassword = password
         passwordVC.encryptionConfirmPassword = confirmPassword
         passwordVC.encryptionPasswordHint = hint

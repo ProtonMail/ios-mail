@@ -49,11 +49,12 @@ private enum ComposerCell: String {
     }
 }
 
-class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, CoordinatedNew, ViewModelProtocol, BannerPresenting, AccessibleView {
+class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, BannerPresenting, AccessibleView {
 
-    @IBOutlet weak var tableView: UITableView!
+    let tableView = UITableView()
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
+
     func configureNavigationBar() {
         ProtonMailViewController.configureNavigationBar(self)
     }
@@ -64,15 +65,32 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     // new code
 
-    private(set) var viewModel: ViewModel!
-    private(set) var coordinator: Coordinator!
+    let viewModel: ViewModel
+    let coordinator: Coordinator
     private var contentOffsetToPerserve: CGPoint = .zero
+
+    init(viewModel: ViewModel, coordinator: Coordinator) {
+        self.viewModel = viewModel
+        self.coordinator = coordinator
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        addSubviews()
+        setUpLayout()
+
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
 
         // table view
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.header.rawValue)
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.body.rawValue)
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.attachment.rawValue)
@@ -93,6 +111,19 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
             NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
         generateAccessibilityIdentifiers()
+    }
+
+    private func addSubviews() {
+        self.view.addSubview(self.tableView)
+    }
+
+    private func setUpLayout() {
+        [
+            self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ].activate()
     }
 
     deinit {
@@ -153,23 +184,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     // --
 
-    typealias coordinatorType = Coordinator
-    typealias viewModelType = ViewModel
-
-    func set(viewModel: ViewModel) {
-        self.viewModel = viewModel
-    }
-
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-
-    func set(coordinator: Coordinator) {
-        self.coordinator = coordinator
-    }
-
-    // --
-
     @objc func presentBanner(_ sender: BannerRequester) {
         #if !APP_EXTENSION
         guard UIApplication.shared.applicationState == .active else {
@@ -205,10 +219,10 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     }
 
     @objc internal func saveOffset() {
-        self.contentOffsetToPerserve = self.tableView?.contentOffset ?? .zero
+        self.contentOffsetToPerserve = self.tableView.contentOffset
     }
 
     @objc internal func restoreOffset() {
-        self.tableView?.setContentOffset(self.contentOffsetToPerserve, animated: false)
+        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
 }

@@ -43,7 +43,6 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
-    private let kToComposerSegue = "toComposer"
 
     func set(viewModel: ContactGroupDetailViewModel) {
         self.viewModel = viewModel
@@ -61,7 +60,20 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             LocalString._storage_exceeded.alertToastBottom()
             return
         }
-        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+
+        let user = self.viewModel.user
+        let viewModel = ContainableComposeViewModel(msg: nil,
+                                                    action: .newDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
+
+            let contactGroupVO = ContactGroupVO(ID: self.viewModel.getGroupID(), name: self.viewModel.getName())
+            contactGroupVO.selectAllEmailFromGroup()
+            viewModel.addToContacts(contactGroupVO)
+
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
+        coordinator.start()
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
@@ -153,24 +165,6 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 // TODO: handle error
                 return
             }
-        } else if segue.identifier == kToComposerSegue {
-            guard let nav = segue.destination as? UINavigationController,
-                let next = nav.viewControllers.first as? ComposeContainerViewController else {
-                return
-            }
-            let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil,
-                                                        action: .newDraft,
-                                                        msgService: user.messageService,
-                                                        user: user,
-                                                        coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
-            if let result = sender as? (String, String) {
-                let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
-                contactGroupVO.selectAllEmailFromGroup()
-                viewModel.addToContacts(contactGroupVO)
-            }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
 
         if #available(iOS 13, *) {
