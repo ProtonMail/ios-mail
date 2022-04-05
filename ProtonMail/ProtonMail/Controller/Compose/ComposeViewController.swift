@@ -28,13 +28,12 @@ import SideMenuSwift
 #endif
 import ProtonCore_DataModel
 
-class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
+class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelProtocol, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
-    typealias coordinatorType = ComposeCoordinator
 
     ///
     var viewModel: ComposeViewModel! // view model
-    private var coordinator: ComposeCoordinator?
+    private let coordinator: ComposeCoordinator
 
     ///  UI
     weak var headerView: ComposeHeaderViewController!
@@ -64,12 +63,13 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
         self.viewModel = viewModel
     }
 
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
+    init(coordinator: ComposeCoordinator) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
     }
 
-    func set(coordinator: ComposeCoordinator) {
-        self.coordinator = coordinator
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     ///
@@ -94,7 +94,6 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        assert(self.coordinator != nil)
         assert(self.viewModel != nil)
 
         self.prepareWebView()
@@ -410,7 +409,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             if viewModel.shouldShowExpirationWarning(havingPGPPinned: headerView.hasPGPPinned,
                                                   isPasswordSet: !encryptionPassword.isEmpty,
                                                   havingNonPMEmail: headerView.hasNonePMEmails) {
-                self.coordinator?.go(to: .expirationWarning)
+                self.coordinator.go(to: .expirationWarning)
                 return
             }
         }
@@ -631,7 +630,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
 
         // decrement number of attachments in message manually
         let realAttachments = userCachedStatus.realAttachments
-        if let number = self.viewModel.message?.attachments.compactMap { $0 as? Attachment }.filter({ attach in
+        if let number = self.viewModel.message?.attachments.compactMap({ $0 as? Attachment }).filter({ attach in
             if attach.isSoftDeleted {
                 return false
             } else if realAttachments {
@@ -842,7 +841,7 @@ extension ComposeViewController: ComposeViewDelegate {
         self.dismissKeyboard()
         self.pickedGroup = contactGroup
         self.pickedCallback = callback
-        self.coordinator?.go(to: .subSelection)
+        self.coordinator.go(to: .subSelection)
     }
 
     func updateEO() {
@@ -978,7 +977,7 @@ extension ComposeViewController {
                 }
                 // decrement number of attachments in message manually
                 let realAttachments = userCachedStatus.realAttachments
-                if let number = self.viewModel.message?.attachments.compactMap { $0 as? Attachment }.filter({ attach in
+                if let number = self.viewModel.message?.attachments.compactMap({ $0 as? Attachment }).filter({ attach in
                     if attach.isSoftDeleted {
                         return false
                     } else if realAttachments {

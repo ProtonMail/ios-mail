@@ -23,10 +23,9 @@
 import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
-    var viewController: UINavigationController?
-
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
+    private let editorViewModel: ContainableComposeViewModel
 
     private(set) var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
@@ -34,27 +33,27 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
 
-    internal weak var navigationController: UINavigationController?
+#if !APP_EXTENSION
+    private weak var presentingViewController: UIViewController?
+
+    init(presentingViewController: UIViewController?, editorViewModel: ContainableComposeViewModel, services: ServiceFactory = sharedServices) {
+        self.presentingViewController = presentingViewController
+        self.editorViewModel = editorViewModel
+        self.services = services
+    }
+#else
+    private weak var embeddingController: UINavigationController?
+
+    init(embeddingController: UINavigationController?, editorViewModel: ContainableComposeViewModel, services: ServiceFactory = sharedServices) {
+        self.embeddingController = embeddingController
+        self.editorViewModel = editorViewModel
+        self.services = services
+    }
+#endif
 
     deinit {
         self.attachmentsObservation = nil
         self.messageObservation = nil
-    }
-
-    init(controller: ComposeContainerViewController, services: ServiceFactory) {
-        self.controller = controller
-        self.services = services
-        super.init()
-    }
-
-    init(nav: UINavigationController, viewModel: ComposeContainerViewModel, services: ServiceFactory) {
-        self.navigationController = nav
-        self.services = services
-        let vc = UIStoryboard.Storyboard.composer.storyboard.instantiateInitialViewController() as? UINavigationController
-        self.viewController = vc
-        self.controller = vc?.viewControllers.first as? ComposeContainerViewController
-        viewModel.uiDelegate = self.controller
-        self.controller?.set(viewModel: viewModel)
     }
 
     func follow(_ deeplink: DeepLink) {
@@ -62,20 +61,19 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     override func start() {
-        guard let viewController = viewController else {
-            return
-        }
-        self.controller?.set(coordinator: self)
-        navigationController?.present(viewController, animated: true, completion: nil)
-    }
+        let viewModel = ComposeContainerViewModel(editorViewModel: editorViewModel, uiDelegate: nil)
+        let viewController = ComposeContainerViewController(viewModel: viewModel, coordinator: self)
+        viewModel.uiDelegate = viewController
 
-    #if !APP_EXTENSION
-    init(controller: ComposeContainerViewController) {
-        self.controller = controller
-        self.services = sharedServices
-        super.init()
+        self.controller = viewController
+
+#if !APP_EXTENSION
+        let navigationController = UINavigationController(rootViewController: viewController)
+        presentingViewController?.present(navigationController, animated: true)
+#else
+        embeddingController?.setViewControllers([viewController], animated: true)
+#endif
     }
-    #endif
 
     internal func cancelAction(_ sender: UIBarButtonItem) {
         self.editor.cancelAction(sender)
@@ -89,12 +87,11 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
-        let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
+        let coordinator = ComposeCoordinator(viewModel: childViewModel)
+        let child = coordinator.start()
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
 
-        let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: self.services)
-        coordinator.start()
         self.editor = child
     }
 

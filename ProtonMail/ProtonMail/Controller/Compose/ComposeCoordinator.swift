@@ -22,79 +22,49 @@
 
 import UIKit
 
-class ComposeCoordinator: DefaultCoordinator {
-    typealias VC = ComposeViewController
+class ComposeCoordinator {
+    private weak var viewController: ComposeViewController?
 
-    weak var viewController: ComposeViewController?
-    weak var navigationController: UINavigationController?
+    private let viewModel: ComposeViewModel
 
-    let viewModel: ComposeViewModel
-    var services: ServiceFactory
-
-    init(vc: ComposeViewController, vm: ComposeViewModel, services: ServiceFactory) {
-        self.viewModel = vm
-        self.viewController = vc
-        self.services = services
+    init(viewModel: ComposeViewModel) {
+        self.viewModel = viewModel
     }
 
-    weak var delegate: CoordinatorDelegate?
-
     enum Destination: String {
-        case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
         case subSelection      = "toContactGroupSubSelection"
     }
 
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false //
-        }
-
-        switch dest {
-        case .password:
-            guard let popup = destination as? ComposePasswordViewController else {
-                return false
-            }
-
+    private func presentExpirationUnavailabilityAlert() {
             guard let vc = viewController else {
-                return false
-            }
-
-            popup.pwdDelegate = self
-            // get this data from view model
-            popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
-
-        case .expirationWarning:
-            guard let vc = viewController else {
-                return false
+                return
             }
             let nonPMEmails = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
             let pgpEmails = vc.headerView.pgpEmails
             guard nonPMEmails.count > 0 || pgpEmails.count > 0 else {
                 vc.sendMessageStepTwo()
-                return false
+                return
             }
             vc.showExpirationUnavailabilityAlert(nonPMEmails: nonPMEmails, pgpEmails: pgpEmails)
-        case .subSelection:
-            return false
-        }
-        return true
     }
 
-    func start() {
-        viewController?.set(viewModel: self.viewModel)
-        viewController?.set(coordinator: self)
-
-        if let navigation = self.navigationController, let vc = self.viewController {
-            navigation.setViewControllers([vc], animated: true)
-        }
+    /// This coordinator is different in that its `start` method does not present anything.
+    /// Instead, it returns a view controller that is then embedded as an editor.
+    /// - returns: ContainableComposeViewController to embed
+    func start() -> ContainableComposeViewController {
+        let viewController = ContainableComposeViewController(coordinator: self)
+        viewController.set(viewModel: self.viewModel)
+        self.viewController = viewController
+        return viewController
     }
 
     func go(to dest: Destination) {
-        if dest == .subSelection {
+        switch dest {
+        case .subSelection:
             presentGroupSubSelectionActionSheet()
-        } else {
-            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
+        case .expirationWarning:
+            presentExpirationUnavailabilityAlert()
         }
     }
 
@@ -109,32 +79,5 @@ class ComposeCoordinator: DefaultCoordinator {
                                                                                      group: group,
                                                                                      callback: vc.pickedCallback)
         vc.groupSubSelectionPresenter?.present()
-    }
-}
-
-extension ComposeCoordinator: ComposePasswordViewControllerDelegate {
-
-    func Cancelled() {
-
-    }
-
-    func Apply(_ password: String, confirmPassword: String, hint: String) {
-        guard let vc = viewController else {
-            return
-        }
-        vc.encryptionPassword = password
-        vc.encryptionConfirmPassword = confirmPassword
-        vc.encryptionPasswordHint = hint
-        vc.updateEO()
-    }
-
-    func Removed() {
-        guard let vc = viewController else {
-            return
-        }
-        vc.encryptionPassword = ""
-        vc.encryptionConfirmPassword = ""
-        vc.encryptionPasswordHint = ""
-        vc.updateEO()
     }
 }

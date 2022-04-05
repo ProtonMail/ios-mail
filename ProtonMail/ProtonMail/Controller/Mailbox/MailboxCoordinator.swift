@@ -135,23 +135,11 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .details:
             break
         case .composer:
-            guard let nav = destination as? UINavigationController,
-                  let next = nav.viewControllers.first as? ComposeContainerViewController
-            else {
-                return false
-            }
-            navigateToComposer(nextViewController: next)
+            assertionFailure("should not be used anymore")
+            return false
         case .composeShow, .composeMailto:
-            self.viewController?.cancelButtonTapped()
-
-            guard let nav = destination as? UINavigationController,
-                  let next = nav.viewControllers.first as? ComposeContainerViewController,
-                  let message = sender as? Message
-            else {
-                return false
-            }
-
-            navigateToCompose(message: message, nextViewController: next)
+            assertionFailure("should not be used anymore")
+            return false
         case .humanCheck:
             guard let next = destination as? MailboxCaptchaViewController else {
                 return false
@@ -175,7 +163,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                 return false
             }
             let viewModel = SearchViewModel(user: self.viewModel.user,
-                                            coreDataContextProvider: self.services.get(by: CoreDataService.self), uiDelegate: next)
+                                            coreDataContextProvider: self.services.get(by: CoreDataService.self),
+                                            uiDelegate: next)
             next.set(viewModel: viewModel)
         case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
             break
@@ -195,6 +184,14 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             presentOnboardingView(type: .newUser)
         case .onboardingForUpdate:
             presentOnboardingView(type: .update)
+        case .composer:
+            navigateToComposer(existingMessage: nil)
+        case .composeShow, .composeMailto:
+            self.viewController?.cancelButtonTapped()
+
+            guard let message = sender as? Message else { return }
+
+            navigateToComposer(existingMessage: message)
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {
@@ -260,9 +257,8 @@ extension MailboxCoordinator {
     private func showComposer(viewModel: ContainableComposeViewModel,
                               navigationVC: UINavigationController,
                               deepLink: DeepLink) {
-        let composerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
-        let composer = ComposeContainerViewCoordinator(nav: navigationVC,
-                                                       viewModel: composerViewModel,
+        let composer = ComposeContainerViewCoordinator(presentingViewController: navigationVC,
+                                                       editorViewModel: viewModel,
                                                        services: services)
         composer.start()
         composer.follow(deepLink)
@@ -320,26 +316,16 @@ extension MailboxCoordinator {
         self.viewController?.present(viewController, animated: true, completion: nil)
     }
 
-    private func navigateToComposer(nextViewController next: ComposeContainerViewController) {
+    private func navigateToComposer(existingMessage: Message?) {
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil,
-                                                    action: .newDraft,
+        let viewModel = ContainableComposeViewModel(msg: existingMessage,
+                                                    action: existingMessage == nil ? .newDraft : .openDraft,
                                                     msgService: user.messageService,
                                                     user: user,
                                                     coreDataContextProvider: contextProvider)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-    }
-
-    private func navigateToCompose(message: Message, nextViewController next: ComposeContainerViewController) {
-        let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: message,
-                                                    action: .openDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataContextProvider: contextProvider)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+        let composer = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
+                                                       editorViewModel: viewModel)
+        composer.start()
     }
 
     private func followToDetails(message: Message,
@@ -419,9 +405,8 @@ extension MailboxCoordinator {
                                                         user: user,
                                                         coreDataContextProvider: contextProvider)
             viewModel.parse(mailToURL: mailToURL)
-            let containerViewModel = ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: nil)
-            let composer = ComposeContainerViewCoordinator(nav: nav,
-                                                           viewModel: containerViewModel,
+            let composer = ComposeContainerViewCoordinator(presentingViewController: nav,
+                                                           editorViewModel: viewModel,
                                                            services: services)
             composer.start()
             composer.follow(deeplink)

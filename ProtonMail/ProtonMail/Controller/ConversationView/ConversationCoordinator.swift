@@ -117,11 +117,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with contact: ContactVO) {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
         let viewModel = ContainableComposeViewModel(
             msg: nil,
             action: .newDraft,
@@ -131,17 +126,10 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         )
         viewModel.addToContacts(contact)
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
     }
 
     private func presentCompose(with mailToURL: URL) {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
         let viewModel = ContainableComposeViewModel(
             msg: nil,
             action: .newDraft,
@@ -151,18 +139,10 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         )
         viewModel.parse(mailToURL: mailToURL)
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
     }
 
     private func presentCompose(message: Message, action: ComposeMessageAction) {
-        let board = UIStoryboard.Storyboard.composer.storyboard
-        guard let destination = board.instantiateInitialViewController() as? ComposerNavigationController,
-              let viewController = destination.viewControllers.first as? ComposeContainerViewController else {
-            return
-        }
-
         let viewModel = ContainableComposeViewModel(
             msg: message,
             action: action,
@@ -171,9 +151,13 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
         )
 
-        viewController.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: viewController))
-        viewController.set(coordinator: ComposeContainerViewCoordinator(controller: viewController))
-        self.viewController?.present(destination, animated: true)
+        presentCompose(viewModel: viewModel)
+    }
+
+    private func presentCompose(viewModel: ContainableComposeViewModel) {
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self.viewController,
+                                                          editorViewModel: viewModel)
+        coordinator.start()
     }
 
     private func presentAddContacts(with contact: ContactVO) {

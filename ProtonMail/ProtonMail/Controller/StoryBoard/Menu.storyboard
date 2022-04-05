@@ -798,8 +798,6 @@
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="zIE-XJ-wkG"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="dh2-Js-yHz"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="pageSheet" id="A0a-yx-qTn"/>
                         <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>
                 </viewController>
@@ -1481,14 +1479,6 @@
             </objects>
             <point key="canvasLocation" x="-25" y="2486"/>
         </scene>
-        <!--ref_composer_nav_controller-->
-        <scene sceneID="b9I-Wi-Bnh">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="Pr4-fX-gNy" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-OO-beg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3734" y="3183"/>
-        </scene>
         <!--Label Edit View Controller-->
         <scene sceneID="YgO-qs-VuR">
             <objects>
@@ -1704,7 +1694,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="A0a-yx-qTn"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="dLq-78-QaD"/>
         <segue reference="tgC-Ba-c8Y"/>

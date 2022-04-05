@@ -41,7 +41,6 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     fileprivate let kContactsDetailsEmailCell: String       = "contacts_details_display_email_cell"
 
     fileprivate let kEditContactSegue: String              = "toEditContactSegue"
-    fileprivate let kToComposeSegue: String                = "toCompose"
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -248,7 +247,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
                                   name: contact.name,
                                   email: email.newEmail,
                                   isProtonMailContact: false)
-        self.performSegue(withIdentifier: kToComposeSegue, sender: contactVO)
+        presentComposer(contact: contactVO)
     }
 
     @IBAction func didTapCallContactButton(_ sender: UIButton) {
@@ -287,22 +286,19 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, user: self.viewModel.user, contact: contact)
-        } else if segue.identifier == kToComposeSegue {
-            guard let nav = segue.destination as? UINavigationController,
-                let next = nav.viewControllers.first as? ComposeContainerViewController else {
-                return
-            }
+        }
+    }
+
+    private func presentComposer(contact: ContactVO) {
             let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user,
                                                         coreDataContextProvider: self.viewModel.coreDataService)
-            if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
-            }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-        }
+
+            let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
+            coordinator.start()
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
@@ -605,7 +601,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                                       name: contact.name,
                                       email: email.newEmail,
                                       isProtonMailContact: false)
-            self.performSegue(withIdentifier: kToComposeSegue, sender: contactVO)
+            presentComposer(contact: contactVO)
         case .encrypted_header:
             break
         case .cellphone:

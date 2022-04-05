@@ -54,7 +54,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
 
     private let kContactGroupCellIdentifier = "ContactGroupCustomCell"
     private let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
-    private let kToComposerSegue = "toComposer"
 
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
@@ -383,21 +382,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             popup.reloadAllContact = { [weak self] in
                 self?.tableView.reloadData()
             }
-        } else if segue.identifier == kToComposerSegue {
-            self.isOnMainView = true
-            guard let nav = segue.destination as? UINavigationController,
-                let next = nav.viewControllers.first as? ComposeContainerViewController else {
-                return
-            }
-            let user = self.viewModel.user
-            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.viewModel.coreDataService)
-            if let result = sender as? (String, String) {
-                let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
-                contactGroupVO.selectAllEmailFromGroup()
-                viewModel.addToContacts(contactGroupVO)
-            }
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel, uiDelegate: next))
-            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
 
         if #available(iOS 13, *) { // detect view dismiss above iOS 13
@@ -484,7 +468,15 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             LocalString._storage_exceeded.alertToastBottom()
             return
         }
-        self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
+
+        let user = self.viewModel.user
+        let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.viewModel.coreDataService)
+        let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
+        contactGroupVO.selectAllEmailFromGroup()
+        viewModel.addToContacts(contactGroupVO)
+
+        let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
+        coordinator.start()
     }
 }
 
