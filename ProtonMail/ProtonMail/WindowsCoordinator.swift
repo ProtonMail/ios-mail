@@ -388,55 +388,6 @@ class WindowsCoordinator: CoordinatorNew {
         return true
     }
 
-    // Preserving and Restoring State
-
-    func currentDeepLink() -> DeepLink? {
-        let deeplink = DeepLink("Root")
-        self.appWindow?.enumerateViewControllerHierarchy { controller, _ in
-            guard let deeplinkable = controller as? Deeplinkable else { return }
-
-            deeplink.append(deeplinkable.deeplinkNode)
-
-            // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
-            // mostly relevant in multiuser environment when two or more windows with defferent users in each one
-            if let menu = controller as? MenuViewController,
-               let user = menu.viewModel.currentUser {
-                let userNode = DeepLink.Node(name: MenuCoordinator.Setup.switchUser.rawValue, value: user.auth.sessionID)
-                deeplink.append(userNode)
-            }
-        }
-        guard let _ = deeplink.popFirst, let _ = deeplink.head else {
-            return nil
-        }
-        return deeplink
-    }
-
-    internal func saveForRestoration(_ coder: NSCoder) {
-        switch UIDevice.current.stateRestorationPolicy {
-        case .deeplink:
-            if let deeplink = self.currentDeepLink(),
-                let data = try? JSONEncoder().encode(deeplink) {
-                coder.encode(data, forKey: "deeplink")
-            }
-
-        case .multiwindow:
-            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
-        }
-    }
-
-    internal func restoreState(_ coder: NSCoder) {
-        switch UIDevice.current.stateRestorationPolicy {
-        case .deeplink:
-            if let data = coder.decodeObject(forKey: "deeplink") as? Data,
-                let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-                self.followDeeplink(deeplink)
-            }
-
-        case .multiwindow:
-            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
-        }
-    }
-
     internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst

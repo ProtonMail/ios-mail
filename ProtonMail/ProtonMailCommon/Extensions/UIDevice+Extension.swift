@@ -30,8 +30,6 @@ extension UIDevice {
 
     var stateRestorationPolicy: StateRestorationPolicy {
         let iOS13: Bool = { if #available(iOS 13.0, *) { return true } else { return false } }()
-        let hasSignificantProtection: Bool = keymaker.isProtectorActive(BioProtection.self) || keymaker.isProtectorActive(PinProtection.self)
-
         /*
          Deeplink restoratin downside: it can not restore UI statle, scrolling offset in tableViews for example.
          NSCoders restoration downside: it does not work when mainKey is protected, it encodes only one UIWindow on multiwindow scene.
@@ -50,10 +48,10 @@ extension UIDevice {
          
          */
 
-        switch (iOS13, hasSignificantProtection, self.userInterfaceIdiom) {
-        case (_, _, .phone):    return .deeplink
-        case (true, _, .pad):   return .multiwindow
-        case (false, _, .pad): return .deeplink
+        switch (iOS13, self.userInterfaceIdiom) {
+        case (_, .phone):    return .deeplink
+        case (true, .pad):   return .multiwindow
+        case (false, .pad): return .deeplink
         default:
             assert(false, "All possible combinations should be covered by cases above")
             return .deeplink

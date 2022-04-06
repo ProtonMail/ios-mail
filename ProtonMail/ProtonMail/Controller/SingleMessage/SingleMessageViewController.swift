@@ -456,17 +456,6 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
     }
 }
 
-extension SingleMessageViewController: Deeplinkable {
-
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(
-            name: String(describing: SingleMessageViewController.self),
-            value: viewModel.message.messageID
-        )
-    }
-
-}
-
 extension SingleMessageViewController: PMActionSheetEventsListener {
     func willPresent() {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false

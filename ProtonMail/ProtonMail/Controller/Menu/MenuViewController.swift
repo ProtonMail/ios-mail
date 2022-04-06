@@ -533,9 +533,3 @@ extension MenuViewController: AccountSwitchDelegate {
         }
     }
 }
-
-extension MenuViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: MenuViewController.self))
-    }
-}

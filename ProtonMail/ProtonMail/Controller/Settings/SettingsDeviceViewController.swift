@@ -433,9 +433,3 @@ extension SettingsDeviceViewController {
         }
     }
 }
-
-extension SettingsDeviceViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
-    }
-}

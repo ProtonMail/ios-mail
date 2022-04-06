@@ -415,26 +415,6 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: - State restoration
-
-    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        if UIDevice.current.stateRestorationPolicy == .multiwindow {
-            return false
-        } else {
-            self.coordinator.saveForRestoration(coder)
-            return true
-        }
-    }
-    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-        if UIDevice.current.stateRestorationPolicy == .multiwindow {
-            // everything is handled by a window scene delegate
-        } else if UIDevice.current.stateRestorationPolicy == .deeplink {
-            self.coordinator.restoreState(coder)
-        }
-
-        return false
-    }
-
     // MARK: - Multiwindow iOS 13
 
     @available(iOS 13.0, *)
