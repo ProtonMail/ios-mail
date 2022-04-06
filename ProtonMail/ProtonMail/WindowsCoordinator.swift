@@ -431,7 +431,11 @@ class WindowsCoordinator: CoordinatorNew {
 
     private func handleWebUrl(url: URL) {
         let linkOpener: LinkOpener = userCachedStatus.browser
-        if linkOpener == .inAppSafari, let url = linkOpener.deeplink(to: url) {
+        guard let url = linkOpener.deeplink(to: url) else {
+            openUrl(url)
+            return
+        }
+        if linkOpener == .inAppSafari {
             presentInAppSafari(url: url)
         } else {
             openUrl(url)
