@@ -189,9 +189,3 @@ extension SettingsGesturesViewController: UITableViewDelegate, UITableViewDataSo
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
-
-extension SettingsGesturesViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsGesturesViewController.self), value: nil)
-    }
-}

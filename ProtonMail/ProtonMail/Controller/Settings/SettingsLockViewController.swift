@@ -272,9 +272,3 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
         }
     }
 }
-
-extension SettingsLockViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: SettingsDeviceViewController.self), value: nil)
-    }
-}

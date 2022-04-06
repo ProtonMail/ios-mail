@@ -553,12 +553,3 @@ extension ComposeContainerViewController: AttachmentController {
         }
     }
 }
-
-#if !APP_EXTENSION
-extension ComposeContainerViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: ComposeContainerViewController.self),
-                             value: self.viewModel.childViewModel.message?.messageID)
-    }
-}
-#endif

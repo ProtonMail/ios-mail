@@ -97,12 +97,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-        // to prevent built-in restoration on iPhones, which is broken up to at least iOS 13.3 beta 2
-        guard UIDevice.current.stateRestorationPolicy == .multiwindow else { return nil }
-        return self.currentUserActivity(in: scene)
-    }
-
     // handle the shorcut item in scene(_:willConnectTo:options:)
     func handleShortcutAction(shortcutItem: UIApplicationShortcutItem) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
@@ -111,18 +105,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             self.coordinator.start()
         }
-    }
-
-    private func currentUserActivity(in scene: UIScene) -> NSUserActivity? {
-        guard let deeplink = self.coordinator.currentDeepLink() ,
-            let data = try? JSONEncoder().encode(deeplink) else {
-            return scene.userActivity
-        }
-
-        let userActivity = NSUserActivity(activityType: "RestoreWindow")
-        userActivity.userInfo?["deeplink"] = data
-
-        return userActivity
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {

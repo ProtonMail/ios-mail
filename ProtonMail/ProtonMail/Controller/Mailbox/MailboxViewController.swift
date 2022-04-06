@@ -2521,12 +2521,6 @@ extension MailboxViewController {
     }
 }
 
-extension MailboxViewController: Deeplinkable {
-    var deeplinkNode: DeepLink.Node {
-        return DeepLink.Node(name: String(describing: MailboxViewController.self), value: self.viewModel.labelID)
-    }
-}
-
 extension MailboxViewController: SkeletonTableViewDataSource {
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return MailBoxSkeletonLoadingCell.Constant.identifier
