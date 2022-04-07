@@ -25,6 +25,7 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
 protocol PasswordViewControllerDelegate: AnyObject {
+    func passwordIsShown()
     func validatedPassword(password: String, completionHandler: (() -> Void)?)
     func passwordBackButtonPressed()
 }
@@ -36,6 +37,8 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     var customErrorPresenter: LoginErrorPresenter?
     var signupAccountType: SignupAccountType!
     var signupPasswordRestrictions: SignupPasswordRestrictions!
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
 
@@ -85,6 +88,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
         setupGestures()
         setupNotifications()
         generateAccessibilityIdentifiers()
+        delegate?.passwordIsShown()
     }
     
     override func viewDidAppear(_ animated: Bool) {

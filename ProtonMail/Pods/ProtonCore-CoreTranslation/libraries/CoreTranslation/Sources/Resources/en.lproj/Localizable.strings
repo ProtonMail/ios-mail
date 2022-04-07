@@ -156,7 +156,7 @@
 "payment failed" = "payment failed";
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
 "Retry" = "Retry";
-"Failed to get list of available products from AppStore." = "Failed to get list of available products from AppStore.";
+"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
 "Purchase is not possible." = "Purchase is not possible.";
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.";
@@ -185,6 +185,9 @@
 
 "Delete account" = "Delete account";
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"A networking error has occured" = "A networking error has occured";
+"Close" = "Close";
 
 /*
  *  Account Manager
@@ -217,10 +220,12 @@
 "Password" = "Password";
 "Password must contain at least 8 characters" = "Password must contain at least 8 characters";
 "Repeat password" = "Repeat password";
+"Set recovery method" = "Set recovery method";
 "Set recovery method (optional)" = "Set recovery method (optional)";
 // TODO: CP-2352 — remove the string once the new text (below) is translated to all languages
 "This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
 "We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
 "Email" = "Email";
 "Phone" = "Phone";
 "Recovery email" = "Recovery email";
@@ -267,50 +272,25 @@
 "Current plan" = "Current plan";
 "Subscription" = "Subscription";
 "Upgrade your plan" = "Upgrade your plan";
-"Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@." = "Only annual subscriptions without auto-renewal is available via app. Find additional subscription options at %@.";
-"Manage your subscription at %@." = "Manage your subscription at %@.";
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
 "Select" = "Select";
 "Upgrade" = "Upgrade";
-"for 1 month" = "for 1 month";
-"for 1 year" = "for 1 year";
-"for %i years" = "for %i years";
 "Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
 "Current plan will expire on %@" = "Current plan will expire on %@";
-"%i user" = "%i user";
-"%i users" = "%i users";
 "%@ storage" = "%@ storage";
 "%@ storage / user" = "%@ storage / user";
-"%i email address" = "%i email address";
-"%i email addresses" = "%i email addresses";
-"%i email address / user" = "%i email address / user";
-"%i email addresses / user" = "%i email addresses / user";
-"%i calendar" = "%i calendar";
-"%i folders / labels" = "%i folders / labels";
 "Medium speed" = "Medium speed";
 "Priority customer support" = "Priority customer support";
-"%i countries" = "%i countries";
 "Adblocker (NetShield)" = "Adblocker (NetShield)";
 "Streaming service support" = "Streaming service support";
-"%i calendars" = "%i calendars";
-"%i calendar / user" = "%i calendar / user";
-"%i calendars / user" = "%i calendars / user";
-"%i connection" = "%i connection";
-"%i connections" = "%i connections";
-"%i high-speed VPN connection" = "%i high-speed VPN connection";
-"%i high-speed VPN connections" = "%i high-speed VPN connections";
-"%i high-speed VPN connection / user" = "%i high-speed VPN connection / user";
-"%i high-speed VPN connections / user" = "%i high-speed VPN connections / user";
-"%i custom domain" = "%i custom domain";
-"%i custom domains" = "%i custom domains";
-"%i address & calendar" = "%i address & calendar";
-"%i addresses & calendars" = "%i addresses & calendars";
 "%@ & %@" = "%@ & %@";
 "High speed" = "High speed";
 "Highest speed" = "Highest speed";
 "Multi-user support" = "Multi-user support";
 "The basic for private and secure communications." = "The basic for private and secure communications.";
 "Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
-"ProtonMain for professionals and businesses" = "ProtonMain for professionals and businesses";
+"ProtonMail for professionals and businesses" = "ProtonMail for professionals and businesses";
 "Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
 "Complete payment?" = "Complete payment?";
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";

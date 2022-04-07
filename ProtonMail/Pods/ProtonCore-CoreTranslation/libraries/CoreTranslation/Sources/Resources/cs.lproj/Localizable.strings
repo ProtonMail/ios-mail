@@ -10,18 +10,6 @@
 /* Plan delails storage */
 "%@ storage *" = "%@ úložiště *";
 
-/* Plan delails n address */
-"%i address" = "%i adresa";
-
-/* Plan delails n addresses */
-"%i addresses" = "%i adres";
-
-/* Plan delails n user */
-"%i user" = "%i uživatel";
-
-/* Plan delails n users */
-"%i users" = "%i uživatelů";
-
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda obnovení vám pomůže získat přístup k účtu v případě, že zapomenete heslo nebo se z účtu odhlásíte.";
 
@@ -166,7 +154,7 @@
 "Error occured" = "Došlo k chybě";
 
 /* Error message */
-"Failed to get list of available products from AppStore." = "Proces získání seznamu dostupných produktů z AppStore selhal.";
+"Failed to get list of available products from App Store." = "Proces získání seznamu dostupných produktů z App Store selhal.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Z důvodu Vaší bezpečnosti musíme ověřit, zda zadaná adresa patří Vám. Poslali jsme ověřovací kód na adresu %@. Zadejte prosím následující kód:";

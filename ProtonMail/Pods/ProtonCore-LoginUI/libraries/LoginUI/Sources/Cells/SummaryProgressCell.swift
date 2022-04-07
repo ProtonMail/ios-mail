@@ -56,7 +56,7 @@ final class SummaryProgressCell: UITableViewCell {
     
     var getWidth: CGFloat {
         let fontAttributes = [NSAttributedString.Key.font: stepLabel.font]
-        let size = stepLabel.text?.size(withAttributes: fontAttributes as [NSAttributedString.Key : Any])
+        let size = stepLabel.text?.size(withAttributes: fontAttributes as [NSAttributedString.Key: Any])
         return (size?.width ?? 0) + labelLeadingConstraint.constant + 1
     }
 }

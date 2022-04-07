@@ -42,7 +42,7 @@ final class TokenRequest: BaseApiRequest<TokenResponse> {
 
     override var parameters: [String: Any]? {
         let paymentDict: [String: Any]
-        if let card = TemporaryHacks.testCardForPayments {
+        if let card = ProtonCore_Payments.TemporaryHacks.testCardForPayments {
             paymentDict = [
                 "Type": "card",
                 "Details": card
@@ -62,9 +62,7 @@ final class TokenResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        guard let code = response["Code"] as? Int, code == 1000 else { return false }
-
-        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self)
+        let (result, token) = decodeResponse(response as Any, to: PaymentToken.self, errorToReturn: .tokenDecode)
         self.paymentToken = token
         return result
     }

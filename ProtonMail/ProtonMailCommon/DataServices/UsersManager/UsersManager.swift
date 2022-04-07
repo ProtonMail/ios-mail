@@ -707,6 +707,8 @@ extension UsersManager {
 }
 
 extension UsersManager: APIServiceDelegate {
+    var additionalHeaders: [String: String]? { nil }
+
     var locale: String {
         return LanguageManager.currentLanguageCode()
     }

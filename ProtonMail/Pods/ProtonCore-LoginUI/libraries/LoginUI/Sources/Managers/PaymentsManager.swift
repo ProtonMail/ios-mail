@@ -87,7 +87,7 @@ class PaymentsManager {
     func finishPaymentProcess(loginData: LoginData, completionHandler: @escaping (Result<(InAppPurchasePlan?), Error>) -> Void) {
         self.loginData = loginData
         if selectedPlan != nil {
-            payments.planService.updateCurrentSubscription(updateCredits: false) { [weak self] in
+            payments.planService.updateCurrentSubscription() { [weak self] in
                 self?.payments.storeKitManager.continueRegistrationPurchase { [weak self] in
                     var result: InAppPurchasePlan?
                     if self?.payments.planService.currentSubscription?.hasExistingProtonSubscription ?? false {
@@ -186,9 +186,10 @@ class TokenStorageImp: PaymentTokenStorage {
 class DataStorageImpl: ServicePlanDataStorage {
     var servicePlansDetails: [Plan]?
     var defaultPlanDetails: Plan?
-    var isIAPUpgradePlanAvailable: Bool = false
+    var paymentsBackendStatusAcceptsIAP: Bool = false
     var credits: Credits?
     var currentSubscription: Subscription?
+    var paymentMethods: [PaymentMethod]?
 }
 
 protocol PaymentErrorCapable: ErrorCapable {

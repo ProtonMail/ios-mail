@@ -20,8 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import AwaitKit
-import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Services
@@ -34,25 +32,50 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
     var defaultPlanDetails: Plan? { get }
     var availablePlansDetails: [Plan] { get }
     var currentSubscription: Subscription? { get set }
+    var paymentMethods: [PaymentMethod]? { get set }
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
     func detailsOfServicePlan(named name: String) -> Plan?
 
-    func updateServicePlans() -> Promise<Void> 
-    func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    /// This is a blocking network call that should never be called from the main thread — there's an assertion ensuring that
+    func updateServicePlans() throws
+    func updateServicePlans(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func updateCredits(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+}
 
-    func updateCurrentSubscription(updateCredits: Bool) -> Promise<Void>
-    func updateCurrentSubscription(updateCredits: Bool, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
-    func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+public extension ServicePlanDataServiceProtocol {
+    func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        updateServicePlans(callBlocksOnParticularQueue: .main, success: success, failure: failure)
+    }
+    func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        updateCurrentSubscription(callBlocksOnParticularQueue: .main, success: success, failure: failure)
+    }
+    func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        updateCredits(callBlocksOnParticularQueue: .main, success: success, failure: failure)
+    }
 }
 
 public protocol ServicePlanDataStorage: AnyObject {
     var servicePlansDetails: [Plan]? { get set }
-    var isIAPUpgradePlanAvailable: Bool { get set }
     var defaultPlanDetails: Plan? { get set }
     var currentSubscription: Subscription? { get set }
     var credits: Credits? { get set }
+    var paymentMethods: [PaymentMethod]? { get set }
+    var paymentsBackendStatusAcceptsIAP: Bool { get set }
+    
+    /// Informs about the result of the payments backend status call /payments/v4/status concerning IAP acceptance
+    @available(*, deprecated, renamed: "paymentsBackendStatusAcceptsIAP")
+    var isIAPUpgradePlanAvailable: Bool { get set }
+}
+
+public extension ServicePlanDataStorage {
+    @available(*, deprecated, renamed: "paymentsBackendStatusAcceptsIAP")
+    var isIAPUpgradePlanAvailable: Bool {
+        get { paymentsBackendStatusAcceptsIAP }
+        set { paymentsBackendStatusAcceptsIAP = newValue }
+    }
 }
 
 public struct Credits {
@@ -65,11 +88,19 @@ public struct Credits {
     }
 }
 
+public struct PaymentMethod: Codable {
+    
+    // we don't use any properties so it's ok to leave it as simple as possible
+    public let type: String
+    
+}
+
 public protocol CurrentSubscriptionChangeDelegate: AnyObject {
     func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?)
 }
 
 final class ServicePlanDataService: ServicePlanDataServiceProtocol {
+    
     public let service: APIService
 
     private let paymentsApi: PaymentsApiProtocol
@@ -80,16 +111,22 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
     public weak var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate?
 
     public var isIAPAvailable: Bool {
-        guard isIAPUpgradePlanAvailable else { return false }
+        guard paymentsBackendStatusAcceptsIAP else { return false }
         return true
     }
 
     public var availablePlansDetails: [Plan] {
         willSet { localStorage.servicePlansDetails = newValue }
     }
+    
+    public var paymentsBackendStatusAcceptsIAP: Bool {
+        willSet { localStorage.paymentsBackendStatusAcceptsIAP = newValue }
+    }
 
+    @available(*, deprecated, renamed: "paymentsBackendStatusAcceptsIAP")
     public var isIAPUpgradePlanAvailable: Bool {
-        willSet { localStorage.isIAPUpgradePlanAvailable = newValue }
+        get { paymentsBackendStatusAcceptsIAP }
+        set { paymentsBackendStatusAcceptsIAP = newValue }
     }
 
     public var defaultPlanDetails: Plan? {
@@ -106,11 +143,15 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
         willSet { localStorage.currentSubscription = newValue }
         didSet { currentSubscriptionChangeDelegate?.onCurrentSubscriptionChange(old: oldValue, new: currentSubscription) }
     }
+    
+    public var paymentMethods: [PaymentMethod]? {
+        willSet { localStorage.paymentMethods = newValue }
+    }
 
     public var credits: Credits? {
         willSet { localStorage.credits = newValue }
     }
-
+    
     init(inAppPurchaseIdentifiers: @escaping ListOfIAPIdentifiersGet,
          paymentsApi: PaymentsApiProtocol,
          apiService: APIService,
@@ -118,7 +159,7 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
          paymentsAlertManager: PaymentsAlertManager) {
         self.localStorage = localStorage
         self.availablePlansDetails = localStorage.servicePlansDetails ?? []
-        self.isIAPUpgradePlanAvailable = localStorage.isIAPUpgradePlanAvailable
+        self.paymentsBackendStatusAcceptsIAP = localStorage.paymentsBackendStatusAcceptsIAP
         self.defaultPlanDetails = localStorage.defaultPlanDetails
         self.currentSubscription = localStorage.currentSubscription
         self.paymentsApi = paymentsApi
@@ -133,129 +174,127 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
             return availablePlansDetails.first(where: { $0.name == name })
         }
     }
-
-    public static func cleanUpAll() -> Promise<Void> {
-        return Promise()
-    }
-
-    public func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            currentSubscription = nil
-            seal.fulfill_()
-        }
-    }
 }
 
 extension ServicePlanDataService {
-    public func updateServicePlans(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        firstly {
-            updateServicePlans()
-        }.done {
-            success()
-        }.catch {
-            failure($0)
-        }
+    public func updateServicePlans(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        performWork(work: { try self.updateServicePlans() },
+                    callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
     }
 
-    @discardableResult public func updateServicePlans() -> Promise<Void> {
-        return Promise { seal in
-            async {
-                // get API atatus
-                let statusApi = self.paymentsApi.statusRequest(api: self.service)
-                let statusRes = try AwaitKit.await(statusApi.run())
-                self.isIAPUpgradePlanAvailable = statusRes.isAvailable ?? false
-
-                // get service plans
-                let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
-                let servicePlanRes = try AwaitKit.await(servicePlanApi.run())
-                self.availablePlansDetails = servicePlanRes.availableServicePlans?
-                    .filter { InAppPurchasePlan.nameIsPresentInIAPIdentifierList(name: $0.name, identifiers: self.listOfIAPIdentifiers()) }
-                    ?? []
-
-                let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
-                let defaultServicePlanRes = try AwaitKit.await(defaultServicePlanApi.run())
-                self.defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
-                
-                seal.fulfill(())
-            }.catch { error in
-                seal.reject(error)
-            }
+    public func updateServicePlans() throws {
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
         }
+        
+        // get API atatus
+        let statusApi = self.paymentsApi.statusRequest(api: self.service)
+        let statusRes = try statusApi.awaitResponse(responseObject: StatusResponse())
+        self.paymentsBackendStatusAcceptsIAP = statusRes.isAvailable ?? false
+
+        // get service plans
+        let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
+        let servicePlanRes = try servicePlanApi.awaitResponse(responseObject: PlansResponse())
+        self.availablePlansDetails = servicePlanRes.availableServicePlans?
+            .filter { InAppPurchasePlan.nameAndCycleArePresentInIAPIdentifierList(name: $0.name, cycle: $0.cycle, identifiers: self.listOfIAPIdentifiers()) }
+            .sorted { $0.pricing(for: String(12)) ?? 0 > $1.pricing(for: String(12)) ?? 0 }
+            ?? []
+
+        let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
+        let defaultServicePlanRes = try defaultServicePlanApi.awaitResponse(responseObject: DefaultPlanResponse())
+        self.defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
     }
 
-    public func updateCurrentSubscription(updateCredits: Bool, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        _ = firstly {
-            updateCurrentSubscription(updateCredits: updateCredits)
-        }.done {
-            success()
-        }.catch { error in
-            failure(error)
-        }
+    public func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        performWork(work: { try self.updateCurrentSubscription() },
+                    callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
     }
     
-    public func updateCredits(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        _ = firstly {
-            async {
-                try self.updateCredits()
-            }
-        }.done {
-            success()
-        }.catch { error in
-            failure(error)
-        }
+    public func updateCredits(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        performWork(work: {
+            let user = try self.getUserInfo()
+            self.updateCredits(user: user)
+        }, callBlocksOnParticularQueue: callBlocksOnParticularQueue, success: success, failure: failure)
     }
-
-    public func updateCurrentSubscription(updateCredits: Bool) -> Promise<Void> {
-        return Promise { seal in
-            async {
-                if updateCredits {
-                    try self.updateCredits()
+    
+    private func performWork(work: @escaping () throws -> Void, callBlocksOnParticularQueue: DispatchQueue?,
+                             success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try work()
+                guard let callBlocksOnParticularQueue = callBlocksOnParticularQueue else {
+                    success()
+                    return
                 }
-                let subscriptionApi = self.paymentsApi.getSubscriptionRequest(api: self.service)
-                let subscriptionRes = try AwaitKit.await(subscriptionApi.run())
-                self.currentSubscription = subscriptionRes.subscription
-
-                let organizationsApi = self.paymentsApi.organizationsRequest(api: self.service)
-                let organizationsRes = try AwaitKit.await(organizationsApi.run())
-                self.currentSubscription?.organization = organizationsRes.organization
-
-                seal.fulfill(())
-            }.catch { error in
-                if error.isNoSubscriptionError {
-                    self.currentSubscription = .userHasNoPlanAKAFreePlan
-                    self.credits = nil
-                    seal.fulfill(())
-                } else if error.accessTokenDoesNotHaveSufficientScopeToAccessResource {
-                    self.currentSubscription = .userHasUnsufficientScopeToFetchSubscription
-                    self.credits = nil
-                    seal.fulfill(())
-                } else {
-                    self.currentSubscription = nil
-                    self.credits = nil
-                    seal.reject(error)
+                callBlocksOnParticularQueue.async {
+                    success()
+                }
+            } catch {
+                guard let callBlocksOnParticularQueue = callBlocksOnParticularQueue else {
+                    failure(error)
+                    return
+                }
+                callBlocksOnParticularQueue.async {
+                    failure(error)
                 }
             }
         }
     }
     
-    private func updateCredits() throws {
+    private func updateCurrentSubscription() throws {
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+
         do {
-            let user = try AwaitKit.await(self.getUser())
-            self.credits = Credits(credit: Double(user.credit) / 100, currency: user.currency)
+            // no user info means we don't even need to ask for subscription, so it's ok to throw here
+            let user = try self.getUserInfo()
+            
+            updateCredits(user: user)
+            
+            let methodsAPI = self.paymentsApi.methodsRequest(api: self.service)
+            let methodsRes = try methodsAPI.awaitResponse(responseObject: MethodResponse())
+            self.paymentMethods = methodsRes.methods
+            
+            guard user.subscribed != 0 else {
+                self.currentSubscription = .userHasNoPlanAKAFreePlan
+                self.currentSubscription?.usedSpace = Int64(user.usedSpace)
+                return
+            }
+                
+            let subscriptionApi = self.paymentsApi.getSubscriptionRequest(api: self.service)
+            let subscriptionRes = try subscriptionApi.awaitResponse(responseObject: GetSubscriptionResponse())
+            self.currentSubscription = subscriptionRes.subscription
+            
+            let organizationsApi = self.paymentsApi.organizationsRequest(api: self.service)
+            let organizationsRes = try organizationsApi.awaitResponse(responseObject: OrganizationsResponse())
+            self.currentSubscription?.organization = organizationsRes.organization
+
         } catch {
-            self.credits = nil
+            if error.accessTokenDoesNotHaveSufficientScopeToAccessResource {
+                self.currentSubscription = .userHasUnsufficientScopeToFetchSubscription
+                self.credits = nil
+                self.paymentMethods = nil
+            } else {
+                self.currentSubscription = nil
+                self.credits = nil
+                self.paymentMethods = nil
+                throw error
+            }
+        }
+    }
+    
+    private func getUserInfo() throws -> User {
+        do {
+            return try self.paymentsApi.getUser(api: self.service)
+        } catch {
             throw error
         }
     }
-
-    private func getUser() -> Promise<User> {
-        return Promise { seal in
-            self.paymentsApi.getUser(api: self.service) { result in
-                switch result {
-                case .success(let user): seal.fulfill(user)
-                case .failure(let error): seal.reject(error)
-                }
-            }
-        }
+    
+    private func updateCredits(user: User) {
+        credits = Credits(credit: Double(user.credit) / 100, currency: user.currency)
     }
 }

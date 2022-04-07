@@ -51,10 +51,6 @@ class EmailVerifyViewController: BaseUIViewController, AccessibleView {
         generateAccessibilityIdentifiers()
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.default
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         _ = emailTextFieldView.becomeFirstResponder()

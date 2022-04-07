@@ -49,33 +49,37 @@ class SummaryViewModel {
     }
     
     var summaryImage: UIImage? {
-        if case .custom(let data) = screenVariant{
-            return data.image
+        switch screenVariant {
+        case .noSummaryScreen:
+            return nil
+        case .screenVariant(let screenVariant):
+            if case .custom(let data) = screenVariant {
+                return data.image
+            }
         }
         return nil
     }
 
     var startButtonText: String? {
         switch screenVariant {
-        case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text):
-            return text
-        case .custom(let data):
-            return data.startButtonText
+        case .noSummaryScreen:
+            return nil
+        case .screenVariant(let screenVariant):
+            switch screenVariant {
+            case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text):
+                return text
+            case .custom(let data):
+                return data.startButtonText
+            }
         }
     }
     
     var brandIcon: UIImage? {
         switch clientApp {
         case .mail, .drive, .calendar, .other:
-            return UIImage(named: "summary_proton", in: LoginAndSignup.bundle, compatibleWith: nil)
+            return LoginUIImages.brandIconForProton
         case .vpn:
-            return UIImage(named: "summary_vpn", in: LoginAndSignup.bundle, compatibleWith: nil)
+            return LoginUIImages.brandIconForVPN
         }
-    }
-    
-    // MARK: Private interface
-
-    private func getImage(name: String) -> UIImage? {
-        return UIImage(named: name, in: LoginAndSignup.bundle, compatibleWith: nil)
     }
 }

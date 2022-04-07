@@ -27,6 +27,7 @@ import ProtonCore_Authentication
 import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_DataModel
 import ProtonCore_Log
+import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_Utilities
 
@@ -36,12 +37,12 @@ public protocol Signup {
     func checkValidationToken(email: String, token: String, completion: @escaping (Result<Void, SignupError>) -> Void)
     
     func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
-    func createNewExternalUser(email: String, password: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
     
     @available(*, deprecated, message: "Use variant without device token createNewUser(userName:password:email:phoneNumber:completion:)")
     func createNewUser(userName: String, password: String, deviceToken: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
     @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:completion:)")
-    func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
 }
 
 public protocol ChallangeParametersProvider {
@@ -49,7 +50,6 @@ public protocol ChallangeParametersProvider {
 }
 
 public class SignupService: Signup {
-
     private let apiService: APIService
     private let authenticator: Authenticator
     private let challangeParametersProvider: ChallangeParametersProvider
@@ -66,11 +66,15 @@ public class SignupService: Signup {
 
     public func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         let route = UserAPI.Router.code(type: .email, receiver: email)
-        apiService.exec(route: route) { (_, response) in
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
             DispatchQueue.main.async {
                 if response.responseCode != APIErrorCode.responseOK {
                     if let error = response.error {
-                        completion(.failure(SignupError.generic(message: error.messageForTheUser)))
+                        completion(.failure(SignupError.generic(
+                            message: error.networkResponseMessageForTheUser,
+                            code: error.bestShotAtReasonableErrorCode,
+                            originalError: error
+                        )))
                     } else {
                         completion(.failure(SignupError.validationTokenRequest))
                     }
@@ -84,7 +88,7 @@ public class SignupService: Signup {
     public func checkValidationToken(email: String, token: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         let token = HumanVerificationToken(type: .email, token: token, input: email)
         let route = UserAPI.Router.check(token: token)
-        apiService.exec(route: route) { (_, response) in
+        apiService.exec(route: route, responseObject: Response()) { (_, response) in
             DispatchQueue.main.async {
                 if response.responseCode != APIErrorCode.responseOK {
                     if response.responseCode == 2500 {
@@ -94,7 +98,11 @@ public class SignupService: Signup {
                         completion(.failure(SignupError.invalidVerificationCode(message: error.localizedDescription)))
                     } else {
                         if let error = response.error {
-                            completion(.failure(SignupError.generic(message: error.messageForTheUser)))
+                            completion(.failure(SignupError.generic(
+                                message: error.networkResponseMessageForTheUser,
+                                code: error.bestShotAtReasonableErrorCode,
+                                originalError: error
+                            )))
                         } else {
                             completion(.failure(SignupError.validationToken))
                         }
@@ -118,12 +126,12 @@ public class SignupService: Signup {
         }
     }
 
-    public func createNewExternalUser(email: String, password: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    public func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
 
         getRandomSRPModulus { result in
             switch result {
             case .success(let modulus):
-                self.createExternalUser(email: email, password: password, modulus: modulus, verifyToken: verifyToken, completion: completion)
+                self.createExternalUser(email: email, password: password, modulus: modulus, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
             case .failure(let error):
                 return completion(.failure(error))
             }
@@ -135,9 +143,9 @@ public class SignupService: Signup {
         createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
     }
     
-    @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:completion:)")
-    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void) {
-        createNewExternalUser(email: email, password: password, verifyToken: verifyToken, completion: completion)
+    @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:tokenType:completion:)")
+    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
     }
 
     // MARK: Private interface
@@ -149,7 +157,11 @@ public class SignupService: Signup {
             case .success(let res):
                 completion(.success(res))
             case .failure(let error):
-                completion(.failure(SignupError.generic(message: error.messageForTheUser)))
+                completion(.failure(SignupError.generic(
+                    message: error.userFacingMessageInNetworking,
+                    code: error.codeInNetworking,
+                    originalError: error
+                )))
             }
         }
     }
@@ -184,7 +196,11 @@ public class SignupService: Signup {
                 case .success:
                     completion(.success(()))
                 case .failure(let error):
-                    completion(.failure(SignupError.generic(message: error.messageForTheUser)))
+                    completion(.failure(SignupError.generic(
+                        message: error.userFacingMessageInNetworking,
+                        code: error.codeInNetworking,
+                        originalError: error
+                    )))
                 }
             }
         } catch {
@@ -196,12 +212,12 @@ public class SignupService: Signup {
         }
     }
 
-    private func createExternalUser(email: String, password: String, modulus: AuthService.ModulusEndpointResponse, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    private func createExternalUser(email: String, password: String, modulus: AuthService.ModulusEndpointResponse, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
 
         do {
             let authParameters = try gererateAuthParameters(password: password, modulus: modulus.modulus)
 
-            let externalUserParameters = ExternalUserParameters(email: email, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, verifyToken: verifyToken, productPrefix: authParameters.productPrefix)
+            let externalUserParameters = ExternalUserParameters(email: email, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, verifyToken: verifyToken, tokenType: tokenType, productPrefix: authParameters.productPrefix)
 
             PMLog.debug("Creating external user with email: \(externalUserParameters.email)")
             authenticator.createExternalUser(externalUserParameters: externalUserParameters) { result in
@@ -209,7 +225,11 @@ public class SignupService: Signup {
                 case .success:
                     completion(.success(()))
                 case .failure(let error):
-                    completion(.failure(SignupError.generic(message: error.messageForTheUser)))
+                    completion(.failure(SignupError.generic(
+                        message: error.userFacingMessageInNetworking,
+                        code: error.codeInNetworking,
+                        originalError: error
+                    )))
                 }
             }
         } catch {

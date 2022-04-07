@@ -49,8 +49,13 @@ public struct SignupParameters {
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
     
-    public init(mode: SignupMode, passwordRestrictions: SignupPasswordRestrictions, summaryScreenVariant: SummaryScreenVariant) {
-        self.mode = mode
+    // No way to set signupMode because external email signup flow is temporarily turned off until the updated flow is ready on the BE side
+    public init(passwordRestrictions: SignupPasswordRestrictions, summaryScreenVariant: SummaryScreenVariant) {
+        if let mode = ProtonCore_LoginUI.TemporaryHacks.signupMode {
+            self.mode = mode
+        } else {
+            self.mode = .internal
+        }
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
     }

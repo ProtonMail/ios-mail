@@ -52,6 +52,8 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
     weak var delegate: MailboxPasswordViewControllerDelegate?
     var viewModel: MailboxPasswordViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()

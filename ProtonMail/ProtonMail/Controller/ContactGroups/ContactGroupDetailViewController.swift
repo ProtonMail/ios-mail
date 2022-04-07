@@ -178,8 +178,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     private func presentPlanUpgrade() {
         self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true,
-                                         updateCredits: false) { _ in }
+                                         backendFetch: true) { _ in }
     }
 
 }

@@ -50,8 +50,7 @@ class StorefrontViewController: UIViewController {
 
     private func presentSubscriptions() {
         paymentsUI.showCurrentPlan(presentationType: .none,
-                                   backendFetch: true,
-                                   updateCredits: false) { [weak self] result in
+                                   backendFetch: true) { [weak self] result in
             switch result {
             case let .open(viewController, opened) where !opened:
                 self?.present(paymentsViewController: viewController)

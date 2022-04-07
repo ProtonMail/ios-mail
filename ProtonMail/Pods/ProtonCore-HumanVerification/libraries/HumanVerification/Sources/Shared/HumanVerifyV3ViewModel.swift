@@ -21,9 +21,12 @@
 
 import WebKit
 import enum ProtonCore_DataModel.ClientApp
+import ProtonCore_Log
+import ProtonCore_Doh
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import ProtonCore_CoreTranslation
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
@@ -50,6 +53,9 @@ class HumanVerifyV3ViewModel {
     var startToken: String?
     var methods: [VerifyMethod]?
     var onVerificationCodeBlock: ((@escaping SendVerificationCodeBlock) -> Void)?
+    
+    // the order matters, methods below assume it's kept
+    let schemeMapping = [("coreioss", "https"), ("coreios", "http")]
 
     // MARK: - Public properties and methods
 
@@ -60,12 +66,36 @@ class HumanVerifyV3ViewModel {
         self.clientApp = clientApp
     }
 
-    var getURL: URL {
+    var getURLRequest: URLRequest {
         let host = apiService.doh.getHumanVerificationV3Host()
-        let methods = methods?.map { $0.method } ?? []
-        let methodsStr = methods.joined(separator: ",")
+        let token = "?token=\(startToken ?? "")"
+        let methodsStrings = methods?.map { $0.method } ?? []
+        let methods = "&methods=\(methodsStrings.joined(separator: ","))"
+        let theme = "&theme=\(getTheme)"
+        let locale = "&locale=\(getLocale)"
+        let country = "&defaultCountry=\(getCountry)"
+        let embed = "&embed=true"
         let vpn = clientApp == .vpn ? "&vpn=true" : ""
-        return URL(string: "\(host)/?token=\(startToken ?? "")&methods=\(methodsStr)&theme=\(getTheme)&locale=\(getLocale)&defaultCountry=\(getCountry)&embed=true" + vpn)!
+        let url = URL(string: "\(host)/\(token)\(methods)\(theme)\(locale)\(country)\(embed)\(vpn)")!
+        let request = URLRequest(url: url)
+        PMLog.info("\(request)")
+        return request
+    }
+    
+    func shouldRetryFailedLoading(host: String, error: Error, shouldReloadWebView: @escaping (Bool) -> Void) {
+        apiService.doh.handleErrorResolvingProxyDomainIfNeeded(host: host, error: error, completion: shouldReloadWebView)
+    }
+    
+    func setup(webViewConfiguration: WKWebViewConfiguration) {
+        let requestInterceptor = AlternativeRoutingRequestInterceptor(headersGetter: apiService.doh.getHumanVerificationV3Headers) { challenge, completionHandler in
+            handleAuthenticationChallenge(
+                didReceive: challenge,
+                noTrustKit: PMAPIService.noTrustKit,
+                trustKit: PMAPIService.trustKit,
+                challengeCompletionHandler: completionHandler
+            )
+        }
+        requestInterceptor.setup(webViewConfiguration: webViewConfiguration)
     }
     
     func finalToken(method: VerifyMethod, token: String, complete: @escaping SendVerificationCodeBlock) {
@@ -79,29 +109,65 @@ class HumanVerifyV3ViewModel {
     func getToken() -> TokenType {
         return TokenType(verifyMethod: tokenMethod, token: token)
     }
-
-    func interpretMessage(message: WKScriptMessage, notificationMessage: ((NotificationType, String) -> Void)? = nil, errorHandler: ((ResponseError) -> Void)? = nil, completeHandler: ((VerifyMethod) -> Void)) {
-        guard message.name == scriptName, let string = message.body as? String, let json = try? JSONSerialization.jsonObject(with: Data(string.utf8), options: []) as? [String: Any] else { return }
-        if let type = json["type"] as? String {
-            switch type {
-            case MessageType.human_verification_success.rawValue:
-                guard let messageSuccess: MessageSuccess = decode(json: json) else { return }
-                let method = VerifyMethod(string: messageSuccess.payload.type)
-                finalToken(method: method, token: messageSuccess.payload.token) { res, responseError, verificationCodeBlockFinish in
-                    // if for some reason verification code is not accepted by the BE, send errorHandler to relaunch HV UI once again
-                    if res {
-                        verificationCodeBlockFinish?()
-                    } else if let responseError = responseError {
-                        errorHandler?(responseError)
-                    }
+    
+    func interpretMessage(message: WKScriptMessage,
+                          notificationMessage: ((NotificationType, String) -> Void)? = nil,
+                          loadedMessage: (() -> Void)? = nil,
+                          errorHandler: ((ResponseError, Bool) -> Void)? = nil,
+                          completeHandler: ((VerifyMethod) -> Void)) {
+        guard message.name == scriptName,
+              let string = message.body as? String,
+              let json = try? JSONSerialization.jsonObject(with: Data(string.utf8), options: []) as? [String: Any]
+        else { return }
+        guard let type = json["type"] as? String, let messageType = MessageType(rawValue: type) else { return }
+        
+        processMessage(type: messageType,
+                       json: json,
+                       notificationMessage: notificationMessage,
+                       loadedMessage: loadedMessage,
+                       errorHandler: errorHandler,
+                       completeHandler: completeHandler)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    private func processMessage(type: MessageType,
+                                json: [String: Any],
+                                notificationMessage: ((NotificationType, String) -> Void)?,
+                                loadedMessage: (() -> Void)?,
+                                errorHandler: ((ResponseError, Bool) -> Void)?,
+                                completeHandler: ((VerifyMethod) -> Void)) {
+        switch type {
+        case .human_verification_success:
+            guard let messageSuccess: MessageSuccess = decode(json: json) else { return }
+            let method = VerifyMethod(string: messageSuccess.payload.type)
+            finalToken(method: method, token: messageSuccess.payload.token) { res, responseError, verificationCodeBlockFinish in
+                // if for some reason verification code is not accepted by the BE, send errorHandler to relaunch HV UI once again
+                if res {
+                    verificationCodeBlockFinish?()
+                } else if let responseError = responseError {
+                    errorHandler?(responseError, true)
                 }
-                // messageSuccess is emitted by the Web core with validated verification code, then it's possible to send completeHandler to close HV UI
-                completeHandler(method)
-            case MessageType.notification.rawValue:
-                guard let messageNotification: MessageNotification = decode(json: json), (messageNotification.payload.type == .success || messageNotification.payload.type == .error) else { return }
-                notificationMessage?(messageNotification.payload.type, messageNotification.payload.text)
-            default: break
             }
+            // messageSuccess is emitted by the Web core with validated verification code, then it's possible to send completeHandler to close HV UI
+            completeHandler(method)
+            
+        case .notification:
+            guard let messageNotification: MessageNotification = decode(json: json),
+                  (messageNotification.payload.type == .success || messageNotification.payload.type == .error)
+            else { return }
+            notificationMessage?(messageNotification.payload.type, messageNotification.payload.text)
+        case .loaded:
+            loadedMessage?()
+        case .close:
+            let responseError = ResponseError(httpCode: nil, responseCode: APIErrorCode.humanVerificationEditEmail, userFacingMessage: "Human Verification edit email address", underlyingError: nil)
+            errorHandler?(responseError, true)
+        case .error:
+            guard let messageError: MessageError = decode(json: json) else { return }
+            let message = messageError.payload.message ?? CoreString._ad_delete_network_error
+            let responseError = ResponseError(httpCode: nil, responseCode: messageError.payload.code, userFacingMessage: message, underlyingError: nil)
+            errorHandler?(responseError, false)
+        case .resize:
+            break
         }
     }
     

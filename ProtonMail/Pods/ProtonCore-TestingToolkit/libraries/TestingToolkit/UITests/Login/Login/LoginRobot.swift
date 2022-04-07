@@ -123,7 +123,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func fillpassword(password: String) -> LoginRobot {
-        secureTextField(passwordTextFieldId).tap().typeText(password)
+        secureTextField(passwordTextFieldId).tap().wait().typeText(password)
         return self
     }
     

@@ -31,13 +31,19 @@ class SignupViewModel {
     var signupService: Signup
     var loginService: Login
     let challenge: PMChallenge
+    let humanVerificationVersion: HumanVerificationVersion
     var signUpDomain: String { return loginService.signUpDomain }
 
-    init(apiService: PMAPIService, signupService: Signup, loginService: Login, challenge: PMChallenge) {
+    init(apiService: PMAPIService,
+         signupService: Signup,
+         loginService: Login,
+         challenge: PMChallenge,
+         humanVerificationVersion: HumanVerificationVersion) {
         self.apiService = apiService
         self.signupService = signupService
         self.loginService = loginService
         self.challenge = challenge
+        self.humanVerificationVersion = humanVerificationVersion
     }
 
     func isUserNameValid(name: String) -> Bool {
@@ -62,6 +68,22 @@ class SignupViewModel {
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    func checkEmail(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void, editEmail: @escaping () -> Void) {
+        loginService.checkAvailabilityExternal(email: email) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                if error.codeInLogin == APIErrorCode.humanVerificationEditEmail {
+                    // transform internal HV error to editEmail closure
+                    editEmail()
+                } else {
+                    completion(.failure(error))
+                }
             }
         }
     }

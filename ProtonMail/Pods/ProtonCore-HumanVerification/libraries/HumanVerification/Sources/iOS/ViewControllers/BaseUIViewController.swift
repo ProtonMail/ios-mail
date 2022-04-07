@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_UIFoundations
 
 class BaseUIViewController: UIViewController {
     var bottomPaddingConstraint: CGFloat = 0
@@ -33,6 +34,8 @@ class BaseUIViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 }
 
 extension BaseUIViewController: NSNotificationCenterKeyboardObserverProtocol {

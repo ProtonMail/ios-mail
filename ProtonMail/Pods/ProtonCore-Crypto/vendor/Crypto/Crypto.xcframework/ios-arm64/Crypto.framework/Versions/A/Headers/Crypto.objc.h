@@ -403,6 +403,12 @@ If signKeyRing is not nil, it is used to do an embedded signature.
 
 // skipped method KeyRing.GetKeys with unsupported parameter or return types
 
+/**
+ * GetVerifiedSignatureTimestamp verifies a PlainMessage with a detached PGPSignature
+returns the creation time of the signature if it succeeds
+and returns a SignatureVerificationError if fails.
+ */
+- (BOOL)getVerifiedSignatureTimestamp:(CryptoPlainMessage* _Nullable)message signature:(CryptoPGPSignature* _Nullable)signature verifyTime:(int64_t)verifyTime ret0_:(int64_t* _Nullable)ret0_ error:(NSError* _Nullable* _Nullable)error;
 - (CryptoAttachmentProcessor* _Nullable)newLowMemoryAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename error:(NSError* _Nullable* _Nullable)error;
 - (CryptoManualAttachmentProcessor* _Nullable)newManualAttachmentProcessor:(long)estimatedSize filename:(NSString* _Nullable)filename dataBuffer:(NSData* _Nullable)dataBuffer error:(NSError* _Nullable* _Nullable)error;
 /**
@@ -523,12 +529,16 @@ the given headers. Empty parameters are omitted from the headers.
 // skipped method PGPMessage.NewReader with unsupported parameter or return types
 
 /**
- * SeparateKeyAndData returns the first keypacket and the (hopefully unique)
-dataPacket (not verified).
-* estimatedLength is the estimate length of the message.
-* garbageCollector > 0 activates the garbage collector.
+ * SeparateKeyAndData splits the message into key and data packet(s).
+Parameters are for backwards compatibility and are unused.
+Deprecated: use SplitMessage().
  */
-- (CryptoPGPSplitMessage* _Nullable)separateKeyAndData:(long)estimatedLength garbageCollector:(long)garbageCollector error:(NSError* _Nullable* _Nullable)error;
+- (CryptoPGPSplitMessage* _Nullable)separateKeyAndData:(long)p0 p1:(long)p1 error:(NSError* _Nullable* _Nullable)error;
+/**
+ * SplitMessage splits the message into key and data packet(s).
+Parameters are for backwards compatibility and are unused.
+ */
+- (CryptoPGPSplitMessage* _Nullable)splitMessage:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**

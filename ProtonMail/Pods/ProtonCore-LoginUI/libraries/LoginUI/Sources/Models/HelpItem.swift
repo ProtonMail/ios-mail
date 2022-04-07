@@ -22,6 +22,7 @@
 import Foundation
 import UIKit
 import ProtonCore_CoreTranslation
+import ProtonCore_UIFoundations
 
 enum HelpItem: CaseIterable {
     case forgotUsername
@@ -49,13 +50,13 @@ extension HelpItem {
     var icon: UIImage {
         switch self {
         case .forgotUsername:
-            return UIImage(named: "ForgotUsernameIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
+            return IconProvider.userCircle
         case .forgotPassword:
-            return UIImage(named: "ForgotPasswordIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
+            return IconProvider.key
         case .otherIssues:
-            return UIImage(named: "OtherIssuesIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
+            return IconProvider.questionCircle
         case .support:
-            return UIImage(named: "SupportIcon", in: LoginAndSignup.bundle, compatibleWith: nil)!
+            return IconProvider.speechBubble
         }
     }
 }

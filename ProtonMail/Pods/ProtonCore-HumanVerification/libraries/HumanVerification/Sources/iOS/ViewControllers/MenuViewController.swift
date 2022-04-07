@@ -44,9 +44,12 @@ public class MenuViewController: UIViewController, AccessibleView {
 
     weak var delegate: MenuViewControllerDelegate?
     var viewModel: MenuViewModel!
+    var viewTitle: String?
     var capchaViewController: RecaptchaViewController?
     var emailViewController: EmailVerifyViewController?
     var smsViewController: PhoneVerifyViewController?
+    
+    override public var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: View controller life cycle
 
@@ -59,10 +62,6 @@ public class MenuViewController: UIViewController, AccessibleView {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
-    override public var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.default
     }
 
     func resetUI() {
@@ -82,10 +81,11 @@ public class MenuViewController: UIViewController, AccessibleView {
     // MARK: - Private Interface
 
     private func configureUI() {
+        closeBarButtonItem.image = IconProvider.crossSmall
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
         view.backgroundColor = ColorProvider.BackgroundNorm
-        self.title = CoreString._hv_title
+        self.title = viewTitle ?? CoreString._hv_title
         updateTitleAttributes()
         helpBarButtonItem.title = CoreString._hv_help_button
         helpBarButtonItem.tintColor = ColorProvider.BrandNorm

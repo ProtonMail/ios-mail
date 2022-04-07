@@ -97,6 +97,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
         static let realAttachments = "realAttachments"
+
+        static let paymentMethods = "paymentMethods"
     }
 
     var keymakerRandomkey: String? {
@@ -585,6 +587,18 @@ extension UserCachedStatus: LinkOpenerCacheProtocol {
     }
 }
 extension UserCachedStatus: ServicePlanDataStorage {
+    var paymentMethods: [PaymentMethod]? {
+        get {
+            guard let data = getShared().data(forKey: Key.paymentMethods) else {
+                return nil
+            }
+            return try? PropertyListDecoder().decode([PaymentMethod].self, from: data)
+        }
+        set {
+            let data = try? PropertyListEncoder().encode(newValue)
+            getShared().setValue(data, forKey: Key.paymentMethods)
+        }
+    }
     /* TODO NOTE: this should be updated alongside Payments integration */
     var credits: Credits? {
         get { nil }
@@ -629,8 +643,8 @@ extension UserCachedStatus: ServicePlanDataStorage {
             self.setValue(data, forKey: Key.currentSubscription)
         }
     }
-
-    var isIAPUpgradePlanAvailable: Bool {
+    
+    var paymentsBackendStatusAcceptsIAP: Bool {
         get {
             return self.getShared().bool(forKey: Key.isIAPAvailableOnBE)
         }

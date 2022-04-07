@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -15,52 +15,64 @@
             <objects>
                 <viewController storyboardIdentifier="Login" id="ns3-2c-TbF" customClass="LoginViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5xC-t1-2Fg">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="1Yh-Pq-tND">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDH-n2-Ues">
-                                        <rect key="frame" x="232" y="28" width="560" height="409.5"/>
+                                        <rect key="frame" x="8" y="52" width="398" height="409.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Sign in" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ga1-hy-Q3M" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="REA-Fj-eCa">
+                                                <rect key="frame" x="164.5" y="8" width="69.5" height="26.5"/>
+                                                <subviews>
+                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f37-xG-C6L">
+                                                        <rect key="frame" x="-5.5" y="0.0" width="80" height="80"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="80" id="ax2-yd-X0W"/>
+                                                            <constraint firstAttribute="width" secondItem="f37-xG-C6L" secondAttribute="height" multiplier="1:1" id="hpn-J5-9le"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Sign in" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ga1-hy-Q3M" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="69.5" height="26.5"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Enter your Proton Account details." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGZ-j9-ciy" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="42.5" width="544" height="18"/>
+                                                <rect key="frame" x="8" y="42.5" width="382" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abK-Fo-mdZ" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="84.5" width="544" height="80"/>
+                                                <rect key="frame" x="8" y="84.5" width="382" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Email or username"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="ssN-wD-ixD" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="172.5" width="544" height="80"/>
+                                                <rect key="frame" x="8" y="172.5" width="382" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Password"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPassword" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3kB-7r-0CL">
-                                                <rect key="frame" x="8" y="270.5" width="544" height="76"/>
+                                                <rect key="frame" x="8" y="270.5" width="382" height="76"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0K-Kh-3Bo" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="34"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="34"/>
                                                         <state key="normal" title="Sign in"/>
                                                         <connections>
                                                             <action selector="signInPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="t0C-M2-ApC"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a9F-OJ-qwD" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="0.0" y="42" width="544" height="34"/>
+                                                        <rect key="frame" x="0.0" y="42" width="382" height="34"/>
                                                         <state key="normal" title="Create an account"/>
                                                         <connections>
                                                             <action selector="signUpPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="5gi-LJ-cUg"/>
@@ -69,14 +81,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="GFF-vf-p90">
-                                                <rect key="frame" x="8" y="356.5" width="544" height="1"/>
+                                                <rect key="frame" x="8" y="356.5" width="382" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGrayColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="JbM-zY-ruH"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQk-BF-bjo" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="367.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="367.5" width="382" height="34"/>
                                                 <state key="normal" title="Need help?"/>
                                                 <connections>
                                                     <action selector="needHelpPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="fDM-UM-uRb"/>
@@ -85,23 +97,22 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="ga1-hy-Q3M" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="02t-wa-Jeh"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="bottom" secondItem="vDH-n2-Ues" secondAttribute="bottom" constant="-8" id="0yu-L7-e2h"/>
-                                            <constraint firstItem="KGZ-j9-ciy" firstAttribute="top" secondItem="ga1-hy-Q3M" secondAttribute="bottom" constant="8" id="2xm-UX-oOG"/>
                                             <constraint firstItem="KGZ-j9-ciy" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="3XR-Xc-dSk"/>
-                                            <constraint firstItem="ga1-hy-Q3M" firstAttribute="top" secondItem="vDH-n2-Ues" secondAttribute="top" constant="8" id="5GV-pw-lIx"/>
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="top" secondItem="KGZ-j9-ciy" secondAttribute="bottom" constant="24" id="6z5-RF-VUV"/>
+                                            <constraint firstItem="REA-Fj-eCa" firstAttribute="centerX" secondItem="vDH-n2-Ues" secondAttribute="centerX" id="9s8-LL-cdJ"/>
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="9va-1T-8Zw"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="top" secondItem="GFF-vf-p90" secondAttribute="bottom" constant="10" id="B6C-IW-yJG"/>
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="E9H-eT-VKq"/>
+                                            <constraint firstItem="REA-Fj-eCa" firstAttribute="top" secondItem="vDH-n2-Ues" secondAttribute="top" constant="8" id="Mfn-Ks-qRJ"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="TPB-3v-d08"/>
                                             <constraint firstItem="GFF-vf-p90" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="WD1-5m-p6h"/>
                                             <constraint firstItem="ssN-wD-ixD" firstAttribute="top" secondItem="abK-Fo-mdZ" secondAttribute="bottom" constant="8" id="Z3d-5X-OcR"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="top" secondItem="ssN-wD-ixD" secondAttribute="bottom" constant="18" id="bM3-zd-yOT"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="dCG-fY-0e7"/>
+                                            <constraint firstItem="KGZ-j9-ciy" firstAttribute="top" secondItem="REA-Fj-eCa" secondAttribute="bottom" constant="8" id="fjV-zy-jsi"/>
                                             <constraint firstItem="GFF-vf-p90" firstAttribute="top" secondItem="3kB-7r-0CL" secondAttribute="bottom" constant="10" id="gG7-6V-9FH"/>
                                             <constraint firstItem="KGZ-j9-ciy" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="mj7-S8-hMV"/>
-                                            <constraint firstItem="ga1-hy-Q3M" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="mm3-ZQ-HWn"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="qak-OP-mY4"/>
                                             <constraint firstItem="ssN-wD-ixD" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="qzH-xC-8Zv"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="slI-eU-f1v"/>
@@ -130,6 +141,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="brandImage" destination="f37-xG-C6L" id="E8a-zS-mxF"/>
                         <outlet property="helpButton" destination="BQk-BF-bjo" id="eTY-9P-pLt"/>
                         <outlet property="loginTextField" destination="abK-Fo-mdZ" id="pkl-3R-Zqs"/>
                         <outlet property="passwordTextField" destination="ssN-wD-ixD" id="CPN-j7-l8u"/>
@@ -150,33 +162,33 @@
             <objects>
                 <viewController storyboardIdentifier="TwoFactor" id="JkI-GG-JBm" customClass="TwoFactorViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1OM-B8-Vzq">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="S1N-nW-Ckx">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTz-qM-qTz">
-                                        <rect key="frame" x="232" y="28" width="560" height="246.5"/>
+                                        <rect key="frame" x="8" y="52" width="398" height="246.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Two-factor authentication" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uF7-Od-Bc2" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
+                                                <rect key="frame" x="8" y="8" width="382" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="1gL-Ze-tzS" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="58.5" width="544" height="80"/>
+                                                <rect key="frame" x="8" y="58.5" width="382" height="80"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IbO-f6-IH4" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="162.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="162.5" width="382" height="34"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="authenticatePressed:" destination="JkI-GG-JBm" eventType="touchUpInside" id="fEg-85-cgF"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qK7-y9-n5P" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="204.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="204.5" width="382" height="34"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="recoveryPressed:" destination="JkI-GG-JBm" eventType="touchUpInside" id="grr-5e-4Ga"/>
@@ -237,33 +249,33 @@
             <objects>
                 <viewController storyboardIdentifier="MailboxPassword" id="urv-M6-RE1" customClass="MailboxPasswordViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EJA-2n-2xn">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="hRr-wd-t1H">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="USW-3y-gS1">
-                                        <rect key="frame" x="232" y="28" width="560" height="246.5"/>
+                                        <rect key="frame" x="8" y="52" width="398" height="246.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlock your mailbox" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rzx-E7-dES" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
+                                                <rect key="frame" x="8" y="8" width="382" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="EVR-bx-lZi" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="58.5" width="544" height="80"/>
+                                                <rect key="frame" x="8" y="58.5" width="382" height="80"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxa-DB-vzG" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="162.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="162.5" width="382" height="34"/>
                                                 <state key="normal" title="Unlock"/>
                                                 <connections>
                                                     <action selector="unlockPressed:" destination="urv-M6-RE1" eventType="touchUpInside" id="VU1-mp-2iD"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdo-bv-OfL" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="204.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="204.5" width="382" height="34"/>
                                                 <state key="normal" title="Forgot password"/>
                                                 <connections>
                                                     <action selector="forgetPressed:" destination="urv-M6-RE1" eventType="touchUpInside" id="v4E-A4-4S5"/>
@@ -324,7 +336,7 @@
             <objects>
                 <viewController storyboardIdentifier="Help" id="0dC-Hl-SR5" customClass="HelpViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dXe-Bn-yXb">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="87N-4d-0V4">
@@ -333,19 +345,18 @@
                                     <constraint firstAttribute="width" constant="40" id="9a0-Lb-439"/>
                                     <constraint firstAttribute="height" constant="40" id="jha-dW-9up"/>
                                 </constraints>
-                                <state key="normal" image="Close"/>
                                 <connections>
                                     <action selector="closePressed:" destination="0dC-Hl-SR5" eventType="touchUpInside" id="ZcN-Ye-PqS"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How can we help?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlS-LV-eb1">
-                                <rect key="frame" x="24" y="80" width="976" height="27"/>
+                                <rect key="frame" x="24" y="80" width="366" height="27"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="RbN-Gc-Kc7">
-                                <rect key="frame" x="0.0" y="131" width="1024" height="1235"/>
+                                <rect key="frame" x="0.0" y="131" width="414" height="765"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" name="SeparatorLineColour"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -380,35 +391,35 @@
             <objects>
                 <viewController storyboardIdentifier="ChooseUsername" id="o6g-3e-Q3c" customClass="ChooseUsernameViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SSl-7I-yFn">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="RCn-eF-abS">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-e3-F4p">
-                                        <rect key="frame" x="232" y="28" width="560" height="236.5"/>
+                                        <rect key="frame" x="8" y="52" width="398" height="254.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create ProtonMail address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1m-dB-wgK" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
+                                                <rect key="frame" x="8" y="8" width="382" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Proton Account is associated with email@example.com. To use ProtonMail, please create an address." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dA-qi-cNL" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="42.5" width="544" height="36"/>
+                                                <rect key="frame" x="8" y="42.5" width="382" height="54"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="XVX-7d-VjN" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="102.5" width="544" height="80"/>
+                                                <rect key="frame" x="8" y="120.5" width="382" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="suffix" value="@protonmail.com"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEJ-XM-wsk" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="194.5" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="212.5" width="382" height="34"/>
                                                 <state key="normal" title="Next"/>
                                                 <connections>
                                                     <action selector="nextPressed:" destination="o6g-3e-Q3c" eventType="touchUpInside" id="JuZ-ZB-Elj"/>
@@ -469,48 +480,48 @@
             <objects>
                 <viewController storyboardIdentifier="CreateAddress" id="wcG-3y-iFk" customClass="CreateAddressViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8H0-4W-5Wm">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="cbI-QG-6Fl">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBg-LN-23C">
-                                        <rect key="frame" x="232" y="28" width="560" height="229"/>
+                                        <rect key="frame" x="8" y="52" width="398" height="262.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You will use this email address to log into all Proton services." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGP-JF-mbz" customClass="SubtitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="42.5" width="544" height="18"/>
+                                                <rect key="frame" x="8" y="42.5" width="382" height="36"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="adam@protonmail.com is available" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WkI-iA-g1B" customClass="TitleLabel" customModule="ProtonCore_LoginUI">
-                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
+                                                <rect key="frame" x="8" y="8" width="382" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your recovery email address:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fN-9Y-d0V">
-                                                <rect key="frame" x="8" y="84.5" width="544" height="20.5"/>
+                                                <rect key="frame" x="8" y="102.5" width="382" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="adam@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQm-b9-Yod">
-                                                <rect key="frame" x="8" y="113" width="544" height="18"/>
+                                                <rect key="frame" x="8" y="131" width="382" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GiH-yO-SEE" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="155" width="544" height="34"/>
+                                                <rect key="frame" x="8" y="173" width="382" height="34"/>
                                                 <state key="normal" title="Create address"/>
                                                 <connections>
                                                     <action selector="createPressed:" destination="wcG-3y-iFk" eventType="touchUpInside" id="M5h-ge-UGZ"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By clicking Create address, you agree with Proton's Terms and Conditions." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bff-Al-2ch">
-                                                <rect key="frame" x="8" y="205" width="544" height="16"/>
+                                                <rect key="frame" x="8" y="223" width="382" height="31.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" systemColor="systemGrayColor"/>
                                                 <nil key="highlightedColor"/>
@@ -575,7 +586,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Close" width="24" height="24"/>
         <namedColor name="SeparatorLineColour">
             <color red="0.91764705882352937" green="0.92549019607843142" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

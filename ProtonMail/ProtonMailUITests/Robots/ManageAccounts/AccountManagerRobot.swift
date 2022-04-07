@@ -40,19 +40,19 @@ class AccountManagerRobot: CoreElements {
     }
 
     func logoutPrimaryAccount(_ user: User) -> InboxRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .signOut()
             .confirmSignOutPrimary()
     }
     
     func logoutSecondaryAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .signOut()
             .confirmSignOut()
     }
     
     func deleteAccount(_ user: User) -> AccountManagerRobot {
-        return tapMore(user.email)
+        return tapMore(user.name)
             .removeAccount()
             .confirmRemove()
     }

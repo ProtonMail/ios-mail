@@ -35,7 +35,7 @@ import typealias ProtonCore_Payments.BugAlertHandler
 import ProtonCore_PaymentsUI
 
 extension PMChallenge: ChallangeParametersProvider {
-    public func provideParameters() -> [[String : Any]] {
+    public func provideParameters() -> [[String: Any]] {
         export().toDictArray()
     }
 }
@@ -47,13 +47,23 @@ final class Container {
     private let api: PMAPIService
     private let authManager: AuthManager
     private var humanCheckHelper: HumanCheckHelper?
+    let humanVerificationVersion: HumanVerificationVersion
     private var paymentsManager: PaymentsManager?
     private let externalLinks: ExternalLinks
     private let clientApp: ClientApp
     private let appName: String
     private let challenge: PMChallenge
+    
+    var token: String?
+    var tokenType: String?
 
-    init(appName: String, clientApp: ClientApp, doh: DoH & ServerConfig, apiServiceDelegate: APIServiceDelegate, forceUpgradeDelegate: ForceUpgradeDelegate, minimumAccountType: AccountType) {
+    init(appName: String,
+         clientApp: ClientApp,
+         doh: DoH & ServerConfig,
+         apiServiceDelegate: APIServiceDelegate,
+         forceUpgradeDelegate: ForceUpgradeDelegate,
+         humanVerificationVersion: HumanVerificationVersion,
+         minimumAccountType: AccountType) {
         if PMAPIService.trustKit == nil {
             let trustKit = TrustKit()
             trustKit.pinningValidator = .init()
@@ -72,6 +82,7 @@ final class Container {
         self.appName = appName
         self.clientApp = clientApp
         self.externalLinks = ExternalLinks(clientApp: clientApp)
+        self.humanVerificationVersion = humanVerificationVersion
     }
 
     // MARK: Login view models
@@ -99,7 +110,11 @@ final class Container {
     // MARK: Signup view models
 
     func makeSignupViewModel() -> SignupViewModel {
-        return SignupViewModel(apiService: api, signupService: signupService, loginService: login, challenge: challenge)
+        return SignupViewModel(apiService: api,
+                               signupService: signupService,
+                               loginService: login,
+                               challenge: challenge,
+                               humanVerificationVersion: humanVerificationVersion)
     }
 
     func makePasswordViewModel() -> PasswordViewModel {
@@ -135,7 +150,14 @@ final class Container {
     }
 
     func setupHumanVerification(viewController: UIViewController? = nil) {
-        humanCheckHelper = HumanCheckHelper(apiService: api, viewController: viewController, clientApp: clientApp, responseDelegate: nil, paymentDelegate: self)
+        let nonModalUrl = URL(string: "/users/availableExternal")!
+        humanCheckHelper = HumanCheckHelper(apiService: api,
+                                            viewController: viewController,
+                                            nonModalUrls: [nonModalUrl],
+                                            clientApp: clientApp,
+                                            versionToBeUsed: humanVerificationVersion,
+                                            responseDelegate: self,
+                                            paymentDelegate: self)
         api.humanDelegate = humanCheckHelper
     }
 
@@ -149,5 +171,15 @@ extension Container: HumanVerifyPaymentDelegate {
     func paymentTokenStatusChanged(status: PaymentTokenStatusResult) {
 
     }
+}
 
+extension Container: HumanVerifyResponseDelegate {
+    func onHumanVerifyStart() { }
+    
+    func onHumanVerifyEnd(result: HumanVerifyEndResult) { }
+    
+    func humanVerifyToken(token: String?, tokenType: String?) {
+        self.token = token
+        self.tokenType = tokenType
+    }
 }

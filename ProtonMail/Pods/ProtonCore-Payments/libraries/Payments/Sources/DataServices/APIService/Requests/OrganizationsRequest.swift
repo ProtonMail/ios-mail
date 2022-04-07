@@ -35,7 +35,8 @@ final class OrganizationsResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        let (result, details) = decodeResponse(response["Organization"] as Any, to: Organization.self)
+        guard let organizationResponse = response["Organization"] else { return false }
+        let (result, details) = decodeResponse(organizationResponse, to: Organization.self, errorToReturn: .organizationDecode)
         organization = details
         return result
     }

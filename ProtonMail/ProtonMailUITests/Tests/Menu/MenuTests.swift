@@ -36,7 +36,7 @@ class MenuTests : BaseTestCase {
         let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
         let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))".uppercased()
         
-        loginRobot
+        let menuAccountListRobot = loginRobot
             .loginUser(testData.onePassUser)
             .menuDrawer()
             .settings()
@@ -47,6 +47,21 @@ class MenuTests : BaseTestCase {
             .navigateBackToSettings()
             .menuDrawer()
             .accountsList()
+
+        menuAccountListRobot
             .verify.accountShortNameIsCorrect(shortName.uppercased())
+
+        menuAccountListRobot
+            .dismiss()
+            .settings()
+            .selectAccount(testData.onePassUser.email)
+            .displayName()
+            .setDisplayNameTextTo(testData.onePassUser.name)
+            .save()
+            .navigateBackToSettings()
+            .menuDrawer()
+            .accountsList()
+            .verify.accountShortNameIsCorrect("1")
+        
     }
 }

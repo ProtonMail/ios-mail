@@ -25,6 +25,7 @@ import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import ProtonCore_Foundations
 import ProtonCore_Networking
+import ProtonCore_Services
 
 class RecaptchaViewController: UIViewController, AccessibleView {
 
@@ -40,6 +41,8 @@ class RecaptchaViewController: UIViewController, AccessibleView {
 
     var viewModel: RecaptchaViewModel!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
+    
     private enum WaitingIndicatorState {
         case off
         case waiting
@@ -52,10 +55,6 @@ class RecaptchaViewController: UIViewController, AccessibleView {
         super.viewDidLoad()
         configureUI()
         generateAccessibilityIdentifiers()
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.default
     }
 
     // MARK: Private interface
@@ -205,11 +204,15 @@ extension RecaptchaViewController: WKNavigationDelegate {
         setWaitingIndicatorState(state: .off)
     }
     
-    func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let serverTrust = challenge.protectionSpace.serverTrust else { return completionHandler(.useCredential, nil) }
-        let exceptions = SecTrustCopyExceptions(serverTrust)
-        SecTrustSetExceptions(serverTrust, exceptions)
-        completionHandler(.useCredential, URLCredential(trust: serverTrust))
+    func webView(_ webView: WKWebView,
+                 didReceive challenge: URLAuthenticationChallenge,
+                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        handleAuthenticationChallenge(
+            didReceive: challenge,
+            noTrustKit: PMAPIService.noTrustKit,
+            trustKit: PMAPIService.trustKit,
+            challengeCompletionHandler: completionHandler
+        )
     }
 
     private func enableUserInteraction(for webView: WKWebView) {

@@ -27,7 +27,7 @@ public extension Credential {
     }
 
     func updated(
-        UID: String? = nil, accessToken: String? = nil, refreshToken: String? = nil, expiration: Date? = nil, scope: Credential.Scope? = nil
+        UID: String? = nil, accessToken: String? = nil, refreshToken: String? = nil, expiration: Date? = nil, scope: Credential.Scopes? = nil
     ) -> Credential {
         Credential(UID: UID ?? self.UID,
                    accessToken: accessToken ?? self.accessToken,

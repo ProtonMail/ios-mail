@@ -34,6 +34,8 @@ class TCViewController: UIViewController, AccessibleView {
     weak var delegate: TCViewControllerDelegate?
     var termsAndConditionsURL: URL?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
+    
     // MARK: Outlets
 
     @IBOutlet weak var webView: WKWebView!

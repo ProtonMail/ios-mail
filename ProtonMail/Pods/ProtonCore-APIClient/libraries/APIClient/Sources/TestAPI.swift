@@ -85,7 +85,7 @@ extension TestApiClient {
     //  3. combin
     public func triggerHumanVerify(isAuth: Bool = true, complete: @escaping  (_ task: URLSessionDataTask?, _ response: HumanVerificationResponse) -> Void) {
         let route = createHumanVerifyRoute(isAuth: isAuth)
-        self.apiService.exec(route: route, complete: complete)
+        self.apiService.exec(route: route, responseObject: HumanVerificationResponse(), complete: complete)
     }
 
     public func createHumanVerifyRoute(destination: String? = nil, type: VerifyMethod? = nil, token: String? = nil, isAuth: Bool = true) -> Router {
@@ -98,24 +98,4 @@ class TestApi: Request {
     var header: [String: Any] = [:]
     var method: HTTPMethod = .get
     var parameters: [String: Any]?
-}
-
-public struct ExpireTokenResponse: Codable {
-    public var code: Int
-}
-
-public class ExpireToken: Request {
-    let uid: String
-    public init(uid: String) {
-        self.uid = uid
-    }
-    public var path: String {
-        return "/internal/quark/user:expire:access:token?UID=\(self.uid)"
-    }
-    public var method: HTTPMethod = .get
-    public var parameters: [String: Any]?
-
-    public var isAuth: Bool {
-        return false
-    }
 }

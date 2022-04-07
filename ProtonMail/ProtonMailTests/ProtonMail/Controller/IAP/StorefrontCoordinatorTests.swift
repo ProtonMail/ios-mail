@@ -52,12 +52,12 @@ class StorefrontCoordinatorTests: XCTestCase {
         sut.start()
 
         XCTAssertEqual(sideMenuMock.hideMenu.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.hideMenu.arguments(forCallCounter: 0)?.a1, true)
+        XCTAssertEqual(sideMenuMock.hideMenu.arguments(forCallCounter: 1)?.a1, true)
 
         XCTAssertEqual(sideMenuMock.setContentViewController.callCounter, 1)
-        XCTAssertEqual(sideMenuMock.setContentViewController.arguments(forCallCounter: 0)?.a2, false)
+        XCTAssertEqual(sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a2, false)
 
-        let presentedViewController = sideMenuMock.setContentViewController.arguments(forCallCounter: 0)?.a1
+        let presentedViewController = sideMenuMock.setContentViewController.arguments(forCallCounter: 1)?.a1
 
         XCTAssertTrue(presentedViewController is UINavigationController)
 

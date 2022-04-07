@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,47 +14,59 @@
             <objects>
                 <viewController storyboardIdentifier="Signup" id="LQ8-D2-bgN" customClass="SignupViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ooq-Ol-kGk">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZ7-mB-wbY">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="QY7-pQ-zCk">
-                                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZM1-O3-W7Y">
-                                                <rect key="frame" x="8" y="52" width="374" height="294.33333333333331"/>
+                                                <rect key="frame" x="232" y="28" width="560" height="302.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Create your Proton Account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD8-O9-kRX">
-                                                        <rect key="frame" x="8" y="7.9999999999999982" width="358" height="26.333333333333329"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="AWR-V5-JGo">
+                                                        <rect key="frame" x="8" y="8" width="544" height="26.5"/>
+                                                        <subviews>
+                                                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6Ai-OT-lAN">
+                                                                <rect key="frame" x="232" y="0.0" width="80" height="80"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="80" id="cvm-ys-hju"/>
+                                                                    <constraint firstAttribute="width" secondItem="6Ai-OT-lAN" secondAttribute="height" id="uj7-zf-xRr"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Create your Proton Account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD8-O9-kRX">
+                                                                <rect key="frame" x="130" y="0.0" width="284" height="26.5"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="One account for all Proton services." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWf-De-PP6">
-                                                        <rect key="frame" x="8" y="42.333333333333329" width="358" height="18"/>
+                                                        <rect key="frame" x="8" y="50.5" width="544" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" systemColor="systemGrayColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="248" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="zrR-Xg-iH3" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="84.333333333333343" width="358" height="80"/>
+                                                        <rect key="frame" x="8" y="92.5" width="544" height="80"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Username"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
-                                                    <view contentMode="scaleToFill" horizontalHuggingPriority="248" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="JpY-ih-Bwz" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="84.333333333333343" width="358" height="80"/>
+                                                    <view contentMode="scaleToFill" horizontalHuggingPriority="248" translatesAutoresizingMaskIntoConstraints="NO" id="JpY-ih-Bwz" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
+                                                        <rect key="frame" x="8" y="92.5" width="544" height="80"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Username"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="HxP-mt-FV5">
-                                                        <rect key="frame" x="8" y="164.33333333333334" width="358" height="80"/>
+                                                        <rect key="frame" x="8" y="172.5" width="544" height="80"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k93-oQ-rLI" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                                <rect key="frame" x="0.0" y="0.0" width="358" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="544" height="30"/>
                                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                                 <state key="normal" title="Use your current email instead"/>
                                                                 <connections>
@@ -62,7 +74,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uvw-1L-jQh" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                                <rect key="frame" x="0.0" y="45.999999999999972" width="358" height="34"/>
+                                                                <rect key="frame" x="0.0" y="46" width="544" height="34"/>
                                                                 <state key="normal" title="Next"/>
                                                                 <connections>
                                                                     <action selector="onNextButtonTap:" destination="LQ8-D2-bgN" eventType="touchUpInside" id="9yJ-3f-Nis"/>
@@ -71,7 +83,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODc-un-6xP" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="252.33333333333331" width="358" height="34"/>
+                                                        <rect key="frame" x="8" y="260.5" width="544" height="34"/>
                                                         <state key="normal" title="Sign in"/>
                                                         <connections>
                                                             <action selector="onSignInButtonTap:" destination="LQ8-D2-bgN" eventType="touchUpInside" id="JGl-PG-9bC"/>
@@ -80,23 +92,23 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="AWR-V5-JGo" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="3sx-Ti-Tdj"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="top" secondItem="HxP-mt-FV5" secondAttribute="bottom" constant="8" id="5fm-95-Jxk"/>
+                                                    <constraint firstItem="AWR-V5-JGo" firstAttribute="top" secondItem="ZM1-O3-W7Y" secondAttribute="top" constant="8" id="67E-I5-Rds"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="6QL-Oc-RPg"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="top" secondItem="cWf-De-PP6" secondAttribute="bottom" constant="24" id="CT5-1u-gcA"/>
                                                     <constraint firstItem="cWf-De-PP6" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="CTw-3i-fP2"/>
                                                     <constraint firstItem="cWf-De-PP6" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="DQW-N2-ABb"/>
-                                                    <constraint firstItem="MD8-O9-kRX" firstAttribute="top" secondItem="ZM1-O3-W7Y" secondAttribute="top" constant="8" id="I4j-6f-gMN"/>
+                                                    <constraint firstAttribute="trailing" secondItem="AWR-V5-JGo" secondAttribute="trailing" constant="8" id="E2x-0w-Dtq"/>
+                                                    <constraint firstItem="cWf-De-PP6" firstAttribute="top" secondItem="AWR-V5-JGo" secondAttribute="bottom" constant="16" id="Iu4-DH-foc"/>
                                                     <constraint firstItem="JpY-ih-Bwz" firstAttribute="top" secondItem="zrR-Xg-iH3" secondAttribute="top" id="KEX-2W-SYx"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="MHG-6X-0wH"/>
                                                     <constraint firstItem="JpY-ih-Bwz" firstAttribute="leading" secondItem="zrR-Xg-iH3" secondAttribute="leading" id="OOR-c8-hhT"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="PXx-ws-tRY"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="bottom" secondItem="ZM1-O3-W7Y" secondAttribute="bottom" constant="-8" id="U33-ok-g80"/>
-                                                    <constraint firstItem="MD8-O9-kRX" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="cX2-8u-AIX"/>
-                                                    <constraint firstItem="MD8-O9-kRX" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="dln-EN-Wma"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="top" secondItem="zrR-Xg-iH3" secondAttribute="bottom" id="eoN-nn-Nvn"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="fHe-8r-vFc"/>
                                                     <constraint firstItem="JpY-ih-Bwz" firstAttribute="trailing" secondItem="zrR-Xg-iH3" secondAttribute="trailing" id="jht-vy-oe0"/>
-                                                    <constraint firstItem="cWf-De-PP6" firstAttribute="top" secondItem="MD8-O9-kRX" secondAttribute="bottom" constant="8" id="js6-4F-4qv"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="lne-bO-y8D"/>
                                                     <constraint firstItem="JpY-ih-Bwz" firstAttribute="bottom" secondItem="zrR-Xg-iH3" secondAttribute="bottom" id="obl-w3-5XA"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="yhD-8J-D8b"/>
@@ -132,6 +144,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="brandLogo" destination="6Ai-OT-lAN" id="om9-Mc-IkU"/>
                         <outlet property="contentView" destination="kZ7-mB-wbY" id="48W-J2-4gV"/>
                         <outlet property="createAccountDescriptionLabel" destination="cWf-De-PP6" id="3MB-JL-ntj"/>
                         <outlet property="createAccountTitleLabel" destination="MD8-O9-kRX" id="RKi-hA-cS6"/>
@@ -152,37 +165,37 @@
             <objects>
                 <viewController storyboardIdentifier="Password" id="oq8-ak-9hu" customClass="PasswordViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C9b-Mr-NnT">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="S0k-W5-iwt">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xwd-ef-Nhl">
-                                        <rect key="frame" x="8" y="52" width="374" height="300.33333333333331"/>
+                                        <rect key="frame" x="232" y="28" width="560" height="300.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your password" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCl-ar-NAN">
-                                                <rect key="frame" x="8" y="7.9999999999999982" width="358" height="26.333333333333329"/>
+                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="wJi-kj-bMv" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="58.333333333333329" width="358" height="79.999999999999986"/>
+                                                <rect key="frame" x="8" y="58.5" width="544" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Password"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPassword" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="xWC-gS-6sP" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="154.33333333333334" width="358" height="80"/>
+                                                <rect key="frame" x="8" y="154.5" width="544" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Password"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPassword" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zji-Vi-H4O" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="258.33333333333331" width="358" height="34"/>
+                                                <rect key="frame" x="8" y="258.5" width="544" height="34"/>
                                                 <state key="normal" title="Next"/>
                                                 <connections>
                                                     <action selector="onNextButtonTap:" destination="oq8-ak-9hu" eventType="touchUpInside" id="QLd-tY-ome"/>
@@ -243,58 +256,70 @@
             <objects>
                 <viewController storyboardIdentifier="Recovery" id="6ZI-zN-8iV" customClass="RecoveryViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="l33-Jn-Uc8">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="SBU-NJ-Suf">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mmH-MH-N8x">
-                                        <rect key="frame" x="8" y="52" width="374" height="393.66666666666669"/>
+                                        <rect key="frame" x="232" y="28" width="560" height="360.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set recovery method" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="546-5J-cxx">
-                                                <rect key="frame" x="8" y="7.9999999999999982" width="358" height="26.333333333333329"/>
+                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will help you access your account in case you forget your password or get locked out of your account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Rt-Fy-zQH">
-                                                <rect key="frame" x="8" y="42.333333333333329" width="358" height="54"/>
+                                                <rect key="frame" x="8" y="42.5" width="544" height="36"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="21p-Yv-DG4" customClass="PMSegmentedControl" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="112.33333333333334" width="358" height="41"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2cK-Jb-xIR"/>
-                                                </constraints>
-                                                <segments>
-                                                    <segment title="Email"/>
-                                                    <segment title="Phone"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="onMethodSegmentedTap:" destination="6ZI-zN-8iV" eventType="valueChanged" id="a0n-3s-Dcp"/>
-                                                </connections>
-                                            </segmentedControl>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7H5-6h-Ku6">
+                                                <rect key="frame" x="8" y="78.5" width="544" height="56"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="maY-AN-C76">
+                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="16"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="16" id="SjH-4v-Zey"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="21p-Yv-DG4" customClass="PMSegmentedControl" customModule="ProtonCore_UIFoundations">
+                                                        <rect key="frame" x="0.0" y="16" width="544" height="41"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="2cK-Jb-xIR"/>
+                                                        </constraints>
+                                                        <segments>
+                                                            <segment title="Email"/>
+                                                            <segment title="Phone"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="onMethodSegmentedTap:" destination="6ZI-zN-8iV" eventType="valueChanged" id="a0n-3s-Dcp"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                </subviews>
+                                            </stackView>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="350" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="hen-aY-mep" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="184.33333333333334" width="358" height="80.000000000000028"/>
+                                                <rect key="frame" x="8" y="166.5" width="544" height="80"/>
                                             </view>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="350" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="h0d-0U-xjK" customClass="PMTextFieldCombo" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="184.33333333333334" width="358" height="80.000000000000028"/>
+                                                <rect key="frame" x="8" y="166.5" width="544" height="80"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isPassword" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sg8-Qx-pu3" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="288.33333333333331" width="358" height="34"/>
+                                                <rect key="frame" x="8" y="270.5" width="544" height="34"/>
                                                 <state key="normal" title="Next"/>
                                                 <connections>
                                                     <action selector="onNextButtonTap:" destination="6ZI-zN-8iV" eventType="touchUpInside" id="e9i-49-ffx"/>
                                                 </connections>
                                             </button>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="By clicking Next, you agree with Proton's Terms and Conditions" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="xph-W3-88o">
-                                                <rect key="frame" x="8" y="338.33333333333331" width="358" height="47.333333333333314"/>
+                                                <rect key="frame" x="8" y="320.5" width="544" height="32"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -309,24 +334,24 @@
                                             <constraint firstItem="546-5J-cxx" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="2Mr-7S-3d1"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="top" secondItem="hen-aY-mep" secondAttribute="bottom" constant="24" id="3ob-J1-fNp"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="top" secondItem="546-5J-cxx" secondAttribute="bottom" constant="8" id="4z0-Dt-5Yo"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="5Ph-c1-4sh"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="9uo-En-PEQ"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="Aip-SO-Im0"/>
+                                            <constraint firstItem="h0d-0U-xjK" firstAttribute="top" secondItem="7H5-6h-Ku6" secondAttribute="bottom" constant="32" id="EYK-Dm-zdE"/>
                                             <constraint firstItem="546-5J-cxx" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="IfM-ha-eXf"/>
-                                            <constraint firstItem="hen-aY-mep" firstAttribute="top" secondItem="21p-Yv-DG4" secondAttribute="bottom" constant="32" id="MYg-Wb-0Yn"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="top" secondItem="9Rt-Fy-zQH" secondAttribute="bottom" constant="16" id="UAM-aE-JEI"/>
+                                            <constraint firstItem="7H5-6h-Ku6" firstAttribute="top" secondItem="9Rt-Fy-zQH" secondAttribute="bottom" id="LQD-eQ-jZW"/>
                                             <constraint firstItem="546-5J-cxx" firstAttribute="top" secondItem="mmH-MH-N8x" secondAttribute="top" constant="8" id="VbY-eT-Dgi"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="leading" secondItem="hen-aY-mep" secondAttribute="leading" id="W8z-UB-dqT"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="bottom" secondItem="mmH-MH-N8x" secondAttribute="bottom" constant="-8" id="X0s-q6-9Ro"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="YFo-bd-D74"/>
-                                            <constraint firstItem="h0d-0U-xjK" firstAttribute="top" secondItem="21p-Yv-DG4" secondAttribute="bottom" constant="32" id="YxB-pn-hnF"/>
                                             <constraint firstItem="h0d-0U-xjK" firstAttribute="trailing" secondItem="hen-aY-mep" secondAttribute="trailing" id="bD8-3g-WQU"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="dwq-Lb-VVf"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="top" secondItem="Sg8-Qx-pu3" secondAttribute="bottom" constant="16" id="hXC-wA-GwZ"/>
                                             <constraint firstItem="hen-aY-mep" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="iqh-u7-yzz"/>
+                                            <constraint firstAttribute="trailing" secondItem="7H5-6h-Ku6" secondAttribute="trailing" constant="8" id="ka4-Dh-JxJ"/>
                                             <constraint firstItem="Sg8-Qx-pu3" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="kab-A4-wL1"/>
-                                            <constraint firstItem="21p-Yv-DG4" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="lkk-Lm-K5d"/>
+                                            <constraint firstItem="7H5-6h-Ku6" firstAttribute="leading" secondItem="mmH-MH-N8x" secondAttribute="leading" constant="8" id="oyH-OG-3E2"/>
                                             <constraint firstItem="9Rt-Fy-zQH" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="rEr-Cs-FfC"/>
+                                            <constraint firstItem="hen-aY-mep" firstAttribute="top" secondItem="7H5-6h-Ku6" secondAttribute="bottom" constant="32" id="s7o-eM-IKt"/>
                                             <constraint firstItem="xph-W3-88o" firstAttribute="trailing" secondItem="mmH-MH-N8x" secondAttribute="trailing" constant="-8" id="wcR-sg-O9o"/>
                                         </constraints>
                                     </view>
@@ -352,6 +377,7 @@
                     </view>
                     <connections>
                         <outlet property="methodSegmenedControl" destination="21p-Yv-DG4" id="zdN-A7-dWa"/>
+                        <outlet property="methodStackView" destination="7H5-6h-Ku6" id="pPq-vF-a4e"/>
                         <outlet property="nextButton" destination="Sg8-Qx-pu3" id="KBV-GX-GMy"/>
                         <outlet property="recoveryEmailTextField" destination="hen-aY-mep" id="MU0-ra-PMF"/>
                         <outlet property="recoveryMethodDescriptionLabel" destination="9Rt-Fy-zQH" id="to2-V6-6Va"/>
@@ -370,11 +396,11 @@
             <objects>
                 <viewController storyboardIdentifier="Complete" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="ayH-Ma-frc" customClass="CompleteViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="NSh-6d-foi">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOD-ob-rBK" customClass="AnimationView" customModule="Lottie">
-                                <rect key="frame" x="115" y="211" width="160" height="160"/>
+                                <rect key="frame" x="432" y="341.5" width="160" height="160"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="j4K-ZT-6NJ"/>
@@ -382,26 +408,26 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your account is being created…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ryG-24-BPe">
-                                <rect key="frame" x="16" y="401" width="358" height="26.333333333333314"/>
+                                <rect key="frame" x="16" y="531.5" width="992" height="26.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This should take no more than a minute." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWs-r7-kJW">
-                                <rect key="frame" x="16" y="435.33333333333331" width="358" height="15.666666666666686"/>
+                                <rect key="frame" x="16" y="566" width="992" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="28" estimatedRowHeight="28" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XXE-C9-cOC">
-                                <rect key="frame" x="78.666666666666686" y="475" width="233" height="319"/>
+                                <rect key="frame" x="395.5" y="606" width="233" height="744"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="233" id="aE9-p3-JhH"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SummaryProgressCell" id="1k4-cd-u3W" customClass="SummaryProgressCell" customModule="ProtonCore_LoginUI">
-                                        <rect key="frame" x="0.0" y="44.666666030883789" width="233" height="28"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="233" height="28"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1k4-cd-u3W" id="lQB-UZ-fgv">
                                             <rect key="frame" x="0.0" y="0.0" width="233" height="28"/>
@@ -411,14 +437,14 @@
                                                     <rect key="frame" x="0.0" y="4" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bAX-1S-fyZ">
-                                                    <rect key="frame" x="0.0" y="7.6666666666666679" width="13" height="13"/>
+                                                    <rect key="frame" x="0.0" y="7.5" width="13" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="13" id="Aex-7e-i2d"/>
                                                         <constraint firstAttribute="width" constant="13" id="Kco-3r-qFP"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-gv-pYk">
-                                                    <rect key="frame" x="22.666666666666671" y="5" width="210.33333333333331" height="18"/>
+                                                    <rect key="frame" x="22.5" y="5" width="210.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -480,11 +506,11 @@
             <objects>
                 <viewController storyboardIdentifier="TC" id="mgS-ty-qip" customClass="TCViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6g4-vM-jwm">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pgh-np-LkJ">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                     <wkPreferences key="preferences"/>
@@ -513,33 +539,33 @@
             <objects>
                 <viewController storyboardIdentifier="EmailVerification" id="1CE-QH-WeU" customClass="EmailVerificationViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nay-Gr-GaF">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="vBX-Ys-sbs">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OAR-iX-yhn">
-                                        <rect key="frame" x="8" y="52" width="374" height="322"/>
+                                        <rect key="frame" x="232" y="28" width="560" height="304.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account verification" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00i-im-2tw">
-                                                <rect key="frame" x="8" y="7.9999999999999982" width="358" height="26.333333333333329"/>
+                                                <rect key="frame" x="8" y="8" width="544" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Da-BL-h3P">
-                                                <rect key="frame" x="8" y="42.333333333333321" width="358" height="71.666666666666686"/>
+                                                <rect key="frame" x="8" y="42.5" width="544" height="54"/>
                                                 <string key="text">For your security, we must verify that the address you entered belongs to you. We sent a verification code to paumuller@gmail.com. Please enter the code below:</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="350" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="yZO-Nx-ZPX" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="138" width="358" height="80"/>
+                                                <rect key="frame" x="8" y="120.5" width="544" height="80"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60X-Av-qRN" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="242" width="358" height="30"/>
+                                                <rect key="frame" x="8" y="224.5" width="544" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Next"/>
                                                 <connections>
@@ -547,7 +573,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TbE-FK-IDy" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="280" width="358" height="34"/>
+                                                <rect key="frame" x="8" y="262.5" width="544" height="34"/>
                                                 <state key="normal" title="Did not receive a code?"/>
                                                 <connections>
                                                     <action selector="onNotReceivedCodeButtonTap:" destination="1CE-QH-WeU" eventType="touchUpInside" id="ek9-sg-WGM"/>
@@ -611,61 +637,83 @@
         <scene sceneID="Sv5-51-fdj">
             <objects>
                 <viewController storyboardIdentifier="Summary" id="LWH-Rb-gQy" customClass="SummaryViewController" customModule="ProtonCore_LoginUI" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="VaW-mx-UjF">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="VaW-mx-UjF">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="summary_bottom" translatesAutoresizingMaskIntoConstraints="NO" id="CIg-iZ-cOE">
-                                <rect key="frame" x="75" y="118" width="240" height="156"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CIg-iZ-cOE" userLabel="SummaryBottom">
+                                <rect key="frame" x="287" y="191" width="450" height="292.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="CIg-iZ-cOE" secondAttribute="height" multiplier="20:13" id="8Dc-pm-Pso"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="450" id="ffq-Kj-3XU"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGS-2r-kFe">
-                                <rect key="frame" x="16" y="304" width="358" height="33.666666666666686"/>
+                                <rect key="frame" x="16" y="513.5" width="992" height="33.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your payment was confirmed and your Proton Bundle account successfully created." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJB-gG-QAU">
-                                <rect key="frame" x="16" y="361.66666666666669" width="358" height="40.666666666666686"/>
+                                <rect key="frame" x="16" y="571" width="992" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enjoy the world privacy." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhB-wc-uYp">
-                                <rect key="frame" x="16" y="426.33333333333331" width="358" height="20.333333333333314"/>
+                                <rect key="frame" x="16" y="615.5" width="992" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbH-i9-YnW" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                <rect key="frame" x="16" y="733.33333333333337" width="358" height="34"/>
+                                <rect key="frame" x="16" y="1208" width="992" height="34"/>
                                 <state key="normal" title="Start using Proton Mail"/>
                                 <connections>
                                     <action selector="onStartButtonTap:" destination="LWH-Rb-gQy" eventType="touchUpInside" id="33Q-ku-BgI"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="summary_proton" translatesAutoresizingMaskIntoConstraints="NO" id="aX7-kd-Yu6">
-                                <rect key="frame" x="167.66666666666666" y="114" width="65" height="65"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aX7-kd-Yu6" userLabel="SummaryLogo">
+                                <rect key="frame" x="484.5" y="187" width="65" height="65"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="700" constant="65" id="OfW-yd-4Yn"/>
+                                    <constraint firstAttribute="width" secondItem="aX7-kd-Yu6" secondAttribute="height" multiplier="1:1" id="oFY-j4-QRD"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IDs-7f-SuC" userLabel="SummaryWhole">
+                                <rect key="frame" x="287" y="232.5" width="450" height="257"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="450" id="Bof-cT-2EK"/>
+                                    <constraint firstAttribute="width" secondItem="IDs-7f-SuC" secondAttribute="height" multiplier="1.75" id="Zss-WB-squ"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="zBl-rb-RLd"/>
+                        <viewLayoutGuide key="safeArea" id="TG9-Cy-pNw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="rJB-gG-QAU" firstAttribute="top" secondItem="zGS-2r-kFe" secondAttribute="bottom" constant="24" id="1Fb-FF-Gqj"/>
                             <constraint firstItem="CIg-iZ-cOE" firstAttribute="top" secondItem="aX7-kd-Yu6" secondAttribute="top" constant="4" id="3xx-sy-5ye"/>
-                            <constraint firstItem="zBl-rb-RLd" firstAttribute="trailing" secondItem="zGS-2r-kFe" secondAttribute="trailing" constant="16" id="5BP-s4-U0J"/>
+                            <constraint firstAttribute="trailing" secondItem="CIg-iZ-cOE" secondAttribute="trailing" priority="600" constant="75" id="4et-W1-flG"/>
+                            <constraint firstAttribute="trailing" secondItem="zGS-2r-kFe" secondAttribute="trailing" constant="16" id="5BP-s4-U0J"/>
                             <constraint firstItem="aX7-kd-Yu6" firstAttribute="centerX" secondItem="VaW-mx-UjF" secondAttribute="centerX" constant="5" id="6R3-8a-CLm"/>
+                            <constraint firstAttribute="trailing" secondItem="IDs-7f-SuC" secondAttribute="trailing" priority="600" id="9yE-6X-KCO"/>
                             <constraint firstItem="CIg-iZ-cOE" firstAttribute="top" secondItem="VaW-mx-UjF" secondAttribute="bottom" multiplier="0.14" id="Bnv-qq-rOt"/>
-                            <constraint firstItem="zGS-2r-kFe" firstAttribute="leading" secondItem="zBl-rb-RLd" secondAttribute="leading" constant="16" id="C9A-fE-xfI"/>
+                            <constraint firstItem="zGS-2r-kFe" firstAttribute="leading" secondItem="VaW-mx-UjF" secondAttribute="leading" constant="16" id="C9A-fE-xfI"/>
+                            <constraint firstItem="CIg-iZ-cOE" firstAttribute="leading" secondItem="VaW-mx-UjF" secondAttribute="leading" priority="600" constant="75" id="EOL-gr-N2m"/>
+                            <constraint firstItem="CIg-iZ-cOE" firstAttribute="centerX" secondItem="TG9-Cy-pNw" secondAttribute="centerX" id="Mcb-RZ-T4T"/>
                             <constraint firstItem="rJB-gG-QAU" firstAttribute="leading" secondItem="zGS-2r-kFe" secondAttribute="leading" id="Ndc-Sl-8i6"/>
                             <constraint firstItem="bhB-wc-uYp" firstAttribute="trailing" secondItem="rJB-gG-QAU" secondAttribute="trailing" id="Q0n-Qv-9iX"/>
                             <constraint firstItem="bhB-wc-uYp" firstAttribute="top" secondItem="rJB-gG-QAU" secondAttribute="bottom" constant="24" id="QOz-g7-aD8"/>
-                            <constraint firstItem="zBl-rb-RLd" firstAttribute="trailing" secondItem="CIg-iZ-cOE" secondAttribute="trailing" constant="75" id="Rbj-vA-6wL"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CIg-iZ-cOE" secondAttribute="trailing" constant="75" id="Rbj-vA-6wL"/>
                             <constraint firstAttribute="bottom" secondItem="wbH-i9-YnW" secondAttribute="bottom" multiplier="1.1" id="Rka-JL-AZE"/>
-                            <constraint firstItem="wbH-i9-YnW" firstAttribute="leading" secondItem="zBl-rb-RLd" secondAttribute="leading" constant="16" id="SrU-Dc-uCW"/>
+                            <constraint firstItem="wbH-i9-YnW" firstAttribute="leading" secondItem="VaW-mx-UjF" secondAttribute="leading" constant="16" id="SrU-Dc-uCW"/>
+                            <constraint firstItem="zGS-2r-kFe" firstAttribute="top" secondItem="IDs-7f-SuC" secondAttribute="bottom" constant="24" id="fyD-W0-p9K"/>
                             <constraint firstItem="zGS-2r-kFe" firstAttribute="top" secondItem="CIg-iZ-cOE" secondAttribute="bottom" constant="30" id="gGB-sZ-UOq"/>
-                            <constraint firstItem="zBl-rb-RLd" firstAttribute="trailing" secondItem="wbH-i9-YnW" secondAttribute="trailing" constant="16" id="jh4-En-44C"/>
+                            <constraint firstItem="IDs-7f-SuC" firstAttribute="leading" secondItem="VaW-mx-UjF" secondAttribute="leading" priority="600" id="iBO-cr-85X"/>
+                            <constraint firstItem="IDs-7f-SuC" firstAttribute="centerX" secondItem="TG9-Cy-pNw" secondAttribute="centerX" id="iU9-Y2-r0Y"/>
+                            <constraint firstAttribute="trailing" secondItem="wbH-i9-YnW" secondAttribute="trailing" constant="16" id="jh4-En-44C"/>
                             <constraint firstItem="rJB-gG-QAU" firstAttribute="trailing" secondItem="zGS-2r-kFe" secondAttribute="trailing" id="mO2-JP-nS4"/>
-                            <constraint firstItem="CIg-iZ-cOE" firstAttribute="leading" secondItem="zBl-rb-RLd" secondAttribute="leading" constant="75" id="neN-84-f51"/>
+                            <constraint firstItem="CIg-iZ-cOE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VaW-mx-UjF" secondAttribute="leading" constant="75" id="neN-84-f51"/>
                             <constraint firstItem="bhB-wc-uYp" firstAttribute="leading" secondItem="rJB-gG-QAU" secondAttribute="leading" id="un9-IU-Ry8"/>
                         </constraints>
                     </view>
@@ -674,6 +722,8 @@
                         <outlet property="header" destination="zGS-2r-kFe" id="Da3-Up-gAY"/>
                         <outlet property="imageView" destination="aX7-kd-Yu6" id="Il3-4I-ruO"/>
                         <outlet property="startButton" destination="wbH-i9-YnW" id="10g-mE-umo"/>
+                        <outlet property="summaryImage" destination="CIg-iZ-cOE" id="B6d-r5-KvP"/>
+                        <outlet property="summaryWhole" destination="IDs-7f-SuC" id="PU8-Gc-pz5"/>
                         <outlet property="welcomeLabel" destination="bhB-wc-uYp" id="pDR-gz-s4b"/>
                     </connections>
                 </viewController>
@@ -682,9 +732,10 @@
             <point key="canvasLocation" x="3223.0769230769229" y="-618.48341232227483"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="ZOD-ob-rBK"/>
+    </designables>
     <resources>
-        <image name="summary_bottom" width="233" height="156"/>
-        <image name="summary_proton" width="65" height="65"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

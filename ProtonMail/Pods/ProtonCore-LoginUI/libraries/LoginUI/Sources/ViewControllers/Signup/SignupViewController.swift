@@ -24,11 +24,15 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import ProtonCore_Login
+import ProtonCore_HumanVerification
+import ProtonCore_Services
 
 protocol SignupViewControllerDelegate: AnyObject {
     func validatedName(name: String, signupAccountType: SignupAccountType)
+    func validatedEmail(email: String, signupAccountType: SignupAccountType)
     func signupCloseButtonPressed()
     func signinButtonPressed()
+    func hvEmailAlreadyExists(email: String)
 }
 
 enum SignupAccountType {
@@ -44,6 +48,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var signupAccountType: SignupAccountType!
     var showOtherAccountButton = true
     var showCloseButton = true
+    var minimumAccountType: AccountType?
     var domain: String? { didSet { configureDomainSuffix() } }
 
     // MARK: Outlets
@@ -126,15 +131,25 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var brandLogo: UIImageView!
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: View controller life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
+        
+        if let image = LoginUIImages.brandLogo {
+            brandLogo.image = image
+            brandLogo.isHidden = false
+        }
+        
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
@@ -185,7 +200,11 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         if signupAccountType == .internal {
             checkUsername(userName: self.currentlyUsedTextField.value)
         } else {
-            requestValidationToken(email: self.currentlyUsedTextField.value)
+            if viewModel.humanVerificationVersion == .v3 {
+                checkEmail(email: self.currentlyUsedTextField.value)
+            } else {
+                requestValidationToken(email: self.currentlyUsedTextField.value)
+            }
         }
     }
 
@@ -220,6 +239,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureDomainSuffix() {
+        guard minimumAccountType != .username else { return }
         internalNameTextField.suffix = domain ?? "@\(viewModel.signUpDomain)"
     }
     
@@ -255,7 +275,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             case .failure(let error):
                 self.unlockUI()
                 switch error {
-                case .generic(let message):
+                case .generic(let message, _, _):
                     if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                         self.showError(message: message)
                     }
@@ -266,6 +286,35 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
                     }
                 }
             }
+        }
+    }
+    
+    private func checkEmail(email: String) {
+        viewModel.checkEmail(email: email) { result in
+            self.nextButton.isSelected = false
+            switch result {
+            case .success:
+                self.delegate?.validatedEmail(email: email, signupAccountType: self.signupAccountType)
+            case .failure(let error):
+                self.unlockUI()
+                switch error {
+                case .generic(let message, let code, _):
+                    if code == APIErrorCode.humanVerificationAddressAlreadyTaken {
+                        self.delegate?.hvEmailAlreadyExists(email: email)
+                    } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                case .notAvailable(let message):
+                    self.currentlyUsedTextField.isError = true
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                }
+            }
+        } editEmail: {
+            self.nextButton.isSelected = false
+            self.unlockUI()
+            _ = self.currentlyUsedTextField.becomeFirstResponder()
         }
     }
 

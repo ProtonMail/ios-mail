@@ -37,70 +37,78 @@ public class LoginMock: Login {
 
     public let signUpDomain: String = "protonmail.com"
 
+    @FuncStub(Login.checkAvailability) public var checkAvailabilityStub
     public func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.success)
-        }
+        checkAvailabilityStub(username, completion)
+    }
+    
+    @FuncStub(Login.checkAvailabilityExternal) public var checkAvailabilityExternalStub
+    public func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        checkAvailabilityExternalStub(email, completion)
     }
 
+    @FuncStub(Login.setUsername) public var setUsernameStub
     public func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.alreadySet(message: "Already set")))
-        }
+        setUsernameStub(username, completion)
     }
 
+    @FuncStub(Login.createAddress) public var createAddressStub
     public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
-        }
+        createAddressStub(completion)
     }
 
+    @FuncStub(Login.logout) public var logoutStub
     public func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.success)
-        }
+        logoutStub(credential, completion)
     }
 
+    @FuncStub(Login.login) public var loginStub
     public func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
-        }
+        loginStub(username, password, completion)
     }
 
+    @FuncStub(Login.provide2FACode) public var provide2FACodeStub
     public func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
-        }
+        provide2FACodeStub(code, completion)
     }
 
+    @FuncStub(Login.finishLoginFlow) public var finishLoginFlowStub
     public func finishLoginFlow(mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
-        }
+        finishLoginFlowStub(mailboxPassword, completion)
     }
 
+    @FuncStub(Login.createAccountKeysIfNeeded) public var createAccountKeysIfNeededStub
     public func createAccountKeysIfNeeded(user: User, addresses: [Address]?, mailboxPassword: String?, completion: @escaping (Result<User, LoginError>) -> Void) {
-
+        createAccountKeysIfNeededStub(user, addresses, mailboxPassword, completion)
     }
 
+    @FuncStub(Login.createAddressKeys) public var createAddressKeysStub
     public func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion(.failure(.generic(message: "")))
-        }
+        createAddressKeysStub(user, address, mailboxPassword, completion)
     }
     
     public var minimumAccountType: AccountType {
         return .username
     }
 
+    @FuncStub(Login.updateAccountType) public var updateAccountTypeStub
     public func updateAccountType(accountType: AccountType) {
-
+        updateAccountTypeStub(accountType)
     }
 
+    @FuncStub(Login.updateAvailableDomain) public var updateAvailableDomainStub
     public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            result("")
-        }
+        updateAvailableDomainStub(type, result)
+    }
+    
+    @FuncStub(Login.refreshCredentials) public var refreshCredentialsStub
+    public func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void) {
+        refreshCredentialsStub(completion)
+    }
+    
+    @FuncStub(Login.refreshUserInfo) public var refreshUserInfoStub
+    public func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void) {
+        refreshUserInfoStub(completion)
     }
     
     public var startGeneratingAddress: (() -> Void)?
@@ -114,17 +122,13 @@ public class AnonymousServiceManager: APIServiceDelegate {
     
     public var locale: String { return "en_US" }
     public var appVersion: String = "iOSMail_2.7.0"
+    public var additionalHeaders: [String: String]?
     public var userAgent: String?
     public func onUpdate(serverTime: Int64) {
         CryptoUpdateTime(serverTime)
     }
     public func isReachable() -> Bool { return true }
     public func onDohTroubleshot() { }
-    public func onHumanVerify() { }
-    public func onChallenge(challenge: URLAuthenticationChallenge, credential: AutoreleasingUnsafeMutablePointer<URLCredential?>?) -> URLSession.AuthChallengeDisposition {
-        let dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
-        return dispositionToReturn
-    }
 }
 
 public class AnonymousAuthManager: AuthDelegate {
@@ -138,7 +142,7 @@ public class AnonymousAuthManager: AuthDelegate {
     }
     public func onLogout(sessionUID uid: String) { }
     public func onUpdate(auth: Credential) {
-        self.authCredential = AuthCredential( auth)
+        self.authCredential = authCredential?.updatedKeepingKeyAndPasswordDataIntact(credential: auth) ?? AuthCredential(auth)
     }
     public func onRefresh(bySessionUID uid: String, complete: (Credential?, AuthErrors?) -> Void) { }
     public func onForceUpgrade() { }

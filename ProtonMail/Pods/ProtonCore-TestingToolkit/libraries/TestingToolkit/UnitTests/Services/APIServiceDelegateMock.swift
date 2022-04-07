@@ -40,6 +40,9 @@ public final class APIServiceDelegateMock: APIServiceDelegate {
 
     @PropertyStub(\APIServiceDelegateMock.userAgent, initialGet: nil) public var userAgentStub
     public var userAgent: String? { userAgentStub() }
+    
+    @PropertyStub(\APIServiceDelegateMock.additionalHeaders, initialGet: nil) public var additionalHeadersStub
+    public var additionalHeaders: [String: String]? { additionalHeadersStub() }
 
     @FuncStub(APIServiceDelegateMock.onDohTroubleshot) public var onDohTroubleshotStub
     public func onDohTroubleshot() { onDohTroubleshotStub() }

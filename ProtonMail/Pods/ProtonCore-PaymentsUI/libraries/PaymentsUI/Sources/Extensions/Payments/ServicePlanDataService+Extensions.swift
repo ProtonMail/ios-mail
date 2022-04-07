@@ -25,7 +25,13 @@ import ProtonCore_CoreTranslation
 
 extension ServicePlanDataServiceProtocol {
     
-    // MARK: Public interface
+    var hasPaymentMethods: Bool {
+        guard let paymentMethods = paymentMethods else {
+            // if we don't know better, we default to assuming the user has payment methods available
+            return true
+        }
+        return !paymentMethods.isEmpty
+    }
     
     func endDateString(plan: InAppPurchasePlan) -> NSAttributedString? {
         guard let endDate = currentSubscription?.endDate, endDate.isFuture else { return nil }
@@ -40,16 +46,6 @@ extension ServicePlanDataServiceProtocol {
             string = String(format: CoreString._pu_plan_details_renew_expired, endDateString)
         }
         return string.getAttributedString(replacement: endDateString, attrFont: .systemFont(ofSize: 13, weight: .bold))
-    }
-    
-    var price: String? {
-        guard let amount = currentSubscription?.amount, let currency = currentSubscription?.currency else { return nil }
-        let value = Double(amount) / 100.0
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.numberStyle = .currency
-        formatter.currencyCode = currency
-        return formatter.string(from: NSNumber(value: value))
     }
 
     // MARK: Private interface

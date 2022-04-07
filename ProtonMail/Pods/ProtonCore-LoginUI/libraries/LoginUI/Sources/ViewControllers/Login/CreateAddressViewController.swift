@@ -49,6 +49,8 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
     weak var delegate: CreateAddressViewControllerDelegate?
     var viewModel: CreateAddressViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
 
@@ -96,10 +98,15 @@ final class CreateAddressViewController: UIViewController, AccessibleView {
             self?.view.isUserInteractionEnabled = !isLoading
             self?.createButton.isSelected = isLoading
         }
-        viewModel.error.bind { [weak self] message in
+        viewModel.error.bind { [weak self] messageWithCode in
             guard let self = self else { return }
-            if self.customErrorPresenter?.willPresentError(error: CreateAddressError.generic(message: message), from: self) == true { } else {
-                self.showError(message: message)
+            if self.customErrorPresenter?.willPresentError(
+                error: CreateAddressError.generic(message: messageWithCode.0,
+                                                  code: messageWithCode.1,
+                                                  originalError: messageWithCode.2),
+                from: self
+            ) == true { } else {
+                self.showError(message: messageWithCode.0)
             }
         }
         viewModel.finished.bind { [weak self] data in

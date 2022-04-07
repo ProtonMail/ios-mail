@@ -49,6 +49,12 @@ class AccountSettingsTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .verify.displayNameShownWithText(newDisplayName)
+            
+        accountSettingsRobot
+            .displayName()
+            .setDisplayNameTextTo(testData.onePassUser.name)
+            .save()
+            .verify.displayNameShownWithText(testData.onePassUser.name)
     }
 
     func testSwitchSignatureToggleOn() {

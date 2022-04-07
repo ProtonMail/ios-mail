@@ -103,7 +103,7 @@ public final class AuthCredential: NSObject, NSCoding {
         self.passwordKeySalt = salt
     }
 
-    public func udpate (password: String) {
+    public func udpate(password: String) {
         self.mailboxpassword = password
     }
 
@@ -192,11 +192,22 @@ extension AuthCredential {
                   privateKey: nil,
                   passwordKeySalt: nil)
     }
+    
+    public func updatedKeepingKeyAndPasswordDataIntact(credential: Credential) -> AuthCredential {
+        self.sessionID = credential.UID
+        self.accessToken = credential.accessToken
+        self.refreshToken = credential.refreshToken
+        self.expiration = credential.expiration
+        self.userName = credential.userName
+        self.userID = credential.userID
+        // we deliberately not update nor nil out privateKey, passwordKeySalt and mailboxpassword here
+        return self
+    }
 }
 
 public struct Credential: Equatable {
     public typealias BackendScope = CredentialConvertible.Scope
-    public typealias Scope = [String]
+    public typealias Scopes = [String]
 
     public var UID: String
     public var accessToken: String
@@ -204,9 +215,11 @@ public struct Credential: Equatable {
     public var expiration: Date
     public var userName: String
     public var userID: String
-    public var scope: Scope
+    public var scope: Scopes
+    
+    public var hasFullScope: Bool { scope.contains("full") }
 
-    public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, userName: String, userID: String, scope: Credential.Scope) {
+    public init(UID: String, accessToken: String, refreshToken: String, expiration: Date, userName: String, userID: String, scope: Scopes) {
         self.UID = UID
         self.accessToken = accessToken
         self.refreshToken = refreshToken
@@ -261,6 +274,16 @@ extension Credential {
                   userName: authCredential.userName,
                   userID: authCredential.userID,
                   scope: [])
+    }
+    
+    public init(_ authCredential: AuthCredential, scope: Scopes) {
+        self.init(UID: authCredential.sessionID,
+                  accessToken: authCredential.accessToken,
+                  refreshToken: authCredential.refreshToken,
+                  expiration: authCredential.expiration,
+                  userName: authCredential.userName,
+                  userID: authCredential.userID,
+                  scope: scope)
     }
 }
 
@@ -325,17 +348,27 @@ public typealias SendVerificationCodeBlock = (Bool, ResponseError?, Verification
 public typealias SendResultCodeBlock = (Bool, ResponseError?) -> Void
 public typealias VerificationCodeBlockFinish = () -> Void
 
-public class HumanVerificationResponse: Response {
+public struct HumanVerifyParameters {
     public var methods: [VerifyMethod] = []
     public var startToken: String?
+    public var title: String?
+    
+    public init(methods: [VerifyMethod] = [], startToken: String? = nil, title: String? = nil) {
+        self.methods = methods
+        self.startToken = startToken
+        self.title = title
+    }
+}
+
+public class HumanVerificationResponse: Response {
+    public var parameters = HumanVerifyParameters()
 
     override public func ParseResponse(_ response: [String: Any]) -> Bool {
         if let details = response["Details"] as? [String: Any] {
-            if let hvToken = details["HumanVerificationToken"] as? String {
-                startToken = hvToken
-            }
+            parameters.startToken = details["HumanVerificationToken"] as? String
+            parameters.title = details["Title"] as? String
             if let methods = details["HumanVerificationMethods"] as? [String] {
-                self.methods = methods.map { VerifyMethod(string: $0) }
+                parameters.methods = methods.map { VerifyMethod(string: $0) }
             }
         }
         return true
@@ -370,7 +403,17 @@ public enum AuthErrors: Error {
         }
     }
 
-    public var code: Int { underlyingError.code }
+    public var codeInNetworking: Int {
+        switch self {
+        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth,
+             .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .notImplementedYet:
+            return (self as NSError).code
+        case .addressKeySetupError(let error), .parsingError(let error):
+            return (error as NSError).code
+        case .networkingError(let error):
+            return error.bestShotAtReasonableErrorCode
+        }
+    }
 
     public var localizedDescription: String {
         switch self {
@@ -387,7 +430,7 @@ public enum AuthErrors: Error {
 }
 
 public extension AuthErrors {
-    var messageForTheUser: String {
+    var userFacingMessageInNetworking: String {
         return localizedDescription
     }
 }

@@ -43,7 +43,7 @@ public final class MailboxPasswordRobot: CoreElements {
     }
     
     public func fillMailboxPassword(mailboxPassword: String) -> MailboxPasswordRobot {
-        secureTextField(mailboxPasswordTextFieldId).wait().tap().typeText(mailboxPassword)
+        secureTextField(mailboxPasswordTextFieldId).wait(time: 20).tap().typeText(mailboxPassword)
         return self
     }
     

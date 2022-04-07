@@ -204,14 +204,13 @@ Sources: [libraries/Foundations](libraries/Foundations)
 Platforms supported: iOS, macOS (very limited subset of sources)
 
 
-### GoSRP
+### Hash
 
-Delivery mechanism for the SRP library, built into `vendor/Srp/SRP.xcframework`. 
-No actual Swift sources here.
+Basic hash algo types.
 
-Podspec: [ProtonCore-GoSRP.podspec](ProtonCore-GoSRP.podspec)
+Podspec: [ProtonCore-Hash.podspec](ProtonCore-Hash.podspec)
 
-Uses and deliveres framework: [GoSRP.xcframework](vendor/Srp/GoSRP.xcframework)
+Sources: [libraries/Hash](libraries/Hash)
 
 Platforms supported: iOS, macOS
 
@@ -404,17 +403,6 @@ Podspec: [ProtonCore-Settings.podspec](ProtonCore-Settings.podspec)
 Sources: [libraries/Settings](libraries/Settings)
 
 Platforms supported: iOS
-
-
-### SRP
-
-Basic hash algo types.
-
-Podspec: [ProtonCore-SRP.podspec](ProtonCore-SRP.podspec)
-
-Sources: [libraries/SRP](libraries/SRP)
-
-Platforms supported: iOS, macOS
 
 
 # TestingToolkit

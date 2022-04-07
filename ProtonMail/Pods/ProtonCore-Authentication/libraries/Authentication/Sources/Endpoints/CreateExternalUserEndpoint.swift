@@ -29,15 +29,17 @@ public struct ExternalUserParameters {
     public let verifer: String
     public let challenge: [[String: Any]]
     public let verifyToken: String
+    public let tokenType: String
     public let productPrefix: String
     
-    public init(email: String, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], verifyToken: String, productPrefix: String) {
+    public init(email: String, modulusID: String, salt: String, verifer: String, challenge: [[String: Any]] = [], verifyToken: String, tokenType: String, productPrefix: String) {
         self.email = email
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
         self.challenge = challenge
         self.verifyToken = verifyToken
+        self.tokenType = tokenType
         self.productPrefix = productPrefix
     }
 }
@@ -66,8 +68,15 @@ extension AuthService {
         }
         
         var header: [String: Any] {
-            return ["x-pm-human-verification-token-type": "email",
-                    "x-pm-human-verification-token": "\(externalUserParameters.email):\(externalUserParameters.verifyToken)"]
+            let token: String
+            if externalUserParameters.tokenType == VerifyMethod.PredefinedMethod.email.rawValue {
+                token = "\(externalUserParameters.email):\(externalUserParameters.verifyToken)"
+            } else {
+                token = "\(externalUserParameters.verifyToken)"
+            }
+            
+            return ["x-pm-human-verification-token-type": externalUserParameters.tokenType,
+                    "x-pm-human-verification-token": token]
         }
 
         var path: String {

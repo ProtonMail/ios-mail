@@ -21,6 +21,7 @@
 
 import Foundation
 import ProtonCore_Log
+import ProtonCore_Utilities
 
 struct RuntimeError: Error {
     let message: String
@@ -40,6 +41,7 @@ struct DNSCache {
 public enum DoHStatus {
     case on
     case off
+    case forceAlternativeRouting
     @available(*, deprecated, renamed: "on")
     case auto // mix don't know yet
 }
@@ -99,16 +101,36 @@ public extension ServerConfig {
     }
 }
 
+@available(*, deprecated, message: "Please use CompletionBlockExecutor from ProtonCore-Utilities")
+public protocol DoHWorkExecutor {
+    func execute(work: @escaping () -> Void)
+}
+
+@available(*, deprecated, message: "Please use CompletionBlockExecutor from ProtonCore-Utilities")
+extension DispatchQueue: DoHWorkExecutor {
+    public func execute(work: @escaping () -> Void) {
+        self.async { work() }
+    }
+}
+
 public protocol DoHInterface {
 
     @available(*, deprecated, message: "Please use getCurrentlyUsedHostUrl() in places you want to synchronously get the host url. Use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:) in places that you handle the errors that should result in switching to proxy domain")
     func getHostUrl() -> String
     func getCurrentlyUsedHostUrl() -> String
     
+    var isCurrentlyUsingProxyDomain: Bool { get }
+    
     @available(*, deprecated, message: "Please use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:)")
     func handleError(host: String, error: Error?) -> Bool
+    
+    @available(*, deprecated, message: "Please use variant taking CompletionBlockExecutor from ProtonCore-Utilities: handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)")
     func handleErrorResolvingProxyDomainIfNeeded(
         host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
+    )
+    
+    func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?, callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void
     )
     
     @available(*, deprecated, renamed: "clearCache")
@@ -118,17 +140,13 @@ public protocol DoHInterface {
     func getCaptchaHostUrl() -> String
     func getHumanVerificationV3Host() -> String
     func getAccountHost() -> String
+    func getHumanVerificationV3Headers() -> [String: String]
+    func getAccountHeaders() -> [String: String]
+    
+    @available(*, deprecated, message: "Please use errorIndicatesDoHSolvableProblem(error:) instead")
     func codeCheck(code: Int) -> Bool
-}
-
-public protocol DoHWorkExecutor {
-    func execute(work: @escaping () -> Void)
-}
-
-extension DispatchQueue: DoHWorkExecutor {
-    public func execute(work: @escaping () -> Void) {
-        self.async { work() }
-    }
+    
+    func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool
 }
 
 open class DoH: DoHInterface {
@@ -139,7 +157,7 @@ open class DoH: DoHInterface {
     private var caches: [DNSCache] = []
     private var providers: [DoHProviderPublic] = []
     
-    private let domainResolvingExecutor: DoHWorkExecutor
+    private let domainResolvingExecutor: CompletionBlockExecutor
     private let networkingEngine: DoHNetworkingEngine
     private let currentTimeProvider: () -> Date
     
@@ -150,23 +168,21 @@ open class DoH: DoHInterface {
         return config
     }
 
-    internal var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
+    internal let cacheQueue = DispatchQueue(label: "ch.proton.core.doh.caches")
     
     // MARK: - Initialization and deinitialization
     
-    public init(networkingEngine: DoHNetworkingEngine = URLSession.shared,
-                executor: DoHWorkExecutor = DispatchQueue(label: "ch.proton.core.ios.doh", qos: .userInitiated),
-                currentTimeProvider: @escaping () -> Date = Date.init) {
+    public init(
+        networkingEngine: DoHNetworkingEngine = URLSession.shared,
+        executor: CompletionBlockExecutor = .asyncExecutor(dispatchQueue: .init(
+            label: "ch.proton.core.ios.doh",
+            qos: .userInitiated
+        )),
+        currentTimeProvider: @escaping () -> Date = Date.init
+    ) {
         self.networkingEngine = networkingEngine
         self.domainResolvingExecutor = executor
         self.currentTimeProvider = currentTimeProvider
-        pthread_mutex_init(mutex, nil)
-    }
-    
-    deinit {
-        pthread_mutex_destroy(mutex)
-        self.mutex.deinitialize(count: 1)
-        self.mutex.deallocate()
     }
     
     // MARK: - Accessing host url
@@ -179,12 +195,16 @@ open class DoH: DoHInterface {
     /// By proxy domain being available I mean proxy domain being already fetched and cached,
     /// and not removed from cache after connection failure or time limit.
     /// - Returns: currently used host url string
-    public func getCurrentlyUsedHostUrl() -> String {
+    open func getCurrentlyUsedHostUrl() -> String {
+        getCurrentlyUsedHost() + config.defaultPath
+    }
+    
+    private func getCurrentlyUsedHost() -> String {
         guard doHProxyDomainsMechanismIsActive() else {
-            return getDefaultHostWithDefaultPath()
+            return getDefaultHost()
         }
         guard let hostUrlToUse = fetchCurrentlyUsedHostUrlFromCacheUpdatingIfNeeded() else {
-            return getDefaultHostWithDefaultPath()
+            return getDefaultHost()
         }
         return hostUrl(config, hostUrlToUse)
     }
@@ -198,18 +218,18 @@ open class DoH: DoHInterface {
         status != .off && config.enableDoh && !config.apiHost.isEmpty
     }
     
-    private func getDefaultHostWithDefaultPath() -> String {
-        config.defaultHost + config.defaultPath
+    private func getDefaultHost() -> String {
+        config.defaultHost
     }
 
     private func hostUrl(_ config: ServerConfig, _ found: DNSCache) -> String {
         let newurl = URL(string: config.defaultHost)!
         let host = newurl.host
         let hostUrl = newurl.absoluteString.replacingOccurrences(of: host!, with: found.dns.url)
-        return hostUrl + config.defaultPath
+        return hostUrl
     }
 
-    public func getCaptchaHostUrl() -> String {
+    open func getCaptchaHostUrl() -> String {
         guard doHProxyDomainsMechanismIsActive() else { return config.captchaHost }
         guard let defaultUrl = URL(string: config.defaultHost)?.host else { return config.captchaHost }
         guard config.captchaHost.contains(defaultUrl) else { return config.captchaHost }
@@ -217,23 +237,51 @@ open class DoH: DoHInterface {
         return config.captchaHost.replacingOccurrences(of: defaultUrl, with: currentUrl)
     }
     
-    public func getHumanVerificationV3Host() -> String {
-        config.humanVerificationV3Host
+    open func getHumanVerificationV3Host() -> String {
+        guard var proxyDomain = currentlyUsedProxyDomain() else { return config.humanVerificationV3Host }
+        for (custom, original) in AlternativeRoutingRequestInterceptor.schemeMapping {
+            proxyDomain = proxyDomain.replacingOccurrences(of: original, with: custom)
+        }
+        return proxyDomain
     }
     
-    public func getAccountHost() -> String {
-        config.accountHost
+    open func getHumanVerificationV3Headers() -> [String: String] {
+        guard isCurrentlyUsingProxyDomain, let host = URL(string: config.humanVerificationV3Host)?.host else { return [:] }
+        return ["X-PM-DoH-Host": host]
+    }
+    
+    open func getAccountHost() -> String {
+        guard var proxyDomain = currentlyUsedProxyDomain() else { return config.accountHost }
+        for (custom, original) in AlternativeRoutingRequestInterceptor.schemeMapping {
+            proxyDomain = proxyDomain.replacingOccurrences(of: original, with: custom)
+        }
+        return proxyDomain
+    }
+    
+    open func getAccountHeaders() -> [String: String] {
+        guard isCurrentlyUsingProxyDomain, let host = URL(string: config.accountHost)?.host else { return [:] }
+        return ["X-PM-DoH-Host": host]
+    }
+    
+    open var isCurrentlyUsingProxyDomain: Bool {
+        currentlyUsedProxyDomain() != nil
+    }
+    
+    private func currentlyUsedProxyDomain() -> String? {
+        guard doHProxyDomainsMechanismIsActive() else { return nil }
+        let currentlyUsedHost = getCurrentlyUsedHost()
+        guard currentlyUsedHost != getDefaultHost() else { return nil }
+        return currentlyUsedHost
     }
 
-    public func getSignUpString() -> String { config.signupDomain }
+    open func getSignUpString() -> String { config.signupDomain }
     
     // MARK: - Caching
 
-    public func clearCache() {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-        
-        self.caches = []
+    open func clearCache() {
+        cacheQueue.sync {
+            self.caches = []
+        }
     }
     
     @available(*, deprecated, message: "Please use clearCache() instead")
@@ -242,39 +290,36 @@ open class DoH: DoHInterface {
     }
     
     private func fetchCurrentlyUsedHostUrlFromCacheUpdatingIfNeeded() -> DNSCache? {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-        caches = caches.filter { $0.fetchTime + 24 * 60 * 60 > currentTimeProvider().timeIntervalSince1970 }
-        return caches.first
+        return cacheQueue.sync {
+            caches = caches.filter { $0.fetchTime + 24 * 60 * 60 > currentTimeProvider().timeIntervalSince1970 }
+            return caches.first
+        }
     }
     
     private func isThereAnyDomainWorthRetryInCache() -> Bool {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-        
-        return !caches.isEmpty
+        return cacheQueue.sync {
+            !caches.isEmpty
+        }
     }
 
     private func populateCache(dnsList: [DNS]) {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-        
-        for dns in dnsList.shuffled() {
-            let dnsCache = DNSCache(dns: dns, fetchTime: currentTimeProvider().timeIntervalSince1970)
-            if let indexOfAlreadyExistingDNS = caches.firstIndex(where: { $0.dns == dns }) {
-                caches[indexOfAlreadyExistingDNS] = dnsCache
-            } else {
-                caches.append(dnsCache)
+        cacheQueue.sync {
+            for dns in dnsList.shuffled() {
+                let dnsCache = DNSCache(dns: dns, fetchTime: currentTimeProvider().timeIntervalSince1970)
+                if let indexOfAlreadyExistingDNS = caches.firstIndex(where: { $0.dns == dns }) {
+                    caches[indexOfAlreadyExistingDNS] = dnsCache
+                } else {
+                    caches.append(dnsCache)
+                }
             }
         }
     }
     
     private func removeFailedDomainFromCache(host: String) {
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
-        
-        // remove the dns cache that failed
-        caches = caches.filter { $0.dns.url != host }
+        cacheQueue.sync {
+            // remove the dns cache that failed
+            caches = caches.filter { $0.dns.url != host }
+        }
     }
     
     // MARK: - Handling error
@@ -285,25 +330,32 @@ open class DoH: DoHInterface {
     ///   - error: The error (if any) returned from the request
     ///   - callCompletionBlockOn: Executor used to call completion block on
     ///   - completion: Completion block parameter (Bool) indicates whether the request should be retried.
-    public func handleErrorResolvingProxyDomainIfNeeded(
-        host: String, error: Error?, callCompletionBlockOn possibleCompletionBlock: DoHWorkExecutor? = nil, completion: @escaping (Bool) -> Void
+    open func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?,
+        callCompletionBlockUsing callCompletionBlockOn: CompletionBlockExecutor = .asyncMainExecutor,
+        completion: @escaping (Bool) -> Void
     ) {
-        let callCompletionBlockOn = possibleCompletionBlock ?? DispatchQueue.main
         guard errorShouldResultInTryingProxyDomain(host: host, error: error),
-              let failedURL = URL(string: host), let failedHost = failedURL.host,
-              let defaultURL = URL(string: config.defaultHost), let defaultHost = defaultURL.host else {
+              let failedHost = URL(string: host)?.host,
+              let defaultHost = URL(string: config.defaultHost)?.host else {
             callCompletionBlockOn.execute { completion(false) }
             return
         }
         
         if failedHost == defaultHost {
-            handlePrimaryHostFailure(
-                callCompletionBlockOn: callCompletionBlockOn, completion: completion
-            )
+            handlePrimaryHostFailure(callCompletionBlockOn: callCompletionBlockOn, completion: completion)
+            
+        } else if let accountHost = URL(string: config.accountHost)?.host, failedHost == accountHost {
+            handlePrimaryHostFailure(callCompletionBlockOn: callCompletionBlockOn, completion: completion)
+            
+        } else if let hvV3Host = URL(string: config.humanVerificationV3Host)?.host, failedHost == hvV3Host {
+            handlePrimaryHostFailure(callCompletionBlockOn: callCompletionBlockOn, completion: completion)
+            
         } else {
-            handleProxyDomainFailure(
-                failedHost: failedHost, callCompletionBlockOn: callCompletionBlockOn, completion: completion
-            )
+            handleProxyDomainFailure(failedHost: failedHost,
+                                     callCompletionBlockOn: callCompletionBlockOn,
+                                     completion: completion)
+            
         }
     }
     
@@ -312,33 +364,47 @@ open class DoH: DoHInterface {
 
         guard config.debugMode == false else { return debugModeLogic(host: host) }
 
-        guard let newurl = URL(string: host), newurl.host != nil else { return false }
-
-        guard let error = error, codeCheck(code: (error as NSError).code) else { return false }
+        guard let checkedHost = URL(string: host)?.host else { return false }
         
-        return true
-    }
-    
-    public func codeCheck(code: Int) -> Bool {
-        guard code == NSURLErrorTimedOut ||
-                code == NSURLErrorCannotConnectToHost ||
-                code == NSURLErrorCannotFindHost ||
-                code == NSURLErrorDNSLookupFailed ||
-                code == 3500 || // this is tls error
-                code == -1200 ||
-                code == 451 ||
-                code == 310 ||
-                code == -1017 || // this is when proxy return nil body
-                //            code == -1004 ||  // only for testing
-                code == -1005 // only for testing
-        else {
-            return false
+        if status == .forceAlternativeRouting, let defaultHost = URL(string: config.defaultHost)?.host, defaultHost == checkedHost {
+            return true
         }
+
+        guard errorIndicatesDoHSolvableProblem(error: error) else { return false }
         
         return true
     }
     
-    private func handlePrimaryHostFailure(callCompletionBlockOn: DoHWorkExecutor,
+    open func errorIndicatesDoHSolvableProblem(error: Error?) -> Bool {
+        guard let error = error else { return false }
+        return determineIfErrorCodeIndicatesDoHSolvableProblem((error as NSError).code)
+    }
+    
+    @available(*, deprecated, message: "Please use errorIndicatesDoHSolvableProblem(error:) instead")
+    public func codeCheck(code: Int) -> Bool {
+        determineIfErrorCodeIndicatesDoHSolvableProblem(code)
+    }
+    
+private func determineIfErrorCodeIndicatesDoHSolvableProblem(_ code: Int) -> Bool {
+    guard code == NSURLErrorTimedOut ||
+            code == NSURLErrorCannotConnectToHost ||
+            code == NSURLErrorCannotFindHost ||
+            code == NSURLErrorDNSLookupFailed ||
+            code == 3500 || // this is tls error
+            code == -1200 ||
+            code == 451 ||
+            code == 310 ||
+            code == -1017 || // this is when proxy return nil body
+            //            code == -1004 ||  // only for testing
+            code == -1005 // only for testing
+    else {
+        return false
+    }
+    
+    return true
+}
+    
+    private func handlePrimaryHostFailure(callCompletionBlockOn: CompletionBlockExecutor,
                                           completion: @escaping (Bool) -> Void) {
         guard isThereAnyDomainWorthRetryInCache() == false else {
             // the request to primary host failed, but proxy domain is available - should retry, proxy domain will be returned in getCurrentlyUsedHostUrl()
@@ -372,7 +438,7 @@ open class DoH: DoHInterface {
     }
     
     private func handleProxyDomainFailure(
-        failedHost: String, callCompletionBlockOn: DoHWorkExecutor, completion: @escaping (Bool) -> Void
+        failedHost: String, callCompletionBlockOn: CompletionBlockExecutor, completion: @escaping (Bool) -> Void
     ) {
         removeFailedDomainFromCache(host: failedHost)
         
@@ -387,6 +453,8 @@ open class DoH: DoHInterface {
     
     @available(*, deprecated, message: "Please use handleErrorResolvingProxyDomainIfNeeded(host:error:completion:)")
     public func handleError(host: String, error: Error?) -> Bool {
+        assert(Thread.isMainThread == false, "This is a blocking call, should never be called from the main thread")
+        
         let semaphore = DispatchSemaphore(value: 0)
         var result: Bool = false
         handleErrorResolvingProxyDomainIfNeeded(host: host, error: error) { shouldRetry in
@@ -395,6 +463,18 @@ open class DoH: DoHInterface {
         }
         semaphore.wait()
         return result
+    }
+    
+    @available(*, deprecated, message: "Please use variant taking CompletionBlockExecutor from ProtonCore-Utilities: handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)")
+    public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void
+    ) {
+        guard let callCompletionBlockOn = callCompletionBlockOn else {
+            handleErrorResolvingProxyDomainIfNeeded(host: host, error: error, completion: completion)
+            return
+        }
+        let executor = CompletionBlockExecutor(executionContext: callCompletionBlockOn.execute)
+        handleErrorResolvingProxyDomainIfNeeded(host: host, error: error, callCompletionBlockUsing: executor, completion: completion)
     }
     
     // MARK: - Resolving proxy domains
@@ -425,6 +505,8 @@ open class DoH: DoHInterface {
     }
 
     private func fetchHostFromDNSProvidersUsingSynchronousBlockingCall(timeout: TimeInterval) {
+        assert(Thread.isMainThread == false, "This is a blocking call, should never be called from the main thread")
+        
         let semaphore = DispatchSemaphore(value: 0)
         [Google(networkingEngine: networkingEngine), Quad9(networkingEngine: networkingEngine)]
             .map { (provider: DoHProviderInternal) in
@@ -450,18 +532,17 @@ open class DoH: DoHInterface {
 
         let code = foundCode
 
-        guard codeCheck(code: code) else { return false }
+        guard determineIfErrorCodeIndicatesDoHSolvableProblem(code) else { return false }
 
-        pthread_mutex_lock(mutex)
-        defer { pthread_mutex_unlock(mutex) }
+        return cacheQueue.sync {
+            globalCounter += 1
+            guard globalCounter % 2 == 0 else { return false }
 
-        globalCounter += 1
-        guard globalCounter % 2 == 0 else { return false }
-        
-        caches = caches.filter { $0.dns.url != host }
-        
-        guard isThereAnyDomainWorthRetryInCache() else { return false }
-        
-        return true
+            caches = caches.filter { $0.dns.url != host }
+
+            guard isThereAnyDomainWorthRetryInCache() else { return false }
+
+            return true
+        }
     }
 }
