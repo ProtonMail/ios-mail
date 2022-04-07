@@ -119,7 +119,7 @@ extension MailboxViewController {
         } else {
             item = Asset.messageExpandCollapse.image.toUIBarButtonItem(
                 target: self,
-                action: #selector(ellipsisMenuTapped),
+                action: #selector(ellipsisMenuTapped(sender:)),
                 tintColor: ColorProvider.IconNorm,
                 backgroundSquareSize: 40)
         }

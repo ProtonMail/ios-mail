@@ -521,7 +521,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         hideSelectionMode()
     }
 
-    @objc func ellipsisMenuTapped() {
+    @objc func ellipsisMenuTapped(sender: UIBarButtonItem) {
         let action = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let composeAction = UIAlertAction(title: LocalString._compose_message,
                                           style: .default) { [weak self] _ in
@@ -538,6 +538,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         action.addAction(composeAction)
         action.addAction(emptyAction)
         action.addAction(cancel)
+        if let popover = action.popoverPresentationController {
+            popover.barButtonItem = sender
+        }
         self.present(action, animated: true, completion: nil)
     }
 
