@@ -201,6 +201,9 @@ class NewMessageBodyViewModel {
             if self.currentMessageRenderStyle == .dark && newValue == .lightOnly {
                 self.delegate?.sendDarkModeMetric(isApply: false)
             }
+            if self.currentMessageRenderStyle == .lightOnly && newValue == .dark {
+                self.delegate?.sendDarkModeMetric(isApply: true)
+            }
         }
     }
     var shouldDisplayRenderModeOptions: Bool {

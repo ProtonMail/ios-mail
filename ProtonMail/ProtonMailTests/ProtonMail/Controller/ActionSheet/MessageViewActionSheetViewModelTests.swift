@@ -350,18 +350,19 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
                                               shouldShowRenderModeOption: true)
         XCTAssertEqual(sut.title, testTitle)
         let expectedOptions2: [MessageViewActionSheetAction] = [.reply,
-                                                               .forward,
-                                                               .markUnread,
-                                                               .labelAs,
-                                                               .star,
-                                                               .trash,
-                                                               .archive,
-                                                               .spam,
-                                                               .moveTo,
-                                                               .print,
-                                                               .viewHeaders,
-                                                               .viewHTML,
-                                                               .reportPhishing]
+                                                                .forward,
+                                                                .markUnread,
+                                                                .labelAs,
+                                                                .star,
+                                                                .viewInDarkMode,
+                                                                .trash,
+                                                                .archive,
+                                                                .spam,
+                                                                .moveTo,
+                                                                .print,
+                                                                .viewHeaders,
+                                                                .viewHTML,
+                                                                .reportPhishing]
         XCTAssertEqual(sut.items, expectedOptions2)
     }
 }
