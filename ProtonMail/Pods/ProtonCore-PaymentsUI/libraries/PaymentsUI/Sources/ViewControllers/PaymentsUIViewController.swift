@@ -62,6 +62,11 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.estimatedSectionHeaderHeight = sectionHeaderHeight
         }
     }
+    @IBOutlet weak var infoIcon: UIImageView! {
+        didSet {
+            infoIcon.image = IconProvider.info
+        }
+    }
     
     // MARK: - Properties
     
@@ -76,7 +81,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     override public func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {} else {
-            if ProtonColorPallete.brand == .vpn {
+            if Brand.currentBrand == .vpn {
                 tableView.indicatorStyle = .white
             }
         }
@@ -105,7 +110,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         navigationItem.assignNavItemIndentifiers()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(PaymentsUIViewController.asd),
+            selector: #selector(PaymentsUIViewController.informAboutIAPInProgress),
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
@@ -113,7 +118,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     
     var banner: PMBanner?
     
-    @objc private func asd() {
+    @objc private func informAboutIAPInProgress() {
         if model?.iapInProgress == true {
             let banner = PMBanner(message: CoreString._pu_iap_in_progress_banner,
                                   style: PMBannerNewStyle.error,
@@ -160,6 +165,10 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         banner.show(at: position, on: self)
     }
     
+    func showOverlayConnectionError() {
+        // Not handled
+    }
+    
     public func planPurchaseError() {
         delegate?.planPurchaseError()
     }
@@ -198,12 +207,12 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 
     private func reloadUI() {
-        guard isDataLoaded, let linkString = model?.linkString else { return }
+        guard isDataLoaded else { return }
         switch model?.footerType {
         case .withPlans:
-            tableFooterTextLabel.textWithLink(text: String(format: CoreString._pu_plan_footer_desc, linkString), link: linkString, handler: model?.openLink)
+            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc
         case .withoutPlans, .none:
-            tableFooterTextLabel.textWithLink(text: String(format: CoreString._pu_plan_footer_desc_purchased, linkString), link: linkString, handler: model?.openLink)
+            tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
         case .disabled:
             hideFooter = true
         }

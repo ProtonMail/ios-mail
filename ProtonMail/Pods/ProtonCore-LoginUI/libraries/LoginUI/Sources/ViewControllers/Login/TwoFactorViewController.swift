@@ -48,6 +48,8 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: - Setup
 

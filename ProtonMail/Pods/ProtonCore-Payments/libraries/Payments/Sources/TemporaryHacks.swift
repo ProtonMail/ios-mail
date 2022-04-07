@@ -19,8 +19,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+#if DEBUG
 
 public enum TemporaryHacks {
+    // Can be used only for core example app internal tests
     public static var testCardForPayments: [String: String]?
 }
+
+#else
+
+public enum TemporaryHacks {
+    // Can be used only for core example app internal tests
+    public static var testCardForPayments: [String: String]? { nil }
+}
+
+#endif

@@ -23,6 +23,15 @@
 
 import Foundation
 
+extension ThrowingFuncStub where Input == Void, Output == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
+                         A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
+
+    public convenience init<T>(_ prototype: (T) -> () throws -> Void,
+                               function: String = #function, line: UInt = #line, file: String = #filePath) {
+        self.init(function: function, line: line, file: file)
+    }
+}
+
 extension ThrowingFuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 == Absent, A4 == Absent, A5 == Absent, A6 == Absent, A7 == Absent,
                          A8 == Absent, A9 == Absent, A10 == Absent, A11 == Absent, A12 == Absent {
 
@@ -42,11 +51,6 @@ extension ThrowingFuncStub where Input == Void, A1 == Absent, A2 == Absent, A3 =
                                initialReturn: InitialReturn<Input, Output>,
                                function: String = #function, line: UInt = #line, file: String = #filePath) {
         self.init(initialReturn: initialReturn, function: function, line: line, file: file)
-    }
-
-    public convenience init<T>(_ prototype: (T) -> () throws -> Output,
-                               function: String = #function, line: UInt = #line, file: String = #filePath) where Output == Void {
-        self.init(function: function, line: line, file: file)
     }
 }
 

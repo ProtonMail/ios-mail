@@ -26,8 +26,8 @@ extension NSAttributedString {
     static func hyperlink(path: String, in string: String, as substring: String, alignment: NSTextAlignment = .left, font: UIFont?) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment
-        let nsString = NSString(string: string)
-        let substringRange = nsString.range(of: substring)
+        let nsString = NSString(string: string.lowercased())
+        let substringRange = nsString.range(of: substring.lowercased())
         let attributerString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         attributerString.addAttribute(.link, value: path, range: substringRange)
         if let font = font {

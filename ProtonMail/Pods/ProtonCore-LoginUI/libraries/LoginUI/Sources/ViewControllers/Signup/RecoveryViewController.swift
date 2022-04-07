@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import typealias ProtonCore_Login.AccountType
 
 protocol RecoveryViewControllerDelegate: AnyObject {
     func recoveryBackButtonPressed()
@@ -40,19 +41,20 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
 
     weak var delegate: RecoveryViewControllerDelegate?
     var viewModel: RecoveryViewModel!
+    var minimumAccountType: AccountType?
     private var countryCode: String = ""
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
 
     @IBOutlet weak var recoveryMethodTitleLabel: UILabel! {
         didSet {
-            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title
             recoveryMethodTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var recoveryMethodDescriptionLabel: UILabel! {
         didSet {
-            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
             recoveryMethodDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
@@ -80,11 +82,16 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
             updateCountryCode(viewModel.initialCountryCode)
         }
     }
+    @IBOutlet weak var methodStackView: UIStackView!
     @IBOutlet weak var methodSegmenedControl: PMSegmentedControl! {
         didSet {
             if #available(iOS 13.0, *) {
-            methodSegmenedControl.setImage(image: UIImage(named: "ic-envelope", in: LoginAndSignup.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_email, forSegmentAt: 0)
-            methodSegmenedControl.setImage(image: UIImage(named: "ic-mobile", in: LoginAndSignup.bundle, compatibleWith: nil)!, withText: CoreString._su_recovery_seg_phone, forSegmentAt: 1)
+                methodSegmenedControl.setImage(image: IconProvider.envelope,
+                                               withText: CoreString._su_recovery_seg_email,
+                                               forSegmentAt: 0)
+                methodSegmenedControl.setImage(image: IconProvider.mobile,
+                                               withText: CoreString._su_recovery_seg_phone,
+                                               forSegmentAt: 1)
             } else {
                 // don't show icons for the version below iOS 13
                 methodSegmenedControl.setTitle(CoreString._su_recovery_seg_email, forSegmentAt: 0)
@@ -119,19 +126,28 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
-        skipButton.tintColor = ColorProvider.BrandNorm
-        navigationItem.rightBarButtonItem = skipButton
+        if minimumAccountType == .username {
+            methodStackView.subviews.forEach { $0.isHidden = true }
+            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_email_only_view_desc
+            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title
+        } else {
+            recoveryMethodDescriptionLabel.text = CoreString._su_recovery_view_desc
+            recoveryMethodTitleLabel.text = CoreString._su_recovery_view_title_optional
+            let skipButton = UIBarButtonItem(title: CoreString._su_skip_button,
+                                             style: .done,
+                                             target: self,
+                                             action: #selector(RecoveryViewController.onSkipButtonTap(_:)))
+            skipButton.tintColor = ColorProvider.BrandNorm
+            navigationItem.rightBarButtonItem = skipButton
+        }
         setUpBackArrow(action: #selector(RecoveryViewController.onBackButtonTap))
         setupGestures()
         setupNotifications()
         recoveryPhoneTextField.isHidden = true
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
-        try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+        try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recoveryMail)
+        try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recoveryPhone)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -161,11 +177,11 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         case RecoveryMethod.email.rawValue:
             recoveryEmailTextField.isHidden = false
             recoveryPhoneTextField.isHidden = true
-            try? recoveryEmailTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+            _ = recoveryEmailTextField.becomeFirstResponder()
         case RecoveryMethod.phoneNumber.rawValue:
             recoveryEmailTextField.isHidden = true
             recoveryPhoneTextField.isHidden = false
-            try? recoveryPhoneTextField.setUpChallenge(viewModel.challenge, type: .recovery)
+            _ = recoveryPhoneTextField.becomeFirstResponder()
         default:
             break
         }

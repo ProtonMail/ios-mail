@@ -33,7 +33,6 @@ final class PaymentsUICoordinator {
     private var mode: PaymentsUIMode = .signup
     private var completionHandler: ((PaymentsUIResultReason) -> Void)?
     private var viewModel: PaymentsUIViewModelViewModel?
-    private var updateCredits: Bool = false
 
     private let planService: ServicePlanDataServiceProtocol
     private let storeKitManager: StoreKitManagerProtocol
@@ -41,6 +40,7 @@ final class PaymentsUICoordinator {
     private let shownPlanNames: ListOfShownPlanNames
     private let alertManager: PaymentsUIAlertManager
     private let clientApp: ClientApp
+    private let storyboardName: String
     
     private var processingAccountPlan: InAppPurchasePlan? {
         didSet {
@@ -66,6 +66,7 @@ final class PaymentsUICoordinator {
         self.shownPlanNames = shownPlanNames
         self.alertManager = alertManager
         self.clientApp = clientApp
+        self.storyboardName = Config.storyboardName
     }
     
     func start(viewController: UIViewController?, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
@@ -75,11 +76,10 @@ final class PaymentsUICoordinator {
         showPaymentsUI(servicePlan: planService, backendFetch: false)
     }
     
-    func start(presentationType: PaymentsUIPresentationType, mode: PaymentsUIMode, backendFetch: Bool, updateCredits: Bool, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
+    func start(presentationType: PaymentsUIPresentationType, mode: PaymentsUIMode, backendFetch: Bool, completionHandler: @escaping ((PaymentsUIResultReason) -> Void)) {
         self.presentationType = presentationType
         self.mode = mode
         self.completionHandler = completionHandler
-        self.updateCredits = updateCredits
         showPaymentsUI(servicePlan: planService, backendFetch: backendFetch)
     }
 
@@ -87,11 +87,10 @@ final class PaymentsUICoordinator {
 
     private func showPaymentsUI(servicePlan: ServicePlanDataServiceProtocol, backendFetch: Bool) {
 
-        let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self)
+        let paymentsUIViewController = UIStoryboard.instantiate(PaymentsUIViewController.self, storyboardName: storyboardName)
         paymentsUIViewController.delegate = self
         
-        viewModel = PaymentsUIViewModelViewModel(mode: mode, storeKitManager: storeKitManager, servicePlan: servicePlan, shownPlanNames: shownPlanNames, clientApp: clientApp, updateCredits: updateCredits,
-                                                      planRefreshHandler: { [weak self] in
+        viewModel = PaymentsUIViewModelViewModel(mode: mode, storeKitManager: storeKitManager, servicePlan: servicePlan, shownPlanNames: shownPlanNames, clientApp: clientApp, planRefreshHandler: { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentsUIViewController?.reloadData()
             }
@@ -153,20 +152,18 @@ final class PaymentsUICoordinator {
     
     private func showError(error: Error) {
         if let error = error as? StoreKitManagerErrors {
-            self.showError(message: error.localizedDescription)
+            self.showError(message: error.userFacingMessageInPayments, error: error)
         } else if let error = error as? ResponseError {
-            let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription ?? error.localizedDescription
-            self.showError(message: message)
+            self.showError(message: error.localizedDescription, error: error)
         } else {
-            self.showError(message: error.localizedDescription)
+            self.showError(message: error.userFacingMessageInPayments, error: error)
         }
-        showError(message: error.messageForTheUser)
         finishCallback(reason: .purchaseError(error: error))
     }
     
-    private func showError(message: String) {
+    private func showError(message: String, error: Error) {
         guard localErrorMessages else { return }
-        alertManager.showError(message: message)
+        alertManager.showError(message: message, error: error)
     }
     
     private var localErrorMessages: Bool {
@@ -250,7 +247,7 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
 }
 
 private extension UIStoryboard {
-    static func instantiate<T: UIViewController>(_ controllerType: T.Type) -> T {
-        instantiate(storyboardName: "PaymentsUI", controllerType: controllerType)
+    static func instantiate<T: UIViewController>(_ controllerType: T.Type, storyboardName: String) -> T {
+        instantiate(storyboardName: storyboardName, controllerType: controllerType)
     }
 }

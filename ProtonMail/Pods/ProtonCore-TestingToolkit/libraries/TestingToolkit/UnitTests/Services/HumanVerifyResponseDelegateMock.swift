@@ -34,4 +34,9 @@ public final class HumanVerifyResponseDelegateMock: HumanVerifyResponseDelegate 
     public func onHumanVerifyEnd(result: HumanVerifyEndResult) {
         onHumanVerifyEndStub(result)
     }
+    
+    @FuncStub(HumanVerifyResponseDelegateMock.humanVerifyToken) public var humanVerifyTokenStub
+    public func humanVerifyToken(token: String?, tokenType: String?) {
+        humanVerifyTokenStub(token, tokenType)
+    }
 }

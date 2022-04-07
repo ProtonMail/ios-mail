@@ -148,6 +148,13 @@ class MenuRobot: CoreElements {
             return InboxRobot()
         }
 
+        func dismiss() -> MenuRobot {
+            let normalized = app.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+            let coordinate = normalized.withOffset(CGVector(dx: 10, dy: 400))
+            coordinate.tap()
+            return MenuRobot()
+        }
+
         /**
          Contains all the validations that can be performed by [MenuAccountListRobot].
          */

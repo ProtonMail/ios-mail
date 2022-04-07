@@ -69,7 +69,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
         let pressView = UIView(frame: .zero)
         pressView.backgroundColor = ColorProvider.BackgroundSecondary
         self.selectedBackgroundView = pressView
-        self.generateCellAccessibilityIdentifiers(mailAddress.text!)
+        
     }
 
     public func config(data: AccountSwitcher.AccountData, delegate: AccountSwitchCellProtocol) {
@@ -93,6 +93,7 @@ public final class AccountSwitcherCell: UITableViewCell, AccessibleCell {
             self.name.textColor = ColorProvider.TextWeak
         }
         self.setupLabelConstraint(isSignin: data.isSignin)
+        self.generateCellAccessibilityIdentifiers(name)
     }
 
     private func setupLabelConstraint(isSignin: Bool) {

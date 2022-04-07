@@ -135,8 +135,7 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         guard let user = user else { return }
         self.paymentsUI = PaymentsUI(payments: user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true,
-                                         updateCredits: false) { _ in }
+                                         backendFetch: true) { _ in }
     }
 
 }

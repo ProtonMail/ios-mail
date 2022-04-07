@@ -356,7 +356,7 @@ public class Keymaker: NSObject {
     }
     
     public func updateAutolockCountdownStart() {
-        self.autolocker?.updateAutolockCountdownStart()
+        self.autolocker?.startCountdown()
         _ = self.privatelyAccessibleMainKey
     }
 }

@@ -98,6 +98,8 @@ extension AppDelegate: UserDataServiceDelegate {
 }
 
 extension AppDelegate: APIServiceDelegate {
+    var additionalHeaders: [String: String]? { nil }
+
     var locale: String {
         return LanguageManager.currentLanguageCode()
     }

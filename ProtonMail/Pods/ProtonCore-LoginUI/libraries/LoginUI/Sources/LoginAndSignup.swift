@@ -34,6 +34,14 @@ import UIKit
 @available(*, deprecated, renamed: "LoginAndSignupInterface")
 public typealias LoginInterface = LoginAndSignupInterface
 
+public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
+    case mail(SpecificScreenData)
+    case calendar(SpecificScreenData)
+    case drive(SpecificScreenData)
+    case vpn(SpecificScreenData)
+    case custom(CustomScreenData)
+}
+
 public struct WorkBeforeFlow {
     let stepName: String
     let completion: FlowCompletion
@@ -73,6 +81,7 @@ public protocol LoginAndSignupInterface {
 
     func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void)
 
+    // swiftlint:disable:next function_parameter_count
     func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                       welcomeScreen: WelcomeScreenVariant,
                                       username: String?,
@@ -85,6 +94,8 @@ public protocol LoginAndSignupInterface {
                                         performBeforeFlow: WorkBeforeFlow?,
                                         customErrorPresenter: LoginErrorPresenter?,
                                         completion: @escaping (LoginResult) -> Void) -> UIViewController
+
+    func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 extension LoginAndSignupInterface {
@@ -174,7 +185,7 @@ public class LoginAndSignup: LoginAndSignupInterface {
     private var loginCompletion: (LoginResult) -> Void = { _ in }
     private var mailboxPasswordCompletion: ((String) -> Void)?
 
-    @available(*, deprecated, message: "Use the new initializer with payment plans for a particular app. Otherwise the no plans will be available. init(appName:doh:clientApp:apiServiceDelegate:forceUpgradeDelegate:minimumAccountType:signupMode:signupPasswordRestrictions:isCloseButtonAvailable:presentPaymentFlowFor:)")
+    @available(*, deprecated, message: "Use the new initializer with payment plans for a particular app. Otherwise the no plans will be available.")
     public convenience init(appName: String,
                             clientApp: ClientApp,
                             doh: DoH & ServerConfig,
@@ -187,11 +198,25 @@ public class LoginAndSignup: LoginAndSignupInterface {
         self.init(appName: appName, clientApp: clientApp, doh: doh, apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate, minimumAccountType: minimumAccountType, isCloseButtonAvailable: isCloseButtonAvailable, paymentsAvailability: isPlanSelectorAvailable ? .available(parameters: .init(listOfIAPIdentifiers: [], listOfShownPlanNames: [], reportBugAlertHandler: nil)) : .notAvailable)
     }
 
+    @available(*, deprecated, message: "Use the initializer that specifies the human verification version")
+    public convenience init(appName: String,
+                            clientApp: ClientApp,
+                            doh: DoH & ServerConfig,
+                            apiServiceDelegate: APIServiceDelegate,
+                            forceUpgradeDelegate: ForceUpgradeDelegate,
+                            minimumAccountType: AccountType,
+                            isCloseButtonAvailable: Bool = true,
+                            paymentsAvailability: PaymentsAvailability,
+                            signupAvailability: SignupAvailability = .notAvailable) {
+        self.init(appName: appName, clientApp: clientApp, doh: doh, apiServiceDelegate: apiServiceDelegate, forceUpgradeDelegate: forceUpgradeDelegate, humanVerificationVersion: .v2, minimumAccountType: minimumAccountType, isCloseButtonAvailable: isCloseButtonAvailable, paymentsAvailability: paymentsAvailability, signupAvailability: signupAvailability)
+    }
+    
     public init(appName: String,
                 clientApp: ClientApp,
                 doh: DoH & ServerConfig,
                 apiServiceDelegate: APIServiceDelegate,
                 forceUpgradeDelegate: ForceUpgradeDelegate,
+                humanVerificationVersion: HumanVerificationVersion,
                 minimumAccountType: AccountType,
                 isCloseButtonAvailable: Bool = true,
                 paymentsAvailability: PaymentsAvailability,
@@ -201,6 +226,7 @@ public class LoginAndSignup: LoginAndSignupInterface {
                               doh: doh,
                               apiServiceDelegate: apiServiceDelegate,
                               forceUpgradeDelegate: forceUpgradeDelegate,
+                              humanVerificationVersion: humanVerificationVersion,
                               minimumAccountType: minimumAccountType)
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.paymentsAvailability = paymentsAvailability
@@ -236,6 +262,7 @@ public class LoginAndSignup: LoginAndSignupInterface {
         mailboxPasswordCoordinator?.start(viewController: viewController)
     }
 
+    // swiftlint:disable:next function_parameter_count
     public func presentFlowFromWelcomeScreen(over viewController: UIViewController,
                                              welcomeScreen: WelcomeScreenVariant,
                                              username: String?,
@@ -325,7 +352,7 @@ extension LoginAndSignup: SignupCoordinatorDelegate {
     }
     
     func signupCoordinatorDidFinish(signupCoordinator: SignupCoordinator, loginData: LoginData) {
-        loginCompletion(.loggedIn(loginData))
+        loginCompletion(.signedUp(loginData))
     }
     
     func userSelectedSignin(email: String?, navigationViewController: LoginNavigationViewController) {

@@ -49,25 +49,46 @@ public enum LoginStatus {
     case chooseInternalUsernameAndCreateInternalAddress(CreateAddressData)
 }
 
-public enum LoginError: Error, Equatable, CustomStringConvertible {
+public enum LoginError: Error, CustomStringConvertible {
     case invalidSecondPassword
     case invalidCredentials(message: String)
     case invalid2FACode(message: String)
     case invalidAccessToken(message: String)
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
     case invalidState
     case missingKeys
     case needsFirstTimePasswordChange
     case emailAddressAlreadyUsed
 }
 
+extension LoginError: Equatable {
+    public static func == (lhs: LoginError, rhs: LoginError) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidSecondPassword, .invalidSecondPassword),
+            (.invalidState, .invalidState),
+            (.missingKeys, .missingKeys),
+            (.needsFirstTimePasswordChange, .needsFirstTimePasswordChange),
+            (.emailAddressAlreadyUsed, .emailAddressAlreadyUsed):
+            return true
+        case (.invalidCredentials(let lv), .invalidCredentials(let rv)),
+            (.invalid2FACode(let lv), .invalid2FACode(let rv)),
+            (.invalidAccessToken(let lv), .invalidAccessToken(let rv)):
+            return lv == rv
+        case let (.generic(lmessage, lcode, _), .generic(rmessage, rcode, _)):
+            return lmessage == rmessage && lcode == rcode
+        default:
+            return false
+        }
+    }
+}
+
 public extension LoginError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
         case .invalidCredentials(let message),
              .invalid2FACode(let message),
              .invalidAccessToken(let message),
-             .generic(let message):
+             .generic(let message, _, _):
             return message
         case .invalidState,
              .invalidSecondPassword,
@@ -77,9 +98,16 @@ public extension LoginError {
             return localizedDescription
         }
     }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
+        }
+    }
 }
 
-public enum SignupError: Error, Equatable {
+public enum SignupError: Error {
     case emailAddressAlreadyUsed
     case invalidVerificationCode(message: String)
     case validationTokenRequest
@@ -90,13 +118,36 @@ public enum SignupError: Error, Equatable {
     case passwordEmpty
     case passwordNotEqual
     case passwordShouldHaveAtLeastEightCharacters
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
+}
+
+extension SignupError: Equatable {
+    public static func == (lhs: SignupError, rhs: SignupError) -> Bool {
+        switch (lhs, rhs) {
+        case (.emailAddressAlreadyUsed, .emailAddressAlreadyUsed),
+            (.validationTokenRequest, .validationTokenRequest),
+            (.validationToken, .validationToken),
+            (.randomBits, .randomBits),
+            (.cantHashPassword, .cantHashPassword),
+            (.passwordEmpty, .passwordEmpty),
+            (.passwordNotEqual, .passwordNotEqual),
+            (.passwordShouldHaveAtLeastEightCharacters, .passwordShouldHaveAtLeastEightCharacters):
+            return true
+        case (.invalidVerificationCode(let lv), .invalidVerificationCode(let rv)),
+            (.generateVerifier(let lv), .generateVerifier(let rv)):
+            return lv == rv
+        case let (.generic(lmessage, lcode, _), .generic(rmessage, rcode, _)):
+            return lmessage == rmessage && lcode == rcode
+        default:
+            return false
+        }
+    }
 }
 
 public extension SignupError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message),
+        case .generic(let message, _, _),
              .generateVerifier(let message),
              .invalidVerificationCode(let message):
             return message
@@ -104,30 +155,51 @@ public extension SignupError {
             return localizedDescription
         }
     }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
+        }
+    }
 }
 
 public enum AvailabilityError: Error {
     case notAvailable(message: String)
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
 }
 
 public extension AvailabilityError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message), .notAvailable(let message): return message
+        case .generic(let message, _, _), .notAvailable(let message): return message
+        }
+    }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
         }
     }
 }
 
 public enum SetUsernameError: Error {
     case alreadySet(message: String)
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
 }
 
 public extension SetUsernameError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
-        case .alreadySet(let message), .generic(let message): return message
+        case .alreadySet(let message), .generic(let message, _, _): return message
+        }
+    }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
         }
     }
 }
@@ -135,28 +207,42 @@ public extension SetUsernameError {
 public enum CreateAddressError: Error {
     case alreadyHaveInternalOrCustomDomainAddress(Address)
     case cannotCreateInternalAddress(alreadyExistingAddress: Address?)
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
 }
 
 public extension CreateAddressError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message): return message
+        case .generic(let message, _, _): return message
         default: return localizedDescription
+        }
+    }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
         }
     }
 }
 
 public enum CreateAddressKeysError: Error {
     case alreadySet
-    case generic(message: String)
+    case generic(message: String, code: Int, originalError: Error)
 }
 
 public extension CreateAddressKeysError {
-    var messageForTheUser: String {
+    var userFacingMessageInLogin: String {
         switch self {
-        case .generic(let message): return message
+        case .generic(let message, _, _): return message
         case .alreadySet: return localizedDescription
+        }
+    }
+    
+    var codeInLogin: Int {
+        switch self {
+        case .generic(_, let code, _): return code
+        default: return bestShotAtReasonableErrorCode
         }
     }
 }
@@ -170,11 +256,15 @@ public protocol Login {
     func logout(credential: AuthCredential, completion: @escaping (Result<Void, Error>) -> Void)
 
     func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
+    func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void)
     func setUsername(username: String, completion: @escaping (Result<(), SetUsernameError>) -> Void)
 
     func createAccountKeysIfNeeded(user: User, addresses: [Address]?, mailboxPassword: String?, completion: @escaping (Result<User, LoginError>) -> Void)
     func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void)
     func createAddressKeys(user: User, address: Address, mailboxPassword: String, completion: @escaping (Result<Key, CreateAddressKeysError>) -> Void)
+    
+    func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void)
+    func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void)
 
     var minimumAccountType: AccountType { get }
     func updateAccountType(accountType: AccountType)

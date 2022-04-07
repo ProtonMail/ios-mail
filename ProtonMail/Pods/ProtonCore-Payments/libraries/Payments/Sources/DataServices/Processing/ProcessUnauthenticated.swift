@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import StoreKit
-import AwaitKit
 import ProtonCore_Log
 
 final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
@@ -36,19 +35,24 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
     func process(
         transaction: SKPaymentTransaction, plan: PlanToBeProcessed, completion: @escaping ProcessCompletionCallback
     ) throws {
+        guard Thread.isMainThread == false else {
+            assertionFailure("This is a blocking network request, should never be called from main thread")
+            throw AwaitInternalError.synchronousCallPerformedFromTheMainThread
+        }
+        
         let receipt = try dependencies.getReceipt()
         do {
             PMLog.debug("Making TokenRequest")
             let tokenApi = dependencies.paymentsApiProtocol.tokenRequest(
                 api: dependencies.apiService, amount: plan.amount, receipt: receipt
             )
-            let tokenRes = try AwaitKit.await(tokenApi.run())
+            let tokenRes = try tokenApi.awaitResponse(responseObject: TokenResponse())
             guard let token = tokenRes.paymentToken else { return }
             PMLog.debug("StoreKit: payment token created for signup")
             dependencies.tokenStorage.add(token)
             self.processUnauthenticated(withToken: token, transaction: transaction, plan: plan, completion: completion)
         } catch let error {
-            PMLog.debug("StoreKit: Create token failed: \(error.messageForTheUser)")
+            PMLog.debug("StoreKit: Create token failed: \(error.userFacingMessageInPayments)")
             dependencies.tokenStorage.clear()
             dependencies.addTransactionsBeforeSignup(transaction: transaction)
             completion(.finished)
@@ -63,7 +67,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
         do {
             PMLog.debug("Making TokenRequestStatus")
             let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
-            let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
+            let tokenStatusRes = try tokenStatusApi.awaitResponse(responseObject: TokenStatusResponse())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
             case .pending:
@@ -87,7 +91,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 // Transaction will be finished after login
             }
         } catch let error {
-            PMLog.debug("StoreKit: Get token info failed: \(error.messageForTheUser)")
+            PMLog.debug("StoreKit: Get token info failed: \(error.userFacingMessageInPayments)")
             dependencies.tokenStorage.clear()
             dependencies.addTransactionsBeforeSignup(transaction: transaction)
             completion(.finished)
@@ -113,7 +117,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 let tokenApi = dependencies.paymentsApiProtocol.tokenRequest(
                     api: dependencies.apiService, amount: plan.amount, receipt: receipt
                 )
-                let tokenRes = try AwaitKit.await(tokenApi.run())
+                let tokenRes = try tokenApi.awaitResponse(responseObject: TokenResponse())
                 guard let token = tokenRes.paymentToken else {
                     throw StoreKitManager.Errors.transactionFailedByUnknownReason
                 }
@@ -121,7 +125,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 try self.processAuthenticatedBeforeSignup(transaction: transaction, plan: plan, completion: completion)
 
             } catch let error {
-                PMLog.debug("StoreKit: payment token was not (re)created: \(error.messageForTheUser)")
+                PMLog.debug("StoreKit: payment token was not (re)created: \(error.userFacingMessageInPayments)")
                 try retryOnError()
             }
 
@@ -136,7 +140,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                                completion: completion)
 
         } catch let error {
-            PMLog.debug("StoreKit: Get token info failed: \(error.messageForTheUser)")
+            PMLog.debug("StoreKit: Get token info failed: \(error.userFacingMessageInPayments)")
             if error.isNetworkIssueError {
                 try retryOnError()
                 return
@@ -161,7 +165,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                                                          completion: @escaping ProcessCompletionCallback) throws {
 
         let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
-        let tokenStatusRes = try AwaitKit.await(tokenStatusApi.run())
+        let tokenStatusRes = try tokenStatusApi.awaitResponse(responseObject: TokenStatusResponse())
         let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
         switch status {
         case .pending:
@@ -216,7 +220,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 amountDue: plan.amountDue,
                 paymentAction: .token(token: token.token)
             )
-            let recieptRes = try AwaitKit.await(request.run())
+            let recieptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
             PMLog.debug("StoreKit: success (2)")
             if let newSubscription = recieptRes.newSubscription {
                 dependencies.updateSubscription(newSubscription)
@@ -226,7 +230,7 @@ final class ProcessUnauthenticated: ProcessUnathenticatedProtocol {
                 throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
             }
         } catch let error {
-            PMLog.debug("StoreKit: Buy plan failed: \(error.messageForTheUser)")
+            PMLog.debug("StoreKit: Buy plan failed: \(error.userFacingMessageInPayments)")
             try retryOnError()
         }
     }

@@ -26,7 +26,7 @@ import ProtonCore_UIFoundations
 protocol PaymentsUIAlertManager: AlertManagerProtocol {
     var viewController: PaymentsUIViewController? { get set }
     var delegatedAlertManager: AlertManagerProtocol { get }
-    func showError(message: String)
+    func showError(message: String, error: Error)
 }
 
 extension PaymentsUIAlertManager {
@@ -76,21 +76,26 @@ final class LocallyPresentingPaymentsUIAlertManager: PaymentsUIAlertManager {
         showError(message: message, action: confirmAction ?? cancelAction)
     }
 
-    func showError(message: String) {
-        showError(message: message, action: nil)
+    func showError(message: String, error: Error) {
+        showError(message: message, error: error, action: nil)
     }
 
-    private func showError(message: String, action: ActionCallback) {
+    private func showError(message: String, error: Error? = nil, action: ActionCallback) {
         guard let viewController = viewController else { return }
         if !viewController.activityIndicator.isHidden {
             viewController.activityIndicator.isHidden = true
         }
-        let banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-        banner.addButton(text: CoreString._hv_ok_button) {
-            $0.dismiss()
-            action?()
+        // show overlay error in case of internet connection issue
+        if Config.showOverlayConnectionError, let error = error, (error as NSError).isNetworkIssueError {
+            viewController.showOverlayConnectionError()
+        } else {
+            let banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
+            banner.addButton(text: CoreString._hv_ok_button) {
+                $0.dismiss()
+                action?()
+            }
+            viewController.showBanner(banner: banner, position: .top)
         }
-        viewController.showBanner(banner: banner, position: .top)
     }
 }
 
@@ -114,7 +119,7 @@ final class AlwaysDelegatingPaymentsUIAlertManager: PaymentsUIAlertManager {
         passAlertToDelegatedManager(confirmAction: confirmAction, cancelAction: cancelAction)
     }
 
-    func showError(message: String) {
+    func showError(message: String, error: Error) {
         showErrorOnDelegatedManager(message: message)
     }
 }

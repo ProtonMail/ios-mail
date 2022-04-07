@@ -67,7 +67,9 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.mail.textColor = ColorProvider.TextWeak
         self.shortNameView.backgroundColor = ColorProvider.BrandNorm
         self.shortNameLabel.textColor = ColorProvider.SidebarTextNorm
+        self.shortNameLabel.backgroundColor = ColorProvider.BrandNorm
         self.separatorView.backgroundColor = ColorProvider.InteractionWeak
+        self.moreBtn.setImage(IconProvider.threeDotsHorizontal, for: .normal)
         self.moreBtn.tintColor = ColorProvider.TextNorm
     }
 
@@ -91,26 +93,30 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
             // This will override IBAction
             self.configMoreButton(isSignin: isLogin)
         }
-        self.generateCellAccessibilityIdentifiers(mail)
+        self.generateCellAccessibilityIdentifiers(name)
     }
 
     @available(iOS 14.0, *)
     private func configMoreButton(isSignin: Bool) {
         // todo i18n
 
-        let signOut = UIAction(title: CoreString._as_signout, image: UIImage(named: "menu_signout", in: Bundle.switchBundle, compatibleWith: nil)) { [weak self](_) in
-            guard let _self = self else { return }
-            _self.delegate?.prepareSignOut(for: _self.userID)
+        let signOut = UIAction(title: CoreString._as_signout,
+                               image: IconProvider.arrowOutFromRectangle) { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.prepareSignOut(for: self.userID)
         }
 
-        let signIn = UIAction(title: CoreString._ls_screen_title, image: UIImage(named: "icon_signin", in: Bundle.switchBundle, compatibleWith: nil)) { [weak self](_) in
-            guard let _self = self else { return }
-            _self.delegate?.prepareSignIn(for: _self.userID)
+        let signIn = UIAction(title: CoreString._ls_screen_title,
+                              image: IconProvider.signIn) { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.prepareSignIn(for: self.userID)
         }
 
-        let remove = UIAction(title: CoreString._as_remove_account, image: UIImage(named: "icon_minus_circle", in: Bundle.switchBundle, compatibleWith: nil), attributes: .destructive) { [weak self](_) in
-            guard let _self = self else { return }
-            _self.delegate?.removeAccount(of: _self.userID)
+        let remove = UIAction(title: CoreString._as_remove_account,
+                              image: IconProvider.minusCircle,
+                              attributes: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.removeAccount(of: self.userID)
         }
 
         let arr = isSignin ? [signOut, remove]: [signIn, remove]

@@ -33,7 +33,7 @@ final class CreateAddressViewModel {
     }
     let recoveryEmail: String
     let isLoading = Observable<Bool>(false)
-    let error = Publisher<String>()
+    let error = Publisher<(String, Int, Error)>()
     let finished = Publisher<LoginData>()
 
     private let login: Login
@@ -55,7 +55,6 @@ final class CreateAddressViewModel {
 
     func finish() {
         isLoading.value = true
-
         setUsername()
     }
 
@@ -65,30 +64,18 @@ final class CreateAddressViewModel {
         PMLog.debug("Setting username")
         let username = self.username
         // we do not have any info about addresses so we let the login service fetch it
-        login.createAccountKeysIfNeeded(user: user, addresses: nil, mailboxPassword: mailboxPassword) { [weak self] result in
+        login.setUsername(username: username) { [weak self] result in
             switch result {
-            case .failure(let error):
-                PMLog.debug("User account doesn't have keys and we cannot create one")
-                self?.isLoading.value = false
-                self?.error.publish(error.localizedDescription)
-            case .success(let user):
-                // we update the user so that we know about the newly created keys
-                self?.user = user
-                self?.updateUser(user)
-                self?.login.setUsername(username: username) { [weak self] result in
-                    switch result {
-                    case .success:
-                        self?.createAddress()
-                    case let .failure(error):
-                        switch error {
-                        case .alreadySet:
-                            PMLog.debug("Username already set, moving on")
-                            self?.createAddress()
-                        case let .generic(message):
-                            self?.isLoading.value = false
-                            self?.error.publish(message)
-                        }
-                    }
+            case .success:
+                self?.createAddress()
+            case let .failure(error):
+                switch error {
+                case .alreadySet:
+                    PMLog.debug("Username already set, moving on")
+                    self?.createAddress()
+                case .generic:
+                    self?.isLoading.value = false
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 }
             }
         }
@@ -100,20 +87,36 @@ final class CreateAddressViewModel {
         login.createAddress { [weak self] result in
             switch result {
             case let .success(address):
-                self?.generateKeys(address: address)
+                self?.createAccountKeys(address: address)
             case let .failure(error):
                 switch error {
                 case let .alreadyHaveInternalOrCustomDomainAddress(address):
                     PMLog.debug("Address already created, moving on")
-                    self?.generateKeys(address: address)
+                    self?.createAccountKeys(address: address)
                 case let .cannotCreateInternalAddress(address):
                     PMLog.debug("Address cannot be created. Already existing address: \(String(describing: address))")
                     self?.isLoading.value = false
-                    self?.error.publish("The user has no email address suitable")
-                case let .generic(message):
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+                case .generic:
                     self?.isLoading.value = false
-                    self?.error.publish(message)
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 }
+            }
+        }
+    }
+    
+    private func createAccountKeys(address: Address) {
+        login.createAccountKeysIfNeeded(user: user, addresses: nil, mailboxPassword: mailboxPassword) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                PMLog.debug("User account doesn't have keys and we cannot create one")
+                self?.isLoading.value = false
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
+            case .success(let user):
+                // we update the user so that we know about the newly created keys
+                self?.user = user
+                self?.updateUser(user)
+                self?.generateKeys(address: address)
             }
         }
     }
@@ -130,9 +133,9 @@ final class CreateAddressViewModel {
                 case .alreadySet:
                     PMLog.debug("Address keys already created, moving on")
                     self?.finishFlow()
-                case let .generic(message):
+                case .generic:
                     self?.isLoading.value = false
-                    self?.error.publish(message)
+                    self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 }
             }
         }
@@ -151,7 +154,7 @@ final class CreateAddressViewModel {
                     self?.finished.publish(data)
                 }
             case let .failure(error):
-                self?.error.publish(error.description)
+                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, error))
                 self?.isLoading.value = false
             }
         }

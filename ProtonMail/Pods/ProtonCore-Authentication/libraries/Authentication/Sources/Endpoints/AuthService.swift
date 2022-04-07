@@ -32,7 +32,7 @@ public class AuthService: Client {
     
     func info(username: String, complete: @escaping(_ response: AuthInfoResponse) -> Void) {
         let route = InfoEndpoint(username: username)
-        self.apiService.exec(route: route, complete: complete)
+        self.apiService.exec(route: route, responseObject: AuthInfoResponse(), complete: complete)
     }
     
     func auth(username: String,

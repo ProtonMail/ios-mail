@@ -46,7 +46,7 @@ public class SigupMock: Signup {
         completion(createNewUserResult)
     }
     
-    public func createNewExternalUser(email: String, password: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    public func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
         completion(createNewExternalUserResult)
     }
     
@@ -54,8 +54,7 @@ public class SigupMock: Signup {
         completion(createNewUserResult)
     }
     
-    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
         completion(createNewExternalUserResult)
     }
-    
 }

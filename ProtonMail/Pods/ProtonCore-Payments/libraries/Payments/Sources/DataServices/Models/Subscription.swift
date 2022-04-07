@@ -30,6 +30,7 @@ public struct Subscription: Codable { // this doesn't represent backend response
     public let couponCode: String?
     public let amount: Int?
     public let currency: String?
+    public internal(set) var usedSpace: Int64?
 
     /// Special coupons have to be set from app using this library
     public static var specialCoupons: [String] = [String]()
@@ -97,6 +98,16 @@ extension Subscription {
 
     public var endDate: Date? {
         return end
+    }
+    
+    public var price: String? {
+        guard let amount = amount, let currency = currency else { return nil }
+        let value = Double(amount) / 100.0
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency
+        return formatter.string(from: NSNumber(value: value))
     }
 
     public var hasSpecialCoupon: Bool {

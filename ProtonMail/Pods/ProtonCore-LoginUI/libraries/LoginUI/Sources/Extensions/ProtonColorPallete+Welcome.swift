@@ -21,12 +21,15 @@
 
 import ProtonCore_UIFoundations
 
-extension ProtonColorPallete {
+extension ProtonColorPaletteiOS {
+    
+    static var White: UIColor {
+        UIColor(rgb: 0xFFFFFF)
+    }
 
-    // MARK: Welcome
     enum Welcome {
         static var Background: UIColor {
-            switch brand {
+            switch Brand.currentBrand {
             case .proton:
                 // Port Gore
                 return UIColor(rgb: 0x1C223D)

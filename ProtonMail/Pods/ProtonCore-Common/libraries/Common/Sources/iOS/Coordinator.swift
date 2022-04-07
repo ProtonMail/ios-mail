@@ -113,7 +113,7 @@ extension ModalVCBasedCoordinator where ViewController: Coordinated {
         configuration?(viewController)
         viewController.set(coordinator: self as! Self.ViewController.CoordinatorType)
         if let rootViewController = rootViewController {
-            let nav = UINavigationController()
+            let nav = DarkModeAwareNavigationViewController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
             rootViewController.present(nav, animated: animated)
@@ -126,7 +126,7 @@ extension ModalVCBasedCoordinator where ViewController: Coordinated {
                 }
                 topViewController = top
             }
-            let nav = UINavigationController()
+            let nav = DarkModeAwareNavigationViewController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
             topViewController?.present(nav, animated: animated)

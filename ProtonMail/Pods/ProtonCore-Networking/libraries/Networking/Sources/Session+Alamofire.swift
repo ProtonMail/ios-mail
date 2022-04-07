@@ -36,32 +36,16 @@ internal class AlamofireSessionDelegate: SessionDelegate {
     override public func urlSession(_ session: URLSession, task: URLSessionTask,
                                     didReceive challenge: URLAuthenticationChallenge,
                                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if true == self.noTrustKit {
-            let dispositionToReturn: URLSession.AuthChallengeDisposition = .useCredential
-            guard let trust = challenge.protectionSpace.serverTrust else {
-                completionHandler(.performDefaultHandling, nil)
-                return
-            }
-            let credential = URLCredential(trust: trust)
-            completionHandler(dispositionToReturn, credential)
-            return
-        }
-        
-        let wrappedCompletionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void = { disposition, credential in
+        handleAuthenticationChallenge(
+            didReceive: challenge,
+            noTrustKit: noTrustKit,
+            trustKit: trustKit,
+            challengeCompletionHandler: completionHandler
+        ) { disposition, credential, completionHandler in
             if disposition == .cancelAuthenticationChallenge, let request = task.originalRequest {
                 self.failedTLS?(request)
             }
             completionHandler(disposition, credential)
-        }
-        guard let tk = self.trustKit else {
-            assert(false, "TrustKit not initialized correctly")
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        if tk.pinningValidator.handle(challenge, completionHandler: wrappedCompletionHandler) == false {
-            // TrustKit did not handle this challenge: perhaps it was not for server trust
-            // or the domain was not pinned. Fall back to the default behavior
-            completionHandler(.performDefaultHandling, nil)
         }
     }
 }

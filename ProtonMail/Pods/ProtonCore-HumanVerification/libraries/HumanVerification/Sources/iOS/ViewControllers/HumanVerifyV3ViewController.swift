@@ -25,14 +25,18 @@ import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 import ProtonCore_Foundations
 import ProtonCore_Networking
+import ProtonCore_Services
 
 protocol HumanVerifyV3ViewControllerDelegate: AnyObject {
     func didDismissViewController()
     func didShowHelpViewController()
     func willReopenViewController()
+    func didFinishViewController()
+    func didDismissWithError(code: Int, description: String)
+    func emailAddressAlreadyTakenWithError(code: Int, description: String)
 }
 
-class HumanVerifyV3ViewController: UIViewController, AccessibleView {
+final class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     
     // MARK: Outlets
 
@@ -52,13 +56,17 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     @IBOutlet weak var closeBarButtonItem: UIBarButtonItem!
 
     // MARK: Properties
-    
-    let userContentController = WKUserContentController()
+    private let userContentController = WKUserContentController()
     weak var delegate: HumanVerifyV3ViewControllerDelegate?
     var viewModel: HumanVerifyV3ViewModel!
+    var isModalPresentation = true
+    var viewTitle: String?
     var banner: PMBanner?
+    var presentsBannerInsteadOfWebView = false
     @available(iOS 12.0, *)
     lazy var currentInterfaceStyle: UIUserInterfaceStyle = .unspecified
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
     
     // MARK: View controller life cycle
 
@@ -73,10 +81,6 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     deinit {
         userContentController.removeAllUserScripts()
         NotificationCenter.default.removeObserver(self)
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.default
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -101,7 +105,7 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
     // MARK: Private interface
 
     private func configureUI() {
-        title = CoreString._hv_title
+        title = viewTitle ?? CoreString._hv_title
         if #available(iOS 12.0, *) {
             currentInterfaceStyle = traitCollection.userInterfaceStyle
         }
@@ -109,8 +113,7 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         closeBarButtonItem.accessibilityLabel = "closeButton"
         updateTitleAttributes()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        navigationController?.hideBackground()
-        activityIndicator?.startAnimating()
+        closeBarButtonItem.image = isModalPresentation ? IconProvider.crossSmall : IconProvider.arrowLeft
         setupWebView()
     }
     
@@ -118,6 +121,7 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         userContentController.add(WeaklyProxingScriptHandler(self), name: viewModel.scriptName)
         let webViewConfiguration = WKWebViewConfiguration()
         webViewConfiguration.userContentController = userContentController
+        viewModel.setup(webViewConfiguration: webViewConfiguration)
         if #available(iOS 13.0, *) {
             webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
         }
@@ -126,7 +130,6 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.isOpaque = false
-        webView.isHidden = true
         view.addSubview(webView)
         view.bringSubviewToFront(activityIndicator)
         
@@ -137,10 +140,14 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         webView.topAnchor.constraint(equalTo: layoutGuide.topAnchor).isActive = true
     }
+    
+    private var lastLoadingURL: String?
 
     private func loadWebContent() {
+        hideWebView(showActivityIndicator: true)
         URLCache.shared.removeAllCachedResponses()
-        let requestObj = URLRequest(url: viewModel.getURL)
+        let requestObj = viewModel.getURLRequest
+        lastLoadingURL = requestObj.url?.absoluteString
         webView.load(requestObj)
     }
     
@@ -159,6 +166,59 @@ class HumanVerifyV3ViewController: UIViewController, AccessibleView {
             currentInterfaceStyle = traitCollection.userInterfaceStyle
         }
     }
+    
+    private func presentErrorWithoutWebView(message: String) {
+        self.hideWebView(showActivityIndicator: false)
+        self.banner?.dismiss()
+        self.banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity) { [weak self] _ in
+            self?.dismissErrorBanner()
+        }
+        self.banner?.addButton(icon: IconProvider.arrowsRotate) { [weak self] _ in
+            self?.dismissErrorBanner()
+        }
+        self.banner?.show(at: .top, on: self)
+        presentsBannerInsteadOfWebView = true
+    }
+    
+    private func presentErrorOverWebView(message: String) {
+        self.banner?.dismiss()
+        self.banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
+        self.banner?.addButton(text: CoreString._hv_ok_button) { [weak self] _ in
+            self?.banner?.dismiss()
+        }
+        self.banner?.show(at: .top, on: self)
+    }
+    
+    private func dismissErrorBanner() {
+        presentsBannerInsteadOfWebView = false
+        banner?.dismiss()
+        loadWebContent()
+    }
+    
+    private func presentSuccessBanner(message: String) {
+        self.banner?.dismiss()
+        self.banner = PMBanner(message: message, style: PMBannerNewStyle.success)
+        self.banner?.show(at: .topCustom(.baner), on: self)
+    }
+    
+    private func showWebView() {
+        enableUserInteraction(for: webView)
+        webView.isHidden = false
+        activityIndicator?.stopAnimating()
+    }
+    
+    private func hideWebView(showActivityIndicator: Bool) {
+        webView.isHidden = true
+        if showActivityIndicator {
+            activityIndicator?.startAnimating()
+        } else {
+            activityIndicator?.stopAnimating()
+        }
+    }
+
+    private func enableUserInteraction(for webView: WKWebView) {
+        webView.window?.isUserInteractionEnabled = true
+    }
 }
 
 // MARK: - WKWebViewDelegate
@@ -170,28 +230,36 @@ extension HumanVerifyV3ViewController: WKNavigationDelegate {
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         enableUserInteraction(for: webView)
         decisionHandler(.allow)
-        return
+    }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        handleFailedRequest(webView, error)
     }
 
-    func webView(_ webview: WKWebView, didFinish nav: WKNavigation!) {
-        enableUserInteraction(for: webView)
-        webView.isHidden = false
-        activityIndicator?.stopAnimating()
+    func webView(_ webview: WKWebView, didFail _: WKNavigation!, withError error: Error) {
+        handleFailedRequest(webView, error)
     }
-
-    func webView(_ webview: WKWebView, didCommit nav: WKNavigation!) {
-        enableUserInteraction(for: webView)
-        activityIndicator?.startAnimating()
+    
+    private func handleFailedRequest(_ webview: WKWebView, _ error: Error) {
+        guard let loadingUrl = lastLoadingURL else { return }
+        viewModel.shouldRetryFailedLoading(host: loadingUrl, error: error) { [weak self] in
+            if $0 {
+                self?.loadWebContent()
+            } else {
+                self?.presentErrorWithoutWebView(message: error.localizedDescription)
+            }
+        }
     }
-
-    func webView(_ webview: WKWebView, didFail _: WKNavigation!, withError _: Error) {
-        enableUserInteraction(for: webView)
-        webView.isHidden = false
-        activityIndicator?.stopAnimating()
-    }
-
-    private func enableUserInteraction(for webView: WKWebView) {
-        webView.window?.isUserInteractionEnabled = true
+    
+    func webView(_ webView: WKWebView,
+                 didReceive challenge: URLAuthenticationChallenge,
+                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        handleAuthenticationChallenge(
+            didReceive: challenge,
+            noTrustKit: PMAPIService.noTrustKit,
+            trustKit: PMAPIService.trustKit,
+            challengeCompletionHandler: completionHandler
+        )
     }
 }
 
@@ -210,30 +278,42 @@ extension HumanVerifyV3ViewController: WKScriptMessageHandler {
                 if let self = self {
                     switch type {
                     case .success:
-                        self.banner?.dismiss()
-                        self.banner = PMBanner(message: message, style: PMBannerNewStyle.success)
-                        self.banner?.show(at: .topCustom(.baner), on: self)
+                        self.presentSuccessBanner(message: message)
                     case .error:
-                        self.banner?.dismiss()
-                        self.banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-                        self.banner?.addButton(text: CoreString._hv_ok_button) { [weak self] _ in
-                            self?.banner?.dismiss()
-                        }
-                        self.banner?.show(at: .top, on: self)
+                        self.presentErrorOverWebView(message: message)
                     default:
                         break
                     }
                 }
             }
-        }, errorHandler: { _ in 
+        }, loadedMessage: {
             DispatchQueue.main.async { [weak self] in
-                self?.delegate?.willReopenViewController()
+                if !(self?.presentsBannerInsteadOfWebView ?? false) {
+                    self?.showWebView()
+                }
+            }
+        }, errorHandler: { [weak self] error, shouldClose in
+            DispatchQueue.main.async { [weak self] in
+                if shouldClose {
+                    if let code = error.responseCode {
+                        switch code {
+                        case APIErrorCode.humanVerificationAddressAlreadyTaken:
+                            self?.delegate?.emailAddressAlreadyTakenWithError(code: code, description: error.localizedDescription)
+                        case APIErrorCode.invalidVerificationCode:
+                            self?.delegate?.willReopenViewController()
+                        default:
+                            self?.delegate?.didDismissWithError(code: code, description: error.localizedDescription)
+                        }
+                    }
+                } else {
+                    self?.presentErrorWithoutWebView(message: error.localizedDescription)
+                }
             }
         }, completeHandler: { method in
             let delay: TimeInterval = method.predefinedMethod == .captcha ? 1.0 : 0.0
             // for captcha method there is an additional artificial delay to see verification animation
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-                self?.navigationController?.dismiss(animated: true)
+                self?.delegate?.didFinishViewController()
             }
         })
     }

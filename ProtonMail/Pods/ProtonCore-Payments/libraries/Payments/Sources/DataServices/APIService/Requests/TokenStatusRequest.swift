@@ -42,7 +42,7 @@ final class TokenStatusResponse: Response {
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
-        let (result, tokenStatus) = decodeResponse(response as Any, to: PaymentTokenStatus.self)
+        let (result, tokenStatus) = decodeResponse(response as Any, to: PaymentTokenStatus.self, errorToReturn: .tokenStatusDecode)
         self.paymentTokenStatus = tokenStatus
         return result
     }

@@ -26,14 +26,12 @@ protocol PaymentsUIProtocol {
     func showCurrentPlan(
         presentationType: PaymentsUIPresentationType,
         backendFetch: Bool,
-        updateCredits: Bool,
         completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
     )
 
     func showUpgradePlan(
         presentationType: PaymentsUIPresentationType,
         backendFetch: Bool,
-        updateCredits: Bool,
         completionHandler: @escaping ((PaymentsUIResultReason) -> Void)
     )
 }

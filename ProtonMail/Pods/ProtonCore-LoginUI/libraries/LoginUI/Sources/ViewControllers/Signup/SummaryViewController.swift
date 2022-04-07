@@ -24,9 +24,12 @@ import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 
-public typealias SummaryScreenVariant = ScreenVariant<SummaryStartButtonText, SummaryScreenCustomData>
-
 public typealias SummaryStartButtonText = String
+
+public enum SummaryScreenVariant {
+    case noSummaryScreen
+    case screenVariant(ScreenVariant<SummaryStartButtonText, SummaryScreenCustomData>)
+}
 
 public struct SummaryScreenCustomData {
     let image: UIImage
@@ -46,9 +49,16 @@ class SummaryViewController: UIViewController, AccessibleView {
 
     weak var delegate: SummaryViewControllerDelegate?
     var viewModel: SummaryViewModel!
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     // MARK: Outlets
     @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var summaryImage: UIImageView!
+    
+    @IBOutlet weak var summaryWhole: UIImageView!
+    
     @IBOutlet weak var header: UILabel! {
         didSet {
             header.textColor = ColorProvider.TextNorm
@@ -91,6 +101,8 @@ class SummaryViewController: UIViewController, AccessibleView {
         } else {
             imageView.image = viewModel.brandIcon
         }
+        summaryImage.image = LoginUIImages.summaryImage
+        summaryWhole.image = LoginUIImages.summaryWhole
         descriptionLabel.attributedText = viewModel.descriptionText
         startButton.setTitle(viewModel.startButtonText, for: .normal)
     }

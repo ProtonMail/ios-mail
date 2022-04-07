@@ -33,7 +33,9 @@ public enum ChallengeTextFieldType {
     /// TextField for password confirm
     case confirm
     /// TextField for recovery mail
-    case recovery
+    case recoveryMail
+    /// TextField for recovery phone
+    case recoveryPhone
     /// TextField for verification
     case verification
 }

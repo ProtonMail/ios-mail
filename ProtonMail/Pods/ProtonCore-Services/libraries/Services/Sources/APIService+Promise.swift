@@ -23,14 +23,12 @@
 
 import Foundation
 import ProtonCore_Networking
-
-#if canImport(PromiseKit)
-
 import PromiseKit
 import AwaitKit
 
 public extension APIService {
 
+    @available(*, deprecated, message: "ProtonCore is moving away from PromiseKit. Please switch to other available APIs")
     func run<T>(route: Request) -> Promise<T> where T: Response {
 
         let deferred = Promise<T>.pending()
@@ -56,5 +54,3 @@ public extension APIService {
         return deferred.promise
     }
 }
-
-#endif

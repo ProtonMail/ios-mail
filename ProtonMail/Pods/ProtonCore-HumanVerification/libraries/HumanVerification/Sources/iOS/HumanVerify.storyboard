@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="kN8-ZJ-W2a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="kN8-ZJ-W2a">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -107,7 +107,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="soC-7y-Z1K">
-                        <barButtonItem key="leftBarButtonItem" image="ic-close" landscapeImage="ic-close" id="wye-3t-bCX">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="wye-3t-bCX">
                             <connections>
                                 <action selector="closeAction:" destination="YIP-X7-8Un" id="cfx-kS-6gC"/>
                             </connections>
@@ -156,11 +156,6 @@
                                                 <state key="disabled">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="sendCodeAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="hDz-2B-MNW"/>
                                                 </connections>
@@ -259,11 +254,6 @@
                                                 <state key="disabled">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="sendCodeAction:" destination="72v-cj-LoN" eventType="touchUpInside" id="sJF-Nn-csc"/>
                                                 </connections>
@@ -390,7 +380,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="cvn-xC-D2z">
                         <barButtonItem key="backBarButtonItem" title=" " id="LrA-eU-7Hk"/>
-                        <barButtonItem key="leftBarButtonItem" image="ic-close" landscapeImage="ic-close" id="qkf-WB-zOs">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="qkf-WB-zOs">
                             <connections>
                                 <action selector="closeAction:" destination="Wxg-Gt-OHZ" id="J1G-78-fhW"/>
                             </connections>
@@ -446,11 +436,6 @@
                                                 <state key="disabled">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="verifyCodeAction:" destination="5GO-eP-O0i" eventType="touchUpInside" id="7uc-23-chT"/>
                                                 </connections>
@@ -464,11 +449,6 @@
                                                 <state key="disabled">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="requestReplacementAction:" destination="5GO-eP-O0i" eventType="touchUpInside" id="bwf-V1-nUC"/>
                                                 </connections>
@@ -522,7 +502,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="2hH-0g-mIs">
-                        <barButtonItem key="leftBarButtonItem" image="ic-arrow-left" id="t6G-hW-Odk">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="t6G-hW-Odk">
                             <connections>
                                 <action selector="backButtonAction:" destination="5GO-eP-O0i" id="QcC-wE-29i"/>
                             </connections>
@@ -572,7 +552,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="jcm-iv-qTZ">
                         <barButtonItem key="backBarButtonItem" title=" " id="0P3-NL-Mv3"/>
-                        <barButtonItem key="leftBarButtonItem" image="ic-close" landscapeImage="ic-close" id="COE-tb-fPT">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="COE-tb-fPT">
                             <connections>
                                 <action selector="closeAction:" destination="A58-yN-P20" id="2Mu-e1-T2h"/>
                             </connections>
@@ -595,8 +575,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic-arrow-left" width="16" height="16"/>
-        <image name="ic-close" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -46,6 +46,8 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
     weak var delegate: ChooseUsernameViewControllerDelegate?
     var viewModel: ChooseUsernameViewModel!
     var customErrorPresenter: LoginErrorPresenter?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
@@ -90,7 +92,7 @@ final class ChooseUsernameViewController: UIViewController, AccessibleView, Erro
             }
 
             switch error {
-            case let .generic(message: message):
+            case let .generic(message: message, _, _):
                 if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                     self.showError(message: message)
                 }
