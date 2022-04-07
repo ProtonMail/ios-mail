@@ -40,7 +40,8 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         return coordinator
     }
 
-    @IBOutlet weak var bioCodeView: BioCodeView!
+    @IBOutlet weak var bioContainerView: UIView!
+    var bioCodeView: BioCodeView?
 
     //
     var inputSubject: String! = ""
@@ -66,8 +67,12 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         LanguageManager.setupCurrentLanguage()
         configureNavigationBar()
 
-        self.bioCodeView.delegate = self
-        self.bioCodeView.setup()
+        let bioView = BioCodeView(frame: .zero)
+        bioContainerView.addSubview(bioView)
+        bioView.fillSuperview()
+        self.bioCodeView = bioView
+        self.bioCodeView?.delegate = self
+        self.bioCodeView?.setup()
 
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
@@ -154,11 +159,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
-            self.bioCodeView.loginCheck(.requirePin)
+            self.bioCodeView?.loginCheck(.requirePin)
             self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
-            self.bioCodeView.loginCheck(.requireTouchID)
+            self.bioCodeView?.loginCheck(.requireTouchID)
             self.authenticateUser()
 
         case .restore:
@@ -167,7 +172,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     }
 
     private func showErrorAndQuit(errorMsg: String) {
-        self.bioCodeView.showErrorAndQuit(errorMsg: errorMsg)
+        self.bioCodeView?.showErrorAndQuit(errorMsg: errorMsg)
 
         let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
         let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in

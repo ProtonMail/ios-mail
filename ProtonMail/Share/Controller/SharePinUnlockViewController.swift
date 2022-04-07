@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol SharePinUnlockViewControllerDelegate: AnyObject {
@@ -30,17 +31,18 @@ protocol SharePinUnlockViewControllerDelegate: AnyObject {
 class SharePinUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = SharePinUnlockCoordinator
 
+    @IBOutlet weak var pinCodeViewContainer: UIView!
     private weak var coordinator: SharePinUnlockCoordinator?
     var viewModel: PinCodeViewModel!
     weak var delegate: SharePinUnlockViewControllerDelegate?
-    @IBOutlet var pinCodeView: PinCodeView!
+    lazy var pinCodeView = PinCodeView(frame: .zero)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.layoutIfNeeded()
-        self.pinCodeView.delegate = self
-        self.view.backgroundColor = UIColor(named: "launch_background_color")
+        setupPinCodeView()
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.setUpView(true)
 
         if #available(iOSApplicationExtension 13.0, *) {
@@ -76,6 +78,17 @@ class SharePinUnlockViewController: UIViewController, CoordinatedNew {
     private func setUpView(_ reset: Bool) {
         self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(), resetPin: reset)
     }
+
+    private func setupPinCodeView() {
+        pinCodeViewContainer.addSubview(pinCodeView)
+        [
+            pinCodeView.topAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.topAnchor),
+            pinCodeView.trailingAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.trailingAnchor),
+            pinCodeView.leadingAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.leadingAnchor),
+            pinCodeView.bottomAnchor.constraint(equalTo: self.pinCodeViewContainer.safeAreaLayoutGuide.bottomAnchor),
+        ].activate()
+        pinCodeView.delegate = self
+    }
 }
 
 extension SharePinUnlockViewController: PinCodeViewDelegate {
@@ -98,7 +111,7 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
             } else {
                 self.viewModel.isPinMatched { matched in
                     if matched {
-                        self.pinCodeView.hideAttempError(true)
+                        self.pinCodeView.hideAttemptError(true)
                         self.viewModel.done { _ in
                             self.dismiss(animated: true, completion: {
                                 self.delegate?.next()
@@ -108,13 +121,13 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
                         let count = self.viewModel.getPinFailedRemainingCount()
                         if count == 11 { // when setup
                             self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
                                 self.cancel()
                             } else {
                                 self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                                self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: count < 4)
                             }
                         }
                         self.pinCodeView.showError()

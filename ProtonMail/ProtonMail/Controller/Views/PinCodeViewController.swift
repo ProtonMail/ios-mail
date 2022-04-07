@@ -29,39 +29,44 @@ protocol PinCodeViewControllerDelegate: AnyObject {
     func next()
 }
 
-class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView {
-    var viewModel: PinCodeViewModel!
+final class PinCodeViewController: UIViewController, AccessibleView {
+    let viewModel: PinCodeViewModel
     weak var delegate: PinCodeViewControllerDelegate?
 
-    @IBOutlet var pinCodeView: PinCodeView!
+    private lazy var pinCodeView: PinCodeView = .init()
+    private let contentView = UIView()
+    private let unlockManager: UnlockManager
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    init(unlockManager: UnlockManager,
+         viewModel: PinCodeViewModel,
+         delegate: PinCodeViewControllerDelegate?) {
+        self.unlockManager = unlockManager
+        self.viewModel = viewModel
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+        view = self.contentView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        self.pinCodeView.delegate = self
 
         self.setUpView(true)
+        self.setupPinCodeView()
         self.subscribeToWillEnterForegroundMessage()
 
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
             self?.pinCodeView.resetPin()
         }
         generateAccessibilityIdentifiers()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    internal func setUpView(_ reset: Bool) {
-        self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(),
-                                        resetPin: reset)
-        self.pinCodeView.updateBackButton(self.viewModel.backButtonIcon())
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -82,12 +87,32 @@ class PinCodeViewController: UIViewController, BioAuthenticating, AccessibleView
         }
 
         if self.viewModel.getPinFailedRemainingCount() < 4 {
-            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: true)
+            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: true)
         }
     }
 
+    private func setupPinCodeView() {
+        self.pinCodeView.delegate = self
+        self.contentView.addSubview(self.pinCodeView)
+        [
+            self.pinCodeView.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor),
+            self.pinCodeView.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor),
+            self.pinCodeView.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor),
+            self.pinCodeView.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor),
+        ].activate()
+
+    }
+
+    func setUpView(_ reset: Bool) {
+        self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(),
+                                        resetPin: reset)
+        self.pinCodeView.updateBackButton(self.viewModel.backButtonIcon())
+    }
+}
+
+extension PinCodeViewController: BioAuthenticating {
     func authenticateUser() {
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
+        unlockManager.biometricAuthentication(afterBioAuthPassed: {
             self.viewModel.done { shouldPop in
                 self.delegate?.next()
                 if shouldPop {
@@ -135,7 +160,7 @@ extension PinCodeViewController: PinCodeViewDelegate {
             } else {
                 self.viewModel.isPinMatched { matched in
                     if matched {
-                        self.pinCodeView.hideAttempError(true)
+                        self.pinCodeView.hideAttemptError(true)
                         self.viewModel.done { shouldPop in
                             self.delegate?.next()
                             if shouldPop {
@@ -146,13 +171,13 @@ extension PinCodeViewController: PinCodeViewDelegate {
                         let count = self.viewModel.getPinFailedRemainingCount()
                         if count == 11 { // when setup
                             self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
                                 self.proceedCancel()
                             } else {
                                 self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                                self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: count < 4)
                             }
                         }
                         self.pinCodeView.showError()

@@ -96,7 +96,7 @@ class PinCodeView: PMView {
         }
     }
 
-    func showAttempError(_ error: String, low: Bool) {
+    func showAttemptError(_ error: String, low: Bool) {
         pinDisplayView.textColor = UIColor.red
         attempsLabel.isHidden = false
         attempsLabel.text = error
@@ -110,7 +110,7 @@ class PinCodeView: PMView {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
 
-    func hideAttempError(_ hide: Bool) {
+    func hideAttemptError(_ hide: Bool) {
         pinDisplayView.textColor = ColorProvider.InteractionNorm
         attempsLabel.isHidden = hide
     }
@@ -144,13 +144,13 @@ class PinCodeView: PMView {
 
     // MARK: Actions
     @IBAction func buttonActions(_ sender: UIButton) {
-        hideAttempError(true)
+        hideAttemptError(true)
         let numberClicked = sender.tag
         add(numberClicked)
     }
 
     @IBAction func deleteAction(_ sender: UIButton) {
-        hideAttempError(true)
+        hideAttemptError(true)
         remove()
     }
 
