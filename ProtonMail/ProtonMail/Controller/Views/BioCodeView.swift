@@ -20,43 +20,115 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol BioCodeViewDelegate: AnyObject {
     func touch_id_action(_ sender: Any)
 }
 
-class BioCodeView: PMView {
-    @IBOutlet var touchID: UIButton!
+final class BioCodeView: UIView {
+    let bioButton = SubviewFactory.bioButton
+    let upperSpace = UIView()
+    let iconView = SubviewFactory.iconView
+    let titleLabel = SubviewFactory.titleLabel
+    let footer = SubviewFactory.footer
+    let buttonContainer = UIView()
 
     weak var delegate: BioCodeViewDelegate?
 
-    @IBAction func touch_id_action(_ sender: Any) {
+    @objc
+    private func touchIDTapped(_ sender: Any) {
         delegate?.touch_id_action(sender)
     }
 
-    override func getNibName() -> String {
-        return "BioCodeView"
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubviews()
+        setupLayout()
+        setup()
     }
 
-    override func setup() {
-        super.setup()
-        self.backgroundColor = .clear
-        touchID.alpha = 0.0
-        touchID.isEnabled = false
-        touchID.layer.cornerRadius = 25
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addSubviews()
+        setupLayout()
+        setup()
+    }
+
+    private func addSubviews() {
+        addSubview(upperSpace)
+        addSubview(buttonContainer)
+        addSubview(iconView)
+        addSubview(titleLabel)
+        addSubview(footer)
+        buttonContainer.addSubview(bioButton)
+    }
+
+    private func setupLayout() {
+        [
+            upperSpace.trailingAnchor.constraint(equalTo: trailingAnchor),
+            upperSpace.leadingAnchor.constraint(equalTo: leadingAnchor),
+            upperSpace.topAnchor.constraint(equalTo: topAnchor),
+            upperSpace.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.333_583)
+        ].activate()
+
+        [
+            iconView.widthAnchor.constraint(equalToConstant: 96),
+            iconView.heightAnchor.constraint(equalToConstant: 96),
+            iconView.topAnchor.constraint(equalTo: upperSpace.bottomAnchor),
+            iconView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ].activate()
+
+        [
+            titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 16),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ].activate()
+
+        [
+            buttonContainer.heightAnchor.constraint(equalToConstant: 170),
+            buttonContainer.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 70),
+            buttonContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+            buttonContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            buttonContainer.leadingAnchor.constraint(equalTo: leadingAnchor)
+        ].activate()
+
+        [
+            bioButton.centerXAnchor.constraint(equalTo: buttonContainer.centerXAnchor),
+            bioButton.widthAnchor.constraint(equalToConstant: 50),
+            bioButton.heightAnchor.constraint(equalToConstant: 50),
+            bioButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32)
+
+        ].activate()
+
+        [
+            footer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -56),
+            footer.heightAnchor.constraint(equalToConstant: 16),
+            footer.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ].activate()
+
+        bioButton.addTarget(self,
+                            action: #selector(touchIDTapped(_:)),
+                            for: .touchUpInside)
+    }
+
+    func setup() {
+        backgroundColor = ColorProvider.BackgroundNorm
+        bioButton.alpha = 0.0
+        bioButton.isEnabled = false
+        bioButton.layer.cornerRadius = 25
 
         switch UIDevice.current.biometricType {
         case .faceID:
-            touchID.setImage(UIImage(named: "face_id_icon"), for: .normal)
-            touchID.isHidden = false
+            bioButton.setImage(UIImage(named: "face_id_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+            bioButton.isHidden = false
 
         case .touchID:
-            touchID.setImage(UIImage(named: "touch_id_icon"), for: .normal)
-            touchID.isHidden = false
+            bioButton.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+            bioButton.isHidden = false
 
         case .none:
-            touchID.isHidden = true
+            bioButton.isHidden = true
         }
     }
 
@@ -64,12 +136,12 @@ class BioCodeView: PMView {
         switch flow {
         case .requirePin:
             if userCachedStatus.isTouchIDEnabled {
-                touchID.alpha = 1.0
-                touchID.isEnabled = true
+                bioButton.alpha = 1.0
+                bioButton.isEnabled = true
             }
         case .requireTouchID:
-            touchID.alpha = 1.0
-            touchID.isEnabled = true
+            bioButton.alpha = 1.0
+            bioButton.isEnabled = true
 
         case .restore:
             break
@@ -77,6 +149,37 @@ class BioCodeView: PMView {
     }
 
     func showErrorAndQuit(errorMsg: String) {
-        touchID.alpha = 0.0
+        bioButton.alpha = 0.0
+    }
+}
+
+private enum SubviewFactory {
+    static var bioButton: UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+        button.imageView?.tintColor = ColorProvider.IconNorm
+        return button
+    }
+
+    static var iconView: UIImageView {
+        let view = UIImageView(image: UIImage(named: "splash-icon-mail"))
+        view.contentMode = .scaleAspectFit
+        return view
+    }
+
+    static var titleLabel: UILabel {
+        let label = UILabel(frame: .zero)
+        label.text = "ProtonMail"
+        label.font = .systemFont(ofSize: 22, weight: .medium)
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        return label
+    }
+
+    static var footer: UIImageView {
+        let view = UIImageView(image: UIImage(named: "footer"))
+        view.contentMode = .scaleAspectFit
+        view.tintColor = ColorProvider.IconNorm
+        return view
     }
 }

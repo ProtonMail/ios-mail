@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShareUnlockViewController" customModule="Share" customModuleProvider="target">
             <connections>
-                <outlet property="bioCodeView" destination="FM7-qY-lgi" id="Kr5-yy-Uue"/>
+                <outlet property="bioContainerView" destination="FM7-qY-lgi" id="IZn-xk-i34"/>
                 <outlet property="view" destination="zq2-PQ-5fi" id="k6g-Kn-iaC"/>
             </connections>
         </placeholder>
@@ -19,20 +20,28 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FM7-qY-lgi" customClass="BioCodeView" customModule="Share" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FM7-qY-lgi">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                    <color key="backgroundColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" systemColor="systemPurpleColor"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <viewLayoutGuide key="safeArea" id="KfX-vc-yih"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="FM7-qY-lgi" firstAttribute="top" secondItem="KfX-vc-yih" secondAttribute="top" id="Fhn-BS-geB"/>
                 <constraint firstItem="FM7-qY-lgi" firstAttribute="leading" secondItem="KfX-vc-yih" secondAttribute="leading" id="Wyc-id-5ve"/>
                 <constraint firstItem="KfX-vc-yih" firstAttribute="bottom" secondItem="FM7-qY-lgi" secondAttribute="bottom" id="pjJ-cC-vxk"/>
                 <constraint firstItem="KfX-vc-yih" firstAttribute="trailing" secondItem="FM7-qY-lgi" secondAttribute="trailing" id="rDJ-sc-TAH"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="KfX-vc-yih"/>
             <point key="canvasLocation" x="144" y="-890"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

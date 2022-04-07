@@ -72,17 +72,17 @@ final class LockCoordinator: DefaultCoordinator {
 
     private func goToPin() {
         if actualViewController.presentedViewController is PinCodeViewController { return }
-        let pinVC = UIStoryboard.Storyboard.signIn.storyboard.make(PinCodeViewController.self)
-        pinVC.viewModel = UnlockPinCodeModelImpl()
-        pinVC.delegate = self
+        let pinVC = PinCodeViewController(unlockManager: UnlockManager.shared,
+                                          viewModel: UnlockPinCodeModelImpl(),
+                                          delegate: self)
         pinVC.modalPresentationStyle = .fullScreen
         actualViewController.present(pinVC, animated: true, completion: nil)
     }
 
     private func goToTouchId() {
         if (actualViewController.presentedViewController as? UINavigationController)?.viewControllers.first is BioCodeViewController { return }
-        let bioCodeVC = UIStoryboard.Storyboard.signIn.storyboard.make(BioCodeViewController.self)
-        bioCodeVC.delegate = self
+        let bioCodeVC = BioCodeViewController(unlockManager: UnlockManager.shared,
+                                              delegate: self)
         let navigationVC = UINavigationController(rootViewController: bioCodeVC)
         navigationVC.modalPresentationStyle = .fullScreen
         actualViewController.present(navigationVC, animated: true, completion: nil)
