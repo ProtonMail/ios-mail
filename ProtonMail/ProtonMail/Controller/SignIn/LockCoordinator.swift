@@ -12,7 +12,7 @@ import PromiseKit
 final class LockCoordinator: DefaultCoordinator {
 
     enum FlowResult {
-        case signIn
+        case signIn(reason: String)
         case mailboxPassword
         case mailbox
     }
@@ -54,13 +54,14 @@ final class LockCoordinator: DefaultCoordinator {
 
     func start() {
         startedOrSheduledForAStart = true
-        switch unlockManager.getUnlockFlow() {
+        let unlockFlow = unlockManager.getUnlockFlow()
+        switch unlockFlow {
         case .requirePin:
             goToPin()
         case .requireTouchID:
             goToTouchId()
         case .restore:
-            finishLockFlow(.signIn)
+            finishLockFlow(.signIn(reason: "unlockFlow: \(unlockFlow)"))
         }
     }
 
@@ -96,7 +97,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
         unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
             self?.finishLockFlow(.mailboxPassword)
         }, unlockFailed: { [weak self] in
-            self?.finishLockFlow(.signIn)
+            self?.finishLockFlow(.signIn(reason: "unlock failed"))
         }, unlocked: { [weak self] in
             self?.finishLockFlow(.mailbox)
         })
@@ -106,7 +107,7 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
         UserTempCachedStatus.backup()
         _ = self.usersManager.clean().done { [weak self] in
             completion()
-            self?.finishLockFlow(.signIn)
+            self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))
         }
     }
 }

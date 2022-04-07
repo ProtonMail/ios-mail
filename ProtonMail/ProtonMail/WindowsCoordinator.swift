@@ -24,6 +24,7 @@ import Foundation
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_DataModel
+import ProtonMailAnalytics
 import SafariServices
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
@@ -194,7 +195,7 @@ class WindowsCoordinator: CoordinatorNew {
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             keymaker.wipeMainKey()
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
         }
         self.go(dest: .lockWindow)
@@ -205,12 +206,12 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = self.services.get()
 
         guard usersManager.hasUsers() else {
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
             return
         }
         if usersManager.count <= 0 {
             _ = usersManager.clean()
-            self.go(dest: .signInWindow(.form))
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
             let pushService: PushNotificationService = sharedServices.get()
@@ -227,6 +228,8 @@ class WindowsCoordinator: CoordinatorNew {
         if let user = usersManager.getUser(by: uid),
            !usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = usersManager.count == 1
+
+            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
             queueManager.unregisterHandler(user.mainQueueHandler)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
@@ -250,6 +253,11 @@ class WindowsCoordinator: CoordinatorNew {
                 handler.showSessionRevokeNotification(email: user.defaultEmail)
             }
         }
+    }
+
+    private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
+        Analytics.shared.sendEvent(.userKickedOut(reason: reason))
+        go(dest: .signInWindow(.form))
     }
 
     func go(dest: Destination) {
@@ -288,10 +296,10 @@ class WindowsCoordinator: CoordinatorNew {
                         self?.currentWindow?.rootViewController?.present(navigationVC, animated: true, completion: nil)
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
-                        self?.go(dest: .signInWindow(.form))
+                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
                     case .dismissed:
                         assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
-                        self?.go(dest: .signInWindow(.form))
+                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
                     }
                 }
                 let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
@@ -313,9 +321,12 @@ class WindowsCoordinator: CoordinatorNew {
 
                 let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
                     switch flowResult {
-                    case .mailbox: self?.go(dest: .appWindow)
-                    case .mailboxPassword: self?.go(dest: .signInWindow(.mailboxPassword))
-                    case .signIn: self?.go(dest: .signInWindow(.form))
+                    case .mailbox:
+                        self?.go(dest: .appWindow)
+                    case .mailboxPassword:
+                        self?.go(dest: .signInWindow(.mailboxPassword))
+                    case .signIn(let reason):
+                        self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
                     }
                 }
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)

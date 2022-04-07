@@ -179,13 +179,13 @@ extension AppDelegate: UIApplicationDelegate {
         if CommandLine.arguments.contains("-disableAnimations") {
             UIView.setAnimationsEnabled(false)
         }
-        Analytics.shared.setup(isInDebug: true, isProduction: true)
+        Analytics.shared.setup(isInDebug: true, environment: .production)
         #else
 
         #if Enterprise
-        Analytics.shared.setup(isInDebug: false, isProduction: false)
+        Analytics.shared.setup(isInDebug: false, environment: .enterprise)
         #else
-        Analytics.shared.setup(isInDebug: false, isProduction: true)
+        Analytics.shared.setup(isInDebug: false, environment: .production)
         #endif
 
         #endif

@@ -17,6 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonMailAnalytics
 
 class AnalyticsTests: XCTestCase {
 
@@ -36,12 +37,12 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSetup_inDebug() {
-        sut.setup(isInDebug: true, isProduction: true)
+        sut.setup(isInDebug: true, environment: .production)
         XCTAssertFalse(sut.isEnabled)
     }
 
     func testSetup_notInDebug_isProduction() throws {
-        sut.setup(isInDebug: false, isProduction: true)
+        sut.setup(isInDebug: false, environment: .production)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "production")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
@@ -49,86 +50,32 @@ class AnalyticsTests: XCTestCase {
     }
 
     func testSetup_notInDebug_isEnterprise() throws {
-        sut.setup(isInDebug: false, isProduction: false)
+        sut.setup(isInDebug: false, environment: .enterprise)
         XCTAssertTrue(sut.isEnabled)
         XCTAssertEqual(analyticsMock.environment, "enterprise")
         let isDebug = try XCTUnwrap(analyticsMock.debug)
         XCTAssertFalse(isDebug)
     }
 
-    func testSendDebugMessage() {
-        sut.setup(isInDebug: false, isProduction: true)
-
-        let testExtra: [String: Any] = ["Test": 1]
-        sut.debug(message: .authError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 998,
-                  column: 123)
-        XCTAssertEqual(analyticsMock.debugEvent, .authError)
-        XCTAssertNotNil(analyticsMock.debugExtra)
-        XCTAssertEqual(analyticsMock.debugFile, "file1")
-        XCTAssertEqual(analyticsMock.debugFunction, "function1")
-        XCTAssertEqual(analyticsMock.debugLine, 998)
-        XCTAssertEqual(analyticsMock.debugColum, 123)
+    func testTrackEvent() {
+        sut.setup(isInDebug: false, environment: .production)
+        sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+        XCTAssertEqual(analyticsMock.event, .userKickedOut(reason: .apiAccessTokenInvalid))
     }
 
     func testSendDebugMessage_notEnable() {
-        let testExtra: [String: Any] = ["Test": 1]
-        sut.debug(message: .authError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 998,
-                  column: 123)
-        XCTAssertNil(analyticsMock.debugEvent)
-        XCTAssertNil(analyticsMock.debugExtra)
-        XCTAssertNil(analyticsMock.debugFile)
-        XCTAssertNil(analyticsMock.debugFunction)
-        XCTAssertNil(analyticsMock.debugLine)
-        XCTAssertNil(analyticsMock.debugColum)
+        sut.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+        XCTAssertNil(analyticsMock.event)
     }
 
     func testSendErrorMessage() {
-        sut.setup(isInDebug: false, isProduction: true)
-
-        let testExtra: [String: Any] = ["Test": 1]
-        let testError = NSError.lockError()
-        sut.error(message: .decryptedMessageBodyFailed,
-                  error: testError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 986,
-                  column: 123)
-
-        XCTAssertEqual(analyticsMock.errorEvent, .decryptedMessageBodyFailed)
-        XCTAssertNotNil(analyticsMock.errorError)
-        XCTAssertNotNil(analyticsMock.errorExtra)
-        XCTAssertEqual(analyticsMock.errorFile, "file1")
-        XCTAssertEqual(analyticsMock.errorFunction, "function1")
-        XCTAssertEqual(analyticsMock.errorLine, 986)
-        XCTAssertEqual(analyticsMock.errorColum, 123)
+        sut.setup(isInDebug: false, environment: .production)
+        sut.sendError(.mockErorr)
+        XCTAssertEqual(analyticsMock.errorEvent, .mockErorr)
     }
 
     func testSendErrorMessage_notEnable() {
-        let testExtra: [String: Any] = ["Test": 1]
-        let testError = NSError.lockError()
-        sut.error(message: .decryptedMessageBodyFailed,
-                  error: testError,
-                  extra: testExtra,
-                  file: "file1",
-                  function: "function1",
-                  line: 986,
-                  column: 123)
-
+        sut.sendError(.mockErorr)
         XCTAssertNil(analyticsMock.errorEvent)
-        XCTAssertNil(analyticsMock.errorError)
-        XCTAssertNil(analyticsMock.errorExtra)
-        XCTAssertNil(analyticsMock.errorFile)
-        XCTAssertNil(analyticsMock.errorFunction)
-        XCTAssertNil(analyticsMock.errorLine)
-        XCTAssertNil(analyticsMock.errorColum)
     }
 }

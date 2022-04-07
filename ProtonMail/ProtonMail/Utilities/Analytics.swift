@@ -27,7 +27,7 @@ import UIKit
 class Analytics {
     static var shared = Analytics()
 
-    enum ENV: String {
+    enum Environment: String {
         case production, enterprise
     }
 
@@ -43,53 +43,23 @@ class Analytics {
         self.analytics = analytics
     }
 
-    func setup(isInDebug: Bool, isProduction: Bool) {
+    func setup(isInDebug: Bool, environment: Environment) {
         if isInDebug {
             isEnabled = false
             analytics = nil
         } else {
-            if isProduction {
-                analytics?.setup(environment: ENV.production.rawValue, debug: false)
-            } else {
-                analytics?.setup(environment: ENV.enterprise.rawValue, debug: false)
-            }
+            analytics?.setup(environment: environment.rawValue, debug: false)
             isEnabled = true
         }
     }
 
-    func debug(message: ProtonMailAnalytics.Events,
-               extra: [String: Any],
-               file: String = #file,
-               function: String = #function,
-               line: Int = #line,
-               column: Int = #column) {
-        guard isEnabled else {
-            return
-        }
-        analytics?.debug(event: message,
-                         extra: extra,
-                         file: file,
-                         function: function,
-                         line: line,
-                         colum: column)
+    func sendEvent(_ event: MailAnalyticsEvent) {
+        guard isEnabled else { return }
+        analytics?.track(event: event)
     }
 
-    func error(message: ProtonMailAnalytics.Events,
-               error: Error,
-               extra: [String: Any] = [:],
-               file: String = #file,
-               function: String = #function,
-               line: Int = #line,
-               column: Int = #column) {
-        guard isEnabled else {
-            return
-        }
-        analytics?.error(event: message,
-                         error: error,
-                         extra: extra,
-                         file: file,
-                         function: function,
-                         line: line,
-                         colum: column)
+    func sendError(_ error: MailAnalyticsError) {
+        guard isEnabled else { return }
+        analytics?.track(error: error)
     }
 }
