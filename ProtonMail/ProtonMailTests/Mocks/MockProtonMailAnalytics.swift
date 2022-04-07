@@ -23,20 +23,8 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     var environment: String?
     var debug: Bool?
 
-    var debugEvent: ProtonMailAnalytics.Events?
-    var debugExtra: [String: Any]?
-    var debugFile: String?
-    var debugFunction: String?
-    var debugLine: Int?
-    var debugColum: Int?
-
-    var errorEvent: ProtonMailAnalytics.Events?
-    var errorError: Error?
-    var errorExtra: [String: Any]?
-    var errorFile: String?
-    var errorFunction: String?
-    var errorLine: Int?
-    var errorColum: Int?
+    var event: MailAnalyticsEvent?
+    var errorEvent: MailAnalyticsError?
 
     required init(endPoint: String) {
         self.endPoint = endPoint
@@ -47,33 +35,11 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.debug = debug
     }
 
-    func debug(event: ProtonMailAnalytics.Events,
-               extra: [String: Any],
-               file: String,
-               function: String,
-               line: Int,
-               colum: Int) {
-        self.debugEvent = event
-        self.debugExtra = extra
-        self.debugFile = file
-        self.debugFunction = function
-        self.debugLine = line
-        self.debugColum = colum
+    public func track(event: MailAnalyticsEvent) {
+        self.event = event
     }
 
-    func error(event: ProtonMailAnalytics.Events,
-               error: Error,
-               extra: [String: Any],
-               file: String,
-               function: String,
-               line: Int,
-               colum: Int) {
-        self.errorEvent = event
-        self.errorError = error
-        self.errorExtra = extra
-        self.errorFile = file
-        self.errorFunction = function
-        self.errorLine = line
-        self.errorColum = colum
+    public func track(error: MailAnalyticsError) {
+        self.errorEvent = error
     }
 }

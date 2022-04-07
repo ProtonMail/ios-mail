@@ -21,93 +21,116 @@ import Sentry
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
     init(endPoint: String)
     func setup(environment: String?, debug: Bool)
-    func debug(event: ProtonMailAnalytics.Events,
-               extra: [String: Any],
-               file: String,
-               function: String,
-               line: Int,
-               colum: Int)
-
-    func error(event: ProtonMailAnalytics.Events,
-               error: Error,
-               extra: [String: Any],
-               file: String,
-               function: String,
-               line: Int,
-               colum: Int)
+    func track(event: MailAnalyticsEvent)
+    func track(error: MailAnalyticsError)
 }
 
 public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
-
-    public enum Events: String {
-        case keychainError = "Keychain Error"
-        case notificationError = "Notification Error"
-        case sendMessageError = "Send Message Error"
-        case saveDraftError = "Save Draft Error"
-        case uploadAttachmentError = "Upload Att Error"
-        case fetchMetadata = "FetchMetadata"
-        case grtJSONSerialization = "GRTJSONSerialization"
-        case vcard = "vcard"
-        case authError = "AuthError"
-        case updateAddressIDError = "UpdateAddressID Error"
-        case purgeOldMessages = "Purge Old Messages"
-        case queueError = "Queue Error"
-        case updateLoginPassword = "Update Login Password"
-        case updateMailBoxPassword = "Update MailBox Password"
-        case fetchSubscriptionData = "Fetch Subscription Data"
-        case coreDataError = "Core Data Error"
-        case menuSetupFailed = "Menu Failed to setup"
-        case usersRestoreFailed = "Users Restore Failed"
-        case coredataIssue = "CoreData Issue"
-        case decryptedMessageBodyFailed = "Decrypted Message Body Failed"
-        case paymentGetProductsListError = "Payment get products list error"
-    }
-
-    private(set) var endPoint: String
+    private let endPoint: String
     private(set) var isEnabled = false
 
     required public init(endPoint: String) {
         self.endPoint = endPoint
     }
 
-    public func setup(environment: String? = nil,
-                      debug: Bool = false) {
+    public func setup(environment: String? = nil, debug: Bool = false) {
         SentrySDK.start { options in
             options.dsn = self.endPoint
             options.debug = debug
             options.environment = environment
+
+            // Disabling some options to make the report work. Otherwise it does not show in Sentry,
+            // probably because the size limit in Proton's backend is 65kb for each event.
+            // See: https://jira.protontech.ch/browse/INFSUP-682
+            options.enableAutoSessionTracking = false
+            options.attachStacktrace = false
+            options.maxBreadcrumbs = 10
         }
         isEnabled = true
     }
 
-    public func debug(event: Events,
-                      extra: [String: Any],
-                      file: String = #file,
-                      function: String = #function,
-                      line: Int = #line,
-                      colum: Int = #column) {
-        guard isEnabled else {
-            return
-        }
-        let eventToSend = Sentry.Event(level: .debug)
-        eventToSend.message = SentryMessage(formatted: event.rawValue)
-        eventToSend.extra = extra
+    public func track(event: MailAnalyticsEvent) {
+        guard isEnabled else { return }
+        let eventToSend = Sentry.Event(level: .info)
+        eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
+        // eventToSend.extra = error.extraInfo <- extra does not allow to query in the Sentry dashboard
         SentrySDK.capture(event: eventToSend)
     }
 
-    public func error(event: Events,
-                      error: Error,
-                      extra: [String: Any],
-                      file: String = #file,
-                      function: String = #function,
-                      line: Int = #line,
-                      colum: Int = #column) {
-        guard isEnabled else {
-            return
-        }
+    public func track(error: MailAnalyticsError) {
+        guard isEnabled else { return }
         let eventToSend = Sentry.Event(error: error)
-        eventToSend.message = SentryMessage(formatted: event.rawValue)
-        eventToSend.extra = extra
+        eventToSend.message = SentryMessage(formatted: error.message)
         SentrySDK.capture(event: eventToSend)
+    }
+}
+
+// MARK: Events
+
+public enum MailAnalyticsEvent {
+
+    /// The user session has been terminated and the user has to authenticate again
+    case userKickedOut(reason: UserKickedOutReason)
+
+}
+
+extension MailAnalyticsEvent: Equatable {
+
+    public static func == (lhs: MailAnalyticsEvent, rhs: MailAnalyticsEvent) -> Bool {
+        lhs.name == rhs.name && lhs.description == rhs.description
+    }
+}
+
+private extension MailAnalyticsEvent {
+
+    var name: String {
+        let message: String
+        switch self {
+        case .userKickedOut:
+            message = "User kicked out"
+        }
+        return message
+    }
+
+    var description: String {
+        switch self {
+        case .userKickedOut(let reason):
+            return "reason: \(reason.description)"
+        }
+    }
+}
+
+public enum UserKickedOutReason {
+    case apiAccessTokenInvalid
+    case afterLockScreen(description: String)
+    case noUsersFoundInUsersManager(action: String)
+    case unexpected(description: String)
+
+    var description: String {
+        let description: String
+        switch self {
+        case .apiAccessTokenInvalid:
+            description = "user access token is not valid anymore"
+        case .afterLockScreen(let message):
+            description = "after lock screen (\(message))"
+        case .noUsersFoundInUsersManager(let action):
+            description = "no users found for action (\(action))"
+        case .unexpected(let message):
+            description = "unexpected (\(message))"
+        }
+        return description
+    }
+}
+
+// MARK: Error Events
+
+public enum MailAnalyticsError: Error {
+    /// used for test purposes. Whenever we add a new type of error, we can replace mockError in tests and delete this case.
+    case mockErorr
+
+    var message: String { "" }
+
+    var extraInfo: [String: Any] {
+        return [String: Any]()
     }
 }
