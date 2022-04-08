@@ -100,7 +100,7 @@ extension MenuViewModel: MenuVMProtocol {
     func userDataInit() {
         assert(self.delegate != nil,
                "delegate can't be nil, use set(delegate:) to setting")
-        self.regesterNotification()
+        self.registerNotification()
         self.fetchLabels()
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
@@ -193,7 +193,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func appVersion() -> String {
-        var appVersion = "Unkonw Version"
+        var appVersion = "Unknown Version"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             appVersion = "\(version)"
         }
@@ -460,7 +460,7 @@ extension MenuViewModel {
 
 // MARK: Private functions
 extension MenuViewModel {
-    private func regesterNotification() {
+    private func registerNotification() {
         NotificationCenter.default.removeObserver(self)
         NotificationCenter
             .default
@@ -478,8 +478,8 @@ extension MenuViewModel {
 
     private func updatePrimaryUserView() {
         guard let user = self.currentUser else {
-            // todo, error handle
-            fatalError("Primary user is nil")
+            self.usersManager.clean().cauterize()
+            return
         }
         self.delegate?.update(email: user.defaultEmail)
 
