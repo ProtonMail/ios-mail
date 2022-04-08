@@ -20,13 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import CoreData
 import MBProgressHUD
 import ProtonCore_UIFoundations
+import UIKit
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
+
     func update(progress: Float)
     func setupProgressBar(isHidden: Bool)
     func activityIndicator(isAnimating: Bool)
@@ -35,13 +36,14 @@ protocol SearchViewUIProtocol: UIViewController {
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
 
-    @IBOutlet var navigationBarView: UIView!
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet var noResultLabel: UILabel!
+    @IBOutlet private var navigationBarView: UIView!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var noResultLabel: UILabel!
+    @IBOutlet private var toolBar: PMToolBarView!
     private let searchBar = SearchBarView()
-    private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
+
     // TODO: need better UI solution for this progress bar
     private lazy var progressBar: UIProgressView = {
         let bar = UIProgressView()
@@ -49,7 +51,11 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         bar.progressTintColor = .white
         bar.progressViewStyle = .bar
 
-        let label = UILabel.init(font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize), text: "Indexing local messages", textColor: .gray)
+        let label = UILabel(
+            font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize),
+            text: "Indexing local messages",
+            textColor: .gray
+        )
 
         label.translatesAutoresizingMaskIntoConstraints = false
         bar.addSubview(label)
@@ -67,7 +73,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private var messageTapped = false
     private(set) var listEditing: Bool = false
 
-    private(set) var viewModel: SearchVMProtocol!
+    private let viewModel: SearchVMProtocol
     private var currentPage = 0
     private var query: String = ""
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
@@ -76,13 +82,18 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
 
-    func set(viewModel: SearchVMProtocol) {
+    init(viewModel: SearchVMProtocol) {
         self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        assert(self.viewModel != nil, "Please set view model")
 
         self.edgesForExtendedLayout = UIRectEdge()
         self.extendedLayoutIncludesOpaqueBars = false
@@ -108,10 +119,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         super.viewWillDisappear(animated)
         searchBar.textField.resignFirstResponder()
         navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
     }
 
     override func viewDidLayoutSubviews() {
@@ -146,7 +153,8 @@ extension SearchViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.backgroundColor = .clear
         self.tableView.separatorColor = ColorProvider.SeparatorNorm
-        let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self,
+                                                                      action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
@@ -199,14 +207,13 @@ extension SearchViewController {
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewController {
     private func showActionBar() {
-        guard self.actionBar == nil else { return }
+        guard self.toolBar.isHidden else { return }
 
         let actions = self.viewModel.getActionBarActions()
-        var actionItems: [PMActionBarItem] = []
+        var actionItems: [PMToolBarView.ActionItem] = []
 
-        for (key, action) in actions.enumerated() {
-
-            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
+        for action in actions {
+            let actionHandler: () -> Void = { [weak self] in
                 guard let self = self else { return }
                 if action == .more {
                     self.moreButtonTapped()
@@ -236,35 +243,21 @@ extension SearchViewController {
                 }
             }
 
-            if key == actions.startIndex {
-                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
-                                              text: action.name,
-                                              itemColor: ColorProvider.FloatyText,
-                                              handler: actionHandler)
-                actionItems.append(barItem)
-            } else {
-                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
-                                              itemColor: ColorProvider.FloatyText,
-                                              backgroundColor: .clear,
-                                              handler: actionHandler)
-                actionItems.append(barItem)
-            }
+            let barItem = PMToolBarView.ActionItem(type: action, handler: actionHandler)
+            actionItems.append(barItem)
         }
-        let separator = PMActionBarItem(width: 1,
-                                        verticalPadding: 6,
-                                        color: ColorProvider.FloatyText)
-        actionItems.insert(separator, at: 1)
-        self.actionBar = PMActionBar(items: actionItems,
-                                         backgroundColor: ColorProvider.FloatyBackground,
-                                         floatingHeight: 42.0,
-                                         width: .fit,
-                                         height: 48.0)
-        self.actionBar?.show(at: self)
+        self.toolBar.setUpActions(actionItems)
+        self.setToolBarHidden(false)
     }
 
     private func hideActionBar() {
-        self.actionBar?.dismiss()
-        self.actionBar = nil
+        self.setToolBarHidden(true)
+    }
+
+    private func setToolBarHidden(_ hidden: Bool) {
+        UIView.animate(withDuration: 0.25) {
+            self.toolBar.isHidden = hidden
+        }
     }
 
     private func hideActionSheet() {
@@ -329,7 +322,9 @@ extension SearchViewController {
     }
 
     private func showNoEmailSelected(title: String) {
-        let alert = UIAlertController(title: title, message: LocalString._message_list_no_email_selected, preferredStyle: .alert)
+        let alert = UIAlertController(title: title,
+                                      message: LocalString._message_list_no_email_selected,
+                                      preferredStyle: .alert)
         alert.addOKAction()
         self.present(alert, animated: true, completion: nil)
     }
@@ -385,7 +380,9 @@ extension SearchViewController {
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
                         self?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                            self?.showMoveToActionSheet(messages: messages,
+                                                        isEnableColor: isEnableColor,
+                                                        isInherit: isInherit)
                         }
                         self?.presentCreateFolder(type: .folder)
                      },
@@ -450,8 +447,8 @@ extension SearchViewController {
                      },
                      done: { [weak self] isArchive, currentOptionsStatus in
                         handler.handleLabelAsAction(messages: messages,
-                                                 shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus)
+                                                    shouldArchive: isArchive,
+                                                    currentOptionsStatus: currentOptionsStatus)
                         self?.dismissActionSheet()
                         self?.cancelButtonTapped()
                      })
@@ -494,17 +491,17 @@ extension SearchViewController {
         self.updateTapped(status: true)
         self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
             self?.updateTapped(status: false)
-            guard let _self = self else { return }
+            guard let self = self else { return }
             guard error == nil else {
                 let alert = LocalString._unable_to_edit_offline.alertController()
                 alert.addOKAction()
-                _self.present(alert, animated: true, completion: nil)
-                _self.tableView.indexPathsForSelectedRows?.forEach {
-                    _self.tableView.deselectRow(at: $0, animated: true)
+                self.present(alert, animated: true, completion: nil)
+                self.tableView.indexPathsForSelectedRows?.forEach {
+                    self.tableView.deselectRow(at: $0, animated: true)
                 }
                 return
             }
-            _self.showComposer(message: message)
+            self.showComposer(message: message)
         }
     }
 
@@ -729,7 +726,9 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
 
 extension SearchViewController: UITextFieldDelegate {
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         query = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         searchBar.clearButton.isHidden = query.isEmpty == true
         return true
@@ -739,7 +738,7 @@ extension SearchViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         self.query = self.query.trim()
         textField.text = self.query
-        guard self.query.count > 0 else {
+        guard !self.query.isEmpty else {
             return true
         }
         self.viewModel.fetchRemoteData(query: self.query, fromStart: true)

@@ -55,10 +55,12 @@ protocol SearchVMProtocol {
 
 final class SearchViewModel: NSObject {
     typealias LocalObjectsIndexRow = [String: Any]
+
     let user: UserManager
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
-    private weak var uiDelegate: SearchViewUIProtocol?
+    weak var uiDelegate: SearchViewUIProtocol?
+
     private(set) var messages: [Message] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -94,11 +96,9 @@ final class SearchViewModel: NSObject {
     }
 
     init(user: UserManager,
-         coreDataContextProvider: CoreDataContextProviderProtocol,
-         uiDelegate: SearchViewUIProtocol) {
+         coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
-        self.uiDelegate = uiDelegate
     }
 }
 
@@ -312,7 +312,9 @@ extension SearchViewModel: SearchVMProtocol {
     func getConversation(conversationID: String,
                          messageID: String,
                          completion: @escaping (Result<Conversation, Error>) -> Void) {
-        self.user.conversationService.fetchConversation(with: conversationID, includeBodyOf: messageID, completion: completion)
+        self.user.conversationService.fetchConversation(with: conversationID,
+                                                        includeBodyOf: messageID,
+                                                        completion: completion)
     }
 }
 
@@ -337,18 +339,20 @@ extension SearchViewModel: MoveToActionSheetProtocol {
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [Message],
+                             shouldArchive: Bool,
+                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID}) {
+                .contains(where: { $0.labelID == label.location.labelID }) {
                 // Add to message which does not have this label
-                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID )})
+                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID) })
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true,
                                      shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID )})
+                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID) })
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false,
@@ -382,8 +386,9 @@ extension SearchViewModel {
     private func checkToUseReadOrUnreadAction(messageIDs: NSMutableSet, labelID: String) -> Bool {
         var readCount = 0
         coreDataContextProvider.mainContext.performAndWait {
-            let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-            readCount = messages.reduce(0) { (result, next) -> Int in
+            let messages = self.messageService.fetchMessages(withIDs: messageIDs,
+                                                             in: coreDataContextProvider.mainContext)
+            readCount = messages.reduce(0) { result, next -> Int in
                 if next.unRead == false {
                     return result + 1
                 } else {
@@ -461,9 +466,11 @@ extension SearchViewModel {
         var count = 0
         context.performAndWait {
             do {
-                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
+                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 overallCountRequest.resultType = .countResultType
-                overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
+                overallCountRequest.predicate = NSPredicate(format: "%K == %@",
+                                                            Message.Attributes.userID,
+                                                            self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch {
@@ -473,7 +480,10 @@ extension SearchViewModel {
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
+        ]
         fetchRequest.resultType = .dictionaryResultType
 
         let objectId = NSExpressionDescription()
@@ -500,33 +510,31 @@ extension SearchViewModel {
             }
 
             self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.uiDelegate?.update(progress: completionRate)
-                }
-            })
+            self.localObjectsIndexingObserver = index.progress?.observe(
+                \Progress.completedUnitCount,
+                options: NSKeyValueObservingOptions.new) { [weak self] progress, _ in
+                    DispatchQueue.main.async {
+                        let completionRate = Float(progress.completedUnitCount) / Float(count)
+                        self?.uiDelegate?.update(progress: completionRate)
+                    }
+            }
         }
     }
 
     private func fetchLocalObjects() {
-        // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
+        let fieldsToMatchQueryAgainst: [String] = [
+            "title",
+            "senderName",
+            "sender",
+            "toList"
+        ]
+
         let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
-            if let title = $0["title"] as? String,
-                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let senderName = $0["senderName"]  as? String,
-                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let sender = $0["sender"]  as? String,
-                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let toList = $0["toList"]  as? String,
-                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) {
-                return $0["objectID"] as? NSManagedObjectID
+            for field in fieldsToMatchQueryAgainst {
+                if let value = $0[field] as? String,
+                    value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
+                    return $0["objectID"] as? NSManagedObjectID
+                }
             }
             return nil
         }
@@ -554,9 +562,15 @@ extension SearchViewModel {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         let ids = self.messages.map { $0.messageID }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
+            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+        ]
         fetchRequest.includesPropertyValues = true
-        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                          managedObjectContext: context,
+                                                          sectionNameKeyPath: nil,
+                                                          cacheName: nil)
         self.fetchController?.delegate = self
         do {
             try self.fetchController?.performFetch()

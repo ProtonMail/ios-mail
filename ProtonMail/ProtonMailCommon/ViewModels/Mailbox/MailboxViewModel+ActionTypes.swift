@@ -76,6 +76,27 @@ extension MailboxViewModel {
                 return Asset.actionBarReadUnread.image
             }
         }
+
+        var accessibilityIdentifier: String {
+            switch self {
+            case .delete:
+                return "PMToolBarView.deleteButton"
+            case .trash:
+                return "PMToolBarView.trashButton"
+            case .moveTo:
+                return "PMToolBarView.moveToButton"
+            case .more:
+                return "PMToolBarView.moreButton"
+            case .labelAs:
+                return "PMToolBarView.labelAsButton"
+            case .reply:
+                return "PMToolBarView.replyButton"
+            case .replyAll:
+                return "PMToolBarView.replyAllButton"
+            case .readUnread:
+                return "PMToolBarView.unreadButton"
+            }
+        }
     }
 
     func getActionBarActions() -> [ActionTypes] {

@@ -1142,6 +1142,7 @@
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		663FB796BEE1191AFCA491957A476D39 /* AccountManagerRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D5AC76468FB86BA2584A13B6C297A /* AccountManagerRobot.swift */; };
 		666B03AAD18ED3364234265C67AD11A6 /* ConversationMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A12088CECB2A929960CC2190EB027E7 /* ConversationMessageCell.swift */; };
+		667AB2CCBD770AB171C61B526256714D /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		6687CFF82975D46721428AB162261ACA /* FeatureFlagsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3635E2D3AF2D66CE53F02B2DB9E65CB /* FeatureFlagsResponse.swift */; };
 		66C4A4AED23E47D0E1DFF3C693F5174D /* SettingsDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B638CAEF36AC7D048561717D2293B44 /* SettingsDeviceViewController.swift */; };
@@ -2671,6 +2672,7 @@
 		F284D2AF97095DAFCFEE47BCFCF4147B /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
 		F2874A8AE665131D6AFAE3EEF8176294 /* FeatureFlagsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA053F517CE0617EE5F6D77637100C5C /* FeatureFlagsRequest.swift */; };
 		F292801D946FAD4757D61FFB17C64904 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
+		F2B93680B093DA806C3EF757E9B6D668 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */; };
 		F2D01701200524D628965A0BB4FDDACD /* UserInfo+ViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B854E9663E924BA98511AB6033591 /* UserInfo+ViewMode.swift */; };
 		F2FC189283C065FC613EBCF555B3A98F /* PMActionSheet+MessageDetailsContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF252E8057DA29FF18FD8A935B18550 /* PMActionSheet+MessageDetailsContact.swift */; };
 		F3040DDEFFEF223B01C0CFE5EF31F949 /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C121060DD5ACF43CDC90A248BCD398D /* LabelCell.xib */; };
@@ -3674,6 +3676,7 @@
 		8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		8BFCC6EE1C9134369A39E8F4D76EA3B6 /* ProtonMailAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailAnalytics.swift; sourceTree = "<group>"; };
 		8BFE4DA4069E188AF860795FB7CABF21 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		8D0D8871C5AF26D9C5679C65AD042501 /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D1FE3E7021372A0C067B259C5FD854D /* MessageDecrypterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDecrypterMock.swift; sourceTree = "<group>"; };
 		8D3471D79A0F9DE75F9D221D62F4B4BA /* SharedUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserDefaults.swift; sourceTree = "<group>"; };
@@ -5800,6 +5803,7 @@
 			children = (
 				B3221DC867E35D1A0AEF46F584A41502 /* SearchBarView.swift */,
 				6C94282905B31CB4FD9261528DC8F5C7 /* SearchViewController.swift */,
+				8C840C4909C0099DB9EC9B14A3CACDB3 /* SearchViewController.xib */,
 				E865C6674C2F8D20657331E1AC340900 /* SearchViewModel.swift */,
 			);
 			path = Search;
@@ -8177,6 +8181,7 @@
 				38AE15E914403F3294DDE2BB86916854 /* QuoteBreaker.js in Resources */,
 				E427B15A1468319F705C3D9F36185C89 /* RecipientCell.xib in Resources */,
 				CAEBC1F1C1A2DE1C380E06125BF76B3C /* RecipientView.xib in Resources */,
+				F2B93680B093DA806C3EF757E9B6D668 /* SearchViewController.xib in Resources */,
 				7BED07044EB4F17ED3DC0FD10746860B /* SelectableTableViewCell.xib in Resources */,
 				C8A98E6E7F1F29E16BA8812E693490B7 /* SettingDetailViewController.xib in Resources */,
 				3A8C441FB6EBA663470A887B6DBB88A1 /* Settings.bundle in Resources */,
@@ -8253,6 +8258,7 @@
 				40AF00585C1F2A78B29435F26E128824 /* QuoteBreaker.js in Resources */,
 				D9E9E6AD719E15FFB94955ABF452F308 /* RecipientCell.xib in Resources */,
 				033474749ADA8B07051B6DFF1AA784D2 /* RecipientView.xib in Resources */,
+				667AB2CCBD770AB171C61B526256714D /* SearchViewController.xib in Resources */,
 				0A924F73489755F09E57F0C563F19266 /* SelectableTableViewCell.xib in Resources */,
 				C604A56590DF10A21CE663257D322BFD /* SettingDetailViewController.xib in Resources */,
 				EF5866725A8677EF8D3A90C4F8108603 /* Settings.bundle in Resources */,

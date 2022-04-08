@@ -67,8 +67,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var unreadFilterButton: UIButton!
     @IBOutlet weak var unreadFilterButtonWidth: NSLayoutConstraint!
 
-    // MARK: MailActionBar
-    private var mailActionBar: PMActionBar?
+    // MARK: PMToolBarView
+    @IBOutlet private var toolBar: PMToolBarView!
 
     // MARK: - Private attributes
 
@@ -1582,15 +1582,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 // MARK: - Action bar
 extension MailboxViewController {
     private func showActionBar() {
-        guard self.mailActionBar == nil else {
+        guard self.toolBar.isHidden else {
             return
         }
+
         let actions = self.viewModel.getActionBarActions()
-        var actionItems: [PMActionBarItem] = []
+        var actionItems: [PMToolBarView.ActionItem] = []
 
-        for (key, action) in actions.enumerated() {
-
-            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
+        for action in actions {
+            let actionHandler: () -> Void = { [weak self] in
                 guard let self = self else { return }
                 if action == .more {
                     self.moreButtonTapped()
@@ -1621,35 +1621,21 @@ extension MailboxViewController {
                 }
             }
 
-            if key == actions.startIndex {
-                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
-                                              text: action.name,
-                                              itemColor: ColorProvider.FloatyText,
-                                              handler: actionHandler)
-                actionItems.append(barItem)
-            } else {
-                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
-                                              itemColor: ColorProvider.FloatyText,
-                                              backgroundColor: .clear,
-                                              handler: actionHandler)
-                actionItems.append(barItem)
-            }
+            let barItem = PMToolBarView.ActionItem(type: action, handler: actionHandler)
+            actionItems.append(barItem)
         }
-        let separator = PMActionBarItem(width: 1,
-                                        verticalPadding: 6,
-                                        color: ColorProvider.FloatyText)
-        actionItems.insert(separator, at: 1)
-        self.mailActionBar = PMActionBar(items: actionItems,
-                                         backgroundColor: ColorProvider.FloatyBackground,
-                                         floatingHeight: 42.0,
-                                         width: .fit,
-                                         height: 48.0)
-        self.mailActionBar?.show(at: self)
+        self.toolBar.setUpActions(actionItems)
+        self.setToolBarHidden(false)
     }
 
     private func hideActionBar() {
-        self.mailActionBar?.dismiss()
-        self.mailActionBar = nil
+        self.setToolBarHidden(true)
+    }
+
+    private func setToolBarHidden(_ hidden: Bool) {
+        UIView.animate(withDuration: 0.25) {
+            self.toolBar.isHidden = hidden
+        }
     }
 
     private func showDeleteAlert(yesHandler: @escaping () -> Void) {

@@ -148,8 +148,7 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/Attachments/MIMEType.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/SingleMessageViewController+Print.swift
   - ${PWD}/ProtonMail/Controller/SingleMessage/Children/NewMessageBodyViewController+Print.swift
-  - ${PWD}/ProtonMail/Controller/Search/SearchBarView.swift
-  - ${PWD}/ProtonMail/Controller/Search/SearchViewController+BuildMessageViewModel.swift
+  - ${PWD}/ProtonMail/Controller/Search/
   - ${PWD}/ProtonMailCommon/Extensions/Date+CountExpirationTime.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderCell.swift
   - ${PWD}/ProtonMail/Controller/ConversationView/Cells/ConversationViewHeaderView.swift

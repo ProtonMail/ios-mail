@@ -159,13 +159,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .feedback, .feedbackView:
             return false
         case .search:
-            guard let next = (destination as? UINavigationController)?.viewControllers.first as? SearchViewController else {
-                return false
-            }
-            let viewModel = SearchViewModel(user: self.viewModel.user,
-                                            coreDataContextProvider: self.services.get(by: CoreDataService.self),
-                                            uiDelegate: next)
-            next.set(viewModel: viewModel)
+            assertionFailure("should not be used anymore")
         case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
             break
         }
@@ -192,6 +186,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             guard let message = sender as? Message else { return }
 
             navigateToComposer(existingMessage: message)
+        case .search:
+            presentSearch()
         default:
             guard let viewController = self.viewController else { return }
             if let presented = viewController.presentedViewController {
@@ -328,6 +324,16 @@ extension MailboxCoordinator {
         composer.start()
     }
 
+    private func presentSearch() {
+        let viewModel = SearchViewModel(user: self.viewModel.user,
+                                        coreDataContextProvider: self.services.get(by: CoreDataService.self))
+        let viewController = SearchViewController(viewModel: viewModel)
+        viewModel.uiDelegate = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .fullScreen
+        self.viewController?.present(navigationController, animated: true)
+    }
     private func followToDetails(message: Message,
                                  navigationController: UINavigationController,
                                  deeplink: DeepLink?) {

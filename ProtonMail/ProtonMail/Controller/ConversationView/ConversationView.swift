@@ -6,6 +6,20 @@ class ConversationView: UIView {
     let separator = SubviewsFactory.separator
     let toolBar = SubviewsFactory.toolBar
 
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        return stackView
+    }()
+
+    // needed to cover the space between the toolBar and the edge of the screen
+    private let spacer: UIView = {
+        let spacer = UIView()
+        spacer.backgroundColor = ColorProvider.BackgroundNorm
+        return spacer
+    }()
+
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundSecondary
@@ -15,27 +29,25 @@ class ConversationView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(tableView)
         addSubview(separator)
-        addSubview(toolBar)
+        stackView.addArrangedSubview(tableView)
+        stackView.addArrangedSubview(toolBar)
+        stackView.addArrangedSubview(spacer)
+        addSubview(stackView)
     }
 
     private func setUpLayout() {
         let bottomPadding = UIDevice.safeGuide.bottom
-        let height = 56.0 + bottomPadding
 
         [
-            toolBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            toolBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            toolBar.heightAnchor.constraint(equalToConstant: height)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
 
         [
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: toolBar.topAnchor)
+            spacer.heightAnchor.constraint(equalToConstant: bottomPadding)
         ].activate()
 
         [

@@ -57,13 +57,11 @@ class SingleMessageView: UIView {
 
     private func setUpLayout() {
         let bottomPadding = UIDevice.safeGuide.bottom
-        let height = 56.0 + bottomPadding
 
         [
             toolBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             toolBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            toolBar.heightAnchor.constraint(equalToConstant: height)
+            toolBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomPadding)
         ].activate()
 
         [
