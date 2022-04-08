@@ -265,6 +265,7 @@ included:
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageProvider.swift
   - ${PWD}/ProtonMailCommon/Utilities/ConnectionStatus/ConnectionMonitor.swift
   - ${PWD}/ProtonMail/Controller/SignIn/BioCodeViewController.swift
+  - ${PWD}/ProtonMail/Controller/MessageDetail/LinkOpeningValidator.swift
 
 excluded:
   - ${PWD}/Pods

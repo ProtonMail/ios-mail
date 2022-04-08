@@ -20,50 +20,46 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
 import ProtonCore_DataModel
 
 protocol LinkOpeningValidator {
     var linkConfirmation: LinkOpeningMode { get }
 
-    func validateNotPhishing(_ url: URL, handler: @escaping (Bool) -> Void)
+    func shouldOpenPhishingAlert(_ url: URL, isFromPhishingMsg: Bool) -> Bool
+    func generatePhishingAlertContent(_ url: URL, isFromPhishingMsg: Bool) -> (String, String)
 }
+
 extension LinkOpeningValidator {
-    func validateNotPhishing(_ url: URL, handler: @escaping (Bool) -> Void) {
-        guard linkConfirmation == .confirmationAlert else {
-            handler(true)
-            return
+    func shouldOpenPhishingAlert(_ url: URL, isFromPhishingMsg: Bool) -> Bool {
+        guard linkConfirmation == .confirmationAlert || isFromPhishingMsg == true else {
+            return false
         }
 
         guard url.isOwnedByProton == false else {
-            handler(true)
-            return
+            return false
         }
+        return true
+    }
 
+    func generatePhishingAlertContent(_ url: URL, isFromPhishingMsg: Bool) -> (String, String) {
         var tail = url.absoluteString.dropFirst(60)
         tail = tail.isEmpty ? "" : ("\n...\n" + tail.suffix(40))
         let shortLink = url.absoluteString.prefix(60) + tail
 
-        let alert = UIAlertController(title: LocalString._about_to_open_link,
-                                      message: String(shortLink),
-                                      preferredStyle: .alert)
-        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
-            handler(true)
+        if isFromPhishingMsg {
+            let msg = String(format: LocalString._spam_open_link_content, String(shortLink))
+            return (LocalString._spam_open_link_title, msg)
+        } else {
+            return (LocalString._about_to_open_link, String(shortLink))
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
-            handler(false)
-        }
-        [proceed, cancel].forEach(alert.addAction)
-
-        // will deliver to the topmost view controller in responder chain
-        UIApplication.shared.sendAction(#selector(UIViewController.present(_:animated:completion:)), to: nil, from: alert, for: nil)
     }
 }
 
 extension URL {
     var isOwnedByProton: Bool {
-        guard let host = self.host?.lowercased() else { return false }
-        return ["protonmail.com",
+        guard let host = host?.lowercased() else { return false }
+        return ["proton.me",
+                "protonmail.com",
                 "protonmail.ch",
                 "protonvpn.com",
                 "protonstatus.com",
@@ -72,6 +68,6 @@ extension URL {
                 "pm.me",
                 "protonirockerxow.onion",
                 "mail.protonmail.com",
-                "account.protonvpn.com" ].contains(host)
+                "account.protonvpn.com"].contains(host)
     }
 }

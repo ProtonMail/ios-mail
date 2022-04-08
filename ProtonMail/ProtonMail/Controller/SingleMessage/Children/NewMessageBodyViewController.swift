@@ -385,11 +385,7 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     }
 }
 
-extension NewMessageBodyViewController: LinkOpeningValidator {
-    var linkConfirmation: LinkOpeningMode {
-        return viewModel.linkConfirmation
-    }
-
+extension NewMessageBodyViewController {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -408,12 +404,31 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                 return
             }
             url = url.removeProtonSchemeIfNeeded()
-            self.validateNotPhishing(url) { [weak self] allowedToOpen in
-                guard let self = self else { return }
-                if allowedToOpen {
-                    self.delegate?.openUrl(url)
+
+            let isFromPhishingMail = viewModel.message.spam == .autoPhishing
+            guard viewModel.shouldOpenPhishingAlert(url, isFromPhishingMsg: isFromPhishingMail) else {
+                self.delegate?.openUrl(url)
+                return
+            }
+            let alertContent = viewModel.generatePhishingAlertContent(url, isFromPhishingMsg: isFromPhishingMail)
+            let alert: UIAlertController
+            if isFromPhishingMail {
+                alert = makeSpamLinkConfirmationAlert(title: alertContent.0,
+                                                      message: alertContent.1) { allowedToOpen in
+                    if allowedToOpen {
+                        self.delegate?.openUrl(url)
+                    }
+                }
+            } else {
+                alert = makeLinkConfirmationAlert(title: alertContent.0,
+                                                  message: alertContent.1) { allowedToOpen in
+                    if allowedToOpen {
+                        self.delegate?.openUrl(url)
+                    }
                 }
             }
+
+            self.present(alert, animated: true, completion: nil)
         default:
             decisionHandler(.allow)
         }
@@ -422,7 +437,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
     // Won't be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared
     @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "")
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return linkConfirmation == .openAtWill
+        return viewModel.linkConfirmation == .openAtWill
     }
 
     @available(iOS 13.0, *)
@@ -430,7 +445,7 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
         // This will show default preview and default menu
-        guard linkConfirmation != .openAtWill else {
+        guard viewModel.linkConfirmation != .openAtWill else {
             completionHandler(nil)
             return
         }
@@ -442,6 +457,38 @@ extension NewMessageBodyViewController: LinkOpeningValidator {
                                                 previewProvider: { nil },
                                                 actionProvider: { UIMenu(title: "", children: $0) })
         completionHandler(config)
+    }
+
+    private func makeLinkConfirmationAlert(title: String,
+                                           message: String,
+                                           urlHandler: @escaping (Bool) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
+            urlHandler(true)
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            urlHandler(false)
+        }
+        [proceed, cancel].forEach(alert.addAction)
+        return alert
+    }
+
+    private func makeSpamLinkConfirmationAlert(title: String,
+                                               message: String,
+                                               urlHandler: @escaping (Bool) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let cancel = UIAlertAction(title: LocalString._spam_open_go_back, style: .cancel) { _ in
+            urlHandler(false)
+        }
+        let proceed = UIAlertAction(title: LocalString._spam_open_continue, style: .destructive) { _ in
+            urlHandler(true)
+        }
+        [cancel, proceed].forEach(alert.addAction)
+        return alert
     }
 }
 
