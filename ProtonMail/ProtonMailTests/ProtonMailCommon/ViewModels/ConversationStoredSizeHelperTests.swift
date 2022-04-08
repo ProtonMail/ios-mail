@@ -47,24 +47,24 @@ class ConversationStoredSizeHelperTests: XCTestCase {
         XCTAssertNil(sut.getStoredSize(of: messageID))
     }
 
-    func testCalculateIfStoreSizeUpdateNeeded_sameHeight_returnFalse() {
+    func testUpdateStoredSizeIfNeeded_sameHeight_returnFalse() {
         sut.storedSize[messageID] = testHeightInfo
-        XCTAssertFalse(sut.calculateIfStoreSizeUpdateNeeded(newHeightInfo: testHeightInfo, messageID: messageID))
+        XCTAssertFalse(sut.updateStoredSizeIfNeeded(newHeightInfo: testHeightInfo, messageID: messageID))
     }
 
-    func testCalculateIfStoreSizeUpdateNeeded_nilHeight_returnTrue() {
-        XCTAssertTrue(sut.calculateIfStoreSizeUpdateNeeded(newHeightInfo: testHeightInfo, messageID: messageID))
+    func testUpdateStoredSizeIfNeeded_nilHeight_returnTrue() {
+        XCTAssertTrue(sut.updateStoredSizeIfNeeded(newHeightInfo: testHeightInfo, messageID: messageID))
     }
 
-    func testCalculateIfStoreSizeUpdateNeeded_differentHeight_returnTrue() {
+    func testUpdateStoredSizeIfNeeded_differentHeight_returnTrue() {
         sut.storedSize[messageID] = testHeightInfo
         let newHeight = HeightStoreInfo(height: 500, isHeaderExpanded: false, loaded: true)
-        XCTAssertTrue(sut.calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeight, messageID: messageID))
+        XCTAssertTrue(sut.updateStoredSizeIfNeeded(newHeightInfo: newHeight, messageID: messageID))
     }
 
-    func testCalculateIfStoreSizeUpdateNeeded_differentState_returnTrue() {
+    func testUpdateStoredSizeIfNeeded_differentState_returnTrue() {
         sut.storedSize[messageID] = testHeightInfo
         let newHeight = HeightStoreInfo(height: 100, isHeaderExpanded: true, loaded: true)
-        XCTAssertTrue(sut.calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeight, messageID: messageID))
+        XCTAssertTrue(sut.updateStoredSizeIfNeeded(newHeightInfo: newHeight, messageID: messageID))
     }
 }

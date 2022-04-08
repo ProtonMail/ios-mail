@@ -478,7 +478,7 @@ private extension ConversationViewController {
                                             isHeaderExpanded: isHeaderExpanded,
                                             loaded: isLoaded)
         if storedSizeHelper
-            .calculateIfStoreSizeUpdateNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
+            .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
             UIView.setAnimationsEnabled(false)
             customView.tableView.beginUpdates()
@@ -584,12 +584,6 @@ private extension Array where Element == ConversationViewItemType {
             .first(where: { $0.messageID == id })
     }
 
-}
-
-struct HeightStoreInfo: Hashable, Equatable {
-    let height: CGFloat
-    let isHeaderExpanded: Bool
-    let loaded: Bool
 }
 
 // MARK: - Tool Bar
@@ -1070,39 +1064,3 @@ extension ConversationViewController: PMActionSheetEventsListener {
     }
 }
 
-class ConversationStoredSizeHelper {
-    var storedSize: [String: HeightStoreInfo] = [:]
-
-    func getStoredSize(of messageID: String) -> HeightStoreInfo? {
-        return storedSize[messageID]
-    }
-
-    func resetStoredSize(of messageID: String) {
-        storedSize[messageID] = nil
-    }
-
-    func calculateIfStoreSizeUpdateNeeded(newHeightInfo: HeightStoreInfo, messageID: String) -> Bool {
-        let oldHeightInfo = storedSize[messageID]
-
-        if let oldHeight = oldHeightInfo, oldHeight == newHeightInfo {
-            return false
-        }
-
-        let storedHeightInfo = storedSize[messageID]
-
-        let shouldChangeLoadedHeight = storedHeightInfo?.loaded == true &&
-                                        storedHeightInfo?.height != newHeightInfo.height
-        let isHeightForLoadedPageStored = storedHeightInfo?.loaded == true
-        let isStoredHeightInfoEmpty = storedHeightInfo == nil
-        let headerStateHasChanged = newHeightInfo.isHeaderExpanded != storedHeightInfo?.isHeaderExpanded
-
-        if shouldChangeLoadedHeight ||
-            !isHeightForLoadedPageStored ||
-            isStoredHeightInfoEmpty ||
-            headerStateHasChanged {
-            storedSize[messageID] = newHeightInfo
-        }
-
-        return true
-    }
-}

@@ -52,7 +52,6 @@ class ConversationViewModel {
     private(set) weak var tableView: UITableView?
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    var openFromNotification = false
     var shouldIgnoreUpdateOnce = false
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
@@ -69,10 +68,6 @@ class ConversationViewModel {
         return formatter
     }()
 
-    private var header: ConversationViewItemType {
-        .header(subject: conversation.subject)
-    }
-
     let isDarkModeEnableClosure: () -> Bool
     let connectionStatusProvider: InternetConnectionStatusProvider
     var isInitialDataFetchCalled = false
@@ -80,7 +75,6 @@ class ConversationViewModel {
     init(labelId: String,
          conversation: Conversation,
          user: UserManager,
-         openFromNotification: Bool = false,
          contextProvider: CoreDataContextProviderProtocol,
          internetStatusProvider: InternetConnectionStatusProvider,
          isDarkModeEnableClosure: @escaping () -> Bool,
@@ -96,7 +90,6 @@ class ConversationViewModel {
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
-        self.openFromNotification = openFromNotification
         self.sharedReplacingEmails = contactService.allAccountEmails()
         self.targetID = targetID
         self.isDarkModeEnableClosure = isDarkModeEnableClosure
