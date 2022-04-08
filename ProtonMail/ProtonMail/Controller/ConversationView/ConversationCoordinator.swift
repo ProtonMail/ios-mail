@@ -40,7 +40,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             labelId: labelId,
             conversation: conversation,
             user: user,
-            openFromNotification: openFromNotification,
             contextProvider: CoreDataService.shared,
             internetStatusProvider: internetStatusProvider,
             isDarkModeEnableClosure: { [weak self] in
