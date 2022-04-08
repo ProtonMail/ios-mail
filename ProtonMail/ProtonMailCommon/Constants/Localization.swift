@@ -1450,4 +1450,9 @@ class LocalizedString {
     lazy var _composer_voiceover_add_exp = NSLocalizedString("Set mail expiration", comment: "The voiceiver title of the add expiration button in the tool bar of composer")
     lazy var _composer_voiceover_add_attachment = NSLocalizedString("Add attachment", comment: "The voiceiver title of the add attachment button in the tool bar of composer")
     lazy var _composer_voiceover_dismiss_keyboard = NSLocalizedString("Dismiss keyboard", comment: "The voiceover title of the dismiss keyboard action")
+
+    lazy var _spam_open_link_title = NSLocalizedString("Warning: suspected fake website", comment: "The title of the link confirmation alert of spam email.")
+    lazy var _spam_open_link_content = NSLocalizedString("This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.", comment: "The content of the link confirmation alert of spam email.")
+    lazy var _spam_open_continue = NSLocalizedString("Ignore warning and continue", comment: "The title of the button to open the link in spam mail.")
+    lazy var _spam_open_go_back = NSLocalizedString("Go back (recommended)", comment: "The title of the button to cancel the action of opening the link in spam mail.")
 }

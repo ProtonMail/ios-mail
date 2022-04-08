@@ -127,6 +127,7 @@
 		0A6632BD903D34DC156E5AE05383F242 /* ExpandedHeaderRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D2644F4718E77240B7DD058CC9C844 /* ExpandedHeaderRowView.swift */; };
 		0A6EDCAEDFC43FBE42BF2B875959C43A /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA73A35D604465146787543338B179D1 /* UIColor+ProtonMail.swift */; };
 		0A924F73489755F09E57F0C563F19266 /* SelectableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90FF60F9FFC7E1CC1C1A0B1BD2E973C2 /* SelectableTableViewCell.xib */; };
+		0A9629522C4FE0D480AF050411E8DF2F /* LinkOpeningValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5704549A082F000F457A7689D3B4545D /* LinkOpeningValidatorTests.swift */; };
 		0AA9AD1D45388FF31E7E07B6B6B6D84C /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		0AAEC3DAE649DD22D2A8368A570CAFA5 /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		0AC3B02E269D9BCB6899F0DB2A8B7DF1 /* FeatureFlagsResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04E6785F72AA267E3308DCABCAECF83 /* FeatureFlagsResponseTests.swift */; };
@@ -3413,6 +3414,7 @@
 		56B32D8D93567EFA92CA6003242CD656 /* SettingsPrivacyCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyCoordinator.swift; sourceTree = "<group>"; };
 		56BEF260D5A15F1C2AD6B0FB0DFC3E29 /* 2.0.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.6.xcdatamodel; sourceTree = "<group>"; };
 		56D1F54D89CD952B07E8D09B1955D5FB /* PushNotificationHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationHandlerTests.swift; sourceTree = "<group>"; };
+		5704549A082F000F457A7689D3B4545D /* LinkOpeningValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LinkOpeningValidatorTests.swift; path = ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift; sourceTree = SOURCE_ROOT; };
 		57295F845FB5B0093197283C600A53DB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "../../ProtonMail/zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		580939BB11B93AF0FBD53F74DEA90CD3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5836AD45DDC190793CED07F21A64C8AA /* UIButton+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
@@ -4494,6 +4496,14 @@
 				6EB6F68394B254A1D2A142B42FDA8F8F /* MenuRobot.swift */,
 			);
 			path = Menu;
+			sourceTree = "<group>";
+		};
+		04DDC6422A8CD97A0F43681F783ACF19 /* Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				BA05031F221BD51C0CDF8F03FD910AA4 /* DocumentAttachmentProviderTests.swift */,
+			);
+			path = Attachments;
 			sourceTree = "<group>";
 		};
 		055CCA58A0C449E33C5316D5CBF97B39 /* UserDataService */ = {
@@ -6179,6 +6189,7 @@
 			children = (
 				86E0141D8E57437DA345A2DF422B1EB0 /* MailActionSheet */,
 				FD4772A16B5183FED7E54BEFED603C03 /* ActionTypesTests.swift */,
+				5704549A082F000F457A7689D3B4545D /* LinkOpeningValidatorTests.swift */,
 				F14F63759C97AD36C68050FD5FE7CEFD /* MailBoxSwipeActionHelperTests.swift */,
 				988595A523ABEA08AE8540F7FF622376 /* MailboxViewModelTests+Fetching.swift */,
 				6CA5BFC27D1E519D2AD5859FDAA37D18 /* MailboxViewModelTests.swift */,
@@ -6395,14 +6406,6 @@
 				EE43C208E26A1BFFEED62DC55422A63F /* SelectionStateRobotInterface.swift */,
 			);
 			path = Mailbox;
-			sourceTree = "<group>";
-		};
-		04DDC6422A8CD97A0F43681F783ACF19 /* Attachments */ = {
-			isa = PBXGroup;
-			children = (
-				BA05031F221BD51C0CDF8F03FD910AA4 /* DocumentAttachmentProviderTests.swift */,
-			);
-			path = Attachments;
 			sourceTree = "<group>";
 		};
 		A4E6950CC27E649B63D5F2E0DA207348 /* Pods */ = {
@@ -9133,6 +9136,7 @@
 				2FD722352701885DAC4BB5617C3C1B38 /* InternetConnectionStatusProviderTests.swift in Sources */,
 				6C0A8C83B374607E46ADC624DEF5BE6A /* KeyTestData.swift in Sources */,
 				41DB35BA471E010BD4ED411ABD57675B /* LabelTestData.swift in Sources */,
+				0A9629522C4FE0D480AF050411E8DF2F /* LinkOpeningValidatorTests.swift in Sources */,
 				957E6A2BB85FE7990095075A3465D5ED /* LocalNotificationServiceTests.swift in Sources */,
 				C4D9DF98DBE8A4D806ED8A0A8C45AEF3 /* Locale.swift in Sources */,
 				D120EB3D32FF1A6415EF7BABD6A683EC /* MailBoxSwipeActionHelperTests.swift in Sources */,

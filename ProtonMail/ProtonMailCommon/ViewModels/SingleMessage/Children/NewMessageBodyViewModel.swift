@@ -86,7 +86,7 @@ private enum EmbeddedDownloadStatus {
     case none, downloading, finish
 }
 
-class NewMessageBodyViewModel {
+final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
 
