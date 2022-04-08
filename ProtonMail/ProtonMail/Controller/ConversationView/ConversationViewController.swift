@@ -162,7 +162,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func scheduleAutoScroll(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
-        self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+        if self.customView.tableView.indexPathExists(indexPath) {
+            self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+        }
 
         switch self.autoScrollState {
         case .notRequested, .pendingRequest:
@@ -493,6 +495,7 @@ private extension ConversationViewController {
         switch self.autoScrollState {
         case let .pendingRequest(indexPath, position):
             self.autoScrollState = .notRequested
+            guard self.customView.tableView.indexPathExists(indexPath) else { return }
             self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
         default:
             break
