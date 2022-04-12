@@ -588,7 +588,7 @@ public class EncryptedSearchService {
         case complete = 6
     }
     
-    var state: EncryptedSearchIndexState = .disabled
+    var state: EncryptedSearchIndexState = .refresh //TODO change to disabled
     
     internal var user: UserManager!
     internal var messageService: MessageDataService? = nil

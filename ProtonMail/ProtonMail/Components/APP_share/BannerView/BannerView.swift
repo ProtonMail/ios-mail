@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
 import UIKit
 import ProtonCore_UIFoundations
 
@@ -38,6 +39,7 @@ class BannerView: PMView {
     private var timer: Timer?
     private var buttonConfig: ButtonConfiguration?
     private var secondButtonConfig: ButtonConfiguration?
+    private var link: String? = ""
 
     @IBOutlet private weak var button: UIButton!
     @IBOutlet private var backgroundView: UIView!
@@ -91,18 +93,38 @@ class BannerView: PMView {
          buttons: ButtonConfiguration?,
          button2: ButtonConfiguration? = nil,
          offset: CGFloat,
-         dismissDuration: TimeInterval = 4) {
+         dismissDuration: TimeInterval = 4,
+         link: String? = "")
+    {
         self.offset = offset
         self.dismissDuration = dismissDuration
 
         super.init(frame: CGRect.zero)
 
         self.roundCorners()
+        
         self.messageTextview.delegate = self
         self.messageTextview.textContainer.lineFragmentPadding = 0
         self.messageTextview.textContainerInset = .zero
-        self.messageTextview.text = message
-        self.messageTextview.textColor = appearance.textColor
+        if link == "" {
+            self.messageTextview.text = message
+            self.messageTextview.textColor = appearance.textColor
+        } else {
+            self.messageTextview.isScrollEnabled = false
+            self.messageTextview.isUserInteractionEnabled = true
+            self.messageTextview.isSelectable = true
+            self.messageTextview.isEditable = false
+            self.messageTextview.dataDetectorTypes = [.link]
+            self.messageTextview.attributedText = self.prepareAttributedText(text: message, link: link!)
+            self.messageTextview.linkTextAttributes = [.foregroundColor: UIColor.blue]
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(tapAttributedStringHandler(_:)))
+            tap.delegate = self
+            self.messageTextview.addGestureRecognizer(tap)
+            
+            self.link = link
+        }
+        
         self.backgroundView.backgroundColor = appearance.backgroundColor
         self.backgroundView.alpha = appearance.backgroundAlpha
         self.buttonConfig = buttons
@@ -273,6 +295,28 @@ extension BannerView: UIGestureRecognizerDelegate {
         let result = (constant * absOffset * dimension) / (dimension + constant * absOffset)
         return offset < 0 ? -result : result
     }
+    
+    @objc func tapAttributedStringHandler(_ sender: UITapGestureRecognizer) {
+        let myTextView = sender.view as! UITextView
+        let layoutManager = myTextView.layoutManager
+        
+        var location = sender.location(in: myTextView)
+        location.x -= myTextView.textContainerInset.left
+        location.y -= myTextView.textContainerInset.right
+        
+        let text = myTextView.attributedText.string
+        let subrange = text.range(of: self.link!)
+        let range = NSRange(subrange!, in: text)
+        
+        let characterIndex = layoutManager.characterIndex(for: location, in: myTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        if range.contains(characterIndex) {
+            let value = myTextView.attributedText.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) as! [String:URL]
+            let url = value["NSLink"]!
+            if (url.absoluteString).starts(with: "downloading") {
+                //TODO move to Settings ES screen
+            }
+        }
+    }
 }
 
 extension BannerView: UITextViewDelegate {
@@ -281,5 +325,33 @@ extension BannerView: UITextViewDelegate {
             self.secondAction("")
         }
         return false
+    }
+}
+
+extension BannerView {
+    func prepareAttributedText(text: String, link: String) -> NSMutableAttributedString {
+        let fullString = String.localizedStringWithFormat(text, link)
+        let formattedString = NSMutableAttributedString(string: fullString)
+
+        var url: URL? = nil
+        if link == LocalString._encrypted_search_info_search_partial_link {
+            url = URL(string: "partial://")
+        } else if link == LocalString._encrypted_search_info_search_downloading_link {
+            url = URL(string: "downloading://")
+        } else if link == LocalString._encrypted_search_info_search_paused_link {
+            url = URL(string: "paused://")
+        } else {
+            url = URL(string: link)
+        }
+
+        let attributes = [NSAttributedString.Key.link: url!] as [NSAttributedString.Key: Any]
+
+        if let subrange = fullString.range(of: link) {
+            let range = NSRange(subrange, in: fullString)
+            formattedString.addAttribute(.link, value: attributes, range: range)
+        }
+
+        //print("formated string: \(formattedString)")
+        return formattedString
     }
 }
