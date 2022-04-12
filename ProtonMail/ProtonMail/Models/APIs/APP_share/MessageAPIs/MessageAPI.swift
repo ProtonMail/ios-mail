@@ -96,11 +96,13 @@ final class FetchMessagesByLabel: Request {
     let labelID: String!
     let endTime: Int
     let isUnread: Bool?
-
-    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
+    let pageSize: Int?
+    
+    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil, pageSize: Int? = 50) {
         self.labelID = labelID
         self.endTime = endTime
         self.isUnread = isUnread
+        self.pageSize = pageSize
     }
 
     var parameters: [String: Any]? {
@@ -114,6 +116,9 @@ final class FetchMessagesByLabel: Request {
         }
         if let unread = self.isUnread, unread {
             out["Unread"] = 1
+        }
+        if let pagesize = self.pageSize {
+            out["PageSize"] = pagesize
         }
         return out
     }
