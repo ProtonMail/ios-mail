@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>pozostały %d próby</string>
+			<key>many</key>
+			<string>pozostało %d prób</string>
+			<key>one</key>
+			<string>pozostała %d próba</string>
+			<key>other</key>
+			<string>pozostało %d próby</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>pozostały %d próby do bezpiecznego wymazania danych!</string>
+			<key>many</key>
+			<string>pozostało %d prób do bezpiecznego wymazania danych!</string>
+			<key>one</key>
+			<string>pozostała %d próba do bezpiecznego wymazania danych!</string>
+			<key>other</key>
+			<string>pozostało %d próby do bezpiecznego wymazania danych!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d dni</string>
+			<key>many</key>
+			<string>%d dni</string>
+			<key>one</key>
+			<string>%d dzień</string>
+			<key>other</key>
+			<string>%d dnia</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d godziny</string>
+			<key>many</key>
+			<string>%d godzin</string>
+			<key>one</key>
+			<string>%d godzina</string>
+			<key>other</key>
+			<string>%d godziny</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d innych</string>
+			<key>many</key>
+			<string>%d innych</string>
+			<key>one</key>
+			<string>%d inny</string>
+			<key>other</key>
+			<string>%d innych</string>
+		</dict>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Zaktualizowano %d minuty temu</string>
+			<key>many</key>
+			<string>Zaktualizowano %d minut temu</string>
+			<key>one</key>
+			<string>Zaktualizowano minutę temu</string>
+			<key>other</key>
+			<string>Zaktualizowano %d minuty temu</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Czy na pewno chcesz trwale usunąć %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wątki</string>
+			<key>many</key>
+			<string>%d wątków</string>
+			<key>one</key>
+			<string>wątek</string>
+			<key>other</key>
+			<string>%d wątków</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Czy na pewno chcesz trwale usunąć %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wiadomości</string>
+			<key>many</key>
+			<string>%d wiadomości</string>
+			<key>one</key>
+			<string>wiadomość</string>
+			<key>other</key>
+			<string>%d wiadomości</string>
+		</dict>
+	</dict>
+	<key>general_conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u wątki</string>
+			<key>many</key>
+			<string>%u wątków</string>
+			<key>one</key>
+			<string>%u wątek</string>
+			<key>other</key>
+			<string>%u wątków</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
+	<key>general_message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u wiadomości</string>
+			<key>many</key>
+			<string>%u wiadomości</string>
+			<key>one</key>
+			<string>%u wiadomość</string>
+			<key>other</key>
+			<string>%u wiadomości</string>
+		</dict>
+	</dict>
+	<key>minute</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d minuty</string>
+			<key>many</key>
+			<string>%d minut</string>
+			<key>one</key>
+			<string>%d minuta</string>
+			<key>other</key>
+			<string>%d minuty</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>swipe_to_label_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wątki</string>
+			<key>many</key>
+			<string>%d wątków</string>
+			<key>one</key>
+			<string>Wątek</string>
+			<key>other</key>
+			<string>%d wątków</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ labeled</string>
+	</dict>
+	<key>swipe_to_label_title</key>
+	<dict>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wiadomości</string>
+			<key>many</key>
+			<string>%d wiadomości</string>
+			<key>one</key>
+			<string>Wiadomość</string>
+			<key>other</key>
+			<string>%d wiadomości</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ labeled</string>
+	</dict>
+	<key>swipe_to_move_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wątki</string>
+			<key>many</key>
+			<string>%d wątków</string>
+			<key>one</key>
+			<string>Wątek</string>
+			<key>other</key>
+			<string>%d wątków</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ moved to %@</string>
+	</dict>
+	<key>swipe_to_move_title</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d wiadomości</string>
+			<key>many</key>
+			<string>%d wiadomości</string>
+			<key>one</key>
+			<string>Wiadomość</string>
+			<key>other</key>
+			<string>%d wiadomości</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ moved to %@</string>
+	</dict>
+</dict>
+</plist>

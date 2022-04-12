@@ -1,0 +1,255 @@
+
+:root {
+  color-scheme: light dark;
+  --text-color: #505061;
+  --bg-color: white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+      --text-color: white;
+      --bg-color: #16171C;
+  }
+  a:link { color: deepskyblue; }
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
+    display: block;
+}
+
+audio,canvas,video {
+    display: inline-block;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+[hidden] {
+    display: none;
+}
+
+html {
+    font-size: 100%;
+}
+
+button,html,input,select,textarea {
+    font-family: -apple-system,sans-serif;
+}
+
+body {
+    font-family: -apple-system,Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    color: var(--text-color);
+    background: var(--bg-color);
+    /* outside of tables we force wrap long text */
+    word-break: break-word;
+}
+
+table * {
+    /* inside of tables we use detault wrapping for best formatting (such as Amazon reciept emails) */
+    word-break: initial;
+}
+
+table a, table p {
+    word-break: break-word;
+}
+
+blockquote {
+    padding: 0 0 0 0.6rem !important;
+    margin: 0 !important;
+    border: 1px solid #ccc !important;
+    border-width: 0 0 0 1px !important;
+    -webkit-margin-before: 1rem !important;
+    -webkit-margin-after: 2rem !important;
+    -webkit-margin-start: 0 !important;
+    -webkit-margin-end: 0 !important;
+}
+
+blockquote blockquote blockquote {
+    padding: 0 !important;
+    border: none !important;
+}
+
+a:focus {
+    outline: dotted thin;
+}
+
+a:active,a:hover {
+    outline: 0;
+}
+
+h1 {
+    font-size: 2em;
+    margin: .67em 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: .83em 0;
+}
+
+h3 {
+    font-size: 1.17em;
+    margin: 1em 0;
+}
+
+h4 {
+    font-size: 1em;
+    margin: 1.33em 0;
+}
+
+h5 {
+    font-size: .83em;
+    margin: 1.67em 0;
+}
+
+h6 {
+    font-size: .75em;
+    margin: 2.33em 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 120%;
+}
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+b,strong {
+    font-weight: 700;
+}
+
+dfn {
+    font-style: italic;
+}
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+p,pre {
+    margin: 1em 0;
+}
+
+code,kbd,pre,samp {
+    font-family: monospace,serif;
+    font-size: 1em;
+}
+
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+* {
+    caret-color: red !important;
+    
+    /* debug only */
+        /* margin: 0 !important;
+        position: static !important;
+        float: none !important; */
+    /* end debug */
+}
+
+q {
+    quotes: none;
+}
+
+q:after,q:before {
+    content: none;
+}
+
+small {
+    font-size: 80%;
+}
+
+sub,sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -.5em;
+}
+
+sub {
+    bottom: -.25em;
+}
+
+dl,menu,ol,ul {
+    margin: 1em 0;
+}
+
+dd {
+    margin: 0 0 0 40px;
+}
+
+menu,ol,ul {
+    padding: 0 0 0 40px;
+}
+
+nav ol,nav ul {
+    list-style: none;
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+    max-width: 100%;
+    /* will prevent embed image improper sizing */
+    /*    height: auto; remove it if test ok*/
+}
+
+/*img.proton-embedded {*/
+/*    height: auto;*/
+/*}*/
+
+td {
+    max-width: 100%;
+}
+
+table {
+    /* Some html newsletters set up inline style for tables to take 100% of height and then add footer contents like Unsubscribe button and credits. This practice breaks MessageBodyViewController layout: webView does not include footer into contentSize because consider it to be scrollable. No matter what, webView will place footer below the bottomline of the view in order to make users scroll for it. Since we do not want webViews to be scrollable (in order to support conversation mode), we have to override this styling practice and let table take as much space as its content really needs and place the footer just below. */
+    height: auto !important;
+    min-height: auto !important;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+figure,form {
+    margin: 0;
+}
+
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em;
+}
+
+legend {
+    border: 0;
+    padding: 0;
+    white-space: normal;
+}
+
+
+.pm_font_larger {
+    font-size: 1.8em;
+}
+
+*[style*="min-height"] {
+    min-height: initial !important;
+}

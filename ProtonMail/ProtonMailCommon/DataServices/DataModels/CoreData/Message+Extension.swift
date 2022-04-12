@@ -24,7 +24,7 @@
 import Foundation
 import CoreData
 import Crypto
-import PMCommon
+import ProtonCore_DataModel
 
 extension Message {
     
@@ -37,12 +37,12 @@ extension Message {
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
+        static let unread = "unread"
         
         static let messageType = "messageType"
         static let messageStatus = "messageStatus"
 
         static let expirationTime = "expirationTime"
-        
         // 1.9.1
         static let unRead = "unRead"
         
@@ -51,6 +51,17 @@ extension Message {
         
         // 1.12.9
         static let isSending = "isSending"
+
+        // 2.0.0
+        static let conversationID = "conversationID"
+        static let isSoftDeleted = "isSoftDeleted"
+    }
+
+    var recipients: [[String: Any]] {
+        let to: [[String: Any]] = self.toList.parseJson() ?? []
+        let cc: [[String: Any]] = self.ccList.parseJson() ?? []
+        let bcc: [[String: Any]] = self.bccList.parseJson() ?? []
+        return to + cc + bcc
     }
     
     // MARK: - variables
@@ -93,12 +104,12 @@ extension Message {
         var outLabel: String?
         //1, 2, labels can't be in inbox,
         var addLabelID = labelID
-        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
             // move message to 1 / 8
             addLabelID = Location.draft.rawValue //"8"
         }
         
-        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HiddenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
             // move message to 2 / 7
             addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue //"7"
         }
@@ -168,7 +179,7 @@ extension Message {
         let labelObjs = self.mutableSetValue(forKey: "labels")
         for l in labelObjs {
             if let label = l as? Label {
-                if label.exclusive == true {
+                if label.type == 3 {
                     return label.labelID
                 }
                 
@@ -227,7 +238,7 @@ extension Message {
         // This is the basic labes for draft
         let basic = [Message.Location.draft.rawValue,
                      Message.Location.allmail.rawValue,
-                     Message.HidenLocation.draft.rawValue]
+                     Message.HiddenLocation.draft.rawValue]
         for label in labels {
             let id = label.labelID
             if basic.contains(id) {continue}
@@ -240,8 +251,7 @@ extension Message {
                 break
             }
             
-            // In v3 api, exclusive == true means folder
-            guard label.exclusive else {continue}
+            guard label.type == 3 else {continue}
             
             self.remove(labelID: Message.Location.draft.rawValue)
             break
@@ -295,7 +305,7 @@ extension Message {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
-                if label.exclusive == true && label.name != ignored {
+                if label.type == 3 && label.name != ignored {
                     return label.name
                 } else if !lableOnly {
                     if let new_loc = Message.Location(rawValue: label.labelID), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
@@ -321,61 +331,6 @@ extension Message {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
-    
-    class func delete(location : Message.Location) -> Bool {
-        if location == .spam || location == .trash || location == .draft {
-            return self.delete(labelID: location.rawValue)
-        }
-        return false
-    }
-    
-    class func delete(labelID : String) -> Bool { //TODO:: double check if user id matters
-        var result = false
-        let mContext = CoreDataService.shared.mainManagedObjectContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@)", "\(labelID)")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        mContext.performAndWait {
-            do {
-                if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-                    for message in oldMessages {
-                        mContext.delete(message)
-                    }
-                    if let error = mContext.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    } else {
-                        result = true
-                    }
-                }
-            } catch {
-                PMLog.D(" error: \(error)")
-            }
-        }
-        
-        return result
-    }
-    
-    
-    /**
-     delete the message from local cache only use the message id
-     
-     :param: messageID String
-     */
-    class func deleteMessage(_ messageID : String) {
-        let context = CoreDataService.shared.mainManagedObjectContext
-        CoreDataService.shared.enqueue(context: context) { (context) in
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                let labelObjs = message.mutableSetValue(forKey: Attributes.labels)
-                labelObjs.removeAllObjects()
-                message.setValue(labelObjs, forKey: Attributes.labels)
-                context.delete(message)
-            }
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-            }
-        }
-    }
 
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
@@ -389,6 +344,21 @@ extension Message {
         return (managedObjectContext.managedObjectsWithEntityName(Attributes.entityName, forKey: Attributes.isSending, matchingValue: NSNumber(value: true)) as? [Message])?.compactMap{ $0.messageID }
     }
     
+    class func messagesForConversationID(_ conversationID: String, inManagedObjectContext context: NSManagedObjectContext, shouldSort: Bool = false) -> [Message]? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.conversationID, conversationID)
+        if shouldSort {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true), NSSortDescriptor(key: #keyPath(Message.order), ascending: true)]
+        }
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results as? [Message]
+        } catch {
+        }
+        return nil
+    }
+    
     override public func awakeFromInsert() {
         super.awakeFromInsert()
         
@@ -396,60 +366,50 @@ extension Message {
     }
     
     // MARK: methods
-//    func decryptBody(keys: Data, passphrase: String) throws -> String? {
-//        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
-//    }
     
     func decryptBody(keys: [Key], passphrase: String) throws -> String? {
         var firstError : Error?
         var errorMessages: [String] = []
         for key in keys {
             do {
-                return try body.decryptMessageWithSinglKey(key.private_key, passphrase: passphrase)
+                if let decryptedBody = try body.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
+                }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
-
+        
+        if let error = firstError {
+            throw error
+        }
         return nil
     }
     
     func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError : Error?
         var errorMessages: [String] = []
-        var newScheme: Int = 0
-        var oldSchemaWithToken: Int = 0
-        var oldSchema: Int = 0
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                    newScheme += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here Detached signature
-                        // if failed return a warning
-                        PMLog.D(signature)
-                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    oldSchemaWithToken += 1
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
-                    }
-                } else {//normal key old schema
-                    oldSchema += 1
-                    return try body.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                if let decryptedBody = try body.decryptMessageWithSinglKey(key.privateKey,
+                                                                           passphrase: addressKeyPassphrase) {
+                    return decryptedBody
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                     errorMessages.append(error.localizedDescription)
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         return nil
@@ -504,7 +464,12 @@ extension Message {
                          name: sender?.name ?? "",
                          email: sender?.address ?? "")
     }
+
+    var isHavingMoreThanOneContact: Bool {
+        (toList.toContacts() + ccList.toContacts()).count > 1
+    }
+
+    var hasMetaData: Bool {
+        messageStatus == 1
+    }
 }
-
-
-

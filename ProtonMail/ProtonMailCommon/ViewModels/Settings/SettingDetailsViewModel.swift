@@ -20,110 +20,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 protocol SettingDetailsViewModel {
-    
-    var sectionTitle2 : String {get}
-    
+    var userManager: UserManager { get }
+    var sectionTitle2: String { get }
     func getNavigationTitle() -> String
-    func getTopHelpText() ->String
-    func getSectionTitle() -> String
     func isDisplaySwitch() -> Bool
     func getSwitchText() -> String
     func getSwitchStatus() -> Bool
     func isShowTextView() -> Bool
     func isRequireLoginPassword() -> Bool
     func getPlaceholdText() -> String
-    
     func getCurrentValue() -> String
-    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void)
-    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void)
-    
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void)
+    func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void)
     func isSwitchEnabled() -> Bool
-    func isTextEnabled() -> Bool
-    
     func getNotes() -> String
-    
     func needAsk2FA() -> Bool
 }
 
-
-class SettingDetailsViewModelTest : SettingDetailsViewModel{
-    var sectionTitle2: String {
-        return ""
-    }
+class ChangeDisplayNameViewModel: SettingDetailsViewModel {
+    let userManager: UserManager
     
-    func getNavigationTitle() -> String {
-        return "Navigation localized Title - Test"
-    }
-    
-    func getTopHelpText() -> String {
-        return "this is localized description - Test"
-    }
-    
-    func isRequireLoginPassword() -> Bool {
-        return false
-    }
-    
-    func getSectionTitle() -> String {
-        return "Section Title - Test"
-    }
-    
-    func isDisplaySwitch() -> Bool {
-        return true
-    }
-    
-    func getSwitchText() -> String {
-        return "Enable - Test"
-    }
-    
-    func getSwitchStatus() -> Bool {
-        return true
-    }
-    
-    func isShowTextView() -> Bool {
-        return true
-    }
-    
-    func getPlaceholdText() -> String {
-        return "Please input ... - Test"
-    }
-    
-    func getCurrentValue() -> String {
-        return "test value"
-    }
-    
-    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping(Bool, NSError?) -> Void) {
-        complete(true, nil)
-    }
-    
-    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
-        complete(true, nil)
-    }
-    
-    func isSwitchEnabled() -> Bool {
-        return true
-    }
-    func isTextEnabled() -> Bool{
-        return true
-    }
-    
-    func getNotes() -> String {
-        return ""
-    }
-    
-    func needAsk2FA() -> Bool {
-        return false
-    }
-}
-
-
-
-class ChangeDisplayNameViewModel : SettingDetailsViewModel{
-    
-    let userManager : UserManager
     init(user: UserManager) {
         self.userManager = user
     }
@@ -136,14 +55,6 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         return LocalString._settings_displayname_title
     }
     
-    func getTopHelpText() -> String {
-        return NSLocalizedString("What people see in the \"From\" field.", comment: "Description")
-    }
-    
-    func getSectionTitle() -> String {
-        return LocalString._settings_display_name_title
-    }
-    
     func isDisplaySwitch() -> Bool {
         return false
     }
@@ -155,7 +66,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     func getSwitchStatus() -> Bool {
         return true
     }
-
+    
     func isShowTextView() -> Bool {
         return false
     }
@@ -169,45 +80,35 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
-        if let addr = self.userManager.addresses.defaultAddress() {
-            return addr.display_name
+        if let addr = userManager.addresses.defaultAddress() {
+            return addr.displayName
         }
-        return self.userManager.displayName
+        return userManager.displayName
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-        let userService = self.userManager.userService
-        if let addr = self.userManager.addresses.defaultAddress() {
+        let userService = userManager.userService
+        if let addr = userManager.addresses.defaultAddress() {
             userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.address_id, displayName: new_value,
-                                      signature: addr.signature, completion: { (_, _, error) in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            })
+                                      addressId: addr.addressID, displayName: new_value,
+                                      signature: addr.signature, completion: { _, _, error in
+                                          if let error = error {
+                                              complete(false, error)
+                                          } else {
+                                              self.userManager.save()
+                                              complete(true, nil)
+                                          }
+                                      })
         } else {
-            userService.updateDisplayName(auth: userManager.auth, user: userManager.userInfo,
-                                          displayName: new_value) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            }
+            fatalError("Current user has no defualt address. Should not go here")
         }
     }
     
-    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void) {
         complete(true, nil)
     }
+
     func isSwitchEnabled() -> Bool {
-        return true
-    }
-    func isTextEnabled() -> Bool {
         return true
     }
     
@@ -220,26 +121,18 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
 }
 
-
-class ChangeSignatureViewModel : SettingDetailsViewModel{
-    let userManager : UserManager
+class ChangeSignatureViewModel: SettingDetailsViewModel {
+    let userManager: UserManager
+    
     init(user: UserManager) {
         self.userManager = user
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
-        return LocalString._settings_signature_title
-    }
-    
-    func getTopHelpText() -> String {
-        return LocalString._settings_email_default_signature
-    }
-    
-    func getSectionTitle() -> String {
         return LocalString._settings_signature_title
     }
     
@@ -254,7 +147,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     func getSwitchStatus() -> Bool {
         return userManager.defaultSignatureStatus
     }
-
+    
     func isShowTextView() -> Bool {
         return true
     }
@@ -264,7 +157,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getPlaceholdText() -> String {
-        return ""
+        return LocalString._settings_default_signature_placeholder
     }
     
     func getCurrentValue() -> String {
@@ -276,20 +169,22 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         let userService = userManager.userService
+        let valueToSave = new_value.trim().ln2br()
         if let addr = userManager.addresses.defaultAddress() {
             userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
-                                      addressId: addr.address_id, displayName: addr.display_name,
-                                      signature: new_value.ln2br(), completion: { (_, _, error) in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            })
+                                      addressId: addr.addressID, displayName: addr.displayName,
+                                      signature: valueToSave, completion: { _, _, error in
+                                          if let error = error {
+                                              complete(false, error)
+                                          } else {
+                                              self.userManager.save()
+                                              complete(true, nil)
+                                          }
+                                      })
         } else {
-            userService.updateSignature(auth: userManager.auth, user: userManager.userInfo,
-                                        new_value.ln2br()) { _, _, error in
+            userService.updateSignature(auth: userManager.auth,
+                                        user: userManager.userInfo,
+                                        valueToSave) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -300,15 +195,12 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         }
     }
     
-    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void) {
         userManager.defaultSignatureStatus = isOn
         complete(true, nil)
     }
     
     func isSwitchEnabled() -> Bool {
-        return true
-    }
-    func isTextEnabled() -> Bool {
         return true
     }
     
@@ -321,25 +213,18 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
 }
 
-class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
-    let userManager : UserManager
+class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
+    let userManager: UserManager
+    
     init(user: UserManager) {
         self.userManager = user
     }
     
     var sectionTitle2: String {
-        return LocalString._edit_mobile_signature
+        return ""
     }
     
     func getNavigationTitle() -> String {
-        return LocalString._settings_mobile_signature_title
-    }
-    
-    func getTopHelpText() -> String {
-        return LocalString._settings_only_paid_to_modify_mobile_signature
-    }
-    
-    func getSectionTitle() -> String {
         return LocalString._settings_mobile_signature_title
     }
     
@@ -352,7 +237,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getSwitchStatus() -> Bool {
-        return self.userManager.showMobileSignature
+        return userManager.showMobileSignature
     }
     
     func isShowTextView() -> Bool {
@@ -368,46 +253,44 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getCurrentValue() -> String {
-        return self.userManager.mobileSignature
+        return userManager.mobileSignature
     }
     
-    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
-            self.userManager.mobileSignature = new_value.ln2br()
-            self.userManager.save()
+            let newValueToSave = new_value.trim().ln2br()
+            userManager.mobileSignature = newValueToSave
+            userManager.save()
             complete(true, nil)
         }
     }
     
-    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
-            self.userManager.showMobileSignature = isOn
+            userManager.showMobileSignature = isOn
             complete(true, nil)
         }
     }
+
     func isSwitchEnabled() -> Bool {
-        return self.getRole()
-    }
-    func isTextEnabled() -> Bool {
-        return self.getRole()
+        return getRole()
     }
     
     func getNotes() -> String {
-        return self.getRole() ? "" : LocalString._settings_plus_is_required_to_modify_signature_notes
+        return ""
     }
     
-    
     internal func getRole() -> Bool {
-        #if Enterprise
-            let isEnterprise = true
-        #else
-            let isEnterprise = false
-        #endif
-        let role = self.userManager.userInfo.role
+#if Enterprise
+        let isEnterprise = true
+#else
+        let isEnterprise = false
+#endif
+        let role = userManager.userInfo.role
         return role > 0 || isEnterprise
     }
     
@@ -416,27 +299,18 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
 }
 
-
-class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
-    
-    let userManager : UserManager
+class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
+    let userManager: UserManager
     init(user: UserManager) {
         self.userManager = user
     }
     
     var sectionTitle2: String {
-        return ""
+        return LocalString._settings_notification_email_section_title
     }
+    
     func getNavigationTitle() -> String {
         return LocalString._settings_notification_email
-    }
-    
-    func getTopHelpText() -> String {
-        return LocalString._settings_notification_email_notes
-    }
-    
-    func getSectionTitle() -> String {
-        return LocalString._settings_notification_email_title
     }
     
     func isRequireLoginPassword() -> Bool {
@@ -452,7 +326,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     func getSwitchStatus() -> Bool {
-        return self.userManager.notify
+        return userManager.notify
     }
     
     func isShowTextView() -> Bool {
@@ -462,16 +336,16 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     func getPlaceholdText() -> String {
         return LocalString._settings_notification_email_placeholder
     }
-
+    
     func getCurrentValue() -> String {
-        return self.userManager.notificationEmail
+        return userManager.notificationEmail
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
-            let service = self.userManager.userService
+            let service = userManager.userService
             service.updateNotificationEmail(auth: userManager.auth,
                                             user: userManager.userInfo,
                                             new_notification_email: new_value,
@@ -487,28 +361,25 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
         }
     }
     
-    func updateNotification(_ isOn : Bool, complete:@escaping (Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn: Bool, complete: @escaping (Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
-            let service = self.userManager.userService
+            let service = userManager.userService
             service.updateNotify(auth: userManager.auth,
                                  user: userManager.userInfo,
-                                 isOn, completion: { (task, response, error) -> Void in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    self.userManager.save()
-                    complete(true, nil)
-                }
-            })
+                                 isOn, completion: { _, _, error in
+                                     if let error = error {
+                                         complete(false, error)
+                                     } else {
+                                         self.userManager.save()
+                                         complete(true, nil)
+                                     }
+                                 })
         }
     }
     
     func isSwitchEnabled() -> Bool {
-        return true
-    }
-    func isTextEnabled() -> Bool {
         return true
     }
     
@@ -517,6 +388,6 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     func needAsk2FA() -> Bool {
-        return self.userManager.userInfo.twoFactor > 0
+        return userManager.userInfo.twoFactor > 0
     }
 }

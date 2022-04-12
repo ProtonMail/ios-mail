@@ -6,71 +6,85 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let singlePasswordLabel = LocalString._single_password
-private let recoveryEmailLabel = LocalString._recovery_email
-private let displayNameLabel = "Display name"
-private let defaultLabel = LocalString._general_default
-private let signatureLabel = LocalString._settings_signature_title
-private let mobileSignatureLabel = "Mobile signature"
-private let privacyLabel = LocalString._privacy
-private let labelsAndFoldersLabel = LocalString._label_and_folders
-private let swipingGesturesLabel = LocalString._swiping_gestures
-private let signatureStaticTextLabel = LocalString._settings_signature_title
-private let signatureOnStaticTextLabel = LocalString._composer_on
-private let signatureOffStaticTextLabel = "Off"
-private let privacySignatureStaticTextLabel = LocalString._privacy
-private let backNavBarButtonIdentifier = LocalString._menu_settings_title
+import pmtest
+
+fileprivate struct id {
+    static let singlePasswordLabel = LocalString._single_password
+    static let recoveryEmailLabel = LocalString._recovery_email
+    static let displayNameLabel = "Display name"
+    static let defaultLabel = LocalString._general_default
+    static let signatureLabel = LocalString._settings_signature_title
+    static let mobileSignatureLabel = "Mobile signature"
+    
+    static let signatureRightStaticTextIdentifier = "Signature.rightText"
+    static let mobileSignatureRightStaticTextIdentifier = "Mobile_signature.rightText"
+    static let onStaticTextLabel = LocalString._settings_On_title
+    static let offStaticTextLabel = LocalString._settings_Off_title
+
+    static let privacyLabel = LocalString._privacy
+    static let labelsIdentifier = "SettingsGeneralCell.Labels"
+    static let foldersIdentifier = "SettingsGeneralCell.Folders"
+    static let swipingGesturesLabel = LocalString._swiping_gestures
+    static let signatureStaticTextLabel = LocalString._settings_signature_title
+    static let signatureOnStaticTextLabel = LocalString._springboard_shortcuts_composer
+    static let privacySignatureStaticTextLabel = LocalString._privacy
+    static let backNavBarButtonIdentifier = LocalString._menu_settings_title
+}
 
 /**
  AccountSettingsRobot class contains actions and verifications for Account settings functionality.
  */
-class AccountSettingsRobot {
+class AccountSettingsRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+    var verify = Verify()
     
-    func foldersAndLabels() -> AccountSettingsLabelsAndFoldersRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(labelsAndFoldersLabel, file: #file, line: #line).tap()
+    func labels() -> AccountSettingsLabelsAndFoldersRobot {
+        cell(id.labelsIdentifier).tap()
+        return AccountSettingsLabelsAndFoldersRobot()
+    }
+    
+    func folders() -> AccountSettingsLabelsAndFoldersRobot {
+        cell(id.foldersIdentifier).tap()
         return AccountSettingsLabelsAndFoldersRobot()
     }
     
     func defaultEmailAddress() -> DefaultEmailAddressRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(defaultLabel, file: #file, line: #line).tap()
+        staticText(id.defaultLabel).tap()
         return DefaultEmailAddressRobot()
     }
     
     func displayName() -> DisplayNameRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(displayNameLabel, file: #file, line: #line).tap()
+        staticText(id.displayNameLabel).tap()
         return DisplayNameRobot()
     }
     
     func mobileSignature() -> SignatureRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(mobileSignatureLabel, file: #file, line: #line).tap()
+        staticText(id.mobileSignatureLabel).tap()
         return SignatureRobot()
     }
     
     func privacy() -> PrivacyRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(privacySignatureStaticTextLabel, file: #file, line: #line).tap()
+        staticText(id.privacySignatureStaticTextLabel).tap()
         return PrivacyRobot()
     }
     
     func recoveryEmail() -> RecoveryEmailRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(recoveryEmailLabel, file: #file, line: #line).tap()
+        staticText(id.recoveryEmailLabel).tap()
         return RecoveryEmailRobot()
     }
     
     func singlePassword() -> SinglePasswordRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(singlePasswordLabel, file: #file, line: #line).tap()
+        staticText(id.singlePasswordLabel).tap()
         return SinglePasswordRobot()
     }
 
     func signature() -> SignatureRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(signatureLabel, file: #file, line: #line).tap()
+        staticText(id.signatureLabel).tap()
         return SignatureRobot()
     }
     
     func navigateBackToSettings() -> SettingsRobot {
-        Element.wait.forButtonWithIdentifier(backNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.backNavBarButtonIdentifier).tap()
         return SettingsRobot()
     }
     
@@ -79,13 +93,12 @@ class AccountSettingsRobot {
      */
     class DefaultEmailAddressRobot {
         
-        var verify: Verify! = nil
-        init() { verify = Verify() }
+        var verify = Verify()
         
-        class Verify {
+        class Verify: CoreElements {
             @discardableResult
             func changeDefaultAddressViewShown(_ email: String) -> DefaultEmailAddressRobot {
-                Element.wait.forButtonWithIdentifier(email, file: #file, line: #line)
+                button(email).wait().checkExists()
                 return DefaultEmailAddressRobot()
             }
         }
@@ -94,32 +107,28 @@ class AccountSettingsRobot {
     /**
      Contains all the validations that can be performed by AccountSettingsRobot.
      */
-    class Verify {
+    class Verify: CoreElements {
         
         func accountSettingsOpened() {}
         
         func signatureIsEnabled() {
-            Element.wait.forCellByIndex(5).assertHasStaticTextChild(withText: signatureStaticTextLabel)
-            Element.wait.forCellByIndex(5).assertHasStaticTextChild(withText: signatureOnStaticTextLabel)
+            staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
         }
         
         func signatureIsDisabled() {
-            Element.wait.forCellByIndex(5).assertHasStaticTextChild(withText: signatureStaticTextLabel)
-            Element.wait.forCellByIndex(5).assertHasStaticTextChild(withText: signatureOffStaticTextLabel)
+            staticText(id.signatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
         }
         
         func mobileSignatureIsEnabled() {
-            Element.wait.forCellByIndex(6).assertHasStaticTextChild(withText: mobileSignatureLabel)
-            Element.wait.forCellByIndex(6).assertHasStaticTextChild(withText: signatureOnStaticTextLabel)
+            staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.onStaticTextLabel).checkExists()
         }
         
         func mobileSignatureIsDisabled() {
-            Element.wait.forCellByIndex(6).assertHasStaticTextChild(withText: mobileSignatureLabel)
-            Element.wait.forCellByIndex(6).assertHasStaticTextChild(withText: signatureOffStaticTextLabel)
+            staticText(id.mobileSignatureRightStaticTextIdentifier).hasLabel(id.offStaticTextLabel).checkExists()
         }
         
         func displayNameShownWithText(_ name: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(name, file: #file, line: #line)
+            staticText(name).wait().checkExists()
         }
     }
 }

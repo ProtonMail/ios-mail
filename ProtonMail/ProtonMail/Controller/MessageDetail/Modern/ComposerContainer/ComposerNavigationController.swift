@@ -24,7 +24,5 @@
 import UIKit
 
 class ComposerNavigationController: UINavigationController {
-    override var childForStatusBarStyle: UIViewController? {
-        self.viewControllers.first
-    }
+    
 }

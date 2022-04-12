@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 public class BugDataService: Service {
     private let apiService : APIService
@@ -32,26 +33,33 @@ public class BugDataService: Service {
     
     func reportPhishing(messageID : String, messageBody : String, completion: ((NSError?) -> Void)?) {
         let route = ReportPhishing(msgID: messageID, mimeType: "text/html", body: messageBody)
-        self.apiService.exec(route: route) { (res) in
-            completion?(res.error)
+        self.apiService.exec(route: route) { (res: Response) in
+            completion?(res.error?.toNSError)
         }
     }
     
-    public func reportBug(_ bug: String, username : String, email: String, completion: ((NSError?) -> Void)?) {
+    public func reportBug(_ bug: String,
+                          username: String,
+                          email: String,
+                          lastReceivedPush: String,
+                          reachabilityStatus: String,
+                          completion: ((NSError?) -> Void)?) {
         let systemVersion = UIDevice.current.systemVersion;
         let model = "iOS - \(UIDevice.current.model)"
         let mainBundle = Bundle.main
         let username = username
         let useremail = email
         let route = BugReportRequest(os: model,
-                                      osVersion: "\(systemVersion)",
-                                      clientVersion: mainBundle.appVersion,
-                                      title: "ProtonMail App bug report",
-                                      desc: bug,
-                                      userName: username,
-                                      email: useremail)
-        self.apiService.exec(route: route) { (res) in
-            completion?(res.error)
+                                     osVersion: "\(systemVersion)",
+                                     clientVersion: mainBundle.appVersion,
+                                     title: "ProtonMail App bug report",
+                                     desc: bug,
+                                     userName: username,
+                                     email: useremail,
+                                     lastReceivedPush: lastReceivedPush,
+                                     reachabilityStatus: reachabilityStatus)
+        self.apiService.exec(route: route) { (res: Response) in
+            completion?(res.error?.toNSError)
         }
     }
 }

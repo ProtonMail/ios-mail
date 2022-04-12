@@ -6,17 +6,16 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
-fileprivate let emptyFolderButtonIdentifier = "Empty folder"
+import pmtest
 
+fileprivate struct id {
+    static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
+    static let emptyFolderButtonIdentifier = "Empty folder"
+}
 
 class TrashRobot: MailboxRobotInterface {
     
-    var verify: Verify! = nil
-    override init() {
-        super.init()
-        verify = Verify(parent: self)
-    }
+    var verify = Verify()
     
     func clearTrashFolder() -> TrashRobot {
         moreOptions()
@@ -25,18 +24,18 @@ class TrashRobot: MailboxRobotInterface {
     }
     
     private func moreOptions() -> TrashRobot {
-        Element.wait.forButtonWithIdentifier(mailboxMoreButtonIdentifier, file: #file, line: #line).tap()
+        button(id.mailboxMoreButtonIdentifier).tap()
         return TrashRobot()
     }
 
     private func emptyFolder() -> TrashDialogRobot {
-        Element.wait.forButtonWithIdentifier(emptyFolderButtonIdentifier, file: #file, line: #line).tap()
+        button(id.emptyFolderButtonIdentifier).tap()
         return TrashDialogRobot()
     }
     
-    class TrashDialogRobot {
+    class TrashDialogRobot: CoreElements {
         func confirmEmptyTrashFolderAction() -> TrashRobot {
-            Element.wait.forButtonWithIdentifier(emptyFolderButtonIdentifier, file: #file, line: #line).tap()
+            button(id.emptyFolderButtonIdentifier).tap()
             return TrashRobot()
         }
     }
@@ -45,11 +44,9 @@ class TrashRobot: MailboxRobotInterface {
      * Contains all the validations that can be performed by [Trash].
      */
     class Verify : MailboxRobotVerifyInterface {
-        unowned let trashRobot: TrashRobot
-        init(parent: TrashRobot) { trashRobot = parent }
         
         func messageWithSubjectExists(_ subject: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            staticText(subject).wait().checkExists()
         }
     }
 }

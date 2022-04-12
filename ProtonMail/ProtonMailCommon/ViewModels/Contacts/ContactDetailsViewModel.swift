@@ -29,6 +29,8 @@ typealias LoadingProgress = () -> Void
 class ContactDetailsViewModel : ViewModelBase {
     var user: UserManager
     let coreDataService: CoreDataService
+
+    var reloadView: (() -> Void)?
     
     init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
@@ -37,7 +39,7 @@ class ContactDetailsViewModel : ViewModelBase {
     }
     
     func paidUser() -> Bool {
-        return user.isPaid
+        return user.hasPaidMailPlan
     }
     
     @discardableResult

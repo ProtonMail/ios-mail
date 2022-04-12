@@ -26,12 +26,13 @@ import Foundation
 extension UsersManager {
     
     fileprivate struct TransType {
-        static let boolean     = "BoolTransformer"
-        static let date        = "DateTransformer"
-        static let number      = "NumberTransformer"
-        static let jsonString  = "JsonStringTransformer"
-        static let jsonObject  = "JsonToObjectTransformer"
-        static let encodedData = "EncodedDataTransformer"
+        static let boolean          = "BoolTransformer"
+        static let date             = "DateTransformer"
+        static let number           = "NumberTransformer"
+        static let jsonString       = "JsonStringTransformer"
+        static let jsonObject       = "JsonToObjectTransformer"
+        static let anyJsonToString  = "AnyJsonToStringTransformer"
+        static let encodedData      = "EncodedDataTransformer"
     }
     
     // MARK: - Private methods
@@ -78,8 +79,7 @@ extension UsersManager {
                     let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
             return ""
         }
@@ -91,12 +91,19 @@ extension UsersManager {
                     let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
             return ""
         }
         
+        ValueTransformer.grt_setValueTransformer(withName: TransType.anyJsonToString) { (value) -> Any? in
+            if let tag = value as? [String : Any] {
+                return tag.toString()
+            } else {
+                return ""
+            }
+        }
+
         ValueTransformer.grt_setValueTransformer(withName: TransType.encodedData) { (value) -> Any? in
             if let tag = value as? String {
                 if let data: Data = Data(base64Encoded: tag, options: NSData.Base64DecodingOptions(rawValue: 0)) {

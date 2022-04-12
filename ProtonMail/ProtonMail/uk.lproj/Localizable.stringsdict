@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d attempt remaining</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Залишилося %d спроби</string>
+			<key>many</key>
+			<string>Залишилося %d спроб</string>
+			<key>one</key>
+			<string>Залишилася %d спроба</string>
+			<key>other</key>
+			<string>Залишилося %d спроб</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d attempt remaining until secure data wipe!</key>
+	<dict>
+		<key>ATTEMPT</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>Залишилось %d спроби до стирання захищених даних!</string>
+			<key>many</key>
+			<string>Залишилось %d спроб до стирання захищених даних!</string>
+			<key>one</key>
+			<string>Залишилась %d спроба до стирання захищених даних!</string>
+			<key>other</key>
+			<string>Залишилось %d спроб до стирання захищених даних!</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@ATTEMPT@</string>
+	</dict>
+	<key>%d day</key>
+	<dict>
+		<key>DAY</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d дні</string>
+			<key>many</key>
+			<string>%d днів</string>
+			<key>one</key>
+			<string>%d день</string>
+			<key>other</key>
+			<string>%d днів</string>
+			<key>zero</key>
+			<string>%d day</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@DAY@</string>
+	</dict>
+	<key>%d hour</key>
+	<dict>
+		<key>HOUR</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d години</string>
+			<key>many</key>
+			<string>%d годин</string>
+			<key>one</key>
+			<string>%d година</string>
+			<key>other</key>
+			<string>%d годин</string>
+			<key>zero</key>
+			<string>%d hour</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@HOUR@</string>
+	</dict>
+	<key>+%d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@OTHER@</string>
+		<key>OTHER</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d інші</string>
+			<key>many</key>
+			<string>%d інших</string>
+			<key>one</key>
+			<string>%d інший</string>
+			<key>other</key>
+			<string>%d інших</string>
+		</dict>
+	</dict>
+	<key>Updated %d min ago</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>Оновлено %d хвилини тому</string>
+			<key>many</key>
+			<string>Оновлено %d хвилин тому</string>
+			<key>one</key>
+			<string>Оновлено %d хвилину тому</string>
+			<key>other</key>
+			<string>Оновлено %d хвилин тому</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>clean_conversation_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Ви дійсно хочете остаточно видалити %#@conversation@?</string>
+		<key>conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d розмови</string>
+			<key>many</key>
+			<string>%d розмов</string>
+			<key>one</key>
+			<string>%d розмова</string>
+			<key>other</key>
+			<string>%d розмов</string>
+		</dict>
+	</dict>
+	<key>clean_message_warning</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Ви дійсно хочете остаточно видалити %#@message@?</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d повідомлення</string>
+			<key>many</key>
+			<string>%d повідомлень</string>
+			<key>one</key>
+			<string>%d повідомлення</string>
+			<key>other</key>
+			<string>%d повідомлень</string>
+		</dict>
+	</dict>
+	<key>general_conversation</key>
+	<dict>
+		<key>CONVERSATION</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u розмови</string>
+			<key>many</key>
+			<string>%u розмов</string>
+			<key>one</key>
+			<string>%u розмова</string>
+			<key>other</key>
+			<string>%u розмов</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@CONVERSATION@</string>
+	</dict>
+	<key>general_message</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%u повідомлення</string>
+			<key>many</key>
+			<string>%u повідомлень</string>
+			<key>one</key>
+			<string>%u повідомлення</string>
+			<key>other</key>
+			<string>%u повідомлень</string>
+		</dict>
+	</dict>
+	<key>minute</key>
+	<dict>
+		<key>MINUTE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d хвилини</string>
+			<key>many</key>
+			<string>%d хвилин</string>
+			<key>one</key>
+			<string>%d хвилина</string>
+			<key>other</key>
+			<string>%d хвилин</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MINUTE@</string>
+	</dict>
+	<key>swipe_to_label_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d розмови</string>
+			<key>many</key>
+			<string>%d розмов</string>
+			<key>one</key>
+			<string>%d розмова</string>
+			<key>other</key>
+			<string>%d розмов</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ позначено міткою</string>
+	</dict>
+	<key>swipe_to_label_title</key>
+	<dict>
+		<key>Message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d повідомлення</string>
+			<key>many</key>
+			<string>%d повідомлень</string>
+			<key>one</key>
+			<string>%d повідомлення</string>
+			<key>other</key>
+			<string>%d повідомлень</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Message@ позначено міткою</string>
+	</dict>
+	<key>swipe_to_move_conversation_title</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d розмови</string>
+			<key>many</key>
+			<string>%d розмов</string>
+			<key>one</key>
+			<string>%d розмова</string>
+			<key>other</key>
+			<string>%d розмов</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@ переміщено у %@</string>
+	</dict>
+	<key>swipe_to_move_title</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%d повідомлення</string>
+			<key>many</key>
+			<string>%d повідомлень</string>
+			<key>one</key>
+			<string>%d повідомлення</string>
+			<key>other</key>
+			<string>%d повідомлень</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@ переміщено у %@</string>
+	</dict>
+</dict>
+</plist>

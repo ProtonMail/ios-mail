@@ -20,32 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 import CoreData
+import MBProgressHUD
+import ProtonCore_UIFoundations
 
-class SearchViewController: ProtonMailViewController {
+protocol SearchViewUIProtocol: UIViewController {
+    var listEditing: Bool { get }
+    func update(progress: Float)
+    func setupProgressBar(isHidden: Bool)
+    func checkNoResultView()
+    func activityIndicator(isAnimating: Bool)
+    func reloadTable()
+    func reloadRows(rows: [IndexPath])
+}
+
+class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchTextField: UITextField!
-    
-    @IBOutlet weak var noResultLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
-    
-    // MARK: - Private Constants
-    fileprivate let kAnimationDuration: TimeInterval = 0.3
-    fileprivate let kSearchCellHeight: CGFloat = 64.0
-    fileprivate let kCellIdentifier: String = "SearchedCell"
-    fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
-    
-    internal var user: UserManager!
-    private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
-    private var messageTapped = false
-    
-    private lazy var replacingEmails : [Email] = { [unowned self] in
-        return user.contactService.allEmails()
-    }()
-    
+    @IBOutlet var navigationBarView: UIView!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var noResultLabel: UILabel!
+    private let searchBar = SearchBarView()
+    private var actionBar: PMActionBar?
+    private var actionSheet: PMActionSheet?
     // TODO: need better UI solution for this progress bar
     private lazy var progressBar: UIProgressView = {
         let bar = UIProgressView()
@@ -63,278 +61,429 @@ class SearchViewController: ProtonMailViewController {
         
         return bar
     }()
-    private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
-    private var localObjectsIndexingObserver: NSKeyValueObservation? {
-        didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.progressBar.isHidden = (self?.localObjectsIndexingObserver == nil)
-            }
-        }
-    }
-    
-    // MARK: - Private attributes
-    typealias LocalObjectsIndexRow = Dictionary<String, Any>
-    private var dbContents: Array<LocalObjectsIndexRow> = []
-    fileprivate var searchResult: [Message] = [] {
-        didSet {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
-    fileprivate var currentPage = 0;
 
-    fileprivate var query: String = ""
+    // MARK: - Private Constants
+    private let kAnimationDuration: TimeInterval = 0.3
+    private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
+    
+    private let serialQueue = DispatchQueue(label: "com.protonamil.messageTapped")
+    private var messageTapped = false
+    private(set) var listEditing: Bool = false
+    
+    private(set) var viewModel: SearchVMProtocol!
+    private var currentPage = 0
+    private var query: String = ""
+    private let mailListActionSheetPresenter = MailListActionSheetPresenter()
+    private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
+    private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
+    private let cellPresenter = NewMailboxMessageCellPresenter()
+    var pendingActionAfterDismissal: (() -> Void)?
+
+    func set(viewModel: SearchVMProtocol) {
+        self.viewModel = viewModel
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
-        
+        assert(self.viewModel != nil, "Please set view model")
+
+        self.edgesForExtendedLayout = UIRectEdge()
+        self.extendedLayoutIncludesOpaqueBars = false
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
+
+        navigationBarView.backgroundColor = ColorProvider.BackgroundNorm
+
+        self.setupSearchBar()
+        self.setupTableview()
+        self.setupProgressBar()
+        self.setupActivityIndicator()
+        self.viewModel.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchBar.textField.resignFirstResponder()
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.tableView.zeroMargin()
+    }
+}
+
+// MARK: UI related
+extension SearchViewController {
+    private func setupSearchBar() {
+        searchBar.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
+        searchBar.textField.delegate = self
+        searchBar.textField.becomeFirstResponder()
+        navigationBarView.addSubview(searchBar)
+        [
+            searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: navigationBarView.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: navigationBarView.trailingAnchor, constant: -16),
+            searchBar.bottomAnchor.constraint(equalTo: navigationBarView.bottomAnchor)
+        ].activate()
+    }
+    
+    private func setupTableview() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
+        self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.contentInsetAdjustmentBehavior = .automatic
-        
-        self.edgesForExtendedLayout = UIRectEdge()
-        self.extendedLayoutIncludesOpaqueBars = false;
-        self.navigationController?.navigationBar.isTranslucent = false;
-        
-        searchTextField.autocapitalizationType = UITextAutocapitalizationType.none
-        searchTextField.returnKeyType = .search
-        searchTextField.delegate = self
-        searchTextField.font = Fonts.h4.regular
-        searchTextField.textColor = UIColor.white
-        searchTextField.tintColor = UIColor.white
-        searchTextField.attributedPlaceholder = NSAttributedString(string: LocalString._general_search_placeholder, attributes:
-            [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
-                NSAttributedString.Key.font: Fonts.h3.light
-            ])
-        
-        searchTextField.becomeFirstResponder()
-        
+        self.tableView.estimatedRowHeight = 100
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.backgroundColor = .clear
+        self.tableView.separatorColor = ColorProvider.SeparatorNorm
+        let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
+        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+    }
+    
+    private func setupProgressBar() {
         self.progressBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.progressBar)
         self.progressBar.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
         self.progressBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
-        
-        self.indexLocalObjects {
-            if self.searchResult.isEmpty, !self.query.isEmpty {
-                self.fetchLocalObjects()
-            }
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator.color = ColorProvider.BrandNorm
+        activityIndicator.isHidden = true
+        activityIndicator.hidesWhenStopped = true
+    }
+}
+
+// MARK: Actions
+extension SearchViewController {
+    @objc
+    private func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        self.showCheckOptions(longPressGestureRecognizer)
+    }
+
+    @objc
+    private func cancelButtonTapped() {
+        if listEditing {
+            self.cancelEditingMode()
+        } else {
+            self.viewModel.cleanLocalIndex()
+            self.dismiss(animated: true, completion: nil)
         }
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-        self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
-    }
-    
-    // my selector that was defined above
-    @objc func willEnterForeground() {
-        self.dismiss(animated: false, completion: nil)
+
+    @objc
+    private func clearAction() {
+        searchBar.textField.text = nil
+        searchBar.textField.sendActions(for: .editingChanged)
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
+    @IBAction func tapAction(_ sender: AnyObject) {
+        searchBar.textField.resignFirstResponder()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.searchResult = self.searchResult.filter{ $0.managedObjectContext != nil }
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willResignActiveNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        searchTextField.resignFirstResponder()
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
-    override func configureNavigationBar() {
-        super.configureNavigationBar()
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
+}
 
-    }
-    
-    func indexLocalObjects(_ completion: @escaping ()->Void) {
-        let context = CoreDataService.shared.makeReadonlyBackgroundManagedObjectContext()
-        var count = 0
-        context.performAndWait {
-            do {
-                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
-                overallCountRequest.resultType = .countResultType
-                overallCountRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
-                let result = try context.fetch(overallCountRequest)
-                count = (result.first as? Int) ?? 1
-            } catch let error {
-                PMLog.D(" performFetch error: \(error)")
-                assert(false, "Failed to fetch message dicts")
-            }
-        }
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userinfo.userId)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        fetchRequest.resultType = .dictionaryResultType
+// MARK: Action bar / sheet related
+// TODO: This is quite overlap what we did in MailboxVC, try to share the logic
+extension SearchViewController {
+    private func showActionBar() {
+        guard self.actionBar == nil else { return }
 
-        let objectId = NSExpressionDescription()
-        objectId.name = "objectID"
-        objectId.expression = NSExpression.expressionForEvaluatedObject()
-        objectId.expressionResultType = NSAttributeType.objectIDAttributeType
+        let actions = self.viewModel.getActionTypes()
+        var actionItems: [PMActionBarItem] = []
         
-        fetchRequest.propertiesToFetch = [objectId,
-                                          Message.Attributes.title,
-                                          Message.Attributes.sender,
-                                          Message.Attributes.toList]
-        let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
-            self?.localObjectsIndexingObserver = nil
-            completion()
-        })
-        
-        context.perform {
-            self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
-            guard let indexRaw = try? context.execute(async),
-                let index = indexRaw as? NSPersistentStoreAsynchronousResult else
-            {
-                self.localObjectIndexing.resignCurrent()
-                return
+        for (key, action) in actions.enumerated() {
+            
+            let actionHandler: (PMActionBarItem) -> Void = { [weak self] _ in
+                guard let self = self else { return }
+                if action == .more {
+                    self.moreButtonTapped()
+                } else {
+                    guard !self.viewModel.selectedIDs.isEmpty else {
+                        self.showNoEmailSelected(title: LocalString._warning)
+                        return
+                    }
+                    switch action {
+                    case .delete:
+                        self.showDeleteAlert { [weak self] in
+                            guard let `self` = self else { return }
+                            self.viewModel.handleBarActions(action)
+                            self.showMessageMoved(title: LocalString._messages_has_been_deleted)
+                        }
+                    case .moveTo:
+                        self.folderButtonTapped()
+                    case .labelAs:
+                        self.labelButtonTapped()
+                    default:
+                        self.viewModel.handleBarActions(action)
+                        if action != .readUnread {
+                            self.showMessageMoved(title: LocalString._messages_has_been_moved)
+                        }
+                        self.cancelButtonTapped()
+                    }
+                }
             }
             
-            self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.progressBar.setProgress(completionRate, animated: true)
-                }
-            })
+            if key == actions.startIndex {
+                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
+                                              text: action.name,
+                                              itemColor: ColorProvider.FloatyText,
+                                              handler: actionHandler)
+                actionItems.append(barItem)
+            } else {
+                let barItem = PMActionBarItem(icon: action.iconImage.withRenderingMode(.alwaysTemplate),
+                                              itemColor: ColorProvider.FloatyText,
+                                              backgroundColor: .clear,
+                                              handler: actionHandler)
+                actionItems.append(barItem)
+            }
         }
+        let separator = PMActionBarItem(width: 1,
+                                        verticalPadding: 6,
+                                        color: ColorProvider.FloatyText)
+        actionItems.insert(separator, at: 1)
+        self.actionBar = PMActionBar(items: actionItems,
+                                         backgroundColor: ColorProvider.FloatyBackground,
+                                         floatingHeight: 42.0,
+                                         width: .fit,
+                                         height: 48.0)
+        self.actionBar?.show(at: self)
     }
     
-    func fetchLocalObjects() {
-        // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
-        let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
-            if let title = $0["title"] as? String,
-                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
+    private func hideActionBar() {
+        self.actionBar?.dismiss()
+        self.actionBar = nil
+    }
+    
+    private func hideActionSheet() {
+        self.actionSheet?.dismiss(animated: true)
+        self.actionSheet = nil
+    }
+
+    private func moreButtonTapped() {
+        mailListActionSheetPresenter.present(
+            on: navigationController ?? self,
+            viewModel: viewModel.getActionSheetViewModel(),
+            action: { [weak self] in
+                self?.viewModel.handleActionSheetAction($0)
+                self?.handleActionSheetAction($0)
             }
-            if let senderName = $0["senderName"]  as? String,
-                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
+        )
+    }
+    
+    private func folderButtonTapped() {
+        guard !self.viewModel.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._apply_labels)
+            return
+        }
+
+        let isEnableColor = viewModel.user.isEnableFolderColor
+        let isInherit = viewModel.user.isInheritParentFolderColor
+        let messages = viewModel.selectedMessages
+        if !messages.isEmpty {
+            showMoveToActionSheet(messages: messages,
+                                  isEnableColor: isEnableColor,
+                                  isInherit: isInherit)
+        }
+    }
+
+    private func labelButtonTapped() {
+        guard !viewModel.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._apply_labels)
+            return
+        }
+        showLabelAsActionSheet(messages: viewModel.selectedMessages)
+    }
+
+    private func handleActionSheetAction(_ action: MailListSheetAction) {
+        switch action {
+        case .dismiss:
+            dismissActionSheet()
+        case .remove, .moveToArchive, .moveToSpam, .moveToInbox:
+            showMessageMoved(title: LocalString._messages_has_been_moved)
+            cancelButtonTapped()
+        case .markRead, .markUnread, .star, .unstar:
+            cancelButtonTapped()
+        case .delete:
+            showDeleteAlert { [weak self] in
+                guard let `self` = self else { return }
+                self.viewModel.deleteSelectedMessage()
             }
-            if let sender = $0["sender"]  as? String,
-                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
-            }
-            if let toList = $0["toList"]  as? String,
-                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-            {
-                return $0["objectID"] as? NSManagedObjectID
-            }
+        case .labelAs:
+            labelButtonTapped()
+        case .moveTo:
+            folderButtonTapped()
+        }
+    }
+
+    private func showNoEmailSelected(title: String) {
+        let alert = UIAlertController(title: title, message: LocalString._message_list_no_email_selected, preferredStyle: .alert)
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    private func showDeleteAlert(yesHandler: @escaping () -> Void) {
+        let messagesCount = viewModel.selectedIDs.count
+        let title = messagesCount > 1 ?
+            String(format: LocalString._messages_delete_confirmation_alert_title, messagesCount) :
+            LocalString._single_message_delete_confirmation_alert_title
+        let message = messagesCount > 1 ?
+            String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount) :
+            LocalString._single_message_delete_confirmation_alert_message
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [weak self] _ in
+            yesHandler()
+            self?.cancelButtonTapped()
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [weak self] _ in
+            self?.cancelButtonTapped()
+        }
+        [yes, cancel].forEach(alert.addAction)
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func showMessageMoved(title : String) {
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
+        let banner = PMBanner(message: title, style: TempPMBannerNewStyle.info, dismissDuration: 3)
+        banner.show(at: .bottom, on: self)
+    }
+
+    private var moveToActionHandler: MoveToActionSheetProtocol? {
+        guard let searchVM = self.viewModel as? SearchViewModel else {
             return nil
         }
-        
-        let context = CoreDataService.shared.mainManagedObjectContext
-        context.performAndWait {
-            let messages = messageIds.compactMap { oldId -> Message? in
-                let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
-                guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
-                    return nil
-                }
-                return context.object(with: newId) as? Message
-            }
-            self.searchResult = messages
-            if self.currentPage == 0 && self.searchResult.count == 0 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.showHideNoresult()
-                }
-            }
-        }
+        return searchVM
     }
     
-    func showHideNoresult(){
-        noResultLabel.isHidden = false
-        if self.searchResult.count > 0 {
-            noResultLabel.isHidden = true
-        }
+    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
+        guard let handler = moveToActionHandler else { return }
+        let moveToViewModel =
+            MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
+                                               messages: messages,
+                                               isEnableColor: isEnableColor,
+                                               isInherit: isInherit,
+                                               labelId: viewModel.labelID)
+        moveToActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: moveToViewModel,
+                     addNewFolder: { [weak self] in
+                        self?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                        }
+                        self?.presentCreateFolder(type: .folder)
+                     },
+                     selected: { menuLabel, isOn in
+                        handler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
+                            self?.showDiscardAlert(handleDiscard: {
+                                handler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isHavingUnsavedChanges in
+                        defer {
+                            self?.dismissActionSheet()
+                            self?.cancelButtonTapped()
+                        }
+                        guard isHavingUnsavedChanges else {
+                            return
+                        }
+                        handler.handleMoveToAction(messages: messages, isFromSwipeAction: false)
+                     })
     }
-    
-    func fetchRemoteObjects(_ query: String,
-                            page: Int? = nil)
-    {
-        let pageToLoad = page ?? 0
-//        if query.count < 3 {  //query.preg_match("^[A-Za-z0-9_]+$") && 
-//            self.searchResult = []
-//            self.currentPage = 0
-//            return
-//        }
-        noResultLabel.isHidden = true
-        tableView.showLoadingFooter()
-        
-        let service = user.messageService
-        service.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
-            DispatchQueue.main.async {
-                self.tableView.hideLoadingFooter()
-            }
 
-            guard error == nil, let messages = messageBoxes else {
-                PMLog.D(" search error: \(String(describing: error))")
-
-                if pageToLoad == 0 {
-                    self.fetchLocalObjects()
-                }
-                return
-            }
-            self.currentPage = pageToLoad
-            guard !messages.isEmpty else {
-                if pageToLoad == 0 {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.showHideNoresult()
-                    }
-                    self.searchResult = []
-                }
-                return
-            }
-
-            let context = CoreDataService.shared.mainManagedObjectContext
-            context.perform {
-                let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
-                if pageToLoad > 0 {
-                    self.searchResult.append(contentsOf: mainQueueMessages)
-                } else {
-                    self.searchResult = mainQueueMessages
-                }
-            }
+    private var labelAsActionHandler: LabelAsActionSheetProtocol? {
+        guard let searchVM = self.viewModel as? SearchViewModel else {
+            return nil
         }
+        return searchVM
+    }
+
+    private func showLabelAsActionSheet(messages: [Message]) {
+        guard let handler = labelAsActionHandler else { return }
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: handler.getLabelMenuItems(),
+                                                                   messages: messages)
+
+        labelAsActionSheetPresenter
+            .present(on: self.navigationController ?? self,
+                     viewModel: labelAsViewModel,
+                     addNewLabel: { [weak self] in
+                        self?.pendingActionAfterDismissal = { [weak self] in
+                            self?.showLabelAsActionSheet(messages: messages)
+                        }
+                        self?.presentCreateFolder(type: .label)
+                     },
+                     selected: { menuLabel, isOn in
+                        handler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+                     },
+                     cancel: { [weak self] isHavingUnsavedChanges in
+                        if isHavingUnsavedChanges {
+                            self?.showDiscardAlert(handleDiscard: {
+                                handler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                                self?.dismissActionSheet()
+                            })
+                        } else {
+                            self?.dismissActionSheet()
+                        }
+                     },
+                     done: { [weak self] isArchive, currentOptionsStatus in
+                        handler.handleLabelAsAction(messages: messages,
+                                                 shouldArchive: isArchive,
+                                                 currentOptionsStatus: currentOptionsStatus)
+                        self?.dismissActionSheet()
+                        self?.cancelButtonTapped()
+                     })
     }
     
-    func initiateFetchIfCloseToBottom(_ indexPath: IndexPath) {
-        if (self.searchResult.count - 1) <= indexPath.row {
-            self.fetchRemoteObjects(query, page: self.currentPage + 1)
+    private func presentCreateFolder(type: PMLabelType) {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let folderLabels = viewModel.user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let viewModel = LabelEditViewModel(user: viewModel.user, label: nil, type: type, labels: folderLabels)
+        let viewController = LabelEditViewController.instance()
+        let coordinator = LabelEditCoordinator(services: sharedServices,
+                                               viewController: viewController,
+                                               viewModel: viewModel,
+                                               coordinatorDismissalObserver: self)
+        coordinator.start()
+        if let navigation = viewController.navigationController {
+            self.navigationController?.present(navigation, animated: true, completion: nil)
         }
     }
-    
+}
+
+extension SearchViewController {
     private func updateTapped(status: Bool) {
         serialQueue.sync {
             self.messageTapped = status
         }
     }
-    
+
     private func getTapped() -> Bool {
         serialQueue.sync {
             let ret = self.messageTapped
@@ -344,26 +493,12 @@ class SearchViewController: ProtonMailViewController {
             return ret
         }
     }
-
-    @IBAction func tapAction(_ sender: AnyObject) {
-        searchTextField.resignFirstResponder()
-    }
-    // MARK: - Button Actions
-    
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: - Prepare for segue
     
     private func prepareForDraft(_ message: Message) {
         self.updateTapped(status: true)
-        let service = self.user.messageService
-        service.ForcefetchDetailForMessage(message) { [weak self] (_, _, msg, error) in
-            guard let _self = self else {
-                self?.updateTapped(status: false)
-                return
-            }
+        self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
+            self?.updateTapped(status: false)
+            guard let _self = self else { return }
             guard error == nil else {
                 let alert = LocalString._unable_to_edit_offline.alertController()
                 alert.addOKAction()
@@ -371,104 +506,232 @@ class SearchViewController: ProtonMailViewController {
                 _self.tableView.indexPathsForSelectedRows?.forEach {
                     _self.tableView.deselectRow(at: $0, animated: true)
                 }
-                _self.updateTapped(status: false)
                 return
             }
-            _self.updateTapped(status: false)
             _self.showComposer(message: message)
         }
     }
     
     private func showComposer(message: Message) {
-        // open drafts in Composer
-        let viewModel = ContainableComposeViewModel(msg: message,
-                                                    action: .openDraft,
-                                                    msgService: user.messageService,
-                                                    user: user,
-                                                    coreDataService: CoreDataService.shared)//FIXME
-        if let navigationController = self.navigationController
-        {
-            let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
-                                                           services: ServiceFactory.default)
-            // this will present composer in a modal which is discouraged
-            // TODO: refactor when implementing enc search
-            composer.start()
+        let viewModel = self.viewModel.getComposeViewModel(message: message)
+        guard let navigationController = self.navigationController else { return }
+        let composerVM = ComposeContainerViewModel(editorViewModel: viewModel,
+                                                   uiDelegate: nil)
+        let coordinator = ComposeContainerViewCoordinator(nav: navigationController,
+                                                          viewModel: composerVM,
+                                                          services: ServiceFactory.default)
+        coordinator.start()
+    }
+
+    private func prepareFor(message: Message) {
+        guard self.viewModel.viewMode == .singleMessage else {
+            self.prepareConversationFor(message: message)
+            return
+        }
+        if message.draft {
+            self.prepareForDraft(message)
+            return
+        }
+        self.updateTapped(status: false)
+        guard let navigationController = navigationController else { return }
+        let coordinator = SingleMessageCoordinator(
+            navigationController: navigationController,
+            labelId: "",
+            message: message,
+            user: self.viewModel.user
+        )
+        coordinator.start()
+    }
+
+    private func prepareConversationFor(message: Message) {
+        guard let navigation = self.navigationController else {
+            self.updateTapped(status: false)
+            return
+        }
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        let conversationID = message.conversationID
+        let messageID = message.messageID
+        self.viewModel.getConversation(conversationID: conversationID, messageID: messageID).done { [weak self] conversation in
+            guard let self = self else { return }
+            let coordinator = ConversationCoordinator(
+                labelId: self.viewModel.labelID,
+                navigationController: navigation,
+                conversation: conversation,
+                user: self.viewModel.user,
+                targetID: messageID
+            )
+            coordinator.start()
+        }.catch { error in
+            error.alert(at: nil)
+        }.finally { [weak self] in
+            guard let self = self else { return }
+            self.updateTapped(status: false)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController = segue.destination as! MessageContainerViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                //FIXME
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, coreDataService: CoreDataService.shared))
-                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
-            } else {
-                PMLog.D("No selected row.")
-            }
+
+    private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
+        let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
+        guard let touchedRowIndexPath = indexPath,
+              longPressGestureRecognizer.state == .began && listEditing == false else { return }
+        enterListEditingMode(indexPath: touchedRowIndexPath)
+    }
+
+    private func hideCheckOptions() {
+        guard listEditing else { return }
+        self.listEditing = false
+        self.tableView.reloadData()
+    }
+
+    private func enterListEditingMode(indexPath: IndexPath) {
+        self.listEditing = true
+
+        guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
+        visibleRowsIndexPaths.forEach { visibleRowIndexPath in
+            let visibleCell = self.tableView.cellForRow(at: visibleRowIndexPath)
+            guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
+            cellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
+            guard indexPath == visibleRowIndexPath else { return }
+            tableView(tableView, didSelectRowAt: indexPath)
         }
+    }
+
+    private func handleEditingDataSelection(of id: String, indexPath: IndexPath) {
+        let itemAlreadySelected = self.viewModel.isSelected(messageID: id)
+        let selectionAction = itemAlreadySelected ? self.viewModel.removeSelected : self.viewModel.addSelected
+        selectionAction(id)
+
+        if self.viewModel.selectedIDs.isEmpty {
+            self.hideActionBar()
+        } else {
+            self.showActionBar()
+        }
+
+        // update checkbox state
+        if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
+            cellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: !itemAlreadySelected),
+                in: mailboxCell.customView
+            )
+        }
+
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    private func cancelEditingMode() {
+        self.viewModel.removeAllSelectedIDs()
+        self.hideCheckOptions()
+        self.hideActionBar()
+        self.hideActionSheet()
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension SearchViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.searchResult.isEmpty ? 0 : 1
+extension SearchViewController: SearchViewUIProtocol {
+    func update(progress: Float) {
+        self.progressBar.setProgress(progress, animated: true)
     }
 
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.searchResult.count
+    func setupProgressBar(isHidden: Bool) {
+        self.progressBar.isHidden = isHidden
+    }
+
+    func checkNoResultView() {
+        if self.activityIndicator.isAnimating {
+            self.noResultLabel.isHidden = true
+            return
+        }
+        self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
+    }
+
+    func activityIndicator(isAnimating: Bool) {
+        isAnimating ? activityIndicator.startAnimating(): activityIndicator.stopAnimating()
+        if isAnimating {
+            self.noResultLabel.isHidden = true
+        }
+    }
+
+    func reloadTable() {
+        self.checkNoResultView()
+        self.tableView.reloadData()
+    }
+
+    func reloadRows(rows: [IndexPath]) {
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: rows, with: .automatic)
+        self.tableView.endUpdates()
+    }
+}
+
+// MARK: - UITableView
+extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.viewModel.messages.isEmpty ? 0 : 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.messages.count
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as? MailboxMessageCell else
-        {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let mailboxCell = tableView.dequeueReusableCell(
+                withIdentifier: NewMailboxMessageCell.defaultID(),
+                for: indexPath
+        ) as? NewMailboxMessageCell else {
             assert(false)
             return UITableViewCell()
         }
-        
-        let message = self.searchResult[indexPath.row]
-        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails)
+
+        let message = self.viewModel.messages[indexPath.row]
+        let viewModel = self.viewModel.getMessageCellViewModel(message: message)
+        cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+
+        mailboxCell.id = message.messageID
+        mailboxCell.cellDelegate = self
+        mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
     }
     
-    @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
-        self.initiateFetchIfCloseToBottom(indexPath)
+        self.viewModel.loadMoreDataIfNeeded(currentRow: indexPath.row)
     }
-}
-
-
-// MARK: - UITableViewDelegate
-
-extension SearchViewController: UITableViewDelegate {
     
-    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = self.viewModel.messages[indexPath.row]
+        guard !listEditing else {
+            self.handleEditingDataSelection(of: message.messageID,
+                                            indexPath: indexPath)
+            return
+        }
         if self.getTapped() {
             // Fetching other draft data
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-        
-        // open messages in MessaveContainerViewController
-        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
-            self.updateTapped(status: false)
-            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
-            return
-        }
-        self.prepareForDraft(message)
-    }
-    
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kSearchCellHeight
+        self.prepareFor(message: message)
     }
 }
 
+extension SearchViewController: NewMailboxMessageCellDelegate {
+    func didSelectButtonStatusChange(id: String?) {
+        let tappedCell = tableView.visibleCells
+            .compactMap { $0 as? NewMailboxMessageCell }
+            .first(where: { $0.id == id })
+        guard let cell = tappedCell, let indexPath = tableView.indexPath(for: cell) else { return }
+
+        if !listEditing {
+            self.enterListEditingMode(indexPath: indexPath)
+        } else {
+            tableView(self.tableView, didSelectRowAt: indexPath)
+        }
+    }
+
+    func getExpirationDate(id: String) -> String? {
+        // todo
+        return nil
+    }
+}
 
 // MARK: - UITextFieldDelegate
 
@@ -476,16 +739,19 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         query = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        
+        searchBar.clearButton.isHidden = query.isEmpty == true
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.query = self.query.trim()
+        textField.text = self.query
         guard self.query.count > 0 else {
             return true
         }
-        self.fetchRemoteObjects(self.query)
+        self.viewModel.fetchRemoteData(query: self.query, fromStart: true)
+        self.cancelEditingMode()
         return true
     }
 }

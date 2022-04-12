@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 enum UIApplicationReleaseMode: Int {
     case unknown = 0
@@ -48,25 +48,15 @@ extension UIApplication {
             do {
                 let binaryString = try String(contentsOfFile: provisioningPath, encoding: String.Encoding.isoLatin1)
                 let scanner : Scanner = Scanner(string: binaryString)
-                var ok : Bool = scanner.scanUpTo("<plist" , into: nil)
-                if !ok {
-                    PMLog.D("unable to find beginning of plist");
-                    //return UIApplicationReleaseUnknown;
-                }
                 
                 var plistString : NSString?
-                ok = scanner.scanUpTo("</plist>" , into: &plistString)
-                if !ok {
-                    PMLog.D("unable to find end of plist");
-                    //return UIApplicationReleaseUnknown;
-                }
+                _ = scanner.scanUpTo("</plist>" , into: &plistString)
                 let newStr = String("\(plistString!)</plist>")
                 // juggle latin1 back to utf-8!
                 let plistdata_latin1 : Data = newStr.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)!
                 
                 MP.mobileProvision = try PropertyListSerialization.propertyList(from: plistdata_latin1, options: PropertyListSerialization.ReadOptions(rawValue: 0), format: nil) as? [String : Any]
             } catch {
-                PMLog.D("error parsing extracted plist — \(error)");
                 MP.mobileProvision = nil;
                 return nil;
             }
@@ -128,5 +118,30 @@ extension UIApplication {
         } else {
             return false
         }
+    }
+
+    static var isTestflightBeta: Bool {
+        // If we're running on simulator, we're definitely not Testflight version
+        #if targetEnvironment(simulator)
+        return false
+
+        // If we're compiled in DEBUG configuration, we're definitely not Testflight version
+        #elseif DEBUG
+        return false
+
+        /*
+            Checking for sandbox appstore receipt to determine if the app is beta version
+            installed through Testflight is used by:
+            * Microsoft's AppCenter:
+             https://github.com/microsoft/appcenter-sdk-apple/blob/928227a72dc813070dc05efae04e19fe86558030/AppCenter/AppCenter/Internals/Util/MSACUtility%2BEnvironment.m#L28
+            * Sentry:
+                https://github.com/getsentry/sentry-cocoa/blob/7185a59493cda3aafcbe3b87652ea0256db2ad59/Sources/SentryCrash/Recording/Monitors/SentryCrashMonitor_System.m#L435
+
+            We explore the same idea here.
+        */
+        #else
+        return Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+        
+        #endif
     }
 }

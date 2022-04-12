@@ -22,13 +22,23 @@
 
 
 import Foundation
+import ProtonCore_UIFoundations
 
 class PhotoAttachmentProvider: AnyImagePickerDelegate {
-    override var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._photo_library, style: .default) { action in
+    override var actionSheetItem: PMActionSheetItem {
+        return PMActionSheetPlainItem(title: LocalString._from_your_photo_library,
+                                      icon: UIImage(named: "ic-photo"),
+                                      iconColor: ColorProvider.IconNorm) { (_) -> (Void) in
             let picker = PMImagePickerController()
             picker.setup(withDelegate: self)
+
+            #if APP_EXTENSION
+            self.checkPhotoPermission { _ in
+                self.controller?.present(picker, animated: true, completion: nil)
+            }
+            #else
             self.controller?.present(picker, animated: true, completion: nil)
+            #endif
         }
     }
 }

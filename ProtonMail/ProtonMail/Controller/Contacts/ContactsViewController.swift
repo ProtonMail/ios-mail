@@ -25,6 +25,7 @@ import UIKit
 import Contacts
 import CoreData
 import MBProgressHUD
+import ProtonCore_UIFoundations
 
 class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactsViewModel
@@ -46,6 +47,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     // MARK: - Private attributes
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var searchController : UISearchController!
+
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
     
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
@@ -57,11 +60,12 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = ColorProvider.BackgroundNorm
         
         tableView.register(ContactsTableViewCell.nib,
                            forCellReuseIdentifier: ContactsTableViewCell.cellID)
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self,
                                  action: #selector(fireFetch),
                                  for: UIControl.Event.valueChanged)
@@ -71,15 +75,15 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         tableView.dataSource = self
         tableView.delegate = self
         
-        refreshControl.tintColor = UIColor.gray
+        refreshControl.tintColor = ColorProvider.BrandNorm
         refreshControl.tintColorDidChange()
 
         self.navigationController?.navigationBar.prefersLargeTitles = false
         self.definesPresentationContext = true
         self.extendedLayoutIncludesOpaqueBars = true
-        self.automaticallyAdjustsScrollViewInsets = false
         self.tableView.noSeparatorsBelowFooter()
-        self.tableView.sectionIndexColor = UIColor.ProtonMail.Blue_85B1DE
+        self.tableView.sectionIndexColor = ColorProvider.BrandNorm
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         
         //get all contacts
         self.viewModel.setupFetchedResults(delegate: self)
@@ -87,6 +91,8 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         
         prepareNavigationItemRightDefault(self.viewModel.user)
         generateAccessibilityIdentifiers()
+
+        emptyBackButtonTitleForNextView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -103,6 +109,11 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         NotificationCenter.default.addKeyboardObserver(self)
         
         self.isOnMainView = true
+
+        if UIAccessibility.isVoiceOverRunning {
+            UIAccessibility.post(notification: .layoutChanged,
+                                 argument: self.navigationController?.view)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -131,19 +142,14 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.keyboardAppearance = .light
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
-        self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.searchController.searchBar.tintColor = ColorProvider.TextNorm
+        self.searchController.searchBar.barTintColor = ColorProvider.BackgroundNorm
         self.searchController.searchBar.backgroundColor = .clear
-        if #available(iOS 15.0, *) {
-            self.searchController.searchBar.searchTextField.leftView?.tintColor = .lightGray
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        }
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true
@@ -180,12 +186,9 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
-            
-        case kToUpgradeAlertSegue:
-            let popup = viewController as! UpgradeAlertViewController
-            popup.delegate = self
-            sharedVMService.upgradeAlert(contacts: popup)
-            
+            popup.reloadAllContact = { [weak self] in
+                self?.tableView.reloadData()
+            }
         default:
             break
         }
@@ -199,43 +202,23 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     }
     
     @objc internal func fireFetch() {
-        self.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
-            if let error = error as NSError? {
-                PMLog.D(" error: \(error)")
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.present(alertController, animated: true, completion: nil)
+        internetConnectionStatusProvider.getConnectionStatuses { [weak self] status in
+            guard status != .NotReachable else {
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+                return
             }
-            self.refreshControl.endRefreshing()
-        }
-    }
-}
 
-extension ContactsViewController: UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
+            self?.viewModel.fetchContacts { (contacts: [Contact]?, error: NSError?) in
+                if let error = error as NSError? {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self?.present(alertController, animated: true, completion: nil)
+                }
+                self?.refreshControl.endRefreshing()
             }
-        } else {
-            self.postToPlan()
         }
-    }
-    
-    func learnMore() {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        
     }
 }
 
@@ -338,32 +321,6 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        //TODO:: add this later the full size index
-        //        - (void)viewDidLoad
-        //            {
-        //                [super viewDidLoad];
-        //                self.indexArray = @[@"{search}", @"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J",@"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
-        //            }
-        //
-        //            - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-        //        {
-        //            NSString *letter = [self.indexArray objectAtIndex:index];
-        //            NSUInteger sectionIndex = [[self.fetchedResultsController sectionIndexTitles] indexOfObject:letter];
-        //            while (sectionIndex > [self.indexArray count]) {
-        //                if (index <= 0) {
-        //                    sectionIndex = 0;
-        //                    break;
-        //                }
-        //                sectionIndex = [self tableView:tableView sectionForSectionIndexTitle:title atIndex:index - 1];
-        //            }
-        //
-        //            return sectionIndex;
-        //            }
-        //
-        //            - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-        //        {
-        //            return self.indexArray;
-        //        }
         return self.viewModel.sectionForSectionIndexTitle(title: title, atIndex: index)
     }
     
@@ -405,54 +362,7 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
 // MARK: - NSFetchedResultsControllerDelegate
 extension ContactsViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChange anObject: Any,
-                    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch(type) {
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .insert:
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .update:
-            if let indexPath = indexPath {
-                if let cell = tableView.cellForRow(at: indexPath) as? ContactsTableViewCell {
-                    if let contact = self.viewModel.item(index: indexPath) {
-                        cell.config(name: contact.name,
-                                    email: contact.getDisplayEmails(),
-                                    highlight: self.searchString)
-                    }
-                }
-            }
-        case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
-        default:
-            break
-        }
+        tableView.reloadData()
     }
 }
 

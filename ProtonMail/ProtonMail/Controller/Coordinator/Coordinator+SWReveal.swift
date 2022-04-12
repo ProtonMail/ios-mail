@@ -22,26 +22,27 @@
     
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
 
-protocol SWRevealCoordinator: DefaultCoordinator {
+protocol SideMenuCoordinator: DefaultCoordinator {
     /// this will be called before push
     var configuration: ((VC) -> ())? { get }
     
     var navigation: UIViewController? { get set }
-    var swRevealVC: SWRevealViewController? { get set }
+    var sideMenu: SideMenuController? { get set }
 }
 
 
-extension SWRevealCoordinator where VC: UIViewController, VC: CoordinatedNew {
+extension SideMenuCoordinator where VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {
             return
         }
         configuration?(viewController) //set viewmodel and coordinator
-        if self.navigation != nil, self.swRevealVC != nil {
-            self.swRevealVC?.pushFrontViewController(self.navigation, animated: self.animated)
+        if self.navigation != nil, self.sideMenu != nil {
+            self.sideMenu?.setContentViewController(to: self.navigation!)
+            self.sideMenu?.hideMenu()
         }
         self.processDeepLink()
     }

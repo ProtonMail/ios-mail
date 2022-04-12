@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import PMKeymaker
+
 import MessageUI
 
 class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
@@ -224,15 +224,13 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     /// cells
     let HeaderCell                    = "header_cell"
     let SwitchTwolineCell             = "switch_two_line_cell"
-    
-    //
+
     let CellHeight : CGFloat = 30.0
-    var cleaning : Bool      = false
-    
-    //
+
     @IBOutlet var settingTableView: UITableView!
-    
-    //
+
+    var onDismiss: () -> Void = { }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
@@ -257,7 +255,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     
     @objc func back(sender: UIBarButtonItem) {
         if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: onDismiss)
         } else {
             let _ = self.navigationController?.popViewController(animated: true)
         }

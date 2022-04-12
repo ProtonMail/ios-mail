@@ -7,23 +7,23 @@
 //
 
 import XCTest
+import pmtest
 
-fileprivate let mailboxTableView = "mailboxTableView"
-fileprivate let inboxTitleLabel = LocalString._menu_inbox_title
-fileprivate var wasTourClosed = false
+fileprivate struct id {
+    static let mailboxTableView = "mailboxTableView"
+    static let inboxTitleLabel = LocalString._menu_inbox_title
+    static let composeButtonLabel = "MailboxViewController.composeBarButtonItem"
+    static let buttonSkipTutorial = LocalString._skip_btn_title
+}
 
 /**
  Represents Inbox view.
 */
 class InboxRobot : MailboxRobotInterface {
     
-    var verify: Verify! = nil
-    
-    override init() {
+    var verify = Verify()
+    required init() {
         super.init()
-        closeTourIfShown()
-        Element.staticText.tapByIdentifier(inboxTitleLabel)
-        verify = Verify(parent: self)
     }
 
     @discardableResult
@@ -31,22 +31,15 @@ class InboxRobot : MailboxRobotInterface {
         return super.menuDrawer()
     }
     
-    override func swipeLeftMessageAtPosition(_ position: Int) -> InboxRobot {
-        super.swipeLeftMessageAtPosition(position)
-        return self
-    }
-    
     override func refreshMailbox() -> InboxRobot {
         super.refreshMailbox()
         return self
     }
     
-    private func closeTourIfShown() {
-        let elem = app.buttons["closeTour"].firstMatch
-        if !wasTourClosed && elem.exists {
-            elem.tap()
-            wasTourClosed = true
-        }
+    @discardableResult
+    override func refreshGentlyMailbox() -> InboxRobot {
+        super.refreshGentlyMailbox()
+        return self
     }
     
     /**
@@ -54,12 +47,9 @@ class InboxRobot : MailboxRobotInterface {
     */
     class Verify: MailboxRobotVerifyInterface {
         
-        unowned let inboxRobot: InboxRobot
-        init(parent: InboxRobot) { inboxRobot = parent }
-        
         @discardableResult
         func inboxShown() -> InboxRobot {
-            Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line)
+            button(id.composeButtonLabel).wait().checkExists()
             return InboxRobot()
         }
     }

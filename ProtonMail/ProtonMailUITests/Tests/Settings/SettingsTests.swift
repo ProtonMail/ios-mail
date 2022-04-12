@@ -6,9 +6,11 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class SettingsTests : BaseTestCase {
     
-    let correctPins = [0,0,0]
+    private let correctPin = "0000"
     private let inboxRobot: InboxRobot = InboxRobot()
     private let loginRobot = LoginRobot()
 
@@ -23,16 +25,17 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enableAndSetPin(correctPins)
-            .autoLockTimer()
+            .enablePin()
+            .setPin(correctPin)
+            .pinTimmer()
             .selectAutoLockNone()
             .backgroundApp()
             .activateAppWithoutPin()
-            .autoLockTimer()
+            .pinTimmer()
             .selectAutolockEveryTime()
             .backgroundApp()
             .activateAppWithPin()
-            .inputCorrectPin(correctPins)
+            .inputCorrectPin()
             .verify.appUnlockSuccessfully()
     }
     
@@ -47,19 +50,23 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .enableAndSetPin(correctPins)
+            .enablePin()
+            .setPin(correctPin)
+            .pinTimmer()
+            .selectAutolockEveryTime()
             .backgroundApp()
             .activateAppWithPin()
-            .inputCorrectPin(correctPins)
+            .inputCorrectPin()
             .navigateUpToSettings()
             .menuDrawer()
             .accountsList()
             .switchToAccount(testData.onePassUser)
-            .menuDrawer().settings()
+            .menuDrawer()
+            .settings()
             .pin()
             .backgroundApp()
             .activateAppWithPin()
-            .inputCorrectPin(correctPins)
+            .inputCorrectPin()
             .verify.appUnlockSuccessfully()
     }
 }

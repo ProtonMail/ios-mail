@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AccountSwitcherCell" customModule="ProtonCore_AccountSwitcher">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HCT-Fe-28W">
+                        <rect key="frame" x="18" y="18" width="28" height="28"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="0IS-ab-PKi"/>
+                            <constraint firstAttribute="width" constant="28" id="txk-By-rhB"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uak-be-SBq">
+                        <rect key="frame" x="60" y="14" width="161" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="Jeh-Yw-8Kc"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" name="TextNorm"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="mail address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2uD-BP-hNh">
+                        <rect key="frame" x="60" y="32" width="161" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" name="TextWeak"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zI6-dA-Blk">
+                        <rect key="frame" x="231" y="16" width="73" height="32"/>
+                        <color key="backgroundColor" name="InteractionWeak"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="1KJ-be-W4w"/>
+                            <constraint firstAttribute="width" constant="73" id="ZoT-Kg-6nG"/>
+                        </constraints>
+                        <color key="tintColor" name="TextNorm"/>
+                        <state key="normal" title="Sign in">
+                            <color key="titleColor" name="TextNorm"/>
+                        </state>
+                        <connections>
+                            <action selector="clickSigninBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Yra-sp-IKn"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="Slk-k5-s1Z">
+                        <rect key="frame" x="284" y="22" width="20" height="20"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwz-BR-drT">
+                                <rect key="frame" x="6" y="2" width="8" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="SidebarTextNorm"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BrandNorm"/>
+                        <constraints>
+                            <constraint firstItem="dwz-BR-drT" firstAttribute="top" secondItem="Slk-k5-s1Z" secondAttribute="top" constant="2" id="Ef1-oB-uMc"/>
+                            <constraint firstAttribute="bottom" secondItem="dwz-BR-drT" secondAttribute="bottom" constant="2" id="ISs-LE-upD"/>
+                            <constraint firstItem="dwz-BR-drT" firstAttribute="leading" secondItem="Slk-k5-s1Z" secondAttribute="leading" constant="6" id="L1D-h7-cX0"/>
+                            <constraint firstAttribute="trailing" secondItem="dwz-BR-drT" secondAttribute="trailing" constant="6" id="MJ1-bF-A1t"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="gzU-hF-Nl1"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z35-Xh-8XH">
+                        <rect key="frame" x="18" y="18" width="28" height="28"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5cj-Xf-CEk">
+                                <rect key="frame" x="2" y="0.0" width="24" height="28"/>
+                                <color key="backgroundColor" name="BrandNorm"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" name="SidebarTextNorm"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BrandNorm"/>
+                        <constraints>
+                            <constraint firstItem="5cj-Xf-CEk" firstAttribute="leading" secondItem="z35-Xh-8XH" secondAttribute="leading" constant="2" id="7VH-NV-853"/>
+                            <constraint firstItem="5cj-Xf-CEk" firstAttribute="top" secondItem="z35-Xh-8XH" secondAttribute="top" id="MEC-Tq-hP2"/>
+                            <constraint firstAttribute="width" constant="28" id="UlY-vJ-DvX"/>
+                            <constraint firstAttribute="height" constant="28" id="XNh-BL-n3a"/>
+                            <constraint firstAttribute="bottom" secondItem="5cj-Xf-CEk" secondAttribute="bottom" id="l7V-Ae-NqA"/>
+                            <constraint firstAttribute="trailing" secondItem="5cj-Xf-CEk" secondAttribute="trailing" constant="2" id="wCl-DE-KHD"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v7Z-fY-JDq">
+                        <rect key="frame" x="0.0" y="63" width="320" height="1"/>
+                        <color key="backgroundColor" name="InteractionWeak"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="5Xe-Z0-gOH"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" name="BackgroundNorm"/>
+                <constraints>
+                    <constraint firstItem="Slk-k5-s1Z" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="1Pl-2K-6N6"/>
+                    <constraint firstItem="z35-Xh-8XH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="1Ua-6R-Y4r"/>
+                    <constraint firstAttribute="trailing" secondItem="v7Z-fY-JDq" secondAttribute="trailing" id="5XY-i4-h4j"/>
+                    <constraint firstItem="2uD-BP-hNh" firstAttribute="top" secondItem="uak-be-SBq" secondAttribute="bottom" id="64r-7R-c7e"/>
+                    <constraint firstItem="z35-Xh-8XH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="7Xb-ob-PSg"/>
+                    <constraint firstItem="HCT-Fe-28W" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="AaW-9q-JFb"/>
+                    <constraint firstItem="zI6-dA-Blk" firstAttribute="leading" secondItem="uak-be-SBq" secondAttribute="trailing" constant="10" id="Ch1-bS-1Uz"/>
+                    <constraint firstAttribute="trailing" secondItem="Slk-k5-s1Z" secondAttribute="trailing" constant="16" id="LNi-ng-1Z3"/>
+                    <constraint firstAttribute="bottom" secondItem="v7Z-fY-JDq" secondAttribute="bottom" id="R9f-LU-svM"/>
+                    <constraint firstItem="2uD-BP-hNh" firstAttribute="width" secondItem="uak-be-SBq" secondAttribute="width" id="W7r-xK-Tjb"/>
+                    <constraint firstItem="Slk-k5-s1Z" firstAttribute="leading" secondItem="uak-be-SBq" secondAttribute="trailing" constant="10" id="aGV-9w-6fh"/>
+                    <constraint firstItem="uak-be-SBq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="eSz-6S-Plg"/>
+                    <constraint firstItem="zI6-dA-Blk" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kZV-eg-hBC"/>
+                    <constraint firstItem="v7Z-fY-JDq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mbq-Pk-acJ"/>
+                    <constraint firstItem="HCT-Fe-28W" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nEa-8B-jek"/>
+                    <constraint firstItem="uak-be-SBq" firstAttribute="leading" secondItem="HCT-Fe-28W" secondAttribute="trailing" constant="14" id="nLQ-FX-cms"/>
+                    <constraint firstItem="2uD-BP-hNh" firstAttribute="leading" secondItem="HCT-Fe-28W" secondAttribute="trailing" constant="14" id="upR-Ln-82Q"/>
+                    <constraint firstAttribute="trailing" secondItem="zI6-dA-Blk" secondAttribute="trailing" constant="16" id="vq7-12-glN"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="aGV-9w-6fh"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="BackgroundNorm"/>
+            <connections>
+                <outlet property="avatar" destination="HCT-Fe-28W" id="Ses-mH-BDA"/>
+                <outlet property="mailAddress" destination="2uD-BP-hNh" id="4Wn-z2-tBo"/>
+                <outlet property="name" destination="uak-be-SBq" id="5Eh-Rt-GVs"/>
+                <outlet property="nameRightToSignin" destination="Ch1-bS-1Uz" id="lJ0-pR-WwW"/>
+                <outlet property="nameRightToUnread" destination="aGV-9w-6fh" id="NdQ-6k-b25"/>
+                <outlet property="separatorView" destination="v7Z-fY-JDq" id="PCs-ed-52S"/>
+                <outlet property="shortName" destination="5cj-Xf-CEk" id="jot-qo-CYT"/>
+                <outlet property="shortNameView" destination="z35-Xh-8XH" id="ril-fF-Joe"/>
+                <outlet property="signInBtn" destination="zI6-dA-Blk" id="65G-2w-fT7"/>
+                <outlet property="unread" destination="dwz-BR-drT" id="DJI-bk-6Hp"/>
+                <outlet property="unreadView" destination="Slk-k5-s1Z" id="yny-IP-GWX"/>
+            </connections>
+            <point key="canvasLocation" x="60.869565217391312" y="104.46428571428571"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="BackgroundNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BrandNorm">
+            <color red="0.39599999785423279" green="0.49399998784065247" blue="0.89399999380111694" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="InteractionWeak">
+            <color red="0.9179999828338623" green="0.92500001192092896" blue="0.94499999284744263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SidebarTextNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextNorm">
+            <color red="0.090000003576278687" green="0.093999996781349182" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextWeak">
+            <color red="0.44699999690055847" green="0.46299999952316284" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

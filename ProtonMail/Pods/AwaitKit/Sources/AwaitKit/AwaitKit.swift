@@ -72,3 +72,14 @@ public func await<T>(_ body: @escaping () throws -> T) throws -> T {
 public func await<T>(_ promise: Promise<T>) throws -> T {
   return try Queue.await.ak.await(promise)
 }
+
+/**
+ Awaits that the given guarantee resolved and returns its value or throws an error if the current and target queues are the same.
+ - parameter guarantee: The guarantee to resolve.
+ - throws: when the queues are the same.
+ - returns: The value of the guarantee when it is resolved.
+ */
+@discardableResult
+public func await<T>(_ guarantee: Guarantee<T>) throws -> T {
+  return try Queue.await.ak.await(guarantee)
+}

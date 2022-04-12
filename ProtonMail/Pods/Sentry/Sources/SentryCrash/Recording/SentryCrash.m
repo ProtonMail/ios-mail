@@ -35,6 +35,7 @@
 #import "SentryCrashMonitor_System.h"
 #import "SentryCrashReportFields.h"
 #import "SentryCrashSystemCapabilities.h"
+#import <NSData+Sentry.h>
 
 //#define SentryCrashLogger_LocalLevel TRACE
 #import "SentryCrashLogger.h"
@@ -161,10 +162,9 @@ getBasePath()
         NSError *error = nil;
         NSData *userInfoJSON = nil;
         if (userInfo != nil) {
-            userInfoJSON =
-                [self nullTerminated:[SentryCrashJSONCodec encode:userInfo
-                                                          options:SentryCrashJSONEncodeOptionSorted
-                                                            error:&error]];
+            userInfoJSON = [[SentryCrashJSONCodec encode:userInfo
+                                                 options:SentryCrashJSONEncodeOptionSorted
+                                                   error:&error] nullTerminated];
             if (error != NULL) {
                 SentryCrashLOG_ERROR(@"Could not serialize user info: %@", error);
                 return;
@@ -356,31 +356,6 @@ getBasePath()
     sentrycrash_deleteReportWithID([reportID longValue]);
 }
 
-- (void)reportUserException:(NSString *)name
-                     reason:(NSString *)reason
-                   language:(NSString *)language
-                 lineOfCode:(NSString *)lineOfCode
-                 stackTrace:(NSArray *)stackTrace
-              logAllThreads:(BOOL)logAllThreads
-           terminateProgram:(BOOL)terminateProgram
-{
-    const char *cName = [name cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *cReason = [reason cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *cLanguage = [language cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *cLineOfCode = [lineOfCode cStringUsingEncoding:NSUTF8StringEncoding];
-    NSError *error = nil;
-    NSData *jsonData = [SentryCrashJSONCodec encode:stackTrace options:0 error:&error];
-    if (jsonData == nil || error != nil) {
-        SentryCrashLOG_ERROR(@"Error encoding stack trace to JSON: %@", error);
-        // Don't return, since we can still record other useful information.
-    }
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    const char *cStackTrace = [jsonString cStringUsingEncoding:NSUTF8StringEncoding];
-
-    sentrycrash_reportUserException(
-        cName, cReason, cLanguage, cLineOfCode, cStackTrace, logAllThreads, terminateProgram);
-}
-
 // ============================================================================
 #pragma mark - Advanced API -
 // ============================================================================
@@ -411,9 +386,9 @@ SYNTHESIZE_CRASH_STATE_PROPERTY(BOOL, crashedLastLaunch)
 
     if (self.sink == nil) {
         sentrycrash_callCompletion(onCompletion, reports, NO,
-            [NSError errorWithDomain:[[self class] description]
-                                code:0
-                         description:@"No sink set. Crash reports not sent."]);
+            [NSError sentryErrorWithDomain:[[self class] description]
+                                      code:0
+                               description:@"No sink set. Crash reports not sent."]);
         return;
     }
 
@@ -517,20 +492,6 @@ SYNTHESIZE_CRASH_STATE_PROPERTY(BOOL, crashedLastLaunch)
 {
     _printPreviousLog = shouldPrintPreviousLog;
     sentrycrash_setPrintPreviousLog(shouldPrintPreviousLog);
-}
-
-// ============================================================================
-#pragma mark - Utility -
-// ============================================================================
-
-- (NSMutableData *)nullTerminated:(NSData *)data
-{
-    if (data == nil) {
-        return NULL;
-    }
-    NSMutableData *mutable = [NSMutableData dataWithData:data];
-    [mutable appendBytes:"\0" length:1];
-    return mutable;
 }
 
 // ============================================================================

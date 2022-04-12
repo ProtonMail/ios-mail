@@ -73,6 +73,7 @@ extension EmailHeaderView {
     }
 }
 
+// TODO: Used in printer mode. Removed this after the improvement of print format
 class EmailHeaderView: UIView, AccessibleView {
     
     weak var viewDelegate: EmailHeaderViewProtocol?
@@ -244,7 +245,7 @@ class EmailHeaderView: UIView, AccessibleView {
             }
             
             let t = LocalString._general_to_label
-            let to = "\(t) \(strTo)"
+            let to = "\(t): \(strTo)"
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -259,7 +260,7 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate var toShortAttr : NSMutableAttributedString! {
         get {
             let t = LocalString._general_to_label
-            let to = "\(t) "
+            let to = "\(t): "
             let formRange = NSRange (location: 0, length: to.count)
             let attributedString = NSMutableAttributedString(string: to,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -274,7 +275,7 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
             let c = LocalString._general_cc_label
-            let cc = "\(c) "
+            let cc = "\(c): "
             let formRange = NSRange (location: 0, length: cc.count)
             let attributedString = NSMutableAttributedString(string: cc,
                                                              attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
@@ -344,9 +345,9 @@ class EmailHeaderView: UIView, AccessibleView {
         self.visible = true
         
         // accessibility
-        self.emailToTable.accessibilityLabel = LocalString._general_to_label
+        self.emailToTable.accessibilityLabel = "\(LocalString._general_to_label):"
         self.emailFromTable.accessibilityLabel = LocalString._general_from_label
-        self.emailCcTable.accessibilityLabel = LocalString._general_cc_label
+        self.emailCcTable.accessibilityLabel = "\(LocalString._general_cc_label):"
         self.emailBccTable.accessibilityLabel = LocalString._general_bcc_label
         self.accessibilityElements = [self.emailTitle!,
                                       self.emailFrom!, self.emailFromTable!,
@@ -432,18 +433,18 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailFavoriteButton.isSelected = self.starred
         self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._starred : LocalString._locations_add_star_action
         
-        let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+        let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let isToday = Calendar.current.isDateInToday(self.date)
-        let at = LocalString._general_at_label
-        let on = LocalString._composer_on
-        self.emailShortTime.text = "\(isToday ? at : on) \(self.date.string(format: isToday ? timeformat : "MMM d"))"
-        let tm = self.date.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)")
-        self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
+        let dateOrTimeString = isToday ? self.date.formattedWith(timeFormat): self.date.formattedWith("MMM d")
+        self.emailShortTime.text = String(format: isToday  ? LocalString._composer_forward_header_at : LocalString._composer_forward_header_on , dateOrTimeString)
+        let date = self.date.formattedWith("E, MMM d, yyyy")
+        let detailedDate = String(format: LocalString._composer_forward_header_on_detail, date, self.date.formattedWith(timeFormat))
+        self.emailDetailDateLabel.text = String(format: LocalString._date, detailedDate)
 
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.exclusive == false {
+                if l.type == 1 {
                     if l.name.isEmpty || l.color.isEmpty { //will also check the lable id
                     } else {
                         tmplabels.append(l)
@@ -614,7 +615,7 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailShortTime = UILabel()
         self.emailShortTime.font = Fonts.h6.medium
         self.emailShortTime.numberOfLines = 1
-        self.emailShortTime.text = "at \(self.date.string(format: self.k12HourMinuteFormat))".lowercased()
+        self.emailShortTime.text = "at \(self.date.formattedWith(self.k12HourMinuteFormat)))".lowercased()
         self.emailShortTime.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailShortTime.sizeToFit()
         self.emailHeaderView.addSubview(emailShortTime)
@@ -757,13 +758,13 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailDetailDateLabel.font = Fonts.h6.medium
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let tm = messageTime.formattedWith("'\(LocalString._composer_on)' EE, MMM d, yyyy '\(LocalString._general_at_label)' \(timeformat)")
-            self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
+            let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let tm = String(format: LocalString._composer_forward_header_on_detail, messageTime.formattedWith("E, MMM d, yyyy"), messageTime.formattedWith(timeFormat))
+            self.emailDetailDateLabel.text = String(format: LocalString._date, tm)
         } else {
             self.emailDetailDateLabel.text = String(format: LocalString._date, "")
         }
-        self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailDetailDateLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateLabel)
         
@@ -1301,10 +1302,7 @@ extension EmailHeaderView: UITableViewDelegate {
                     if let att = attachment.att, let context = att.managedObjectContext {
                         CoreDataService.shared.enqueue(context: context) { (context) in
                             att.localURL = nil
-                            let error = context.saveUpstreamIfNeeded()
-                            if error != nil  {
-                                PMLog.D(" error: \(String(describing: error))")
-                            }
+                            _ = context.saveUpstreamIfNeeded()
                             self.downloadAttachment(att, forIndexPath: indexPath)
                         }
                     }

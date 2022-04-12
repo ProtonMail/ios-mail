@@ -22,38 +22,11 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
-
-//Contact API
-//Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
 struct ContactsAPI {
-    
     static let path : String = "/contacts"
-    
-    /// get contact list. no details. only name, email, labels for displaying
-    static let v_get_contacts : Int = 3
-    /// get contact email list. this is for auto complete. combine with contacts would be full information without encrypted data.
-    static let v_get_contact_emails : Int = 3
-    /// add & import contact post
-    static let v_add_contacts : Int = 3
-    /// get contact details full date clear&encrypt data
-    static let v_get_details : Int = 3
-    /// update contact put
-    static let v_update_contact : Int = 3
-    /// delete contact put
-    static let v_delete_contacts : Int = 3
-    
-    /// group
-    /// label an array of emails to a certain contact group
-    static let v_label_an_array_of_contact_emails: Int = 3
-    
-    /// unlabel an array of emails from a certain contact group
-    static let v_unlabel_an_array_of_contact_emails: Int = 3
-    
-    /// export
-    
-    /// clear contacts
 }
 
 // MARK : Get contacts part -- ContactsResponse
@@ -71,12 +44,10 @@ class ContactsRequest : Request {
     }
 }
 
-//
 class ContactsResponse : Response {
     var total : Int = -1
     var contacts : [[String : Any]] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] Get contacts response \(response)")
         self.total = response?["Total"] as? Int ?? -1
         self.contacts = response?["Contacts"] as? [[String : Any]] ?? []
         return true
@@ -110,14 +81,15 @@ class ContactEmailsRequest : Request {  //ContactEmailsResponse
 // TODO: performance enhancement?
 class ContactEmailsResponse: Response {
     var total : Int = -1
-    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ...], ...]
-    override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] Get contact emails response \(response)")
+    var contacts : [[String : Any]] = [] // [["ID": ..., "Name": ..., "ContactEmails": ..., "LastUsedTime": ...], ...]
+    override func ParseResponse (_ response: [String : Any]?) -> Bool {
         self.total = response?["Total"] as? Int ?? -1
         if let tempContactEmails = response?["ContactEmails"] as? [[String : Any]] {
             // setup emails
             for var email in tempContactEmails { // for every email in ContactEmails
-                if let contactID = email["ContactID"] as? String, let name = email["Name"] as? String {
+                if let contactID = email["ContactID"] as? String,
+                   let name = email["Name"] as? String,
+                   let lastUpdateTime = email["LastUsedTime"] as? Int {
                     // convert the labelID strings into JSON dictionary
                     if let labelIDs = email["LabelIDs"] as? [String] {
                         let mapping: [[String: Any]] = labelIDs.map({
@@ -144,33 +116,21 @@ class ContactEmailsResponse: Response {
                             } else {
                                 c["ContactEmails"] = [email]
                             }
+
+                            c["LastUsedTime"] = lastUpdateTime
                             contacts[index] = c
                         }
                     }
                     if !found {
                         let newContact : [String : Any] = [ // this is contact object
-                            "ID" : contactID, // contactID
-                            "Name" : name, // contact name (email don't have their individual name, so it's contact's name?)
-                            "ContactEmails" : [email] // these are the email objects (contact has a relation to email)
+                            "ID": contactID, // contactID
+                            "Name": name, // contact name (email don't have their individual name, so it's contact's name?)
+                            "ContactEmails": [email] // these are the email objects (contact has a relation to email)
                         ]
                         self.contacts.append(newContact)
                     }
                 }
             }
-        }
-        PMLog.D("contacts: \n \(self.contacts.json(prettyPrinted: true))")
-        return true
-    }
-}
-
-class ContactEmailsResponseForContactGroup: Response {
-    var total : Int = -1
-    var emailList : [[String : Any]] = []
-    override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D("[Contact] Get contact emails for contact group response \(String(describing: response))")
-        
-        if let res = response?["ContactEmails"] as? [[String : Any]] {
-            emailList = res
         }
         return true
     }
@@ -192,8 +152,6 @@ final class ContactDetailRequest : Request {  //ContactDetailResponse
 class ContactDetailResponse : Response {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-//      PMLog.D("[Contact] Get contact detail response \(response)")
-//        PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? [String : Any]
         return true
     }
@@ -223,7 +181,7 @@ final class ContactEmail : Package {
 }
 
 // 0, 1, 2, 3 // 0 for cleartext, 1 for encrypted only (not used), 2 for signed, 3 for both
-enum CardDataType : Int {
+enum CardDataType: Int, Codable {
     case PlainText = 0
     case EncryptedOnly = 1
     case SignedOnly = 2
@@ -231,15 +189,15 @@ enum CardDataType : Int {
 }
 
 // add contacts Card object
-final class CardData : Package {
-    let type : CardDataType
-    let data : String
-    let sign : String
+final class CardData: Package, Codable, Equatable {
+    let type: CardDataType
+    let data: String
+    let sign: String
     
     // t   "Type": CardDataType
     // d   "Data": ""
     // s   "Signature": ""
-    init(t : CardDataType, d: String, s : String) {
+    init(t: CardDataType, d: String, s: String) {
         self.data = d
         self.type = t
         self.sign = s
@@ -252,6 +210,18 @@ final class CardData : Package {
             "Signature": self.sign
         ]
     }
+
+    enum CodingKeys: String, CodingKey {
+        case data = "Data"
+        case type = "Type"
+        case sign = "Signature"
+    }
+    
+    static func == (lhs: CardData, rhs: CardData) -> Bool {
+        return lhs.type.rawValue == rhs.type.rawValue &&
+            lhs.data == rhs.data &&
+            lhs.sign == rhs.sign
+    }
 }
 
 extension Array where Element: CardData {
@@ -263,6 +233,16 @@ extension Array where Element: CardData {
             }
         }
         return dicts
+    }
+    
+    func toJSONString() throws -> String {
+        let jsonData = try JSONEncoder().encode(self)
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            let error = NSError(domain: "", code: -1,
+                                localizedDescription: LocalString._error_no_object)
+            throw error
+        }
+        return jsonString
     }
 }
 
@@ -324,7 +304,6 @@ final class ContactAddRequest : Request {   // ContactAddResponse
 final class ContactAddResponse : Response {
     var results : [Any?] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        PMLog.D( response.json(prettyPrinted: true) )
         if let responses = response["Responses"] as? [[String : Any]] {
             for res in responses {
                 if let response = res["Response"] as? [String : Any] {
@@ -424,7 +403,6 @@ final class ContactLabelAnArrayOfContactEmailsRequest: Request { //ContactLabelA
 final class ContactLabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] label an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {
@@ -468,7 +446,6 @@ final class ContactUnlabelAnArrayOfContactEmailsResponse: Response {
     var emailIDs: [String] = []
     
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
-        //PMLog.D("[Contact] unlabel an array of contact emails response \(response)")
         if let responses = response["Responses"] as? [[String: Any]] {
             for data in responses {
                 if let ID = data["ID"] as? String, let tmp = data["Response"] as? [String: Any] {

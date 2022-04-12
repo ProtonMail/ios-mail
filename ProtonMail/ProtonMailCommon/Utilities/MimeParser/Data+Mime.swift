@@ -341,8 +341,6 @@ extension Data {
                 while i < length {
                     let pointingToNewline = pointer[i] == newline || pointer[i] == cr
                     
-                    //PMLog.D(String(data: Data(bytes: output, count: count), encoding: .utf8) ?? "error")
-                    
                     if pointer[i] == backSlash, pointer[i + 1] == u, let bytes = pointer.nextHexCharacters(from: i + 2, length: length), let chr = UInt32(hexBytes: bytes), let scalar = UnicodeScalar(chr) {
                         i += bytes.count + 2
                         let repl = String(Character(scalar)).utf8
@@ -408,12 +406,7 @@ extension Data {
                     
                     output[count] = pointer[i]
                     count += 1
-                    i += 1
-                    
-                    //                if String(data: Data(bytes: output, count: count), encoding: .utf8) == nil {
-                    //                    print("Bad string")
-                    //                    return Data(bytes: output, count: count)
-                    //                }
+                    i += 1                    
                 }
             }
             

@@ -38,26 +38,28 @@ class PushNotificationDecryptor {
     static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.outdatedSettings, cachingInMemory: false)
     static var deviceTokenSaver = KeychainSaver<String>(key: Key.deviceToken, cachingInMemory: false)
     
-    static func encryptionKit(forSession uid: String) -> EncryptionKit? {
-        guard let allSettings = self.saver.get(),
+    func encryptionKit(forSession uid: String) -> EncryptionKit? {
+        guard let allSettings = Self.saver.get(),
             let settings = allSettings.first(where: { $0.UID == uid}) else
         {
+            SystemLogger.log(message: "encryption kit not found", redactedInfo: "uid: \(uid)", category: .encryption, isError: true)
             return nil
         }
         
         return settings.encryptionKit
     }
     
-    static func markForUnsubscribing(uid: String) {
-        guard let deviceToken = self.deviceTokenSaver.get() else { return }
+    func markForUnsubscribing(uid: String) {
+        guard let deviceToken = Self.deviceTokenSaver.get() else { return }
         let settings = PushSubscriptionSettings(token: deviceToken, UID: uid)
         
-        var outdated = self.outdater.get() ?? []
+        var outdated = Self.outdater.get() ?? []
         outdated.insert(settings)
-        self.outdater.set(newValue: outdated)
+        Self.outdater.set(newValue: outdated)
     }
     
-    static func wipeEncryptionKit() {
-        self.saver.set(newValue: nil)
+    func wipeEncryptionKit() {
+        SystemLogger.log(message: #function, category: .pushNotification)
+        Self.saver.set(newValue: nil)
     }
 }

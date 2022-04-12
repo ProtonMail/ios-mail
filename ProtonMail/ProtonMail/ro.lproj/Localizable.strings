@@ -1,3 +1,9 @@
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "...[Afișare mesaj complet]";
+
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'la' %@";
+
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 de biți)";
 
@@ -20,13 +26,37 @@
 "/user" = "/utilizator";
 
 /* Service plan capability */
-"%@ storage capacity" = "Spațiu de stocare %@";
+"%@ storage capacity" = "%@ spațiu de stocare";
+
+/* Description */
+"%d attempt remaining" = "A mai rămas o încercare";
+
+/* Error */
+"%d attempt remaining until secure data wipe!" = "A mai rămas o încercare până la ștergerea sigură a datelor!";
+
+/* The title of single selected conversation of action sheet in inbox */
+"%d conversation" = "O conversație";
+
+/* The title of multiple selected conversations of action sheet in inbox */
+"%d conversations" = "%d conversații";
+
+/* day */
+"%d day" = "O zi";
+
+/* hour */
+"%d hour" = "O oră";
 
 /* The string that describes whether there are 0 or 1 member in the contact group */
-"%d Member" = "%d membru";
+"%d Member" = "Un membru";
 
 /* The string that describes whether there are 2 or more members in the contact group */
 "%d Members" = "%d membri";
+
+/* The title of single selected message of action sheet in inbox */
+"%d message" = "Un mesaj";
+
+/* The title of multiple selected messages of action sheet in inbox */
+"%d messages" = "%d mesaje";
 
 /* auto lock time format */
 "%d Minute" = "Un minut";
@@ -38,41 +68,53 @@
 "%d Selected" = "Selectate: %d";
 
 /* Service plan capability; i = 1 */
-"%i email address" = "%i adresă de e-mail";
+"%i email address" = "O adresă de e-mail";
 
 /* Service plan capability; i = 5 or 50 */
 "%i email addresses" = "%i adrese de e-mail";
 
 /* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Plasează aici pentru atașare";
+"+ Drop here to add as attachment" = "+ Plasaţi aici pentru atașare";
+
+/* alert body for how many extra mail addresses, e.g. +3 others */
+"+%d others" = "+ încă %d";
 
 /* default empty object */
 "<no object>" = "<lipsă obiect>";
 
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 Message moved to archive" = "Un mesaj a fost mutat în «Arhivă»";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "Un mesaj a fost mutat în «Nedorite»";
+
 /* 2fa verification failed */
-"2FA failed. Please try to login again." = "Autentificare cu doi factori a eșuat. Mai încercați.";
+"2FA failed. Please try to sign in again." = "Autentificarea cu doi factori a eșuat. Mai încercați.";
+
+/* Placeholder */
+"8 to 21 characters long" = "între 8 și 21 de caractere";
 
 /* *
  *  LabelTableViewCell */
 "A message cannot have more than 5 labels" = "Un mesaj nu poate avea mai mult de 5 etichete";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "O nouă versiune a aplicației ProtonMail este disponibilă. Vă rugăm să actualizați la ultima versiune.";
+"A new version of ProtonMail app is available, please update to latest version." = "Este disponibilă o nouă versiune a aplicației ProtonMail. Se recomandă actualizarea la ultima versiune.";
 
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "Este disponibilă o versiune nouă a aplicației ProtonMail. Actualizați aplicația.";
 
-/* alert description */
-"A paid ProtonMail plan is required to use this feature" = "Pentru a folosi această funcție trebuie să aveți un plan plătit";
-
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Nu a fost stabilit un cod de acces. Activați-l în setările sistemului.";
 
+/* Alert message is shown when folder name duplicated */
+"A sub-folder with this name already exists in the destination folder" = "Un subfolder cu acest nume există deja în folderul de destinație";
+
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Accesul la acest cont este dezactivat din cauza neplății. Vă rugăm să vă conectați prin protonmail.com pentru plata facturii restante.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Accesul la acest cont este blocat datorită unei plăți restante. Autentificați-vă la protonmail.com și achitați factura restantă.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.\n\nVă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a> pentru mai multe informații.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.\nPentru mai multe informații accesaţi <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a>.";
 
 /* Account manager title */
 "Account" = "Cont";
@@ -81,7 +123,10 @@
 "Account password invalid" = "Parola contului este greșită";
 
 /* section title in settings */
-"Account Settings" = "Setări cont";
+"Account settings" = "Setări cont";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Acțiune inversată";
 
 /* (No Comment) */
 "Add" = "Adăugare";
@@ -90,46 +135,52 @@
 "Add accounts" = "Adăugare conturi";
 
 /* new contacts add Anniversary */
-"Add Anniversary" = "Adăugare aniversare";
+"Add anniversary" = "Adăugare aniversare";
+
+/* menu title */
+"Add attachment" = "Adăugare atașament";
 
 /* new contacts add Birthday */
-"Add Birthday" = "Adăugare data nașterii";
+"Add birthday" = "Adăugare dată naștere";
 
 /* Contacts add new contact */
 "Add Contact" = "Adăugare contact";
 
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Adăugare contacte";
+
 /* add custom label type action */
-"Add Custom Label" = "Adăugare etichete personale";
+"Add custom label" = "Adăugare etichetă personală";
 
 /* Action */
 "Add Folder" = "Adăugare folder";
 
 /* new contacts add Gender */
-"Add Gender" = "Adăugare sex";
+"Add gender" = "Adăugare gen";
 
 /* The title for the contact group creation view */
-"Add Group" = "Adăugare grup";
+"Add group" = "Adăugare grup";
 
 /* add label action */
 "Add Label" = "Adăugare etichetă";
 
 /* add new address action */
-"Add new address" = "Adăugare adresă nouă";
+"Add new address" = "Adăugare adresă";
 
 /* new custom field action */
 "Add new custom field" = "Adăugare câmp personal";
 
 /* new email action */
-"Add new email" = "Adăugare e-mail nou";
+"Add new email" = "Adăugare e-mail";
 
 /* new field action */
 "Add new field" = "Adăugare câmp";
 
 /* add a new folder */
-"Add New Folder" = "Adăugare folder nou";
+"Add New Folder" = "Adăugare folder";
 
 /* add a new folder */
-"Add New Label" = "Adăugare etichetă nouă";
+"Add New Label" = "Adăugare etichetă";
 
 /* new phone action */
 "Add new phone number" = "Adăugare număr de telefon";
@@ -138,19 +189,19 @@
 "Add new URL" = "Adăugare URL";
 
 /* new contacts add Nickname */
-"Add Nickname" = "Adăugare poreclă";
+"Add nickname" = "Adăugare poreclă";
 
 /* new contacts add Organization */
-"Add Organization" = "Adăugare organizație";
+"Add organization" = "Adăugare organizaţie";
 
 /* The button text for add profile picture */
-"Add Photo" = "Adăugare fotografie";
+"Add photo" = "Adăugare fotografie";
 
 /* mark message star */
-"Add Star" = "Pune stea";
+"Add Star" = "Marcare cu stea";
 
 /* new contacts add Title */
-"Add Title" = "Adăugare adresare";
+"Add title" = "Adăugare titlu";
 
 /* Title */
 "Add to contacts" = "Adăugare la contacte";
@@ -176,16 +227,31 @@
 "All protection settings will be reset and wiped upon logging out of the app." = "Toate setările de protecție vor fi resetate și șterse după ce vă deconectați din aplicație.";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Permite rută alternativă";
+"Allow alternative routing" = "Permitere rută alternativă";
 
 /* archive when apply label */
-"Also Archive" = "Și arhivează";
+"Also Archive" = "Și arhivare";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Și arhivare?";
 
 /* Description */
 "Also used to reset a forgotten password." = "Folosit și pentru resetarea parolelor uitate.";
 
+/* cell title in app settings */
+"Alternative routing" = "Rută alternativă";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Permanent oprit";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Permanent pornit";
+
 /* agree check box middle word */
 "and" = "și";
+
+/* Onboarding title */
+"And more…" = "Și mai mult…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversare";
@@ -193,8 +259,11 @@
 /* network troubleshot cell title */
 "Antivirus interference" = "Interferență antivirus";
 
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Toate modificările nesalvate vor fi pierdute.";
+
 /* when server not reachable */
-"API Server not reachable..." = "Serverul API nu poate fi contactat...";
+"API Server not reachable…" = "Serverul API nu poate fi contactat…";
 
 /* section title in settings */
 "APP INFORMATION" = "INFORMAȚII APLICAȚIE";
@@ -202,14 +271,23 @@
 /* Error */
 "App is locked" = "Aplicația este blocată";
 
-/* cell title in device settings */
-"App Language" = "Limbă aplicație";
+/* security title in settings */
+"App PIN" = "PIN aplicație";
+
+/* security title in settings */
+"App PIN & Face ID" = "PIN aplicație și Face ID";
+
+/* security title in settings */
+"App PIN & Touch ID" = "PIN aplicație și Touch ID";
 
 /* section title in settings */
-"App Settings" = "Setări aplicație";
+"App settings" = "Setări aplicație";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Aspect";
 
 /* Price breakdown */
-"Apple in-app purchase fee" = "Taxa Apple de achiziție în aplicație";
+"Apple in-app purchase fee" = "Taxă Apple de achiziție în aplicație";
 
 /* Apply action */
 "Apply" = "Aplicare";
@@ -217,33 +295,44 @@
 /* Title */
 "Apply Labels" = "Aplicare etichete";
 
+/* button title */
+"Apply Password" = "Aplicare parolă";
+
 /* mail location desc
-   menu title */
+   menu title
+   The title of the archive action in action sheet */
 "Archive" = "Arhivă";
 
 /* mail location title */
-"ARCHIVE" = "ARHIVĂ";
+"ARCHIVE" = "Arhivă";
 
 /* Description */
 "Archived" = "Arhivat";
 
-/* Alert when logout non-primary account from account manager */
-"Are you sure you want to log out?" = "Sigur doriți să vă deconectați?";
+/* Message of message permanent deletion alert, plural */
+"Are you sure you want to delete permanently these %d messages?" = "Ești sigur că vrei să ștergi acest mesaj?";
 
-/* Alert to confirm logout when only one account logged in */
-"Are you sure you want to logout %@?" = "Sigur doriți să vă deconectați din %@?";
+/* Message of message permanent deletion alert, singular */
+"Are you sure you want to delete permanently this message?" = "Sigur doriți să ștergeți permanent acest mesaj?";
 
-/* Alert to confirm logout */
-"Are you sure you want to logout?" = "Sigur doriți să vă deconectați?";
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
+
+/* Alert to confirm sign out
+   Alert when sign out non-primary account from account manager */
+"Are you sure you want to sign out?" = "Sigur doriți să vă deconectați?";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Sigur? Această acțiune nu poate fi anulată.";
+"Are you sure? This can't be undone." = "Sigur continuați? Această acțiune nu poate fi anulată.";
 
-/* like at 10:00pm */
-"at" = "la";
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "La %@";
 
 /* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Cel puțin o adresă de e-mail din grup nu a putut fi găsită";
+"At least one email address in the group could not be found" = "Cel puțin o adresă de e-mail din grup nu a putut fi găsită.";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Cel puțin o adresă de e-mail din grup nu a putut fi găsită.";
 
 /* incorrect email format error in composer */
 "At least one recipient email address is improperly formatted, please double check them." = "Cel puțin o adresă de e-mail a destinatarului nu este în format corespunzător, reverificați-o.";
@@ -251,23 +340,26 @@
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Cel puțin o adresă de e-mail/domeniu pentru destinatar nu există sau nu este în format corespunzător. Mesajul a fost mutat în ciorne.";
 
+/* No comment provided by engineer. */
+"attachment" = "ataşament";
+
+/* No comment provided by engineer. */
+"Attachment" = "Atașament";
+
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Eșuare atașare fișier";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Atașament importat";
 
+/* Alert title */
+"Attachment limit" = "Limită atașament";
+
+/* No comment provided by engineer. */
+"attachments" = "ataşamente";
+
 /* VoiceOver: email has attachments */
 "Attachments" = "Atașamente";
-
-/* Error */
-"attempt remaining until secure data wipe!" = "încercare rămasă până la ștergerea sigură a datelor!";
-
-/* Description */
-"attempts remaining" = "încercări rămase";
-
-/* Error */
-"attempts remaining until secure data wipe!" = "încercări rămase până până la distrugerea sigură a datelor!";
 
 /* Title */
 "Authentication" = "Autentificare";
@@ -276,31 +368,37 @@
 "Authentication failed" = "Autentificare eșuată";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Conectare nereușită: nume de utilizator sau parolă greșită";
+"Authentication Failed Wrong username or password" = "Conectare nereușită: nume de utilizator sau parolă greșită.";
 
 /* Error */
-"Authentication failed. Please try to login again." = "Autentificare eșuată. Reîncercați autentificarea.";
+"Authentication failed. Please try to sign in again." = "Autentificarea a eșuat. Mai reîncercați.";
 
 /* Description */
-"Authentication token is not accessible because the app is locked" = "Semnătura de autentificare nu este disponibilă fiindcă aplicația este blocată";
+"Authentication token is not accessible because the app is locked" = "Semnătura de autentificare nu este disponibilă fiindcă aplicația este blocată.";
 
 /* Description */
-"Authentication was cancelled by the system" = "Autentificarea a fost anulată de sistem";
+"Authentication was cancelled by the system" = "Autentificarea a fost anulată de sistem.";
 
 /* Title */
 "Auto Lock Time" = "Timp autoblocare";
 
-/* settings general section title */
+/* (No Comment) */
 "Auto Show Images" = "Afișare automată imagini";
 
-/* section title in settings */
-"Auto-lock" = "Autoblocare";
+/* settings general section title */
+"Auto show remote content" = "Autoîncărcare conținut extern";
+
+/* settings general section title */
+"Auto-load embedded images" = "Autoîncarcare imagini încorporate";
+
+/* Example feedback */
+"Awful" = "Îngrozitor";
 
 /* top left back button */
 "Back" = "Înapoi";
 
 /* Error */
-"Bad auth cache" = "Tampon autentificare eronat";
+"Bad auth cache" = "Buffer autentificare eronat";
 
 /* title */
 "Bad parameter" = "Parametru greșit";
@@ -318,10 +416,13 @@
 "Bcc" = "CA";
 
 /* message Bcc: feild */
-"Bcc:" = "Ca:";
+"Bcc:" = "CA:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data nașterii";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Parcurgeți rapid mesajele înșiruite în modul conversație.";
 
 /* Title */
 "Bug Description" = "Descriere eroare";
@@ -336,13 +437,13 @@
 "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "Ștergând acest cont, nu îl veți mai putea accesa de pe acest dispozitiv decât dacă îl adăugați din nou.\n\nDoriți totuși să ștergeți acest cont?";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Folosind ProtonMail, sunteți de acord cu";
+"By using ProtonMail, you agree to our" = "Folosind ProtonMail, sunteți de acord cu";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %1$@ și %2$@.";
+"By using ProtonMail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %1$@ și %2$@.";
 
 /* Call the contact (button title text) */
-"Call Contact" = "Apelare contact";
+"Call contact" = "Apelați contactul";
 
 /* key size note part 2 */
 "Can take several minutes to setup." = "Poate dura câteva minute pentru configurare.";
@@ -351,7 +452,7 @@
 "Can't copy the file" = "Fișierul nu poate fi copiat";
 
 /* update password error */
-"Can't create a SRP Client" = "Clientul SRP nu poate fi creat";
+"Can't create a SRP Client" = "Clientul SRP nu poate fi creat.";
 
 /* update password error */
 "Can't create a SRP verifier!" = "Verificatorul SRP nu poate fi creat!";
@@ -360,10 +461,10 @@
 "Can't decrypt this attachment!" = "Atașamentul nu poate fi decriptat!";
 
 /* The error message title that will be shown when the deletion of the contact group failed */
-"Can't delete contact group" = "Nu se poate șterge grupul de contacte";
+"Can't delete contact group" = "Nu se poate șterge grupul de contacte.";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Nu se poate șterge grupul de contacte folosind API";
+"Can't delete contact group through API" = "Nu se poate șterge grupul de contacte folosind API.";
 
 /* *
  *  MessageViewController */
@@ -373,7 +474,7 @@
 "Can't download message body. Please try again." = "Corpul mesajului nu poate fi descărcat. Reîncercați.";
 
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
-"Can't fetch contact groups" = "Nu se poate prelua grupul de contacte";
+"Can't fetch contact groups" = "Nu se poate prelua grupul de contacte.";
 
 /* (No Comment) */
 "Can't find the clicked message please try again!" = "Nu se poate găsi mesajul selectat. Reîncercați!";
@@ -382,44 +483,44 @@
 "Can't find the selected message. Please try again." = "Nu se poate găsi mesajul selectat. Mai încercați.";
 
 /* Description */
-"Can't find the value from the response body" = "Nu se găsește valoarea din corpul de răspuns";
+"Can't find the value from the response body" = "Nu se găsește valoarea din corpul de răspuns.";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Atașamentul nu poate fi găsit!";
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Nu se poate obține ID modul!";
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "Nu se poate obține ID modul!";
 
 /* update password error = typo:Modulus */
-"Can't get a Moduls!" = "Nu se poate obține un coeficient!";
+"Can't get a Modulus!" = "Nu se poate obține un modul!";
 
 /* update password error */
-"Can't get user auth info" = "Nu se pot obține informațiile de autentificare utilizator";
-
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Can't load share content!" = "Nu se poate încărca conținutul partajat!";
+"Can't get user auth info" = "Nu se pot obține informațiile de autentificare pentru utilizator.";
 
 /* Error */
-"Can't load the file" = "Nu se poate încărca fișierul";
+"Can't load the file" = "Nu se poate încărca fișierul.";
 
 /* Error */
-"Can't open the file" = "Fișierul nu poate fi deschis";
+"Can't open the file" = "Fișierul nu poate fi deschis.";
 
 /* The error message title that will be shown when the contact group being created or edited can't be saved */
-"Can't save contact group" = "Nu se poate salva grupul de contacte";
+"Can't save contact group" = "Nu se poate salva grupul de contacte.";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Nu se poate actualiza grupul de contacte folosind API";
+"Can't update contact group through the API" = "Nu se poate actualiza grupul de contacte folosind API.";
 
-/* Cancel action */
+/* Cancel action
+   general cancel action */
 "Cancel" = "Anulare";
 
 /* Action */
 "Cancel Check" = "Anulare verificare";
 
 /* Title */
-"Cancelling" = "Anulare";
+"Cancelling" = "Se anulează";
+
+/* Warning message */
+"Cannot empty folder right now." = "Nu se poate goli folderul în acest moment.";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "Atașamentul nu poate fi decriptat.";
@@ -427,15 +528,16 @@
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Title */
-"Cc" = "Cc";
-
-/* message Cc: feild */
-"Cc:" = "Cc:";
+/* message Cc: feild
+   Title */
+"Cc" = "CI";
 
 /* *
  *  PhoneVerifyViewController */
 "Cell phone number" = "Număr telefon mobil";
+
+/* settings general section title */
+"Change account password" = "Schimbare parolă cont";
 
 /* Title */
 "Change default address to .." = "Schimbare adresă implicită cu ...";
@@ -443,17 +545,25 @@
 /* settings swipe actions section action description */
 "Change left swipe action" = "Schimbare acțiune glisare spre stânga";
 
-/* change password input label */
-"Change Login Password" = "Schimbare parolă conectare";
+/* settings general section title
+   Title */
+"Change mailbox password" = "Schimbare parolă mesaje";
 
-/* Title */
-"Change Mailbox Password" = "Schimbare parolă mesaje";
+/* settings general section title
+   title */
+"Change password" = "Schimbare parolă";
 
 /* title */
 "Change Password" = "Schimbare parolă";
 
-/* settings protection section title */
+/* (No Comment) */
 "Change Pin" = "Schimbare PIN";
+
+/* settings protection section title */
+"Change PIN" = "Schimbare PIN";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Schimbare cod PIN";
 
 /* settings swipe actions section action description */
 "Change right swipe action" = "Schimbare acțiune glisare spre dreapta";
@@ -461,23 +571,38 @@
 /* Title */
 "Change sender address to .." = "Schimbare adresă expeditor cu ...";
 
+/* change password input label */
+"Change sign-in password" = "Schimbare parolă conectare";
+
 /* Title */
-"Change Single Password" = "Schimbare parolă unică";
+"Change single password" = "Schimbare parolă unică";
 
 /* Action */
 "Check Again" = "Reverificare";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "Verifică starea Proton pentru starea sistemului nostru.";
+"Check Proton Status for our system status." = "Consultare stare Proton pentru aflarea stării sistemului.";
 
 /* "Username" */
 "Checking ...." = "Se verifică ...";
+
+/* loading message */
+"Checking…" = "Se verifică…";
 
 /* place holder */
 "Choose a Password" = "Alegeți o parolă";
 
 /* contact placeholder */
 "City" = "Oraș";
+
+/* Warning message when users try to empty conversations in the folder */
+"clean_conversation_warning" = "avertizare_conversație_curățată";
+
+/* Warning message when users try to empty messages in the folder */
+"clean_message_warning" = "mesaj_de_curățare_avertisment";
+
+/* cell title in device setting */
+"Clear local cache" = "Golire buffer local";
 
 /* settings general section title */
 "Clear Local Message Cache" = "Golire buffer mesaje locale";
@@ -494,34 +619,41 @@
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
 
-/* cell title in device settings */
-"Combined Contacts" = "Contacte combinate";
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Restrângere folder";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Retrângere mesaj";
+
+/* cell title in device settings
+   The title of combined contact in settings */
+"Combined contacts" = "Contacte combinate";
 
 /* *
  *  Composer Email view controller */
 "Compose" = "Compunere";
 
+/* An action title shows in ellipsis menu */
+"Compose message" = "Compunere mesaj";
+
 /* Title */
-"Compose to" = "Scrie la";
+"Compose to" = "Scrie lui";
 
 /* *
  *  MenuViewController */
 "Confirm" = "Confirmare";
 
-/* "Login Password" */
-"Confirm Login Password" = "Confirmare parolă conectare";
-
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Confirmare parolă mesaje";
-
-/* Title */
-"Confirm new login password" = "Confirmare parolă de conectare";
 
 /* Title */
 "Confirm new mailbox password" = "Confirmare parolă mesaje";
 
 /* Placeholder */
 "Confirm new password" = "Confirmare parolă nouă";
+
+/* Title */
+"Confirm new sign-in password" = "Confirmare parolă nouă de conectare";
 
 /* Placeholder */
 "Confirm Password" = "Confirmare parolă";
@@ -538,11 +670,17 @@
 /* Account manager title */
 "Connect Account" = "Conectare cont";
 
+/* Hint when users delete contact offline */
+"Contact deleted, will be synced when connection is available" = "Contact șters, va fi sincronizat atunci când conexiunea este disponibilă.";
+
 /* contact section title */
-"Contact Details" = "Detalii contact";
+"Contact details" = "Detalii contact";
+
+/* Hint when users create / edit contact offline */
+"Contact saved, will be synced when connection is available" = "Contact salvat, va fi sincronizat atunci când conexiunea este disponibilă.";
 
 /* Title */
-"Contact the ProtonMail team" = "Contactare echipă ProtonMail";
+"Contact the ProtonMail team" = "Contactați echipa ProtonMail";
 
 /* network troubleshot cell title */
 "Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.com) sau Twitter.";
@@ -551,11 +689,24 @@
    menu title */
 "Contacts" = "Contacte";
 
-/* Action */
+/* Action
+   The title of button of PIN code setup1 */
 "Continue" = "Continuare";
 
 /* Action */
-"Continue and Don't ask again" = "Continuă și nu mă mai întreba";
+"Continue and Don't ask again" = "Continuare și nu mă mai întreba";
+
+/* No comment provided by engineer. */
+"Conversation" = "Conversație";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Mod conversație";
+
+/* Onboarding title */
+"Conversations" = "Conversații";
+
+/* Title */
+"Copy" = "Copiere";
 
 /* Title */
 "Copy address" = "Copiere adresă";
@@ -573,19 +724,13 @@
 "Create" = "Creare";
 
 /* Signup top title */
-"Create a new account" = "Creare cont nou";
+"Create a new account" = "Creare cont";
 
 /* Create account button */
 "Create Account" = "Creare cont";
 
-/* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.";
-
-/* (No Comment) */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.";
-
 /* title of button in account connect page */
-"Create new account" = "Creare cont nou";
+"Create new account" = "Creare cont";
 
 /* error part & alert title */
 "Create user failed" = "Creare utilizator eșuată";
@@ -593,18 +738,34 @@
 /* Error */
 "Create User failed. Please try again." = "Eșuare creare utilizator. Mai încercați.";
 
+/* Alert title */
+"Creating folder not allowed" = "Crearea folderului nu este permisă";
+
+/* Alert title */
+"Creating label not allowed" = "Crearea etichetei nu este permisă";
+
 /* Change language title */
 "Current Language is: " = "Limba curentă este: ";
-
-/* Title */
-"Current login password" = "Parola actuală de conectare";
 
 /* Placeholder */
 "Current password" = "Parola actuală";
 
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Adresă curentă e-mail de recuperare";
+
+/* Title */
+"Current sign-in password" = "Parola actuală de conectare";
+
 /* action sheet option
-   contacts default label type */
+   contacts default label type
+   Custom option for time config picker */
 "Custom" = "Personalizat";
+
+/* Title */
+"Cut" = "Decupare";
+
+/* cell title in app setting */
+"Dark mode" = "Mod întunecat";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -612,7 +773,8 @@
 /* like Date: 2017-10-10 */
 "Date: %@" = "Data: %@";
 
-/* Title */
+/* days
+   Title */
 "days" = "zile";
 
 /* Title */
@@ -631,7 +793,10 @@
 "Decryption error" = "Eroare decriptare";
 
 /* error details */
-"Decryption of this content failed" = "Decriptare eșuată conținut";
+"Decryption of this content failed" = "Decriptarea acestui conținut a eșuat";
+
+/* error details */
+"decryption of this message's encrypted content failed." = "decriptarea conținutului criptat al acestui mesaj a eșuat.";
 
 /* Title */
 "Default" = "Implicit";
@@ -655,14 +820,26 @@
  *  Contacts View Controller */
 "Delete" = "Ștergere";
 
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Ștergere %d mesaje";
+
 /* emptify folder/label confirmation alert */
 "Delete all" = "Ștergere toate";
 
 /* Title-Contacts */
-"Delete Contact" = "Ștergere contact";
+"Delete contact" = "Ștergere contact";
 
 /* The description of the button for deleting the contact group */
-"Delete Contact Group" = "Ștergere grup contacte";
+"Delete contact group" = "Ștergere grup de contacte";
+
+/* The title of delete folder button */
+"Delete folder" = "Ștergere folder";
+
+/* The title of delete label button */
+"Delete label" = "Ștergere etichetă";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Ștergere mesaj";
 
 /* mail location desc */
 "Deleted" = "Șters";
@@ -672,10 +849,13 @@
 "Details" = "Detalii";
 
 /* network troubleshot cell title */
-"Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravan de protecție sau contactați administratorul de rețea.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravanul de protecție sau contactați administratorul de rețea.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Dezactivare validare";
+
+/* Action */
+"Discard" = "Renunțare";
 
 /* Action */
 "Discard changes" = "Anulare modificări";
@@ -696,14 +876,23 @@
 /* Title in display name settings */
 "DisplayName" = "Nume afișat";
 
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Sigur doriți să eliminați această imagine din atașamente?";
+
 /* Description */
 "Do you want to cancel the process?" = "Doriți anularea procesului?";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Doriți să renunțați la modificări?";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Doriți să renunțați la modificări?";
 
 /* Title */
 "Do you want to save the unsaved changes?" = "Doriți să salvați modificările nesalvate?";
 
 /* Action */
-"Don't remind me again" = "Nu mă mai atenționa";
+"Don't remind me again" = "Nu-mi mai reaminti";
 
 /* Title */
 "Don't Show Again" = "Nu mai afișa";
@@ -712,33 +901,54 @@
 "Done" = "Gata";
 
 /* VoiceOver action description */
-"Double tap to setup" = "Dublă atingere pentru setare";
+"Double tap to setup" = "Atingere dublă pentru setare";
 
 /* Action
    mail location desc */
 "Draft" = "Ciornă";
 
 /* title of toast message that user taps the message which is uploading */
-"Draft is still uploading..." = "Ciorna încă se încarcă...";
+"Draft is still uploading…" = "Ciorna încă se încarcă…";
+
+/* hint message */
+"Draft moved to trash" = "Ciorna a fost mutată în «Gunoi»";
+
+/* hint message */
+"Draft restored" = "Ciorna a fost restaurată";
+
+/* hint message */
+"Draft saved" = "Ciorna a fost salvată";
 
 /* menu title */
 "Drafts" = "Ciorne";
 
 /* mail location title */
-"DRAFTS" = "CIORNE";
+"DRAFTS" = "Ciorne";
+
+/* Onboarding title */
+"Easily up-to-date" = "Ușor de actualizat";
 
 /* Action */
 "Edit" = "Editare";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Editare avatar";
 
 /* *
  *  Edit Contact view controller */
 "Edit Contact" = "Editare contact";
 
+/* The title of edit folder page */
+"Edit folder" = "Editare folder";
+
 /* Title */
 "Edit Folder" = "Editare folder";
 
 /* The title for the contact group editing view */
-"Edit Group" = "Editare grup";
+"Edit group" = "Editare grup";
+
+/* The title of edit label page */
+"Edit label" = "Editare etichetă";
 
 /* Title */
 "Edit Label" = "Editare etichetă";
@@ -747,10 +957,16 @@
 "Edit mobile signature" = "Editare semnătură mobil";
 
 /* The button text for edit profile picture */
-"Edit Photo" = "Editare foto";
+"Edit photo" = "Editare fotografie";
 
 /* title */
 "Edit signature" = "Editare semnătură";
+
+/* Alert title */
+"Editing folder not allowed" = "Editarea folderului nu este permisă";
+
+/* Alert title */
+"Editing label not allowed" = "Editarea etichetei nu este permisă";
 
 /* network troubleshot cell title */
 "email" = "e-mail";
@@ -760,7 +976,7 @@
 
 /* *
  *  Email Verify View Controller */
-"Email address" = "Adresă de e-mail";
+"Email address" = "Adresa de e-mail";
 
 /* alert title */
 "Email address invalid" = "Adresa de e-mail nu este validă";
@@ -769,13 +985,13 @@
 "Email address is invalid" = "Adresa de e-mail nu este validă";
 
 /* contact detail view, email addresses section title */
-"Email Addresses" = "Adrese de e-mail";
+"Email addresses" = "Adrese de e-mail";
 
 /* Send an email to the current contact (button title text) */
-"Email Contact" = "Scrie contactului";
+"Email contact" = "Trimitere e-mail la contact";
 
 /* place holder */
-"Email default signature" = "Semnătură implicită e-mail";
+"Email default signature" = "Semnătura implicită e-mail";
 
 /* title */
 "Email domain invalid" = "Domeniu e-mail nevalid";
@@ -783,44 +999,56 @@
 /* human check option button */
 "Email Verification" = "Verificare e-mail";
 
-/* cell title in device setting */
-"Empty Cache" = "Golire buffer";
-
 /* "Cancel" */
 "Empty Folder" = "Golire folder";
 
 /* it is an option to empty the label */
 "Empty Label" = "Eliminare etichetă";
 
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Golire «Nedorite»";
+
+/* Alert title */
+"Empty spam folder" = "Golire folder «Nedorite»";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Golire «Gunoi»";
+
+/* Alert title */
+"Empty trash folder" = "Golire folder «Gunoi»";
+
+/* No comment provided by engineer. */
+"Enable conversations" = "Activare conversații";
+
 /* Title */
-"Enable Default Signature" = "Activare semnătură implicită";
+"Enable email notices" = "Activare notificări prin e-mail";
 
 /* settings protection section title */
-"Enable FaceID" = "Activare FaceID";
-
-/* Title */
-"Enable Mobile Signature" = "Activare semnătură mobil";
-
-/* Title */
-"Enable Notification Email" = "Activare e-mail de notificare";
+"Enable Face ID" = "Activare Face ID";
 
 /* device settings auto lock type title toggle text */
 "Enable PIN" = "Activare PIN";
 
-/* settings protection section title */
-"Enable Pin Protection" = "Activare protecție PIN";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Activare PIN/FaceID";
-
-/* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Activare PIN/TouchID";
+/* (No Comment) */
+"Enable Pin Protection" = "Activare protecție cu PIN";
 
 /* settings protection section title */
+"Enable PIN Protection" = "Activare protecție cu PIN";
+
+/* Title */
+"Enable signature" = "Activare semnătură";
+
+/* settings protection section title */
+"Enable Touch ID" = "Activare Touch ID";
+
+/* (No Comment) */
 "Enable TouchID" = "Activare TouchID";
 
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Criptat de Proton";
+
 /* contact section title */
-"Encrypted Contact Details" = "Detalii criptate contact";
+"Encrypted contact details" = "Detalii contacte criptate";
 
 /* Title */
 "Encrypted for outside" = "Criptat pentru exterior";
@@ -858,11 +1086,23 @@
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Criptat în ambele părți spre adresă verificată";
 
-/* Title */
+/* (No Comment) */
 "End-to-End Encryption" = "Criptare în ambele părți";
+
+/* Onboarding content */
+"Enjoy end-to-end encryption with even non-Proton contacts: Invite them to ProtonMail or manually encrypt their messages." = "Bucurați-vă de criptare în ambele părți chiar și cu contactele care nu sunt în Proton: Invitați-le în ProtonMail sau criptați manual mesajele acestora.";
+
+/* Onboarding content */
+"Enjoy improvements like dark mode, an unread messages filter, and subfolders." = "Bucurați-vă de îmbunătățiri precum modul întunecat, un filtru de mesaje necitite și subfoldere.";
 
 /* Action in 2fa popup view */
 "Enter" = "Introducere";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
+
+/* The title of textfield of PIN code setup1 */
+"Enter current PIN code" = "Introduceţi codul PIN actual";
 
 /* Title */
 "Enter Verification Code" = "Introducere cod de verificare";
@@ -876,17 +1116,26 @@
 /* Account manager title */
 "Enter your mailbox password" = "Introduceți parola pentru mesaje";
 
-/* set pin title */
-"Enter your PIN" = "Introducere PIN";
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Introduceți parola pentru a efectua modificările";
+
+/* set PIN title */
+"Enter your PIN" = "Introducere cod PIN";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Introduceți codul PIN pentru deblocare mesaje.";
+"Enter your PIN to unlock your inbox." = "Introduceți codul PIN pentru deblocarea mesajelor.";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Introduceți aici semnătura";
+
+/* Title of alert in share extension. */
+"Error" = "Eroare";
 
 /* settings debug section title */
 "Error Logs" = "Jurnal de erori";
 
 /* Error alert title */
-"Error occured" = "A apărut o eroare";
+"Error occurred" = "A apărut o eroare";
 
 /* incorrect email format error in composer */
 "Error sending" = "Eroare la trimitere";
@@ -894,17 +1143,23 @@
 /* lock app option */
 "Every time enter app" = "La fiecare intrare în aplicație";
 
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Extindere folder";
+
+/* alert title */
+"Expiration not supported" = "Expirare nesuportată";
+
 /* VoiceOver: email can expire */
 "Expires" = "Expirare";
 
-/* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expiră peste %d zile %d ore %d minute %d secunde";
-
-/* Title */
+/* (No Comment) */
 "Expiring Messages" = "Mesaje care expiră";
 
 /* Key size checkbox */
 "Extreme Security" = "Securitate extremă";
+
+/* The protection title of Face ID protection */
+"Face ID" = "ID facial";
 
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
@@ -916,6 +1171,9 @@
  *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Inițializarea datelor salvate de aplicație a eșuat";
 
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Eșuare încărcare conținut!\nMai reîncercați.";
+
 /* default vcard types */
 "Fax" = "Fax";
 
@@ -925,11 +1183,20 @@
 /* Error */
 "Fetch user info failed" = "Eșuare preluare date utilizator";
 
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Clasificați, etichetați și codificați prin culori mesajele pentru a vă crea o experiență personală de utilizare.";
+
 /* VoiceOver: email belongs to folder */
 "Folder" = "Folder";
 
 /* place holder */
 "Folder Name" = "Nume folder";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Foldere";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Ca în setările dispozitivului";
 
 /* Service Plan description */
 "For individuals looking to benefit from secure communication at no cost" = "Pentru persoane ce doresc comunicații sigure fără cheltuieli";
@@ -946,8 +1213,11 @@
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Pentru utilizatori avansați și grupuri de persoane ce apreciază anonimatul și intimitatea";
 
-/* login page forgot pwd */
-"FORGOT PASSWORD?" = "V-AȚI UITAT PAROLA?";
+/* The title of alert that the app is not having the permission to access photo library */
+"Forbidden" = "Interzis";
+
+/* signin page forgot pwd */
+"FORGOT PASSWORD?" = "Ați uitat parola?";
 
 /* forward action */
 "Forward" = "Redirecționare";
@@ -958,26 +1228,41 @@
 /* Title */
 "From" = "De la";
 
+/* Title */
+"From your photo library" = "Din galeria de imagini";
+
 /* message From: field text */
 "From:" = "De la:";
 
 /* abbreviation of forward: */
-"FW:" = "RD:";
+"Fw:" = "Redir:";
 
 /* abbreviation of forward: */
-"Fwd:" = "Fwd:";
+"Fwd:" = "Red:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Sex";
 
+/* section title in settings */
+"General settings" = "Setări generale";
+
 /* Title */
 "General Settings" = "Setări generale";
+
+/* conversation number */
+"general_conversation" = "general_conversation";
+
+/* message number */
+"general_message" = "general_message";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Obțineți %@";
 
 /* Action */
 "Get more information" = "Aflați mai multe";
+
+/* title of the next button */
+"Get Started" = "Începeți";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Accesare folder «Ciorne»";
@@ -986,46 +1271,55 @@
 "Go to inbox" = "Salt la «Primite»";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to login" = "Conectați-vă";
+"Go to settings" = "Accesare setări";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Accesare setări";
+"Go to sign-in" = "Mergeți la conectare";
 
 /* network troubleshot cell title */
 "Government block" = "Blocare națională";
 
 /* The title for the contact group detail view */
-"Group Details" = "Detalii grup";
+"Group details" = "Detalii grup";
 
 /* The instruction label for the group name textfield */
-"Group Name" = "Nume grup";
+"Group name" = "Denumire grup";
 
 /* menu title (contact groups) */
 "Groups" = "Grupuri";
 
-/* Title */
+/* (No Comment) */
 "Help & Support" = "Ajutor & Asistență";
 
 /* Title */
 "Help us to improve ProtonMail with your input." = "Ajutați-ne să îmbunătățim ProtonMail cu sugestiile dvs.";
 
 /* Title */
-"Help us to make privacy the default in the web." = "Ajutați-ne să facem confidențialitatea o regulă de bază pe web.";
+"Help us to make privacy the default in the web." = "Ajutați-ne să facem confidențialitatea o regulă de bază pe internet.";
 
 /* Action */
-"Hide" = "Ascunde";
+"Hide" = "Ascundere";
 
 /* Title */
-"Hide Details" = "Ascunde detalii";
+"Hide details" = "Ascundere detalii";
+
+/* (No Comment) */
+"Hide Details" = "Ascundere detalii";
 
 /* Key size checkbox */
 "High Security" = "Securitate ridicată";
 
-/* (No Comment) */
-"hours" = "Ore";
+/* hours */
+"hours" = "ore";
 
 /* Title */
 "Hours" = "Ore";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new ProtonMail?" = "Cum ați descrie experiența avută cu noul ProtonMail?";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
 
 /* Description */
 "Human Check Failed" = "Eșuare verificare persoană";
@@ -1045,14 +1339,20 @@
 /* Action */
 "Import Error" = "Eroare importare";
 
-/* Title */
+/* (No Comment) */
 "Import File From..." = "Importare fișier din...";
+
+/* Title */
+"Import File From…" = "Importare fișier din…";
+
+/* Title */
+"Import from…" = "Importare din…";
 
 /* Downloading attachments from cloud */
 "Importing" = "Importare";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Importare atașament, ar putea dura un timp.";
+"Importing attachment, that can take a while" = "Se importă atașamentul, ar putea dura un timp.";
 
 /* import contact title */
 "Importing Contacts" = "Importare contacte";
@@ -1060,39 +1360,49 @@
 /* network troubleshot cell title */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. [Detalii]";
 
-/* network troubleshot cell title */
+/* network troubleshot cell title
+   The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați 'Termenii serviciului' ProtonMail.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați Termenii serviciului ProtonMail.";
 
 /* "Deleted" */
 "Inbox" = "Primite";
 
 /* *
  *  MailboxViewController */
-"INBOX" = "PRIMITE";
+"INBOX" = "Primite";
 
 /* Title */
 "Incorrect password" = "Parolă incorectă";
 
 /* Error */
-"Incorrect PIN," = "PIN incorect,";
+"Incorrect PIN." = "PIN incorect.";
+
+/* Option title */
+"Inherit color from parent folder" = "Moştenire culoare de la folderul părinte";
+
+/* A label message */
+"Inherited from parent folder" = "Moştenit de la folderul părinte";
 
 /* Title */
-"inline attachments" = "atașamente incluse";
+"inline attachments" = "atașamente integrate";
 
-/* place holder */
+/* (No Comment) */
 "Input Display Name ..." = "Introducere nume afișat...";
 
 /* place holder */
-"Input Notification Email ..." = "Introducere e-mail de notificare...";
+"Input Display Name…" = "Introducere nume afișat…";
+
+/* place holder */
+"Input Notification Email …" = "Introducere e-mail de notificare…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Conexiune nesigură";
 
 /* Error */
-"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Crearea unui cont de ProtonMail instant a fost dezactivat temporar. Vă rugăm să vizitați https://protonmail.com/invite pentru a solicita o invitație.";
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Crearea unui cont ProtonMail instant a fost dezactivată temporar. Accesați https://protonmail.com/invite pentru a solicita o invitație.";
 
 /* The preconditions are not met */
 "Internal Error" = "Eroare internă";
@@ -1103,26 +1413,26 @@
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii internet (ISP)";
 
-/* (No Comment) */
-"Invalid access token please relogin" = "Semnătură de acces nevalidă. Reconectați-vă.";
-
 /* alert title */
 "Invalid credential" = "Acreditări nevalide";
 
 /* update password error */
 "Invalid hashed password!" = "Parolă generată nevalidă!";
 
+/* The error message of entering an invalid password */
+"Invalid password" = "Parolă nevalidă";
+
 /* Error */
 "Invalid Password" = "Parolă nevalidă";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "URL nevalid";
+"Invalid URL" = "Adresă URL nevalidă";
 
 /* title */
-"Invalid UserName" = "Nume de utilizator nevalid";
+"Invalid UserName" = "Utilizator nevalid";
 
 /* Error message */
-"Invalid UserName!" = "Nume de utilizator nevalid!";
+"Invalid username!" = "Nume de utilizator nevalid!";
 
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Acest raport de eroare este despre o achiziție din aplicație?";
@@ -1130,7 +1440,7 @@
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Nu este posibilă comutarea la %@ din aplicația iOS.";
 
-/* No comment provided by engineer. */
+/* The string used to show in the plan update page when the user not able to upgrade the account */
 "It's not possible to switch to another plan within the app. %1$@" = "Nu este posibilă schimbarea la un alt plan din cadrul aplicației. %1$@";
 
 /* Title */
@@ -1145,11 +1455,21 @@
 /* Error */
 "Key invalid. Please go back and try again." = "Cheie nevalidă. Reveniți și reîncercați.";
 
+/* The title of first button in the action bar */
+"Label" = "Eticheta";
+
+/* No comment provided by engineer. */
+"Label as" = "Etichetare ca";
+
 /* *
  *  MoreOptionsView */
 "Label as..." = "Etichetare ca...";
 
-/* Title */
+/* The title of the label as action in action sheet
+   Title */
+"Label as…" = "Etichetare ca…";
+
+/* (No Comment) */
 "Label Management" = "Gestionare etichete";
 
 /* createing lable input place holder */
@@ -1162,25 +1482,33 @@
 "Labels & Folders" = "Etichete și foldere";
 
 /* Title */
-"Labels have been applied." = "Eticheta a fost aplicată.";
+"Labels have been applied." = "Etichetele au fost aplicate.";
 
 /* Service plan capability */
-"Labels, Folders, Filters & More" = "Etichete, foldere, filtre & altele";
+"Labels, Folders, Filters & More" = "Etichete, foldere, filtre și altele";
 
 /* Title */
 "Labels/Folders" = "Etichete/Foldere";
 
-/* Title */
+/* cell title in device settings
+   Title */
 "Language" = "Limba";
 
-/* network troubleshot cell title */
+/* Action */
+"Later" = "Mai târziu";
+
+/* network troubleshot cell title
+   The title of learn more link */
 "Learn more" = "Detalii";
 
 /* Action */
-"Learn More" = "Aflați mai multe";
+"Learn More" = "Detalii";
 
 /* learn more button */
 "Learn more here" = "Detalii aici";
+
+/* settings swipe actions section title */
+"Left to Right" = "De la stânga la dreapta";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Limită atinsă";
@@ -1188,11 +1516,20 @@
 /* Service plan capability */
 "Limited to 150 messages sent/day" = "Maxim 150 de mesaje trimise/zi";
 
+/* No comment provided by engineer. */
+"Load content" = "Încărcare conținut";
+
+/* No comment provided by engineer. */
+"Load images" = "Încărcare imagini";
+
 /* Action */
 "Load remote content" = "Încărcare conținut extern";
 
 /* (No Comment) */
 "Loading..." = "Se încarcă...";
+
+/* No comment provided by engineer. */
+"Loading…" = "Se încarcă…";
 
 /* Description */
 "Local cache can't find mailbox password" = "Nu se poate găsi parola mesajelor în bufferul local";
@@ -1210,37 +1547,14 @@
 /* menu title */
 "Lock The App" = "Blocare aplicație";
 
-/* Account manager title */
-"Log in to your ProtonMail account" = "Conectare la contul ProtonMail";
+/* The body of notification that will show when the token of one account is revoked */
+"Log in again to keep receiving updates" = "Conectați-vă din nou pentru a continua să primiți actualizări";
 
 /* comment */
 "Log out" = "Deconectare";
 
-/* Alert title when logout non-primary account from account manager */
-"Log out %@?" = "Ieșiti din %@?";
-
-/* Action */
-"Log Out All" = "Ieșire din toate";
-
-/* Alert when auth token is revoked and switch to another */
-"Logged out from %@ and signed in with %@" = "Deconectat din %1$@ și conectat în %2$@";
-
-/* Title */
-"Login" = "Conectare";
-
-/* (No Comment) */
-"LOGIN" = "Conectare";
-
-/* settings general section title */
-"Login Password" = "Parolă de autentificare";
-
-/* Error */
-"Login password doesn't match" = "Parola de conectare nu se potrivește";
-
-/* Alert title to confirm logout
-   Alert title when logout primary account from account manager
-   menu title */
-"Logout" = "Deconectare";
+/* The title of notification that will show when the token of one account is revoked */
+"Logged out of %@" = "Deconectat de la %@";
 
 /* error title */
 "Logs" = "Jurnale";
@@ -1249,9 +1563,9 @@
 "Looking to secure your contact's details?" = "Doriți securizarea detaliilor contactelor?";
 
 /* cell title in device settings */
-"MAILBOX" = "MESAJE";
+"Mailbox" = "Mesaje";
 
-/* settings general section title */
+/* (No Comment) */
 "Mailbox Password" = "Parolă mesaje";
 
 /* *
@@ -1261,22 +1575,34 @@
 /* (No Comment) */
 "Mailbox password doesn't match" = "Parolele pentru mesaje nu coincid";
 
-/* cell title in device settings */
-"Mailbox size" = "Mărime stocare mesaje";
-
 /* menu title */
 "Manage accounts" = "Gestionare conturi";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage Addresses" = "Gestionare adrese";
+"Manage addresses" = "Gestionare adrese";
+
+/* The title of folder manager page */
+"Manage folders" = "Gestionare foldere";
 
 /* Settings row */
 "Manage in device Settings" = "Gestionare în setări dispozitiv";
 
+/* The title of label manager page */
+"Manage labels" = "Gestionare etichete";
+
 /* Title */
 "Manage Labels/Folders" = "Gestionare etichete/foldere";
 
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Marcare ca legitim";
+
+/* The title of the read action in action sheet */
+"Mark as read" = "Marcare ca citit";
+
 /* Action */
+"Mark as read/unread" = "Marcare ca citit/necitit";
+
+/* The title of the unread action in action sheet */
 "Mark as unread" = "Marcare ca necitit";
 
 /* mark message as read action */
@@ -1291,8 +1617,14 @@
 /* Message with title */
 "Message %@" = "Mesaj %@";
 
+/* Title of the view showing the message body */
+"Message body" = "Conținut mesaj";
+
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
+
+/* Composer expiration page title */
+"Message expiration" = "Expirare mesaj";
 
 /* *
  *  Expiration View */
@@ -1303,6 +1635,12 @@
 
 /* Title */
 "Message has been moved." = "Mesajul a fost mutat.";
+
+/* Title of the view showing the message header */
+"Message headers" = "Antete mesaj";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Mesaj mutat în «Gunoi»";
 
 /* Placeholder */
 "Message Password" = "Parolă mesaj";
@@ -1325,8 +1663,11 @@
 /* Title */
 "Message Swipe Actions" = "Acțiuni glisare mesaje";
 
-/* Description */
+/* (No Comment) */
 "Messages you send can be set to auto delete after a certain time period." = "Mesajele trimise pot fi setate să se șteargă automat după o anumită perioadă.";
+
+/* minute */
+"minute" = "minut";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1342,13 +1683,19 @@
 "Modifying or turning off the default mobile signature is a paid feature." = "Modificarea sau dezactivarea semnăturii mobilului este o funcție plătită.";
 
 /* More actions button */
-"More" = "Mai multe";
+"More" = "Detalii";
 
 /* Screen header */
 "More Credits" = "Cumpărare credite";
 
+/* No comment provided by engineer. */
+"Move to" = "Mutare în";
+
 /* move action */
 "Move to All Mail" = "Mutare în «Toate mesajele»";
+
+/* Action title of move to archive */
+"Move to archive" = "Mutare în «Arhivă»";
 
 /* move action */
 "Move to Archive" = "Mutare în «Arhivă»";
@@ -1359,20 +1706,34 @@
 /* folder apply - title */
 "Move to Folder" = "Mutare în folder";
 
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Mutare în «Primite»";
+
 /* "Trash" */
 "Move to Inbox" = "Mutare în «Primite»";
 
 /* move action */
 "Move to Outbox" = "Mutare în «De trimis»";
 
+/* Action title of move to spam
+   The title of the spam action in action sheet */
+"Move to spam" = "Mutare în «Nedorite»";
+
 /* move action */
 "Move to Spam" = "Mutare în «Spam»";
+
+/* The title of the remove action in action sheet */
+"Move to trash" = "Mutare în «Gunoi»";
 
 /* move action */
 "Move to Trash" = "Mutare în «Gunoi»";
 
-/* Title */
+/* (No Comment) */
 "Move to..." = "Mutare în...";
+
+/* The title of the move to action in action sheet
+   Title */
+"Move to…" = "Mutare în…";
 
 /* Title */
 "Multiple Addresses" = "Adrese multiple";
@@ -1380,26 +1741,57 @@
 /* title */
 "Name" = "Nume";
 
-/* Action */
-"NEED AN ACCOUNT? SIGN UP." = "DORIȚI UN CONT? ÎNREGISTRAȚI-VĂ.";
+/* Onboarding title */
+"Neat and tidy" = "Curată și ordonată";
 
-/* section title */
+/* Action */
+"NEED AN ACCOUNT? SIGN UP." = "Înscriere gratuită";
+
+/* section title 
+   The title of alternative routing settings */
 "Networking" = "Rețea";
 
-/* Title */
-"New login password" = "Parola nouă de conectare";
+/* Contacts add new contact */
+"New contact" = "Contact nou";
+
+/* The title of create folder page */
+"New folder" = "Folder nou";
+
+/* No comment provided by engineer. */
+"New Folder" = "Folder nou";
+
+/* The title for the contact group creation view */
+"New group" = "Grup nou";
+
+/* The title of create label page */
+"New label" = "Etichetă nouă";
+
+/* No comment provided by engineer. */
+"New Label" = "Etichetă nouă";
+
+/* Onboarding title */
+"New look, same protection" = "Un aspect nou, aceeași protecție";
 
 /* Title */
 "New mailbox password" = "Parola nouă mesaje";
 
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Mesaj nou";
+
 /* Placeholder */
-"New password" = "Parolă nouă";
+"New password" = "Parola nouă";
+
+/* Title */
+"New sign-in password" = "Parola nouă de conectare";
+
+/* title of the next button */
+"Next" = "Înainte";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Porecla";
 
 /* Title */
-"No connectivity detected..." = "Nu există conexiune...";
+"No connectivity detected…" = "Nu există conexiune…";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nu există conexiune la internet";
@@ -1410,18 +1802,26 @@
 /* no object error, local only , this could be not translated! */
 "no object" = "fără obiect";
 
-/* Warning message option when user want to relogin to another account */
+/* Placeholder if message sender is empty */
+"No Recipient" = "Lipsă destinatar";
+
+/* Warning message option when user want to resignin to another account */
 "No, for another ProtonMail account" = "Nu, pentru alt cont ProtonMail";
 
 /* Error message */
 "No, not related to in-app purchase" = "Nu, fără legătură cu achizițiile din aplicație";
 
 /* A *short* description saying that there is no contact group associated with this contact email
+   Action title of none
+   The protection title of None protection
    Title */
 "None" = "Nimic";
 
 /* Title */
 "normal attachments" = "atașamente normale";
+
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Nu este nedorit (mutare în «Primite»)";
 
 /* alert description */
 "Not all recipients support message expiration" = "Nu toți destinatarii suportă mesaje care expiră";
@@ -1429,11 +1829,14 @@
 /* Action */
 "Not Now" = "Nu acum";
 
+/* No comment provided by engineer. */
+"Not set" = "Nesetat";
+
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Notă: Numele contului este adresa din ProtonMail.";
 
 /* setup password notes */
-"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Aceasta este folosită pentru criptarea și decriptarea mesajelor. Nu pierdeți această parolă, nu o putem recupera.";
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Notă: Aceasta este folosită pentru criptarea și decriptarea mesajelor. Nu pierdeți această parolă, nu se poate recupera.";
 
 /* setup password notes */
 "Note: This is used to log you into your account." = "Notă: Aceasta este folosită pentru a vă conecta în cont.";
@@ -1441,17 +1844,24 @@
 /* title */
 "Notes" = "Note";
 
+/* The main title of no result message */
+"Nothing to see here" = "Nimic de văzut aici";
+
 /* Alert title */
 "Notice" = "Notificare";
 
 /* Title */
-"Notification / Recovery Email" = "E-mail recuperare/notificare";
+"Notification / Recovery Email" = "E-mail de recuperare/notificare";
 
-/* Title */
+/* (No Comment) */
 "Notification Email" = "E-mail de notificare";
 
 /* title of action sheet */
 "Notification Snooze" = "Amânare notificări";
+
+/* A option title that enable/disable notification feature
+   cell title in device settings */
+"Notifications" = "Notificări";
 
 /* VoiceOver description */
 "Notifications Are Snoozed" = "Notificările sunt amânate";
@@ -1459,21 +1869,30 @@
 /* VoiceOver description */
 "Notifications Snooze Off" = "Amânare notificări oprită";
 
+/* The title of Off setting options */
+"Off" = "Oprit";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Deconectat";
+
 /* *
  *  ReportBugsViewController */
 "OK" = "OK";
 
-/* Title */
+/* The title of On setting options */
 "On" = "Pornit";
 
-/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "EE, d MMM yyyy la %@";
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "În %@";
 
-/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy la %1$@, %2$@, a scris:";
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@ la %2$@";
+
+/* forward email content header, E,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On E, MMM d, yyyy at %@" = "E, d MMM yyyy la %@";
 
 /* Alert message */
-"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \r\n\r\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției doar dacă sunteți sigur că toate abonamentele sunt actualizate. Pentru asistență suplimentară, contactați echipa de asistență a clienților. \r\n\r\n Sigur doriți să ignorați activarea?";
+"Only ignore the purchase activation if you are sure that all your subscriptions are up to date. For further assistance, please contact customer support. \n\n Are you sure you want to ignore the activation?" = "Ignorați activarea achiziției numai dacă aveți siguranța că toate abonamentele vă sunt la zi. Pentru asistență suplimentară, vă rugăm să contactați serviciul de asistență pentru clienți. \n\nSigur doriți să ignorați activarea?";
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
@@ -1481,11 +1900,14 @@
 /* Open action */
 "Open" = "Deschidere";
 
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Deschidere comutator cont";
+
 /* (No Comment) */
 "OpenDraft" = "Deschidere ciornă";
 
 /* contacts talbe cell Organization title */
-"Organization" = "Organizație";
+"Organization" = "Organizația";
 
 /* The title of the iOS 10 upgrate alert */
 "OS compatibility" = "Compatibilitate SO";
@@ -1499,20 +1921,30 @@
 /* Error message */
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care magazinul de aplicații le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de credit asociate sau orice alte informații despre utilizator. Datele tehnice ne ajută doar să verificăm dacă tranzacția a fost realizară pe serverele magazinului de aplicații.";
 
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate" = "Sistemul nostru a marcat acest mesaj ca o încercare de înșelăciune. Verificați dacă este legitim.";
+
 /* "Draft" = "Draft"; */
 "Outbox" = "De trimis";
 
-/* title */
-"Password" = "Parolă";
+/* Setting option title of folder setting page */
+"Parent folder" = "Folder părinte";
+
+/* *
+ *  Login View */
+"Password" = "Parola";
 
 /* Description */
 "Password cannot be empty." = "Parola nu poate fi goală.";
+
+/* title */
+"Password Hint" = "Indiciu parolă";
 
 /* cell title in device settings */
 "Password management" = "Gestionare parole";
 
 /* Title */
-"Password Mismatch" = "Parolele nu se potrivesc";
+"Password Mismatch" = "Parolele nu coincid";
 
 /* update password error */
 "Password update failed" = "Eșuare actualizare parolă";
@@ -1520,8 +1952,11 @@
 /* Title */
 "Password Updated" = "Parolă actualizată";
 
+/* Placeholder */
+"Passwords must match" = "Parolele trebuie să corespundă.";
+
 /* default vcard types */
-"Personal" = "Personal";
+"Personal" = "Personale";
 
 /* encryption lock description */
 "PGP-encrypted" = "Criptat cu PGP";
@@ -1557,14 +1992,11 @@
 /* device settings auto lock type title */
 "PIN" = "PIN";
 
-/* device settings auto lock type title */
-"PIN & FaceID" = "PIN & FaceID";
-
-/* device settings auto lock type title */
-"PIN & TouchID" = "PIN & TouchID";
+/* The protection title of PIN code protection */
+"PIN code" = "Cod PIN";
 
 /* Description */
-"Pin code can't be empty." = "Codul PIN nu poate fi gol.";
+"PIN code can't be empty." = "Codul PIN nu poate fi gol.";
 
 /* No comment provided by engineer. */
 "Plans can be edited on the web version." = "Planurile pot fi editate pe versiunea web.";
@@ -1578,6 +2010,9 @@
 /* error message */
 "Please check your email for the verification code." = "Consultați-vă e-mailul pentru codul de verificare.";
 
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Conectaţi-vă şi reîncercaţi";
+
 /* alert description */
 "Please disable PGP Sending for following addresses." = "Dezactivați trimiterea PGP pentru următoarele adrese.";
 
@@ -1586,6 +2021,9 @@
 
 /* error message */
 "Please input a valid email address." = "Introduceți o adresă de e-mail validă.";
+
+/* Alert message */
+"Please keep ProtonMail open until the operation is done." = "Păstrați ProtonMail deschis până la finalizarea operațiunii.";
 
 /* network troubleshot cell title */
 "Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
@@ -1597,19 +2035,22 @@
 "Please provide a group name" = "Furnizați numele grupului";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Eliminați toate fișierele atașate înainte de a schimba expeditorul";
+"Please remove all attachments before changing sender!" = "Eliminați toate fișierele atașate înainte de a schimba expeditorul.";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Selectați cel puțin un mesaj";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Selectați cel puțin un membru pentru grupul de contacte";
+"Please select at least one email for the contact group" = "Selectați cel puțin un membru pentru grupul de contacte.";
 
 /* human check select option title */
 "Please select one of the following options:" = "Vă rugăm selectați o opțiune:";
 
 /* Description */
 "Please set a password." = "Stabiliți o parolă.";
+
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "Stabiliți o adresă de e-mail de recuperare / notificare.";
 
 /* (No Comment) */
 "Please try a different domain." = "Încercați un domeniu diferit.";
@@ -1626,11 +2067,20 @@
 /* (No Comment) */
 "Please try again." = "Mai încercați";
 
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 foldere.";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 etichete.";
+
 /* Content of storage full alert */
 "Please upgrade your plan" = "Treceți la alt plan";
 
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
+
 /* Description */
-"Please use ProtonMail App login first." = "Folosiți mai întâi conectarea în aplicația ProtonMail.";
+"Please use ProtonMail App sign-in first." = "Mai întâi conectati-vă în aplicația ProtonMail.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Folosiți aplicația web pentru a vă reseta parola.";
@@ -1650,11 +2100,8 @@
 /* alert title */
 "Please, manage it in your phone." = "Gestionarea se face în telefon.";
 
-/* Upgrade warning title */
-"PREMIUM FEATURE" = "FUNCȚIE PREMIUM";
-
 /* Action */
-"Print" = "Imprimare";
+"Print" = "Tipărire";
 
 /* cell title in device settings */
 "Privacy" = "Confidențialitate";
@@ -1680,23 +2127,26 @@
 /* Title */
 "ProtonMail" = "ProtonMail";
 
-/* Description */
+/* (No Comment) */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea ProtonMail. Puteți trece la un cont cu plată sau dona pentru a ajuta ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "Mesaje criptate ProtonMail";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail este momentan offline, pentru starea curentă verificați: https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail este momentan indisponibil, pentru starea curentă verificați: https://twitter.com/protonmail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail este momentan deconectat...";
+"ProtonMail is currently offline…" = "ProtonMail este momentan indisponibil…";
+
+/* The message about the app is not having the permission to access photo library */
+"ProtonMail needs photo library access in your device settings." = "ProtonMail are nevoie de acces la biblioteca foto în setările dispozitivului.";
 
 /* Description */
-"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus este necesar pentru a putea edita semnătura mobilului";
+"ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus este necesar pentru a putea edita semnătura mobilului.";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional Visionary vă permite să adăugați și să editați mai multe detalii pentru contacte, pe lângă numele și adresa de e-mail a acestora. Folosind ProtonMail, aceste date vor fi la fel de sigure ca și e-mailul criptat în ambele părți.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "„ProtonMail Plus”/„Professional Visionary” vă permit să adăugați și să editați mai multe detalii pentru contacte, pe lângă numele și adresa de e-mail a acestora. Folosind ProtonMail, aceste date vor fi la fel de sigure ca și e-mailul criptat în ambele părți.";
 
 /* network troubleshot cell title */
 "ProtonVPN" = "ProtonVPN";
@@ -1704,32 +2154,47 @@
 /* Service plan capability */
 "ProtonVPN included" = "ProtonVPN inclus";
 
+/* Title of menu action to trigger feedback view */
+"Provide feedback" = "Furnizați informații";
+
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Interferență Proxy/Paravan protecție";
+"Proxy/Firewall interference" = "Interferență Proxy/Paravan de protecție";
 
-/* cell title in device settings */
-"Push Notifications" = "Notificari instante";
-
-/* Title */
+/* (No Comment) */
 "Quick swipe actions" = "Acțiuni rapide glisare";
 
 /* Title */
-"Rate & Review" = "Votare & Recenzie";
+"Rate & Review" = "Votare și recenzie";
 
-/* set pin title */
+/* The title of re auth alert */
+"Re-authenticate" = "Reautentificare";
+
+/* set PIN title */
 "Re-Enter your PIN" = "Reintroducere PIN";
 
 /* abbreviation of reply: */
-"Re:" = "Re:";
+"Re:" = "Răsp:";
+
+/* No comment provided by engineer. */
+"Read" = "Citit";
 
 /* Title */
-"Reading device contacts data..." = "Citire date contacte din dispozitiv...";
+"Reading device contacts data…" = "Se citesc datele contactelor din dispozitiv…";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Confirmare de citire trimisă";
+
+/* No comment provided by engineer. */
+"Recipient details" = "Detalii destinatar";
 
 /* The error message is shown in composer */
 "Recipient not found" = "Destinatarul nu a fost găsit";
 
 /* Title */
 "Recovery Code" = "Cod de recuperare";
+
+/* Title */
+"Recovery email" = "E-mail de recuperare";
 
 /* *
  *  SignUpEmailViewController */
@@ -1738,6 +2203,12 @@
 /* Title */
 "Recovery Email Warning" = "Avertizare e-mail de recuperare";
 
+/* No comment provided by engineer. */
+"Recovery enabled" = "Recuperare activată";
+
+/* No comment provided by engineer. */
+"Reload" = "Reîncărcare";
+
 /* Title */
 "Remind Me Later" = "Amintește-mi mai târziu";
 
@@ -1745,22 +2216,38 @@
 "Remove" = "Eliminare";
 
 /* account right bar item title */
-"Remove All" = "Eliminare tot";
+"Remove All" = "Eliminare toate";
 
 /* Settings row */
-"Remove image meta-data" = "Eliminare metadate imagine";
+"Remove image metadata" = "Eliminare metadate din imagini";
+
+/* action title */
+"Remove password" = "Eliminare parolă";
 
 /* un star message */
 "Remove Star" = "Eliminare stea";
 
+/* The button to enable label list reorder */
+"Reorder" = "Reordonare";
+
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Repetare";
+
+/* textview title */
+"Repeat password" = "Repetare parolă";
+
+/* The title of PIN code setup2 view 
+   The title of textfield of PIN code setup2 */
+"Repeat PIN code" = "Repetare cod PIN";
 
 /* *
  *  Controller Defined */
 "Reply" = "Răspuns";
 
 /* reply all action */
+"Reply all" = "Răspuns tuturor";
+
+/* The title of first button in the action bar */
 "Reply All" = "Răspuns tuturor";
 
 /* composer view model impl */
@@ -1770,7 +2257,10 @@
 "ReplyAll" = "Răspuns tuturor";
 
 /* menu title */
-"Report Bugs" = "Raportare erori";
+"Report a bug" = "Raportare eroare";
+
+/* No comment provided by engineer. */
+"Report phishing" = "Raportare înșelăciune";
 
 /* message details-> more action-> report phishing */
 "Report Phishing" = "Raportare înșelăciune";
@@ -1779,19 +2269,22 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "Solicitare de confirmare";
+"Request link confirmation" = "Solicitare de confirmare";
 
 /* Action */
 "RESET MAILBOX PASSWORD" = "RESETARE PAROLĂ MESAJE";
 
 /* Title */
-"Resetting message cache ..." = "Resetare buffer mesaje...";
+"Resetting message cache…" = "Se resetează bufferul de mesaje…";
 
 /* Action */
 "Retry" = "Reîncercare";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reîncercați după %d secunde";
+
+/* settings swipe actions section title */
+"Right to Left" = "De la dreapta la stânga";
 
 /* Title */
 "Save" = "Salvare";
@@ -1812,26 +2305,38 @@
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
 "Select An Option" = "Selectați o opțiune";
 
-/* The title for the view where user can select the color for the group */
-"Select Color" = "Selectare culoare";
+/* section title */
+"Select colour" = "Selectare culoare";
 
 /* (No Comment) */
 "Select your language" = "Selectare limbă";
 
-/* Action */
-"Send" = "Trimite";
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Selectat";
 
 /* Action */
-"Send anyway" = "Trimite așa";
+"Send" = "Trimitere";
+
+/* Action */
+"Send anyway" = "Trimitere așa";
+
+/* Title of button to send feedback */
+"Send feedback" = "Trimitere informații";
 
 /* when subject not empty */
 "Send message without subject?" = "Trimiteți mesajul fără subiect?";
 
 /* Title */
-"Send plain but stored enc" = "Trimitere simplu, dar stocat criptat";
+"Send plain but stored encrypted" = "Trimitere ca text simplu, dar stocat criptat";
+
+/* A button title to send read receipt */
+"Send receipt" = "Trimite confirmare";
 
 /* Title */
 "Send Verification Code" = "Trimitere cod de verificare";
+
+/* No comment provided by engineer. */
+"Sender details" = "Detalii expeditor";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
@@ -1840,28 +2345,28 @@
 "Sending failed" = "Trimiterea nu a reușit";
 
 /* Alert title */
-"Sending message" = "Expediere mesaj";
+"Sending in progress" = "Trimitere în desfășurare";
 
 /* Description */
 "Sending Message" = "Se trimite mesajul";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message..." = "Se trimite mesajul...";
+"Sending message…" = "Se trimite mesajul…";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Trimiterea de mesaje de la adrese %1$@ este o facilitate plătită. Mesajul vă va fi trimis de pe adresa implicită %2$@";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Trimiterea va fi disponibilă\ndupă încărcarea atașamentelor";
+"Sending will be available\nwhen attachments are uploaded" = "Trimiterea va fi disponibilă\ndupă ce sunt încărcate atașamentele";
 
 /* menu title */
 "Sent" = "Trimis";
 
 /* mail location title */
-"SENT" = "TRIMIS";
+"SENT" = "Trimis";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Trimis de ProtonMail cu criptare cu acces zero";
+"Sent by ProtonMail with zero access encryption" = "Trimis de ProtonMail criptat cu acces exclusiv personal";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
@@ -1872,6 +2377,9 @@
 /* Description */
 "Server proofs not valid!" = "Dovezile serverului nu sunt valide!";
 
+/* Title */
+"Set" = "Setare";
+
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Setați o parolă de criptare a acestui mesaj pentru cei ce nu folosesc ProtonMail.";
 
@@ -1881,20 +2389,49 @@
 /* Signup passwords top title */
 "Set passwords" = "Setare parole";
 
+/* The title of PIN code setup1 view */
+"Set PIN code" = "Setare cod PIN";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Configurare gesturi de glisare pentru a accesa cele mai utilizate acțiuni.";
+
 /* menu title */
 "Settings" = "Setări";
 
-/* Title */
-"Share Alert" = "Notificare de partajare";
-
 /* action */
-"Share Contact" = "Contact partajare";
+"Share contact" = "Trimitere contact";
 
 /* Title */
 "Share it with your friends" = "Partajați-l cu prietenii";
 
 /* Action */
+"Show" = "Afișare";
+
+/* Title */
+"Show details" = "Afișare detalii";
+
+/* Title */
+"Sign in" = "Autentificare";
+
+/* Account manager title */
+"Sign in to your ProtonMail account" = "Conectare la contul ProtonMail";
+
+/* Alert title to confirm signout
+   Alert title when sign out primary account from account manager
+   menu title */
+"Sign out" = "Deconectare";
+
+/* Action */
 "Sign Out" = "Deconectare";
+
+/* Alert title when sign out non-primary account from account manager */
+"Sign out %@?" = "Deconectați %@?";
+
+/* Action */
+"Sign Out All" = "Deconectare toate";
+
+/* Error */
+"Sign-in password doesn't match" = "Parola de conectare nu se potrivește";
 
 /* Title in signature settings */
 "Signature" = "Semnătură";
@@ -1902,8 +2439,17 @@
 /* Title */
 "Signature Updated" = "Semnătură actualizată";
 
-/* settings general section title */
-"Single Password" = "Parolă unică";
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Conectat ca %@";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "V-ați deconectat din %1$@ și v-ați conectat cu %2$@";
+
+/* Onboarding title */
+"Simply private" = "Pur și simplu privat";
+
+/* skip button title in onboarding page */
+"Skip" = "Omitere";
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Amânare";
@@ -1922,13 +2468,13 @@
 
 /* mail location desc
    menu title */
-"Spam" = "Spam";
+"Spam" = "Nedorite";
 
 /* mail location title */
-"SPAM" = "SPAM";
+"SPAM" = "Nedorite";
 
 /* Description */
-"Spammed" = "Nesolicitat";
+"Spammed" = "Nedorit";
 
 /* Error */
 "SRP Client" = "Client SRP";
@@ -1937,28 +2483,39 @@
 "SRP Server" = "Server SRP";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Șirul unic al parolei unice SRP nevalid!";
+"SRP single password keysalt invalid!" = "Șirul unic al parolei unice SRP nevalid!";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Șirul unic al parolei unice SRP nu este valid!";
+
+/* The title of the star action in action sheet
+   VoiceOver title of star button in the message view */
+"Star" = "Stea";
 
 /* Title */
-"Star" = "Stea";
+"Star/unstar" = "Cu stea/Fără stea";
 
 /* "Spam" */
 "Starred" = "Cu stea";
 
 /* "INBOX" */
-"STARRED" = "CU STEA";
+"STARRED" = "Cu stea";
 
 /* settings option (Start Time: 8am) */
 "Start Time" = "Oră pornire";
 
 /* contact placeholder */
-"State" = "Judet";
+"State" = "Județ";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Încă nu găsesc o soluție";
+"Still can't find a solution" = "Încă nu există o soluție";
 
-/* Title */
+/* cell title in device settings
+   Title */
 "Storage" = "Spațiu stocare";
+
+/* Alert title */
+"Storage full" = "Spaţiu de stocare plin";
 
 /* Storage warning */
 "Storage quota exceeded" = "Cota de stocare depășită";
@@ -1978,42 +2535,76 @@
 /* subject: text when forward */
 "Subject:" = "Subiect:";
 
-/* menu title */
+/* menu title
+   The title of a subscription plans screen */
 "Subscription" = "Abonament";
 
 /* Fetch subscription data failed */
 "Subscription information temporarily unavailable. Please try again later." = "Informațiile despre abonament sunt momentan indisponibile. Reîncercați mai târziu.";
 
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "Acceptare %i domenii personale (ex. nume@domeniuldvs.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Acceptare domenii personale %i (ex. nume@domeniuldvs.com)";
 
 /* network troubleshot cell title */
 "support form" = "formular de suport";
 
-/* Action */
+/* (No Comment) */
 "Support ProtonMail" = "Asistență ProtonMail";
 
-/* settings swipe actions section title */
+/* cell title in app settings */
+"Swipe actions" = "Acțiuni de glisare";
+
+/* (No Comment) */
 "Swipe Left to Right" = "Glisare spre dreapta";
 
-/* settings swipe actions section title */
+/* (No Comment) */
 "Swipe Right to Left" = "Glisare spre stânga";
+
+/* No comment provided by engineer. */
+"Swipe to set up swipable actions" = "Glisați pentru a configura acțiunile glisabile";
+
+/* The title of swipe banner after swiping to label conversations */
+"swipe_to_label_conversation_title" = "swipe_to_label_conversation_title";
+
+/* The title of swipe banner after swiping to label messages */
+"swipe_to_label_title" = "swipe_to_label_title";
+
+/* The title of swipe banner after swiping to move conversations */
+"swipe_to_move_conversation_title" = "swipe_to_move_conversation_title";
+
+/* The title of swipe banner after swiping to move messages */
+"swipe_to_move_title" = "swipe_to_move_title";
 
 /* cell title in device settings
    Swiping gestures */
 "Swiping gestures" = "Gesturi glisare";
 
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Comutare mod selectare";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Comutare la mesaje necitite";
+
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "S-a comutat la contul '%@'";
+"Switched to account '%@'" = "S-a comutat la contul „%@”";
 
 /* Error */
 "System can't copy the file" = "Sistemul nu poate copia afișierul";
 
 /* Title */
-"Take a Photo" = "Faceți o fotografie";
+"Take a Photo" = "Fac o poză";
+
+/* Title */
+"Take new photo" = "Fac o poză";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Apăsaţi aici pentru setare";
 
 /* alert description */
-"Tap send anyway to send without expiration to these recipients" = "Atingeți «Trimite așa» pentru trimitere fără expirare acestor destinatari";
+"Tap send anyway to send without expiration to these recipients" = "Atingeți «Trimite așa» pentru trimitere fără expirare acestor destinatari.";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Povestiți-ne despre experiența avută. (opțional)";
 
 /* network troubleshot cell title */
 "Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
@@ -2024,11 +2615,17 @@
 /* (No Comment) */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.";
 
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Vă mulțumim pentru informațiile oferite!";
+
+/* Error message */
+"The 2 passwords are not matching" = "Parolele nu se potrivesc.";
+
 /* Description */
 "The authentication credentials are invalid." = "Acreditările de autentificare nu sunt valide.";
 
 /* (No Comment) */
-"The authentication token has expired." = "Semnătura pentru autentificare a expirat.";
+"The authentication token has expired." = "Codul de acces pentru autentificare a expirat.";
 
 /* key size notes */
 "The current standard" = "Standard curent";
@@ -2040,16 +2637,13 @@
 "The draft cache is broken. Please try again." = "Bufferul ciornei este corupt. Mai încercați.";
 
 /* error when sending the message */
-"The draft format incorrectly sending failed!" = "Formatul ciornei nu este corect. Trimitere eșuată!";
+"The draft format incorrectly sending failed!" = "Trimitere eșuată. A apărut o eroare în formatul ciornei.";
 
 /* Alert message when attachment upload failed */
 "The following files couldn't be attached:" = "Următoarele fișiere nu au putut fi atașate:";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "Cel mai mare nivel de criptare disponibil.";
-
-/* (No Comment) */
-"The label name is duplicate" = "Numele etichetei există deja";
 
 /* Error */
 "The mailbox password is incorrect." = "Parola mesajelor nu este corectă.";
@@ -2065,7 +2659,7 @@
 "The new password can't be empty." = "Parola nouă nu poate fi goală.";
 
 /* (No Comment) */
-"The new password can't empty" = "Parola nouă nu poate fi goală";
+"The new password can't empty" = "Parola nouă nu poate fi goală.";
 
 /* update password error */
 "The new password does not match." = "Parolele noi nu sunt identice.";
@@ -2074,13 +2668,16 @@
 "The new password needs to be at least 8 characters long" = "Parola nouă trebuie să aibă cel puțin 8 caractere";
 
 /* (No Comment) */
-"The new password not match" = "Parolele nu coincid";
+"The new password not match" = "Parolele nu coincid.";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "Adresă de e-mail opțională de recuperare vă permite să resetați parola de conectare dacă o uitați.";
+"The optional recovery email address allows you to reset your sign-in password if you forget it." = "Adresă de e-mail opțională de recuperare vă permite să resetați parola de conectare dacă o uitați.";
 
 /* update password error */
 "The Password is wrong." = "Parola este greșită.";
+
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Parola trebuie să aibă între 8 şi 21 de caractere.";
 
 /* Description */
 "The password you entered does not match the current password." = "Parola introdusă nu coincide cu parola actuală.";
@@ -2088,17 +2685,23 @@
 /* Description */
 "The passwords you entered do not match." = "Parolele introduse nu coincid.";
 
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
+
 /* update password error */
 "The private key update failed." = "Actualizarea cheii private a eșuat.";
 
 /* Title */
 "The request timed out." = "Solicitarea a expirat.";
 
-/* (No Comment) */
-"The total attachment size can't be bigger than 25MB" = "Dimensiunea totală a atașamentelor nu poate depăși 25 MB";
+/* Message of a banner which is displayed when sender request a read receipt */
+"The sender has requested a read receipt." = "Expeditorul a solicitat o confirmare de primire.";
 
 /* Description */
-"The total attachment size cannot exceed 25MB" = "Total fișierelor atașate nu poate depăși 25 MB";
+"The size limit for attachments is 25 MB." = "Limita de dimensiunii atașamentelor este de 25 MB.";
+
+/* (No Comment) */
+"The total attachment size can't be bigger than 25MB" = "Dimensiunea totală a atașamentelor nu poate depăși 25 MB";
 
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adresa URL pe care încercați să o accesați nu este standard și s-ar putea să nu se încarce corect. Doriți să o deschideți folosind navigatorul implicit al dispozitivului?";
@@ -2107,7 +2710,7 @@
 "The user is already logged in" = "Utilizator deja conectat";
 
 /* (No Comment) */
-"The UserName have been taken." = "Numele de utilizator este deja luat.";
+"The username has been taken." = "Numele de utilizator a fost luat.";
 
 /* title */
 "The verification email invalid" = "E-mail de verificare nevalid";
@@ -2116,11 +2719,11 @@
  *  RecaptchaViewController */
 "The verification failed!" = "Verificarea a eșuat!";
 
-/* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "Încă mai sunt mesaje în așteptare. Dacă vă deconectați, ciorna va fi ștearsă.";
+/* alert when sign out user if in queue still have tasks */
+"There are still some messages in queue. If you sign out, the draft will be deleted." = "Încă mai sunt mesaje în așteptare. Dacă vă deconectați, ciorna va fi ștearsă.";
 
-/* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați";
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Există mesaje netrimise care vor fi pierdute dacă vă deconectați.";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
@@ -2128,47 +2731,81 @@
 /* local error */
 "There was an error creating or loading the application's saved data." = "A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.";
 
-/* Alert message */
-"This can take a while. Please do not dismiss the app." = "Aceasta ar putea dura un timp. Nu închideți aplicația.";
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Această acțiune nu poate fi anulată.";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Această acțiune nu poate fi anulată. Mesajele stocate în acest folder nu vor fi șterse și pot fi găsite în folderul «Toate mesajele».";
 
 /* alert desc */
 "This contact belongs to your Address Book." = "Acest contact aparține agendei dvs.";
 
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Această conversație conține mesaje care nu au fost șterse.";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Această conversaţie conţine mesaje care sunt șterse";
+
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Acest e-mail pare să fie de la o adresă ProtonMail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!";
 
+/* The secondary title of no result message */
+"This folder is empty" = "Acest folder este gol";
+
+/* No comment provided by engineer. */
+"This message contains embedded images." = "Acest mesaj conține imagini încorporate.";
+
+/* No comment provided by engineer. */
+"This message contains remote content and embedded images" = "Acest mesaj conține conținut la distanță și imagini încorporate.";
+
+/* No comment provided by engineer. */
+"This message contains remote content." = "Acest mesaj cuprinde conținut la distanță.";
+
+/* No comment provided by engineer. */
+"This message is automatically generated as a response to a previous message." = "Acest mesaj este generat automat ca răspuns la un mesaj anterior.";
+
+/* No comment provided by engineer. */
+"This message is from a mailing list." = "Acest mesaj este de la o listă de corespondență.";
+
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Acest mesaj poate fi o încercare de înșelăciune. Verificați expeditorul și conținutul pentru a vă asigura că acestea sunt legitime.";
 
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Acest mesaj va expira peste %1$dD %2$dH %3$dM";
+
 /* Title */
 "This preference will fallback to Safari if the browser of choice will be uninstalled." = "Această setare va reveni la Safari dacă navigatorul ales va fi dezinstalat.";
+
+/* The secondary title of no result message */
+"Time to relax" = "Timp de relaxare";
 
 /* contacts talbe cell Title title */
 "Title" = "Adresare";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Validarea certificatului TLS a eșuat. Conexiunea vă poate fi monitorizată, iar aplicația este blocată temporar pentru siguranță.\n\nSchimbați imediat rețeaua";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch networks immediately" = "Validarea certificatului TLS a eșuat. Conexiunea dvs. poate fi monitorizată, iar aplicația este blocată temporar pentru siguranța dvs.\n\nSchimbați imediat rețeaua.";
 
-/* Title */
+/* message To: feild
+   Title */
 "To" = "Către";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\r\n verificăm dacă sunteți persoană.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Pentru a preveni abuzarea ProtonMail,\n verificăm dacă sunteți persoană.";
 
 /* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Pentru a reseta parola mesajelor, folosiți versiunea web a ProtonMail de la protonmail.com";
 
 /* Description */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com";
-
-/* message To: feild */
-"To:" = "Către:";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Pentru a reseta parola mesajelor, folosiți versiunea web a ProtonMail de la protonmail.com";
 
 /* *
  *  API Error & alert title */
@@ -2180,11 +2817,20 @@
 /* network troubleshot cell title */
 "Tor" = "Tor";
 
+/* The protection title of Touch ID protection */
+"Touch ID" = "Amprentă";
+
+/* settings touchid error */
+"Touch ID is not enrolled, enable it in the system Settings" = "Touch ID nu este înregistrat. Activați-l în setările sistemului.";
+
+/* settings touchid/faceid error */
+"Touch ID not available" = "Touch ID nu este disponibil";
+
 /* *
  *  SettingTableViewController */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID nu este înregistrat. Activați-l în setările sistemului.";
 
-/* settings touchid/faceid error */
+/* (No Comment) */
 "TouchID not available" = "TouchID nu este disponibil";
 
 /* *
@@ -2192,16 +2838,19 @@
 "Trash" = "Gunoi";
 
 /* mail location title */
-"TRASH" = "GUNOI";
-
-/* Title */
-"Trouble shooting guide" = "Ghid de depanare";
+"TRASH" = "Gunoi";
 
 /* troubleshooting view button */
 "Troubleshoot" = "Depanare";
 
 /* network troubleshot view title */
-"TroubleShooting" = "Depanare";
+"Troubleshooting" = "Depanare";
+
+/* Title */
+"Troubleshooting guide" = "Ghid de depanare";
+
+/* Try again action */
+"Try again" = "Reîncercați";
 
 /* network troubleshot cell title */
 "Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți ProtonVPN sau Tor).";
@@ -2209,11 +2858,14 @@
 /* action sheet option */
 "Turn Off" = "Oprire";
 
-/* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it." = "Activați această funcție pentru a bloca automat aplicația și un cod PIN sau FaceID pentru deblocare.";
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts." = "Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
 
 /* A description string in pin & faceID setting page */
-"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activați această funcție pentru a bloca automat aplicația și un cod PIN sau amprentă pentru deblocare.";
+"Turn this feature on to auto-lock your app and use a PIN code or Face ID to unlock it." = "Activați această funcție pentru a bloca automat aplicația și un cod PIN sau Face ID pentru deblocare.";
+
+/* A description string in pin & faceID setting page */
+"Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it." = "Activați această funcție pentru a bloca automat aplicația și folosi un cod PIN sau amprentă pentru deblocare.";
 
 /* Title */
 "Tweet about ProtonMail" = "Scrieți pe Tweeter despre ProtonMail";
@@ -2240,7 +2892,7 @@
 "Unable to decrypt message." = "Nu se poate decripta mesajul.";
 
 /* Description */
-"Unable to edit this message offline" = "Acest mesaj nu poate fi editat deconectat";
+"Unable to edit this message offline" = "Acest mesaj nu poate fi editat deconectat.";
 
 /* Description */
 "Unable to generate hashed password!" = "Nu s-a putut genera valoarea hash a parolei!";
@@ -2258,7 +2910,7 @@
 "Unable to parse cached authentication token!" = "Nu se poate analiza codul de acces de autentificare din buffer!";
 
 /* Description */
-"Unable to parse response" = "Nu se poate prelucra răspunsul";
+"Unable to parse response" = "Nu se poate prelucra răspunsul.";
 
 /* Description */
 "Unable to parse the response object:\n%@" = "Nu se poate analiza obiectul de răspuns:\n%@";
@@ -2268,16 +2920,19 @@
 
 /* *
  *  MessageDataService */
-"Unable to send the email" = "Mesajul nu poate fi trimis";
+"Unable to send the email" = "Mesajul nu poate fi trimis.";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Destinatari nedivulgați";
 
 /* Action */
 "Undo" = "Revenire";
 
 /* Description */
-"Unknow Error" = "Eroare necunoscută";
+"Unknow Error" = "Eroare necunoscută.";
 
 /* (No Comment) */
-"Unknow file" = "Fișier necunoscut";
+"Unknow file" = "Fișier necunoscut.";
 
 /* title, default display name */
 "Unknown" = "Necunoscută";
@@ -2294,9 +2949,17 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Deblocare necesară";
 
-/* The verb for describing the unread action
-   VoiceOver: email is not read yet */
+/* The unread title of unread action button in mailbox view */
+"unread" = "necitit";
+
+/* VoiceOver: email is not read yet */
 "Unread" = "Necitit";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Fără stea";
+
+/* No comment provided by engineer. */
+"Unsubscribe" = "Dezabonare";
 
 /* Error message */
 "Unsupported file type" = "Tip de fișier nesuportat";
@@ -2307,41 +2970,41 @@
 /* like top right action text */
 "Update" = "Actualizare";
 
-/* Contacts Update contact */
-"Update Contact" = "Actualizare contact";
-
 /* update notification email error title */
 "Update Notification Email" = "Actualizare e-mail de notificare";
 
+/* The title of last update status of updated time */
+"Updated %d min ago" = "Actualizat în urmă cu un minut";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Actualizat în urmă cu o oră";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Actualizat chiar acum";
+
 /* Service plan description footer */
-"Upgrade to a paid plan to benefit from more features" = "Treceți la un plan plătit pentru a beneficia de mai multe funcții";
+"Upgrade to a paid plan to benefit from more features" = "Treceți la un plan cu plată pentru a beneficia de mai multe funcții.";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan plătit pentru a trimite de la adresa %@";
-
-/* alert description */
-"Upgrade to get all paid features." = "Faceți upgrade pentru a avea toate funcțiile cu plată.";
+"Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
 
 /* Action */
-"Upload Contacts" = "Încărcare contacte";
+"Upload device contacts" = "Încărcare contacte din dispozitiv";
 
 /* Description */
 "Upload iOS contacts to ProtonMail?" = "Încărcați contactele iOS în ProtonMail?";
 
 /* default vcard types */
-"Url" = "URL";
-
-/* default vcard types */
 "URL" = "URL";
 
+/* Option title */
+"Use folder colors" = "Folosire culori folder";
+
 /* error when user already exist */
-"User already exist!" = "Utilizatorul există deja!";
+"User already exist!" = "Utilizatorul există deja.";
 
 /* (No Comment) */
 "User is available!" = "Nume disponibil!";
-
-/* Title */
-"USER LOGIN" = "AUTENTIFICARE";
 
 /* title */
 "User name exist" = "Utilizator existent";
@@ -2349,9 +3012,8 @@
 /* alert title */
 "User name invalid" = "Utilizator nevalid";
 
-/* *
- *  Login View */
-"Username" = "Nume utilizator";
+/* Title */
+"USER SIGN-IN" = "CONECTARE UTILIZATOR";
 
 /* alert title */
 "Verification code request failed" = "Solicitare cod de verificare eșuată";
@@ -2363,37 +3025,52 @@
 "Verification error" = "Eroare verificare";
 
 /* error details */
-"Verification of this content’s signature failed" = "Verificarea semnăturii acestui conținut a eșuat";
+"Verification of this content’s signature failed" = "Verificarea semnăturii acestui conținut a eșuat.";
 
 /* (No Comment) */
 "Version %@ %@" = "Versiunea %@ %@";
 
+/* No comment provided by engineer. */
+"View headers" = "Afișare antete";
+
 /* message details-> more action-> view headers */
 "View Headers" = "Afișare antete";
 
-/* message details-> more action-> view raw html of message body */
+/* No comment provided by engineer. */
 "View HTML" = "Afișare HTML";
 
-/* Action */
-"View Plans" = "Afișare planuri";
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "Vizualizare mesaj în mod întunecat";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "Vizualizare mesaj în mod deschis";
 
 /* Title */
 "Warning" = "Avertizare";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Avertisment: Nu puteți trimite mesaje până nu dovediți că sunteți o persoană!!!";
+"Warning: Before you pass the human check you can't send email!" = "Avertisment: Nu puteți trimite mesaje până nu dovediți că sunteți o persoană!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Avertizare: Nu ați setat un e-mail de recuperare pentru a vă putea recuperarea contul dacă vă uitați parola. Continuați fără e-mail de recuperare?";
 
 /* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nu am putut trimite mesajul, probabil din cauza unei conexiuni slabe la rețea. Mesajul a fost salvat în «Ciorne» și va fi trimis automat data viitoare la deschiderea aplicației.";
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nu s-a putut trimite mesajul, probabil din cauza unei conexiuni slabe la rețea. Mesajul a fost salvat în «Ciorne» și va fi trimis automat data viitoare la deschiderea aplicației.";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Au apărut probleme la conectarea la servere. Reconectaţi-vă.";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Se recomandă configurarea unei parole pentru următorii destinatari:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Se recomandă configurarea unei parole sau dezactivarea PGP pentru următorii destinatari:";
 
 /* text field notes */
-"We will send a verification code to the cell phone above." = "Vă vom trimite un cod de verificare la numărul de telefon de mai sus.";
+"We will send a verification code to the cell phone above." = "Se va trimite un cod de verificare la numărul de telefon de mai sus.";
 
 /* email field notes */
-"We will send a verification code to the email address above." = "Vom trimite un cod de verificare la adresa de e-mail de mai sus.";
+"We will send a verification code to the email address above." = "Se va trimite un cod de verificare la adresa de e-mail de mai sus.";
 
 /* The body of the iOS 10 upgrate alert */
 "We will soon stop the support for iOS 10 devices. Please update your device's operating system to continue receiving updates in the future." = "În curând vom opri suportul pentru dispozitivele cu iOS 10. Actualizați sistemul de operare al dispozitivului pentru a continua să primiți actualizări în viitor.";
@@ -2401,14 +3078,17 @@
 /* Title */
 "We would like to know what we can do better." = "Am dori să știm ce putem face mai bine.";
 
-/* Title */
-"Welcome to ProtonMail!" = "Bine ați venit la ProtonMail!";
+/* week */
+"week" = "săptămână";
 
-/* Description */
-"What people see in the \"From\" field." = "Ceea ce văd destinatarii în câmpul \"De la\".";
+/* (No Comment) */
+"Welcome to ProtonMail!" = "Bine ați venit la ProtonMail!";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Când trimiteți un e-mail, acesta este numele care apare în câmpul expeditorului.";
+
+/* Example feedback */
+"Wonderful" = "Minunat";
 
 /* default vcard types */
 "Work" = "Serviciu";
@@ -2422,29 +3102,38 @@
 /* Yes action */
 "Yes" = "Da";
 
-/* Warning message option to bypass validation and activate plan for current username */
-"Yes, activate it for " = "Da, activare pentru ";
-
 /* Error message */
-"Yes, attach details of payment" = "Da, atașez detaliile plății";
+"Yes, attach details of payment" = "Da, atașez detaliile plății.";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Ieri";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Urmează să lansezi navigatorul și să accesezi";
+"You are about to launch the web browser and navigate to" = "Sunteți pe cale să lansați navigatorul web și să navigați la";
 
 /* Alert of removing all accounts */
 "You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?" = "Sunteți pe cale să eliminați toate conturile. Nu le veți putea accesa de pe acest dispozitiv decât dacă le veți adăuga din nou.\n\nDoriți totuși să vă ștergeți toate conturile?";
 
-/* Description */
+/* The main title of no result message */
+"You are all caught up" = "Totul este în regulă";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Nu sunteți conectat. Nu se poate afișa conținutul mesajului.";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Sunteți deconectat";
+
+/* (No Comment) */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației ProtonMail.";
 
-/* Description */
+/* (No Comment) */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puteți primi ajutor și asistență la protonmail.com/support. Erorile pot fi raportate și direct din aplicație.";
 
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Aţi dezactivat FaceID în setările de sistem. FaceID a fost utilizat pentru a proteja informaţii importante despre cont. Pentru a accesa contul, accesați setările și reactivați FaceID sau reconectați-vă.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Aţi dezactivat Face ID în setările de sistem. Face ID a fost utilizat pentru a proteja informaţii importante despre cont. Pentru a accesa contul, accesați setările și reactivați Face ID sau reconectați-vă.";
 
 /* description */
 "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Ați activat expirarea mesajelor, dar nu toți destinatarii suportă această funcție. Adăugați o parolă și/sau dezactivați trimiterea cu PGP pentru a folosi expirarea pentru toți.";
@@ -2455,25 +3144,40 @@
 /* Title */
 "You have a new email!" = "Aveți un mesaj nou!";
 
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Ați introdus cel puțin o adresă de e-mail nevalidă. Verificați destinatarii.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Ați introdus cel puțin un destinatar necunoscut. Verificați destinatarii.";
+
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Aveți modificări nesalvate. Doriți să le salvați?";
 
-/* Content of space warning */
+/* (No Comment) */
 "You have used %d%% of your storage space (%@)." = "Ați folosit %d%% din spațiul disponibil (%@).";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ați folosit %1$d%% din spațiul de stocare (%2$@). Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
 /* *
  *  StorageLimit */
 "You have used up all of your storage space (%@)." = "Ați utilizat tot spațiul de stocare disponibil (%@).";
 
-/* "Alert" */
-"You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul";
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ați folosit tot spațiul de stocare (%@). Treceți la un plan superior pentru a putea trimite și primi mesaje în continuare.";
 
-/* Alert to confirm logout
-   Alert when logout primary account from account manager */
+/* "Alert" */
+"You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul.";
+
+/* Alert to confirm signout
+   Alert when signout primary account from account manager */
 "You will be switched to %@" = "Veți fi comutat la %@";
 
 /* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Vei șterge mesajul în mod ireversibil. Sunteți sigur?";
+"You're going to delete the message irreversibly. Are you sure?" = "Veți șterge mesajul în mod ireversibil. Sunteți sigur?";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Modificările vor fi anulate";
 
 /* view top title */
 "Your Country Code" = "Codul de țară";
@@ -2484,15 +3188,27 @@
 /* network troubleshot cell title */
 "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți ProtonVPN (sau orice alt VPN) sau Tor pentru a accesa Proton.";
 
-/* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare de ambele părți. Pentru a trimite prietenilor mesaje sigure automat, convingeți-i să se înscrie în ProtonMail! Puteți și să criptați manual mesajele dacă aceștia nu folosesc ProtonMail.";
+/* Onboarding content */
+"Your encrypted email has been entirely redesigned for ease of use." = "E-mailul dumneavoastră criptat a fost reproiectat în întregime pentru a fi mai ușor de utilizat.";
+
+/* Title of user feedback view */
+"Your feedback" = "Experiența personală";
+
+/* The section title of folder manager table */
+"Your folders" = "Foldere";
+
+/* (No Comment) */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare la ambele capete. Pentru a trimite automat mesaje securizate contactelor, invitați-le la ProtonMail! Mai puteți cripta și manual mesajele către acestea, dacă nu folosesc ProtonMail.";
+
+/* The section title of label manager table */
+"Your labels" = "Etichete";
 
 /* *
  *  Onboarding */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul dvs. cont de e-mail criptat a fost setat și este pregătit pentru trimiterea și primirea mesajelor criptate.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Noul cont de e-mail criptat a fost configurat și este gata să trimită și să primească mesaje criptate.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Noul cont de e-mail\r\n securizat este gata.";
+"Your new secure email\n account is ready." = "Noul cont de e-mail\n securizat este gata.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Abonamentul este activ până la";

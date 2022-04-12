@@ -22,11 +22,9 @@
 
 
 import Foundation
-import PMKeymaker
 import LocalAuthentication
-#if !APP_EXTENSION
-import PMPayments
-#endif
+import ProtonCore_Keymaker
+import ProtonCore_Payments
 
 enum SignInUIFlow : Int {
     case requirePin = 0
@@ -37,10 +35,11 @@ enum SignInUIFlow : Int {
 protocol CacheStatusInject {
     var isPinCodeEnabled : Bool { get }
     var isTouchIDEnabled : Bool { get }
+    var isAppKeyEnabled: Bool { get }
     var pinFailedCount : Int { get set }
 }
 
-protocol UnlockManagerDelegate : class {
+protocol UnlockManagerDelegate : AnyObject {
     func cleanAll()
     func unlocked()
     func isUserStored() -> Bool
@@ -66,10 +65,11 @@ class UnlockManager: Service {
     }
     
     internal func isUnlocked() -> Bool {
-        return self.validate(mainKey: keymaker.mainKey)
+        return self.validate(mainKey: keymaker.mainKey(by: RandomPinProtection.randomPin))
     }
     
     internal func getUnlockFlow() -> SignInUIFlow {
+        migrateProtectionSetting()
         if cacheStatus.isPinCodeEnabled {
             return SignInUIFlow.requirePin
         }
@@ -95,8 +95,14 @@ class UnlockManager: Service {
             completion(true)
         }
     }
-    
-    private func validate(mainKey: PMKeymaker.Key?) -> Bool {
+
+    private func migrateProtectionSetting() {
+        if cacheStatus.isPinCodeEnabled && cacheStatus.isTouchIDEnabled {
+            keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+        }
+    }
+
+    private func validate(mainKey: MainKey?) -> Bool {
         guard let _ = mainKey else { // currently enough: key is Array and will be nil in case it was unlocked incorrectly
             keymaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
             return false
@@ -113,7 +119,6 @@ class UnlockManager: Service {
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
         var error: NSError?
         guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            PMLog.D("LAContext canEvaluatePolicy is false, error: " + String(describing: error?.localizedDescription))
             assert(false, "LAContext canEvaluatePolicy is false")
             return
         }
@@ -168,12 +173,18 @@ class UnlockManager: Service {
         usersManager.run()
         usersManager.tryRestore()
         
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        usersManager.users.forEach { (user) in
+            queueManager.registerHandler(user.mainQueueHandler)
+        }
+        
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
         }
-        self.updateCommonUserData()
-        StoreKitManager.default.continueRegistrationPurchase()
+        if let primaryUser = usersManager.firstUser {
+            primaryUser.payments.storeKitManager.continueRegistrationPurchase(finishHandler: nil)
+        }
         #endif
         
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
@@ -184,15 +195,6 @@ class UnlockManager: Service {
     
     #if !APP_EXTENSION
     func updateCommonUserData() {
-//        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
-//        //TODO:: here need to be changed
-//        sharedContactDataService.fetchContacts { (contacts, error) in
-//            if error != nil {
-//                PMLog.D("\(String(describing: error))")
-//            } else {
-//                PMLog.D("Contacts count: \(contacts?.count)")
-//            }
-//        }
     }
     #endif
 }

@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UITableViewCell {
     /**
@@ -35,6 +35,14 @@ extension UITableViewCell {
             self.layoutMargins = .zero
         }
     }
+    
+    class func defaultNib() -> UINib {
+        let name = String(describing: self)
+        return UINib(nibName: name, bundle: Bundle.main)
+    }
+    
+    class func defaultID() -> String {
+        return String(describing: self)
+    }
 }
-
 

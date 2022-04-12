@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer">
             <userInfo>
@@ -206,7 +206,7 @@
             <fetchIndexElement property="labelID" type="Binary" order="ascending"/>
         </fetchIndex>
         <userInfo>
-            <entry key="identityAttribute" value="labelID"/>
+            <entry key="JSONKeyPath" value="ParentID"/>
         </userInfo>
     </entity>
     <entity name="LabelUpdate" representedClassName=".LabelUpdate" syncable="YES">
@@ -393,7 +393,7 @@
         <element name="Contact" positionX="1240" positionY="-3582" width="128" height="223"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="193"/>
-        <element name="Label" positionX="2095" positionY="-3357" width="128" height="193"/>
+        <element name="Label" positionX="2095" positionY="-3357" width="128" height="179"/>
         <element name="LabelUpdate" positionX="1440" positionY="-3717" width="128" height="148"/>
         <element name="Message" positionX="1717" positionY="-3867" width="128" height="598"/>
         <element name="UserEvent" positionX="1440" positionY="-3717" width="128" height="73"/>

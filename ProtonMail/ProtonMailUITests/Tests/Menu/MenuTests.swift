@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class MenuTests : BaseTestCase {
 
     private let loginRobot = LoginRobot()
@@ -26,7 +28,7 @@ class MenuTests : BaseTestCase {
             .navigateBackToSettings()
             .menuDrawer()
             .accountsList()
-            .verify.accountShortNameIsCorrect(testData.onePassUser, emoji)
+            .verify.accountShortNameIsCorrect(emoji)
     }
     
     func testSaveTwoWordsDisplayName() {
@@ -45,6 +47,6 @@ class MenuTests : BaseTestCase {
             .navigateBackToSettings()
             .menuDrawer()
             .accountsList()
-            .verify.accountShortNameIsCorrect(testData.onePassUser, shortName.uppercased())
+            .verify.accountShortNameIsCorrect(shortName.uppercased())
     }
 }

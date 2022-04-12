@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import ProtonCore_UIFoundations
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     typealias VC = ComposeContainerViewController
@@ -32,9 +32,9 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
     
-    private var header: ComposeHeaderViewController!
+    private(set) var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
-    
+    private(set) var attachmentView: ComposerAttachmentVC?
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
     
@@ -57,6 +57,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         let vc = UIStoryboard.Storyboard.composer.storyboard.instantiateInitialViewController() as? UINavigationController
         self.viewController = vc
         self.controller = vc?.viewControllers.first as? ComposeContainerViewController
+        viewModel.uiDelegate = self.controller
         self.controller?.set(viewModel: viewModel)
     }
     
@@ -68,7 +69,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         guard let viewController = viewController else {
             return
         }
-        viewController.modalPresentationStyle = .fullScreen
         self.controller?.set(coordinator: self)
         navigationController?.present(viewController, animated: true, completion: nil)
     }
@@ -92,38 +92,57 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         return self.header.view.frame
     }
     
-    internal func inject(_ picker: UIPickerView) {
-        self.editor.injectExpirationPicker(picker)
-    }
-    
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
         let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
         
         let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: self.services)
-        coordinator.updateAttachmentsStatus = { [weak self] in
-            self?.controller.checkAttachments()
-        }
         coordinator.start()
         self.editor = child
     }
     
     internal func createHeader(_ childViewModel: ContainableComposeViewModel) -> ComposeHeaderViewController {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
-        
+        return self.header
+    }
+    
+    func createAttachmentView(childViewModel: ContainableComposeViewModel) -> ComposerAttachmentVC {
+
+        // Mainly for inline attachment update
+        // The inline attachment comes from `htmlEditor` and `ComposeViewController` can't access `ComposeContainerViewCoordinator`
         self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
             self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
-                DispatchQueue.main.async {
-                    self?.header.updateAttachmentButton(message.attachments.count != 0)
-                    if change.oldValue?.count != change.newValue?.count, change.newValue?.count != 0 {
-                        self?.header.attachmentButton.shake(5, offset: 5.0)
-                    }
-                }
+                let attachments = message.attachments.allObjects.compactMap { $0 as? Attachment }
+                self?.setAttachments(attachments, shouldUpload: false)
+                #if APP_EXTENSION
+                self?.controller.getSharedFiles()
+                #endif
             }
         }
-        
-        return self.header
+       
+
+        let attachments = childViewModel.getAttachments() ?? []
+        let dataService: CoreDataService = self.services.get(by: CoreDataService.self)
+        let component = ComposerAttachmentVC(attachments: attachments, coreDataService: dataService, delegate: self)
+        self.attachmentView = component
+        self.controller.updateAttachmentCount(number: component.attachmentCount)
+        component.addNotificationObserver()
+        component.isUploading = { [weak self] in
+            self?.controller.isUploadingAttachments = $0
+        }
+        return component
+    }
+    
+    func getAttachmentSize() -> Int {
+        var attachmentSize: Int = 0
+        let semaphore = DispatchSemaphore(value: 0)
+        self.attachmentView?.getSize(completeHandler: { size in
+            attachmentSize = size
+            semaphore.signal()
+        })
+        _ = semaphore.wait(timeout: .distantFuture)
+        return attachmentSize
     }
     
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
@@ -131,10 +150,122 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         case 0:
             self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
         case 1:
+            cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
             self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
+        case 2:
+            guard let component = self.attachmentView else { return }
+            self.embed(component, onto: cell.contentView, ownedBy: self.controller)
         default:
             assert(false, "Children number misalignment")
             return
+        }
+    }
+    
+    func navigateToPassword() {
+        self.editor.autoSaveTimer()
+
+        let password = self.editor.encryptionPassword
+        let confirm = self.editor.encryptionConfirmPassword
+        let hint = self.editor.encryptionPasswordHint
+        let passwordVC = ComposePasswordVC.instance(password: password, confirmPassword: confirm, hint: hint, delegate: self)
+        guard let navigationController = self.controller.navigationController else {
+            return
+        }
+        navigationController.show(passwordVC, sender: nil)
+    }
+    
+    func navigateToExpiration() {
+        self.editor.autoSaveTimer()
+
+        let time = self.header.expirationTimeInterval
+        let expirationVC = ComposeExpirationVC(expiration: time, delegate: self)
+        guard let navigationController = self.controller.navigationController else {
+            return
+        }
+        navigationController.show(expirationVC, sender: nil)
+    }
+    
+    func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
+        guard let message = self.editor.viewModel.message,
+              let context = message.managedObjectContext else { return }
+        context.performAndWait {
+            attachment.message = message
+            _ = context.saveUpstreamIfNeeded()
+        }
+        guard let component = self.attachmentView else { return }
+        component.add(attachments: [attachment]) { [weak self] in
+            DispatchQueue.main.async {
+                let number = component.attachmentCount
+                self?.controller.updateAttachmentCount(number: number)
+            }
+        }
+        
+        guard shouldUpload else { return }
+        _ = self.editor.attachments(pickup: attachment).done { [weak self] in
+            let number = self?.attachmentView?.attachmentCount ?? 0
+            self?.controller.updateAttachmentCount(number: number)
+        }
+    }
+
+    func setAttachments(_ attachments: [Attachment], shouldUpload: Bool = true) {
+        guard let message = self.editor.viewModel.message,
+              let context = message.managedObjectContext else { return }
+        context.performAndWait {
+            attachments.forEach { $0.message = message }
+            _ = context.saveUpstreamIfNeeded()
+        }
+        guard let component = self.attachmentView else { return }
+        component.set(attachments: attachments) { [weak self] in
+            DispatchQueue.main.async {
+                let number = component.attachmentCount
+                self?.controller.updateAttachmentCount(number: number)
+            }
+        }
+        
+        guard shouldUpload else { return }
+        attachments.forEach { [weak self] attachment in
+            _ = self?.editor.attachments(pickup: attachment).done { [weak self] in
+                let number = self?.attachmentView?.attachmentCount ?? 0
+                self?.controller.updateAttachmentCount(number: number)
+            }
+        }
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposePasswordDelegate {
+    func apply(password: String, confirmPassword: String, hint: String) {
+        self.editor.encryptionPassword = password
+        self.editor.encryptionConfirmPassword = confirmPassword
+        self.editor.encryptionPasswordHint = hint
+        self.editor.updateEO()
+        self.controller.setLockStatus(isLock: true)
+    }
+    
+    func removedPassword() {
+        self.editor.encryptionPassword = ""
+        self.editor.encryptionConfirmPassword = ""
+        self.editor.encryptionPasswordHint = ""
+        self.editor.updateEO()
+        self.controller.setLockStatus(isLock: false)
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposeExpirationDelegate {
+    func update(expiration: TimeInterval) {
+        self.header.expirationTimeInterval = expiration
+        self.controller.setExpirationStatus(isSetting: expiration > 0)
+    }
+}
+
+extension ComposeContainerViewCoordinator: ComposerAttachmentVCDelegate {
+    func delete(attachment: Attachment) {
+        self.editor.view.endEditing(true)
+        self.header.view.endEditing(true)
+        self.controller.view.endEditing(true)
+        _ = self.editor.attachments(deleted: attachment).done { [weak self] in
+            let number = self?.attachmentView?.attachmentCount ?? 0
+            self?.controller.updateAttachmentCount(number: number)
+            self?.controller.updateCurrentAttachmentSize()
         }
     }
 }

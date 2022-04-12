@@ -20,18 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMKeymaker
-#if !APP_EXTENSION
-import PMPayments
-#endif
+import ProtonCore_Keymaker
+import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
 //the data in there store longer.
 
-final class UserCachedStatus : SharedCacheBase {
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -91,9 +88,30 @@ final class UserCachedStatus : SharedCacheBase {
         
         //new value to check new messages
         static let newMessageFromNotification = "new_message_from_notification"
+
+        static let leftToRightSwipeAction = "leftToRightSwipeAction"
+        static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
+
+        static let darkModeFlag = "dark_mode_flag"
+        static let localSystemUpTime = "localSystemUpTime"
+        static let localServerTime = "localServerTime"
         
-        //check if the iOS 10 alert is shown
-        static let iOS10AlertIsShown = "ios_10_alert_is_shown"
+        // Random pin protection
+        static let randomPinForProtection = "randomPinForProtection"
+        static let realAttachments = "realAttachments"
+    }
+    
+    var keymakerRandomkey: String? {
+        get {
+            return KeychainWrapper.keychain.string(forKey: Key.randomPinForProtection)
+        }
+        set {
+            if let value = newValue {
+                KeychainWrapper.keychain.set(value, forKey: Key.randomPinForProtection)
+            } else {
+                KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
+            }
+        }
     }
     
     var primaryUserSessionId: String? {
@@ -143,26 +161,8 @@ final class UserCachedStatus : SharedCacheBase {
             setValue(newValue, forKey: Key.combineContactFlag)
         }
     }
-    
-    var iOS10AlertIsShown: Bool {
-        get {
-            if getShared().object(forKey: Key.iOS10AlertIsShown) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.iOS10AlertIsShown)
-        }
-        set {
-            setValue(newValue, forKey: Key.iOS10AlertIsShown)
-        }
-    }
-//    var neverShowDohWarning: Bool {
-//        get {
-//            return getShared().bool(forKey: Key.dohWarningAsk)
-//        }
-//        set {
-//            setValue(newValue, forKey: Key.dohWarningAsk)
-//        }
-//    }
+
+    private(set) var hasShownStorageOverAlert: Bool = false
     
     struct CoderKey {//Conflict with Key object
            static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"
@@ -179,6 +179,9 @@ final class UserCachedStatus : SharedCacheBase {
        }
 
     var isForcedLogout : Bool = false
+    
+    /// Record the last draft messageID, so the app can do delete / restore
+    var lastDraftMessageID: String?
     
     var isPMMEWarningDisabled : Bool {
         get {
@@ -206,17 +209,37 @@ final class UserCachedStatus : SharedCacheBase {
             setValue(newValue, forKey: Key.showServerNoticesNextTime)
         }
     }
-    
+
+    var realAttachments: Bool {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Bool],
+           let sessionID = self.primaryUserSessionId,
+           let flag = dict[sessionID] {
+            return flag
+        } else {
+            return false
+        }
+    }
+
+    func set(realAttachments: Bool, sessionID: String) {
+        if let flagString = getShared().string(forKey: Key.realAttachments),
+           let data = flagString.data(using: .utf8),
+           var dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            dict[sessionID] = realAttachments
+            let jsonString = dict.json()
+            setValue(jsonString, forKey: Key.realAttachments)
+        } else {
+            let dict: [String: Any] = [sessionID: realAttachments]
+            let jsonString = dict.json()
+            setValue(jsonString, forKey: Key.realAttachments)
+        }
+    }
+
     func isSplashOk() -> Bool {
         let splashVersion = getShared().int(forKey: Key.lastSplashViersion)
         return splashVersion == Constants.App.SplashVersion
     }
-    
-    func isTourOk() -> Bool {
-        let tourVersion = getShared().int(forKey: Key.lastTourViersion)
-        return tourVersion == Constants.App.TourVersion
-    }
-    
     func showTourNextTime() {
         setValue(0, forKey: Key.lastTourViersion)
     }
@@ -240,7 +263,7 @@ final class UserCachedStatus : SharedCacheBase {
     
     var mobileSignature : String {
         get {
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
                 case let locked = Locked<String>(encryptedValue: cypherData),
                 let customSignature = try? locked.unlock(with: mainKey) else
@@ -252,7 +275,7 @@ final class UserCachedStatus : SharedCacheBase {
             return customSignature
         }
         set {
-            guard let mainKey = keymaker.mainKey,
+            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
             {
                 return
@@ -263,7 +286,7 @@ final class UserCachedStatus : SharedCacheBase {
     }
     
     func migrateLagcy() {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
             case let locked = Locked<String>(encryptedValue: cypherData),
             let customSignature = try? locked.lagcyUnlock(with: mainKey) else
@@ -359,14 +382,14 @@ final class UserCachedStatus : SharedCacheBase {
     }
     
     func getMobileSignature(by uid: String) -> String {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature),
             let encryptedSignature = signatureData[uid] as? Data ,
             case let locked = Locked<String>(encryptedValue: encryptedSignature),
             let customSignature = try? locked.unlock(with: mainKey) else
         {
             //Get data from legacy
-            if let mainKey = keymaker.mainKey,
+            if let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
                 let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
                 case let locked = Locked<String>(encryptedValue: cypherData),
                 let customSignature = try? locked.unlock(with: mainKey) {
@@ -384,7 +407,7 @@ final class UserCachedStatus : SharedCacheBase {
     }
     
     func setMobileSignature(uid: String, signature: String) {
-        guard let mainKey = keymaker.mainKey,
+        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
             let locked = try? Locked<String>(clearValue: signature, with: mainKey) else
         {
             return
@@ -478,6 +501,9 @@ final class UserCachedStatus : SharedCacheBase {
         
         ////
         getShared().removeObject(forKey: Key.dohWarningAsk)
+        
+        //
+        KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
                         
         getShared().synchronize()
     }
@@ -491,11 +517,17 @@ final class UserCachedStatus : SharedCacheBase {
         //touch id
         getShared().removeObject(forKey: Key.autoLogoutTime)
         getShared().removeObject(forKey: Key.askEnableTouchID)
-        
-        //
+
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
-       
+
+        getShared().removeObject(forKey: Key.leftToRightSwipeAction)
+        getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
+
         getShared().synchronize()
+    }
+
+    func showStorageOverAlert() {
+        self.hasShownStorageOverAlert = true
     }
 }
 
@@ -517,6 +549,10 @@ extension UserCachedStatus : CacheStatusInject {
     
     var isPinCodeEnabled : Bool {
         return keymaker.isProtectorActive(PinProtection.self)
+    }
+    
+    var isAppKeyEnabled: Bool {
+        return keymaker.isProtectorActive(RandomPinProtection.self) == false
     }
     
     var pinFailedCount : Int {
@@ -582,8 +618,28 @@ extension UserCachedStatus {
     }
 }
 
+extension UserCachedStatus: DarkModeCacheProtocol {
+    var darkModeStatus: DarkModeStatus {
+        get {
+            if getShared()?.object(forKey: Key.darkModeFlag) == nil {
+                return .followSystem
+            }
+            let raw = getShared().integer(forKey: Key.darkModeFlag)
+            if let status = DarkModeStatus(rawValue: raw) {
+                return status
+            } else {
+                getShared().removeObject(forKey: Key.darkModeFlag)
+                return .followSystem
+            }
+        }
+        set {
+            setValue(newValue.rawValue, forKey: Key.darkModeFlag)
+        }
+    }
+}
+
 #if !APP_EXTENSION
-extension UserCachedStatus {
+extension UserCachedStatus: LinkOpenerCacheProtocol {
     var browser: LinkOpener {
         get {
             guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
@@ -598,12 +654,18 @@ extension UserCachedStatus {
     }
 }
 extension UserCachedStatus: ServicePlanDataStorage {
-    var servicePlansDetails: [ServicePlanDetails]? {
+    /* TODO NOTE: this should be updated alongside Payments integration */
+    var credits: Credits? {
+        get { nil }
+        set { }
+    }
+
+    var servicePlansDetails: [Plan]? {
         get {
             guard let data = self.getShared().data(forKey: Key.servicePlans) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(Array<ServicePlanDetails>.self, from: data)
+            return try? PropertyListDecoder().decode(Array<Plan>.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
@@ -611,12 +673,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var defaultPlanDetails: ServicePlanDetails? {
+    var defaultPlanDetails: Plan? {
         get {
             guard let data = self.getShared().data(forKey: Key.defaultPlanDetails) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(ServicePlanDetails.self, from: data)
+            return try? PropertyListDecoder().decode(Plan.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
@@ -624,12 +686,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var currentSubscription: ServicePlanSubscription? {
+    var currentSubscription: Subscription? {
         get {
             guard let data = self.getShared().data(forKey: Key.currentSubscription) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(ServicePlanSubscription.self, from: data)
+            return try? PropertyListDecoder().decode(Subscription.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
@@ -645,13 +707,90 @@ extension UserCachedStatus: ServicePlanDataStorage {
             self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
         }
     }
-    
-    var credits: Credits? {
+
+}
+
+extension UserCachedStatus: SwipeActionCacheProtocol {
+    var leftToRightSwipeActionType: SwipeActionSettingType {
         get {
-            return nil
+            if let value = self.getShared()?.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                self.leftToRightSwipeActionType = .readAndUnread
+                return .readAndUnread
+            }
         }
         set {
-            
+            self.setValue(newValue.rawValue, forKey: Key.leftToRightSwipeAction)
+        }
+    }
+
+    var rightToLeftSwipeActionType: SwipeActionSettingType {
+        get {
+            if let value = self.getShared()?.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+                return action
+            } else {
+                self.rightToLeftSwipeActionType = .trash
+                return .trash
+            }
+        }
+        set {
+            self.setValue(newValue.rawValue, forKey: Key.rightToLeftSwipeAction)
+        }
+    }
+    
+    func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
+        if self.getShared()?.int(forKey: Key.leftToRightSwipeAction) == nil,
+           let action = SwipeActionSettingType.migrateFromV3(rawValue: leftToRight) {
+            self.leftToRightSwipeActionType = action
+        }
+        
+        if self.getShared()?.int(forKey: Key.rightToLeftSwipeAction) == nil,
+           let action = SwipeActionSettingType.migrateFromV3(rawValue: rightToLeft) {
+            self.rightToLeftSwipeActionType = action
+        }
+    }
+}
+
+extension UserCachedStatus: SystemUpTimeProtocol {
+
+    var localServerTime: TimeInterval {
+        get {
+            return TimeInterval(self.getShared().double(forKey: Key.localServerTime))
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localServerTime)
+        }
+    }
+
+    var localSystemUpTime: TimeInterval {
+        get {
+            let time = self.getShared().double(forKey: Key.localSystemUpTime)
+            return time == 0 ? Date().timeIntervalSince1970: TimeInterval(time)
+        }
+        set {
+            self.setValue(newValue, forKey: Key.localSystemUpTime)
+        }
+    }
+
+    var systemUpTime: TimeInterval {
+        ProcessInfo.processInfo.systemUptime
+    }
+
+    func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
+        self.localSystemUpTime = time
+    }
+}
+
+extension UserCachedStatus {
+    func getOnboardingDestination() -> MailboxCoordinator.Destination? {
+        guard let tourVersion = getShared().int(forKey: Key.lastTourViersion) else {
+            return .onboardingForNew
+        }
+        if tourVersion == Constants.App.TourVersion {
+            return nil
+        } else {
+            return .onboardingForUpdate
         }
     }
 }

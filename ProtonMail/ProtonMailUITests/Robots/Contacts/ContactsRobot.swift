@@ -6,28 +6,31 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let addContactAlertButtonText = LocalString._contacts_add_contact
-fileprivate let addGroupAlertButtonText = LocalString._contact_groups_add
-fileprivate let deleteContactAlertButtonText = LocalString._delete_contact
-fileprivate let deleteGroupAlertButtonText = LocalString._contact_groups_delete
-fileprivate let deleteButtonText = LocalString._general_delete_action
-fileprivate let contactsTabBarButtonIdentifier = "UITabBar.\(LocalString._contacts_title)"
-fileprivate let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
-fileprivate func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
-fileprivate func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
-fileprivate func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
-fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
-fileprivate let addContactNavBarButtonIdentifier = "UINavigationItem.addButton"
-fileprivate let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
-fileprivate let contactsTableViewIdentifier = "ContactsViewController.tableView"
+import pmtest
+
+fileprivate struct id {
+    static let addContactAlertButtonText = LocalString._contacts_new_contact
+    static let addGroupAlertButtonText = LocalString._contact_groups_new
+    static let deleteContactAlertButtonText = LocalString._delete_contact
+    static let deleteGroupAlertButtonText = LocalString._contact_groups_delete
+    static let deleteButtonText = LocalString._general_delete_action
+    static let contactsTabBarButtonIdentifier = "UITabBar.\(LocalString._contacts_title)"
+    static let groupsTabBarButtonIdentifier = "UITabBar.\(LocalString._menu_contact_group_title)"
+    static func contactCellIdentifier(_ name: String) -> String { return "ContactsTableViewCell.\(name)" }
+    static func groupCellIdentifier(_ name: String) -> String { return "ContactGroupsViewCell.\(name)" }
+    static func groupCellSendImailButtonIdentifier(_ name: String) -> String { return "\(name).sendButton" }
+    static let menuButtonIdentifier = "UINavigationItem.openMenu"
+    static let addContactNavBarButtonText = LocalString._general_create_action
+    static let importContactNavBarButtonIdentifier = "UINavigationItem.importButton"
+    static let contactsTableViewIdentifier = "ContactsViewController.tableView"
+}
 
 /**
  ContactsRobot class contains actions and verifications for Contacts functionality.
  */
-class ContactsRobot {
+class ContactsRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+    var verify = Verify()
 
     func addContact() -> AddContactRobot {
         return add().contact()
@@ -38,39 +41,38 @@ class ContactsRobot {
     }
 
     func groupsView() -> ContactsGroupView {
-        Element.wait.forButtonWithIdentifier(groupsTabBarButtonIdentifier, file: #file, line:  #line).tap()
+        button(id.groupsTabBarButtonIdentifier).tap()
         return ContactsGroupView()
     }
 
     func contactsView() -> ContactsView {
-        Element.wait.forButtonWithIdentifier(contactsTabBarButtonIdentifier, file: #file, line:  #line).tap()
+        button(id.contactsTabBarButtonIdentifier).tap()
         return ContactsView()
     }
 
     func menuDrawer() -> MenuRobot {
-        Element.button.tapByIdentifier(menuNavBarButtonIdentifier)
+        button(id.menuButtonIdentifier).tap()
         return MenuRobot()
     }
     
     private func add() -> ContactsRobot {
-        Element.wait.forButtonWithIdentifier(addContactNavBarButtonIdentifier, file: #file, line:  #line).tap()
+        button(id.addContactNavBarButtonText).tap()
         return ContactsRobot()
     }
     
     private func contact() -> AddContactRobot {
-        Element.wait.forButtonWithIdentifier(addContactAlertButtonText, file: #file, line:  #line).tap()
+        staticText(id.addContactAlertButtonText).tap()
         return AddContactRobot()
     }
     
     private func group() -> AddContactGroupRobot {
-        Element.wait.forButtonWithIdentifier(addGroupAlertButtonText, file: #file, line:  #line).tap()
+        staticText(id.addGroupAlertButtonText).tap()
         return AddContactGroupRobot()
     }
 
-    class ContactsView {
+    class ContactsView: CoreElements {
         
-        var verify: Verify! = nil
-        init() { verify = Verify() }
+        var verify = Verify()
         
         func deleteContact(_ name: String) -> ContactsView {
             return swipeLeftToDelete(name)
@@ -79,43 +81,43 @@ class ContactsRobot {
         }
 
         func clickContact(_ name: String) -> ContactDetailsRobot {
-            Element.wait.forCellWithIdentifier(contactCellIdentifier(name), file: #file, line:  #line).tap()
+            cell(id.contactCellIdentifier(name)).tap()
             return ContactDetailsRobot()
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            Element.cell.swipeDownUpUntilVisibleByIdentifier(contactCellIdentifier(name)).longSwipe(.left)
+            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible().swipeLeft()
             return ContactsView()
         }
         
         private func clickDeleteButton() -> ContactsView {
+            button(id.deleteButtonText).tap()
             return ContactsView()
         }
         
         private func confirmDeletion() -> ContactsView {
-            Element.wait.forButtonWithIdentifier(deleteContactAlertButtonText, file: #file, line:  #line).tap()
+            button(id.deleteContactAlertButtonText).tap()
             return self
         }
         
-        class Verify {
+        class Verify: CoreElements {
 
             func contactExists(_ name: String) {
-                Element.wait.forCellWithIdentifier(contactCellIdentifier(name), file: #file, line:  #line)
+                cell(id.contactCellIdentifier(name)).wait().checkExists()
             }
 
             func contactDoesNotExists(_ name: String) {
-                Element.wait.forCellWithIdentifierToDisappear(contactCellIdentifier(name), file: #file, line:  #line)
+                cell(id.contactCellIdentifier(name)).waitUntilGone()
             }
         }
     }
 
-    class ContactsGroupView {
+    class ContactsGroupView: CoreElements {
         
-        var verify: Verify! = nil
-        init() { verify = Verify() }
+        var verify = Verify()
 
         func clickGroup(_ withName: String) -> GroupDetailsRobot {
-            Element.cell.swipeSwipeUpUntilVisibleByIdentifier(groupCellIdentifier(withName)).tap()
+            cell(id.groupCellIdentifier(withName)).swipeUpUntilVisible().tap()
             return GroupDetailsRobot()
         }
 
@@ -126,30 +128,29 @@ class ContactsRobot {
         }
         
         func sendGroupEmail(_ name: String) -> ComposerRobot {
-            Element.wait.forButtonWithIdentifier(groupCellSendImailButtonIdentifier(name), file: #file, line: #line)
-                .swipeDownUntilVisible()
-                .tap()
+            button(id.groupCellSendImailButtonIdentifier(name)).swipeDownUntilVisible().tap()
             return ComposerRobot()
         }
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
-            Element.cell.swipeDownUpUntilVisibleByIdentifier(groupCellIdentifier(withName)).longSwipe(.left)
+            cell(id.groupCellIdentifier(withName)).swipeUpUntilVisible().swipeLeft()
             return self
         }
         
         private func clickDeleteButton() -> ContactsGroupView {
+            button(id.deleteButtonText).tap()
             return self
         }
         
         private func confirmDeletion() -> ContactsGroupView {
-            Element.wait.forButtonWithIdentifier(deleteGroupAlertButtonText, file: #file, line: #line).tap()
+            button(id.deleteGroupAlertButtonText).tap()
             return self
         }
 
-        class Verify {
+        class Verify: CoreElements {
 
             func groupDoesNotExists(_ name: String) {
-                Element.wait.forCellWithIdentifierToDisappear(groupCellIdentifier(name), file: #file, line: #line)
+                cell(id.groupCellIdentifier(name)).waitUntilGone()
             }
         }
     }
@@ -157,10 +158,10 @@ class ContactsRobot {
     /**
      * Contains all the validations that can be performed by [ContactsRobot].
      */
-    class Verify {
+    class Verify: CoreElements {
 
         func contactsOpened() {
-            Element.wait.forTableViewWithIdentifier(contactsTableViewIdentifier, file: #file, line: #line)
+            table(id.contactsTableViewIdentifier).wait().checkExists()
         }
     }
 }

@@ -114,6 +114,8 @@
 #define SentryCrashField_ImageMajorVersion "major_version"
 #define SentryCrashField_ImageMinorVersion "minor_version"
 #define SentryCrashField_ImageRevisionVersion "revision_version"
+#define SentryCrashField_ImageCrashInfoMessage "crash_info_message"
+#define SentryCrashField_ImageCrashInfoMessage2 "crash_info_message2"
 
 #pragma mark - Memory -
 
@@ -173,6 +175,8 @@
 #define SentryCrashField_Threads "threads"
 #define SentryCrashField_User "user"
 #define SentryCrashField_ConsoleLog "console_log"
+
+#define SentryCrashField_Scope "sentry_sdk_scope"
 
 #pragma mark Incomplete
 #define SentryCrashField_Incomplete "incomplete"

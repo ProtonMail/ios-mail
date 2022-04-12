@@ -23,7 +23,7 @@
 
 import UIKit
 
-protocol Deeplinkable: class {
+protocol Deeplinkable: AnyObject {
     var deeplinkNode: DeepLink.Node { get }
     var deeplinkStorage: DeepLink? { get set }
 }

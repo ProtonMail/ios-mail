@@ -32,9 +32,7 @@ extension NSManagedObjectContext {
         
         do {
             try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
-            PMLog.D("Deleted \(entityName) objects.")
-        } catch let error as NSError {
-            PMLog.D("error: \(error)")
+        } catch {
         }
     }
     
@@ -52,8 +50,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -72,8 +69,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -86,21 +82,22 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
     
-    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> [NSManagedObject]? {
+    func managedObjectsWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg, sortKey: String? = nil, isAscending: Bool = true) -> [NSManagedObject]? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
+        if let sortKey = sortKey {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: isAscending)]
+        }
         
         do {
             let results = try fetch(fetchRequest)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -111,8 +108,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(request)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -123,8 +119,7 @@ extension NSManagedObjectContext {
         do {
             let results = try fetch(request)
             return results as? [NSManagedObject]
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         return nil
     }
@@ -141,6 +136,15 @@ extension NSManagedObjectContext {
         var error: NSError?
         do {
             if hasChanges {
+                //TODO: - v4 remove it later
+                if self == CoreDataService.shared.mainContext {
+                    fatalError("Do not save on main context")
+                }
+
+                if !insertedObjects.isEmpty {
+                    try obtainPermanentIDs(for: Array(insertedObjects))
+                }
+
                 try save()
                 if let parentContext = parent {
                     parentContext.performAndWait() { () -> Void in

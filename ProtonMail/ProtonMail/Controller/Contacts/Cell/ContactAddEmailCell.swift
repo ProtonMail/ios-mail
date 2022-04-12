@@ -20,41 +20,43 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
+import ProtonCore_UIFoundations
 
 class ContactAddEmailCell: UITableViewCell, AccessibleCell {
     fileprivate var email: ContactEditEmail!
     fileprivate var delegate: ContactEditCellDelegate?
-    @IBOutlet weak var typeLabel: UILabel!
-    @IBOutlet weak var valueField: UITextField!
-    @IBOutlet weak var typeButton: UIButton!
-    @IBOutlet weak var separatorView: UIView!
-    
+    @IBOutlet var typeLabel: UILabel!
+    @IBOutlet var valueField: UITextField!
+    @IBOutlet var typeButton: UIButton!
+    @IBOutlet var separatorView: UIView!
+
     @IBAction func selectTypeTapped(_ sender: UIButton) {
         delegate?.pick(typeInterface: email, sender: self)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._contacts_email_address_placeholder
+        backgroundColor = ColorProvider.BackgroundNorm
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         separatorView.gradient()
     }
-    
+
     func configCell(obj: ContactEditEmail,
                     callback: ContactEditCellDelegate?,
                     becomeFirstResponder: Bool = false) {
         self.email = obj
-        
-        typeLabel.text = self.email.newType.title
-        valueField.text = self.email.newEmail
+
+        typeLabel.attributedText = NSAttributedString(string: self.email.newType.title,
+                                                     attributes: FontManager.Default)
+        valueField.attributedText = NSAttributedString(string: self.email.newEmail,
+                                                       attributes: FontManager.Default)
         self.delegate = callback
-        
+
         if becomeFirstResponder {
             delay(0.25, closure: {
                 self.valueField.becomeFirstResponder()
@@ -64,18 +66,18 @@ class ContactAddEmailCell: UITableViewCell, AccessibleCell {
     }
 }
 
-
 extension ContactAddEmailCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.beginEditing(textField: textField)
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField)  {
-        textField.text = textField.text?.trim()
-        email.newEmail = valueField.text!
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.attributedText = NSAttributedString(string: textField.attributedText?.string.trim() ?? "",
+                                                      attributes: FontManager.Default)
+        email.newEmail = valueField.attributedText?.string ?? ""
     }
 }

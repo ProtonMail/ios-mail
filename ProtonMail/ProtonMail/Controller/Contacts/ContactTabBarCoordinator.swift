@@ -22,20 +22,20 @@
     
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
 class ContactTabBarCoordinator: DefaultCoordinator {
     typealias VC = ContactTabBarViewController
     
     internal weak var viewController: ContactTabBarViewController?
-    internal weak var swRevealVC: SWRevealViewController?
+    internal weak var sideMenu: SideMenuController?
     
     var services: ServiceFactory
     private var user: UserManager
     
-    init(rvc: SWRevealViewController?, vc: ContactTabBarViewController, services: ServiceFactory, user: UserManager, deeplink: DeepLink? = nil) {
+    init(sideMenu: SideMenuController?, vc: ContactTabBarViewController, services: ServiceFactory, user: UserManager, deeplink: DeepLink? = nil) {
         self.user = user
-        self.swRevealVC = rvc
+        self.sideMenu = sideMenu
         self.viewController = vc
         self.services = services
     }
@@ -45,16 +45,19 @@ class ContactTabBarCoordinator: DefaultCoordinator {
         
         /// setup contacts vc
         if let viewController = viewController?.contactsViewController {
-            let vmService = services.get() as ViewModelService
+            let vmService = sharedVMService
             vmService.contactsViewModel(viewController, user: self.user)
         }
         
         /// setup contact groups view controller
         if let viewController = viewController?.groupsViewController {
-            let vmService = services.get() as ViewModelService
+            let vmService = sharedVMService
             vmService.contactGroupsViewModel(viewController, user: self.user)
         }
         
-        self.swRevealVC?.pushFrontViewController(self.viewController, animated: true)
+        if let vc = self.viewController {
+            self.sideMenu?.setContentViewController(to: vc)
+            self.sideMenu?.hideMenu()
+        }
     }
 }

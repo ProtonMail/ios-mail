@@ -81,12 +81,12 @@ extension CryptoTests {
         }
         let crypto = Crypto()
         do {
-            
-            guard let armoredSignature = try crypto.signDetached(plainData: signedData,
-                                                        privateKey: keyringPrivateKey,
-                                                        passphrase: self.testMailboxPassword) else {
-                                                            XCTFail("Nil signature")
-                                                            return
+
+            guard let armoredSignature = try crypto.signDetached(plainData: NSMutableData(data: signedData),
+                                                                 privateKey: keyringPrivateKey,
+                                                                 passphrase: self.testMailboxPassword) else {
+                XCTFail("Nil signature")
+                return
             }
             XCTAssertTrue(!armoredSignature.isEmpty)
             XCTAssertTrue( armoredSignature.isMatch(signatureRegexMatch, options: []))

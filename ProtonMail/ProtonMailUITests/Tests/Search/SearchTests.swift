@@ -8,6 +8,8 @@
 
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class SearchTests: BaseTestCase {
     
     var subject = String()
@@ -22,7 +24,6 @@ class SearchTests: BaseTestCase {
     func testSearchFromInboxBySubject() {
         let user = testData.onePassUser
         let recipient = testData.onePassUser
-        let replySubject = String(format: "Re: %@", subject)
         LoginRobot()
             .loginUser(user)
             .compose()
@@ -31,24 +32,17 @@ class SearchTests: BaseTestCase {
             .searchBar()
             .searchMessageText(subject)
             .verify.messageExists(subject)
-            .clickSearchedMessageBySubject(subject)
-            .reply()
-            .sendReplyMessage()
-            .navigateBackToSearchResult()
-            .goBackToInbox()
-            .menuDrawer()
-            .sent()
-            .verify.messageExists(replySubject)
     }
     
     func testSearchFromInboxByAddress() {
         let user = testData.onePassUser
-        let receiver = testData.externalEmailPGPEncrypted.email
+        let coreFusionSender = "Core Fusion"
+        let title = "163880735864890"
         LoginRobot()
             .loginUser(user)
             .searchBar()
-            .searchMessageText(receiver)
-            .verify.addressExists(receiver, 0)
+            .searchMessageText(coreFusionSender)
+            .verify.senderAddressExists(coreFusionSender, title)
     }
     
     func testSearchDraft() {
@@ -59,7 +53,6 @@ class SearchTests: BaseTestCase {
             .compose()
             .changeSubjectTo(subject)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .searchBar()
@@ -69,7 +62,6 @@ class SearchTests: BaseTestCase {
             .clickDraftBySubject(subject)
             .changeSubjectTo(modifiedDraftTopic)
             .tapCancel()
-            .confirmDraftSavingFromDrafts()
             .menuDrawer()
             .inbox()
             .searchBar()

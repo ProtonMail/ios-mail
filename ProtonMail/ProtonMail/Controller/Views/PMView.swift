@@ -54,8 +54,7 @@ class PMView: UIView, AccessibleView {
             pmView.clipsToBounds = true;
             self.clipsToBounds = true;
             self.setup()
-        } else {
-            PMLog.D("PMView setupView loadViewFromNib failed") //TODO:: add a real log
+            self.pmView = pmView
         }
         generateAccessibilityIdentifiers()
     }

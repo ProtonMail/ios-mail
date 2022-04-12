@@ -82,6 +82,9 @@ html_editor.setHtml = function(htmlBody, sanitizeConfig) {
     var cleanByConfig = DOMPurify.sanitize(htmlBody, sanitizeConfig);
     html_editor.editor.innerHTML = DOMPurify.sanitize(cleanByConfig);
     // could update the viewport width here in the future.
+
+    let arr = document.querySelectorAll('div.signature_br')
+    arr.forEach(ele => ele.setAttribute('contentEditable', 'false'))
 };
 
 /// get the html. first removes embedded blobs, then takes the html, then puts embedded stuff back
@@ -104,6 +107,12 @@ html_editor.getText = function() {
 html_editor.setCSP = function(content) {
     var mvp = document.getElementById('myCSP');
     mvp.setAttribute('content', content);
+};
+
+html_editor.addSupplementCSS = function(css) {
+    let style = document.createElement(`style`);
+    style.textContent = css;
+    document.head.appendChild(style);
 };
 
 /// update view port width. set to the content size otherwise the text selection will not work
@@ -129,8 +138,63 @@ html_editor.editor.addEventListener("drop", function(event) {
 
 html_editor.editor.addEventListener("paste", function(event) {
     var items = event.clipboardData.items;
+    html_editor.absorbContactGroupPaste(event);
     html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
 });
+
+html_editor.absorbContactGroupPaste = function(event) {
+    const paste = (event.clipboardData || window.clipboardData).getData("text");
+    let parsed;
+
+    try {
+      parsed = JSON.parse(paste);
+    } catch (e) {
+      return;
+    }
+
+    if (!parsed) {
+      return;
+    }
+
+    const values = Object.values(parsed);
+
+    if (values.length !== 1) {
+      // If the pasted data is contact group, it must have 1 key
+      return;
+    }
+
+    const [data] = values;
+
+    if (!Array.isArray(data)) {
+      return;
+    }
+
+    const notStrings = data.some((item) => typeof item !== "string");
+
+    if (notStrings) {
+      // If the pasted data is contact group, the data must a string array
+      return;
+    }
+
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount) {
+      return;
+    }
+
+    selection.deleteFromDocument();
+
+    const divs = data.map((item) => {
+      const div = document.createElement("div");
+      div.textContent = item;
+      return div;
+    });
+
+    const range = selection.getRangeAt(0);
+
+    divs.reverse().forEach((item) => range.insertNode(item));
+    event.preventDefault();
+}
 
 /// cathes pasted images to turn them into data blobs and add as attachments
 html_editor.absorbImage = function(event, items, target) {
@@ -161,10 +225,8 @@ html_editor.editor.addEventListener("keydown", function(key) {
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function() {
     var range = window.getSelection().getRangeAt(0);
-    if (html_editor.caret != range.endContainer.nextElementSibling) {
-        range.collapse(false);
-        range.insertNode(html_editor.caret);
-    }
+    range.collapse(false);
+    range.insertNode(html_editor.caret);
 
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
     var rect = html_editor.caret.getBoundingClientRect();

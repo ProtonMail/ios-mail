@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import CoreData
 import Foundation
 import OpenPGP
 
@@ -150,6 +150,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
         return ContactFieldType.emailTypes
     }
     
+    func update(order: Int) {
+        self.newOrder = order
+    }
+    
     // to
     func toContactEmail() -> ContactEmail {
         return ContactEmail(e: newEmail, t: newType.vcardType)
@@ -159,7 +163,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
-        let context = self.coreDataService.mainManagedObjectContext
+        let context = self.coreDataService.mainContext
         let emailObject = Email.EmailForAddressWithContact(self.newEmail,
                                                            contactID: contactID,
                                                            inManagedObjectContext: context)
@@ -168,13 +172,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
                 for contactGroup in contactGroups {
                     origContactGroupIDs.insert(contactGroup.labelID)
                 }
-            } else {
-                // TODO: handle error
-                PMLog.D("Can't get contact groups")
             }
-        } else {
-            // TODO: handle error
-            PMLog.D("Can't get email from address")
         }
         
         newContactGroupIDs = origContactGroupIDs
@@ -183,12 +181,9 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            let context = self.coreDataService.mainManagedObjectContext
+            let context = self.coreDataService.mainContext
             if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
-            } else {
-                // TODO: handle error
-                PMLog.D(("Can't get label from ID"))
             }
         }
         
@@ -209,15 +204,12 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
         
-        let context = self.coreDataService.mainManagedObjectContext
+        let context = self.coreDataService.mainContext
         for ID in newContactGroupIDs {
             let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
             
             if let label = label {
                 colors.append(label.color)
-            } else {
-                // TODO: handle error
-                PMLog.D("Can't retrieve label by ID")
             }
         }
         
@@ -258,6 +250,27 @@ final class ContactEditEmail: ContactEditTypeInterface {
     
     func isEmpty() -> Bool {
         return newEmail.isEmpty
+    }
+    
+    func makeTempEmail(context: NSManagedObjectContext, contact: Contact) -> Email {
+        let mail = Email(context: context)
+        mail.userID = contact.userID
+        mail.contactID = contact.contactID
+        mail.emailID = UUID().uuidString
+        mail.name = contact.name
+        mail.email = self.newEmail
+        mail.defaults = NSNumber(value: 1)
+        mail.order = NSNumber(value: self.newOrder)
+        mail.type = self.newType.rawString
+        mail.contact = contact
+        let labelIDs = self.getCurrentlySelectedContactGroupsID()
+        var labels: [Label] = []
+        for id in labelIDs {
+            guard let label = Label.labelGroup(byID: id, inManagedObjectContext: context) else { continue }
+            labels.append(label)
+        }
+        mail.labels = Set(labels) as NSSet
+        return mail
     }
 }
 

@@ -21,11 +21,12 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UIApplication {
     class func setBadge(badge:Int) {
         DispatchQueue.main.async {
+            let badge = badge == 0 ? -1: badge
             UIApplication.shared.applicationIconBadgeNumber = badge
         }
     }

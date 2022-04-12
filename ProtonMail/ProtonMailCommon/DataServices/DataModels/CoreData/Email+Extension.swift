@@ -32,6 +32,8 @@ extension Email {
         static let email = "email"
         static let emailID = "emailID"
         static let userID = "userID"
+        static let name = "name"
+        static let lastUsedTime = "lastUsedTime"
     }
     
     /// Removes all messages from the store.
@@ -81,18 +83,16 @@ extension Email {
     }
 
     func log() {
-        PMLog.D("EmailID: \(self.emailID)")
-        PMLog.D("ContactID: \(self.contactID)")
-        PMLog.D("Email: \(self.email)")
-        PMLog.D("Name: \(self.name)")
-        //PMLog.D("Encrypt: \(self.encrypt)")
-        PMLog.D("Order: \(self.order)")
-        PMLog.D("Type: \(self.type)")
+        print("EmailID: \(self.emailID)")
+        print("ContactID: \(self.contactID)")
+        print("Email: \(self.email)")
+        print("Name: \(self.name)")
+        print("Order: \(self.order)")
+        print("Type: \(self.type)")
     }
     
     func emailType() -> String {
-//        let pasred = type.parseJson();
-        return type;
+        type
     }
 }
 

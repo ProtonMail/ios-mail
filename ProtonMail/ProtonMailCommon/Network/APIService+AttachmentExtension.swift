@@ -22,7 +22,8 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 extension APIService {
     
@@ -34,9 +35,9 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        self.download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
+        self.download(byUrl: self.doh.getCurrentlyUsedHostUrl() + pathForAttachmentID(attachmentID),
                       destinationDirectoryURL: filepath,
-                      headers: [HTTPHeader.apiVersion: 3],
+                      headers: .empty,
                       authenticated: true,
                       customAuthCredential: customAuthCredential,
                       downloadTask: downloadTask,
@@ -46,7 +47,7 @@ extension APIService {
     func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
         self.request(method: .delete, path: pathForAttachmentID(attachmentID),
                      parameters: nil,
-                     headers: [HTTPHeader.apiVersion: 3],
+                     headers: .empty,
                      authenticated: true, autoRetry: true,
                      customAuthCredential: nil, completion: completion)
     }

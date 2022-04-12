@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 import OpenPGP
 
 class ContactAddViewModelImpl : ContactEditViewModel {
@@ -205,9 +205,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     override func done(complete : @escaping ContactEditSaveComplete) {
         let mailboxPassword = user.mailboxPassword
         guard let userkey = user.userInfo.firstUserKey(),
-            case let authCredential = user.authCredential else
+              case _ = user.authCredential else
         {
-            complete(NSError.lockError())
+            DispatchQueue.main.async {
+                complete(NSError.lockError())
+            }
             return
         }
         
@@ -215,7 +217,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
             if e.newEmail.isEmpty || !e.newEmail.isValidEmail() {
-                complete(RuntimeError.invalidEmail.toError())
+                DispatchQueue.main.async {
+                    complete(RuntimeError.invalidEmail.toError())
+                }
                 return
             }
             a_emails.append(e.toContactEmail())
@@ -248,10 +252,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        PMLog.D(vcard2Str)
         //TODO:: fix the try?
         let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
-                                                       privateKey: userkey.private_key,
+                                                       privateKey: userkey.privateKey,
                                                        passphrase: mailboxPassword)
         //card 2 object
         let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
@@ -364,12 +367,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         vcard3.setUid(uuid)
         
         let vcard3Str = PMNIEzvcard.write(vcard3)
-        PMLog.D(vcard3Str)
         //TODO:: fix the try!
         let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
-        PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
-                                                       privateKey: userkey.private_key,
+                                                       privateKey: userkey.privateKey,
                                                        passphrase: mailboxPassword)
         //card 3 object
         let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
@@ -379,12 +380,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             cards.append(card3)
         }
         //TODO:: can be improved
-        user.contactService.add(cards: [cards], authCredential: authCredential) { (contacts : [Contact]?, error : NSError?) in
-            if error == nil {
-                complete(nil)
-            } else {
-                complete(error)
-            }
+        if let error = user.contactService.queueAddContact(cardDatas: cards, name: self.profile.newDisplayName, emails: self.emails) {
+            complete(error)
+        } else {
+            complete(nil)
         }
     }
     

@@ -23,7 +23,7 @@
 
 import UIKit
 
-class GeneralSettingSinglelineCell: UITableViewCell {
+class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var LeftText: UILabel!
     
     override func awakeFromNib() {
@@ -39,8 +39,9 @@ class GeneralSettingSinglelineCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func configCell(_ left:String) {
+    func configCell(_ left: String) {
         LeftText.text = left
         self.accessibilityLabel = left
+        generateCellAccessibilityIdentifiers(left)
     }
 }

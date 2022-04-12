@@ -1,42 +1,23 @@
+// Copyright (c) 2021 Proton Technologies AG
 //
-//  UIImage+Extension.swift
-//  ProtonMail - Created on 8/14/15.
+// This file is part of ProtonMail.
 //
+// ProtonMail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-//  Copyright (c) 2019 Proton Technologies AG
+// ProtonMail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
 //
-//  This file is part of ProtonMail.
-//
-//  ProtonMail is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  ProtonMail is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+// You should have received a copy of the GNU General Public License
+// along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-
-import Foundation
-
+import UIKit
 
 extension UIImage {
-
-    class func image(with color: UIColor) -> UIImage? {
-        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
-        UIGraphicsBeginImageContext(rect.size)
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setFillColor(color.cgColor)
-            context.fill(rect)
-        }
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
     
     class func resizeWithRespectTo(box size: CGSize, scale: CGFloat, image: UIImage) -> UIImage? {
         return UIImage.resize(image: image, targetSize: CGSize.init(width: size.width * scale,
@@ -66,9 +47,105 @@ extension UIImage {
         return newImage
     }
     
-    class func scale(image: UIImage, by scale: CGFloat) -> UIImage? {
-        let size = image.size
-        let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-        return UIImage.resize(image: image, targetSize: scaledSize)
+    /// Only supports contentMode as `.scaleAspectFit`
+    ///
+    /// ### Reference
+    /// https://stackoverflow.com/questions/31314412/how-to-resize-image-in-swift
+    func resizeImage(_ dimension: CGFloat, opaque: Bool, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImage {
+        var width: CGFloat
+        var height: CGFloat
+        var newImage: UIImage
+        
+        let size = self.size
+        let aspectRatio =  size.width/size.height
+        
+        switch contentMode {
+        case .scaleAspectFit:
+            if aspectRatio > 1 {                            // Landscape image
+                width = dimension
+                height = dimension / aspectRatio
+            } else {                                        // Portrait image
+                height = dimension
+                width = dimension * aspectRatio
+            }
+            
+        default:
+            fatalError("UIIMage.resizeToFit(): FATAL: Unimplemented ContentMode")
+        }
+        
+        if #available(iOS 10.0, *) {
+            let renderFormat = UIGraphicsImageRendererFormat.default()
+            renderFormat.opaque = opaque
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: renderFormat)
+            newImage = renderer.image {
+                (context) in
+                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), opaque, 0)
+            self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+            newImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+        }
+        
+        return newImage
+    }
+}
+
+extension UIImage {
+    func toTemplateUIImage() -> UIImage {
+        return self.withRenderingMode(.alwaysTemplate)
+    }
+
+    /// Create a BarButtonItem from IageAsset
+    ///
+    /// ### Support
+    /// - change image's tintColor and image's size
+    /// - add background color as round or square
+    func toUIBarButtonItem( target: Any?,
+                            action: Selector?,
+                            style: UIBarButtonItem.Style = .plain,
+                            tintColor: UIColor? = nil,
+                            squareSize: CGFloat = 24.0,
+                            backgroundColor: UIColor? = nil,
+                            backgroundSquareSize: CGFloat? = nil,
+                            isRound: Bool = false,
+                            imageInsets: UIEdgeInsets? = nil) -> UIBarButtonItem {
+        // Somehow alwaysTemplate should be add after resize
+        let image = self.resizeImage(squareSize, opaque: false).withRenderingMode(.alwaysTemplate)
+
+        if let backgroundColor = backgroundColor,
+           let backgroundSquareSize = backgroundSquareSize {
+            let profileButton = UIButton()
+            profileButton.setImage(image, for: .normal)
+            if let imageInsets = imageInsets {
+                profileButton.imageEdgeInsets = imageInsets
+            }
+            profileButton.backgroundColor = backgroundColor
+
+            profileButton.heightAnchor.constraint(equalToConstant: backgroundSquareSize).isActive = true
+            profileButton.widthAnchor.constraint(equalToConstant: backgroundSquareSize).isActive = true
+
+            if isRound {
+                profileButton.layer.cornerRadius = backgroundSquareSize / 2.0
+                profileButton.layer.masksToBounds = true
+            }
+            if let tintColor = tintColor {
+                profileButton.tintColor = tintColor
+            }
+            if let action = action {
+                profileButton.addTarget(target, action: action, for: .touchDown)
+            }
+            return UIBarButtonItem(customView: profileButton)
+        }
+        if let tintColor = tintColor {
+            let barButtonItem = UIBarButtonItem(image: image, style: style, target: target, action: action)
+            if let imageInsets = imageInsets {
+                barButtonItem.imageInsets = imageInsets
+            }
+            barButtonItem.tintColor = tintColor
+            return barButtonItem
+        }
+        return UIBarButtonItem(image: image, style: .plain, target: target, action: action)
     }
 }

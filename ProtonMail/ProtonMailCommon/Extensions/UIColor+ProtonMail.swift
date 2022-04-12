@@ -53,51 +53,35 @@ extension UIColor {
         )
     }
     
+    func toHex() -> String {
+        guard let components = self.cgColor.components else {
+            return "#000000"
+        }
+        
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        
+        if self.cgColor.numberOfComponents < 3 {
+            // UIExtendedGrayColorSpace
+            r = components[0]
+            g = components[0]
+            b = components[0]
+        } else {
+            r = components[0]
+            g = components[1]
+            b = components[2]
+        }
+        
+        let hexString = String.init(format: "#%02lX%02lX%02lX", lroundf(Float(r * 255)), lroundf(Float(g * 255)), lroundf(Float(b * 255)))
+        return hexString
+    }
+    
     struct ProtonMail {
-        
-        static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
-        static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
-        static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
-        static let Blue_6789AB = UIColor(RRGGBB: UInt(0x6789AB))
-        static let Blue_9397CD = UIColor(RRGGBB: UInt(0x9397CD))
-        static let Gray_383A3B = UIColor(RRGGBB: UInt(0x383A3B))
-        static let Gray_FCFEFF = UIColor(RRGGBB: UInt(0xFCFEFF))
-        static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4))
-        static let Gray_E8EBED = UIColor(RRGGBB: UInt(0xE8EBED))
-        static let Gray_E2E6E8 = UIColor(RRGGBB: UInt(0xE2E6E8))
-        static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
-        static let Gray_8E8E8E = UIColor(RRGGBB: UInt(0x8E8E8E))
-        static let Red_D74B4B = UIColor(RRGGBB: UInt(0xD74B4B))
-        static let Red_FF5959 = UIColor(RRGGBB: UInt(0xFF5959))
-        
-        
-        static let Menu_UnreadCountBackground = UIColor(RRGGBB: UInt(0x8182C3))
-        static let Menu_UnSelectBackground = UIColor(RRGGBB: UInt(0x505061))
-        static let Menu_UnSelectBackground_Label = UIColor(RRGGBB:UInt(0x3F3E4E))
-        static let Menu_SelectedBackground = UIColor(RRGGBB: UInt(0x2F2E3C))
-        
-        static let ServicePlanFree = UIColor(red: 0/255, green: 172/255, blue: 63/255, alpha: 1.0)
-        static let ServicePlanPro = UIColor(red: 153/255, green: 30/255, blue: 245/255, alpha: 1.0)
-        static let ServicePlanPlus = UIColor(red: 199/255, green: 89/255, blue: 31/255, alpha: 1.0)
-        static let ServicePlanVisionary = UIColor(red: 56/255, green: 114/255, blue: 218/255, alpha: 1.0)
-        
-        static let TableFootnoteTextGray = UIColor(red: 110/255, green: 110/255, blue: 112/255, alpha: 1.0)
-        static let TableSeparatorGray = UIColor(red: 226/255, green: 230/255, blue: 232/255, alpha: 1.0)
-        static let ButtonBackground: UIColor = {
-            return Menu_UnreadCountBackground
-        }()
-        
-        static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
-        
-        static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
-        static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
-        static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
-        
-        static let MessageCell_UnRead_Color = UIColor(RRGGBB: UInt(0xFFFFFF))
-        static let MessageCell_Read_Color = UIColor(RRGGBB: UInt(0xF2F3F7))
-        
-        static let TextFieldTintColor = UIColor.white
-        static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
+        static let onboardingImageBackgroundColor = UIColor(r: 245, g: 247, b: 250, a: 1)
+
+        static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4)) // TODO: used in mail printing
+        static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1)) // TODO: used in mail printing
     }
 }
 
@@ -126,14 +110,8 @@ extension UIColor {
                     green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
                     blue  = CGFloat((hexValue & 0x0000FF00) >> 8)  / 255.0
                     alpha = CGFloat(hexValue & 0x000000FF)         / 255.0
-                } else {
-                    PMLog.D("invalid hex code string, length should be 7 or 9")
                 }
-            } else {
-                PMLog.D("scan hex error")
             }
-        } else {
-            PMLog.D("invalid hex code string, missing '#' as prefix")
         }
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }

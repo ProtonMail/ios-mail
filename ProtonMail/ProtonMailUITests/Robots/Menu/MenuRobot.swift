@@ -7,36 +7,48 @@
 //
 
 import XCTest
-import PMCoreTranslation
+import ProtonCore_CoreTranslation
+import ProtonCore_TestingToolkit
+import pmtest
 
-private let logoutCell = "MenuTableViewCell.\(LocalString._logout_title)"
-private let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
-private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
-private let contactsStaticText = "MenuTableViewCell.\(LocalString._menu_contacts_title)"
-private let draftsStaticText = "MenuTableViewCell.\(LocalString._menu_drafts_title)"
-private let inboxStaticText = "MenuTableViewCell.\(LocalString._menu_inbox_title)"
-private let settingsStaticText = "MenuTableViewCell.\(LocalString._menu_settings_title)"
-private let subscriptionStaticText = "MenuTableViewCell.\(LocalString._menu_service_plan_title)"
-private let reportBugStaticText = "MenuTableViewCell.Report_Bugs"
-private let spamStaticText = "MenuTableViewCell.\(LocalString._menu_spam_title)"
-private let trashStaticText = "MenuTableViewCell.\(LocalString._menu_trash_title)"
-private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
-private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
-private let iapErrorAlertTitle = LocalString._general_alert_title
-private let iapErrorAlertMessage = LocalString._iap_unavailable
-private let forceUpgrateAlertTitle = CoreString._fu_alert_title
-private let forceUpgrateAlertMessage = "Test error description"
-private let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
-private let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
-private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
-private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
-private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
-private func folderLabelCellIdentifier(_ name: String) -> String { return "MenuLabelViewCell.\(name)" }
+fileprivate struct id {
+    static let logoutCell = "MenuItemTableViewCell.Sign_out"
+    static let logoutConfirmButton = NSLocalizedString("Log out", comment: "comment")
+    static let inboxStaticText = "MenuItemTableViewCell.\(LocalString._menu_inbox_title)"
+    static let reportBugStaticText = "MenuItemTableViewCell.Report_a_bug"
+    static let spamStaticText = "MenuItemTableViewCell.\(LocalString._menu_spam_title)"
+    static let trashStaticText = "MenuItemTableViewCell.\(LocalString._menu_trash_title)"
+    static let sentStaticText = "MenuItemTableViewCell.\(LocalString._menu_sent_title)"
+    static let contactsStaticText = "MenuItemTableViewCell.\(LocalString._menu_contacts_title)"
+    static let draftsStaticText = "MenuItemTableViewCell.\(LocalString._menu_drafts_title)"
+    static let settingsStaticText = "MenuItemTableViewCell.\(LocalString._menu_settings_title)"
+    static let subscriptionStaticText = "MenuItemTableViewCell.\(LocalString._menu_service_plan_title)"
+    static let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
+    static let manageAccountsStaticTextLabel = CoreString._as_manage_accounts
+    static let primaryViewIdentifier = "AccountSwitcher.primaryView"
+    static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
+    static let primaryUserNameTextIdentifier = "AccountSwitcher.username"
+    static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
+    static let iapErrorAlertTitle = LocalString._general_alert_title
+    static let iapErrorAlertMessage = LocalString._iap_unavailable
+    static let forceUpgrateAlertTitle = CoreString._fu_alert_title
+    static let forceUpgrateAlertMessage = "Test error description"
+    static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
+    static let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
+    static let signInButtonLabel = CoreString._ls_sign_in_button
+    static let signInButtonIdentifier = "mail_address.signInBtn"
+    static let userAccountCellIdentifier = "AccountSwitcherCell.mail_address"
+    static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
+    static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
+    static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
+}
 
 /**
  Represents Menu view.
 */
-class MenuRobot {
+class MenuRobot: CoreElements {
+    
+    var verify = Verify()
     
     func logoutUser() -> LoginRobot {
         return logout()
@@ -45,115 +57,117 @@ class MenuRobot {
     
     @discardableResult
     func sent() -> SentRobot {
-        Element.wait.forCellWithIdentifier(sentStaticText, file: #file, line: #line).tap()
+        cell(id.sentStaticText).swipeDownUntilVisible().tap()
         return SentRobot()
     }
     
     @discardableResult
     func contacts() -> ContactsRobot {
-        Element.wait.forCellWithIdentifier(contactsStaticText, file: #file, line: #line).tap()
+        cell(id.contactsStaticText).swipeUpUntilVisible().tap()
         return ContactsRobot()
     }
     
     @discardableResult
     func subscriptionAsHumanVerification() -> HumanVerificationRobot {
         // fake subscription item leads to human verification (by http mock)
-        Element.wait.forCellWithIdentifier(subscriptionStaticText).tap()
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return HumanVerificationRobot()
     }
     
     func subscriptionAsForceUpgrade() -> MenuRobot{
         // fake subscription item leads to force upgrade (by http mock)
-        Element.wait.forCellWithIdentifier(subscriptionStaticText).tap()
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return MenuRobot()
     }
     
     func drafts() -> DraftsRobot {
-        Element.wait.forCellWithIdentifier(draftsStaticText, file: #file, line: #line).tap()
+        cell(id.draftsStaticText).swipeDownUntilVisible().tap()
         return DraftsRobot()
     }
     
-    func inbox() -> DraftsRobot {
-        Element.wait.forCellWithIdentifier(inboxStaticText, file: #file, line: #line).tap()
-        return DraftsRobot()
+    func inbox() -> InboxRobot {
+        cell(id.inboxStaticText).swipeDownUntilVisible().tap()
+        return InboxRobot()
     }
     
     func spams() -> SpamRobot {
-        Element.wait.forCellWithIdentifier(spamStaticText, file: #file, line: #line).tap()
+        cell(id.spamStaticText).swipeDownUntilVisible().tap()
         return SpamRobot()
     }
     
     func trash() -> TrashRobot {
-        Element.wait.forCellWithIdentifier(trashStaticText, file: #file, line: #line).tap()
+        cell(id.trashStaticText).swipeDownUntilVisible().tap()
         return TrashRobot()
     }
     
     func accountsList() -> MenuAccountListRobot {
-        Element.wait.forOtherFieldWithIdentifier(sidebarHeaderViewOtherIdentifier, file: #file, line: #line).tap()
+        button(id.sidebarHeaderViewOtherIdentifier).tap()
         return MenuAccountListRobot()
     }
     
     func folderOrLabel(_ name: String) -> LabelFolderRobot {
-        Element.wait.forCellWithIdentifier(folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_")), file: #file, line: #line).tap()
+        cell(id.folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_"))).swipeUpUntilVisible().tap()
         return LabelFolderRobot()
     }
     
     @discardableResult
     func reports() -> ReportRobot {
-        Element.wait.forCellWithIdentifier(reportBugStaticText, file: #file, line: #line).tap()
+        cell(id.reportBugStaticText).swipeUpUntilVisible().tap()
         return ReportRobot()
     }
     
     func settings() -> SettingsRobot {
-        Element.wait.forCellWithIdentifier(settingsStaticText, file: #file, line: #line).tap()
+        cell(id.settingsStaticText).swipeUpUntilVisible().tap()
         return SettingsRobot()
     }
     
     private func logout() -> MenuRobot {
-        Element.wait.forCellWithIdentifier(logoutCell).tap()
+        cell(id.logoutCell).swipeUpUntilVisible().tap()
         return self
     }
     
     private func confirmLogout() -> LoginRobot {
-        Element.button.tapByIdentifier(logoutConfirmButton)
+        button(id.logoutConfirmButton).tap()
         return LoginRobot()
     }
     
     /**
      MenuAccountListRobot class contains actions and verifications for Account list functionality inside Menu drawer
      */
-    class MenuAccountListRobot {
+    class MenuAccountListRobot: CoreElements {
         
-        var verify: Verify! = nil
-        
-        init() {
-            verify = Verify()
-        }
+        var verify = Verify()
 
         func manageAccounts() -> AccountManagerRobot {
-            Element.wait.forCellWithIdentifier(manageAccountsStaticTextIdentifier, file: #file, line: #line).tap()
+            staticText(id.manageAccountsStaticTextLabel).tap()
             return AccountManagerRobot()
         }
 
         func switchToAccount(_ user: User) -> InboxRobot {
-            Element.wait.forCellWithIdentifier(userAccountCellIdentifier(user.email), file: #file, line: #line).tap()
+            cell(id.userAccountCellIdentifier).tap()
             return InboxRobot()
         }
 
         /**
          Contains all the validations that can be performed by [MenuAccountListRobot].
          */
-        class Verify {
+        class Verify: CoreElements {
 
             func accountAdded(_ user: User) {
-                Element.wait.forCellWithIdentifier(userAccountCellIdentifier(user.email), file: #file, line: #line)
-                Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
-                Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
+                staticText(id.primaryUserMailTextIdentifier)
+                    .checkExists()
+                    .checkHasLabel(user.email)
             }
             
-            func accountShortNameIsCorrect(_ user: User, _ shortName: String) {
-                Element.wait.forStaticTextFieldWithIdentifier(shortNameStaticTextdentifier(user.email), file: #file, line: #line)
-                    .assertWithLabel(shortName)
+            func accountShortNameIsCorrect(_ shortName: String) {
+                staticText(shortName).wait().checkExists()
+            }
+            
+            func accountAtPositionSignedOut(_ position: Int) {
+                cell(id.userAccountCellIdentifier).byIndex(position)
+                    .onChild(button(id.signInButtonIdentifier))
+                    .checkExists()
+                    .checkHasLabel(id.signInButtonLabel)
             }
         }
     }
@@ -167,10 +181,10 @@ class MenuRobot {
         
         let verify = Verify()
         
-        class Verify {
+        class Verify: CoreElements {
             func invalidCredentialDialogDisplay() {
-                Element.wait.forStaticTextFieldWithIdentifier(iapErrorAlertTitle)
-                Element.wait.forStaticTextFieldWithIdentifier(iapErrorAlertMessage)
+                staticText(id.iapErrorAlertTitle).wait().checkExists()
+                staticText(id.iapErrorAlertMessage).wait().checkExists()
             }
         }
     }
@@ -180,28 +194,28 @@ class MenuRobot {
         return ForceUpgradeDialogRobot()
     }
     
-    class ForceUpgradeDialogRobot {
+    class ForceUpgradeDialogRobot: CoreElements {
         
         let verify = Verify()
         
-        class Verify {
+        class Verify: CoreElements {
             @discardableResult
             func checkDialog() -> ForceUpgradeDialogRobot {
-                Element.wait.forStaticTextFieldWithIdentifier(forceUpgrateAlertTitle)
-                Element.wait.forStaticTextFieldWithIdentifier(forceUpgrateAlertMessage)
+                staticText(id.forceUpgrateAlertTitle).wait().checkExists()
+                staticText(id.forceUpgrateAlertMessage).wait().checkExists()
                 return ForceUpgradeDialogRobot()
             }
         }
 
         @discardableResult
         func learnMoreButtonTap() -> ForceUpgradeDialogRobot {
-            Element.wait.forButtonWithIdentifier(forceUpgrateLearnMoreButton).tap()
+            button(id.forceUpgrateLearnMoreButton).tap()
             return ForceUpgradeDialogRobot()
         }
 
         @discardableResult
         func upgradeButtonTap() -> ForceUpgradeDialogRobot {
-            Element.wait.forButtonWithIdentifier(forceUpgrateUpdateButton).tap()
+            button(id.forceUpgrateUpdateButton).tap()
             return ForceUpgradeDialogRobot()
         }
 
@@ -209,10 +223,14 @@ class MenuRobot {
             XCUIApplication().activate()
             return ForceUpgradeDialogRobot()
         }
-        
-        func wait(timeInterval: TimeInterval) -> ForceUpgradeDialogRobot {
-            Wait().wait(timeInterval: timeInterval)
-            return ForceUpgradeDialogRobot()
+    }
+    
+    /**
+     Contains all the validations that can be performed by MenuRobot.
+    */
+    class Verify: CoreElements {
+        func currentAccount(_ account: User) {
+            button(id.primaryUserViewIdentifier).checkContainsLabel(account.name)
         }
     }
 }

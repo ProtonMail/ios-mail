@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "PushServiceDev";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "允許ProtonMail存取您相機膠卷中的照片及影片，以讓您將媒體檔附加到電子郵件內。";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "允許ProtonMail啟用相機存取，以讓您將相片附加到電子郵件內。";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "用以存取保存在裝置上的聯絡人之電子郵件位址，以便在撰寫訊息與手動上傳裝置聯絡人時使用。除非特別操作，否則聯絡資訊不會上傳至我們的伺服器上。";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "允許您快速且安全的解鎖應用程式。";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "允許ProtonMail將圖片附件保存到您的「相片」。";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "允許ProtonMail存取您的「相片」，以讓您將照片附加至電子郵件內。";
+

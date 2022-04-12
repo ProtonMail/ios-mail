@@ -28,11 +28,11 @@ var shareViewModelFactoy: ViewModelFactory!
 
 // need supprot dev factory live factory
 class ViewModelFactory {
-    func getChangeLoginPassword() -> ChangePWDViewModel {
+    func getChangeLoginPassword() -> ChangePasswordViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getChangeMailboxPassword() -> ChangePWDViewModel {
+    func getChangeMailboxPassword() -> ChangePasswordViewModel {
         fatalError("This method must be overridden")
     }
     
@@ -51,42 +51,4 @@ class ViewModelFactory {
     func getChangeMobileSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
-}
-
-class ViewModelFactoryTest : ViewModelFactory {
-    override func getChangeLoginPassword() -> ChangePWDViewModel {
-        return ChangePWDViewModelTest()
-    }
-    
-    override func getChangeMailboxPassword() -> ChangePWDViewModel {
-        return ChangePWDViewModelTest()
-    }
-}
-
-
-class ViewModelFactoryProduction : ViewModelFactory {
-    
-    override init() {
-        
-    }
-    
-//    override func getChangeLoginPassword() -> ChangePWDViewModel {
-//        return ChangeLoginPWDViewModel()
-//    }
-    
-//    override func getChangeMailboxPassword() -> ChangePWDViewModel {
-//        return ChangeMailboxPWDViewModel()
-//    }
-    
-//    override func getChangeDisplayName() -> SettingDetailsViewModel {
-//        return ChangeDisplayNameViewModel()
-//    }
-//    override func getChangeSignature() -> SettingDetailsViewModel {
-//        return ChangeSignatureViewModel()
-//    }
-    
-//    override func getChangeMobileSignature() -> SettingDetailsViewModel {
-//        return ChangeMobileSignatureViewModel()
-//    }
-
 }

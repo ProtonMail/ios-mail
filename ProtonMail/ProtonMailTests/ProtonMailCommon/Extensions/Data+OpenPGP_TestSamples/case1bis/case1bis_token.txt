@@ -1,0 +1,15 @@
+-----BEGIN PGP MESSAGE-----
+Version: GopenPGP 2.2.4
+Comment: https://gopenpgp.org
+
+wcBMA7QgXheIpM8pAQf/fvJlD8WnyHPxrS/Zbkwhew9jeThPvYkXzcKahIEhcaPM
+wwXq1GxdfzRfvQ7DSmPJMC9KwWJSZU++wWFfaj68jiABgUWGoznIiC4HyJBeqtrM
+g9zl3Mq2lvFCszzn1wYhCPuFSfnWrVmKttble2lq3aEcd6A/Q3PF5XJqR8ISgt1e
+hf+UCNgXSv8dY9Hyf1QSZjddsDjUvYxSnl1Wpdu1f0g4ruM1AZ/1XvriR2YpUgoN
+cdtG9tkVvDVe+VmUjndtJyZLlSQJLCXsfttmlRe+oEYzGoZTpASSyjQxdkaSlexv
+s+FNX89Cl6ivPJtDGCM5+CPIFr8PIOtcdoMqyRmtN9JxAY1jSla5KAEhEBvoOG5u
+yoS7yE0hK7ETUE16vFrUTg+FE5qcekiq0tmRK6R5VE4Co5XMI2fJznR2tJ79HSzn
+ssQ/dDqaS8vp/chzKry4gKYk24nRMY45N21Hh3qvusUo83nUO9/TPmMaQGWl9Gh8
++4o=
+=kKYt
+-----END PGP MESSAGE-----

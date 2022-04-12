@@ -1,0 +1,9 @@
+-----BEGIN PGP SIGNATURE-----
+Version: GopenPGP 2.3.1
+Comment: https://gopenpgp.org
+
+wnUEABYKACcFAmHAhc4JkD8UQEqW+HQOFqEEWT32tVwJth9elkubPxRASpb4dA4A
+AElYAP0Uya2xCtEKuv+7qsIqlb/LvTLNY+/1csBo1sse7WKN2AD+PkU1i6RJHs+u
+BKwLEalXrDxzHVBKw2QK29wOn8tZXgY=
+=fdg7
+-----END PGP SIGNATURE-----

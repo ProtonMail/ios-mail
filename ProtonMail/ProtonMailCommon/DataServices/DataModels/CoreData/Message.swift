@@ -31,6 +31,10 @@ final public class Message: NSManagedObject {
     
     ///"AddressID":"222",
     @NSManaged public var addressID : String?
+    /// Local use, to record the addressID when user change the sender address
+    /// Before executing the updateAttKeyPacket action, this variable keep holding the addressID that should show
+    /// after the action finish and the message.addressID is equal nextAddressID, this variable will be reset to nil
+    @NSManaged public var nextAddressID: String?
     ///"BCCList":[ { "Address":"", "Name":"", "Group": ""} ]
     @NSManaged public var bccList: String
     ///"Body":"-----BEGIN PGP MESSAGE-----.*-----END PGP MESSAGE-----",
@@ -59,11 +63,12 @@ final public class Message: NSManagedObject {
     @NSManaged public var flags: NSNumber
     ///"Header":"(No Header)",
     @NSManaged public var header: String?
+    /// Local use flag to mark this conversation is deleted
+    /// (usually caused by empty trash/ spam action)
+    @NSManaged public var isSoftDeleted: Bool
     
     ///local use, check if details downloaded
     @NSManaged public var isDetailDownloaded: Bool
-    @available(*, deprecated, message: "use flag instead")
-    @NSManaged public var isEncrypted: NSNumber
     
     ////local use, to check draft latest update time to decide pick cache or remote. should use the server time.
     @NSManaged public var lastModified: Date?
@@ -109,7 +114,11 @@ final public class Message: NSManagedObject {
     
     //Check if the message is being sent now
     @NSManaged public var isSending: Bool
-    
+
+    @NSManaged public var conversationID: String
+
+    @NSManaged public var unsubscribeMethods: String?
+
     /// Mark -- relationship
     
     //"Attachments":[ { }, {} ]
@@ -117,7 +126,7 @@ final public class Message: NSManagedObject {
     //"LabelIDs":[ "1", "d3HYa3E394T_ACXDmTaBub14w==" ],
     @NSManaged public var labels: NSSet
     
-    
+    @NSManaged public var order: NSNumber
 
     ///***Those values api returns them but client skip it
     ///"Order": 367
@@ -135,7 +144,7 @@ final public class Message: NSManagedObject {
     var unencrypt_outside : Bool = false
     typealias ObjectIDContainer = ObjectBox<Message>
     
-    var tempAtts: [AttachmentInline]? = nil
+    var tempAtts: [MimeAttachment]? = nil
 }
 
 //IsEncrypted = 2;

@@ -20,9 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import CoreServices
 import Foundation
 import PromiseKit
+import ProtonCore_UIFoundations
 
 class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     internal weak var controller: AttachmentController?
@@ -30,9 +31,11 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     init(for controller: AttachmentController) {
         self.controller = controller
     }
-    
-    var alertAction: UIAlertAction {
-        return UIAlertAction(title: LocalString._import_file_from_, style: UIAlertAction.Style.default, handler: { (action) -> Void in
+
+    var actionSheetItem: PMActionSheetItem {
+        PMActionSheetPlainItem(title: LocalString._import_from,
+                               icon: UIImage(named: "ic-export"),
+                               iconColor: ColorProvider.IconNorm) { (_) -> (Void) in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeVideo as String,
@@ -50,7 +53,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             picker.delegate = self
             picker.allowsMultipleSelection = true
             self.controller?.present(picker, animated: true, completion: nil)
-        })
+        }
     }
     
     
@@ -70,7 +73,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                         let fileName = url.lastPathComponent
                         fileData = ConcreteFileData<URL>(name: fileName, ext: ext, contents: newUrl)
                     } catch let error {
-                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                         seal.reject(error)
                         return
                     }
@@ -81,7 +83,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                         url.stopAccessingSecurityScopedResource()
                         fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
                     } catch let error {
-                        PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                         seal.reject(error)
                         return
                     }
@@ -137,11 +138,9 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
         
         DispatchQueue.global().async {
-            self.process(fileAt: url)
+            _ = self.process(fileAt: url)
         }
     }
     
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        PMLog.D("")
-    }
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) { }
 }

@@ -21,10 +21,11 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
-import PMPayments
+import ProtonCore_Payments
+import ProtonCore_Services
 
 class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
+
     var apiService: APIService? {
         return sharedServices.get(by: UsersManager.self).firstUser?.apiService
     }
@@ -49,9 +50,9 @@ class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
         return sharedServices.get(by: UsersManager.self).firstUser?.userInfo.userId
     }
     
-    var servicePlanDataService: ServicePlanDataService? {
+    var payments: Payments? {
         #if !APP_EXTENSION
-            return sharedServices.get(by: UsersManager.self).firstUser?.sevicePlanService
+            return sharedServices.get(by: UsersManager.self).firstUser?.payments
         #else
             return nil
         #endif

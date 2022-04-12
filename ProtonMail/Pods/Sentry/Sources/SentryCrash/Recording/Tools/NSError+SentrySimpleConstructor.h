@@ -29,7 +29,8 @@
 /**
  * Simpler interface for constructing NSError objects.
  */
-@interface NSError (SentrySimpleConstructor)
+@interface
+NSError (SentrySimpleConstructor)
 
 /** Convenience constructor to make an error with the specified localized
  * description.
@@ -39,9 +40,9 @@
  * @param fmt Description of the error (gets placed into the user data with the
  * key NSLocalizedDescriptionKey).
  */
-+ (NSError *)errorWithDomain:(NSString *)domain
-                        code:(NSInteger)code
-                 description:(NSString *)fmt, ...;
++ (NSError *)sentryErrorWithDomain:(NSString *)domain
+                              code:(NSInteger)code
+                       description:(NSString *)fmt, ...;
 
 /** Fill an error pointer with an NSError object if it's not nil.
  *
@@ -52,16 +53,16 @@
  * key NSLocalizedDescriptionKey).
  * @return NO (to keep the analyzer happy).
  */
-+ (BOOL)fillError:(NSError **)error
-       withDomain:(NSString *)domain
-             code:(NSInteger)code
-      description:(NSString *)fmt, ...;
++ (BOOL)sentryFillError:(NSError **)error
+             withDomain:(NSString *)domain
+                   code:(NSInteger)code
+            description:(NSString *)fmt, ...;
 
 /** Clear a pointer-to-error to nil of its pointer is not nil.
  *
  * @param error Error pointer to fill (ignored if nil).
  * @return NO (to keep the analyzer happy).
  */
-+ (BOOL)clearError:(NSError **)error;
++ (BOOL)sentryClearError:(NSError **)error;
 
 @end

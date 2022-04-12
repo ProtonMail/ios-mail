@@ -1,6 +1,0 @@
-framework module PMUIFoundations {
-  umbrella header "PMUIFoundations-umbrella.h"
-
-  export *
-  module * { export * }
-}

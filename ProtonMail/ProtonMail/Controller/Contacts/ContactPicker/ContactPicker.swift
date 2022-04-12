@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 protocol ContactPickerDataSource: NSObjectProtocol {
@@ -42,6 +42,7 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func customFilterPredicate(searchString: String) -> NSPredicate
     
     func finishLockCheck()
+    func showContactMenu(contact: ContactPickerModelProtocol, contactPicker: ContactPicker)
 }
 
 class ContactPicker: UIView, AccessibleView {
@@ -65,7 +66,9 @@ class ContactPicker: UIView, AccessibleView {
             if let contactGroup = model as? ContactGroupVO {
                 contactGroup.selectAllEmailFromGroup()
             }
-            self.contactCollectionView.addToSelectedContacts(model: model, withCompletion: nil)
+            addToSelectedContacts(model: model) { [weak self] in
+                self?.contactCollectionView.scrollToEntryAnimated(animated: true, onComplete: nil)
+            }
         }
         return controller
     }
@@ -84,7 +87,6 @@ class ContactPicker: UIView, AccessibleView {
     internal weak var delegate : (ContactPickerDelegate&UIViewController)?
     internal weak var datasource : ContactPickerDataSource?
     
-    private var _showPrompt : Bool = true
     private var _prompt : String = ContactPickerDefined.kPrompt
     private var _maxVisibleRows : CGFloat = ContactPickerDefined.kMaxVisibleRows
     private var animationSpeed : CGFloat = ContactPickerDefined.kAnimationSpeed
@@ -95,6 +97,8 @@ class ContactPicker: UIView, AccessibleView {
     private var contacts: [ContactPickerModelProtocol] = [ContactPickerModelProtocol]()
 
     internal var contactCollectionView : ContactCollectionView!
+    private var promptLabel: UILabel!
+    private var grayLine: UIView!
     
     private var contactCollectionViewContentSize: CGSize = CGSize.zero
     private var hasLoadedData : Bool = false
@@ -114,6 +118,9 @@ class ContactPicker: UIView, AccessibleView {
             return self.contactCollectionView.selectedContacts
         }
     }
+
+    /// This flag controls if the component will extend its height to show all addresses
+    var shouldExtendToShowAllContact: Bool = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -136,20 +143,9 @@ class ContactPicker: UIView, AccessibleView {
     
     private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
-        self._showPrompt = true
-        
-        let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
-        contactCollectionView.contactDelegate = self
-        contactCollectionView.clipsToBounds = true
-        contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contactCollectionView)
-        
-        self.contactCollectionView = contactCollectionView
-        
-        self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        self.contactCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 4).isActive = true
-        self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.setupPromptLabel()
+        self.setupContactCollectionView()
+        self.setupGrayLine()
         
         self.maxVisibleRows = ContactPickerDefined.kMaxVisibleRows
         self.animationSpeed = ContactPickerDefined.kAnimationSpeed
@@ -170,6 +166,53 @@ class ContactPicker: UIView, AccessibleView {
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         generateAccessibilityIdentifiers()
+    }
+    
+    private func setupPromptLabel() {
+        guard self.promptLabel == nil else { return }
+        self.promptLabel = UILabel()
+        self.promptLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.promptLabel)
+        [
+            self.promptLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            self.promptLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 14)
+        ].activate()
+        self.promptLabel.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.becomeFirstResponder))
+        self.promptLabel.addGestureRecognizer(tap)
+    }
+    
+    private func setupContactCollectionView() {
+        guard self.contactCollectionView == nil else { return }
+        let contactCollectionView = ContactCollectionView.contactCollectionViewWithFrame(frame: self.bounds)
+        contactCollectionView.showPrompt = false
+        contactCollectionView.contactDelegate = self
+        contactCollectionView.clipsToBounds = true
+        contactCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactCollectionView)
+        
+        self.contactCollectionView = contactCollectionView
+        
+        [
+            self.contactCollectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 11),
+            self.contactCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
+            self.contactCollectionView.leadingAnchor.constraint(equalTo: self.promptLabel.trailingAnchor, constant: 8),
+            self.contactCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -35)
+        ].activate()
+    }
+    
+    private func setupGrayLine() {
+        self.grayLine = UIView(frame: .zero)
+        self.grayLine.backgroundColor = ColorProvider.SeparatorNorm
+        self.grayLine.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.grayLine)
+        
+        [
+            self.grayLine.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.grayLine.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.grayLine.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.grayLine.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
     }
     
     override func awakeFromNib() {
@@ -204,7 +247,21 @@ class ContactPicker: UIView, AccessibleView {
     func reload() {
         self.contactCollectionView.reloadData()
     }
-    
+
+    func removeContact(address: String) {
+        self.contactCollectionView.removeContact(address: address)
+    }
+
+    func removeContact(contact: ContactPickerModelProtocol) {
+        self.contactCollectionView.removeContact(contact: contact)
+    }
+
+    func deselectCells() {
+        self.contactCollectionView.visibleCells
+            .compactMap { $0 as? ContactCollectionViewContactCell }
+            .filter { $0.pickerFocused == true }
+            .forEach { $0.pickerFocused = false }
+    }
     //
     //#pragma mark - Properties
     //
@@ -214,6 +271,7 @@ class ContactPicker: UIView, AccessibleView {
         }
         set {
             self._prompt = newValue
+            self.promptLabel.attributedText = newValue.apply(style: .DefaultSmallWeek)
             self.contactCollectionView.prompt = self._prompt
         }
     }
@@ -231,9 +289,24 @@ class ContactPicker: UIView, AccessibleView {
 
     internal var currentContentHeight : CGFloat {
         get {
-            let minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
+            let minimumHeight: CGFloat = 48.0
+            var minimumSizeWithContent = max(CGFloat(self.cellHeight), self.contactCollectionViewContentSize.height)
+            minimumSizeWithContent = max(minimumHeight, minimumSizeWithContent)
             let maximumSize = self.maxVisibleRows * CGFloat(self.cellHeight)
-            return min(minimumSizeWithContent, maximumSize)
+
+            var finalHeight: CGFloat
+            if shouldExtendToShowAllContact {
+                finalHeight = minimumSizeWithContent
+            } else {
+                finalHeight = min(minimumSizeWithContent, maximumSize)
+            }
+
+            if finalHeight > 48.0 {
+                let topPadding: CGFloat = 11.0
+                let bottomPadding: CGFloat = 10.0
+                finalHeight = finalHeight + topPadding + bottomPadding
+            }
+            return finalHeight
         }
     }
 
@@ -252,21 +325,11 @@ class ContactPicker: UIView, AccessibleView {
         }
     }
     
-    private var showPrompt: Bool {
-        get {
-            return self._showPrompt
-        }
-        set {
-            self._showPrompt = newValue
-            self.contactCollectionView.showPrompt = newValue
-        }
-    }
-
-    
     internal func addToSelectedContacts(model: ContactPickerModelProtocol, needFocus focus: Bool) {
-        self.contactCollectionView.addToSelectedContacts(model: model) {
+        self.contactCollectionView.addToSelectedContacts(model: model) { [weak self] in
             if focus {
-                let _ = self.becomeFirstResponder()
+                self?.contactCollectionView.scrollToEntryAnimated(animated: true, onComplete: nil)
+                let _ = self?.becomeFirstResponder()
             }
         }
     }
@@ -350,6 +413,26 @@ class ContactPicker: UIView, AccessibleView {
         let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
         let intersection = CGRect(origin: .zero, size: size).intersection(superview.frame.insetBy(dx: 0, dy: -1 * window.frame.height))
         return CGRect(origin: topLine, size: intersection.size)
+    }
+
+    private func filteredContacts(by query: String) -> [ContactPickerModelProtocol] {
+        let predicate : NSPredicate!
+        
+        if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
+            predicate = self.delegate?.customFilterPredicate(searchString: query)
+        } else if self.allowsCompletionOfSelectedContacts {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@",
+                                    query)
+        } else {
+            predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
+                                    query,
+                                    self.contactCollectionView.selectedContacts)
+        }
+        
+        let filteredContacts = self.contacts
+            .filter { predicate.evaluate(with: $0) }
+            .compactMap{ $0.copy() as? ContactPickerModelProtocol }
+        return filteredContacts
     }
 }
 
@@ -452,20 +535,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
         }
         
         let searchString = text.trimmingCharacters(in: NSCharacterSet.whitespaces)
-        let predicate : NSPredicate!
-        
-        if let hasCustom = self.delegate?.useCustomFilter(), hasCustom == true {
-            predicate = self.delegate?.customFilterPredicate(searchString: searchString)
-        } else if self.allowsCompletionOfSelectedContacts {
-            predicate = NSPredicate(format: "contactTitle contains[cd] %@",
-                                    searchString)
-        } else {
-            predicate = NSPredicate(format: "contactTitle contains[cd] %@ && !SELF IN %@",
-                                    searchString,
-                                    self.contactCollectionView.selectedContacts)
-        }
-        
-        let filteredContacts = self.contacts.filter { predicate.evaluate(with: $0) }
+        let filteredContacts = self.filteredContacts(by: searchString)
         if self.hideWhenNoResult && filteredContacts.isEmpty {
             self.hideSearchTableView()
         } else {
@@ -498,5 +568,21 @@ extension ContactPicker : ContactCollectionViewDelegate {
     
     internal func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(picker: self, pasted: text, needFocus: focus)
+    }
+
+    func collectionView(at: ContactCollectionView, pasted groupName: String, addresses: [String]) -> Bool {
+        let contacts = self.filteredContacts(by: groupName)
+        guard contacts.count == 1,
+              let group = contacts.first as? ContactGroupVO else { return false }
+        group.selectAllEmailFromGroup()
+        let selected = group.getSelectedEmailData()
+            .filter { addresses.contains($0.email) }
+        group.overwriteSelectedEmails(with: selected)
+        self.addToSelectedContacts(model: group, needFocus: false)
+        return true
+    }
+
+    func showContactMenu(contact: ContactPickerModelProtocol) {
+        self.delegate?.showContactMenu(contact: contact, contactPicker: self)
     }
 }

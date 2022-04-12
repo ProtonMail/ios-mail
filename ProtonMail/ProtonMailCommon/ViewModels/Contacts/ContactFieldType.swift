@@ -24,6 +24,8 @@
 import Foundation
 
 enum ContactFieldType {
+    private static let allCases: [ContactFieldType] = [.home, .work, .email, .other, .phone, .mobile, .fax, .address, .url, .internet, .empty]
+    
     //raw value is the type
     case home
     case work
@@ -47,6 +49,36 @@ enum ContactFieldType {
     //default
     case empty
     case custom(String)
+
+    init(raw: String) {
+        switch raw {
+        case "HOME":
+            self = .home
+        case "WORK":
+            self = .work
+        case "EMAIL":
+            self = .email
+        case "OTHER":
+            self = .other
+        case "PHONE":
+            self = .phone
+        case "MOBILE":
+            self = .mobile
+        case "FAX":
+            self = .fax
+        case "ADDRESS":
+            self = .address
+        case "URL":
+            self = .url
+        case "X-INTERNET", "INTERNET":
+            self = .internet
+        //default
+        case "":
+            self = .email
+        default:
+            self = .custom(raw)
+        }
+    }
     
     var rawString : String {
         switch self {

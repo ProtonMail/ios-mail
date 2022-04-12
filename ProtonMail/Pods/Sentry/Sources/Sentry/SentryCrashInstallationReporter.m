@@ -7,16 +7,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface
+SentryCrashInstallationReporter ()
+
+@property (nonatomic, strong) SentryInAppLogic *inAppLogic;
+
+@end
+
 @implementation SentryCrashInstallationReporter
 
-- (id)init
+- (instancetype)initWithInAppLogic:(SentryInAppLogic *)inAppLogic
 {
-    return [super initWithRequiredProperties:[NSArray new]];
+    if (self = [super initWithRequiredProperties:[NSArray new]]) {
+        self.inAppLogic = inAppLogic;
+    }
+    return self;
 }
 
 - (id<SentryCrashReportFilter>)sink
 {
-    return [[SentryCrashReportSink alloc] init];
+    return [[SentryCrashReportSink alloc] initWithInAppLogic:self.inAppLogic];
 }
 
 - (void)sendAllReports
@@ -29,11 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
     [super
         sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {
             if (nil != error) {
-                [SentryLog logWithMessage:error.localizedDescription andLevel:kSentryLogLevelError];
+                [SentryLog logWithMessage:error.localizedDescription andLevel:kSentryLevelError];
             }
             [SentryLog logWithMessage:[NSString stringWithFormat:@"Sent %lu crash report(s)",
                                                 (unsigned long)filteredReports.count]
-                             andLevel:kSentryLogLevelDebug];
+                             andLevel:kSentryLevelDebug];
             if (completed && onCompletion) {
                 onCompletion(filteredReports, completed, error);
             }

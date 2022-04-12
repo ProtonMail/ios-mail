@@ -23,6 +23,7 @@
 
 import XCTest
 import Crypto
+import OpenPGP
 
 @testable import ProtonMail
 
@@ -75,7 +76,7 @@ EQr2Mx42THr260IFYp5E/rIA
         
         let pgp = Crypto()
         do {
-            let clear = try pgp.decrypt(encrytped: ecdh_msg_bad_2, privateKey: ecdh_dec_key_2, passphrase: "12345")
+            let clear = try pgp.decrypt(encrypted: ecdh_msg_bad_2, privateKey: ecdh_dec_key_2, passphrase: "12345")
             XCTAssertEqual(clear, "Tesssst<br><br><br>Sent from ProtonMail mobile<br><br><br>", "ecdh pgp message decrypt failed")
         } catch let error {
             XCTAssertNil(error)
@@ -197,7 +198,7 @@ EQr2Mx42THr260IFYp5E/rIA
             XCTAssertNotNil(encrypted1)
             
             // decrypt encrypted message
-            let clearText = try Crypto().decrypt(encrytped: encrypted1!, privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
+            let clearText = try Crypto().decrypt(encrypted: encrypted1!, privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
             XCTAssertNotNil(clearText)
             XCTAssertEqual(clearText, "test")
             
@@ -218,7 +219,7 @@ EQr2Mx42THr260IFYp5E/rIA
             XCTAssertNotNil(encrypted3)
 
             
-            let verifyOut = try Crypto().decryptVerify(encrytped: encrypted3!,
+            let verifyOut = try Crypto().decryptVerify(encrypted: encrypted3!,
                                                        publicKey: OpenPGPDefines.publicKey,
                                                        privateKey: OpenPGPDefines.privateKey,
                                                        passphrase: OpenPGPDefines.passphrase, verifyTime: 0)
@@ -247,7 +248,7 @@ EQr2Mx42THr260IFYp5E/rIA
             let encrypted = try Crypto().encrypt(plainText: "test", publicKey: pubkey)
             XCTAssertNotNil(encrypted)
 
-            let clear = try Crypto().decrypt(encrytped: encrypted!,
+            let clear = try Crypto().decrypt(encrypted: encrypted!,
                                          privateKey: OpenPGPDefines.feng100_private_key_1,
                                          passphrase: OpenPGPDefines.feng100_passphrase_1)
             XCTAssertNotNil(clear)

@@ -6,60 +6,67 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let pinSwitchIdentifier = LocalString._enable_pin
-fileprivate let usePinSwitchIdentifier = "Use PIN code"
-fileprivate let pinStaticTextIdentifier = LocalString._pin
-fileprivate let autoLockCellIdentifier = "SettingsCell.Auto-Lock_Timer"
-fileprivate let noneAutoLockButtonLabel = LocalString._general_none
-fileprivate let everyTimeLockButtonLabel = LocalString._settings_every_time_enter_app
-fileprivate let backToSettingsNavBarButtonIdentifier = LocalString._menu_settings_title
-
 import XCTest
+import pmtest
 
-class PinRobot {
+fileprivate struct id {
+    static let pinCellIdentifier = "SettingsLockView.pinCodeCell"
+    static let nonePinCellIdentifier = "SettingsLockView.nonCell"
+    static let pinStaticTextLabel = LocalString._app_pin
+    static let setPinStaticTextLabel =  LocalString._pin_code_setup1_title
+    static let repeatPinStaticTextLabel = LocalString._pin_code_setup2_title
+    static let noneAutoLockButtonLabel = LocalString._general_none
+    static let everyTimeLockButtonLabel = LocalString._settings_every_time_enter_app
+    static let backToSettingsNavBarButtonIdentifier = LocalString._menu_settings_title
+    static let usePinSwitchIdentifier = "Use PIN code"
+    static let autoLockCellIdentifier = "SettingsCell.Auto-Lock_Timer"
+    static let pinTimerCellIdentifier = "SettingsGeneralCell.Timing"
+    static let addPinTextFieldIdentifier = "PinCodeSetUpViewController.textField"
+    static let nextButtonIdentifier = "PinCodeSetUpViewController.nextButton"
+    static let confirmPinTextFieldIdentifier = "PinCodeConfirmationViewController.textField"
+    static let confirmButtonIdentifier = "PinCodeConfirmationViewController.confirmButton"
+    static let checkMarkButtonLabel = "checkmark"
+}
+
+class PinRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() {
-        verify = Verify()
-        Element.wait.forStaticTextFieldWithIdentifier(pinStaticTextIdentifier, file: #file, line: #line)
+    var verify = Verify()
+    
+    required init() {
+        super.init()
+        staticText(id.pinStaticTextLabel).wait().checkExists()
     }
     
-    @discardableResult
-    func enablePin() -> PinRobot {
-        Element.swittch.tapByIdentifier(pinSwitchIdentifier)
-        return PinRobot()
-    }
-    
-    func enableAndSetPin(_ pins: [Int]) -> PinRobot {
-        enablePin()
-            .usePin()
-            .createPin(pins)
+    func enablePin() -> setPinRobot {
+        cell(id.pinCellIdentifier).tap()
+        return setPinRobot()
     }
     
     func navigateUpToSettings() -> SettingsRobot {
-        Element.wait.forButtonWithIdentifier(backToSettingsNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.backToSettingsNavBarButtonIdentifier).tap()
         return SettingsRobot()
     }
     
-    func autoLockTimer() -> AutoLockTimeRobot {
-        Element.wait.forCellWithIdentifier(autoLockCellIdentifier).tap()
+    func pinTimmer() -> AutoLockTimeRobot {
+        cell(id.pinTimerCellIdentifier).tap()
         return AutoLockTimeRobot()
     }
     
     @discardableResult
     func usePin() -> PinInputRobot {
-        Element.swittch.tapByIdentifier(usePinSwitchIdentifier)
+        swittch(id.pinCellIdentifier).tap()
         return PinInputRobot()
     }
     
     @discardableResult
     func disablePin() -> PinRobot {
-        Element.swittch.tapByIdentifier(usePinSwitchIdentifier)
+        cell(id.nonePinCellIdentifier).tap()
         return PinRobot()
     }
     
     func backgroundApp() -> PinRobot {
         XCUIDevice.shared.press(.home)
+        sleep(3)    //It's always more stable when there is a small gap between background and foreground
         return PinRobot()
     }
     
@@ -78,36 +85,80 @@ class PinRobot {
         return PinRobot()
     }
     
-    class AutoLockTimeRobot {
+    class AutoLockTimeRobot: CoreElements {
         
         func selectAutoLockNone() -> PinRobot {
-            Element.wait.forButtonWithIdentifier(noneAutoLockButtonLabel).tap()
+            button(id.noneAutoLockButtonLabel).tap()
             return PinRobot()
         }
         
         func selectAutolockEveryTime() -> PinRobot {
-            Element.wait.forButtonWithIdentifier(everyTimeLockButtonLabel).tap()
+            button(id.everyTimeLockButtonLabel).tap()
             return PinRobot()
         }
     }
-
-    class Verify {
+    
+    class setPinRobot: CoreElements {
+        required init() {
+            super.init()
+            staticText(id.setPinStaticTextLabel).wait().checkExists()
+        }
+        
+        func enterPin(_ pin: String) -> setPinRobot {
+            secureTextField(id.addPinTextFieldIdentifier).typeText(pin)
+            return self
+        }
+        
+        func continueSettingPin() -> RepeatPinRobot {
+            button(id.nextButtonIdentifier).tap()
+            return RepeatPinRobot()
+        }
         
         @discardableResult
-        func isUsePinToggleOn(_ status: Bool) -> PinRobot {
-            let status = Element.swittch.isEnabledByIdentifier(usePinSwitchIdentifier)
+        func setPin(_ pin: String) -> PinRobot {
+            enterPin(pin)
+                .continueSettingPin()
+                .confirmPin(pin)
+        }
+    }
+    
+    class RepeatPinRobot: CoreElements {
+        required init() {
+            super.init()
+            staticText(id.repeatPinStaticTextLabel).wait().checkExists()
+        }
+        
+        func enterPin(_ pin: String) -> RepeatPinRobot {
+            secureTextField(id.confirmPinTextFieldIdentifier).tap().typeText(pin)
+            return self
+        }
+        
+        func continueConfirm() -> PinRobot {
+            button(id.confirmButtonIdentifier).tap()
+            return PinRobot()
+        }
+        
+        func confirmPin(_ pin: String) -> PinRobot {
+            enterPin(pin)
+                .continueConfirm()
+        }
+    }
+
+    class Verify: CoreElements {
+        
+        @discardableResult
+        func isPinEnabled(_ status: Bool) -> PinRobot {
             if status {
-                XCTAssertTrue(status)
+                cell(id.pinCellIdentifier).onChild(button(id.checkMarkButtonLabel)).checkExists()
             }
             else {
-                XCTAssertFalse(status)
+                cell(id.pinCellIdentifier).onChild(button(id.checkMarkButtonLabel)).checkDoesNotExist()
             }
             return PinRobot()
         }
         
         func appUnlockSuccessfully() {
-            Element.wait.forStaticTextFieldWithIdentifier(pinStaticTextIdentifier)
+            staticText(id.pinStaticTextLabel).wait().checkExists()
         }
     }
-    
 }

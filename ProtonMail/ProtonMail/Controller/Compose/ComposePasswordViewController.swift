@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 protocol ComposePasswordViewControllerDelegate : AnyObject {
     func Cancelled()
@@ -71,10 +71,6 @@ class ComposePasswordViewController: UIViewController, AccessibleView {
         applyButton.titleLabel?.minimumScaleFactor = 10.0 / 16.0
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)
         generateAccessibilityIdentifiers()
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {

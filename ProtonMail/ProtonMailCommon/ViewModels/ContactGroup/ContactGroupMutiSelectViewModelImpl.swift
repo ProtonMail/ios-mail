@@ -41,6 +41,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private let messageService: MessageDataService
     private(set) var user: UserManager
     let coreDataService: CoreDataService
+    private let eventsService: EventsFetching
     /**
      Init the view model with state
      
@@ -56,7 +57,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         self.contactGroupService = user.contactGroupService
         self.messageService = user.messageService
         self.coreDataService = coreDateService
-        
+        self.eventsService = user.eventsService
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation
         } else {
@@ -91,7 +92,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         let row = indexPath.row
         
         guard row < self.groupCountInformation.count else {
-            PMLog.D("FatalError: The row count is not correct")
             return ("", "", "", 0)
         }
         
@@ -174,7 +174,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -202,9 +202,8 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
                                             notificationMessageID: nil,
-                                            context: self.coreDataService.mainManagedObjectContext,
                                             completion: { (task, res, error) in
                 self.isFetching = false
             })
@@ -247,7 +246,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    arrayOfPromises.append(self.contactGroupService.deleteContactGroup(groupID: groupID))
+                    arrayOfPromises.append(self.contactGroupService.queueDelete(groupID: groupID))
                 }
                 
                 when(fulfilled: arrayOfPromises).done {
@@ -282,7 +281,6 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         
         let row = indexPath.row
         guard row < self.groupCountInformation.count else {
-            PMLog.D("FatalError: The row count is not correct")
             return ("", "", "", 0, false, false)
         }
         let data = self.groupCountInformation[row]

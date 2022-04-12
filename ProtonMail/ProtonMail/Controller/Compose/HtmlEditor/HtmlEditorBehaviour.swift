@@ -23,6 +23,7 @@
 
 import UIKit
 import PromiseKit
+import WebKit
 
 /// workaround for accessoryView
 fileprivate final class InputAccessoryHackHelper: NSObject {
@@ -229,7 +230,13 @@ class HtmlEditorBehaviour: NSObject {
         firstly { () -> Promise<Void> in
             self.run(with: "html_editor.setCSP(\"\(self.contentHTML.remoteContentMode.cspRaw)\");")
         }.then { () -> Promise<Void> in
-            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(HTMLStringSecureLoader.domPurifyConfiguration));")
+            if let css = self.contentHTML.supplementCSS {
+                return self.run(with: "html_editor.addSupplementCSS(`\(css)`)")
+            } else {
+                return Promise()
+            }
+        }.then { () -> Promise<Void> in
+            self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.default.value));")
         }.then { (_) -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { (width) -> Promise<Void> in
@@ -243,8 +250,7 @@ class HtmlEditorBehaviour: NSObject {
         }.done { (height) in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
-        }.catch { (error) in
-            PMLog.D("\(error)")
+        }.catch { _ in
         }
     }
     
@@ -252,8 +258,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTTPRequestSecureLoader.domPurifyConfiguration));").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(DomPurifyConfig.default.value));").catch { _ in
         }
     }
     
@@ -267,8 +272,7 @@ class HtmlEditorBehaviour: NSObject {
         //Use batch process to add the percent encoding to solve the memory issue
         let escapedBlob: String = blob.batchAddingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
         
-        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { _ in
         }
     }
     
@@ -277,8 +281,7 @@ class HtmlEditorBehaviour: NSObject {
     ///
     /// - Parameter cid: the embed image content id
     func remove(embedImage cid : String) {
-        self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)")
+        self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { _ in
         }
     }
     

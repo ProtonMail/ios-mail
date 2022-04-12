@@ -20,11 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import CoreServices
 import UIKit
 import MBProgressHUD
 import PromiseKit
-import PMCommon
+import ProtonCore_Services
 
 var sharedUserDataService : UserDataService!
 
@@ -58,6 +58,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
+    private var isUnlock = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,9 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
+            guard self?.isUnlock == false else { return }
             self?.signInIfRememberedCredentials()
+            self?.isUnlock = true
         }
     }
     
@@ -99,7 +102,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     return
                 }
                 guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_signin_first)
                     return
                 }
                 self.loginCheck()
@@ -111,7 +114,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         defer {
             group.leave()//#0
         }
-        PMLog.D("\(items)")
         group.enter() //#0
         for item in items {
             let plainText = item.attributedContentText?.string
@@ -124,7 +126,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                             group.leave() //#1
                         }
                     } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                        PMLog.D("1")
                     } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
                         group.enter()//#2
                         itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
@@ -142,8 +143,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     } else if let pt = plainText {
                         self.inputSubject = ""
                         self.inputContent = self.inputContent + "\n"  + pt
-                    } else {
-                        PMLog.D("4")
                     }
                     
                 }
@@ -157,6 +156,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
             self.bioCodeView.loginCheck(.requirePin)
+            self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
             self.bioCodeView.loginCheck(.requireTouchID)
@@ -219,12 +219,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     
     func configureNavigationBar() {
         if let bar = self.navigationController?.navigationBar {
-            bar.barStyle = UIBarStyle.black
-            bar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+            bar.barTintColor = UIColor(named: "launch_background_color")
             bar.isTranslucent = false
-            bar.tintColor = UIColor.white
+            bar.tintColor = UIColor(named: "launch_text_color")
             bar.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.foregroundColor: UIColor(named: "launch_text_color")!,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
         }
@@ -232,6 +231,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
 }
 
 extension ShareUnlockViewController: AttachmentController, FileImporter {
+    func error(title: String, description: String) {
+        self.localized_errors.append(description)
+    }
+
     var barItem: UIBarButtonItem? {
         return nil
     }

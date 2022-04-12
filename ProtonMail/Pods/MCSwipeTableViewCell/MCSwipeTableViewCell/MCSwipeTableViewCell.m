@@ -8,8 +8,6 @@
 
 #import "MCSwipeTableViewCell.h"
 
-static NSOperatingSystemVersion iOS84 = (NSOperatingSystemVersion){8, 4, 0};
-
 static CGFloat const kMCStop1                       = 0.25; // Percentage limit to trigger the first action
 static CGFloat const kMCStop2                       = 0.75; // Percentage limit to trigger the second action
 static CGFloat const kMCBounceAmplitude             = 20.0; // Maximum bounce amplitude when using the MCSwipeTableViewCellModeSwitch mode
@@ -334,13 +332,6 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
         
         UIPanGestureRecognizer *g = (UIPanGestureRecognizer *)gestureRecognizer;
         CGPoint point = [g velocityInView:self];
-
-        CGPoint startpoint    = [g locationInView:self];
-        
-        //here is new need to change if next time to update third lib
-        if (startpoint.x < 36) {
-            return NO;
-        }
         
         if (fabs(point.x) > fabs(point.y) ) {
             if (point.x < 0 && !_modeForState3 && !_modeForState4) {
@@ -675,53 +666,11 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
 
 - (UIImage *)imageWithView:(UIView *)view {
     CGFloat scale = [[UIScreen mainScreen] scale];
-    
-    CGSize iS = view.intrinsicContentSize;
-    CGSize t = view.bounds.size;
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, scale);
-    
-    if (  [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS84] ) { //>= ios8.4
-        NSLog(@"iOS 8.4 =+");
-        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    } else {
-        NSLog(@"iOS 8.4 -");
-        NSArray *hiddenViews = [self prepareUnderlyingViewForSnapshot];
-        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-        [self restoreSuperviewAfterSnapshot:hiddenViews];
-    }
-    
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
-}
-
-- (NSArray *)hideEmptyLayers:(CALayer *)layer
-{
-    NSMutableArray *layers = [NSMutableArray array];
-    if (CGRectIsEmpty(layer.bounds)) {
-        layer.hidden = YES;
-        [layers addObject:layer];
-    }
-    for (CALayer *sublayer in layer.sublayers) {
-        [layers addObjectsFromArray:[self hideEmptyLayers:sublayer]];
-    }
-    return layers;
-}
-
-- (void)restoreSuperviewAfterSnapshot:(NSArray *)hiddenLayers
-{
-    for (CALayer *layer in hiddenLayers)
-    {
-        layer.hidden = NO;
-    }
-}
-
-- (NSArray *)prepareUnderlyingViewForSnapshot
-{
-    NSMutableArray *layers = [NSMutableArray array];
-    // Also hide any sublayers with empty bounds to prevent a crash on iOS 8
-    [layers addObjectsFromArray:[self hideEmptyLayers:self.layer]];
-    return layers;
 }
 
 #pragma mark - Completion block

@@ -22,13 +22,11 @@
 
 
 import Foundation
-import PMCommon
-
-
+import ProtonCore_Networking
 
 /**
  [ProtonMail Reports API]:
- https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report bugs"
+ https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_reports.md "Report a bug"
  
  Reports API
  - Doc: [ProtonMail Reports API]
@@ -42,6 +40,12 @@ struct ReportsAPI {
 // MARK : Get messages part -- Response
 /// Report a bug [POST]
 final class ReportPhishing : Request {
+    enum ParameterKeys: String {
+        case messageID = "MessageID"
+        case mimeType = "MIMEType"
+        case body = "Body"
+    }
+
     let msgID : String
     let mimeType : String
     let body : String
@@ -54,27 +58,37 @@ final class ReportPhishing : Request {
     
     var parameters: [String : Any]? {
         let out : [String : Any] = [
-            "MessageID": self.msgID,
-            "MIMEType" : self.mimeType,
-            "Body": self.body
+            ParameterKeys.messageID.rawValue: self.msgID,
+            ParameterKeys.mimeType.rawValue: self.mimeType,
+            ParameterKeys.body.rawValue: self.body
         ]
         return out
     }
-    
-    var method: HTTPMethod {
-        return .post
-    }
-    
-    
-    var path: String {
-        return ReportsAPI.path + "/phishing"
-    }
+
+    static var defaultMethod: HTTPMethod { .post }
+    var method: HTTPMethod { Self.defaultMethod }
+
+    static var defaultPath: String { ReportsAPI.path + "/phishing" }
+    var path: String { Self.defaultPath }
 }
 
 
 // MARK : Report a bug  -- Response
 /// Report a bug [POST]
 final class BugReportRequest : Request {
+    enum ParameterKeys: String {
+        case os = "OS"
+        case osVersion = "OSVersion"
+        case client = "Client"
+        case clientVersion = "ClientVersion"
+        case title = "Title"
+        case description = "Description"
+        case userName = "Username"
+        case email = "Email"
+        case lastReceivedPush = "LastReceivedPush"
+        case reachabilityStatus = "ReachabilityStatus"
+    }
+    
     let os : String
     let osVersion : String
     let clientVersion : String
@@ -83,38 +97,45 @@ final class BugReportRequest : Request {
     let userName : String
     let email : String
     
-    
-    init(os : String!, osVersion : String!, clientVersion : String!, title : String!, desc : String!, userName : String!, email : String!) {
+    init(os: String,
+         osVersion: String,
+         clientVersion: String,
+         title: String,
+         desc: String,
+         userName: String,
+         email: String,
+         lastReceivedPush: String,
+         reachabilityStatus: String) {
         self.os = os
         self.osVersion = osVersion
         self.clientVersion = clientVersion
         self.title = title
-        self.desc = desc
         self.userName = userName
         self.email = email
+        var description = desc
+        description.append(contentsOf: "\nLP Timestamp:\(lastReceivedPush)")
+        description.append(contentsOf: "\nReachability:\(reachabilityStatus)")
+        self.desc = description
     }
     
     var parameters: [String : Any]? {
-        let out : [String : Any] = [
-            "OS": self.os,
-            "OSVersion" : self.osVersion,
-            "Client": "iOS_Native",
-            "ClientVersion" : self.clientVersion,
-            "Title": self.title,
-            "Description": self.desc,
-            "Username": self.userName,
-            "Email": self.email
+        [
+            ParameterKeys.os.rawValue: self.os,
+            ParameterKeys.osVersion.rawValue : self.osVersion,
+            ParameterKeys.client.rawValue: "iOS_Native",
+            ParameterKeys.clientVersion.rawValue: self.clientVersion,
+            ParameterKeys.title.rawValue: self.title,
+            ParameterKeys.description.rawValue: self.desc,
+            ParameterKeys.userName.rawValue: self.userName,
+            ParameterKeys.email.rawValue: self.email
         ]
-        return out
     }
     
-    var method: HTTPMethod {
-        return .post
-    }
+    static var defaultMethod: HTTPMethod { .post }
+    var method: HTTPMethod { Self.defaultMethod }
     
-    var path: String {
-        return ReportsAPI.path + "/bug"
-    }
+    static var defaultPath: String { ReportsAPI.path + "/bug" }
+    var path: String { Self.defaultPath }
 }
 
 

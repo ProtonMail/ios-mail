@@ -6,39 +6,54 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let addAccountCellIdentifier = "addAccountLabel"
-fileprivate let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
-fileprivate let swipeUserCellLogoutButtonIdentifier = "Log out"
-fileprivate let swipeUserCellDeleteButtonIdentifier = "Delete"
-fileprivate let removeAllLabel = "Remove All"
-private func userAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)" }
-private func loggedOutUserAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)_(logged_out)" }
+import pmtest
+import ProtonCore_TestingToolkit
+
+fileprivate struct id {
+    static let addAccountButtonIdentifier = "UINavigationItem.rightBarButtonItem"
+    static let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
+    static let closeManageAccountsButtonIdentifier = "UINavigationItem.leftBarButtonItem"
+    static let swipeUserCellLogoutButtonIdentifier = "Log out"
+    static let swipeUserCellDeleteButtonIdentifier = "Delete"
+    static let removeAllLabel = "Remove All"
+    static let signOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
+    static let confirmSignOutButtonLabel = LocalString._signout_primary_account_from_manager_account_title
+    static let removeAccountButtonLabel = "Remove account"
+    static let confirmRemoveButtonLabel = LocalString._general_remove_button
+    static let closeManageAccountsButtonLabel = "Dismiss account switcher"
+    static func userAccountMoreBtnIdentifier(_ mail: String) -> String {
+        return "\(mail).moreBtn"
+    }
+    static func loggedOutUserAccountCellIdentifier(_ mail: String) -> String { return "AccountmanagerUserCell.\(mail)" }
+}
 
 /**
  Represents Account Manager view.
 */
-class AccountManagerRobot {
+class AccountManagerRobot: CoreElements {
     
-    var verify: Verify! = nil
-    
-    init() {
-        verify = Verify()
-    }
+    var verify = Verify()
     
     func addAccount() -> ConnectAccountRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(addAccountCellIdentifier, file: #file, line: #line).tap()
+        button(id.addAccountButtonIdentifier).tap()
         return ConnectAccountRobot()
     }
 
-    func logoutAccount(_ email: String) -> AccountManagerRobot {
-        return swipeLeft(email)
-            .logout()
-            .confirmLogout()
+    func logoutPrimaryAccount(_ user: User) -> InboxRobot {
+        return tapMore(user.email)
+            .signOut()
+            .confirmSignOutPrimary()
     }
     
-    func deleteAccount(_ email: String) -> AccountManagerRobot {
-        return swipeLeftToDelete(email)
-            .remove()
+    func logoutSecondaryAccount(_ user: User) -> AccountManagerRobot {
+        return tapMore(user.email)
+            .signOut()
+            .confirmSignOut()
+    }
+    
+    func deleteAccount(_ user: User) -> AccountManagerRobot {
+        return tapMore(user.email)
+            .removeAccount()
             .confirmRemove()
     }
     
@@ -47,32 +62,49 @@ class AccountManagerRobot {
             .confirmRemoveAll()
     }
     
+    func closeManageAccounts() -> InboxRobot {
+        button(id.closeManageAccountsButtonIdentifier).tap()
+        return InboxRobot()
+    }
+    
     private func removeAll() -> RemoveAllAlertRobot {
-        Element.wait.forButtonWithIdentifier(removeAllLabel, file: #file, line: #line).tap()
+        button(id.removeAllLabel).firstMatch().tap()
         return RemoveAllAlertRobot()
     }
     
-    private func swipeLeft(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email), file: #file, line: #line).longSwipe(.left)
+    private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
+        cell(id.loggedOutUserAccountCellIdentifier(email)).firstMatch().swipeLeft()
         return AccountManagerRobot()
     }
     
-    private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line).longSwipe(.left)
+    private func tapMore(_ email: String) -> AccountManagerRobot {
+        button(id.userAccountMoreBtnIdentifier(email)).firstMatch().tap()
         return AccountManagerRobot()
     }
-
-    private func logout() -> LogoutAccountAlertRobot {
-        return LogoutAccountAlertRobot()
+    
+    private func signOut() -> AccountManagerRobot {
+        button(id.signOutButtonLabel).firstMatch().tap()
+        return AccountManagerRobot()
     }
-
-    private func remove() -> RemoveAccountAlertRobot {
-        return RemoveAccountAlertRobot()
+    
+    private func confirmSignOutPrimary() -> InboxRobot {
+        button(id.confirmSignOutButtonLabel).firstMatch().tap()
+        return InboxRobot()
     }
-
-    private func confirmLastAccountLogout() -> LoginRobot {
-     
-        return LoginRobot()
+    
+    private func confirmSignOut() -> AccountManagerRobot {
+        button(id.confirmSignOutButtonLabel).firstMatch().tap()
+        return AccountManagerRobot()
+    }
+    
+    private func removeAccount() -> AccountManagerRobot {
+        button(id.removeAccountButtonLabel).firstMatch().tap()
+        return AccountManagerRobot()
+    }
+    
+    private func confirmRemove() -> AccountManagerRobot {
+        button(id.confirmRemoveButtonLabel).firstMatch().tap()
+        return AccountManagerRobot()
     }
     
     /**
@@ -85,56 +117,18 @@ class AccountManagerRobot {
             return LoginRobot()
         }
     }
-    
-    /**
-     RemoveAllAlertRobot class contains actions for Remove all accounts alert.
-     */
-    class RemoveAccountAlertRobot {
-        
-        func confirmRemove() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-    }
-    
-    /**
-     RemoveAllAlertRobot class contains actions for Remove all accounts alert.
-     */
-    class LogoutAccountAlertRobot {
-        
-        func confirmLogout() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-        
-        func confirmLogoutWithMultipleAccounts() -> AccountManagerRobot {
-            app.alerts.buttons.element(boundBy: 1).tap()
-            return AccountManagerRobot()
-        }
-        
-        func confirmLastAccountLogout() -> LoginRobot {
-            
-            return LoginRobot()
-        }
-    }
 
     /**
     * Contains all the validations that can be performed by [AccountManagerRobot].
     */
-    class Verify {
-
-        func manageAccountsOpened() {
-        }
-
-        func switchedToAccount(_ user: User) {
-        }
+    class Verify: CoreElements {
         
         func accountLoggedOut(_ email: String) {
-            Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line)
+            cell(id.loggedOutUserAccountCellIdentifier(email)).wait().checkExists()
         }
         
-        func accountRemoved(_ email: String) {
-            Element.wait.forCellWithIdentifierToDisappear(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line)
+        func accountRemoved(_ user: User) {
+            cell(id.loggedOutUserAccountCellIdentifier(user.name)).waitUntilGone(time: 15)
         }
     }
 }

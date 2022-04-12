@@ -21,14 +21,14 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
 
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var coordinator: WindowsCoordinator = {
         if UIDevice.current.stateRestorationPolicy == .multiwindow {
             // each window scene has it's own windowCoordinator
-            return WindowsCoordinator(services: sharedServices)
+            return WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
         } else {
             // windowCoordinator is shared across whole app
             return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
@@ -59,7 +59,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
             completionHandler(true)
         } else {
             completionHandler(false)
@@ -111,7 +111,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     // handle the shorcut item in scene(_:willConnectTo:options:)
     func handleShortcutAction(shortcutItem: UIApplicationShortcutItem) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+           let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
             self.coordinator.followDeeplink(deeplink)
         } else {
@@ -162,7 +162,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
             return true
         }
         

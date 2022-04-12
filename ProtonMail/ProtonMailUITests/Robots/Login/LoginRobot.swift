@@ -7,19 +7,21 @@
 //
 
 import XCTest
+import PMTestAutomation
 
-private let usernameIdentifier = "SignInViewController.usernameTextField"
-private let passwordIdentifier = "SignInViewController.passwordTextField"
-private let signinButtonIdentifier = "SignInViewController.signInButton"
-private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
-private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
-private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
-private let invalidCredentialStaticTextIdentifier = "Incorrect login credentials. Please try again"
-
-class LoginRobot {
+fileprivate struct id {
+    static let usernameIdentifier = "SignInViewController.usernameTextField"
+    static let passwordIdentifier = "SignInViewController.passwordTextField"
+    static let signinButtonIdentifier = "SignInViewController.signInButton"
+    static let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+    static let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+    static let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
+    static let invalidCredentialStaticTextIdentifier = "Incorrect login credentials. Please try again"
+}
     
-    var verify: Verify! = nil
-    init() { verify = Verify(parent: self) }
+class LoginRobot: CoreElements {
+    
+    var verify = Verify()
     
     @discardableResult
     func loginUser(_ user: User) -> InboxRobot {
@@ -71,36 +73,32 @@ class LoginRobot {
     }
     
     private func username(_ username: String) -> LoginRobot {
-        let element = Element.wait.forTextFieldWithIdentifier(usernameIdentifier)
-        element.tap()
-        element.typeText(username)
+        textField(id.usernameIdentifier).typeText(username)
         return self
     }
     
     private func password(_ password: String) -> LoginRobot {
-        let element = Element.secureTextField.tapByIdentifier(passwordIdentifier)
-        element.tap()
-        element.typeText(password)
+        secureTextField(id.passwordIdentifier).tap().typeText(password)
         return self
     }
     
     private func signIn() -> InboxRobot {
-        Element.button.tapByIdentifier(signinButtonIdentifier)
+        button(id.signinButtonIdentifier).tap()
         return InboxRobot()
     }
     
     private func signInWithMailboxPassword() -> MailboxPasswordRobot {
-        Element.wait.forButtonWithIdentifier(signinButtonIdentifier).tap()
+        button(id.signinButtonIdentifier).tap()
         return MailboxPasswordRobot()
     }
     
     private func signInWithTwoFA() -> TwoFaRobot {
-        Element.wait.forButtonWithIdentifier(signinButtonIdentifier).tap()
+        button(id.signinButtonIdentifier).tap()
         return TwoFaRobot()
     }
     
     private func singInWithInvalidCreadential() -> ErrorDialogRobot {
-        Element.button.tapByIdentifier(signinButtonIdentifier)
+        button(id.signinButtonIdentifier).tap()
         return ErrorDialogRobot()
     }
     
@@ -119,14 +117,14 @@ class LoginRobot {
         var verify: Verify! = nil
         init() { verify = Verify() }
         
-        class Verify {
+        class Verify: CoreElements {
             func invalidCredentialDialogDisplay() {
-                Element.wait.forStaticTextFieldWithIdentifier(invalidCredentialStaticTextIdentifier, file: #file, line: #line)
+                staticText(id.invalidCredentialStaticTextIdentifier).wait().checkExists()
             }
         }
     }
     
-    class TwoFaRobot {
+    class TwoFaRobot: CoreElements {
 
         func provideTwoFaCode(code: String) -> InboxRobot {
             twoFACode(code: code)
@@ -141,21 +139,19 @@ class LoginRobot {
         }
 
         private func confirm2FA() {
-            Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
+            button(id.twoFaEnterButtonIdentifier).tap()
         }
         
         private func twoFACode(code: String) -> TwoFaRobot {
-            Element.wait.forTextFieldWithIdentifier(twoFaCodeIdentifier, file: #file, line: #line).typeText(code)
+            textField(id.twoFaCodeIdentifier).typeText(code)
             return self
         }
     }
     
-    class Verify {
-        unowned let loginRobot: LoginRobot
-        init(parent: LoginRobot) { loginRobot = parent }
-
+    class Verify: CoreElements {
+        
         func loginScreenDisplayed() {
-            Element.wait.forButtonWithIdentifier(signinButtonIdentifier, file: #file, line: #line)
+            button(id.signinButtonIdentifier).wait().checkExists()
         }
     }
 }

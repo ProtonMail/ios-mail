@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 //TODO:: move this to UI
 enum Fonts : CGFloat {
@@ -53,6 +53,10 @@ enum Fonts : CGFloat {
     
     var bold : UIFont {
         return UIFont.systemFont(ofSize: self.rawValue, weight: .bold)
+    }
+    
+    var semiBold: UIFont {
+        return UIFont.systemFont(ofSize: self.rawValue, weight: .semibold)
     }
 }
 

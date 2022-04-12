@@ -294,7 +294,7 @@ public enum SGItems: Int, CustomStringConvertible {
         case .notifyEmail:
             return LocalString._settings_notification_email
         case .loginPWD:
-            return LocalString._login_password
+            return LocalString._signin_password
         case .mbp:
             return LocalString._mailbox_password
         case .singlePWD:
@@ -315,25 +315,32 @@ public enum SGItems: Int, CustomStringConvertible {
     }
 }
 
-public enum SSwipeActionItems: Int, CustomStringConvertible {
+public enum SwipeActionItems: Int, CustomStringConvertible {
     case left = 0
-    case right = 1
+    case leftActionView
+    case empty
+    case right
+    case rightActionView
     
     public var description : String {
-        switch(self){
+        switch self {
         case .left:
             return LocalString._swipe_left_to_right
         case .right:
             return LocalString._swipe_right_to_left
+        case .leftActionView, .empty, .rightActionView:
+            return ""
         }
     }
     
     public var actionDescription : String {
-        switch(self){
+        switch self {
         case .left:
             return LocalString._change_left_swipe_action
         case .right:
             return LocalString._change_right_swipe_action
+        case .leftActionView, .empty, .rightActionView:
+            return ""
         }
     }
 }
@@ -418,8 +425,7 @@ public enum SettingSections: Int, CustomStringConvertible {
     case swipeAction = 5
     case protection = 6
     case language = 7
-    case labels = 8
-    case network = 9
+    case network = 8
     
     public var description : String {
         switch(self){
@@ -439,8 +445,6 @@ public enum SettingSections: Int, CustomStringConvertible {
             return LocalString._protection
         case .language:
             return LocalString._language
-        case .labels:
-            return LocalString._labels_folders
         case .network:
             return LocalString._networking
         }

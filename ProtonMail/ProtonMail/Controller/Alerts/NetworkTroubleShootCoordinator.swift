@@ -21,7 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
+
 class NetworkTroubleShootCoordinator : DefaultCoordinator {
     typealias VC = NetworkTroubleShootViewController
 
@@ -39,19 +40,9 @@ class NetworkTroubleShootCoordinator : DefaultCoordinator {
     }
     
     weak var delegate: CoordinatorDelegate?
-
-    enum Destination : String {
-        case password          = "to_eo_password_segue"
-        case expirationWarning = "expiration_warning_segue"
-        case subSelection      = "toContactGroupSubSelection"
-    }
     
     func start() {
         viewController?.set(viewModel: self.viewModel)
         viewController?.set(coordinator: self)
-    }
-    
-    func go(to dest: Destination) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
     }
 }

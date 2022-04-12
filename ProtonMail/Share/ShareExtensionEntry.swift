@@ -23,16 +23,11 @@
 
 import Foundation
 import UIKit
-import AFNetworking
-import PMCommon
+import ProtonCore_UIFoundations
+import ProtonCore_Services
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry : UINavigationController {
-    var reachabilityManager: AFNetworkReachabilityManager = {
-        let manager = AFNetworkReachabilityManager.shared()
-        manager.startMonitoring()
-        return manager
-    }()
     var appCoordinator : ShareAppCoordinator?
 
     required init(coder aDecoder: NSCoder) {
@@ -60,22 +55,8 @@ class ShareExtensionEntry : UINavigationController {
         super.viewDidLoad()
         
         self.appCoordinator?.start()
-        //TODO:: fix me
-        //APIService.shared.delegate = self
     }
 }
-
-//TODO:: fix me
-//extension ShareExtensionEntry: APIServiceDelegate {
-//    func onError(error: NSError) {
-//        // alert
-//        error.alertErrorToast()
-//    }
-//
-//    func isReachable() -> Bool {
-//        return self.reachabilityManager.isReachable
-//    }
-//}
 
 extension ShareExtensionEntry: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
@@ -88,13 +69,8 @@ extension ShareExtensionEntry {
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+        appearance.backgroundColor = ColorProvider.BackgroundNorm
         appearance.shadowColor = .clear
-        let navigationBarTitleFont = Fonts.h2.light
-        appearance.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance

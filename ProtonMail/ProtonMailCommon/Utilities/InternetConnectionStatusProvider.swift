@@ -1,7 +1,7 @@
 class InternetConnectionStatusProvider {
 
     private let notificationCenter: NotificationCenter
-    private let reachability: Reachability
+    private var reachability: Reachability
     private var currentStatusHasChanged: ((NetworkStatus) -> Void)?
 
     init(notificationCenter: NotificationCenter = .default,
@@ -37,6 +37,7 @@ class InternetConnectionStatusProvider {
 
     @objc private func connectionStatusHasChanged(notification: Notification) {
         guard let reachability = notification.object as? Reachability else { return }
+        self.reachability = reachability
         let currentStatus = reachability.currentReachabilityStatus()
         currentStatusHasChanged?(currentStatus)
     }

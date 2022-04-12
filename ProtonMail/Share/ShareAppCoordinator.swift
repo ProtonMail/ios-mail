@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-import PMCommon
+import UIKit
 
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
 
@@ -35,6 +34,11 @@ class ShareAppCoordinator: CoordinatorNew {
     func start() {
         self.loadUnlockCheckView()
         
+        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
+        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
+        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        sharedServices.add(QueueManager.self, for: queueManager)
+
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
@@ -53,13 +57,7 @@ class ShareAppCoordinator: CoordinatorNew {
 }
 
 extension ShareAppCoordinator: UsersManagerDelegate {
-    func migrating() {
-        
-    }
-    
-    func session() {
-        
-    }
+
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
@@ -68,7 +66,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
     
     func cleanAll() {
-        sharedServices.get(by: UsersManager.self).clean()
+        sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }

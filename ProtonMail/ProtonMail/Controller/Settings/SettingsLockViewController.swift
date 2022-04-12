@@ -23,21 +23,21 @@
 
 import UIKit
 import MBProgressHUD
-import PMKeymaker
 import Masonry
+import ProtonCore_Keymaker
+import ProtonCore_UIFoundations
 
 class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
-    internal var viewModel : SettingsLockViewModel!
-    internal var coordinator : SettingsLockCoordinator?
+    internal var viewModel: SettingsLockViewModel!
+    internal var coordinator: SettingsLockCoordinator?
     
     struct Key {
-        static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0
-        static let cellHeight: CGFloat = 44.0
-        
-        static let settingSingalLineCell         = "settings_general"
-        static let SwitchCell                    = "switch_table_view_cell"
-        static let SettingTwoLinesCell           = "settings_twolines"
+        static let headerCell: String = "header_cell"
+        static let headerCellHeight: CGFloat = 52.0
+        static let cellHeight: CGFloat = 48.0
+        static let changePinCodeCell: String = "ChangePinCode"
+        static let enableProtectionCell: String = "EnableProtection"
+        static let switchCell: String = "switch_table_view_cell"
     }
     
     func set(viewModel: SettingsLockViewModel) {
@@ -52,37 +52,32 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         return self.coordinator
     }
     
-    var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
-                                                            10, 15, 30, 60]
-    
-    var lockText = LocalString._enable_pin
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
+
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
+
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         
-        self.tableView.estimatedSectionFooterHeight = Key.headerCellHeight
-        self.tableView.sectionFooterHeight = UITableView.automaticDimension
+        self.tableView.estimatedSectionHeaderHeight = Key.headerCellHeight
+        self.tableView.sectionHeaderHeight = UITableView.automaticDimension
         
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
+
+        self.tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+
+        self.tableView.register(SettingsGeneralCell.self)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Key.changePinCodeCell)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Key.enableProtectionCell)
+        self.tableView.register(SwitchTableViewCell.self)
+
         generateAccessibilityIdentifiers()
     }
     
     private func updateTitle() {
-        self.title = LocalString._auto_lock
-        
-        switch UIDevice.current.biometricType {
-        case .none:
-            self.title = LocalString._pin
-        case .touchID:
-            self.title = LocalString._pin_and_touch_id
-            self.lockText = LocalString._enable_pin_or_touch_id
-        case .faceID:
-            self.title = LocalString._pin_and_face_id
-            self.lockText = LocalString._enable_pin_or_face_id
-        }
+        self.title = viewModel.appPINTitle
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,7 +90,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    internal func updateTableProtectionSection() {
+    private func updateTableProtectionSection() {
         self.viewModel.updateProtectionItems()
         self.tableView.reloadData()
     }
@@ -111,11 +106,13 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         }
         let eSection = self.viewModel.sections[section]
         switch eSection {
-        case .lock:
+        case .enableProtection:
+            return self.viewModel.protectionItems.count
+        case .changePin:
             return 1
-        case .type:
-            return self.viewModel.lockItems.count
-        case .timer:
+        case .timing:
+            return 1
+        case .mainKey:
             return 1
         }
     }
@@ -125,76 +122,37 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         let row = indexPath.row
         let eSection = self.viewModel.sections[section]
         switch eSection {
-        case .lock:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            if let c = cell as? SwitchTableViewCell {
-                c.configCell(self.lockText, bottomLine: "", status: self.viewModel.lockOn, complete: { (cell, newStatus, feedback) -> Void in
-                    let ison = self.viewModel.lockOn
-                    self.viewModel.lockOn = !ison
-                    self.updateTableProtectionSection()
-                })
-            }
-            return cell
-        case .type:
-            let item = self.viewModel.lockItems[row]
+        case .enableProtection:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.enableProtectionCell, for: indexPath)
+            let item = self.viewModel.protectionItems[row]
             switch item {
-            case .pin:
-                let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
-                cell.accessoryType = UITableViewCell.AccessoryType.none
-                cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                if let c = cell as? SwitchTableViewCell {
-                    c.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
-                        if let indexp = tableView.indexPath(for: cell!) {
-                            if indexPath == indexp {
-                                if !userCachedStatus.isPinCodeEnabled {
-                                    self.coordinator?.go(to: .pinCode)
-                                } else {
-                                    keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
-                                    feedback(true)
-                                    self.updateTableProtectionSection()
-                                }
-                            } else {
-                                feedback(false)
-                            }
-                        } else {
-                            feedback(false)
-                        }
-                    })
-                }
-                return cell
-            case .touchid, .faceid:
-                let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
-                cell.accessoryType = UITableViewCell.AccessoryType.none
-                cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                if let c = cell as? SwitchTableViewCell {
-                    c.configCell(item.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
-                        if let indexp = tableView.indexPath(for: cell!) {
-                            if indexPath == indexp {
-                                if !userCachedStatus.isTouchIDEnabled {
-                                    // Enable Bio
-                                    keymaker.activate(BioProtection()) { _ in
-                                        self.updateTableProtectionSection()
-                                    }
-                                } else {
-                                    // Disable Bio
-                                    keymaker.deactivate(BioProtection())
-                                    self.updateTableProtectionSection()
-                                }
-                            } else {
-                                feedback(false)
-                            }
-                        } else {
-                            feedback(false)
-                        }
-                    })
-                }
-                return cell
+            case .none:
+                cell.accessoryType = self.viewModel.lockOn ? .none : .checkmark
+                cell.accessibilityIdentifier = "SettingsLockView.nonCell"
+            case .pinCode:
+                cell.accessoryType = self.viewModel.isPinCodeEnabled ? .checkmark : .none
+                cell.accessibilityIdentifier = "SettingsLockView.pinCodeCell"
+            case .faceId:
+                cell.accessoryType = self.viewModel.isTouchIDEnabled ? .checkmark : .none
+                cell.accessibilityIdentifier = "SettingsLockView.faceIdCell"
             }
-        case .timer:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Key.SettingTwoLinesCell, for: indexPath) as! SettingsCell
-            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
+
+            let title = (item == .faceId ? viewModel.getBioProtectionTitle() : item.description)
+            cell.textLabel?.attributedText = NSAttributedString(string: title,
+                                                                attributes: FontManager.Default)
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            cell.textLabel?.translatesAutoresizingMaskIntoConstraints = false
+            cell.textLabel?.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16.0).isActive = true
+            cell.textLabel?.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor).isActive = true
+            return cell
+        case .changePin:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.changePinCodeCell, for: indexPath)
+            var attribute = FontManager.Default
+            attribute[.foregroundColor] = ColorProvider.InteractionNorm
+            cell.textLabel?.attributedText = NSAttributedString(string: LocalString._settings_change_pin_code_title, attributes: attribute)
+            return cell
+        case .timing:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath) as! SettingsGeneralCell
             
             let timeIndex = userCachedStatus.lockTime.rawValue
             var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
@@ -205,34 +163,53 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             } else if timeIndex == 1{
                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
-            cell.configCell(leftText: eSection.description,
-                            rightText: text)
+            cell.configureCell(left: eSection.description.string, right: text, imageType: .arrow)
+            return cell
+        case .mainKey:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.switchCell, for: indexPath) as! SwitchTableViewCell
+            
+            let appKeyEnabled = self.viewModel.isAppKeyEnabled
+            cell.configCell(eSection.description.string, bottomLine: "", status: appKeyEnabled) { _, newStatus, feedback in
+                if newStatus {
+                    if let randomProtection = RandomPinProtection.randomPin {
+                        keymaker.deactivate(randomProtection)
+                    }
+                    userCachedStatus.keymakerRandomkey = nil
+                } else {
+                    userCachedStatus.keymakerRandomkey = String.randomString(32)
+                    if let randomProtection = RandomPinProtection.randomPin {
+                        keymaker.activate(randomProtection) { _ in
+                            
+                        }
+                    }
+                }
+                feedback(true)
+            }
             return cell
         }
     }
-    
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let eSection = self.viewModel.sections[section]
+        guard !eSection.description.string.isEmpty else {
+            return nil
+        }
+
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
         
         if let headerCell = header {
             let textLabel = UILabel()
-            
-            textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-            textLabel.adjustsFontForContentSizeCategory = true
+            textLabel.attributedText = eSection.description
+            textLabel.translatesAutoresizingMaskIntoConstraints = false
             textLabel.numberOfLines = 0
-            textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
-            let eSection = self.viewModel.sections[section]
-            textLabel.text = eSection.foot
-            
             headerCell.contentView.addSubview(textLabel)
-            
-            textLabel.mas_makeConstraints({ (make) in
-                let _ = make?.top.equalTo()(headerCell.contentView.mas_top)?.with()?.offset()(8)
-                let _ = make?.bottom.equalTo()(headerCell.contentView.mas_bottom)?.with()?.offset()(-8)
-                let _ = make?.left.equalTo()(headerCell.contentView.mas_left)?.with()?.offset()(8)
-                let _ = make?.right.equalTo()(headerCell.contentView.mas_right)?.with()?.offset()(-8)
-            })
+
+            textLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
+            textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 24.0).isActive = true
+            textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16.0).isActive = true
+            textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16.0).isActive = true
+            textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8.0).isActive = true
         }
         return header
     }
@@ -241,14 +218,28 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
         switch eSection {
-        case .lock, .type:
-            break
-        case .timer:
+        case .enableProtection:
+            let item = self.viewModel.protectionItems[indexPath.row]
+            switch item {
+            case .none:
+                self.viewModel.disableProtection()
+                self.updateTableProtectionSection()
+            case .pinCode:
+                self.coordinator?.go(to: .pinCodeSetup)
+                //add call back or check in view will appear
+            case .faceId:
+                self.viewModel.enableBioProtection { [weak self] in
+                    self?.updateTableProtectionSection()
+                }
+            }
+        case .changePin:
+            self.coordinator?.go(to: .pinCodeSetup)
+        case .timing:
             let alertController = UIAlertController(title: LocalString._settings_auto_lock_time,
                                                     message: nil,
                                                     preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            for timeIndex in protection_auto_logout {
+            for timeIndex in viewModel.auto_logout_time_options {
                 var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
                 if timeIndex == -1 {
                     text = LocalString._general_none
@@ -268,51 +259,20 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             alertController.popoverPresentationController?.sourceView = cell ?? self.view
             alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
             present(alertController, animated: true, completion: nil)
+        case .mainKey:
+            break
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.none
-    }
 
-    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        if sourceIndexPath.section != proposedDestinationIndexPath.section {
-            return sourceIndexPath
-        }
-        else {
-            return proposedDestinationIndexPath
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch self.viewModel.sections[indexPath.section] {
+        case .enableProtection, .changePin:
+            return Key.cellHeight
+        default:
+            return UITableView.automaticDimension
         }
     }
-    
-    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        if setting_headers[fromIndexPath.section] == SettingSections.multiDomain {
-//            let val = self.multi_domains.remove(at: fromIndexPath.row)
-//            self.multi_domains.insert(val, at: toIndexPath.row)
-//            //let indexSet = NSIndexSet(index:fromIndexPath.section)
-//            tableView.reloadData()
-//        }
-    }
-    
-    
-    
-//    // Override to support rearranging the table view.
-//    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
-
-//    }
-    
 }
 
 extension SettingsLockViewController: Deeplinkable {

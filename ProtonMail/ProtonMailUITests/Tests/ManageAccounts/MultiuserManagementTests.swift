@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class MultiuserManagementTests : BaseTestCase {
 
     private let loginRobot = LoginRobot()
@@ -15,7 +17,6 @@ class MultiuserManagementTests : BaseTestCase {
         let twoPassUser = testData.twoPassUser
         loginRobot
             .loginTwoPasswordUser(twoPassUser)
-            .decryptMailbox(twoPassUser.mailboxPassword)
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -71,7 +72,8 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountAdded(onePassUserWith2Fa)
     }
 
-    func testRemoveAllAccounts() {
+    //Remove all account function is no longer available in v4
+    func disabletestRemoveAllAccounts() {
         let onePassUser = testData.onePassUser
         loginRobot
             .loginUser(onePassUser)
@@ -79,7 +81,7 @@ class MultiuserManagementTests : BaseTestCase {
             .accountsList()
             .manageAccounts()
             .removeAllAccounts()
-            .verify.loginScreenDisplayed()
+            .verify.loginScreenIsShown()
     }
 
     func testLogoutPrimaryAccount() {
@@ -95,8 +97,10 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser.email)
-            .verify.accountLoggedOut(twoPassUser.email)
+            .logoutPrimaryAccount(twoPassUser)
+            .menuDrawer()
+            .accountsList()
+            .verify.accountAtPositionSignedOut(0)
     }
 
     func testLogoutSecondaryAccount() {
@@ -112,8 +116,11 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser.email)
-            .verify.accountLoggedOut(onePassUser.email)
+            .logoutSecondaryAccount(onePassUser)
+            .closeManageAccounts()
+            .menuDrawer()
+            .accountsList()
+            .verify.accountAtPositionSignedOut(0)
     }
 
     func testRemovePrimaryAccount() {
@@ -128,9 +135,12 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(twoPassUser.email)
-            .deleteAccount(twoPassUser.email)
-            .verify.accountRemoved(twoPassUser.email)
+            .logoutPrimaryAccount(twoPassUser)
+            .menuDrawer()
+            .accountsList()
+            .manageAccounts()
+            .deleteAccount(twoPassUser)
+            .verify.accountRemoved(twoPassUser)
     }
 
     func testRemoveSecondaryAccount() {
@@ -146,9 +156,13 @@ class MultiuserManagementTests : BaseTestCase {
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .logoutAccount(onePassUser.email)
-            .deleteAccount(onePassUser.email)
-            .verify.accountRemoved(onePassUser.email)
+            .logoutSecondaryAccount(onePassUser)
+            .closeManageAccounts()
+            .menuDrawer()
+            .accountsList()
+            .manageAccounts()
+            .deleteAccount(onePassUser)
+            .verify.accountRemoved(onePassUser)
     }
 
     func testCancelLoginOnTwoFaPrompt() {
@@ -161,10 +175,11 @@ class MultiuserManagementTests : BaseTestCase {
             .manageAccounts()
             .addAccount()
             .cancelLoginOnTwoFaPrompt(onePassUserWith2Fa)
+            .closeManageAccounts()
             .menuDrawer()
             .accountsList()
             .manageAccounts()
-            .verify.accountRemoved(onePassUserWith2Fa.email)
+            .verify.accountRemoved(onePassUserWith2Fa)
     }
 
     func testAddTwoFreeAccounts() {
@@ -172,7 +187,6 @@ class MultiuserManagementTests : BaseTestCase {
         let onePassUserWith2Fa = testData.onePassUserWith2Fa
         loginRobot
             .loginTwoPasswordUserWithTwoFA(twoPassUserWith2Fa)
-            .decryptMailbox(twoPassUserWith2Fa.mailboxPassword)
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -181,7 +195,8 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.limitReachedDialogDisplayed()
     }
 
-    func testSwitchAccount() {
+    /// DIsabled due to issue with account switcher identifiers - we should use email instead of the account name.
+    func xtestSwitchAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot
@@ -195,8 +210,6 @@ class MultiuserManagementTests : BaseTestCase {
             .accountsList()
             .switchToAccount(onePassUser)
             .menuDrawer()
-            .accountsList()
-            .manageAccounts()
-            .verify.switchedToAccount(onePassUser)
+            .verify.currentAccount(onePassUser)
     }
 }

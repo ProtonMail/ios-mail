@@ -6,20 +6,23 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import pmtest
 
-
-fileprivate let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
-fileprivate let emptyFolderButtonIdentifier = "Empty folder"
-fileprivate let spamStaticTextIdentifier = "MailboxViewController.navigationTitleLabel"
+fileprivate struct id {
+    static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
+    static let emptyFolderButtonIdentifier = "Empty folder"
+    static let spamStaticTextIdentifier = "MailboxViewController.navigationTitleLabel"
+    static let mailTitileIdentifier = "mailboxMessageCell.titleLabel"
+}
 
 class SpamRobot: MailboxRobotInterface {
     
-    var verify: Verify! = nil
-    override init() {
+    var verify = Verify()
+    
+    required init() {
         super.init()
         let label = LocalString._menu_spam_title
-        Element.wait.forStaticTextFieldWithIdentifier(spamStaticTextIdentifier, file:#file, line: #line).assertWithLabel(label)
-        verify = Verify(parent: self)
+        staticText(id.spamStaticTextIdentifier).wait().checkHasLabel(label)
     }
     
     func clearSpamFolder() -> SpamRobot {
@@ -29,18 +32,19 @@ class SpamRobot: MailboxRobotInterface {
     }
     
     private func moreOptions() -> SpamRobot {
-        Element.wait.forButtonWithIdentifier(mailboxMoreButtonIdentifier, file: #file, line: #line).tap()
+        button(id.mailboxMoreButtonIdentifier).tap()
         return SpamRobot()
     }
 
     private func emptyFolder() -> SpamDialogRobot {
-        Element.wait.forButtonWithIdentifier(emptyFolderButtonIdentifier, file: #file, line: #line).tap()
+        button(id.emptyFolderButtonIdentifier).tap()
         return SpamDialogRobot()
     }
     
-    class SpamDialogRobot {
+    class SpamDialogRobot: CoreElements {
+        
         func emptyFolderDialog() -> SpamRobot {
-            Element.wait.forButtonWithIdentifier(emptyFolderButtonIdentifier, file: #file, line: #line).tap()
+            button(id.emptyFolderButtonIdentifier).tap()
             return SpamRobot()
         }
     }
@@ -48,11 +52,9 @@ class SpamRobot: MailboxRobotInterface {
      * Contains all the validations that can be performed by [Spam].
      */
     class Verify : MailboxRobotVerifyInterface {
-        unowned let spamRobot: SpamRobot
-        init(parent: SpamRobot) { spamRobot = parent }
         
         func messageWithSubjectExists(_ subject: String) {
-            Element.wait.forStaticTextFieldWithIdentifier(subject)
+            staticText(id.mailTitileIdentifier).containsLabel(subject).wait().checkExists()
         }
     }
 }

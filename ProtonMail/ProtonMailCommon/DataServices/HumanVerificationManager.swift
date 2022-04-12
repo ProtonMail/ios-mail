@@ -21,8 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import PMCommon
-import PMHumanVerification
+import ProtonCore_Services
+import ProtonCore_HumanVerification
 #if DEBUG
 import OHHTTPStubs
 #endif
@@ -44,7 +44,7 @@ class HumanVerificationManager {
 
         // create new HumanVerifyDelegate
         let url = URL(string: "https://protonmail.com/support/knowledge-base/human-verification/")!
-        let humanDelegate = HumanCheckHelper(apiService: apiService, supportURL: url, viewController: nil, responseDelegate: nil, paymentDelegate: nil)
+        let humanDelegate = HumanCheckHelper(apiService: apiService, supportURL: url, viewController: nil, clientApp: .mail, responseDelegate: nil, paymentDelegate: nil)
 
         // add humanVerifyDelegate to humanVerifyDelegates
         humanVerifyDelegates[apiService.sessionUID] = humanDelegate

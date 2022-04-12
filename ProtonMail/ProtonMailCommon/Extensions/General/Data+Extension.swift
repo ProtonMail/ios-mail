@@ -20,22 +20,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Data {
-    
+
+    /// Converts binary data to hexadecimal representation
     func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""
-        for i in 0 ..< self.count {
-            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+        for idx in 0 ..< self.count {
+            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[idx]])
         }
         return tokenString
     }
-    
-    
-    
+
     func encodeBase64() -> String {
         return self.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }

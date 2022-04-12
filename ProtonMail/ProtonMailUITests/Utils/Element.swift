@@ -48,7 +48,8 @@ struct Element {
         
         static func switchByIndexHasValue(_ index: Int, _ value: Int, file: StaticString = #file, line: UInt = #line) {
             let element = app.switches.element(boundBy: index)
-            XCTAssertTrue(Int((element.value as? String)!) == value, "Switch element \(element.debugDescription) should be in state \(value), but is \(element.value).", file: file, line: line)
+            let elementValue = Int((element.value as? String) ?? "999999999") ?? 999999999
+            XCTAssertTrue(elementValue == value, "Switch element \(element.debugDescription) should be in state \(value), but is \(elementValue).", file: file, line: line)
         }
     }
     
@@ -137,13 +138,6 @@ struct Element {
             element.tap()
             return element
         }
-        
-        class func tapIfExists(_ identifier: String) {
-            let element = app.otherElements[identifier].firstMatch
-            if (Wait().forElement(element, #file, #line, 2)) {
-                element.tap()
-            }
-        }
     }
     
     class pickerWheel {
@@ -187,7 +181,7 @@ struct Element {
         @discardableResult
         class func swipeLeftByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.staticTexts[identifier].firstMatch
-            element.swipeLeft()
+            element.longSwipe(.left)
             return element
         }
         
@@ -251,6 +245,11 @@ struct Element {
             let topEdge = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.15))
             let toCoordinate = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
             topEdge.press(forDuration: 0, thenDragTo: toCoordinate)
+        }
+        
+        class func tapByIdentifier(_ identifier: String) {
+            let element = app.tables.staticTexts[identifier]
+            element.tap()
         }
     }
     
@@ -331,20 +330,6 @@ struct Element {
         }
         
         @discardableResult
-        static func forHittableButton(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier].firstMatch
-            Wait().forElementToBeHittable(element, file, line)
-            return element
-        }
-        
-        @discardableResult
-        static func forCellWithIdentifierToDisappear(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier].firstMatch
-            Wait().forElementToDisappear(element, file, line)
-            return element
-        }
-        
-        @discardableResult
         static func forOtherFieldWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
             let element = app.otherElements[identifier].firstMatch
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
@@ -389,18 +374,18 @@ struct Element {
 extension XCUIElement {
     
     @discardableResult
-        func findCellInTheList(maxAttempts: Int = 5) -> XCUIElement {
-            var eventCount = 0
-            let table = app.tables.element.firstMatch
-            while eventCount <= maxAttempts, !self.isElementHittable {
-                table.swipeDown()
-                eventCount += 1
-            }
-            if !self.isElementHittable {
-                return self.swipeUpUntilVisible(maxAttempts: maxAttempts * 2)
-            }
-            return self
+    func findCellInTheList(maxAttempts: Int = 5) -> XCUIElement {
+        var eventCount = 0
+        let table = app.tables.element.firstMatch
+        while eventCount <= maxAttempts, !self.isElementHittable {
+            table.swipeDown()
+            eventCount += 1
         }
+        if !self.isElementHittable {
+            return self.swipeUpUntilVisible(maxAttempts: maxAttempts * 2)
+        }
+        return self
+    }
     
     @discardableResult
     func swipeUpUntilVisible(maxAttempts: Int = 5) -> XCUIElement {
@@ -463,11 +448,7 @@ extension XCUIElement {
     }
     
     func assertWithLabel(_ text: String) {
-        guard let label = self.label as? String else {
-            XCTFail("Element doesn't have text label.")
-            return
-        }
-        XCTAssertTrue(label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
+        XCTAssertTrue(self.label == text, "Expected Element text label to be: \"\(text)\", but found: \"\(label)\"")
     }
     
     func assertHasStaticTextChild(withText: String) {
@@ -494,15 +475,15 @@ extension XCUIElement {
 
             switch direction {
             case .right:
-                startOffset = CGVector(dx: 0.1, dy: 0.1)
-                endOffset = CGVector(dx: 0.9, dy: 0.1)
+                startOffset = CGVector(dx: 0.1, dy: 0.0)
+                endOffset = CGVector(dx: 0.9, dy: 0.0)
             case .left:
-                startOffset = CGVector(dx: 0.9, dy: 0.1)
-                endOffset = CGVector(dx: 0.1, dy: 0.1)
+                startOffset = CGVector(dx: 0.9, dy: 0.0)
+                endOffset = CGVector(dx: 0.1, dy: 0.0)
             }
 
             let startPoint = self.coordinate(withNormalizedOffset: startOffset)
             let endPoint = self.coordinate(withNormalizedOffset: endOffset)
-            startPoint.press(forDuration: 0.2, thenDragTo: endPoint)
+            startPoint.press(forDuration: 0, thenDragTo: endPoint)
         }
 }

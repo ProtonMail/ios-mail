@@ -14,7 +14,8 @@
   "testTargets" : [
     {
       "selectedTests" : [
-        "SettingsTests\/testEditAutoLockTime()"
+        "SettingsTests\/testEditAutoLockTime()",
+        "SettingsTests\/testEnableAndDisablePinForMultipleAccounts()"
       ],
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",

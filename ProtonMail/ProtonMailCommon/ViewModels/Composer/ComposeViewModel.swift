@@ -24,14 +24,9 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import PMCommon
-
-//TODO:: change to enum
-struct EncryptionStep {
-    static public let DefinePassword = "DefinePassword"
-    static public let ConfirmPassword = "ConfirmPassword"
-    static public let DefineHintPassword = "DefineHintPassword"
-}
+import CoreData
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 enum ComposeMessageAction: Int, CustomStringConvertible {
     case reply = 0
@@ -81,10 +76,19 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 class ComposeViewModel: NSObject {
     @objc dynamic var message: Message?
+    /// Only to notify ComposeContainerViewModel that contacts changed
+    @objc dynamic private(set) var contactsChange: Int = 0
+    var composerContext: NSManagedObjectContext?
     var messageAction : ComposeMessageAction = .newDraft
-    var toSelectedContacts: [ContactPickerModelProtocol] = []
-    var ccSelectedContacts: [ContactPickerModelProtocol] = []
-    var bccSelectedContacts: [ContactPickerModelProtocol] = []
+    var toSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
+    var ccSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
+    var bccSelectedContacts: [ContactPickerModelProtocol] = [] {
+        didSet { self.contactsChange += 1 }
+    }
 
     var showError: ((String) -> Void)?
     
@@ -96,17 +100,6 @@ class ComposeViewModel: NSObject {
             return message?.isDetailDownloaded ?? false
         }
     }
-    var needsUpdate : Bool {
-        get{
-            return toChanged || ccChanged || bccChanged || titleChanged || bodyChanged
-        }
-    }
-    
-    var toChanged : Bool = false;
-    var ccChanged : Bool = false;
-    var bccChanged : Bool = false;
-    var titleChanged : Bool = false;
-    var bodyChanged : Bool = false;
     
     func isValidNumberOfRecipients() -> Bool {
         return true
@@ -191,8 +184,8 @@ class ComposeViewModel: NSObject {
          NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
-        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+    func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
         return Promise()
     }
     
@@ -230,6 +223,23 @@ class ComposeViewModel: NSObject {
     }
     
     func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
+        fatalError("This method must be overridden")
+    }
+
+    func shouldShowExpirationWarning(havingPGPPinned: Bool,
+                                     isPasswordSet: Bool,
+                                     havingNonPMEmail: Bool) -> Bool {
+        let helper = ComposeViewControllerHelper()
+        return helper.shouldShowExpirationWarning(havingPGPPinned: havingPGPPinned,
+                                                  isPasswordSet: isPasswordSet,
+                                                  havingNonPMEmail: havingNonPMEmail)
+    }
+
+    func needAttachRemindAlert(subject: String, body: String, attachmentNum: Int) -> Bool {
+        fatalError("This method must be overridden")
+    }
+
+    func getNormalAttachmentNum() -> Int {
         fatalError("This method must be overridden")
     }
 }

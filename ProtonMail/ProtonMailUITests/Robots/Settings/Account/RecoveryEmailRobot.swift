@@ -6,15 +6,18 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let saveNavBarButtonLabel = LocalString._general_save_action
+import pmtest
+
+fileprivate struct id {
+    static let saveNavBarButtonLabel = LocalString._general_save_action
+}
 
 /**
  * Class represents Email recovery view.
  */
-class RecoveryEmailRobot {
+class RecoveryEmailRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+    var verify = Verify()
 
     func changeRecoveryEmail(_ user: User) -> RecoveryEmailRobot {
         return newEmail(user.email)
@@ -24,17 +27,17 @@ class RecoveryEmailRobot {
     }
 
     private func newEmail(_ email: String) -> RecoveryEmailRobot {
-        Element.textField.tapByIndex(0).typeText(email)
+        textField().byIndex(0).tap().typeText(email)
         return self
     }
 
     private func password(_ password: String) -> RecoveryEmailRobot {
-        Element.secureTextField.tapByIndex(0).typeText(password)
+        secureTextField().byIndex(0).tap().typeText(password)
         return self
     }
 
     private func save() -> RecoveryEmailRobot {
-        Element.button.tapByIdentifier(saveNavBarButtonLabel)
+        button(id.saveNavBarButtonLabel).tap()
         return RecoveryEmailRobot()
     }
 
@@ -42,14 +45,11 @@ class RecoveryEmailRobot {
 
         return RecoveryEmailRobot()
     }
-
-    /**
-     * Contains all the validations that can be performed by [RecoveryEmailRobot].
-     */
-    class Verify {
-
+    
+    class Verify: CoreElements {
+        
         func recoveryEmailChangedTo(_ email: String) {
-
+            ///TODO: add implementation
         }
     }
 }

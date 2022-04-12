@@ -15,9 +15,6 @@
 
 
 
-/* sign up user error when can't get moduls id
- update password error */
-"Can't get a Moduls ID!" = "Can't get a Modulus ID!";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -26,11 +23,8 @@
 /**
  *  Login View
  */
-"Username" = "Username";
 "Password" = "Password";
 
-"USER LOGIN" = "User log in";
-"LOGIN" = "Login";
 "NEED AN ACCOUNT? SIGN UP." = "Sign up for free";
 "FORGOT PASSWORD?" = "Forgot password?";
 
@@ -136,7 +130,6 @@
  */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Your new encrypted email account has been set up and is ready to send and receive encrypted messages.";
 "You can customize swipe gestures in the ProtonMail App Settings." = "You can customize swipe gestures in the ProtonMail App Settings.";
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Create and add labels to organize your inbox. Press and hold down on a message for all options.";
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.";
 "Messages you send can be set to auto delete after a certain time period." = "Messages you send can be set to auto delete after a certain time period.";
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "You can get help and support at protonmail.com/support. Bugs can also be reported with the app.";
@@ -162,12 +155,9 @@
 /**
  *  SignUpPasswordViewController
  */
-//"Login Password"
-"Confirm Login Password" = "Confirm login password";
 //"Mailbox Password"
 "Confirm Mailbox Password" = "Confirm mailbox password";
 "Mailbox password doesn't match" = "Mailbox password doesn't match";
-"Login password doesn't match" = "Login password doesn't match";
 
 
 /**
@@ -289,7 +279,6 @@
 "DisplayName" = "Display name";
 "Display name" = "Display name";
 "Signature" = "Signature";
-"Login Password" = "Login password";
 "Mailbox Password" = "Mailbox password";
 "Clear Local Message Cache" = "Clear local message cache";
 "Mobile Signature" = "Mobile signature";
@@ -329,7 +318,7 @@
 "Unable to parse authentication token!" = "Unable to parse authentication token!";
 
 "Invalid UserName" = "Invalid username"; //title
-"The UserName have been taken." = "The username have been taken.";
+"The username has been taken." = "The username has been taken.";
 "Change Password" = "Change password"; //title
 "The Password is wrong." = "The password is wrong.";
 "The new password not match" = "Passwords do not match";
@@ -353,7 +342,6 @@
  */
 //"Alert" = "Alert";
 "A new version of ProtonMail app is available, please update to latest version." = "A new version of ProtonMail app is available, please update to latest version.";
-"Invalid access token please relogin" = "Invalid access token please relogin";
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
 "Sending Message" = "Sending message";
 "Message sending failed please try again" = "Message sending failed please try again";
@@ -458,8 +446,6 @@
  *  Expiration View
  */
 "Message expired" = "Message expired";
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %d days %d hours %d mins %d seconds";
-
 
 /**
  *  Human Check Menu View Controller
@@ -474,7 +460,6 @@
  */
 
 "The maximum number of labels is %d." = "The maximum number of labels is %d.";
-"The label name is duplicate" = "The label name is duplicate";
 "Apply" = "Apply";
 "Add" = "Add";
 

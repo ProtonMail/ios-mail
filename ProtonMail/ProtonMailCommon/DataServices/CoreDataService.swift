@@ -20,53 +20,146 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 import CoreData
 
-/// this class provide the context.
-class CoreDataService: Service {
-    
-    //TODO:: fix this in the future. for now we share all data in same persistent store
+class CoreDataService: Service, CoreDataContextProviderProtocol {
+
     static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
-    
-    
+
     ///  container pass in from outside or use the default
     var container: NSPersistentContainer
-    
+    let rootSavingContext: NSManagedObjectContext
+    let mainContext: NSManagedObjectContext
+    static var shouldIgnoreContactUpdateInMainContext = false
+
     private let serialQueue: OperationQueue = {
         let persistentContainerQueue = OperationQueue()
         persistentContainerQueue.maxConcurrentOperationCount = 1
         return persistentContainerQueue
     }()
-    
+
     init(container: NSPersistentContainer) {
         self.container = container
+        self.rootSavingContext = CoreDataService.createRootSavingContext(container.persistentStoreCoordinator)
+        self.mainContext = CoreDataService.createMainContext(self.rootSavingContext)
     }
-    
-    // MARK: - variables
-    lazy var mainManagedObjectContext: NSManagedObjectContext = { [unowned self] in
-        return self.container.viewContext
-    }()
-    
-    /// this case crashes when cleaning cache
-    lazy var backgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
-        let context = self.container.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+
+    static func createMainContext(_ parent: NSManagedObjectContext) -> NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.parent = parent
+        context.mergePolicy = NSRollbackMergePolicy
+        context.undoManager = nil
+        context.name = "ch.protonmail.MainContext"
+
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextWillSave, object: context, queue: nil) { (noti) in
+            let context = noti.object as! NSManagedObjectContext
+            let insertedObjects = context.insertedObjects
+            let numberOfInsertedObjects = insertedObjects.count
+            guard numberOfInsertedObjects > 0 else {
+                return
+            }
+
+            do {
+                try context.obtainPermanentIDs(for: Array(insertedObjects))
+            } catch {
+            }
+        }
+
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: parent, queue: nil) { [weak context] (noti) in
+            DispatchQueue.main.async {
+                guard let _ = noti.object as? NSManagedObjectContext,
+                      !shouldIgnoreContactUpdateInMainContext,
+                      let context = context else {
+                    return
+                }
+                let mergeChanges = {
+                    if let updatedObjects = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) {
+                        for object in updatedObjects {
+                            context.object(with: object.objectID).willAccessValue(forKey: nil)
+                        }
+                    }
+                    context.mergeChanges(fromContextDidSave: noti)
+                }
+                context.perform(mergeChanges)
+            }
+            
+        }
+
         return context
-    }()
-    
-    func childBackgroundManagedObjectContext(forUseIn thread: Thread) -> NSManagedObjectContext  {
+    }
+
+    static func createRootSavingContext(_ coordinator: NSPersistentStoreCoordinator) -> NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.persistentStoreCoordinator = coordinator
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        context.undoManager = nil
+        context.name = "ch.protonmail.RootContext"
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "com.apple.coredata.ubiquity.importer.didfinishimport"), object: coordinator, queue: nil) { [weak context] (noti) in
+            context?.perform {
+                if let updatedObjectIDs = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObjectID>) {
+
+                    for objectID in updatedObjectIDs {
+
+                        context?.registeredObject(for: objectID)?.willAccessValue(forKey: nil)
+                    }
+                }
+                context?.mergeChanges(fromContextDidSave: noti)
+            }
+        }
+
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextWillSave, object: context, queue: nil) { (noti) in
+            let context = noti.object as! NSManagedObjectContext
+            let insertedObjects = context.insertedObjects
+            let numberOfInsertedObjects = insertedObjects.count
+            guard numberOfInsertedObjects > 0 else {
+                return
+            }
+
+            do {
+                try context.obtainPermanentIDs(for: Array(insertedObjects))
+            } catch {
+            }
+        }
+        // setup notification
+        return context
+    }
+
+    func makeComposerMainContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.parent = self.rootSavingContext
+
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: self.rootSavingContext, queue: nil) { [weak context] (noti) in
+            guard let _ = noti.object as? NSManagedObjectContext,
+                  let context = context else {
+                return
+            }
+            let mergeChanges = { () -> Void in
+                if let updatedObjects = (noti.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) {
+                    for object in updatedObjects {
+                        context.object(with: object.objectID).willAccessValue(forKey: nil)
+                    }
+                }
+                context.mergeChanges(fromContextDidSave: noti)
+            }
+            context.perform(mergeChanges)
+        }
+
+        return context
+    }
+
+    var operationContext: NSManagedObjectContext {
+        return rootSavingContext
+    }
+
+    func childBackgroundManagedObjectContext(forUseIn thread: Thread) -> NSManagedObjectContext {
         if Thread.current.isMainThread {
             assert(false, "This object is not supposed to be used on main thread")
         }
         let background = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        background.parent = self.backgroundManagedObjectContext
+        background.parent = self.rootSavingContext
         return background
-    }
-    
-    func makeReadonlyBackgroundManagedObjectContext() -> NSManagedObjectContext {
-        return self.container.newBackgroundContext()
     }
 
     // MARK: - methods
@@ -77,39 +170,23 @@ class CoreDataService: Service {
         }
         return nil
     }
-    
+
     func cleanLegacy() {
-        //the old code data file
+        // the old code data file
         let url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
             try FileManager.default.removeItem(at: url)
-            PMLog.D("clean ok")
-        } catch let error as NSError{
-            PMLog.D("\(error)")
+        } catch {
         }
     }
-    
+
     func enqueue(context: NSManagedObjectContext? = nil,
                  block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         self.serialQueue.addOperation {
             let context = context ?? self.container.newBackgroundContext()
             context.performAndWait {
                 block(context)
-//                _ = context.saveUpstreamIfNeeded()
             }
         }
     }
-    
-    /// this do the auto sync
-    lazy var testChildContext: NSManagedObjectContext = { [unowned self] in
-        let managedObjectContext = self.container.newBackgroundContext()
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.parent = self.mainManagedObjectContext
-        return managedObjectContext
-    }()
-    
-    lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
-        return self.container.newBackgroundContext()
-    }()
-    
 }

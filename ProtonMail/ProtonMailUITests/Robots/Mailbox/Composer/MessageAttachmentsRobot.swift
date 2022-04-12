@@ -7,41 +7,31 @@
 //
 
 import XCTest
+import pmtest
 
-fileprivate let addButtonIdentifier = "AttachmentsTableViewController.addButton"
-fileprivate let doneButtonIdentifier = "AttachmentsTableViewController.doneButton"
-fileprivate let photoLibraryButtonIdentifier = LocalString._photo_library
+fileprivate struct id {
+    static let fromYourPhotoLibraryText = LocalString._from_your_photo_library
+    static let doneButtonIdentifier = "AttachmentsTableViewController.doneButton"
+    static let photoLibraryButtonIdentifier = LocalString._photo_library
+}
 
 /**
  Represents Composer view.
 */
-class MessageAttachmentsRobot {
-    
-    var verify: Verify! = nil
-    init() { verify = Verify(parent: self) }
+class MessageAttachmentsRobot: CoreElements {
     
     func photoLibrary() -> ImageGalleryRobot {
-        Element.button.tapByIdentifier(photoLibraryButtonIdentifier)
+        button(id.photoLibraryButtonIdentifier).tap()
         return ImageGalleryRobot()
     }
     
-    func add() -> MessageAttachmentsRobot {
-        Element.wait.forHittableButton(addButtonIdentifier, file: #file, line: #line).tap()
-        return self
+    func add() -> ImageGalleryRobot {
+        cell(id.fromYourPhotoLibraryText).tap()
+        return ImageGalleryRobot()
     }
     
     func done() -> ComposerRobot {
-        Element.wait.forButtonWithIdentifier(doneButtonIdentifier).tap()
+        button(id.doneButtonIdentifier).tap()
         return ComposerRobot()
     }
-    
-    /**
-     Contains all the validations that can be performed by ComposerRobot.
-    */
-    class Verify {
-        unowned let attachmentsRobot: MessageAttachmentsRobot
-        init(parent: MessageAttachmentsRobot) { attachmentsRobot = parent }
-    }
 }
-
-

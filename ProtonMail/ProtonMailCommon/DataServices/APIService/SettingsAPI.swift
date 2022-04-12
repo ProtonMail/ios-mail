@@ -22,8 +22,8 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 /**
  [Settings API Part 1]:
@@ -40,40 +40,8 @@ struct SettingsAPI {
     
     static let settingsPath: String = "/settings"
     
-    /// Get general settings [GET]
-    static let v_get_general_settings : Int = 3
-    
-    /// Turn on/off email notifications [PUT]
-    static let v_update_notify : Int = 3
-    
-    /// Update email [PUT]
-    static let v_update_email : Int = 3
-    
-    /// Update swipe left flag [PUT]
-    static let v_update_swipe_left_right : Int = -1
-    
-    /// Update swipe right flag [PUT]
-    static let v_update_swipe_right_left : Int = -1
-    
-    /// Update newsletter subscription [PUT]
-    static let v_update_sub_news : Int = -1
-    
-    /// Update display name [PUT]
-    static let v_update_display_name : Int = -1
-    
-    /// Update images bits [PUT]
-    static let v_update_shwo_images : Int = -1
-    
-    /// Update login password [PUT]
-    static let v_update_login_password : Int = 3
-    
-    /// Update login password [PUT]
-    static let v_update_link_confirmation : Int = -1
-    
-    /// Update email signature [PUT]
-    static let v_update_email_signature: Int = -1
+    static let versionPrefix: String = "/mail/v4"
 }
-
 
 //"News" : 255 // 0 - 255 bitmask., . 16, 32, 64, and 128 are currently unused.
 struct News : OptionSet {
@@ -278,37 +246,6 @@ final class UpdateNewsRequest : Request {
     }
 }
 
-//MARK : update display name, seems deprecated - Response
-final class UpdateDisplayNameRequest : Request {
-    let displayName : String
-    
-    init(displayName: String, authCredential: AuthCredential?) {
-        self.displayName = displayName
-        self.auth = authCredential
-    }
-    
-    //custom auth credentical
-    let auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["DisplayName" : displayName]
-        return out
-    }
-    var method: HTTPMethod  {
-        return .put
-    }
-    var path: String {
-        return SettingsAPI.path + "/display"
-    }
-}
-
-//MARK : update display name -- Response
-
 final class UpdateShowImages : Request {
     let status : Int
     
@@ -366,66 +303,6 @@ final class UpdateLinkConfirmation : Request {
     }
     var path: String {
         return SettingsAPI.path + "/confirmlink"
-    }
-}
-
-// MARK : update left swipe action -- Response
-final class UpdateSwiftLeftAction : Request {
-    let newAction : MessageSwipeAction
-    
-    init(action : MessageSwipeAction, authCredential: AuthCredential?) {
-        self.newAction = action;
-        self.auth = authCredential
-    }
-    
-    //custom auth credentical
-    let auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["SwipeLeft" : self.newAction.rawValue]
-        return out
-    }
-    var method: HTTPMethod {
-        return .put
-    }
-    var path: String {
-        return SettingsAPI.path + "/swipeleft"
-    }
-}
-
-// MARK : update right swipe action -- Response
-final class UpdateSwiftRightAction : Request {
-    let newAction : MessageSwipeAction
-    
-    init(action : MessageSwipeAction, authCredential: AuthCredential?) {
-        self.newAction = action
-        self.auth = authCredential
-    }
-    
-    //custom auth credentical
-    let auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-    
-    var parameters: [String : Any]? {
-        let out : [String : Any] = ["SwipeRight" : self.newAction.rawValue]
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .put
-    }
-    
-    var path: String {
-        return SettingsAPI.path + "/swiperight"
     }
 }
 
@@ -487,7 +364,6 @@ final class UpdateLoginPassword : Request {
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
-        //PMLog.D(JSONStringify(out))
         return out
     }
     var method: HTTPMethod {
@@ -496,5 +372,47 @@ final class UpdateLoginPassword : Request {
     
     var path: String {
         return SettingsAPI.settingsPath + "/password"
+    }
+}
+
+final class EnableFolderColorRequest: Request {
+    private let isEnable: Bool
+    
+    init(isEnable: Bool) {
+        self.isEnable = isEnable
+    }
+    
+    var parameters: [String : Any]? {
+        let value = self.isEnable ? 1: 0
+        return ["EnableFolderColor": value]
+    }
+    
+    var path: String {
+        return SettingsAPI.versionPrefix + SettingsAPI.settingsPath + "/enablefoldercolor"
+    }
+    
+    var method: HTTPMethod {
+        return .put
+    }
+}
+
+final class InheritParentFolderColorRequest: Request {
+    private let isEnable: Bool
+    
+    init(isEnable: Bool) {
+        self.isEnable = isEnable
+    }
+    
+    var parameters: [String : Any]? {
+        let value = self.isEnable ? 1: 0
+        return ["InheritParentFolderColor": value]
+    }
+    
+    var path: String {
+        return SettingsAPI.versionPrefix + SettingsAPI.settingsPath + "/inheritparentfoldercolor"
+    }
+    
+    var method: HTTPMethod {
+        return .put
     }
 }

@@ -22,21 +22,11 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
-
-//Events API
-//Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_events_v3.md
 struct EventAPI {
     /// base event api path
     static let path :String = "/events"
-    
-    /// get latest event id
-    static let v_get_latest_event_id : Int = 3
-    
-    /// get updated events based on latest event id
-    static let v_get_events : Int = 3
-    
 }
     
 // MARK : Get messages part -- EventCheckResponse
@@ -62,7 +52,6 @@ final class EventLatestIDRequest : Request{
 final class EventLatestIDResponse : Response {
     var eventID : String = ""
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         return true
     }
@@ -104,13 +93,14 @@ final class EventCheckResponse : Response {
     
     var messageCounts: [[String : Any]]?
     
-    var conversationCounts: [[String : Any]]? //TODO:: use when we add conversation view
+    var conversations: [[String: Any]]?
+    
+    var conversationCounts: [[String : Any]]?
     
     var usedSpace : Int64?
     var notices : [String]?
     
     override func ParseResponse(_ response: [String : Any]) -> Bool {
-        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
         self.more    = response["More"] as? Int ?? 0
@@ -137,7 +127,9 @@ final class EventCheckResponse : Response {
         
         self.messageCounts = response["MessageCounts"] as? [[String : Any]]
         
-        //self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
+        self.conversations = response["Conversations"] as? [[String: Any]]
+        //TODO: - V4 Wait for BE fix
+        self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
         
         self.usedSpace = response["UsedSpace"] as? Int64
         self.notices = response["Notices"] as? [String]
@@ -179,6 +171,51 @@ final class MessageEvent {
         self.ID =  (event["ID"] as! String)
         self.message?["ID"] = self.ID
         self.message?["needsUpdate"] = false
+    }
+}
+
+extension MessageEvent {
+    var isDraft: Bool {
+        let draftID = LabelLocation.draft.labelID
+        let hiddenDraftID = LabelLocation.hiddenDraft.labelID
+
+        if let location = self.message?["Location"] as? Int,
+           location == Int(draftID) || location == Int(hiddenDraftID) {
+            return true
+        }
+
+        if let labelIDs = self.message?["LabelIDs"] as? NSArray,
+           labelIDs.contains(draftID) || labelIDs.contains(hiddenDraftID) {
+            return true
+        }
+
+        return false
+    }
+
+    var parsedTime: Date? {
+        guard let value = self.message?["Time"] else { return nil }
+        var time: TimeInterval = 0
+        if let stringValue = value as? NSString {
+            time = stringValue.doubleValue as TimeInterval
+        } else if let numberValue = value as? NSNumber {
+            time = numberValue.doubleValue as TimeInterval
+        }
+        return time == 0 ? nil: time.asDate()
+    }
+}
+
+struct ConversationEvent {
+    var action: Int
+    var ID: String
+    var conversation: [String: Any]
+    init?(event: [String: Any]) {
+        if let action = event["Action"] as? Int, let id = event["ID"] as? String {
+            self.action = action
+            self.ID = id
+            self.conversation = event["Conversation"] as? [String: Any] ?? [:]
+        } else {
+            return nil
+        }
     }
 }
 

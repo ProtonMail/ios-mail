@@ -21,12 +21,35 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
 
 class ContainableComposeViewModel: ComposeViewModelImpl {
     @objc internal dynamic var contentHeight: CGFloat = 0.1
-    @objc internal dynamic var showExpirationPicker: Bool = false
     private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
+    
+    func parse(mailToURL: URL) {
+        guard let mailToData = mailToURL.parseMailtoLink() else { return }
+
+        mailToData.to.forEach { (recipient) in
+            self.addToContacts(ContactVO(name: recipient, email: recipient))
+        }
+
+        mailToData.cc.forEach { (recipient) in
+            self.addCcContacts(ContactVO(name: recipient, email: recipient))
+        }
+
+        mailToData.bcc.forEach { (recipient) in
+            self.addBccContacts(ContactVO(name: recipient, email: recipient))
+        }
+
+        if let subject = mailToData.subject {
+            self.setSubject(subject)
+        }
+
+        if let body = mailToData.body {
+            self.setBody(body)
+        }
+    }
 }
 
 extension ContainableComposeViewModel {

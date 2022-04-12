@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 protocol TwoFACodeViewDelegate {
     func ConfirmedCode(_ code : String, pwd : String)
@@ -90,7 +90,7 @@ class TwoFACodeView : PMView {
         twoFactorCodeField.inputAccessoryView = toolbarDone
         
         twoFactorCodeField.placeholder = LocalString._two_factor_code
-        loginPasswordField.placeholder = LocalString._login_password
+        loginPasswordField.placeholder = LocalString._signin_password
         topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         enterButton.setTitle(LocalString._enter, for: .normal)

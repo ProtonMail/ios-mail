@@ -241,7 +241,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
                 return XCTFail("can't be null")
             }
             // decrypt
-            let decrypted = try crypto.decrypt(encrytped: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            let decrypted = try crypto.decrypt(encrypted: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
             //match
             XCTAssertEqual(testAttachmentCleartext, decrypted)
         } catch let error {
@@ -336,16 +336,16 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
             XCTFail("Should not throw error")
         }
     }
-    
+
     func testGenerateRandomKeyPair() throws {
         let keyPair = try Crypto.generateRandomKeyPair()
         let message = "Hello my friend!"
-        
+
         let encrypted = try Crypto().encrypt(plainText: message, publicKey: keyPair.publicKey)
         let unwrappedEncrypted = try XCTUnwrap(encrypted)
         XCTAssertNotEqual(message, unwrappedEncrypted)
-        
-        let decrypted = try Crypto().decrypt(encrytped: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
+
+        let decrypted = try Crypto().decrypt(encrypted: unwrappedEncrypted, privateKey: keyPair.privateKey, passphrase: keyPair.passphrase)
         XCTAssertEqual(message, decrypted)
-    }    
+    }
 }

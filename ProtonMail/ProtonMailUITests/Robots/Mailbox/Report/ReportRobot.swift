@@ -6,24 +6,29 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let sendButtonIdentifier = LocalString._general_send_action
-fileprivate let bugDescriptionStaticTextIdentifier = "ReportBugsViewController.topTitleLabel"
-fileprivate let bugDescriptionTextViewIdentifier = "ReportBugsViewController.textView"
-fileprivate let menuButtonIdentifier = LocalString._menu_button
-fileprivate let okButtonIdentifier = LocalString._general_ok_action
-fileprivate let titleStaticTextIdentifier = LocalString._menu_bugs_title
+import pmtest
 
-class ReportRobot {
+fileprivate struct id {
+    static let sendButtonIdentifier = LocalString._general_send_action
+    static let bugDescriptionStaticTextIdentifier = "ReportBugsViewController.topTitleLabel"
+    static let bugDescriptionTextViewIdentifier = "ReportBugsViewController.textView"
+    static let menuButtonIdentifier = LocalString._menu_button
+    static let okButtonIdentifier = LocalString._general_ok_action
+    static let titleStaticTextIdentifier = LocalString._menu_bugs_title
+}
+
+class ReportRobot: CoreElements {
     
-    init() {
-        let label = LocalString._menu_bugs_title
-        Element.wait.forStaticTextFieldWithIdentifier(titleStaticTextIdentifier, file: #file, line: #line).assertWithLabel(label)
-        Element.wait.forStaticTextFieldWithIdentifier(bugDescriptionStaticTextIdentifier, file: #file, line: #line)
-        Element.wait.forButtonWithIdentifier(sendButtonIdentifier, file: #file, line: #line)
+    required init() {
+        super.init()
+        //let label = LocalString._menu_bugs_title
+        navigationBar(id.titleStaticTextIdentifier).onChild(staticText(id.titleStaticTextIdentifier)).byIndex(0).wait().checkExists()
+        textView(id.bugDescriptionTextViewIdentifier).wait().checkExists()
+        button(id.sendButtonIdentifier).wait().checkExists()
     }
     
     func menu() -> MenuRobot {
-        Element.wait.forButtonWithIdentifier(menuButtonIdentifier, file: #file, line: #line).tap()
+        button(id.menuButtonIdentifier).tap()
         return MenuRobot()
     }
     
@@ -35,19 +40,20 @@ class ReportRobot {
     }
     
     func fileBugDescription(_ description: String) -> ReportRobot {
-        Element.textView.typeTextByIdentifier(bugDescriptionTextViewIdentifier, description)
+        textView(id.bugDescriptionTextViewIdentifier).typeText(description)
         return ReportRobot()
     }
     
+    @discardableResult
     func send() -> ReportDialogRobot {
-        Element.wait.forHittableButton(sendButtonIdentifier, file: #file, line: #line).tap()
+        button(id.sendButtonIdentifier).waitForHittable().tap()
         return ReportDialogRobot()
     }
     
-    class ReportDialogRobot {
+    class ReportDialogRobot: CoreElements {
 
         func clickOK() -> MailboxRobotInterface {
-            Element.button.tapByIdentifier(okButtonIdentifier)
+            button(id.okButtonIdentifier).tap()
             return MailboxRobotInterface()
         }
     }

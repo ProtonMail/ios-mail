@@ -20,89 +20,95 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
+import MBProgressHUD
+import ProtonCore_UIFoundations
 import QuickLook
-
+import UIKit
 
 class QuickViewViewController: QLPreviewController {
+    private var isPresented = true
+    private var loadingView: UIView?
 
-    var isPresented = true
-    
+    override var shouldAutorotate: Bool {
+        return true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+
         if #available(iOS 13.0, *) {
-            return .darkContent
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.dismissWhenAppGoesToBackground),
+                                                   name: UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
         } else {
-            return .lightContent
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.dismissWhenAppGoesToBackground),
+                                                   name: UIApplication.didEnterBackgroundNotification,
+                                                   object: nil)
         }
-    }
-    
-    @available(iOS 15, *)
-    private func configureNavigationBar_iOS15() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .white
-        let navigationBarTitleFont = Fonts.h2.light
-        appearance.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
-        let barAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [QLPreviewController.self])
-        barAppearance.standardAppearance = appearance
-        barAppearance.scrollEdgeAppearance = appearance
-        barAppearance.compactAppearance = appearance
-        barAppearance.compactScrollEdgeAppearance = appearance
     }
 
-    func configureNavigationBar(_ navigationController: UINavigationController) {
-        if #available(iOS 15, *) {
-            self.configureNavigationBar_iOS15()
-        }
-        navigationController.navigationBar.tintColor = UIColor.black
-        let navigationBarTitleFont = Fonts.h2.light
-        navigationController.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         let views = self.children
-        if views.count > 0 {
+        if !views.isEmpty {
             if let nav = views[0] as? UINavigationController {
                 configureNavigationBar(nav)
                 setNeedsStatusBarAppearanceUpdate()
             }
         }
+        self.showLoadingViewIfNeeded()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        isPresented = false
-        super.viewWillDisappear(animated)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override var shouldAutorotate : Bool {
-        
-        return true
-    }
-    
-    
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        isPresented = false
+    }
+
+    func removeLoadingView(needDelay: Bool) {
+        if let view = self.loadingView {
+            // Some file needs more time to process
+            // To avoid the loading view disappear too early, add a delay
+            let time: Double = needDelay ? 2: 0.8
+            delay(time) { [weak self] in
+                view.removeFromSuperview()
+                MBProgressHUD.hide(for: view, animated: true)
+                self?.loadingView = nil
+            }
+        }
+    }
+
+    @objc
+    func dismissWhenAppGoesToBackground() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    private func configureNavigationBar(_ navigationController: UINavigationController) {
+        navigationController.navigationBar.barTintColor = ColorProvider.BackgroundNorm
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.tintColor = ColorProvider.TextNorm
+
+        navigationController.navigationBar.titleTextAttributes = FontManager.DefaultSmallStrong
+    }
+
+    private func showLoadingViewIfNeeded() {
+        guard let numberOfItems = self.dataSource?.numberOfPreviewItems(in: self),
+              numberOfItems == 0,
+              let navController = self.children.first(where: { $0 is UINavigationController }) else { return }
+
+        let view = UIView(frame: .zero)
+        // Todo: Is it ok when dark mode enabled
+        view.backgroundColor = .white
+        self.view.insertSubview(view, belowSubview: navController.view)
+        [
+            view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 44),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
+        ].activate()
+        self.loadingView = view
+        MBProgressHUD.showAdded(to: view, animated: true)
     }
 }

@@ -20,13 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import CoreServices
 import UIKit
 import Photos
 
 #if APP_EXTENSION
 
-class PMImagePickerController: UIImagePickerController {
+class PMImagePickerController: UIImagePickerController, AccessibleView {
     internal func setup(withDelegate delegate: UIImagePickerControllerDelegate&UINavigationControllerDelegate) {
         self.delegate = delegate
         self.sourceType = .photoLibrary

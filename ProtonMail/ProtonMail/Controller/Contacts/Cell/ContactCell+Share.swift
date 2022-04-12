@@ -21,9 +21,9 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
-protocol ContactCellShare: class
+protocol ContactCellShare: AnyObject
 {
     func prepareContactGroupIcons(cell: UITableViewCell,
                                   contactGroupColors: [String],
@@ -97,9 +97,7 @@ extension ContactCellShare
             }
         } else {
             if showNoneLabel {
-                let label = UILabel.init(font: UIFont.systemFont(ofSize: 17),
-                                         text: LocalString._contact_group_no_contact_group_associated_with_contact_email,
-                                         textColor: UIColor.gray)
+                let label = UILabel.init(attributedString: LocalString._contact_group_no_contact_group_associated_with_contact_email.apply(style: .Default))
                 iconStackView.addArrangedSubview(label)
             }
         }

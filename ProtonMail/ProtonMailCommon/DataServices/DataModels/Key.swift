@@ -23,7 +23,7 @@
 
 import Foundation
 import Crypto
-import PMCommon
+import ProtonCore_DataModel
 
 //@objc(Key)
 //final class Key : NSObject {
@@ -125,11 +125,11 @@ import PMCommon
 extension Key {
 
     var publicKey : String {
-        return self.private_key.publicKey
+        return self.privateKey.publicKey
     }
     
     var fingerprint : String {
-        return self.private_key.fingerprint
+        return self.privateKey.fingerprint
     }
 
     var shortFingerpritn: String {
@@ -150,7 +150,7 @@ extension Array where Element : Key {
         var out = Data()
         var error : NSError?
         for key in self {
-            if let privK = ArmorUnarmor(key.private_key, &error) {
+            if let privK = ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }
@@ -161,7 +161,7 @@ extension Array where Element : Key {
         var out: [Data] = []
         var error: NSError?
         for key in self {
-            if let privK = ArmorUnarmor(key.private_key, &error) {
+            if let privK = ArmorUnarmor(key.privateKey, &error) {
                 out.append(privK)
             }
         }
@@ -170,7 +170,7 @@ extension Array where Element : Key {
     
     var newSchema : Bool {
         for key in self {
-            if key.newSchema {
+            if key.isKeyV2 {
                 return true
             }
         }

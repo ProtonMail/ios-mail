@@ -20,9 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
-
+import UIKit
 
 enum PinCodeStep: Int {
     case enterPin = 0
@@ -79,5 +77,9 @@ class PinCodeViewModel : NSObject {
     
     func checkTouchID() -> Bool {
         return false
+    }
+
+    func reset() {
+        fatalError("This method must be overridden")
     }
 }

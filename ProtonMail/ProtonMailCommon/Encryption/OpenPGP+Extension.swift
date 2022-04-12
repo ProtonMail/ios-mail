@@ -24,32 +24,20 @@
 
 import Foundation
 import Crypto
-import PMCommon
 import OpenPGP
-import Crypto
+import ProtonCore_DataModel
 
 extension Crypto {
-    
     
     static func updateKeysPassword(_ old_keys : [Key], old_pass: String, new_pass: String ) throws -> [Key] {
         var outKeys : [Key] = [Key]()
         for okey in old_keys {
             do {
-                let new_private_key = try self.updatePassphrase(privateKey: okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
-                let newK = Key(key_id: okey.key_id,
-                               private_key: new_private_key,
-                               token: nil,
-                               signature: nil,
-                               activation: nil,
-                               isupdated: true)
+                let new_private_key = try self.updatePassphrase(privateKey: okey.privateKey, oldPassphrase: old_pass, newPassphrase: new_pass)
+                let newK = Key(keyID: okey.keyID, privateKey: new_private_key, isUpdated: true)
                 outKeys.append(newK)
             } catch {
-                let newK = Key(key_id: okey.key_id,
-                               private_key: okey.private_key,
-                               token: nil,
-                               signature: nil,
-                               activation: nil,
-                               isupdated: false)
+                let newK = Key(keyID: okey.keyID, privateKey: okey.privateKey)
                 outKeys.append(newK)
             }
         }
@@ -58,15 +46,15 @@ extension Crypto {
             throw UpdatePasswordError.keyUpdateFailed.error
         }
         
-        guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+        guard outKeys.count > 0 && outKeys[0].isUpdated == true else {
             throw UpdatePasswordError.keyUpdateFailed.error
         }
         
         for u_k in outKeys {
-            if u_k.is_updated == false {
+            if u_k.isUpdated == false {
                 continue
             }
-            let result = u_k.private_key.check(passphrase: new_pass)
+            let result = u_k.privateKey.check(passphrase: new_pass)
             guard result == true else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
@@ -80,24 +68,34 @@ extension Crypto {
     static func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
         var out_addresses = [Address]()
         for addr in old_addresses {
-            var outKeys : [Key] = [Key]()
+            var outKeys = [Key]()
             for okey in addr.keys {
                 do {
-                    let new_private_key = try Crypto.updatePassphrase(privateKey: okey.private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
-                    let newK = Key(key_id: okey.key_id,
-                                   private_key: new_private_key,
+                    let new_private_key = try Crypto.updatePassphrase(privateKey: okey.privateKey,
+                                                                      oldPassphrase: old_pass,
+                                                                      newPassphrase: new_pass)
+                    let newK = Key(keyID: okey.keyID,
+                                   privateKey: new_private_key,
+                                   keyFlags: okey.keyFlags,
                                    token: nil,
                                    signature: nil,
                                    activation: nil,
-                                   isupdated: true)
+                                   active: okey.active,
+                                   version: okey.version,
+                                   primary: okey.primary,
+                                   isUpdated: true)
                     outKeys.append(newK)
                 } catch {
-                    let newK = Key(key_id: okey.key_id,
-                                   private_key: okey.private_key,
+                    let newK = Key(keyID: okey.keyID,
+                                   privateKey: okey.privateKey,
+                                   keyFlags: okey.keyFlags,
                                    token: nil,
                                    signature: nil,
                                    activation: nil,
-                                   isupdated: false)
+                                   active: okey.active,
+                                   version: okey.version,
+                                   primary: okey.primary,
+                                   isUpdated: false)
                     outKeys.append(newK)
                 }
             }
@@ -106,30 +104,31 @@ extension Crypto {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
             
-            guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+            guard outKeys.count > 0 && outKeys[0].isUpdated == true else {
                 throw UpdatePasswordError.keyUpdateFailed.error
             }
             
             for u_k in outKeys {
-                if u_k.is_updated == false {
+                if u_k.isUpdated == false {
                     continue
                 }
-                let result = u_k.private_key.check(passphrase: new_pass)
+                let result = u_k.privateKey.check(passphrase: new_pass)
                 guard result == true else {
                     throw UpdatePasswordError.keyUpdateFailed.error
                 }
             }
-            
-            let new_addr = Address(addressid: addr.address_id,
+            let new_addr = Address(addressID: addr.addressID,
+                                   domainID: addr.domainID,
                                    email: addr.email,
-                                   order: addr.order,
+                                   send: addr.send,
                                    receive: addr.receive,
-                                   display_name: addr.display_name,
-                                   signature: addr.signature,
-                                   keys: outKeys,
                                    status: addr.status,
                                    type: addr.type,
-                                   send: addr.send)
+                                   order: addr.order,
+                                   displayName: addr.displayName,
+                                   signature: addr.signature,
+                                   hasKeys: outKeys.isEmpty ? 0 : 1,
+                                   keys: outKeys)
             out_addresses.append(new_addr)
         }
         
@@ -142,38 +141,56 @@ extension Crypto {
     
 }
 
+//
+extension PMNOpenPgp {
+    func generateKey(_ passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
+        var out_new_key : PMNOpenPgpKey?
+        try ObjC.catchException {
+            let timeinterval = CryptoGetUnixTime()
+            let int32Value = NSNumber(value: timeinterval).int32Value
+            let email =  userName + "@" + domain
+            out_new_key = self.generateKey(email, domain: email, passphrase: passphrase, bits: bits, time: int32Value)
+            if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
+                out_new_key = nil
+            }
+        }
+        return out_new_key
+    }
+}
+
+protocol AttachmentDecryptor {
+    func decryptAttachment(keyPacket: Data,
+                           dataPacket: Data,
+                           privateKey: String,
+                           passphrase: String) throws -> Data?
+}
+
+extension Crypto: AttachmentDecryptor {}
+
 extension Data {
-    func decryptAttachment(keyPackage: Data, userKeys: [Data], passphrase: String, keys: [Key]) throws -> Data? {
+    func decryptAttachment(keyPackage: Data,
+                           userKeys: [Data],
+                           passphrase: String,
+                           keys: [Key],
+                           attachmentDecryptor: AttachmentDecryptor = Crypto()) throws -> Data? {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        PMLog.D(signature)
-                        return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                              dataPacket: self,
-                                                              privateKey: key.private_key,
-                                                              passphrase: plaitToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                              dataPacket: self,
-                                                              privateKey: key.private_key,
-                                                              passphrase: plaitToken)
-                    }
-                } else {//normal key old schema
-                    return try Crypto().decryptAttachment(keyPacket: keyPackage,
-                                                          dataPacket: self,
-                                                          privateKey: userKeys,
-                                                          passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                if let decryptedAttachment =  try attachmentDecryptor.decryptAttachment(keyPacket: keyPackage,
+                                                                                        dataPacket: self,
+                                                                                        privateKey: key.privateKey,
+                                                                                        passphrase: addressKeyPassphrase) {
+                    return decryptedAttachment
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         if let error = firstError {
@@ -189,11 +206,6 @@ extension Data {
 
     func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, privateKey: String) throws -> Data? {
         return try Crypto().decryptAttachment(keyPacket: keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
-    }
-    
-
-    func signAttachment(byPrivKey: String, passphrase: String) throws -> String? {
-        return try Crypto().signDetached(plainData: self, privateKey: byPrivKey, passphrase: passphrase)
     }
     
     func encryptAttachment(fileName:String, pubKey: String) throws -> SplitMessage? {
@@ -220,24 +232,20 @@ extension Data {
         var firstError : Error?
         for key in keys {
             do {
-                if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                    if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        PMLog.D(signature)
-                        return try Crypto().getSession(keyPacket: self, privateKey: key.private_key, passphrase: plainToken)
-                    }
-                } else if let token = key.token { //old schema with token - subuser. key is embed singed
-                    if let plainToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
-                        //TODO:: try to verify signature here embeded signature
-                        return try Crypto().getSession(keyPacket: self, privateKey: key.private_key, passphrase: plainToken)
-                    }
-                } else {//normal key old schema
-                    return try Crypto().getSession(keyPacket: self, privateKeys: userKeys, passphrase: passphrase)
+                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                if let sessionKey = try Crypto().getSession(keyPacket: self,
+                                                            privateKey: key.privateKey,
+                                                            passphrase: addressKeyPassphrase) {
+                    return sessionKey
+                } else {
+                    throw Crypto.CryptoError.unexpectedNil
                 }
             } catch let error {
                 if firstError == nil {
                     firstError = error
                 }
-                PMLog.D(error.localizedDescription)
             }
         }
         if let error = firstError {

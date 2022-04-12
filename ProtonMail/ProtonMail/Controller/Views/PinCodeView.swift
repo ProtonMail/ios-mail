@@ -20,86 +20,85 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
 import AudioToolbox
+import Foundation
+import ProtonCore_UIFoundations
+import UIKit
 
-protocol PinCodeViewDelegate : AnyObject {
-    func Cancel()
-    func Next(_ code : String)
-    func TouchID()
+protocol PinCodeViewDelegate: AnyObject {
+    func cancel()
+    func next(_ code: String)
+    func touchID()
 }
 
-class PinCodeView : PMView {
-    @IBOutlet var roundButtons: [RoundButton]!
-    
-    @IBOutlet weak var pinView: UIView!
-    @IBOutlet weak var pinDisplayView: UITextField!
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var logoutButton: UIButton!
-    @IBOutlet weak var backButton: UIButton!
-    
-    @IBOutlet weak var touchIDButton: UIButton!
-    
-    @IBOutlet weak var attempsLabel: UILabel!
-    @IBOutlet weak var whiteLineView: UIView!
-    
-    weak var delegate : PinCodeViewDelegate?
-    
-    var pinCode : String = ""
+class PinCodeView: PMView {
+    @IBOutlet private var roundButtons: [RoundButton]!
 
-    override func getNibName() -> String {
-        return "PinCodeView";
-    }
-    
-    func showTouchID() {
-        touchIDButton.isHidden = false
-    }
-    
-    func hideTouchID() {
-        touchIDButton.isHidden = true
-    }
-    
-    override func setup() {
-        touchIDButton.layer.cornerRadius = 25
-        touchIDButton.isHidden = true
-        
-        if UIDevice.current.biometricType == .faceID {
-            touchIDButton.setImage(UIImage(named: "face_id_icon"), for: .normal)
+    @IBOutlet private weak var lockImageView: UIImageView!
+
+    @IBOutlet private var pinView: UIView!
+    @IBOutlet private var pinDisplayView: UITextField!
+
+    @IBOutlet private var backButton: UIButton!
+    @IBOutlet private weak var deletePinButton: RoundButton!
+
+    @IBOutlet private var confirmButton: ProtonButton! {
+        didSet {
+            confirmButton.setMode(mode: .solid)
         }
     }
-    
+
+    @IBOutlet private var attempsLabel: UILabel!
+
+    weak var delegate: PinCodeViewDelegate?
+
+    var pinCode: String = ""
+
+    override func getNibName() -> String {
+        return "PinCodeView"
+    }
+
+    override func setup() {
+        roundButtons.forEach { btn in
+            btn.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        }
+        backButton.tintColor = ColorProvider.TextNorm
+        backButton.contentMode = .center
+        backButton.imageView?.contentMode = .scaleAspectFit
+
+        // swiftlint:disable:next object_literal
+        let image = UIImage(named: "pin_code_del")?.toTemplateUIImage()
+        deletePinButton.setImage(image, for: .normal)
+        deletePinButton.tintColor = ColorProvider.IconNorm
+
+        lockImageView.tintColor = ColorProvider.TextNorm
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: ColorProvider.TextHint
+        ]
+        pinDisplayView.attributedPlaceholder = LocalString
+            ._enter_pin_to_unlock_inbox.apply(style: attributes)
+
+        attempsLabel.setCornerRadius(radius: 8.0)
+
+        pinDisplayView.textColor = ColorProvider.InteractionNorm
+    }
+
     func updateBackButton(_ icon: UIImage) {
-        backButton.setImage(icon, for: UIControl.State())
+        backButton.setImage(icon.withRenderingMode(.alwaysTemplate), for: UIControl.State())
         backButton.setTitle("", for: UIControl.State())
     }
-    
-    func updateViewText(_ title : String, cancelText : String, resetPin : Bool) {
-        titleLabel.text = title
-        logoutButton.setTitle(cancelText, for: UIControl.State())
+
+    func updateViewText(cancelText: String, resetPin: Bool) {
+        confirmButton.setTitle(cancelText, for: .normal)
         if resetPin {
             self.resetPin()
         }
     }
-    
-    func updateTitle(_ title : String) {
-        titleLabel.text = title
-    }
-    
-    func updateCorner() {
-        logoutButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
-        logoutButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
-        logoutButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
-    }
-    
-    @IBAction func touchIDAction(_ sender: AnyObject) {
-        delegate?.TouchID()
-    }
-    
-    func showAttempError(_ error:String, low : Bool) {
+
+    func showAttempError(_ error: String, low: Bool) {
         pinDisplayView.textColor = UIColor.red
-        whiteLineView.backgroundColor = UIColor.red
         attempsLabel.isHidden = false
         attempsLabel.text = error
         if low {
@@ -111,89 +110,70 @@ class PinCodeView : PMView {
         }
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
-    
-    func hideAttempError(_ hide : Bool) {
-        pinDisplayView.textColor = UIColor.lightGray
-        whiteLineView.backgroundColor = UIColor.white
+
+    func hideAttempError(_ hide: Bool) {
+        pinDisplayView.textColor = ColorProvider.InteractionNorm
         attempsLabel.isHidden = hide
     }
-    
-    internal func add(_ number : Int) {
-        pinCode = pinCode + String(number)
-        self.updateCodeDisplay()
+
+    func resetPin() {
+        pinCode = ""
+        updateCodeDisplay()
     }
-    
-    internal func remove() {
+
+    func showError() {
+        attempsLabel.shake(3, offset: 10)
+    }
+
+    // MARK: Private methods
+    private func add(_ number: Int) {
+        pinCode += String(number)
+        updateCodeDisplay()
+    }
+
+    private func remove() {
         if !pinCode.isEmpty {
             let index = pinCode.index(before: pinCode.endIndex)
             pinCode = String(pinCode[..<index])
-            self.updateCodeDisplay()
+            updateCodeDisplay()
         }
     }
-    
-    internal func resetPin() {
-        pinCode = ""
-        self.updateCodeDisplay()
-    }
-    
-    internal func updateCodeDisplay() {
+
+    private func updateCodeDisplay() {
         pinDisplayView.text = pinCode
     }
-    
-    func showError() {
-        attempsLabel.shake(3, offset: 10)
-        pinCode = ""
-    }
-    
+
+    // MARK: Actions
     @IBAction func buttonActions(_ sender: UIButton) {
-        self.hideAttempError(true)
+        hideAttempError(true)
         let numberClicked = sender.tag
-        self.add(numberClicked)
+        add(numberClicked)
     }
-    
+
     @IBAction func deleteAction(_ sender: UIButton) {
-        self.hideAttempError(true)
-        self.remove()
+        hideAttempError(true)
+        remove()
     }
-    
-    @IBAction func logoutAction(_ sender: UIButton) {
-        delegate?.Next(pinCode)
+
+    @IBAction func confirmAction(_ sender: UIButton) {
+        delegate?.next(pinCode)
     }
-    
+
     @IBAction func backAction(_ sender: UIButton) {
-        delegate?.Cancel()
+        delegate?.cancel()
     }
-    
-    
-    @IBAction func goAction(_ sender: UIButton) {
-        delegate?.Next(pinCode)
-    }
-    
-    internal func changePinStatus(_ pin : UIView, on : Bool) {
-        if on {
-            pin.backgroundColor = UIColor.lightGray
-            pin.layer.borderWidth = 0.0
-        } else {
-            pin.backgroundColor = UIColor.clear
-            pin.layer.borderWidth = 1.0
-        }
-        
-    }
-    
 }
 
 class RoundButton: UIButton {
     override func draw(_ rect: CGRect) {
-        let path = UIBezierPath.init(ovalIn: rect)
+        let path = UIBezierPath(ovalIn: rect)
         let sublayer = CAShapeLayer()
-        
-        sublayer.strokeColor = UIColor.white.cgColor
-        sublayer.fillColor = UIColor.clear.cgColor
-        sublayer.borderWidth = 1.0
+
+        sublayer.fillColor = ColorProvider.BackgroundSecondary.cgColor
         sublayer.path = path.cgPath
         sublayer.name = "pm_border"
-        
-        self.layer.sublayers?.first(where: { $0.name == "pm_border" })?.removeFromSuperlayer()
-        self.layer.addSublayer(sublayer)
+
+        layer.sublayers?.first(where: { $0.name == "pm_border" })?.removeFromSuperlayer()
+        layer.insertSublayer(sublayer, at: 0)
     }
 }

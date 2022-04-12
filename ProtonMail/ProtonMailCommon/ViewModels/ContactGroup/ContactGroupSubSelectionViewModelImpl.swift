@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
 {
@@ -33,8 +33,8 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     private let groupName: String
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
-    private let delegate: ContactGroupSubSelectionViewModelDelegate
-    private let coreDataService: CoreDataService
+    private var delegate: ContactGroupSubSelectionViewModelDelegate?
+    private let labelsDataService: LabelsDataService
     
     /**
      Setup the sub-selection view of a specific group, at a specific state
@@ -50,19 +50,17 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     init(contactGroupName: String,
          selectedEmails: [DraftEmailData],
          user: UserManager,
-         delegate: ContactGroupSubSelectionViewModelDelegate,
-         coreDataService: CoreDataService) {
+         delegate: ContactGroupSubSelectionViewModelDelegate? = nil,
+         labelsDataService: LabelsDataService) {
         self.user = user
         self.groupName = contactGroupName
         self.delegate = delegate
-        self.coreDataService = coreDataService
+        self.labelsDataService = labelsDataService
         
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
-        
-        let context = self.coreDataService.mainManagedObjectContext
+
         // (1)
-        if let label = Label.labelForLabelName(self.groupName,
-                                               inManagedObjectContext: context),
+        if let label = labelsDataService.label(name: groupName),
             let emails = label.emails.allObjects as? [Email] {
             self.groupColor = label.color
             
@@ -126,11 +124,11 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
      Select the given email data
     */
     func select(indexPath: IndexPath) {
-        emailArray[indexPath.row - 1].isSelected = true
+        emailArray[indexPath.row].isSelected = true
         
         // TODO: performance improvement
         if self.isAllSelected() {
-            delegate.reloadTable()
+            delegate?.reloadTable()
         }
     }
     
@@ -141,7 +139,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         for i in emailArray.indices {
             emailArray[i].isSelected = true
         }
-        delegate.reloadTable()
+        delegate?.reloadTable()
     }
     
     /**
@@ -151,10 +149,10 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         // TODO: performance improvement
         let performDeselectInHeader = self.isAllSelected()
         
-        emailArray[indexPath.row - 1].isSelected = false
+        emailArray[indexPath.row].isSelected = false
         
         if performDeselectInHeader {
-             delegate.reloadTable()
+             delegate?.reloadTable()
         }
     }
     
@@ -165,7 +163,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         for i in emailArray.indices {
             emailArray[i].isSelected = false
         }
-        delegate.reloadTable()
+        delegate?.reloadTable()
     }
     
     /**
@@ -189,30 +187,25 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
     }
     
     func getTotalRows() -> Int {
-        // 1 header + n emails
-        return self.emailArray.count + 1
+        self.emailArray.count
     }
     
     func cellForRow(at indexPath: IndexPath) -> ContactGroupSubSelectionViewModelEmailInfomation {
         guard indexPath.row < self.getTotalRows() else {
-            // TODO: handle error
-            PMLog.D("FatalError: Invalid access")
             return ContactGroupSubSelectionViewModelEmailInfomation.init(email: "", name: "")
         }
         
-        return self.emailArray[indexPath.row - 1] // -1 due to header row
+        return self.emailArray[indexPath.row]
     }
     
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
                                          to status: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?) {
         guard indexPath.row < self.getTotalRows() else {
-            // TODO: handle error
-            PMLog.D("FatalError: Invalid access")
             return
         }
         
-        self.emailArray[indexPath.row - 1].isEncrypted = isEncrypted
-        self.emailArray[indexPath.row - 1].checkEncryptedStatus = status // -1 due to header row
+        self.emailArray[indexPath.row].isEncrypted = isEncrypted
+        self.emailArray[indexPath.row].checkEncryptedStatus = status
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class AccountSettingsTests : BaseTestCase {
 
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
@@ -90,22 +92,20 @@ class AccountSettingsTests : BaseTestCase {
     func testCreateAndDeleteLabelFromAccountSettings() {
         let labelName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
-            .foldersAndLabels()
+            .labels()
             .addLabel()
             .createFolderLabel(labelName)
             .deleteFolderLabel(labelName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(labelName)
     }
 
     func testCreateAndDeleteFolderFromAccountSettings() {
         let folderName = StringUtils().randomAlphanumericString()
         accountSettingsRobot
-            .foldersAndLabels()
+            .folders()
             .addFolder()
             .createFolderLabel(folderName)
             .deleteFolderLabel(folderName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(folderName)
     }
     

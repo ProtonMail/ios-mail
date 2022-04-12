@@ -1,9 +1,9 @@
 //
 //  LabelEditViewController.swift
-//  ProtonMail - Created on 3/1/17.
+//  ProtonMail
 //
 //
-//  Copyright (c) 2019 Proton Technologies AG
+//  Copyright (c) 2021 Proton Technologies AG
 //
 //  This file is part of ProtonMail.
 //
@@ -20,156 +20,397 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
 import MBProgressHUD
+import UIKit
+import ProtonCore_UIFoundations
 
-class LabelEditViewController : UIViewController, AccessibleView {
-    
-    var viewModel : LabelEditViewModel!
+protocol LabelEditUIProtocol: AnyObject {
+    func updateParentFolderName()
+    func checkDoneButtonStatus()
+    func updatePaletteSection(index: Int)
+    func showLoadingHUD()
+    func hideLoadingHUD()
+    func showAlert(message: String)
+    func dismiss()
+}
 
-    
-    fileprivate var selected : IndexPath?
-    fileprivate var selectedFirstLoad : IndexPath?
-    
-    fileprivate var archiveMessage = false
-    
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    
-    @IBOutlet weak var inputContentView: UIView!
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var applyButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
-    
-    @IBOutlet weak var newLabelInput: UITextField!
+final class LabelEditViewController: ProtonMailViewController {
+    @IBOutlet private var tableView: UITableView!
+    private var doneBtn: UIBarButtonItem!
+    private var coordinator: LabelEditCoordinator!
+    private var viewModel: LabelEditVMProtocol!
 
-    var delegate : LabelsViewControllerDelegate?
-    var applyButtonText : String!
-    
+    class func instance() -> LabelEditViewController {
+        let board = UIStoryboard.Storyboard.inbox.storyboard
+        let identifier = "LabelEditViewController"
+        guard let instance = board
+                .instantiateViewController(withIdentifier: identifier) as? LabelEditViewController else {
+            return .init()
+        }
+        if #available(iOS 13.0, *) {
+            instance.isModalInPresentation = true
+        }
+        _ = UINavigationController(rootViewController: instance)
+        return instance
+    }
+
+    func set(viewModel: LabelEditVMProtocol, coordinator: LabelEditCoordinator) {
+        self.viewModel = viewModel
+        self.coordinator = coordinator
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.layer.cornerRadius = 4
-        newLabelInput.delegate = self
-        
-        titleLabel.text = viewModel.title()
-        newLabelInput.placeholder = viewModel.placeHolder()
-        let name = viewModel.name()
-        newLabelInput.text = name
-        
-        applyButtonText = viewModel.rightButtonText()
-        applyButton.setTitle(applyButtonText, for: UIControl.State.disabled)
-        applyButton.setTitle(applyButtonText, for: UIControl.State())
-        cancelButton.setTitle(LocalString._general_cancel_button, for: UIControl.State())
-        
-        applyButton.isEnabled = !name.isEmpty
-        generateAccessibilityIdentifiers()
+        assert(self.viewModel != nil, "Please use set(viewModel:) to initialize")
+        self.setupViews()
+        self.emptyBackButtonTitleForNextView()
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
+
+}
+
+// MARK: UI related
+extension LabelEditViewController {
+    private func setupViews() {
+        self.view.backgroundColor = ColorProvider.BackgroundSecondary
+        self.setupNavigationBar()
+        self.setupTableView()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.newLabelInput.becomeFirstResponder()
-        self.selectedFirstLoad = viewModel.seletedIndex()
+
+    private func setupNavigationBar() {
+        self.title = self.viewModel.viewTitle
+
+        self.setupDoneButton()
+        let discardBtn = Asset.actionSheetClose.image
+            .toUIBarButtonItem(target: self,
+                               action: #selector(self.clickDiscardButton),
+                               style: .plain,
+                               tintColor: ColorProvider.IconNorm,
+                               squareSize: 24,
+                               backgroundColor: nil,
+                               backgroundSquareSize: nil,
+                               isRound: false)
+        self.navigationItem.leftBarButtonItem = discardBtn
+
+        self.navigationController?.navigationBar.barTintColor = ColorProvider.BackgroundNorm
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
     }
-    
-    @IBAction func applyAction(_ sender: AnyObject) {
-        //show loading
-        MBProgressHUD.showAdded(to: view, animated: true)
-        let color = viewModel.color(at: selected?.row ?? 0)
-        viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
-            MBProgressHUD.hide(for: self.view, animated: true)
-            let alert = errorMessage.alertController()
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
-        }, complete: { () -> Void in
+
+    private func setupDoneButton() {
+        self.doneBtn = UIBarButtonItem(title: self.viewModel.rightBarItemTitle,
+                                       style: .plain,
+                                       target: self,
+                                       action: #selector(self.clickDoneButton))
+
+        var attr = FontManager.HeadlineSmall
+        attr[.foregroundColor] = ColorProvider.InteractionNorm
+        self.doneBtn.setTitleTextAttributes(attr, for: .normal)
+
+        var disableAttr = FontManager.HeadlineSmall
+        disableAttr[.foregroundColor] = ColorProvider.InteractionNormDisabled
+        self.doneBtn.setTitleTextAttributes(disableAttr, for: .disabled)
+
+        self.navigationItem.rightBarButtonItem = self.doneBtn
+        self.checkDoneButtonStatus()
+    }
+
+    private func setupTableView() {
+        self.tableView.tableFooterView = UIView(frame: .zero)
+        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
+        self.tableView.register(LabelPaletteCell.defaultNib(), forCellReuseIdentifier: LabelPaletteCell.defaultID())
+        self.tableView.register(SwitchTableViewCell.self)
+        self.tableView.register(LabelNameCell.defaultNib(), forCellReuseIdentifier: LabelNameCell.defaultID())
+        self.tableView.register(SettingsGeneralCell.self)
+        self.tableView.register(LabelInfoCell.defaultNib(), forCellReuseIdentifier: LabelInfoCell.defaultID())
+
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 100
+
+        guard let keyWindow = UIApplication.shared.windows.first else {
+            return
+        }
+
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyWindow.safeAreaInsets.bottom, right: 0)
+    }
+
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: true)
+        coordinator.viewControllerDidDismiss()
+    }
+}
+
+// MARK: Functions
+extension LabelEditViewController {
+    @objc
+    private func clickDoneButton() {
+        self.view.endEditing(true)
+
+        guard self.viewModel.hasNetworking else {
+            self.viewModel.networkingAlertTitle.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
+            return
+        }
+
+        guard !self.viewModel.doesNameDuplicate else {
+            LocalString._folder_name_duplicated_message.alertToast()
+            return
+        }
+
+        self.viewModel.save()
+    }
+
+    @objc
+    private func clickDiscardButton() {
+        self.view.endEditing(true)
+
+        guard self.viewModel.hasChanged else {
             self.dismiss(animated: true, completion: nil)
-            self.delegate?.dismissed()
-        })
+            return
+        }
+
+        let title = "\(LocalString._discard_changes)?"
+        let alert = UIAlertController(title: title,
+                                      message: LocalString._discard_change_message,
+                                      preferredStyle: .alert)
+        let discard = UIAlertAction(title: LocalString._general_discard, style: .destructive) { _ in
+            self.dismiss(animated: true, completion: nil)
+        }
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
+        [discard, cancelAction].forEach(alert.addAction)
+        self.navigationController?.present(alert, animated: true, completion: nil)
     }
-    
-    @IBAction func cancelAction(_ sender: AnyObject) {
+
+    private func clickDeleteButton() {
+        guard self.viewModel.hasNetworking else {
+            self.viewModel.networkingAlertTitle.alertToastBottom(subtitle: LocalString._please_connect_and_retry)
+            return
+        }
+
+        let title = "\(self.viewModel.deleteTitle)?"
+        let alert = UIAlertController(title: title, message: self.viewModel.deleteMessage, preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { _ in
+            self.deleteLabel()
+        }
+
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
+        [deleteAction, cancelAction].forEach(alert.addAction)
+        self.navigationController?.present(alert, animated: true, completion: nil)
+    }
+
+    private func showParentFolderSheet() {
+        self.coordinator.goToParentSelect()
+    }
+
+    private func deleteLabel() {
+        self.viewModel.delete()
+    }
+}
+
+// MARK: LabelEditUIProtocol
+extension LabelEditViewController: LabelEditUIProtocol {
+    func updateParentFolderName() {
+        guard let section = self.viewModel.section.firstIndex(of: .folderOptions) else {
+            return
+        }
+        let path = IndexPath(row: 0, section: section)
+        guard let cell = self.tableView.cellForRow(at: path) as? SettingsGeneralCell else {
+            return
+        }
+        cell.configure(right: self.viewModel.parentLabelName)
+    }
+
+    func checkDoneButtonStatus() {
+        self.doneBtn.isEnabled = !self.viewModel.shouldDisableDoneButton
+    }
+
+    func updatePaletteSection(index: Int) {
+        self.tableView.beginUpdates()
+        let section = IndexSet(integer: index)
+        self.tableView.reloadSections(section, with: .automatic)
+        self.tableView.endUpdates()
+    }
+
+    func showLoadingHUD() {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+    }
+
+    func hideLoadingHUD() {
+        MBProgressHUD.hide(for: self.view, animated: true)
+    }
+
+    func showAlert(message: String) {
+        message.alertToastBottom()
+    }
+
+    func dismiss() {
         self.dismiss(animated: true, completion: nil)
-        delegate?.dismissed()
-    }
-    
-    func dismissKeyboard() {
-        if (self.newLabelInput != nil) {
-            newLabelInput.resignFirstResponder()
-        }
     }
 }
 
-extension LabelEditViewController : UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dismissKeyboard()
-        return false
+// MARK: TableView
+extension LabelEditViewController: UITableViewDelegate, UITableViewDataSource {
+    // MARK: Section header
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.viewModel.section.count
     }
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let text = textField.text! as NSString
-        let changedText = text.replacingCharacters(in: range, with: string)
-        if changedText.isEmpty {
-            applyButton.isEnabled = false
-        } else {
-            applyButton.isEnabled = true
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch self.viewModel.section[section] {
+        case .palette, .colorInherited:
+            return PMHeaderView(title: LocalString._select_colour)
+        default:
+            return PMHeaderView(title: "")
         }
-        return true
     }
-}
 
-// MARK: UICollectionViewDataSource
-extension LabelEditViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return self.viewModel.section[section].headerHeight
+    }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Group style has extra 20 px of footer
+        // UI trick, 0 has no effect
+        return 0.01
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.colorCount()
+
+    // MARK: Cells
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.section[section].numberOfRows
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelColorCell", for: indexPath)
-        let color = viewModel.color(at: indexPath.row)
-        cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
-        cell.layer.cornerRadius = 17
-        
-        if selected == nil {
-            if indexPath.row == selectedFirstLoad?.row {
-                cell.layer.borderWidth = 4
-                cell.layer.borderColor = UIColor.darkGray.cgColor
-                self.selected = indexPath
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        switch self.viewModel.section[indexPath.section] {
+        case .name:
+            return self.setupNameCell(indexPath: indexPath)
+        case .folderOptions:
+            if indexPath.row == 0 {
+                return self.setupParentFolder(indexPath: indexPath)
+            } else {
+                return self.setupNoficationCell(indexPath: indexPath)
             }
+        case .colorInherited:
+            return self.setupLabelInfoCell(indexPath: indexPath)
+        case .palette:
+            return self.setupPaletteCell(indexPath: indexPath)
+        case .delete:
+            return self.setupDeleteCell()
         }
+    }
+
+    private func setupNameCell(indexPath: IndexPath) -> LabelNameCell {
+        let identifier = LabelNameCell.defaultID()
+        guard let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? LabelNameCell else {
+            return .init()
+        }
+        cell.config(name: self.viewModel.name, type: self.viewModel.type, delegate: self)
+        cell.addSeparator(padding: 0)
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let index = selected {
-            let oldCell = collectionView.cellForItem(at: index)
-            oldCell?.layer.borderWidth = 0
+
+    private func setupParentFolder(indexPath: IndexPath) -> SettingsGeneralCell {
+        let identifier = SettingsGeneralCell.CellID
+        guard let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsGeneralCell else {
+            return .init()
         }
-        
-        let newCell = collectionView.cellForItem(at: indexPath)
-        newCell?.layer.borderWidth = 4
-        newCell?.layer.borderColor = UIColor.darkGray.cgColor
-        self.selected = indexPath
-        
-        self.dismissKeyboard()
+
+        cell.configure(left: LocalString._parent_folder)
+        cell.configure(right: self.viewModel.parentLabelName)
+        cell.addSeparator(padding: 0)
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0,left: 0,bottom: 0,right: 0)
+
+    private func setupNoficationCell(indexPath: IndexPath) -> SwitchTableViewCell {
+        let identifier = SwitchTableViewCell.CellID
+        guard let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SwitchTableViewCell else {
+            return .init()
+        }
+
+        cell.configCell(LocalString._general_notifications,
+                        bottomLine: "",
+                        status: self.viewModel.notify) { _, newStatus, feedback in
+            self.viewModel.update(notify: newStatus)
+            feedback(true)
+        }
+        cell.selectionStyle = .none
+        cell.addSeparator(padding: 0)
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
-        return CGSize(width: 34, height: 34)
+
+    private func setupPaletteCell(indexPath: IndexPath) -> LabelPaletteCell {
+        let identifier = LabelPaletteCell.defaultID()
+        guard let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? LabelPaletteCell else {
+            return .init()
+        }
+        cell.selectionStyle = .none
+        cell.config(colors: self.viewModel.colors,
+                    selected: self.viewModel.iconColor,
+                    type: self.viewModel.type,
+                    delegate: self)
+        cell.addSeparator(padding: 0)
+        return cell
     }
+
+    private func setupLabelInfoCell(indexPath: IndexPath) -> LabelInfoCell {
+        let identifier = LabelInfoCell.defaultID()
+        guard let cell = self.tableView
+                .dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? LabelInfoCell else {
+            return .init()
+        }
+        let info = LocalString._color_inherited_from_parent_folder
+        let icon = Asset.icInfoCircle.image
+        cell.config(info: info, icon: icon, cellHeight: 88)
+        cell.addSeparator(padding: 0)
+        return cell
+    }
+
+    private func setupDeleteCell() -> UITableViewCell {
+        var cell = self.tableView.dequeueReusableCell(withIdentifier: "deleteCell")
+        if cell == nil {
+            cell = UITableViewCell(style: .default, reuseIdentifier: "deleteCell")
+        }
+
+        guard let instance = cell else { return .init() }
+
+        var attr = FontManager.Default
+        attr[.foregroundColor] = ColorProvider.NotificationError
+        instance.textLabel?.attributedText = self.viewModel.deleteTitle.apply(style: attr)
+        instance.textLabel?.textAlignment = .center
+        instance.addSeparator(padding: 0)
+        instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        instance.accessibilityIdentifier = "LabelEditViewController.deleteCell"
+        return instance
+    }
+
+    // MARK: didSelectRow
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch self.viewModel.section[indexPath.section] {
+        case .name, .palette, .colorInherited:
+            return
+        case .folderOptions:
+            if indexPath.row == 0 {
+                self.showParentFolderSheet()
+            }
+        case .delete:
+            self.clickDeleteButton()
+        }
+    }
+
 }
 
+extension LabelEditViewController: LabelPaletteCellDelegate, LabelNameDelegate {
+    func nameChanged(name: String) {
+        self.viewModel.update(name: name)
+    }
+
+    func selectColor(hex: String, index: Int) {
+        self.viewModel.update(iconColor: hex)
+    }
+}

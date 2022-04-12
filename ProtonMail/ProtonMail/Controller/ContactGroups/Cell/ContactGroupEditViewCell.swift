@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 enum ContactGroupEditViewCellState
@@ -28,14 +28,13 @@ enum ContactGroupEditViewCellState
     case detailView
     case editView
     case selectEmailView
-    
     case none
 }
 
 struct ContactGroupEditViewCellColor
 {
     static let deselected = (text: UIColor.white,
-                      background: UIColor(hexString: "9497ce", alpha: 1.0))
+                             background: ColorProvider.BrandNorm)
     static let selected = (text: UIColor.gray,
                     background: UIColor.white)
 }
@@ -50,7 +49,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     var emailID: String = ""
     var name: String = ""
     var email: String = ""
-    var shortName: String = ""
     var state: ContactGroupEditViewCellState = .none
     
     var viewModel: ContactGroupEditViewModel?
@@ -88,8 +86,6 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
         } else {
             guard viewModel != nil else {
                 // TODO: handle this
-//                fatalError("In editing mode, view model must be present")
-                PMLog.D("In editing mode, view model must be present")
                 return
             }
         }
@@ -112,12 +108,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     }
     
     private func prepareShortName() {
-        if name.count > 0 {
-            shortName = String(name[name.startIndex])
-        } else {
-            shortName = ""
-        }
-        shortNameLabel.text = self.shortName
+        shortNameLabel.text = name.initials()
         
         shortNameLabel.textColor = ContactGroupEditViewCellColor.deselected.text
         shortNameLabel.backgroundColor = ContactGroupEditViewCellColor.deselected.background

@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import CoreServices
 import PromiseKit
 
 protocol FileImporter {

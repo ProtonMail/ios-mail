@@ -24,82 +24,20 @@
 import Foundation
 import PromiseKit
 import AwaitKit
+import ProtonCore_UIFoundations
 
 protocol AttachmentProvider {
-    var alertAction: UIAlertAction { get }
+    var actionSheetItem: PMActionSheetItem { get }
     var controller: AttachmentController? { get }
 }
 
 
-protocol AttachmentController: class {
+protocol AttachmentController: AnyObject {
     func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
     func error(_ description: String)
+    func error(title: String, description: String)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
     
     @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
     var barItem : UIBarButtonItem? {get}
 }
-
-extension AttachmentsTableViewController {
-    func error(_ description: String) {
-        self.showErrorAlert(description)
-        self.delegate?.attachments(self, error: description)
-    }
-    
-    func sizeError(_ size: Int) {
-        self.showSizeErrorAlert(size)
-        self.delegate?.attachments(self, didReachedSizeLimitation: size)
-    }
-    
-    func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
-        return Promise { [weak self] seal in
-            guard let self = self else {
-                seal.fulfill_()
-                return
-            }
-            self.processQueue.addOperation { [weak self] in
-                guard let self = self else {
-                    seal.fulfill_()
-                    return
-                }
-                let size = fileData.contents.dataSize
-                let usedSpace = self.user?.userinfo.usedSpace ?? 0
-                let maxSpace = self.user?.userinfo.maxSpace ?? 0
-                if (usedSpace + Int64(size)) >= maxSpace ||
-                    self.user?.isStorageExceeded == true {
-                    DispatchQueue.main.async {
-                        LocalString._storage_exceeded.alertToast(view: self.view)
-                    }
-                    return
-                }
-                guard size < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
-                    self.sizeError(0)
-                    PMLog.D(" Size too big Orig: \(size) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                    seal.fulfill_()
-                    return
-                }
-            
-                guard self.message.managedObjectContext != nil else {
-                    PMLog.D(" Error during copying size incorrect")
-                    self.error(LocalString._system_cant_copy_the_file)
-                    seal.fulfill_()
-                    return
-                }
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                
-                let attachment = try? AwaitKit.await(fileData.contents.toAttachment(self.message, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata))
-                guard let att = attachment else {
-                    PMLog.D(" Error during copying size incorrect")
-                    self.error(LocalString._cant_copy_the_file)
-                    return
-                }
-                self.user?.usedSpace(plus: att.fileSize.int64Value)
-                self.updateAttachments()
-                self.user?.usedSpace(plus: Int64(size))
-                self.delegate?.attachments(self, didPickedAttachment: att)
-                seal.fulfill_()
-            }
-        }
-    }
-}
-

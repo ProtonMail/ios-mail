@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "PushServiceDev";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Необхідно для вкладання медіа до електронних листів.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Необхідно для вкладання фотографій до електронних листів.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Використовується для отримання доступу до адрес електронної пошти контактів пристрою, для можливості їх використання при написанні повідомлення чи при ручному вивантаженні контактів пристрою до вашого облікового запису. Контактні дані не завантажуються на наші сервери без явної дії для цього.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Дає змогу швидко й безпечно відмикати програму.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Необхідно для збереження вкладених зображень до бібліотеки фотографій.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Необхідно для вкладання фотографій до електронних листів.";
+

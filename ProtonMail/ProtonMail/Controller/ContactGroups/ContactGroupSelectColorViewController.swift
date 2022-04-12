@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import ProtonCore_UIFoundations
 import UIKit
 
 class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModelProtocol {
@@ -28,6 +28,7 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     
     var viewModel: ContactGroupSelectColorViewModel!
     @IBOutlet weak var collectionView: UICollectionView!
+    private var doneButton: UIBarButtonItem!
 
     func set(viewModel: ContactGroupSelectColorViewModel) {
         self.viewModel = viewModel
@@ -35,12 +36,40 @@ class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = LocalString._contact_groups_select_color
+        view.backgroundColor = ColorProvider.BackgroundNorm
+        collectionView.backgroundColor = ColorProvider.BackgroundNorm
+        title = LocalString._contact_groups_edit_avartar
+
+        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
+                                        style: UIBarButtonItem.Style.plain,
+                                        target: self, action: #selector(self.didTapDoneButton))
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
+        self.doneButton.setTitleTextAttributes(attributes, for: .normal)
+        self.navigationItem.rightBarButtonItem = doneButton
+
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+
+    @objc
+    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+        if viewModel.havingUnsavedChanges {
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc
+    private func didTapDoneButton() {
         viewModel.save()
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

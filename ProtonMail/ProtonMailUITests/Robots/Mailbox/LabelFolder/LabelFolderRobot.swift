@@ -6,22 +6,21 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let labelNavBarButtonIdentifier = "UINavigationItem.topLabelButton"
-fileprivate let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton"
-fileprivate let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
-fileprivate let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
+import pmtest
+
+fileprivate struct id {
+    static let labelNavBarButtonIdentifier = "UINavigationItem.topLabelButton"
+    static let folderNavBarButtonIdentifier = "UINavigationItem.topFolderButton"
+    static let trashNavBarButtonIdentifier = "UINavigationItem.topTrashButton"
+    static let moreNavBarButtonIdentifier = "UINavigationItem.topMoreButton"
+}
 
 /*
  LabelFolderRobot class implements MailboxRobotInterface, contains actions and verifications for Labels or Folders mailbox functionality.
  */
 class LabelFolderRobot : MailboxRobotInterface {
 
-    var verify: Verify! = nil
-    
-    override init() {
-        super.init()
-        verify = Verify()
-    }
+    var verify = Verify()
     
     /**
      * Contains all the validations that can be performed by [LabelFolderRobot].

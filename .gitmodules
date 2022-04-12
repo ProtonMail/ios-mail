@@ -1,6 +1,3 @@
 [submodule "DOMPurify"]
 	path = DOMPurify
 	url = https://github.com/cure53/DOMPurify
-[submodule "Networking"]
-	path = Networking
-	url = https://github.com/ProtonMail/ios-networking

@@ -22,20 +22,12 @@
 
 
 import Foundation
-import PMCommon
+import ProtonCore_Networking
 
 final class MessageCountResponse : Response {
     var counts : [[String : Any]]?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.counts = response?["Counts"] as? [[String : Any]]
-        return true
-    }
-}
-
-final class MessageResponse : Response {
-    var message : [String : Any]?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.message = response?["Message"] as? [String : Any]
         return true
     }
 }

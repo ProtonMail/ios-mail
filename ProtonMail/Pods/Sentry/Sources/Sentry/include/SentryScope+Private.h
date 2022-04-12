@@ -1,17 +1,23 @@
 #import <Foundation/Foundation.h>
 
 #import "SentryScope.h"
+#import "SentryScopeObserver.h"
+
+@class SentryAttachment;
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^SentryScopeListener)(SentryScope *scope);
+@interface
+SentryScope (Private)
 
-@interface SentryScope (Private)
+@property (atomic, strong, readonly) NSArray<SentryAttachment *> *attachments;
 
-@property (nonatomic, retain) NSMutableArray<SentryScopeListener> *listeners;
+@property (atomic, strong) SentryUser *_Nullable userObject;
 
-- (void)addScopeListener:(SentryScopeListener)listener;
-- (void)notifyListeners;
+@property (atomic, strong)
+    NSMutableDictionary<NSString *, NSDictionary<NSString *, id> *> *contextDictionary;
+
+- (void)addObserver:(id<SentryScopeObserver>)observer;
 
 @end
 

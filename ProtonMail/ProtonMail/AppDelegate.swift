@@ -22,13 +22,14 @@
 
 
 import UIKit
-import SWRevealViewController
-import AFNetworking
-import PMKeymaker
 import UserNotifications
 import Intents
-import PMCommon
-import PMPayments
+import SideMenuSwift
+import ProtonCore_Keymaker
+import ProtonCore_Networking
+import ProtonCore_Payments
+import ProtonCore_Services
+import ProtonCore_UIFoundations
 
 let sharedUserDataService = UserDataService(api: PMAPIService.unauthorized)
 
@@ -37,36 +38,45 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
 }
 
-// MARK: - this is workaround to track when the SWRevealViewController first time load
-extension SWRevealViewController {
+// MARK: - this is workaround to track when the SideMenuController first time load
+extension SideMenuController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "sw_rear") {
-            if let menuViewController =  segue.destination as? MenuViewController {
-                let usersManager = sharedServices.get(by: UsersManager.self)
-                let viewModel = MenuViewModelImpl(usersManager: usersManager)
-                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
-                menu.start()
+        guard let segue = segue as? SideMenuSegue, let identifier = segue.identifier else {
+            return
+        }
+        switch identifier {
+        case contentSegueID:
+            segue.contentType = .content
+            // Show skeleton view at the begining
+        case menuSegueID:
+            segue.contentType = .menu
+            guard let menuVC = segue.destination as? MenuViewController else {
+                return
             }
-        } else if (segue.identifier == "sw_front") {
-            if let navigation = segue.destination as? UINavigationController {
-                if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
-                    sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let usersManager = sharedServices.get(by: UsersManager.self)
-                    let user = usersManager.firstUser!
-                    let viewModel = MailboxViewModelImpl(label: .inbox,
-                                                         userManager: user,
-                                                         usersManager: usersManager,
-                                                         pushService: sharedServices.get(),
-                                                         coreDataService: sharedServices.get())
-                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
-                    mailbox.start()
-                }
-            }
+            let usersManager = sharedServices.get(by: UsersManager.self)
+            let pushService = sharedServices.get(by: PushNotificationService.self)
+            let coreDataService = sharedServices.get(by: CoreDataService.self)
+            let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+            let queueManager = sharedServices.get(by: QueueManager.self)
+            let viewModel = MenuViewModel(usersManager: usersManager, userStatusInQueueProvider: queueManager, coreDataContextProvider: coreDataService)
+            viewModel.set(delegate: menuVC)
+            let menuWidth = MenuViewController.calcProperMenuWidth()
+            let coordinator = MenuCoordinator(services: sharedServices,
+                                              pushService: pushService,
+                                              coreDataService: coreDataService,
+                                              lastUpdatedStore: lateUpdatedStore,
+                                              usersManager: usersManager,
+                                              vc: menuVC,
+                                              vm: viewModel,
+                                              menuWidth: menuWidth)
+
+            coordinator.start()
+        default:
+            break
         }
     }
 }
@@ -77,20 +87,22 @@ extension AppDelegate: UserDataServiceDelegate {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
-            (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow)
+            (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow(.form))
             
             for session in sessions where session != oneToStay {
-                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                    PMLog.D(error.localizedDescription)
-                }
+                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { _ in }
             }
         } else {
-            self.coordinator.go(dest: .signInWindow)
+            self.coordinator.go(dest: .signInWindow(.form))
         }
     }
 }
 
 extension AppDelegate: APIServiceDelegate {
+    var locale: String {
+        return LanguageManager.currentLanguageCode()
+    }
+
     func isReachable() -> Bool {
         #if !APP_EXTENSION
         return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
@@ -100,7 +112,7 @@ extension AppDelegate: APIServiceDelegate {
     }
 
     func onUpdate(serverTime: Int64) {
-        Crypto.updateTime(serverTime)
+        Crypto.updateTime(serverTime, processInfo: userCachedStatus)
     }
 
     var appVersion: String {
@@ -141,35 +153,45 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
+        SystemLogger.log(message: message, category: .appLifeCycle)
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
         let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
+        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
+        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        sharedServices.add(QueueManager.self, for: queueManager)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         return true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        #if DEBUG 
-        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-        PMAPIService.noTrustKit = true
+        SystemLogger.log(message: #function, category: .appLifeCycle)
+        #if DEBUG
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
+        Analytics.shared.setup(isInDebug: true, isProduction: true)
+        #else
+        
+        #if Enterprise
+        Analytics.shared.setup(isInDebug: false, isProduction: false)
+        #else
+        Analytics.shared.setup(isInDebug: false, isProduction: true)
         #endif
-
-        TrustKitWrapper.start(delegate: self)
-        Analytics.shared.setup()
+        
+        #endif
+        
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-        
-        ///TODO::fixme refactor
-        shareViewModelFactoy = ViewModelFactoryProduction()
-        sharedVMService.cleanLegacy()
-        
-        AFNetworkActivityIndicatorManager.shared().isEnabled = true
+
+        configureAppearance()
         
         //start network notifier
         sharedInternetReachability.startNotifier()
@@ -182,15 +204,15 @@ extension AppDelegate: UIApplicationDelegate {
         //setup language
         LanguageManager.setupCurrentLanguage()
 
+        if #available(iOS 15.0, *) {
+            UITableView.appearance().sectionHeaderTopPadding = .zero
+        }
+
         let pushService : PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
-        
-        StoreKitManager.default.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
-        StoreKitManager.default.subscribeToPaymentQueue()
-        StoreKitManager.default.updateAvailableProductsList()
-        
+
         #if DEBUG
         NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
@@ -219,15 +241,13 @@ extension AppDelegate: UIApplicationDelegate {
 //            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
         }
 
-        if #available(iOS 15.0, *) {
-            setupNavigationBarAppearance()
-            setupTableViewHeader()
-        }
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
             self.coordinator.start()
         }
+
+        UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
         setupUITestsMocks()
         #endif
@@ -240,27 +260,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.checkOrientation(window?.rootViewController)
-    }
-    
-    func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
-            return UIInterfaceOrientationMask.all
-        } else if let nav = viewController as? UINavigationController {
-            if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
-                return UIInterfaceOrientationMask.portrait
-            }
-            return UIInterfaceOrientationMask.all
-        } else {
-            if let sw = viewController as? SWRevealViewController {
-                if let nav = sw.frontViewController as? UINavigationController {
-                    if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
-                        return UIInterfaceOrientationMask.portrait
-                    }
-                }
-            }
-            return .all
-        }
+        return .portrait
     }
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
@@ -313,35 +313,29 @@ extension AppDelegate: UIApplicationDelegate {
         keymaker.updateAutolockCountdownStart()
         
         let users: UsersManager = sharedServices.get()
+        let queueManager: QueueManager = sharedServices.get()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask {
-            PMLog.D("Background Task Timed Out")
+        taskID = application.beginBackgroundTask { }
+        let delayedCompletion: ()->Void = {
             application.endBackgroundTask(taskID)
             taskID = .invalid
         }
-        let delayedCompletion: ()->Void = {
-            delay(3) {
-                PMLog.D("End Background Task")
-                application.endBackgroundTask(taskID)
-                taskID = .invalid
-            }
-        }
         
         if let user = users.firstUser {
-            user.messageService.backgroundTimeRemaining = {
-                application.backgroundTimeRemaining
-            }
             user.messageService.purgeOldMessages()
-            user.messageService.cleanOldAttachment()
+            user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
-            user.messageService.backgroundFetch {
+
+            queueManager.backgroundFetch(remainingTime: {
+                application.backgroundTimeRemaining
+            }, notify: {
                 delayedCompletion()
-            }
+            })
         } else {
             delayedCompletion()
         }
-        PMLog.D("Enter Background")
+        BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
@@ -352,7 +346,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         return true
     }
@@ -360,54 +354,55 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
         let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let mainContext = coreDataService.mainManagedObjectContext
-        mainContext.performAndWait {
-            let _ = mainContext.saveUpstreamIfNeeded()
-        }
         
-        let backgroundContext = coreDataService.backgroundManagedObjectContext
-        backgroundContext.performAndWait {
-            let _ = backgroundContext.saveUpstreamIfNeeded()
+        let rootContext = coreDataService.rootSavingContext
+        rootContext.performAndWait {
+            let _ = rootContext.saveUpstreamIfNeeded()
         }
+        BackgroundTimer().willEnterBackgroundOrTerminate()
     }
-    
+
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
-        users.users.forEach { (user) in
-            user.messageService.unBlockQueueAction()
-            user.messageService.backgroundTimeRemaining = nil
+        let queueManager = sharedServices.get(by: QueueManager.self)
+        if users.firstUser != nil {
+            queueManager.enterForeground()
+            users.firstUser?.refreshFeatureFlags()
         }
     }
     
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
-        let signInManager = SignInManagerProvider()
-        let unlockManager = UnlockManagerProvider()
-        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
-            completionHandler(.noData)
-            return
-        }
-        let usersManager: UsersManager = sharedServices.get()
-        usersManager.firstUser?.messageService.backgroundFetch(notify: {
-            completionHandler(.newData)
-        })
-        //HACK: Call this after n seconds to prevent app got killed.
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-            completionHandler(.newData)
-        }
+//        let signInManager = SignInManagerProvider()
+//        let unlockManager = UnlockManagerProvider()
+//        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
+//            completionHandler(.noData)
+//            return
+//        }
+//
+//        let queueManager = sharedServices.get(by: QueueManager.self)
+//        queueManager.backgroundFetch(remainingTime: {
+//            application.backgroundTimeRemaining
+//        }, notify: {
+//            completionHandler(.newData)
+//        })
+        completionHandler(.noData)
     }
     
     // MARK: Notification methods
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Analytics.shared.error(message: .notificationError, error: error)
-    }
-
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        PMLog.D(deviceToken.stringFromToken())
         let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+    }
+
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        PushUpdater().update(with: userInfo) {
+            completionHandler(.newData)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -475,7 +470,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
@@ -483,15 +478,6 @@ extension AppDelegate: UIApplicationDelegate {
 
 extension AppDelegate : UsersManagerDelegate {
 
-    func migrating() {
-        
-    }
-    
-    func session() {
-        
-    }
-    
-    
 }
 
 extension AppDelegate : UnlockManagerDelegate {
@@ -523,7 +509,7 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func cleanAll() {
         ///
-        sharedServices.get(by: UsersManager.self).clean()
+        sharedServices.get(by: UsersManager.self).clean().cauterize()
         keymaker.wipeMainKey()
         keymaker.mainKeyExists()
     }
@@ -533,26 +519,26 @@ extension AppDelegate : UnlockManagerDelegate {
     }
 }
 
+// MARK: Appearance
 extension AppDelegate {
+    private func configureAppearance() {
+        UINavigationBar.appearance().backIndicatorImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "back-arrow")?.withRenderingMode(.alwaysTemplate)
+        if #available(iOS 15.0, *) {
+            setupNavigationBarAppearance()
+        }
+    }
+
     @available(iOS 15.0, *)
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
-        let navigationBarTitleFont = Fonts.h2.light
-        appearance.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
+        appearance.backgroundColor = ColorProvider.BackgroundNorm
+        appearance.shadowColor = .clear
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
-    }
-    
-    @available(iOS 15.0, *)
-    private func setupTableViewHeader() {
-        UITableView.appearance().sectionHeaderTopPadding = 0
     }
 }
 

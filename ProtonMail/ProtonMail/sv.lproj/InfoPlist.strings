@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "PushServiceDev";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Krävs för att bifoga media till e-postmeddelandet.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Krävs för att bifoga foton till e-postmeddelandet.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Används för att komma åt e-postadresser för kontakter som sparats på enheten så att de kan användas när du skriver ett meddelande eller när du manuellt laddar upp enhetskontakterna till ditt konto. Kontaktuppgifter laddas inte upp till våra servrar utan en uttrycklig godkännande åtgärd för att göra det.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Lets you quickly and securely unlock your application.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Krävs för att spara bildbilagor till fotobiblioteket.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Krävs för att bifoga foton till e-postmeddelandet.";
+

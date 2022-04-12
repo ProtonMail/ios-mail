@@ -105,6 +105,7 @@ handleSignal(int sigNum, siginfo_t *signalInfo, void *userContext)
 
         sentrycrashcm_handleException(crashContext);
         sentrycrashmc_resumeEnvironment();
+        sentrycrash_async_backtrace_decref(g_stackCursor.async_caller);
     }
 
     SentryCrashLOG_DEBUG("Re-raising signal for regular handlers to catch.");
@@ -174,6 +175,13 @@ installSignalHandler()
                 sigaction(fatalSignals[i], &g_previousSignalHandlers[i], NULL);
             }
             goto failed;
+        } else {
+            // The previous handler was `SIG_IGN` -- restore the original handler so
+            // we don't override the `SIG_IGN` and report a crash when the application
+            // would have ignored the signal otherwise.
+            if (g_previousSignalHandlers[i].sa_handler == SIG_IGN) {
+                sigaction(fatalSignals[i], &g_previousSignalHandlers[i], NULL);
+            }
         }
     }
     SentryCrashLOG_DEBUG("Signal handlers installed.");

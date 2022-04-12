@@ -5,18 +5,35 @@
 #import "SentryDefines.h"
 #import "SentryEvent.h"
 #import "SentryException.h"
+#import "SentryHub.h"
 #import "SentryLog.h"
+#import "SentrySDK+Private.h"
 #import "SentrySDK.h"
 #import "SentryThread.h"
 
+@interface
+SentryCrashReportSink ()
+
+@property (nonatomic, strong) SentryInAppLogic *inAppLogic;
+
+@end
+
 @implementation SentryCrashReportSink
+
+- (instancetype)initWithInAppLogic:(SentryInAppLogic *)inAppLogic
+{
+    if (self = [super init]) {
+        self.inAppLogic = inAppLogic;
+    }
+    return self;
+}
 
 - (void)handleConvertedEvent:(SentryEvent *)event
                       report:(NSDictionary *)report
                  sentReports:(NSMutableArray *)sentReports
 {
     [sentReports addObject:report];
-    [SentrySDK captureEvent:event];
+    [SentrySDK captureCrashEvent:event];
 }
 
 - (void)filterReports:(NSArray *)reports
@@ -27,7 +44,8 @@
         NSMutableArray *sentReports = [NSMutableArray new];
         for (NSDictionary *report in reports) {
             SentryCrashReportConverter *reportConverter =
-                [[SentryCrashReportConverter alloc] initWithReport:report];
+                [[SentryCrashReportConverter alloc] initWithReport:report
+                                                        inAppLogic:self.inAppLogic];
             if (nil != [SentrySDK.currentHub getClient]) {
                 SentryEvent *event = [reportConverter convertReportToEvent];
                 if (nil != event) {
@@ -40,7 +58,7 @@
                                           @"misconfiguration, make sure you set the client with "
                                           @"[SentrySDK.currentHub bindClient] before calling "
                                           @"startCrashHandlerWithError:."
-                                 andLevel:kSentryLogLevelError];
+                                 andLevel:kSentryLevelError];
             }
         }
         if (onCompletion) {

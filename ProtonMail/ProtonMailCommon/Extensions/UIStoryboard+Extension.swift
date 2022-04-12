@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UIStoryboard {
     /// The raw value must match the restorationIdentifier for the initialViewController
@@ -32,6 +32,9 @@ extension UIStoryboard {
         case composer = "Composer"
         case message = "Message"
         case alert = "Alerts"
+        case settings = "Settings"
+        case contact = "Contact"
+        case accountManager = "AccountManager"
         var restorationIdentifier: String {
             return rawValue
         }

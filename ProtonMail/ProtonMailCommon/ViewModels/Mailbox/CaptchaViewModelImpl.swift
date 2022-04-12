@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_Services
 
 final class CaptchaViewModelImpl : HumanCheckViewModel {
     
@@ -35,7 +35,7 @@ final class CaptchaViewModelImpl : HumanCheckViewModel {
         let api = GetHumanCheckToken()
         self.apiService.exec(route: api) { (task, response: GetHumanCheckResponse) in
             if let error = response.error {
-                complete(nil, error)
+                complete(nil, error.toNSError)
             } else {
                 complete(response.token, nil)
             }
@@ -44,8 +44,8 @@ final class CaptchaViewModelImpl : HumanCheckViewModel {
     
     override func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         let api = HumanCheckRequest(type: type, token: token)
-        self.apiService.exec(route: api) { (task, response) in
-            complete(response.error)
+        self.apiService.exec(route: api) { (task, response: Response) in
+            complete(response.error?.toNSError)
         }
     }
 }

@@ -20,27 +20,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
+import ProtonCore_UIFoundations
 
 class ContactSectionHeadView: UITableViewHeaderFooterView {
-    @IBOutlet weak var headerLabel: UILabel!
-    @IBOutlet weak var signMark: UIImageView!
+    @IBOutlet var headerLabel: UILabel!
+    @IBOutlet var signMark: UIImageView!
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
-    func ConfigHeader(title : String, signed : Bool) {
-        headerLabel.text = title
+    func configHeader(title: String, signed: Bool) {
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
+        headerLabel.attributedText = title.apply(style: FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.InteractionNorm)) 
         signMark.isHidden = !signed
-        
-        //disable for now 
+
+        // disable for now
         signMark.isHidden = true
     }
-
 }

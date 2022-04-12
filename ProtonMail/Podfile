@@ -1,46 +1,65 @@
+source 'https://cdn.cocoapods.org/'
+
+def proton_core_path
+  "git@gitlab.protontech.ch:apple/shared/protoncore.git"
+end
+
+# proton url is set to env variable because the core module podspecs expect it.
+# it's part of transition into open sourced core modules and it will not be necessary when they are on github
+ENV['PROTON_CORE_GIT_URL'] = proton_core_path
+source proton_core_path
+
 platform :ios, '11.0'
 inhibit_all_warnings!
 use_frameworks!
 
+def proton_core_version
+  '3.5.2'
+end
+
 def pm_shared_pods
-  pod 'PMCrypto', :git => 'git@gitlab.protontech.ch:apple/shared/pmcrypto.git', :tag => '2.1.10'
-  # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
-  pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
-  pod 'PMAuthentication', :git => 'git@gitlab.protontech.ch:apple/shared/pmauthentication.git', :branch => 'develop', :testspecs => ['Tests']
-  pod 'PMKeymaker', :git => 'git@gitlab.protontech.ch:apple/shared/pmkeymaker.git', :branch => 'develop'
+  pod 'Alamofire', '5.4.4'
+  pod 'ProtonCore-Networking/Alamofire', proton_core_version
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-SRP', proton_core_version
+  pod 'ProtonCore-Authentication/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-Payments/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-PaymentsUI/UsingCrypto+Alamofire', proton_core_version
 end
 
 def common_pods
   pm_shared_pods
-
-  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
+  pod 'ProtonCore-UIFoundations', proton_core_version
+  pod 'ProtonCore-Common/Alamofire', proton_core_version
+  pod 'ProtonCore-Authentication-KeyGeneration/UsingCrypto+Alamofire', proton_core_version
   pod 'Groot', '3.0.1'
-  pod 'AFNetworking', '4.0.1'
-  pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
   pod 'Masonry', '1.1.0'
-  pod 'UIColor+Hex', '1.0.1'
-  pod 'MCSwipeTableViewCell', '~> 2.1.4'
-  pod 'PromiseKit', '~> 6.0'
-  pod 'AwaitKit', '~> 5.0.0'
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.2'
+  pod 'PromiseKit', '6.13.1'
+  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
+  pod 'MCSwipeTableViewCell', '2.1.4'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'master'
-  pod 'PMCommon', :path => '../Networking', :testspecs => ['Tests']
+  pod 'SwiftGen', '~> 6.0'
+  pod 'SwiftSoup', '~> 2.3'
 end
 
 def pm_pods
   common_pods
-
-  pod 'SWRevealViewController', '2.3.0'
+  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :branch =>  'main'
   pod 'DKImagePickerController/PhotoGallery', '~> 4.2.0'
-  pod 'PMChallenge', :git => 'git@gitlab.protontech.ch:apple/shared/pmchallenge.git', :tag => '0.0.3'
-  pod 'PMPayments', :git => 'git@gitlab.protontech.ch:apple/shared/pmpayments.git', :branch => 'develop'
-  pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
-  pod 'PMLog', :git => 'git@gitlab.protontech.ch:apple/shared/pmlog.git', :branch => 'master'
-  pod 'PMUIFoundations', :git => 'git@gitlab.protontech.ch:apple/shared/PMUIFoundations.git', :branch => 'master'
-  pod 'PMHumanVerification', :git => 'git@gitlab.protontech.ch:apple/shared/pmhumanverification.git', :branch => 'Develop'
-  pod 'PMForceUpgrade', :git => 'git@gitlab.protontech.ch:apple/shared/pmforceupgrade.git', :branch => 'develop'
+  pod 'ProtonCore-Challenge', proton_core_version
+  pod 'ProtonCore-CoreTranslation', proton_core_version
+  pod 'ProtonCore-Log', proton_core_version
+  pod 'ProtonCore-AccountSwitcher', proton_core_version
+  pod 'ProtonCore-ForceUpgrade/Alamofire', proton_core_version
+  pod 'ProtonCore-HumanVerification/Alamofire', proton_core_version
+  pod 'ProtonCore-Login/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-LoginUI/UsingCrypto+Alamofire', proton_core_version
+  pod 'SideMenuSwift', '2.0.6'
+  pod "SkeletonView", '1.11.0'
   pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug']
+  pod 'ProtonCore-OpenPGP', proton_core_version
 end
 
 def pm_share
@@ -61,28 +80,39 @@ end
 
 target 'ProtonMailDev' do
   pm_pods
+end
 
-  target 'PushServiceDev' do
-    inherit! :search_paths
-  end
+target 'PushServiceDev' do
+  pm_shared_pods
 end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OpenPGP', :git => 'git@gitlab.protontech.ch:apple/shared/pmopenpgp.git', :branch => 'develop' #:path => '../OpenPGP'
-  pod 'AFNetworking', '4.0.1'
   pod 'OHHTTPStubs/Swift', '9.0.0'
   pod 'Groot', '3.0.1'
+  pod 'PromiseKit', '6.13.1'
+  pod 'ProtonCore-TestingToolkit/UnitTests/Core', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Doh', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Services/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Login/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/LoginUI/UsingCrypto+Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification/Alamofire', proton_core_version
+  pm_pods
 end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'PMCoreTranslation', :git => 'git@gitlab.protontech.ch:apple/shared/pmcoretranslation.git', :branch => 'develop'
+  pod 'pmtest', :git => 'git@gitlab.protontech.ch:apple/shared/pmtestautomation.git', :branch =>'master'
+  pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UITests/Login', proton_core_version
 end
 
 target 'Share' do
   pm_share
 end
+
 target 'ShareDev' do
   pm_share
 end
@@ -90,18 +120,23 @@ end
 target 'Siri' do
   pm_siri
 end
+
 target 'SiriDev' do
   pm_siri
+end
+
+target 'ProtonMailAnalytics' do
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.8.0'
 end
 
 post_install do | installer |
   require 'fileutils'
   FileUtils.cp_r('Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail-Acknowledgements.plist', 'ProtonMail/Supporting Files/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
-
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
       config.build_settings['SWIFT_VERSION'] = '5.0'
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
       if config.name == 'Release'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
         else

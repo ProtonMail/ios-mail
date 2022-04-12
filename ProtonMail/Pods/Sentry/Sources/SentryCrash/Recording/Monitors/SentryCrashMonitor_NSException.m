@@ -68,6 +68,8 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
         NSArray *addresses = [exception callStackReturnAddresses];
         NSUInteger numFrames = addresses.count;
         uintptr_t *callstack = malloc(numFrames * sizeof(*callstack));
+        assert(callstack != NULL);
+
         for (NSUInteger i = 0; i < numFrames; i++) {
             callstack[i] = (uintptr_t)[addresses[i] unsignedLongLongValue];
         }
@@ -104,6 +106,7 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
             SentryCrashLOG_DEBUG(@"Calling original exception handler.");
             g_previousUncaughtExceptionHandler(exception);
         }
+        sentrycrash_async_backtrace_decref(cursor.async_caller);
     }
 }
 

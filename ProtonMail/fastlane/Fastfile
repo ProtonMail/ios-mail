@@ -82,8 +82,7 @@ def get_xcode_profile(api_key)
     "ch.protonmail.protonmail",
     "ch.protonmail.protonmail.Share",
     "ch.protonmail.protonmail.PushService",
-    "ch.protonmail.protonmail.Siri",
-    APP_IDENTIFIER
+    "ch.protonmail.protonmail.Siri"
   ]
 
   ids.each do |id|
@@ -179,9 +178,9 @@ def send_to_slack(success, changelog, exception, bundle_version)
 end
 
 platform :ios do 
-  desc "Build app"
+  desc "Build the app and upload to testflight"
   lane :build do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
     set_up_keychain(false)
 
     api_key = set_up_app_store_api_key
@@ -212,37 +211,9 @@ platform :ios do
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
-  desc "Unit Test"
-  lane :unit_test do |options|
-    xcversion(version: "~> 13.0.0")
-    scan(workspace: "Protonmail.xcworkspace",
-      device: "iPhone 8",
-      scheme: "Tests",
-      code_coverage: true,
-      derived_data_path: "../test_output",
-      reinstall_app: true,
-      app_identifier: "ch.protonmail.protonmail"
-    )
-  end
-
-  desc "UI Test"
-  lane :ui_test do |options|
-    xcversion(version: "~> 13.0.0")
-    scan(workspace: "Protonmail.xcworkspace",
-      device: "iPhone 8",
-      scheme: "ProtonMailUITests",
-      code_coverage: true,
-      derived_data_path: "../test_output",
-      concurrent_workers: 2,
-      testplan: "SmokeTests",
-      reinstall_app: true,
-      app_identifier: "ch.protonmail.protonmail"
-    )
-  end
-  
   desc "Build enterprise app"
   lane :enterprise do |options|
-    xcversion(version: "~> 13.0.0")
+    xcversion(version: "~> 13")
     set_up_keychain(true)
     
     # Set build version by git log numbers
@@ -270,7 +241,69 @@ platform :ios do
   # send_to_slack(true, releaseNote, "", bundle_version.strip)
   end
 
+  %w{major minor patch}.each do |part|
+      lane "bump_#{part}".to_sym do
+        increment_version_number(bump_type: part)
+      end
+  end
+
+  desc "Run unit test and get test coverage"
+  lane :unit_test do |options|
+    xcversion(version: "~> 13")
+    scan(
+      workspace: "Protonmail.xcworkspace",
+      device: "iPhone 8",
+      scheme: "ProtonMailTests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: APP_IDENTIFIER
+    )
+
+    slather(build_directory: "../test_output/",
+      scheme: "ProtonMailTests",
+      workspace: "Protonmail.xcworkspace",
+      proj: "Protonmail.xcodeproj",
+      output_directory: "../test_output/slatherOutput", 
+      cobertura_xml: true,
+      simple_output: false,
+      ignore: ["Pods/*", "Frameworks/*"]
+    )
+
+    slather(build_directory: "../test_output/",
+      scheme: "ProtonMailTests",
+      workspace: "Protonmail.xcworkspace",
+      proj: "Protonmail.xcodeproj",
+      simple_output: true,
+      ignore: ["Pods/*", "Frameworks/*"]
+    )
+  end
+
+  desc "Run ui test and get test coverage"
+  lane :ui_test do |options|
+    xcversion(version: "~> 13")
+
+    try_scan(
+      workspace: "Protonmail.xcworkspace",
+      device: "iPhone 12",
+      reset_simulator: true,
+      try_count: 2,
+      parallel_workers: 4,
+      try_parallel: true,
+      retry_parallel: true,
+      scheme: "ProtonMailUITests",
+      testplan: "SmokeTests",
+      code_coverage: true,
+      derived_data_path: "../test_output",
+      reinstall_app: true,
+      app_identifier: APP_IDENTIFIER,
+      xcpretty_args: "-r junit -o report.xml"
+      #slack_url: ENV["SLACK_CI_BOT_URL"]
+    )
+  end
+
   error do |lane, exception|
     send_to_slack(false, "", exception, "")
+    tear_down_keychain
   end
 end

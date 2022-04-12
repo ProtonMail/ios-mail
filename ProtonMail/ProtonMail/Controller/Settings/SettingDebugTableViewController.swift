@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 
 class SettingDebugViewController: UITableViewController {
@@ -68,12 +68,12 @@ class SettingDebugViewController: UITableViewController {
     @objc override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0
         {
-            let count = sharedMessageQueue.count
+            let count = 0//sharedMessageQueue.count
             return count
         }
         else if section == 1
         {
-            let count = sharedFailedQueue.count
+            let count = 0//sharedFailedQueue.count
             return count
         }
         return 0
@@ -83,14 +83,14 @@ class SettingDebugViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "setting_debug_cell", for: indexPath) 
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
-        var element : [String : Any]!
+        let element: [String : Any] = [:]
         if indexPath.section == 0
         {
-            element = (sharedMessageQueue.queueArray()[indexPath.row] as! [String : Any])
+//            element = (sharedMessageQueue.queueArray()[indexPath.row] as! [String : Any])
         }
         else if indexPath.section == 1
         {
-            element = (sharedFailedQueue.queueArray()[indexPath.row] as! [String : Any])
+//            element = (sharedFailedQueue.queueArray()[indexPath.row] as! [String : Any])
         }
         
         if let element = element["object"] as? [String : String] {
@@ -120,11 +120,11 @@ class SettingDebugViewController: UITableViewController {
         
         if indexPath.section == 0
         {
-            tempSelected = sharedMessageQueue.queueArray()[indexPath.row]
+//            tempSelected = sharedMessageQueue.queueArray()[indexPath.row]
         }
         else if indexPath.section == 1
         {
-            tempSelected = sharedFailedQueue.queueArray()[indexPath.row]
+//            tempSelected = sharedFailedQueue.queueArray()[indexPath.row]
         }
         
         self.performSegue(withIdentifier: kQueueDebugDetailsSegue, sender: self)

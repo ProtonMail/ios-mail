@@ -1,0 +1,24 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Bundle name */
+"CFBundleName" = "ProtonMail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Diperlukan untuk melampirkan media ke dalam email.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam email.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Digunakan untuk mengakses alamat email untuk kontak yang tersimpan di perangkat, sehingga dapat digunakan saat menulis pesan atau ketika mengunggah kontak secara manual ke akun Anda. Informasi kontak tidak diunggah ke server kami tanpa tindakan eksplisit untuk melakukannya.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Memungkinkan Anda untuk dapat membuka kunci aplikasi secara cepat dan aman.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Diperlukan untuk menyimpan lampiran-lampiran yang berupa gambar ke dalam pustaka foto.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Diperlukan untuk melampirkan foto ke dalam email.";
+

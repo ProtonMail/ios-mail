@@ -33,27 +33,45 @@ struct Constants {
     enum App {
         static let AuthCacheVersion : Int              = 15 //this is user info cache
         
-        static let SpaceWarningThreshold: Int          = 80
-        static let SpaceWarningThresholdDouble: Double = 80
+        static let SpaceWarningThreshold: Int          = 90
+        static let SpaceWarningThresholdDouble: Double = 90
         static let SplashVersion : Int                 = 1
-        static let TourVersion : Int                   = 2
-        
+        static let TourVersion : Int                   = 3
+
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
+         
         
         // live api
+        static let domain: String = "protonmail.com"
         static let URL_HOST : String = "api.protonmail.ch"
         static let API_PATH : String = ""
-        //static let URL_HOST : String = "beta.proton.black"
-        //static let API_PATH : String = "/api"
+//        static let domain = "proton.black"
+//        static let URL_HOST : String = "proton.black"
+//        static let API_PATH : String = "/api"
         static let DOH_ENABLE : Bool = true
         
         ///
-        static let URL_Protocol : String = "https://"
-        static let API_PREFIXED: String = "mail/v4"
-        static var API_HOST_URL : String {
+        static let URL_Protocol = "https://"
+        static let API_PREFIXED = "mail/v4"
+        private static var API_HOST_URL : String {
             get {
                 return URL_Protocol + URL_HOST
+            }
+        }
+        
+        static func apiHost() -> String {
+            if let apiURLOverrideString = UserDefaults.standard.string(forKey: "ch.protonmail.protonmail.APIURLOverride"), let apiURLOverride = URL(string: apiURLOverrideString) {
+                return apiURLOverride.absoluteString
+            }
+            return API_HOST_URL
+        }
+         
+        static func captchaHost() -> String {
+            if URL_HOST.starts(with: "api.") {
+                return "https://\(URL_HOST)"
+            } else {
+                return "https://api.\(URL_HOST)"
             }
         }
         
@@ -67,10 +85,26 @@ struct Constants {
                 #endif
             }
         }
-        
-        
-        @available(*, deprecated, message: "unlimited soon")
-        static let MaxNumberOfRecipients: Int = 100
-    }
-}
 
+        static var humanVerifyHost = "https://verify.\(Constants.App.domain)"
+        static var accountHost = "https://account.\(Constants.App.domain)"
+    }
+
+    enum FreePlan {
+        static let maxNumberOfFolders = 3
+        static let maxNumberOfLabels = 3
+    }
+    
+    static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
+                                           "iosmail_mail2021_12_usd_non_renewing",
+                                           "iosmail_bundle2021_12_usd_non_renewing"]
+    static let shownPlanNames: Set<String> = ["plus",
+                                              "professional",
+                                              "visionary",
+                                              "mail2021",
+                                              "bundle2021",
+                                              "mailpro2021",
+                                              "family2021",
+                                              "visionary2021",
+                                              "bundlepro2021"]
+}

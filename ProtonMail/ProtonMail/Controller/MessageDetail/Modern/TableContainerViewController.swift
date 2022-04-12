@@ -22,13 +22,33 @@
     
 
 import UIKit
+import ProtonCore_UIFoundations
 
-protocol ScrollableContainer: class {
-    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
+protocol ScrollableContainer: AnyObject {
+    func propagate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
     
     func saveOffset()
     func restoreOffset()
+}
+
+fileprivate enum ComposerCell: String {
+    case header = "ComposerHeaderCell"
+    case body = "ComposerBodyCell"
+    case attachment = "ComposerAttachmentCell"
+    
+    static func reuseID(for indexPath: IndexPath) -> String {
+        switch indexPath.row {
+        case 0:
+            return ComposerCell.header.rawValue
+        case 1:
+            return ComposerCell.body.rawValue
+        case 2:
+            return ComposerCell.attachment.rawValue
+        default:
+            return ComposerCell.header.rawValue
+        }
+    }
 }
 
 class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, CoordinatedNew, ViewModelProtocol, BannerPresenting, AccessibleView
@@ -36,10 +56,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
 
     @IBOutlet weak var tableView: UITableView!
     
-    // base protocols
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
     @IBOutlet weak var menuButton: UIBarButtonItem!
     func configureNavigationBar() {
         ProtonMailViewController.configureNavigationBar(self)
@@ -61,11 +77,14 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
         
         // table view
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "EmbedCell")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.header.rawValue)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.body.rawValue)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ComposerCell.attachment.rawValue)
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 85
         self.tableView.bounces = false
         self.tableView.separatorInset = .zero
+        self.tableView.tableFooterView = UIView(frame: .zero)
         
         // events
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
@@ -95,19 +114,24 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmbedCell", for: indexPath)
+        let id = ComposerCell.reuseID(for: indexPath)
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         self.coordinator.embedChild(indexPath: indexPath, onto: cell)
+        cell.clipsToBounds = true
         return cell
     }
 
     // --
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     @objc func scrollToTop() {
         guard self.presentedViewController == nil, self.navigationController?.topViewController == self else { return }
         self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
     }
     
-    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
+    func propagate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
         UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
             self.tableView.flashScrollIndicators()
         }

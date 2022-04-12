@@ -20,241 +20,188 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
 import MBProgressHUD
-import PMKeymaker
+import ProtonCore_UIFoundations
+import UIKit
 
 class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel : SettingsPrivacyViewModel!
-    internal var coordinator : SettingsPrivacyCoordinator?
-    
+    internal var viewModel: SettingsPrivacyViewModel!
+    internal var coordinator: SettingsPrivacyCoordinator?
+
     func set(viewModel: SettingsPrivacyViewModel) {
         self.viewModel = viewModel
     }
-    
+
     func set(coordinator: SettingsPrivacyCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
-    struct Key {
-        static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0
-    }
-    
-    /// cells
-//    let SettingSingalLineCell         = "settings_general"
-//    let SettingSingalSingleLineCell   = "settings_general_single_line"
-//    let SettingTwoLinesCell           = "settings_twolines"
-//    let SettingDomainsCell            = "setting_domains"
-//    let SettingStorageCell            = "setting_storage_cell"
-//    let HeaderCell                    = "header_cell"
-//    let SingleTextCell                = "single_text_cell"
-//    let SwitchCell                    = "switch_table_view_cell"
 
-    //
-    @IBOutlet var settingTableView: UITableView!
-    
-    //
+    struct Key {
+        static let headerCell: String = "header_cell"
+        static let headerCellHeight: CGFloat = 36.0
+    }
+
+    @IBOutlet private var settingTableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.backgroundView = nil
+        self.tableView.backgroundColor = ColorProvider.BackgroundSecondary
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SettingsGeneralCell.self)
-        self.tableView.register(SettingsTwoLinesCell.self)
         self.tableView.register(SwitchTableViewCell.self)
         self.tableView.tableFooterView = UIView()
-        self.tableView.backgroundColor = UIColor(hexString: "E2E6E8", alpha: 1.0)
-        
-//        self.tableView.estimatedRowHeight = 36.0
-        self.tableView.rowHeight = 50.0// UITableView.automaticDimension
+
+        self.tableView.rowHeight = 48.0
     }
-    
+
     private func updateTitle() {
         self.title = LocalString._privacy
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateProtectionItems()
 
-        
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    
-    internal func updateProtectionItems() {
-        
-    }
-    
-    internal func updateTableProtectionSection() {
-        self.updateProtectionItems()
-    }
-    
-    ///MARK: -- table view delegate
+
+    // MARK: - tableView delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.privacySections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = indexPath.row
         let item = self.viewModel.privacySections[row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         switch item {
-        case .autoLoadImage:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            if let c = cell as? SwitchTableViewCell {
-                let userinfo = self.viewModel.userInfo
-                let userService = self.viewModel.user.userService
-                c.configCell(item.description, bottomLine: "", status: userinfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                    if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
-                        let view = UIApplication.shared.keyWindow ?? UIView()
-                        MBProgressHUD.showAdded(to: view, animated: true)
-                        userService.updateAutoLoadImage(auth: self.viewModel.user.auth, user: userinfo,
-                                                        remote: newStatus, completion: { (_, _, error) in
-                            MBProgressHUD.hide(for: view, animated: true)
-                            if let error = error {
-                                feedback(false)
-                                let alertController = error.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            } else {
-                                self.viewModel.user.save()
-                                feedback(true)
-                            }
-                        })
-                    } else {
-                        feedback(false)
-                    }
-                })
-            }
-            return cell
-        case .browser:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
-            if let c = cell as? SettingsGeneralCell {
-                let browser = userCachedStatus.browser
-                c.config(left: item.description)
-                c.config(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
-            }
-            return cell
+        case .autoLoadRemoteContent:
+            configureAutoLoadImageCell(cell, item, tableView, indexPath)
+        case .autoLoadEmbeddedImage:
+            configureAutoLoadEmbeddedImageCell(cell, item, tableView, indexPath)
         case .linkOpeningMode:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            if let c = cell as? SwitchTableViewCell {
-                let userinfo = self.viewModel.userInfo
-                let userService = self.viewModel.user.userService
-                c.configCell(item.description, bottomLine: "", status: userinfo.linkConfirmation == .confirmationAlert, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                    if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
-                        let view = UIApplication.shared.keyWindow ?? UIView()
-                        MBProgressHUD.showAdded(to: view, animated: true)
-                        userService.updateLinkConfirmation(auth: self.viewModel.user.auth, user: userinfo,
-                                                           newStatus ? .confirmationAlert : .openAtWill) { userInfo, _, error in
-                            MBProgressHUD.hide(for: view, animated: true)
-                            if let error = error {
-                                feedback(false)
-                                let alertController = error.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            } else {
-                                self.viewModel.user.save()
-                                feedback(true)
-                            }
-                        }
-                    } else {
-                        feedback(false)
-                    }
-                })
-            }
-            return cell
+            configureLinkOpeningModeCell(cell, item, tableView, indexPath)
         case .metadataStripping:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
-            cell.accessoryType = UITableViewCell.AccessoryType.none
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
-            if let c = cell as? SwitchTableViewCell {
-                c.configCell(item.description, bottomLine: "", status: userCachedStatus.metadataStripping == .stripMetadata) { cell, newStatus, feedback in
-                    userCachedStatus.metadataStripping = newStatus ? .stripMetadata : .sendAsIs
+            if let cellToUpdate = cell as? SwitchTableViewCell {
+                cellToUpdate.configCell(item.description,
+                                        bottomLine: "",
+                                        status: viewModel.isMetadataStripping) { _, newStatus, _ in
+                    self.viewModel.isMetadataStripping = newStatus
                 }
             }
-            return cell
         }
+        return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return Key.headerCellHeight
     }
-    
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let row = indexPath.row
-        let item = self.viewModel.privacySections[row]
-        switch item {
-        case .autoLoadImage:
-            break
-        case .browser:
-            let browsers = LinkOpener.allCases.filter {
-                $0.isInstalled
-            }.compactMap { app in
-                return UIAlertAction(title: app.title, style: .default) { [weak self] _ in
-                    userCachedStatus.browser = app
-                    self?.tableView?.reloadRows(at: [indexPath], with: .fade)
-                }
-            }
-            let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
-            if let cell = tableView.cellForRow(at: indexPath) {
-                alert.popoverPresentationController?.sourceView = cell
-                alert.popoverPresentationController?.sourceRect = cell.bounds
-            }
-            browsers.forEach(alert.addAction)
-            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        case .linkOpeningMode:
-            break
-        case .metadataStripping:
-            break
-        }
-        
-        
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.none
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
     }
 
-    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        if sourceIndexPath.section != proposedDestinationIndexPath.section {
-            return sourceIndexPath
+}
+
+extension SettingsPrivacyViewController {
+    private func configureAutoLoadImageCell(_ cell: UITableViewCell,
+                                            _ item: SettingPrivacyItem,
+                                            _ tableView: UITableView,
+                                            _ indexPath: IndexPath)
+    {
+        if let cellToUpdate = cell as? SwitchTableViewCell {
+            cellToUpdate.configCell(item.description,
+                                    bottomLine: "",
+                                    status: viewModel.userInfo.showImages.contains(.remote),
+                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
+                                            let view = UIApplication.shared.keyWindow ?? UIView()
+                                            MBProgressHUD.showAdded(to: view, animated: true)
+
+                                            self.viewModel.updateAutoLoadImageStatus(newStatus: newStatus) { error in
+                                                MBProgressHUD.hide(for: view, animated: true)
+                                                if let error = error {
+                                                    feedback(false)
+                                                    error.alertToast()
+                                                } else {
+                                                    feedback(true)
+                                                }
+                                            }
+                                        } else {
+                                            feedback(false)
+                                        }
+                                    })
         }
-        else {
-            return proposedDestinationIndexPath
+    }
+
+    private func configureAutoLoadEmbeddedImageCell(_ cell: UITableViewCell,
+                                            _ item: SettingPrivacyItem,
+                                            _ tableView: UITableView,
+                                            _ indexPath: IndexPath) {
+        if let cellToUpdate = cell as? SwitchTableViewCell {
+            cellToUpdate.configCell(item.description,
+                                    bottomLine: "",
+                                    status: viewModel.userInfo.showImages.contains(.embedded),
+                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
+                                            let view = UIApplication.shared.keyWindow ?? UIView()
+                                            MBProgressHUD.showAdded(to: view, animated: true)
+                                            self.viewModel.updateAutoLoadEmbeddedImageStatus(newStatus: newStatus) { error in
+                                                MBProgressHUD.hide(for: view, animated: true)
+                                                if let error = error {
+                                                    feedback(false)
+                                                    error.alertToast()
+                                                } else {
+                                                    feedback(true)
+                                                }
+                                            }
+                                        } else {
+                                            feedback(false)
+                                        }
+                                    })
+        }
+    }
+
+    private func configureLinkOpeningModeCell(_ cell: UITableViewCell,
+                                              _ item: SettingPrivacyItem,
+                                              _ tableView: UITableView,
+                                              _ indexPath: IndexPath) {
+        if let cellToUpdate = cell as? SwitchTableViewCell {
+            let userinfo = self.viewModel.userInfo
+            cellToUpdate.configCell(item.description,
+                                    bottomLine: "",
+                                    status: userinfo.linkConfirmation == .confirmationAlert,
+                                    complete: { (_, newStatus, feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                                        if let indexp = tableView.indexPath(for: cellToUpdate), indexPath == indexp {
+                                            let view = UIApplication.shared.keyWindow ?? UIView()
+                                            MBProgressHUD.showAdded(to: view, animated: true)
+
+                                            self.viewModel.updateLinkConfirmation(newStatus: newStatus) { error in
+                                                MBProgressHUD.hide(for: view, animated: true)
+                                                if let error = error {
+                                                    feedback(false)
+                                                    error.alertToast()
+                                                } else {
+                                                    feedback(true)
+                                                }
+                                            }
+                                        } else {
+                                            feedback(false)
+                                        }
+                                    })
         }
     }
 }

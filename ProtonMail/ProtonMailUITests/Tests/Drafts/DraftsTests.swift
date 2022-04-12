@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 import Foundation
 
 class DraftsTests: BaseTestCase {
@@ -28,7 +30,6 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .verify.messageWithSubjectExists(subject)
@@ -40,7 +41,6 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftToSubjectBodyAttachment(to,subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .verify.messageWithSubjectExists(subject)
@@ -52,7 +52,6 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftSubjectBody(subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .searchBar()
@@ -67,7 +66,6 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftToSubjectBodyAttachment(to, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
@@ -85,17 +83,15 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftSubjectBody(subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
             .recipients(to)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .verify.messageWithSubjectAndRecipientExists(subject, to)
     }
 
-    func testChangeDraftSender() {
+    func disabledChangeDraftSender() {
         let onePassUserSecondEmail = "2\(testData.onePassUser.email)"
 
         loginRobot
@@ -103,13 +99,11 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftSubjectBody(subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
             .changeFromAddressTo(onePassUserSecondEmail)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .clickDraftBySubject(subject)
             .verify.fromEmailIs(onePassUserSecondEmail)
     }
@@ -122,7 +116,6 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
@@ -135,13 +128,12 @@ class DraftsTests: BaseTestCase {
     
     /// TestId: 34636
     func testSaveDraftWithoutSubject() {
-        let noSubject = "(No_Subject)"
+        let noSubject = "(No Subject)"
         loginRobot
             .loginUser(testData.onePassUser)
             .compose()
             .draftToBody(to, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftByIndex(0)
@@ -160,7 +152,6 @@ class DraftsTests: BaseTestCase {
             .backgroundApp()
             .foregroundApp()
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .verify.messageWithSubjectExists(subject)
@@ -179,7 +170,6 @@ class DraftsTests: BaseTestCase {
             .editRecipients(newRecipient)
             .changeSubjectTo(newSubject)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(newSubject)
@@ -200,19 +190,16 @@ class DraftsTests: BaseTestCase {
             .compose()
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
             .editRecipients(editOneRecipient)
             .changeSubjectTo(editOneSubject)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .clickDraftBySubject(editOneSubject)
             .editRecipients(editTwoRecipient)
             .changeSubjectTo(editTwoSubject)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .verify.messageWithSubjectExists(editTwoSubject)
     }
     
@@ -222,18 +209,15 @@ class DraftsTests: BaseTestCase {
         let newSubject = testData.newMessageSubject
         loginRobot
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
             .editRecipients(newRecipient)
             .changeSubjectTo(newSubject)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .clickDraftBySubject(newSubject)
             .send()
             .menuDrawer()
@@ -249,23 +233,19 @@ class DraftsTests: BaseTestCase {
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         loginRobot
             .loginTwoPasswordUser(testData.twoPassUser)
-            .decryptMailbox(testData.twoPassUser.mailboxPassword)
             .compose()
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()
-            .confirmDraftSaving()
             .menuDrawer()
             .drafts()
             .clickDraftBySubject(subject)
             .editRecipients(editOneRecipient)
             .changeSubjectTo(editOneSubject)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .clickDraftBySubject(editOneSubject)
             .editRecipients(editTwoRecipient)
             .changeSubjectTo(editTwoSubject)
-            .tapCancel()
-            .confirmDraftSavingFromDrafts()
+            .tapCancelFromDrafts()
             .verify.messageWithSubjectExists(editTwoSubject)
     }
 }

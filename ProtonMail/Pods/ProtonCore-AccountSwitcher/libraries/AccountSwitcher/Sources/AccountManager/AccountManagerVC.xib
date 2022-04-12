@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountManagerVC" customModule="ProtonCore_AccountSwitcher">
+            <connections>
+                <outlet property="tableView" destination="2we-6e-M1p" id="A5T-a7-r5c"/>
+                <outlet property="titleLabel" destination="0RX-cp-NWU" id="ZyV-kT-BSn"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RX-cp-NWU">
+                    <rect key="frame" x="16" y="74" width="182" height="26.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                    <color key="textColor" red="0.090196078431372548" green="0.094117647058823528" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2we-6e-M1p">
+                    <rect key="frame" x="0.0" y="108.5" width="414" height="753.5"/>
+                    <color key="backgroundColor" name="BackgroundNorm"/>
+                    <color key="separatorColor" name="InteractionWeak"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Ut2-nC-ENH"/>
+                        <outlet property="delegate" destination="-1" id="JUa-Rd-2R5"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" name="BackgroundNorm"/>
+            <constraints>
+                <constraint firstItem="0RX-cp-NWU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="30" id="OwM-a0-OKc"/>
+                <constraint firstItem="2we-6e-M1p" firstAttribute="top" secondItem="0RX-cp-NWU" secondAttribute="bottom" constant="8" id="X9c-VW-7DX"/>
+                <constraint firstItem="2we-6e-M1p" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dWk-vN-hoU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2we-6e-M1p" secondAttribute="trailing" id="ijt-Ul-Abg"/>
+                <constraint firstItem="0RX-cp-NWU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="mW0-8f-64X"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="2we-6e-M1p" secondAttribute="bottom" id="qxn-R8-FcD"/>
+            </constraints>
+            <point key="canvasLocation" x="57" y="96"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="BackgroundNorm">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="InteractionWeak">
+            <color red="0.9179999828338623" green="0.92500001192092896" blue="0.94499999284744263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

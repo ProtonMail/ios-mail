@@ -20,8 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
+import ProtonCore_UIFoundations
 
 protocol ContactEditTextViewCellDelegate {
     func beginEditing(textView: UITextView)
@@ -41,9 +40,13 @@ final class ContactEditTextViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.textView.delegate = self
+        self.textView.tintColor = ColorProvider.TextHint
+        self.textView.textColor = ColorProvider.TextNorm
+        self.textView.backgroundColor = ColorProvider.BackgroundNorm
+        backgroundColor = ColorProvider.BackgroundNorm
     }
+
     @IBAction func notesClicked(_ sender: Any) {
-        
         self.textView.becomeFirstResponder()
     }
     

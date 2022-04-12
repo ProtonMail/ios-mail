@@ -143,7 +143,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         
         // update
         updateTableContent(emailCount: self.emailsInGroup.count)
-        self.delegate?.update()
+        self.delegate?.updateAddressSection()
     }
     
     /**
@@ -188,9 +188,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                 return
             }
         }
-        
-        // TODO: handle error
-        PMLog.D("FatalError: Email to delete doesn't exist")
     }
     
     /**
@@ -199,7 +196,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getViewTitle() -> String {
         switch state {
         case .create:
-            return LocalString._contact_groups_add
+            return ""
         case .edit:
             return LocalString._contact_groups_edit
         }
@@ -319,13 +316,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     private func createContactGroupDetail(name: String,
                                           color: String,
                                           emailList: Set<Email>) -> Promise<Void> {
-        return firstly {
-            return self.contactGroupService.createContactGroup(name: name, color: color)
-        }.then {
-            (ID: String) -> Promise<Void> in
-            self.contactGroup.ID = ID
-            return self.addEmailsToContactGroup(emailList: emailList)
-        }
+        let ids = emailList.map { $0.emailID }
+        return self.contactGroupService.queueCreate(name: name,
+                                                    color: color,
+                                                    emailIDs: ids)
     }
     
     /**
@@ -341,29 +335,19 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     private func updateContactGroupDetail(name: String,
                                           color: String,
                                           updatedEmailList: Set<Email>) -> Promise<Void> {
-        
-        return firstly {
-            () -> Promise<Void> in
-            
-            if let ID = contactGroup.ID {
-                // update contact group
-                return self.contactGroupService.editContactGroup(groupID: ID, name: name, color: color)
-            } else {
-                return Promise.init(error: ContactGroupEditError.TypeCastingError)
-            }
-        }.then {
-            () -> Promise<Void> in
-            
-            let original = self.contactGroup.originalEmailIDs
-            let toAdd = updatedEmailList.subtracting(original)
-            return self.addEmailsToContactGroup(emailList: toAdd)
-        }.then {
-            () -> Promise<Void> in
-            
-            let original = self.contactGroup.originalEmailIDs
-            let toDelete = original.subtracting(updatedEmailList)
-            return self.removeEmailsFromContactGroup(emailList: toDelete)
+        let service = self.contactGroupService
+        guard let id = self.contactGroup.ID else {
+            return Promise.init(error: ContactGroupEditError.TypeCastingError)
         }
+        let original = self.contactGroup.originalEmailIDs
+        let toAdd = updatedEmailList.subtracting(original)
+        let toDelete = original.subtracting(updatedEmailList)
+        
+        return service.queueUpdate(groupID: id,
+                                   name: name,
+                                   color: color,
+                                   addedEmailIDs: toAdd.map { $0.emailID },
+                                   removedEmailIDs: toDelete.map { $0.emailID })
     }
     
     /**
@@ -372,15 +356,10 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Returns: Promise<Void>
      */
     func deleteContactGroup() -> Promise<Void> {
-        return firstly {
-            () -> Promise<Void> in
-            
-            if let ID = contactGroup.ID {
-                return self.contactGroupService.deleteContactGroup(groupID: ID)
-            } else {
-                return Promise.init(error: ContactGroupEditError.InternalError)
-            }
+        guard let id = self.contactGroup.ID else {
+            return Promise.init(error: ContactGroupEditError.InternalError)
         }
+        return self.contactGroupService.queueDelete(groupID: id)
     }
     
     /**
@@ -453,7 +432,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     func getEmail(at indexPath: IndexPath) -> (String, String, String) {
         let index = indexPath.row
         guard index < emailsInGroup.count else {
-            PMLog.D("FatalError: Calculation error")
             return ("", "", "")
         }
         

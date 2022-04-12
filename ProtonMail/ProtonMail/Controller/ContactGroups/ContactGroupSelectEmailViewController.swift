@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import ProtonCore_UIFoundations
 import UIKit
 
 class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
@@ -35,6 +36,8 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
+    private var doneButton: UIBarButtonItem!
+    private var cancelButton: UIBarButtonItem!
     
     private var queryString = ""
     private var searchController: UISearchController!
@@ -43,13 +46,23 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = ColorProvider.BackgroundNorm
         self.definesPresentationContext = true
-        title = LocalString._contact_groups_manage_addresses
+        title = LocalString._contact_groups_add_contacts
         
         tableView.allowsMultipleSelection = true
         tableView.register(UINib(nibName: "ContactGroupEditViewCell", bundle: Bundle.main),
                            forCellReuseIdentifier: kContactGroupEditCellIdentifier)
         prepareSearchBar()
+
+        self.doneButton = UIBarButtonItem(title: LocalString._general_done_button,
+                                        style: UIBarButtonItem.Style.plain,
+                                        target: self, action: #selector(self.didTapDoneButton))
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
+        self.doneButton.setTitleTextAttributes(attributes, for: .normal)
+        self.navigationItem.rightBarButtonItem = doneButton
+
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +84,6 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
@@ -81,31 +93,43 @@ class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModel
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
         
-        if #available(iOS 13.0, *) {
-            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
-        } else {
-            searchController.searchBar.setValue(LocalString._general_done_button,
-                                                forKey:"_cancelButtonText")
-        }
-        
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.automaticallyAdjustsScrollViewInsets = true
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.keyboardType = .default
         self.searchController.searchBar.autocapitalizationType = .none
         self.searchController.searchBar.isTranslucent = false
         self.searchController.searchBar.tintColor = .white
-        self.searchController.searchBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.searchController.searchBar.backgroundColor = .clear
+        self.searchController.searchBar.backgroundColor = ColorProvider.BackgroundNorm
 
         self.searchViewConstraint.constant = 0.0
         self.searchView.isHidden = true
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.navigationItem.searchController = self.searchController
+    }
+
+    @objc
+    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+        if viewModel.havingUnsavedChanges {
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc
+    private func didTapDoneButton() {
+        viewModel.save()
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

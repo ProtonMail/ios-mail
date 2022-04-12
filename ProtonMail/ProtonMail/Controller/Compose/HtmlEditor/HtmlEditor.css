@@ -3,6 +3,20 @@
     Proton Technologies AG
 */
 
+:root {
+  color-scheme: light dark;
+  --text-color: #505061;
+  --bg-color: white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+      --text-color: white;
+      --bg-color: #16171C;
+  }
+  a:link { color: deepskyblue; }
+}
+
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
     display: block;
 }
@@ -33,10 +47,12 @@ body {
     font-weight: 400;
     margin: 0;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     padding: 0rem;
     word-break: break-word;
-    color: #505061;
+    color: var(--text-color);
+    background: var(--bg-color);
 }
 
 /*div,*/
@@ -54,7 +70,7 @@ blockquote {
     border: 1px solid #ccc !important;
     border-width: 0 0 0 1px !important;
     -webkit-margin-before: 1rem !important;
-    -webkit-margin-after: 2rem !important;
+    -webkit-margin-after: 20px !important;
     -webkit-margin-start: 0 !important;
     -webkit-margin-end: 0 !important;
 }
@@ -235,5 +251,9 @@ legend {
 
 body > #editor {
     /*  temp solve the click range too small when no signature  */
-    min-height: 300px;
+    min-height: 60px;
+}
+
+#editor > #protonmail_mobile_signature_block {
+    min-height: 40px;
 }

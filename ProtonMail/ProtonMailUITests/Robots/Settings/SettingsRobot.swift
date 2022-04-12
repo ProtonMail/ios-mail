@@ -6,30 +6,42 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
-fileprivate let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
-fileprivate let menuButton = LocalString._menu_button
-fileprivate let pinStaticTextIdentifier = LocalString._pin
+import pmtest
+
+fileprivate struct id {
+    static func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
+    static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
+    static let menuButton = LocalString._menu_button
+    static let pinCellIdentifier = "SettingsGeneralCell.App_PIN"
+    static let swipeActionStaticTextIdentifier = LocalString._swipe_actions
+    static let clearLocalCacheStaticTextIdentifier = LocalString._clear_local_message_cache
+}
+
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-class SettingsRobot {
+class SettingsRobot: CoreElements {
     
-    var verify: Verify! = nil
-    init() { verify = Verify() }
+    var verify = Verify()
 
     func menuDrawer() -> MenuRobot {
-        Element.wait.forHittableButton(menuButton).tap()
+        button(id.menuButton).tap()
         return MenuRobot()
     }
+    
     @discardableResult
     func selectAccount(_ email: String) -> AccountSettingsRobot {
-        Element.wait.forCellWithIdentifier(accountCellIdentifier(email)).tap()
+        staticText(email).tap()
         return AccountSettingsRobot()
     }
     
+    func clearCache() -> SettingsRobot {
+        staticText(id.clearLocalCacheStaticTextIdentifier).tap()
+        return SettingsRobot()
+    }
+    
     func pin() -> PinRobot {
-        Element.wait.forStaticTextFieldWithIdentifier(pinStaticTextIdentifier, file: #file, line: #line).tap()
+        cell(id.pinCellIdentifier).tap()
         return PinRobot()
     }
     /**

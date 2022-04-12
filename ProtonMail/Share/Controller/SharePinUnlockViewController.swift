@@ -20,119 +20,101 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import UIKit
 
-protocol SharePinUnlockViewControllerDelegate : AnyObject {
+protocol SharePinUnlockViewControllerDelegate: AnyObject {
     func cancel()
     func next()
     func failed()
 }
 
-class SharePinUnlockViewController : UIViewController, CoordinatedNew {
+class SharePinUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = SharePinUnlockCoordinator
-    private weak var coordinator: SharePinUnlockCoordinator?
-    var viewModel : PinCodeViewModel!
-    weak var delegate : SharePinUnlockViewControllerDelegate?
-    
-    func set(coordinator: SharePinUnlockCoordinator) {
-        self.coordinator = coordinator
-    }
-    
-    func getCoordinator() -> CoordinatorNew? {
-        return coordinator
-    }
 
-    /// UI
-    @IBOutlet weak var pinCodeView: PinCodeView!
-    
-    ///
+    private weak var coordinator: SharePinUnlockCoordinator?
+    var viewModel: PinCodeViewModel!
+    weak var delegate: SharePinUnlockViewControllerDelegate?
+    @IBOutlet var pinCodeView: PinCodeView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         self.view.layoutIfNeeded()
         self.pinCodeView.delegate = self
-        self.pinCodeView.hideTouchID()
+        self.view.backgroundColor = UIColor(named: "launch_background_color")
         self.setUpView(true)
+
+        if #available(iOSApplicationExtension 13.0, *) {
+            self.isModalInPresentation = true
+        }
     }
-    
-    internal func setUpView(_ reset: Bool) {
-        pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel(), resetPin: reset)
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
-        pinCodeView.updateCorner()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+
+    func set(coordinator: SharePinUnlockCoordinator) {
+        self.coordinator = coordinator
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
+
+    func getCoordinator() -> CoordinatorNew? {
+        return self.coordinator
     }
-    
-    func doEnterForeground(){
-//        if userCachedStatus.isTouchIDEnabled {
-//            
-//        }
+
+    private func setUpView(_ reset: Bool) {
+        self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(), resetPin: reset)
     }
 }
 
-extension SharePinUnlockViewController : PinCodeViewDelegate {
-    
-    func TouchID() {
+extension SharePinUnlockViewController: PinCodeViewDelegate {
+    func touchID() {}
 
-    }
-    
-    func Cancel() {
-        //TODO:: use the coordinator delegated
-        self.dismiss(animated: true) { 
+    func cancel() {
+        // TODO: use the coordinator delegated
+        self.dismiss(animated: true) {
             self.delegate?.cancel()
         }
     }
-    
-    func Next(_ code : String) {
+
+    func next(_ code: String) {
         if code.isEmpty {
             let alert = LocalString._pin_code_cant_be_empty.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         } else {
-            let step : PinCodeStep = self.viewModel.setCode(code)
+            let step: PinCodeStep = self.viewModel.setCode(code)
             if step != .done {
                 self.setUpView(true)
             } else {
-                self.viewModel.isPinMatched() { matched in
+                self.viewModel.isPinMatched { matched in
                     if matched {
                         self.pinCodeView.hideAttempError(true)
-                        self.viewModel.done() { _ in
+                        self.viewModel.done { _ in
                             self.dismiss(animated: true, completion: {
                                 self.delegate?.next()
                             })
                         }
                     } else {
                         let count = self.viewModel.getPinFailedRemainingCount()
-                        if count == 11 { //when setup
+                        if count == 11 { // when setup
                             self.pinCodeView.resetPin()
                             self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
-                                //TODO:: fix me
-//                                SignInManager.shared.clean()
-                                self.Cancel()
+                                self.cancel()
                             } else {
                                 self.pinCodeView.resetPin()
                                 self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
@@ -144,5 +126,4 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
             }
         }
     }
-    
 }

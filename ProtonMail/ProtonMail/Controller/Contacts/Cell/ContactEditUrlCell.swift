@@ -20,9 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import Foundation
-
+import ProtonCore_UIFoundations
 
 final class ContactEditUrlCell: UITableViewCell {
     
@@ -35,11 +33,12 @@ final class ContactEditUrlCell: UITableViewCell {
     
     @IBOutlet weak var sepratorView: UIView!
     
-    fileprivate var isPaid : Bool = false
     override func awakeFromNib() {
         super.awakeFromNib()
         self.valueField.delegate = self
         self.valueField.placeholder = LocalString._contacts_vcard_url_placeholder
+        self.valueField.tintColor = ColorProvider.TextHint
+        backgroundColor = ColorProvider.BackgroundNorm
     }
     
     override func layoutSubviews() {
@@ -47,28 +46,23 @@ final class ContactEditUrlCell: UITableViewCell {
         sepratorView.gradient()
     }
     
-    func configCell(obj : ContactEditUrl, paid: Bool, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
+    func configCell(obj : ContactEditUrl, callback: ContactEditCellDelegate?, becomeFirstResponder: Bool = false) {
         self.url = obj
-        self.isPaid = paid
         self.delegate = callback
         
-        typeLabel.text = self.url.newType.title
-        valueField.text = self.url.newUrl
+        typeLabel.attributedText = NSAttributedString(string: self.url.newType.title,
+                                                      attributes: FontManager.Default)
+        valueField.attributedText = NSAttributedString(string: self.url.newUrl,
+                                                       attributes: FontManager.Default)
 
-        if self.isPaid {
-            if becomeFirstResponder {
-                delay(0.25, closure: {
-                    self.valueField.becomeFirstResponder()
-                })
-            }
+        if becomeFirstResponder {
+            delay(0.25, closure: {
+                self.valueField.becomeFirstResponder()
+            })
         }
     }
     
     @IBAction func typeAction(_ sender: UIButton) {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         delegate?.pick(typeInterface: url, sender: self)
     }
 }
@@ -78,10 +72,6 @@ extension ContactEditUrlCell: UITextFieldDelegate {
         return true
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
         return true
     }
     
@@ -90,10 +80,6 @@ extension ContactEditUrlCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
-        url.newUrl = valueField.text!
+        url.newUrl = valueField.attributedText?.string ?? ""
     }
 }

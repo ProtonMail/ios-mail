@@ -1,10 +1,11 @@
+
 # iOS-mail
 
 ## Introduction
 
 iOS-mail — ProtonMail iOS client app
 
-The app is intended for all users of the ProtonMail service. Whether they are paid or free, they can compose and read emails, manage folders and labels, manage some account settings and create a new account. The app supports iOS 11-14.
+The app is intended for all users of the ProtonMail service. Whether they are paid or free, they can compose and read emails, manage folders and labels, manage some account settings and create a new account. The app supports iOS versions above 11.
 
 ## License
 
@@ -15,13 +16,12 @@ See [LICENSE](LICENSE) file
 ## Table of Contents
 
 <!-- TOC depthFrom:3 -->
-
 - [Introduction](#Introduction)
 - [License](#License)
 - [Architecture](#Architecture)
 - [Dependencies](#Dependencies)
-  - [Internal](#Internal)
-  - [Third Party](#Third-Party)
+    - [Internal](#Internal)
+    - [Third Party](#Third-Party)
 - [Content Explanation](#Content-Explanation)
 - [Setup](#setup)
 - [Live version](#live-version)
@@ -50,7 +50,6 @@ See [LICENSE](LICENSE) file
 ## Content Explanation
 
 <!-- TOC depthFrom:3 -->
-
 - [OpenPGP](OpenPGP/README.md)
 - [Keymaker](ProtonMail/Keymaker/README.md)
 - [ProtonMail](ProtonMail/ProtonMail/README.md)
@@ -66,16 +65,17 @@ See [LICENSE](LICENSE) file
 
 ## Setup
 
-1. Have macOS up to date and install Xcode 13.0
+1. Have macOS up to date and install Xcode 13.2.1
 2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in the ProtonMail.xcodeproj file. Each shared scheme has a post-build action, and builds will fail on machines with no xUnique installed. Please follow xUnique's [installation instructions](https://github.com/truebit/xUnique)
-3. `DOMPurify`(@b06b6b2ac8) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
-4. Open `ProtonMail/ProtonMail.xcworkspace` and click the run button
+3. We use swiftlint. If you don't have it, you can install it via [Homebrew](https://brew.sh), by opening ProtonMail directory and run `brew bundle` in the Terminal.
+4. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+5. Open `ProtonMail/ProtonMail.xcworkspace` and update project settings to use your own provisioning profile.
+6. Run the app.
 
 ## Live version
 
-Current live version 1.15.8
+Current live version 3.1.4
 
-- [Changelogs](Changelog.md)
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
 ## Articles
@@ -88,3 +88,5 @@ Current live version 1.15.8
 - [Anson](https://github.com/xxi511)
 - [Mustapha](https://github.com/justarandomdev)
 - [Steven](https://github.com/Linquas)
+- [Jacek](https://github.com/jacekkra)
+- [Xavi](https://github.com/xavigil)

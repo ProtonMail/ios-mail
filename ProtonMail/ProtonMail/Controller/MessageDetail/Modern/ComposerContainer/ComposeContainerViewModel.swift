@@ -31,24 +31,29 @@ class ComposeContainerViewModel: TableContainerViewModel {
     internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
     internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
-    
+    private var contactChanged: NSKeyValueObservation!
+    weak var uiDelegate: ComposeContainerUIProtocol?
+    var user: UserManager { self.childViewModel.getUser() }
 
-    init(editorViewModel: ContainableComposeViewModel) {
+    init(editorViewModel: ContainableComposeViewModel,
+         uiDelegate: ComposeContainerUIProtocol?) {
         self.childViewModel = editorViewModel
+        self.uiDelegate = uiDelegate
         super.init()
+        self.contactChanged = obsereReicpients()
     }
     
     override var numberOfSections: Int {
         return 1
     }
     override func numberOfRows(in section: Int) -> Int {
-        return 2
+        return 3
     }
     
     override func syncMailSetting() {
         let usersManager = sharedServices.get(by: UsersManager.self)
         guard let currentUser = usersManager.firstUser else {return}
-        currentUser.messageService.syncMailSetting(context: CoreDataService.shared.mainManagedObjectContext)
+        currentUser.messageService.syncMailSetting()
     }
     
     internal func filesExceedSizeLimit() -> Bool {
@@ -67,9 +72,24 @@ class ComposeContainerViewModel: TableContainerViewModel {
             self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
         }
     }
+    
+    func hasRecipients() -> Bool {
+        let count = self.childViewModel.toSelectedContacts.count + self.childViewModel.ccSelectedContacts.count + self.childViewModel.bccSelectedContacts.count
+        return count > 0
+    }
+
+    private func obsereReicpients() -> NSKeyValueObservation {
+        return self.childViewModel.observe(\.contactsChange, options: [.new, .old]) { [weak self](_, _) in
+            self?.uiDelegate?.updateSendButton()
+        }
+    }
 }
 
 extension ComposeContainerViewModel: FileImporter, AttachmentController {
+    func error(title: String, description: String) {
+        self.showErrorBanner(description)
+    }
+
     func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
         fatalError()
     }
@@ -86,7 +106,7 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             return Promise()
         }
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata).done { (attachment) in
+        return fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
             self.childViewModel.uploadAtt(attachment)
         }
     }

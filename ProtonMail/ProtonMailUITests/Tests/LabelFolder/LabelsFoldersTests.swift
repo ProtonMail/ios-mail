@@ -6,6 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
+import ProtonCore_TestingToolkit
+
 class LabelsFoldersTests: BaseTestCase {
     
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
@@ -20,13 +22,13 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
-            .clickApplyButtonAndReturnToInbox()
+            .selectFolder(folderName)
+            .tapDoneSelectingFolderButton()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .folders()
             .deleteFolderLabel(folderName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(folderName)
     }
     
@@ -39,14 +41,14 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(labelName)
-            .clickLabelApplyButton()
+            .selectLabel(labelName)
+            .tapDoneSelectingLabelButton()
             .navigateBackToInbox()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .labels()
             .deleteFolderLabel(labelName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(labelName)
     }
     
@@ -66,6 +68,7 @@ class LabelsFoldersTests: BaseTestCase {
             .manageAccounts()
             .addAccount()
             .connectTwoPassAccount(secondUser)
+            .refreshMailbox()
             .clickMessageBySubject(subject)
             .addMessageToFolder(folderName)
             .menuDrawer()
@@ -89,6 +92,7 @@ class LabelsFoldersTests: BaseTestCase {
             .manageAccounts()
             .addAccount()
             .connectTwoPassAccount(secondUser)
+            .refreshMailbox()
             .clickMessageBySubject(subject)
             .assignLabelToMessage(labelName)
             .navigateBackToInbox()
@@ -107,18 +111,15 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createFolder(folderName)
-            .clickApplyButtonAndReturnToInbox()
+            .tapDoneSelectingFolderButton()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
-            .editFolderLabel(folderName)
+            .folders()
+            .selectFolderLabel(folderName)
             .editFolderLabelName(newFolderName)
-            .selectFolderColorByIndex(3)
-            .done()
-            .create()
+            .save()
             .deleteFolderLabel(newFolderName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(newFolderName)
     }
     
@@ -132,19 +133,17 @@ class LabelsFoldersTests: BaseTestCase {
             .refreshMailbox()
             .clickMessageByIndex(1)
             .createLabel(folderName)
-            .clickLabelApplyButton()
+            .tapDoneSelectingLabelButton()
             .navigateBackToInbox()
             .menuDrawer()
             .settings()
             .selectAccount(user.email)
-            .foldersAndLabels()
+            .labels()
             .editFolderLabel(folderName)
             .editFolderLabelName(newFolderName)
             .selectFolderColorByIndex(3)
-            .done()
-            .create()
+            .save()
             .deleteFolderLabel(newFolderName)
-            .foldersAndLabels()
             .verify.folderLabelDeleted(newFolderName)
     }
 }

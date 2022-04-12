@@ -204,7 +204,6 @@ public enum EllipticCurveKeyPair {
     // `Manager` is an example of such an opiniated facade
     public struct Helper {
         
-        // The user visible label in the device's key chain
         public let config: Config
         
         public init(config: Config) {

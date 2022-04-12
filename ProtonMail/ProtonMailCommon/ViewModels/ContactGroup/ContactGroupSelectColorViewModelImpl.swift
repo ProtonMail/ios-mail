@@ -25,11 +25,17 @@ import Foundation
 
 class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
 {
+    let originalColor: String
     var currentColor: String
     let colors = ColorManager.forLabel
     let refreshHandler: (String) -> Void
+
+    var havingUnsavedChanges: Bool {
+        return originalColor != currentColor
+    }
     
     init(currentColor: String, refreshHandler: @escaping (String) -> Void) {
+        self.originalColor = currentColor
         self.currentColor = currentColor
         self.refreshHandler = refreshHandler
     }
@@ -52,7 +58,6 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
         }
         
         // This should not happen
-        PMLog.D("Color not in the list!")
         currentColor = ColorManager.defaultColor
         return 0
     }
@@ -75,8 +80,6 @@ class ContactGroupSelectColorViewModelImpl: ContactGroupSelectColorViewModel
     func getColor(at indexPath: IndexPath) -> String
     {
         guard indexPath.row < colors.count else {
-            // TODO: handle error
-            PMLog.D("FatalError: Collection view invalid request")
             return ColorManager.defaultColor
         }
         

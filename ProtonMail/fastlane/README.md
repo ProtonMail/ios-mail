@@ -1,20 +1,15 @@
-# fastlane documentation
+fastlane documentation
+----
 
 # Installation
 
 Make sure you have the latest version of the Xcode command line tools installed:
 
-```
+```sh
 xcode-select --install
 ```
 
-Install _fastlane_ using
-
-```
-[sudo] gem install fastlane -NV
-```
-
-or alternatively using `brew install fastlane`
+For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
 
 # Available Actions
 
@@ -22,38 +17,64 @@ or alternatively using `brew install fastlane`
 
 ### ios build
 
-```
-fastlane ios build
-```
-
-Build app
-
-### ios unit_test
-
-```
-fastlane ios unit_test
+```sh
+[bundle exec] fastlane ios build
 ```
 
-Unit Test
-
-### ios ui_test
-
-```
-fastlane ios ui_test
-```
-
-UI Test
+Build the app and upload to testflight
 
 ### ios enterprise
 
-```
-fastlane ios enterprise
+```sh
+[bundle exec] fastlane ios enterprise
 ```
 
 Build enterprise app
 
----
+### ios bump_major
+
+```sh
+[bundle exec] fastlane ios bump_major
+```
+
+
+
+### ios bump_minor
+
+```sh
+[bundle exec] fastlane ios bump_minor
+```
+
+
+
+### ios bump_patch
+
+```sh
+[bundle exec] fastlane ios bump_patch
+```
+
+
+
+### ios unit_test
+
+```sh
+[bundle exec] fastlane ios unit_test
+```
+
+Run unit test and get test coverage
+
+### ios ui_test
+
+```sh
+[bundle exec] fastlane ios ui_test
+```
+
+Run ui test and get test coverage
+
+----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
-More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
-The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
+
+More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
+
+The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).

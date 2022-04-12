@@ -6,16 +6,20 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let saveNavBarButtonIdentifier = "UINavigationItem.doneAction"
-fileprivate let cancelNavBarButtonIdentifier = "UINavigationItem.cancelAction"
-fileprivate let nameTextFieldIdentifier = "ContactEditViewController.displayNameField"
-fileprivate let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"
-fileprivate let emailTextFieldIdentifier = "Email_address.valueField"
+import pmtest
+
+fileprivate struct id {
+    static let saveNavBarButtonIdentifier = "UINavigationItem.doneAction"
+    static let cancelNavBarButtonIdentifier = "UINavigationItem.cancelAction"
+    static let nameTextFieldIdentifier = "ContactEditViewController.displayNameField"
+    static let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"
+    static let emailTextFieldIdentifier = "Email_address.valueField"
+}
 
 /**
  AddContactRobot class contains actions and verifications for Add/Edit Contacts.
  */
-class AddContactRobot {
+class AddContactRobot: CoreElements {
 
     func setNameEmailAndSave(_ name: String, _ email: String) -> ContactsRobot {
         return displayName(name)
@@ -32,41 +36,33 @@ class AddContactRobot {
     }
 
     private func displayName(_ name: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line)
-            .click()
-            .typeText(name)
+        textField(id.nameTextFieldIdentifier).tap().typeText(name)
         return self
     }
     
     private func editDisplayName(_ name: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(nameTextFieldIdentifier, file: #file, line: #line)
-            .click()
-            .clear()
-            .typeText(name)
+        textField(id.nameTextFieldIdentifier).tap().clearText().typeText(name)
         return self
     }
     
     private func addNewEmail() -> AddContactRobot {
-        Element.wait.forCellWithIdentifier(addNewEmailCellIdentifier, file: #file, line: #line).tap()
+        cell(id.addNewEmailCellIdentifier).tap()
         return self
     }
 
     private func email(_ email: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line).click().typeText(email)
+        textField(id.emailTextFieldIdentifier).tap().typeText(email)
         return self
     }
     
     private func editEmailmail(_ email: String) -> AddContactRobot {
-        Element.wait.forTextFieldWithIdentifier(emailTextFieldIdentifier, file: #file, line: #line)
-            .click()
-            .clear()
-            .typeText(email)
+        textField(id.emailTextFieldIdentifier).tap().clearText().typeText(email)
         return self
     }
 
     @discardableResult
     private func save() -> ContactsRobot {
-        Element.wait.forButtonWithIdentifier(saveNavBarButtonIdentifier, file: #file, line: #line).tap()
+        button(id.saveNavBarButtonIdentifier).tap()
         return ContactsRobot()
     }
 }

@@ -20,8 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
-
 import Foundation
+import ProtonCore_UIFoundations
+import WebKit
 
 /// Loads web content into WKWebView by means of load(_:) and inner URLRequest method. In order to prevent resources prefetching, loading happens in a number of stages:
 /// 1. webView gets a WKContentRuleList restricting any loads other than current url and a custom scheme handler
@@ -36,9 +37,9 @@ import Foundation
 /// Why that is not perfect:
 /// - WKContentRuleList and WKURLSchemeHandler are not supported until iOS 11
 ///
-@available(iOS 11.0, *)
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
+    private var heightChanged: ((CGFloat) -> ())?
     
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
@@ -55,12 +56,21 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
     
     func load(contents: WebContents, in webView: WKWebView) {
+        addSpinnerIfNeeded(to: webView)
+
         self.webView?.stopLoading()
         self.renderedContents.invalidate()
         self.webView?.configuration.userContentController.removeAllUserScripts()
-        self.webView?.loadHTMLString("⏱", baseURL: URL(string: "about:blank")!)
+        self.webView?.loadHTMLString("", baseURL: URL(string: "about:blank")!)
         
         self.webView = webView
+
+        switch contents.renderStyle {
+        case .lightOnly:
+            self.webView?.backgroundColor = .white
+        case .dark:
+            self.webView?.backgroundColor = ColorProvider.BackgroundNorm
+        }
         
         let urlString = (UUID().uuidString + ".proton").lowercased()
         let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
@@ -97,21 +107,44 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             webView.load(request)
         }
     }
+
+    func observeHeight(_ callBack: @escaping ((CGFloat) -> ())) {
+        self.heightChanged = callBack
+    }
     
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
         self.contents = contents
-        
+        var css: String
+        switch contents.renderStyle {
+        case .lightOnly:
+            css = WebContents.cssLightModeOnly
+        case .dark:
+            css = WebContents.css
+			if let supplementCSS = contents.supplementCSS,
+               !supplementCSS.isEmpty {
+				css += supplementCSS
+            } else {
+                // means this message doesn't support dark mode style
+                css = WebContents.cssLightModeOnly
+            }
+        }
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
+        let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+        let messageHead = protonizer.querySelector('head').innerHTML.trim()
         var clean0 = DOMPurify.sanitize(dirty);
-        var clean1 = DOMPurify.sanitize(clean0, \(HTTPRequestSecureLoader.domPurifyConfiguration));
+        var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
         
         var style = document.createElement('style');
         style.type = 'text/css';
-        style.appendChild(document.createTextNode('\(WebContents.css)'));
+        style.appendChild(document.createTextNode(`\(css)`));
         document.getElementsByTagName('head')[0].appendChild(style);
+        
+        let wrapper = document.createElement('div');
+        wrapper.innerHTML = messageHead;
+        Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
         
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
@@ -147,6 +180,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
         
         if let sanitized = dict["clearBody"] as? String {
+            if sanitized.contains("<body></body>"),
+               let content = self.contents,
+               !content.body.isEmpty,
+               let webView = self.webView {
+                self.prepareRendering(content, into: webView.configuration)
+                return
+            }
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
             
@@ -155,11 +195,21 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         metaWidth.content = "width=device-width";
         var ratio = document.body.offsetWidth/document.body.scrollWidth;
         if (ratio < 1) {
-            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
         } else {
             ratio = 1;
         };
-        window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+        let body = document.body;
+        let height = ratio * document.body.scrollHeight;
+        var refHeight = height;
+        var tag = 1;
+        if (body.children.length > 1) {
+            let last = body.children[body.children.length - 1];
+            let bottom = last.getBoundingClientRect().bottom;
+            refHeight = bottom * ratio;
+        }
+        
+        window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
 """
 
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -172,18 +222,44 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             self.loopbacks[url] = data
             
             self.webView?.load(request)
+
+            removeAllSpinners()
         }
         if let preheight = dict["preheight"] as? Double {
             self.renderedContents.preheight = CGFloat(preheight)
         }
         if let height = dict["height"] as? Double {
             self.renderedContents.height = CGFloat(height)
+            let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
+            let res = refHeight > 0 ? refHeight: CGFloat(height)
+            self.heightChanged?(res)
         }
     }
     
     func inject(into config: WKWebViewConfiguration) {
         config.userContentController.add(self, name: "loaded")
         config.setURLSchemeHandler(self, forURLScheme: HTTPRequestSecureLoader.loopbackScheme)
+    }
+
+    private func addSpinnerIfNeeded(to webView: WKWebView) {
+        guard webView.subviews.compactMap({ $0 as? UIActivityIndicatorView }).isEmpty else {
+            return
+        }
+        let spinner = UIActivityIndicatorView()
+        webView.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        [
+            spinner.topAnchor.constraint(equalTo: webView.topAnchor, constant: 4),
+            spinner.centerXAnchor.constraint(equalTo: webView.centerXAnchor)
+        ].activate()
+        spinner.startAnimating()
+    }
+
+    private func removeAllSpinners() {
+        self.webView?.subviews.compactMap({ $0 as? UIActivityIndicatorView }).forEach({ view in
+            view.stopAnimating()
+            view.removeFromSuperview()
+        })
     }
 }
 

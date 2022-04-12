@@ -24,9 +24,8 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import PMCommon
-
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 //Message API
 //Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
@@ -34,71 +33,6 @@ import PMCommon
 struct MessageAPI {
     /// base message api path
     static let path :String = "/\(Constants.App.API_PREFIXED)/messages"
-    
-    //Get a list of message metadata [GET]
-    static let v_fetch_messages : Int = -1
-    
-    //Get grouped message count [GET]
-    static let v_message_count : Int = -1
-    
-    static let v_create_draft : Int = -1
-    
-    static let v_update_draft : Int = -1
-    
-    // inlcude read/unread
-    static let V_MessageActionRequest : Int = -1
-    
-    //Send a message [POST]
-    static let v_send_message : Int = -1
-    
-    //Label/move an array of messages [PUT]
-    static let v_label_move_msgs : Int = -1
-    
-    //Unlabel an array of messages [PUT]
-    static let v_unlabel_msgs : Int = -1
-    
-    //Delete all messages with a label/folder [DELETE]
-    static let v_empty_label_folder : Int = -1
-    
-    //Delete an array of messages [PUT]
-    static let v_delete_msgs : Int = -1
-    
-    //Undelete Messages [/messages/undelete]
-    static let v_undelete_msgs : Int = -1
-    
-    //Label/Move Messages [/messages/label] [PUT]
-    static let v_apply_label_to_messages : Int = -1
-    
-    //Unlabel Messages [/messages/unlabel] [PUT]
-    static let v_remove_label_from_message : Int = -1
-}
-
-
- 
-// MARK : apply label to message  -- Response
-final class ApplyLabelToMessages : Request {
-    var labelID: String
-    var messages:[String]
-    
-    init(labelID: String, messages: [String]) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["LabelID"] = self.labelID
-        out["IDs"] = messages
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .put
-    }
-    
-    var path: String {
-        return MessageAPI.path + "/label"
-    }
 }
 
 final class SearchMessage: Request {
@@ -126,35 +60,6 @@ final class SearchMessage: Request {
     }
 }
 
-
-// MARK : remove label from message -- Response
-final class RemoveLabelFromMessages : Request {
-    
-    var labelID: String
-    var messages:[String]
-    
-    init(labelID:String, messages: [String]) {
-        self.labelID = labelID
-        self.messages = messages
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = [String : Any]()
-        out["LabelID"] = self.labelID
-        out["IDs"] = messages
-        return out
-    }
-    
-    var method: HTTPMethod {
-        return .put
-    }
-    
-    var path: String {
-        return MessageAPI.path + "/unlabel"
-    }
-}
-
-
 // MARK : Get messages part --- MessageCountResponse
 final class MessageCount : Request {
     var path: String {
@@ -162,71 +67,35 @@ final class MessageCount : Request {
     }
 }
 
-// MARK : Get messages part --- Response
-final class FetchMessages : Request {
-    let labelID : String
-    let startTime : Int?
-    let endTime : Int
-    
-    init(labelID : String, endTime : Int = 0) {
-        self.labelID = labelID
-        self.endTime = endTime
-        self.startTime = 0
-    }
-    
-    var parameters: [String : Any]? {
-        var out : [String : Any] = ["Sort" : "Time"]
-        out["LabelID"] = self.labelID
-        if self.endTime > 0 {
-            let newTime = self.endTime - 1
-            out["End"] = newTime
-        }
-        PMLog.D( out.json(prettyPrinted: true) )
-        return out
-    }
-    
-    var path: String {
-        return MessageAPI.path
-    }
-}
+final class FetchMessagesByID: Request {
+    let msgIDs: [String]
 
-/// Response
-final class FetchMessagesByID : Request {
-    let msgIDs : [String]
-    
     init(msgIDs: [String]) {
         self.msgIDs = msgIDs
     }
-    
-    internal func buildURL () -> String {
-        var out = ""
-        for msgID in self.msgIDs {
-            if !out.isEmpty {
-                out = out + "&"
-            }
-            out = out + "ID[]=\(msgID)"
-        }
-        if !out.isEmpty {
-            out = "?" + out
-        }
+
+    var parameters: [String : Any]? {
+        let out: [String : Any] = ["ID": msgIDs]
         return out
     }
+    
     var path: String {
-        return MessageAPI.path + self.buildURL()
+        return MessageAPI.path
     }
 }
 
-
 ///Response
 final class FetchMessagesByLabel : Request {
-    let labelID : String
-    let startTime : Int?
-    let endTime : Int
+    let labelID: String!
+    let startTime: Int?
+    let endTime: Int
+    let isUnread: Bool?
     
-    init(labelID : String, endTime : Int = 0) {
+    init(labelID: String, endTime: Int = 0, isUnread: Bool? = nil) {
         self.labelID = labelID
         self.endTime = endTime
         self.startTime = 0
+        self.isUnread = isUnread
     }
     
     var parameters: [String : Any]? {
@@ -236,7 +105,9 @@ final class FetchMessagesByLabel : Request {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        PMLog.D( out.json(prettyPrinted: true) )
+        if let unread = self.isUnread, unread {
+            out["Unread"] = 1
+        }
         return out
     }
     
@@ -244,6 +115,7 @@ final class FetchMessagesByLabel : Request {
         return MessageAPI.path
     }
 }
+
 
 // MARK : Create/Update Draft Part
 /// create draft message request class -- MessageResponse
@@ -267,7 +139,7 @@ class CreateDraft : Request {
             "Unread" : message.unRead ? 1 : 0]
         
         let fromaddr = fromAddress
-        let name = fromaddr?.display_name ?? "unknow"
+        let name = fromaddr?.displayName ?? "unknow"
         let address = fromaddr?.email ?? "unknow"
         
         messsageDict["Sender"] = [
@@ -289,15 +161,13 @@ class CreateDraft : Request {
         
         if let attachments = self.message.attachments.allObjects as? [Attachment] {
             var atts : [String : String] = [:]
-            for att in attachments {
-                if att.keyChanged {
-                    atts[att.attachmentID] = att.keyPacket
-                }
+            for att in attachments where att.keyChanged {
+                atts[att.attachmentID] = att.keyPacket
             }
-            out["AttachmentKeyPackets"] = atts
+            if !atts.keys.isEmpty {
+                out["AttachmentKeyPackets"] = atts
+            }
         }
-        
-        //PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     
@@ -563,8 +433,6 @@ final class SendMessage : Request {
             packages.append(mimeAddress)
         }
         out["Packages"] = packages
-        //PMLog.D( out.json(prettyPrinted: true) )
-        PMLog.D( "API toDict done" )
         return out
     }
     

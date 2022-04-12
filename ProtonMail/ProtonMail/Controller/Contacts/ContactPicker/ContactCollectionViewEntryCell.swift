@@ -89,7 +89,7 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
                                                            metrics: nil,
                                                            views: ["textField": textField]))
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]-(40)-|",
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[textField]-(10)-|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["textField": textField]))
@@ -181,9 +181,9 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         let s = CGSize(width: Double.greatestFiniteMagnitude, height: Double.greatestFiniteMagnitude)
         let size = NSString(string: text).boundingRect(with: s,
                                                        options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                       attributes: [NSAttributedString.Key.font : Fonts.h6.light],
+                                                       attributes: [NSAttributedString.Key.font : Fonts.h5.regular],
                                                        context: nil).size
-        return size.width.rounded(.up)
+        return size.width.rounded(.up) + 10
     }
     
 }

@@ -21,9 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
-
+import UIKit
 
 protocol ContactEditCellDelegate {
     func pick(typeInterface: ContactEditTypeInterface, sender: UITableViewCell)

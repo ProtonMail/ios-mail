@@ -21,9 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 import LocalAuthentication
-
 
 enum BiometricType {
     case none
@@ -31,13 +30,12 @@ enum BiometricType {
     case faceID
 }
 
-extension UIDevice {
+extension UIDevice: BiometricStatusProvider {
     var biometricType: BiometricType {
         get {
             let context = LAContext()
             var error: NSError?
             guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-                PMLog.D(error?.localizedDescription ?? "")
                 return .none
             }
             switch context.biometryType {
@@ -52,4 +50,8 @@ extension UIDevice {
             }
         }
     }
+}
+
+protocol BiometricStatusProvider {
+    var biometricType: BiometricType { get }
 }

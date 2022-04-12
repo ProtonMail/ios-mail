@@ -2,13 +2,12 @@ stages:
   - i18n
   - test
   - test_flight
-  - enterprise_test
+  - enterprise
   - bot # comes from translations/generator job
 
 .before_script_mac: &before_script_mac
   - cd ProtonMail/ProtonMailUITests/ && sh Tests/TestPlans/scripts/prepare_users.sh && cd .. && cd ..
   - gem install xcpretty
-  - gem install xcode-install
 
 .set_up_brew_dependecies: &set_up_brew_dependecies
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
@@ -24,7 +23,7 @@ stages:
   - base64 -D -o Share.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SHARE_PROVISIONPROFILE
   - SENTRY_PROJECT=$SENTRY_PROJECT_ENTERPRISE
   - SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN_ENTERPRISE
-  
+
 # --- includes ---
 include:
   - project: "translations/generator"
@@ -50,11 +49,17 @@ unit_tests:
     - merge_requests
   except:
     - schedules
+  variables:
+    GIT_DEPTH: 1
+  artifacts:
+    reports:
+      cobertura: ./test_output/slatherOutput/cobertura.xml
   before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
+    - *set_up_brew_dependecies
     # - pip install xUnique
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
@@ -69,11 +74,14 @@ ui_tests:
   stage: test
   except:
     - schedules
-  only:
-    - master
     - develop
-    - /^release\/.*$/
-    - merge_requests
+  only:
+    refs:
+      - master
+      - /^release\/.*$/
+      - merge_requests
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -90,19 +98,20 @@ ui_tests:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
+    - *set_up_brew_dependecies
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
-    - cd ProtonMail
-    - bundle install
-    - bundle exec fastlane ui_test
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - xcodebuild -workspace ProtonMail/ProtonMail.xcworkspace -scheme ProtonMailUITests -destination "platform=iOS Simulator,name=iPhone 11,OS=15.0" -testPlan "SmokeTests" -resultBundlePath "./TestResults" -derivedDataPath "./DerivedData" -parallel-testing-enabled YES -parallel-testing-worker-count "2" -quiet test
   tags:
     - iOS_ARM_TAIPEI
-    
+
 feature_tests:
   dependencies: []
   stage: test
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+  variables:
+    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -120,6 +129,7 @@ feature_tests:
     - git submodule init
     - git submodule update --init --recursive
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
+    - *set_up_brew_dependecies
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
     - sh ProtonMail/ProtonMailUITests/Tests/TestPlans/scripts/run_ui_tests.sh $TEST_PLAN $NUMBER_OF_DEVICES $CI_COMMIT_BRANCH $CI_JOB_URL $SLACK_UI_TESTS_URL
@@ -146,12 +156,14 @@ build-app-and-upload:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
     - git submodule init
     - git submodule update --init --recursive
+    - *set_up_brew_dependecies
   script:
     - cd ProtonMail
     - touch ~/.bashrc
     - curl -sL https://sentry.io/get-cli/ | bash || true
     - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
     - fastlane ios build
+    - ./fastlane/add_git_tag.sh
   tags:
     - iOS_ARM_TAIPEI
 
@@ -182,13 +194,43 @@ nightly-build-and-upload:
   tags:
     - iOS_ARM_TAIPEI
 
-# --- Build enterprise app for test and upload
-build-test-enterprise-app-and-upload:
+# --- Build enterprise app for release and upload
+enterprise-release:
   dependencies: []
-  stage: enterprise_test
-  when: manual
+  stage: enterprise
   variables:
     GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
+  artifacts:
+    name: "iOS mail app release enterprise build"
+    paths:
+      - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
+    expire_in: 90 days
+  before_script:
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmauthentication".insteadOf git@gitlab.protontech.ch:apple/shared/pmauthentication
+    - git submodule init
+    - git submodule update --init --recursive
+    - *set_up_brew_dependecies
+  script:
+    - *enterprise_config_setting
+    - fastlane ios enterprise usingTimeStamp:false
+  tags:
+    - iOS_ARM_TAIPEI
+
+# --- Build enterprise app for test and upload
+enterprise-test:
+  dependencies: []
+  stage: enterprise
+  variables:
+    GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
   artifacts:
     name: "iOS mail app test enterprise build"
     paths:
@@ -209,26 +251,16 @@ build-test-enterprise-app-and-upload:
 # --- Translation related tasks ---
 i18n-sync-crowdin:
   variables:
-    I18N_SYNC_CROWDIN_PROJECT: "apple-mail"
-    I18N_COMMIT_BRANCH_PUSH: $CI_COMMIT_REF_NAME
+    I18N_SYNC_CROWDIN_PROJECT: "apple-mail-v4"
+    I18N_SYNC_BRANCH: "develop"
   extends: .i18n-sync-crowdin-shared-apple
-  only:
-    refs:
-      - branches
-    variables:
-      - $CI_COMMIT_REF_NAME =~ /^feat\/V3/
 
 i18n-commit-locales:
   variables:
-    I18N_COMMIT_CROWDIN_PROJECT: "apple-mail"
-    I18N_COMMIT_BRANCH_ALLOWED: $CI_COMMIT_REF_NAME
+    I18N_COMMIT_CROWDIN_PROJECT: "apple-mail-v4"
+    I18N_COMMIT_BRANCH_PUSH: "develop"
+    I18N_COMMIT_BRANCH_ALLOWED: "develop"
   extends: .i18n-commit-locales-shared-apple2
-  when: manual
-  only:
-    refs:
-      - branches
-    variables:
-      - $CI_COMMIT_REF_NAME =~ /^feat\/V3/
 
 commit-locales-release:
   stage: i18n
@@ -236,9 +268,9 @@ commit-locales-release:
   when: manual
   variables:
     I18N_COMMIT_BRANCH_PUSH: $CI_COMMIT_REF_NAME
-    I18N_COMMIT_CROWDIN_PROJECT: "apple-mail"
+    I18N_COMMIT_CROWDIN_PROJECT: "apple-mail-v4"
   only:
     refs:
       - branches
     variables:
-      - $CI_COMMIT_REF_NAME =~ /^feat\/V3/
+      - $CI_COMMIT_REF_NAME == 'develop'

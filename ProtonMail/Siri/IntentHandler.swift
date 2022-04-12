@@ -19,9 +19,9 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
-import PMKeymaker
+
 import Intents
+import ProtonCore_Keymaker
 
 @available(iOS 12.0, *)
 class IntentHandler: INExtension {
@@ -42,7 +42,7 @@ public class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
     
     public func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {
         Keymaker(autolocker: nil, keychain: KeychainWrapper.keychain).wipeMainKey()
-        PushNotificationDecryptor.wipeEncryptionKit()
+        PushNotificationDecryptor().wipeEncryptionKit()
         
         completion(WipeMainKeyIntentResponse(code: WipeMainKeyIntentResponseCode.success, userActivity: nil))
     }

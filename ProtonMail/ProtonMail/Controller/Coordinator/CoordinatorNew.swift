@@ -21,10 +21,10 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
+import UIKit
 
 
-protocol CoordinatorDelegate: class {
+protocol CoordinatorDelegate: AnyObject {
     func willStop(in coordinator: CoordinatorNew)
     func didStop(in coordinator: CoordinatorNew)
 }
@@ -87,7 +87,7 @@ protocol PushCoordinator: DefaultCoordinator {
     var navigationController: UINavigationController? { get }
 }
 
-extension PushCoordinator where VC: UIViewController, VC: CoordinatedNew {
+extension PushCoordinator where VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {
             return
@@ -110,7 +110,7 @@ protocol ModalCoordinator: DefaultCoordinator {
     var destinationNavigationController: UINavigationController? { get }
 }
 
-extension ModalCoordinator where VC: UIViewController, VC: CoordinatedNew {
+extension ModalCoordinator where VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {
             return

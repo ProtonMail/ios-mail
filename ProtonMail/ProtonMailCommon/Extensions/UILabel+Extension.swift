@@ -21,9 +21,15 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UILabel {
+
+    convenience init(attributedString: NSAttributedString) {
+        self.init()
+        self.attributedText = attributedString
+        self.sizeToFit()
+    }
     
     convenience init(font: UIFont, text: String, textColor: UIColor) {
         self.init()
@@ -32,35 +38,5 @@ extension UILabel {
         self.text = text
         self.textColor = textColor
         self.sizeToFit()
-    }
-    
-    func setIcons(imageNames: [String], useTintColor: Bool) {
-        let myString = NSMutableAttributedString.init()
-        
-        for imageName in imageNames {
-            let attachment = NSTextAttachment()
-            let image = UIImage(named: imageName)
-            
-            if useTintColor {
-                image?.withRenderingMode(.alwaysTemplate)
-            }
-            
-            attachment.image = image
-            
-            let attachmentString = NSAttributedString(attachment: attachment)
-            myString.append(attachmentString)
-        }
-        
-        self.attributedText = myString
-    }
-    
-    func addBottomBorder() {
-        let bottomBorder = CALayer()
-        bottomBorder.borderColor = UIColor.lightGray.cgColor
-        bottomBorder.borderWidth = 0.7
-        bottomBorder.frame = CGRect.init(x: 0, y: self.frame.height - 1,
-                                         width: self.frame.width, height: 1)
-        self.clipsToBounds = true
-        self.layer.addSublayer(bottomBorder)
     }
 }

@@ -24,8 +24,9 @@
 import Foundation
 import PromiseKit
 import Crypto
-import PMCommon
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_Services
 
 //Keys API
 struct KeysAPI {
@@ -109,77 +110,6 @@ final class KeysResponse : Response {
         }
         return nil
     }
-    
-    //TODO:: change to filter later.
-    func getCompromisedKeys() -> Data?  {
-        var pubKeys : Data? = nil
-        for k in keys {
-            if k.flags == 0 {
-                if pubKeys == nil {
-                    pubKeys = Data()
-                }
-                if let p = k.publicKey {
-                    var error : NSError?
-                    if let data = ArmorUnarmor(p, &error) {
-                        if error == nil && data.count > 0 {
-                            pubKeys?.append(data)
-                        }
-                    }
-                }
-            }
-        }
-        return pubKeys
-    }
-    
-    func getVerifyKeys() -> Data? {
-        var pubKeys : Data? = nil
-        for k in keys {
-            if k.flags == 1 || k.flags == 3 {
-                if pubKeys == nil {
-                    pubKeys = Data()
-                }
-                if let p = k.publicKey {
-                    var error : NSError?
-                    if let data = ArmorUnarmor(p, &error) {
-                        if error == nil && data.count > 0 {
-                            pubKeys?.append(data)
-                        }
-                    }
-                }
-            }
-        }
-        return pubKeys
-    }
-}
-
-///KeySaltResponse
-final class GetKeysSalts : Request {
-    init(authCredential: AuthCredential? = nil) {
-        self.auth = authCredential
-    }
-    var path: String {
-        return KeysAPI.path + "/salts"
-    }
-    
-    //custom auth credentical
-    var auth: AuthCredential?
-    var authCredential : AuthCredential? {
-        get {
-            return self.auth
-        }
-    }
-}
-
-final class KeySaltResponse : Response {
-    var keySalt : String?
-    var keyID : String?
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        if let keySalts = response["KeySalts"] as? [[String : Any]], let firstKeySalt = keySalts.first {
-            self.keySalt = firstKeySalt["KeySalt"] as? String
-            self.keyID = firstKeySalt["ID"] as? String
-        }
-        return true
-    }
 }
 
 /// message packages
@@ -216,41 +146,11 @@ final class UpdatePrivateKeyRequest : Request {
     let SRPSession : String //hex encoded session id
     let tfaCode : String? // optional
     let keySalt : String //base64 encoded need random value
-    
     var userLevelKeys: [Key]
     var userAddressKeys: [Key]
     let orgKey : String?
-    
     let userKeys: [Key]?
-    
     let auth : PasswordAuth?
-    
-    init(clientEphemeral: String,
-         clientProof: String,
-         SRPSession: String,
-         keySalt: String,
-         tfaCode : String? = nil,
-         orgKey: String? = nil,
-         userKeys: [Key]? = nil,
-         auth: PasswordAuth?,
-         authCredential: AuthCredential?
-         ) {
-        self.clientEphemeral = clientEphemeral
-        self.clientProof = clientProof
-        self.SRPSession = SRPSession
-        self.keySalt = keySalt
-        self.userLevelKeys = []
-        self.userAddressKeys = []
-        
-        self.userKeys = userKeys
-        
-        //optional values
-        self.orgKey = orgKey
-        self.tfaCode = tfaCode
-        self.auth = auth
-        
-        self.credential = authCredential
-    }
 
     init(clientEphemeral: String,
          clientProof: String,
@@ -260,9 +160,7 @@ final class UpdatePrivateKeyRequest : Request {
          addressKeys: [Key] = [],
          tfaCode : String? = nil,
          orgKey: String? = nil,
-
          userKeys: [Key]?,
-         
          auth: PasswordAuth?,
          authCredential: AuthCredential?
          ) {
@@ -293,15 +191,11 @@ final class UpdatePrivateKeyRequest : Request {
     
     var parameters: [String : Any]? {
         var keysDict : [Any] = [Any]()
-        for _key in userLevelKeys {
-            if _key.is_updated {
-                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
-            }
+        for userLevelKey in userLevelKeys where userLevelKey.isUpdated {
+            keysDict.append( ["ID": userLevelKey.keyID, "PrivateKey" : userLevelKey.privateKey] )
         }
-        for _key in userAddressKeys {
-            if _key.is_updated {
-                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
-            }
+        for userAddressKey in userAddressKeys where userAddressKey.isUpdated {
+            keysDict.append( ["ID": userAddressKey.keyID, "PrivateKey" : userAddressKey.privateKey] )
         }
         
         var out : [String : Any] = [
@@ -316,9 +210,9 @@ final class UpdatePrivateKeyRequest : Request {
         }
         
         if let userKeys = self.userKeys {
-            var userKeysDict : [Any] = [Any]()
-            for key in userKeys {
-                userKeysDict.append( ["ID": key.key_id, "PrivateKey" : key.private_key] )
+            var userKeysDict: [Any] = []
+            for userKey in userKeys where userKey.isUpdated {
+                userKeysDict.append( ["ID": userKey.keyID, "PrivateKey" : userKey.privateKey] )
             }
             if !userKeysDict.isEmpty {
                 out["UserKeys"] = userKeysDict
@@ -351,7 +245,7 @@ extension Array where Element: Package {
     var parameters: [Any]? {
         var out : [Any] = []
         for item in self {
-            out.append(item.parameters)
+            out.append(item.parameters as Any)
         }
         return  out
     }
@@ -370,8 +264,7 @@ extension Array where Element: Any {
                 if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
+            } catch {
             }
         }
         return ""
@@ -396,7 +289,6 @@ final class ActivateKey : Request {
             "PrivateKey" : self.privateKey,
             "SignedKeyList" : self.signedKeyList
         ]
-        PMLog.D(out.json(prettyPrinted: true))
         return out
     }
     

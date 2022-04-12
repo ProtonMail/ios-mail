@@ -25,13 +25,16 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
-import PMCommon
+import CoreData
 import OpenPGP
+import ProtonCore_DataModel
+import ProtonCore_Payments
 
-class ContactDetailsViewModelImpl : ContactDetailsViewModel {
+class ContactDetailsViewModelImpl: ContactDetailsViewModel {
     
     private let contact: Contact
     private let contactService: ContactDataService
+    private var contactParser: contactParserProtocol!
 
     private var origEmails: [ContactEditEmail] = []
     private var origAddresses: [ContactEditAddress] = []
@@ -63,10 +66,17 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         .share
     ]
 
+    private var contactFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
+
     init(contact: Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
         self.contact = contact
         super.init(user: user, coreDataService: coreDateService)
+        self.contactParser = ContactParser(resultDelegate: self)
+
+        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+        contactFetchedController?.delegate = self
+        try? contactFetchedController?.performFetch()
     }
     
     override func sections() -> [ContactEditSectionType] {
@@ -143,9 +153,24 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         }
         return false
     }
+
+    private func rebuildData() {
+        origEmails = []
+        origAddresses = []
+        origTelephons = []
+        origInformations = []
+        origFields = []
+        origNotes = []
+        origUrls = []
+        profilePicture = nil
+
+        verifyType2 = true
+        verifyType3 = true
+        self.setupEmails(forceRebuild: true)
+    }
     
     @discardableResult
-    private func setupEmails() -> Promise<Void> {
+    private func setupEmails(forceRebuild: Bool = false) -> Promise<Void> {
         return firstly { () -> Promise<Void> in
             let userInfo = self.user.userInfo
             
@@ -154,267 +179,46 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             for card in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
                 switch card.type {
                 case .PlainText:
-                    if let vcard = PMNIEzvcard.parseFirst(card.data) {
-                        let emails = vcard.getEmails()
-                        var order : Int = 1
-                        for e in emails {
-                            let types = e.getTypes()
-                            let typeRaw = types.count > 0 ? types.first! : ""
-                            let type = ContactFieldType.get(raw: typeRaw)
-                            
-                            let ce = ContactEditEmail(order: order,
-                                                      type: type == .empty ? .email : type,
-                                                      email:e.getValue(),
-                                                      isNew: false,
-                                                      keys: nil,
-                                                      contactID: self.contact.contactID,
-                                                      encrypt: nil,
-                                                      sign: nil ,
-                                                      scheme: nil,
-                                                      mimeType: nil,
-                                                      delegate: nil,
-                                                      coreDataService: self.coreDataService)
-                            origEmails.append(ce)
-                            order += 1
-                        }
-                    }
-                    break
+                    self.contactParser
+                        .parsePlainTextContact(data: card.data,
+                                               coreDataService: self.coreDataService,
+                                               contactID: self.contact.contactID)
                 case .EncryptedOnly:
-                    break
+                    let hasError = self.contactParser
+                        .parseEncryptedOnlyContact(card: card,
+                                                   passphrase: user.mailboxPassword,
+                                                   userKeys: userInfo.userKeys)
+                    if let hasError = hasError {
+                        return hasError
+                    }
                 case .SignedOnly:
-                    let userkeys = userInfo.userKeys
-                    for key in userkeys {
-                        do {
-                            let verifyStatus = try Crypto().verifyDetached(signature: card.sign,
-                                                                           plainText: card.data,
-                                                                           publicKey: key.publicKey,
-                                                                           verifyTime: 0)
-                            self.verifyType2 = verifyStatus
-                            if self.verifyType2 {
-                                if !key.private_key.check(passphrase: user.mailboxPassword) {
-                                    self.verifyType2 = false
-                                }
-                                break
-                            }
-                            
-                        } catch {
-                            self.verifyType2 = false
-                        }
-                    }
-                    
-                    if let vcard = PMNIEzvcard.parseFirst(card.data) {
-                        let emails = vcard.getEmails()
-                        var order = 1
-                        for email in emails {
-                            let types = email.getTypes()
-                            let typeRaw = types.count > 0 ? types.first! : ""
-                            let type = ContactFieldType.get(raw: typeRaw)
-                            
-                            let contactEditEmail = ContactEditEmail(
-                                order: order,
-                                type: type == .empty ? .email : type,
-                                email: email.getValue(),
-                                isNew: false,
-                                keys: nil,
-                                contactID: self.contact.contactID,
-                                encrypt: nil,
-                                sign: nil ,
-                                scheme: nil,
-                                mimeType: nil,
-                                delegate: nil,
-                                coreDataService: self.coreDataService
-                            )
-                            origEmails.append(contactEditEmail)
-                            order += 1
-                        }
-                    }
-                    break
+                    self.verifyType2 = self.contactParser.verifySignature(
+                        signature: card.sign,
+                        plainText: card.data,
+                        userKeys: userInfo.userKeys,
+                        passphrase: user.mailboxPassword)
+                    self.contactParser
+                        .parsePlainTextContact(data: card.data,
+                                               coreDataService: self.coreDataService,
+                                               contactID: self.contact.contactID)
                 case .SignAndEncrypt:
-                    guard let firstUserkey = userInfo.firstUserKey() else {
-                        return Promise.value(())
+                    let hasError = self.contactParser
+                        .parseSignAndEncryptContact(card: card,
+                                                    passphrase: user.mailboxPassword,
+                                                    firstUserKey: userInfo.firstUserKey(),
+                                                    userKeys: userInfo.userKeys)
+                    if let hasError = hasError {
+                        return hasError
                     }
-                    var pt_contact : String?
-                    var signKey : Key?
-                    let userkeys = userInfo.userKeys
-                    for key in userkeys {
-                        do {
-                            pt_contact = try card.data.decryptMessageWithSinglKey(key.private_key,
-                                                                                  passphrase: user.mailboxPassword)
-                            signKey = key
-                            self.decryptError = false
-                            break
-                        } catch {
-                            self.decryptError = true
-                        }
-                    }
-                    
-                    let key = signKey ?? firstUserkey
-                    guard let pt_contact_vcard = pt_contact else {
-                        break
-                    }
-                    
-                    do {
-                        let verifyStatus = try Crypto().verifyDetached(signature: card.sign,
-                                                                       plainText: pt_contact_vcard,
-                                                                       publicKey: key.publicKey,
-                                                                       verifyTime: 0)
-                        self.verifyType3 = verifyStatus
-                    } catch {
-                        self.verifyType3 = false
-                    }
-                    
-                    do {
-                        try ObjC.catchException {
-                            if let vcard = PMNIEzvcard.parseFirst(pt_contact_vcard) {
-                                let types = vcard.getPropertyTypes()
-                                for type in types {
-                                    switch type {
-                                    case "Telephone":
-                                        let telephones = vcard.getTelephoneNumbers()
-                                        var order = 1
-                                        for t in telephones {
-                                            let types = t.getTypes()
-                                            let typeRaw = types.count > 0 ? types.first! : ""
-                                            let type = ContactFieldType.get(raw: typeRaw)
-                                            let contactEditPhone = ContactEditPhone(
-                                                order: order,
-                                                type: type == .empty ? .phone : type,
-                                                phone: t.getText(),
-                                                isNew: false
-                                            )
-                                            self.origTelephons.append(contactEditPhone)
-                                            order += 1
-                                        }
-                                    case "Address":
-                                        let addresses = vcard.getAddresses()
-                                        var order = 1
-                                        for a in addresses {
-                                            let types = a.getTypes()
-                                            let typeRaw = types.count > 0 ? types.first! : ""
-                                            let type = ContactFieldType.get(raw: typeRaw)
-
-                                            let pobox = a.getPoBoxes().joined(separator: ",")
-                                            let street = a.getStreetAddress()
-                                            let extention = a.getExtendedAddress()
-                                            let locality = a.getLocality()
-                                            let region = a.getRegion()
-                                            let postal = a.getPostalCode()
-                                            let country = a.getCountry()
-                                            
-                                            let contactEditAddress = ContactEditAddress(
-                                                order: order, type: type == .empty ? .address : type,
-                                                pobox: pobox, street: street, streetTwo: extention,
-                                                locality: locality, region: region,
-                                                postal: postal, country: country, isNew: false
-                                            )
-                                            self.origAddresses.append(contactEditAddress)
-                                            order += 1
-                                        }
-                                    case "Organization":
-                                        let organization = vcard.getOrganization()
-                                        let contactEditInformation = ContactEditInformation(
-                                            type: .organization,
-                                            value: organization?.getValue() ?? "",
-                                            isNew: false
-                                        )
-                                        self.origInformations.append(contactEditInformation)
-                                    case "Title":
-                                        let title = vcard.getTitle()
-                                        let info = ContactEditInformation(
-                                            type: .title,
-                                            value: title?.getTitle() ?? "",
-                                            isNew: false
-                                        )
-                                        self.origInformations.append(info)
-                                    case "Nickname":
-                                        let nick = vcard.getNickname()
-                                        let contactEditInformation = ContactEditInformation(
-                                            type: .nickname,
-                                            value: nick?.getNickname() ?? "",
-                                            isNew: false
-                                        )
-                                        self.origInformations.append(contactEditInformation)
-                                    case "Birthday":
-                                        let birthdays = vcard.getBirthdays()
-                                        let contactEditInformations = birthdays.map { birthday in
-                                            ContactEditInformation(
-                                                type: .birthday,
-                                                value: birthday.formattedBirthday,
-                                                isNew: false
-                                            )
-                                        }
-                                        self.origInformations.append(contentsOf: contactEditInformations)
-                                    case "Anniversary":
-                                        break
-                                    case "Gender":
-                                        if let gender = vcard.getGender() {
-                                            let contactEditInformation = ContactEditInformation(
-                                                type: .gender,
-                                                value: gender.getGender(),
-                                                isNew: false
-                                            )
-                                            self.origInformations.append(contactEditInformation)
-                                        }
-                                    case "Url":
-                                        let urls = vcard.getUrls()
-                                        var order = 1
-                                        for url in urls {
-                                            let typeRaw = url.getType()
-                                            let type = ContactFieldType.get(raw: typeRaw)
-                                            let contactEditUrl = ContactEditUrl(
-                                                order: order,
-                                                type: type == .empty ? .url : type,
-                                                url: url.getValue(),
-                                                isNew: false
-                                            )
-                                            self.origUrls.append(contactEditUrl)
-                                            order += 1
-                                        }
-                                    case "Photo":
-                                        let photo = vcard.getPhoto()
-                                        if let image = photo?.getRawData() {
-                                            let data = Data(image)
-                                            self.profilePicture = UIImage(data: data)
-                                        }
-                                        break
-                                    default:
-                                        break
-                                    }
-                                }
-                                
-                                let customs = vcard.getCustoms()
-                                var order = 1
-                                for custom in customs {
-                                    let typeRaw = custom.getType()
-                                    let type = ContactFieldType.get(raw: typeRaw)
-                                    let contactEditField = ContactEditField(
-                                        order: order,
-                                        type: type,
-                                        field: custom.getValue(),
-                                        isNew: false
-                                    )
-                                    self.origFields.append(contactEditField)
-                                    order += 1
-                                }
-                                
-                                if let note = vcard.getNote() {
-                                    let contactEditNote = ContactEditNote(note: note.getNote(), isNew: false)
-                                    contactEditNote.isNew = false
-                                    self.origNotes.append(contactEditNote)
-                                }
-                                
-                            }
-                        }
-                    } catch let error {
-                        return Promise(error: error)
-                    }
-                    break
                 }
             }
-            self.contact.managedObjectContext?.performAndWait {
-                self.contact.needsRebuild = false
-                if let error = self.contact.managedObjectContext?.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
+
+            if !forceRebuild {
+                self.coreDataService.rootSavingContext.performAndWait {
+                    if let contactToUpdate = try? self.coreDataService.rootSavingContext.existingObject(with: self.contact.objectID) as? Contact {
+                        contactToUpdate.needsRebuild = false
+                        _ = self.coreDataService.rootSavingContext.saveUpstreamIfNeeded()
+                    }
                 }
             }
             
@@ -442,7 +246,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         loading()
         return Promise { seal in
             //Fixme
-            self.contactService.details(contactID: contact.contactID, inContext: self.coreDataService.mainManagedObjectContext).then { _ in
+            self.contactService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
             }.done {
                 seal.fulfill(self.contact)
@@ -502,7 +306,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.private_key,
+                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.privateKey,
                                                                                passphrase: user.mailboxPassword)
                         break
                     }
@@ -559,5 +363,58 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
             return name + ".vcf"
         }
         return "exported.vcf"
+    }
+}
+
+extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        rebuildData()
+        reloadView?()
+    }
+}
+
+extension ContactDetailsViewModelImpl: ContactParserResultDelegate {
+    func append(emails: [ContactEditEmail]) {
+        self.origEmails.append(contentsOf: emails)
+    }
+    
+    func append(addresses: [ContactEditAddress]) {
+        self.origAddresses.append(contentsOf: addresses)
+    }
+    
+    func append(telephones: [ContactEditPhone]) {
+        self.origTelephons.append(contentsOf: telephones)
+    }
+    
+    func append(informations: [ContactEditInformation]) {
+        self.origInformations.append(contentsOf: informations)
+    }
+    
+    func append(fields: [ContactEditField]) {
+        self.origFields.append(contentsOf: fields)
+    }
+    
+    func append(notes: [ContactEditNote]) {
+        self.origNotes.append(contentsOf: notes)
+    }
+    
+    func append(urls: [ContactEditUrl]) {
+        self.origUrls.append(contentsOf: urls)
+    }
+    
+    func update(verifyType2: Bool) {
+        self.verifyType2 = verifyType2
+    }
+    
+    func update(verifyType3: Bool) {
+        self.verifyType3 = verifyType3
+    }
+    
+    func update(decryptionError: Bool) {
+        self.decryptError = decryptionError
+    }
+
+    func update(profilePicture: UIImage?) {
+        self.profilePicture = profilePicture
     }
 }

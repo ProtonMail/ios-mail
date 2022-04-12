@@ -22,7 +22,7 @@
     
 
 import Foundation
-import UIKit
+import ProtonCore_UIFoundations
 
 class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthenticating {
     weak var delegate : PinCodeViewControllerDelegate?
@@ -35,7 +35,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             let settings = UIAlertAction(title: LocalString._go_to_settings, style: .cancel) { _ in
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
-            let logout = UIAlertAction(title: LocalString._go_to_login, style: .default) { _ in
+            let logout = UIAlertAction(title: LocalString._go_to_signin, style: .default) { _ in
                 self.logout()
             }
             [settings, logout].forEach(alert.addAction)
@@ -58,33 +58,22 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         self.authenticateUser()
     }
     
-    func pin_unlock_action(_ sender: Any) {
-        // nothing
-    }
-    
     @IBOutlet weak var bioCodeView: BioCodeView!
     
     func configureNavigationBar() {
-        let original = UIImage(named: "menu_logout-active")!
-        let flipped = UIImage(cgImage: original.cgImage!, scale: 0.7 * original.scale, orientation: .up) // scale coefficient is a magic number
+        let original = UIImage(named: "menu_logout")?.withRenderingMode(.alwaysTemplate)
         
         self.navigationItem.title = ""
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: flipped,
-                                                style: .plain,
-                                                target: self,
-                                                action: #selector(self.logoutButtonTapped))
+        let logoutButton = UIBarButtonItem(image: original,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(self.logoutButtonTapped))
+        logoutButton.tintColor = ColorProvider.IconNorm
+        self.navigationItem.leftBarButtonItem = logoutButton
         
         if let bar = self.navigationController?.navigationBar {
             // this will make bar transparent
-            if #available(iOS 15.0, *) {
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithTransparentBackground()
-                navigationController?.navigationBar.standardAppearance = appearance
-                navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            } else {
-                navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            }
-            
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.isTranslucent = true
             
@@ -108,7 +97,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.configureNavigationBar()
-        
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.bioCodeView.delegate = self
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)
@@ -122,7 +111,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     
     @objc func logoutButtonTapped() {
         
-        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation_in_bio, preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: LocalString._signout_confirmation_in_bio, preferredStyle: .alert)
         let logout = UIAlertAction(title: LocalString._sign_out, style: .destructive) { _ in
             self.logout()
         }

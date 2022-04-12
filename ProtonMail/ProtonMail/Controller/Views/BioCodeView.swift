@@ -19,67 +19,54 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
 
-import Foundation
+import UIKit
 
-protocol BioCodeViewDelegate: class {
+protocol BioCodeViewDelegate: AnyObject {
     func touch_id_action(_ sender: Any)
-    func pin_unlock_action(_ sender: Any)
 }
 
 class BioCodeView: PMView {
-    @IBOutlet weak var pinUnlock: UIButton!
-    @IBOutlet weak var touchID: UIButton!
-    
+    @IBOutlet var touchID: UIButton!
+
     weak var delegate: BioCodeViewDelegate?
-    
+
     @IBAction func touch_id_action(_ sender: Any) {
-        self.delegate?.touch_id_action(sender)
-    }
-    
-    @IBAction func pin_unlock_action(_ sender: Any) {
-        self.delegate?.pin_unlock_action(sender)
+        delegate?.touch_id_action(sender)
     }
 
     override func getNibName() -> String {
-        return "BioCodeView";
+        return "BioCodeView"
     }
-    
+
     override func setup() {
         super.setup()
-        
-        pinUnlock.alpha = 0.0
+        self.backgroundColor = .clear
         touchID.alpha = 0.0
-        
-        pinUnlock.isEnabled = false
         touchID.isEnabled = false
         touchID.layer.cornerRadius = 25
-        
+
         switch UIDevice.current.biometricType {
         case .faceID:
-            self.touchID.setImage(UIImage(named: "face_id_icon"), for: .normal)
-            self.touchID.isHidden = false
-            
+            touchID.setImage(UIImage(named: "face_id_icon"), for: .normal)
+            touchID.isHidden = false
+
         case .touchID:
-            self.touchID.setImage(UIImage(named: "touch_id_icon"), for: .normal)
-            self.touchID.isHidden = false
-            
+            touchID.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+            touchID.isHidden = false
+
         case .none:
-            self.touchID.isHidden = true
+            touchID.isHidden = true
         }
     }
-    
+
     func loginCheck(_ flow: SignInUIFlow) {
         switch flow {
         case .requirePin:
-            pinUnlock.alpha = 1.0
-            pinUnlock.isEnabled = true
             if userCachedStatus.isTouchIDEnabled {
                 touchID.alpha = 1.0
                 touchID.isEnabled = true
             }
-
         case .requireTouchID:
             touchID.alpha = 1.0
             touchID.isEnabled = true
@@ -88,9 +75,8 @@ class BioCodeView: PMView {
             break
         }
     }
-    
-    func showErrorAndQuit(errorMsg : String) {
-        self.touchID.alpha = 0.0
-        self.pinUnlock.alpha = 0.0
+
+    func showErrorAndQuit(errorMsg: String) {
+        touchID.alpha = 0.0
     }
 }

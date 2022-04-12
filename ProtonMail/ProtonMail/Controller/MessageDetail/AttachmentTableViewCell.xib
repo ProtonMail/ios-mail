@@ -42,19 +42,14 @@
                             <constraint firstAttribute="width" constant="24" id="pRz-86-AIQ"/>
                         </constraints>
                     </imageView>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="gLB-iZ-ZxU">
-                        <rect key="frame" x="430" y="73.5" width="20" height="20"/>
-                    </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="GZk-Sg-DKL" firstAttribute="leading" secondItem="S5M-E8-Ldb" secondAttribute="leading" constant="16" id="5Ff-r8-uvW"/>
-                    <constraint firstItem="gLB-iZ-ZxU" firstAttribute="centerY" secondItem="S5M-E8-Ldb" secondAttribute="centerY" id="DWn-gM-sSP"/>
                     <constraint firstAttribute="centerY" secondItem="A6v-CT-zxf" secondAttribute="centerY" id="RLn-fh-rZ9"/>
                     <constraint firstAttribute="centerY" secondItem="xwp-Xm-P2R" secondAttribute="centerY" id="TlE-QO-yeo"/>
                     <constraint firstAttribute="trailing" secondItem="xwp-Xm-P2R" secondAttribute="trailing" constant="16" id="XsY-vc-qed"/>
                     <constraint firstItem="xwp-Xm-P2R" firstAttribute="leading" secondItem="A6v-CT-zxf" secondAttribute="trailing" constant="6" id="Yj6-BN-kbJ"/>
                     <constraint firstItem="A6v-CT-zxf" firstAttribute="leading" secondItem="xh2-ST-5dh" secondAttribute="leading" id="ayz-bH-C5O"/>
-                    <constraint firstAttribute="trailing" secondItem="gLB-iZ-ZxU" secondAttribute="trailing" constant="18" id="bQ6-kb-g9K"/>
                     <constraint firstItem="xh2-ST-5dh" firstAttribute="top" secondItem="A6v-CT-zxf" secondAttribute="bottom" constant="1" id="e5B-TL-a10"/>
                     <constraint firstItem="A6v-CT-zxf" firstAttribute="leading" secondItem="GZk-Sg-DKL" secondAttribute="trailing" constant="6" id="oB3-vd-XFb"/>
                     <constraint firstAttribute="centerY" secondItem="GZk-Sg-DKL" secondAttribute="centerY" id="t3R-o5-TDJ"/>
@@ -66,7 +61,6 @@
                 <outlet property="downloadIcon" destination="xwp-Xm-P2R" id="tyk-3P-USk"/>
                 <outlet property="fileNameLabel" destination="A6v-CT-zxf" id="rIx-vI-Gz6"/>
                 <outlet property="progressView" destination="xh2-ST-5dh" id="zSz-lh-ffk"/>
-                <outlet property="spinnerView" destination="gLB-iZ-ZxU" id="r4U-fa-pvf"/>
             </connections>
             <point key="canvasLocation" x="-38" y="195"/>
         </tableViewCell>

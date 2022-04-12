@@ -39,7 +39,18 @@ public class Contact: NSManagedObject {
     @NSManaged var isDownloaded : Bool
     @NSManaged var isCorrected : Bool
     @NSManaged var needsRebuild : Bool
+    @NSManaged var isSoftDeleted: Bool
 
     // relation
     @NSManaged var emails: NSSet
+
+    @objc
+    dynamic var sectionName: String {
+        let temp = self.name.lowercased()
+        if temp.isEmpty || temp.count == 1 {
+            return temp
+        }
+        let index = temp.index(after: temp.startIndex)
+        return String(temp.prefix(upTo: index))
+    }
 }

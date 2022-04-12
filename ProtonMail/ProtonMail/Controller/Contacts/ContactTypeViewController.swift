@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
-
+import ProtonCore_UIFoundations
 
 protocol ContactTypeViewControllerDelegate : AnyObject {
     func done(sectionType: ContactEditSectionType)
@@ -41,19 +40,14 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     
     weak var deleget: ContactTypeViewControllerDelegate?
     
-    @IBOutlet weak var doneItem: UIBarButtonItem!
-    @IBOutlet weak var cancelItem: UIBarButtonItem!
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
     
     var activeText : UITextField? = nil
-    var selected : IndexPath? = nil
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
+        navigationItem.hidesBackButton = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,13 +60,13 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         if let index = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            tableView(self.tableView, didSelectRowAt: indexPath)
+            updateSelection(selectedIndexPath: indexPath)
         } else {
             let custom = viewModel.getCustomType()
             if !custom.isEmpty {
                 let indexPath = IndexPath(row: 0, section: 1)
                 self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                tableView(self.tableView, didSelectRowAt: indexPath)
+                updateSelection(selectedIndexPath: indexPath)
             }
         }
     }
@@ -86,36 +80,28 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         super.viewDidLayoutSubviews()
         self.tableView.zeroMargin()
     }
-    
-    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-        dismissKeyboard()
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func doneAction(_ sender: UIBarButtonItem) {
-        dismissKeyboard()
-        if let index = selected {
-            var type : ContactFieldType = .empty
-            if index.section == 0 {
-                let types = viewModel.getDefinedTypes()
-                type = types[index.row]
-            } else if index.section == 1 {
-                if let cell = self.tableView.cellForRow(at: index) {
-                    if let addCell = cell as? ContactTypeAddCustomCell {
-                        type = ContactFieldType.get(raw: addCell.getValue())
-                    } else {
-                        type = ContactFieldType.get(raw: cell.textLabel?.text ?? LocalString._contacts_custom_type)
-                    }
+
+    private func selectAndGoBack(at index: IndexPath) {
+        var type : ContactFieldType = .empty
+        if index.section == 0 {
+            let types = viewModel.getDefinedTypes()
+            type = types[index.row]
+        } else if index.section == 1 {
+            if let cell = self.tableView.cellForRow(at: index) {
+                if let addCell = cell as? ContactTypeAddCustomCell {
+                    type = ContactFieldType.get(raw: addCell.getValue())
                 } else {
-                    type = ContactFieldType.get(raw: LocalString._contacts_custom_type )
+                    type = ContactFieldType.get(raw: cell.textLabel?.text ?? LocalString._contacts_custom_type)
                 }
+            } else {
+                type = ContactFieldType.get(raw: LocalString._contacts_custom_type )
             }
-            viewModel.updateType(t: type)
-            deleget?.done(sectionType: viewModel.getSectionType())
         }
+        viewModel.updateType(t: type)
+        deleget?.done(sectionType: viewModel.getSectionType())
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     func dismissKeyboard() {
         if let t = self.activeText {
             t.resignFirstResponder()
@@ -186,18 +172,18 @@ extension ContactTypeViewController: UITableViewDataSource {
         let row = indexPath.row
         if section == 0 {
             let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
+            outCell.backgroundColor = ColorProvider.BackgroundNorm
+            outCell.textLabel?.textColor = ColorProvider.TextNorm
             outCell.selectionStyle = .default
             let l = viewModel.getDefinedTypes()
             outCell.textLabel?.text = l[indexPath.row].title
             return outCell
         } else {
-//            if row == 0 {
-//                let addCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeAddCustomCell", for: indexPath) as! ContactTypeAddCustomCell
-//                addCell.configCell(v: LocalString._contacts_add_custom_label)
-//                return addCell
-//            } else if row == 1 {
             if row == 0 {
                 let outCell = tableView.dequeueReusableCell(withIdentifier: "ContactTypeCell", for: indexPath)
+                outCell.backgroundColor = ColorProvider.BackgroundNorm
+                outCell.textLabel?.textColor = ColorProvider.TextNorm
+                outCell.selectionStyle = .default
                 outCell.selectionStyle = .default
                 let text = viewModel.getCustomType()
                 outCell.textLabel?.text = text.title
@@ -220,24 +206,28 @@ extension ContactTypeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let s = selected {
-            if let cell =  self.tableView.cellForRow(at: s) {
+        updateSelection(selectedIndexPath: indexPath)
+        selectAndGoBack(at: indexPath)
+    }
+}
+
+extension ContactTypeViewController {
+    private func updateSelection(selectedIndexPath: IndexPath) {
+        let indexPaths = tableView.indexPathsForVisibleRows ?? []
+        for index in indexPaths {
+            if let cell =  self.tableView.cellForRow(at: index) {
                 if let addCell = cell as? ContactTypeAddCustomCell {
                     addCell.unsetMark()
                 }
                 cell.accessoryType = .none
             }
         }
-        
-        if let cell = self.tableView.cellForRow(at: indexPath) {
+        if let cell = self.tableView.cellForRow(at: selectedIndexPath) {
             if let addCell = cell as? ContactTypeAddCustomCell {
                 addCell.setMark()
             }
             cell.accessoryType = .checkmark
         }
-        
-        selected = indexPath
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: selectedIndexPath, animated: true)
     }
-    
 }

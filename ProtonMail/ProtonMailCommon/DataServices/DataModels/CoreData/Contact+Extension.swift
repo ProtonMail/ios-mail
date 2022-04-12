@@ -32,6 +32,8 @@ extension Contact {
         static let name = "name"
         static let emails = "emails"
         static let userID = "userID"
+        static let sectionName = "sectionName"
+        static let isSoftDeleted = "isSoftDeleted"
     }
 
     // MARK: - methods
@@ -81,7 +83,7 @@ extension Contact {
     func getDisplayEmails() -> String {
         if let emails = getEmailsArray()?.order() {
             let arrayMap: Array = emails.map(){ $0.email }
-            return arrayMap.joined(separator: ",")
+            return arrayMap.asCommaSeparatedList(trailingSpace: false)
         }
         return ""
     }
@@ -95,13 +97,13 @@ extension Contact {
     
     
     func log() {
-        PMLog.D("ContactID: \(self.contactID)")
-        PMLog.D("Name: \(self.name)")
-        PMLog.D("Cards: \(self.cardData)")
-        PMLog.D("Size: \(self.size)")
-        PMLog.D("UUID: \(self.uuid)")
-        PMLog.D("CreateTime: \(String(describing: self.createTime))")
-        PMLog.D("ModifyTime: \(String(describing: self.modifyTIme))")
+        print("ContactID: \(self.contactID)")
+        print("Name: \(self.name)")
+        print("Cards: \(self.cardData)")
+        print("Size: \(self.size)")
+        print("UUID: \(self.uuid)")
+        print("CreateTime: \(String(describing: self.createTime))")
+        print("ModifyTime: \(String(describing: self.modifyTIme))")
     }
     
     func getCardData() -> [CardData] {
@@ -118,10 +120,25 @@ extension Contact {
                     }
                 }
             }
-        } catch let ex as NSError {
-            PMLog.D(" func parseJson() -> error error \(ex)")
+        } catch {
         }
         return cards
+    }
+    
+    class func makeTempContact(context: NSManagedObjectContext, userID: String, name: String, cardDatas: [CardData], emails: [ContactEditEmail]) throws -> Contact {
+        let contact = Contact(context: context)
+        contact.userID = userID
+        contact.contactID = UUID().uuidString
+        contact.name = name
+        contact.cardData = try cardDatas.toJSONString()
+        contact.size = NSNumber(value: 0)
+        contact.uuid = UUID().uuidString
+        contact.createTime = Date()
+        contact.isDownloaded = true
+        contact.isCorrected = true
+        contact.needsRebuild = false
+        _ = emails.map { $0.makeTempEmail(context: context, contact: contact) }
+        return contact
     }
 }
 

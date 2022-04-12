@@ -33,12 +33,4 @@ extension URL {
     static var eoLearnMore : URL {
         return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
     }
-    
-    static var paidPlans : URL {
-        return URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!
-    }
-    
-    static var planUpgradePage : URL {
-        return URL(string: "https://protonmail.com/upgrade")!
-    }
 }

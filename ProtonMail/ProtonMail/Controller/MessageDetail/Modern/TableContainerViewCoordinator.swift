@@ -21,8 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
 
-import Foundation
-// this is the UI
+import UIKit
 
 //can we move this to  view controller -- notes from feng.
 class TableContainerViewCoordinator: NSObject, CoordinatorNew {
@@ -50,15 +49,18 @@ class TableContainerViewCoordinator: NSObject, CoordinatorNew {
             child.removeFromParent()
         }
 
-        // clean up subviews and ignore the subview if it is the view of the child view controller we want to add here.
-        view.subviews.filter({ $0 != child.view }).forEach {
-            $0.removeFromSuperview()
-        }
-        
         // add child to new parent
         controller.addChild(child)
         child.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(child.view)
+        if view.subviews.isEmpty {
+            view.addSubview(child.view)
+        } else if let existedView = view.subviews.first {
+            if existedView != child.view {
+                existedView.removeFromSuperview()
+                view.addSubview(child.view)
+            }
+        }
+        
         child.didMove(toParent: controller)
         
         // autolayout guides priority: parameter, safeArea, no guide

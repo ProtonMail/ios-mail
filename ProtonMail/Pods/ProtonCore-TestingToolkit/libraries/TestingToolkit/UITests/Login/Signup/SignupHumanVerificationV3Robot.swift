@@ -1,0 +1,126 @@
+//
+//  SignupHumanVerificationV3Robot.swift
+//  ProtonCore-TestingToolkit - Created on 13.12.2021
+//
+//  Copyright (c) 2021 Proton Technologies AG
+//
+//  This file is part of Proton Technologies AG and ProtonCore.
+//
+//  ProtonCore is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  ProtonCore is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+
+import Foundation
+import XCTest
+import pmtest
+import ProtonCore_CoreTranslation
+
+private let titleName = CoreString._hv_title
+private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
+private let closeButtonAccessibilityId = "closeButton"
+private let captchaSelectedControlLabel = CoreString._hv_captha_method_name
+private let smsSelectedControlLabel = CoreString._hv_sms_method_name
+private let emailSelectedControlLabel = CoreString._hv_email_method_name
+private let emailTextField = "EmailVerifyViewController.emailTextFieldView.textField"
+private let sendCodeButtonLabel = CoreString._hv_email_verification_button
+private let verifyCodeTextField = "VerifyCodeViewController.verifyCodeTextFieldView.textField"
+private let verifyCodeButtonLabel = CoreString._hv_verification_verify_button
+
+public final class SignupHumanVerificationV3Robot: CoreElements {
+    public enum HV3OrCompletionRobot {
+        case humanVerification(SignupHumanVerificationV3Robot)
+        case complete(CompleteRobot)
+
+        public func proceed<T: CoreElements>(email: String, code: String, to: T.Type) -> T {
+            switch self {
+            case .humanVerification(let hvRobot):
+                return hvRobot
+                    .verify.humanVerificationScreenIsShown()
+                    .performEmailVerificationV3(email: email, code: code, to: CompleteRobot.self)
+                    .verify.completeScreenIsShown(robot: T.self)
+            case .complete(let completeRobot):
+                return completeRobot
+                    .verify.completeScreenIsShown(robot: T.self)
+            }
+        }
+    }
+    
+    public let verify = Verify()
+    
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func humanVerificationScreenIsShown() -> SignupHumanVerificationV3Robot {
+            staticText(titleName).wait(time: 15).checkExists()
+            return SignupHumanVerificationV3Robot()
+        }
+        
+        public func isHumanVerificationRequired() -> HV3OrCompletionRobot {
+            let staticText = XCUIApplication().staticTexts[titleName]
+            Wait(time: 10.0).forElement(staticText)
+            return staticText.exists ? .humanVerification(SignupHumanVerificationV3Robot()) : .complete(CompleteRobot())
+        }
+    }
+    
+    public func switchToEmailHVMethod() -> SignupHumanVerificationV3Robot {
+        button(emailSelectedControlLabel).tap()
+        return self
+    }
+    
+    public func insertEmailV3(_ email: String) -> SignupHumanVerificationV3Robot {
+        let element = XCUIApplication().webViews["HumanVerifyV3ViewController.webView"].webViews.textFields.element(boundBy: 0)
+        Wait().forElement(element)
+        element.tap()
+        element.typeText(email)
+        return self
+    }
+    
+    public func sendCodeButton() -> SignupHumanVerificationV3Robot {
+        button(sendCodeButtonLabel).tap()
+        return self
+    }
+    
+    public func fillInCodeV3(_ code: String) -> SignupHumanVerificationV3Robot {
+        let element = XCUIApplication().webViews["HumanVerifyV3ViewController.webView"].webViews.textFields.element(boundBy: 0)
+        Wait().forElement(element)
+        element.tap()
+        element.typeText(code)
+        return self
+    }
+    
+    public func verifyCodeButton<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        button(verifyCodeButtonLabel).wait(time: 30).tap()
+        return Robot()
+    }
+    
+    public func performEmailVerificationV3<Robot: CoreElements>(
+        email: String, code: String, to: Robot.Type
+    ) -> Robot {
+        self
+            .switchToEmailHVMethod()
+            .insertEmailV3(email)
+            .sendCodeButton()
+            .fillInCodeV3(code)
+            .verifyCodeButton(to: Robot.self)
+    }
+
+    public func humanVerificationCaptchaTap<Robot: CoreElements>(to: Robot.Type) -> Robot {
+        let element = XCUIApplication().webViews["RecaptchaViewController.webView"].webViews.switches[hCaptchaButtonCheckName]
+        Wait().forElement(element)
+        element.tap()
+        return Robot()
+    }
+    
+    public func closeButton() -> RecoveryRobot {
+        button(closeButtonAccessibilityId).tap()
+        return RecoveryRobot()
+    }
+}

@@ -20,10 +20,30 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import Foundation
 
 extension Dictionary where Key == String, Value == Any {
+
+    func toString() -> String? {
+        guard JSONSerialization.isValidJSONObject(self),
+              let data = try? JSONSerialization.data(withJSONObject: self, options: .fragmentsAllowed) else {
+            return nil
+        }
+        return String(data: data, encoding: .utf8)
+    }
+
+    static var empty: [String: Any] {
+        return [:]
+    }
+
+    static func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
+        var result = lhs
+        rhs.forEach { result[$0] = $1 }
+        return result
+    }
+}
+
+extension Array where Iterator.Element == [String: Any] {
     /**
      base class for convert anyobject to a json string
      
@@ -32,50 +52,18 @@ extension Dictionary where Key == String, Value == Any {
      
      :returns: String value
      */
-    public func json(prettyPrinted : Bool = false) -> String {
-        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self
-        if JSONSerialization.isValidJSONObject(anyObject) {
+    func json(prettyPrinted: Bool = false) -> String {
+        let defaultOptions = JSONSerialization.WritingOptions()
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted: defaultOptions
+        if JSONSerialization.isValidJSONObject(self) {
             do {
-                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
-                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                    return string as String
+                let data = try JSONSerialization
+                    .data(withJSONObject: self, options: options)
+                if let string = String(data: data, encoding: .utf8) {
+                    return string
                 }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
+            } catch { }
         }
         return ""
     }
-    
 }
-
-
-extension Array where Iterator.Element == [String: Any]  {
-    /**
-     base class for convert anyobject to a json string
-     
-     :param: value         AnyObject input value
-     :param: prettyPrinted Bool is need pretty format
-     
-     :returns: String value
-     */
-    public func json(prettyPrinted : Bool = false) -> String {
-        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self
-        if JSONSerialization.isValidJSONObject(anyObject) {
-            do {
-                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
-                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                    return string as String
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-        }
-        return ""
-    }
-    
-}
-
-

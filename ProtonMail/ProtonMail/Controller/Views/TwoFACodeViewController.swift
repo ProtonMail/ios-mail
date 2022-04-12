@@ -25,12 +25,11 @@ import Foundation
 import UIKit
 
 protocol TwoFACodeViewControllerDelegate {
-    func Cancel2FA()
-    func ConfirmedCode(_ code : String, pwd:String)
+    func cancel2FA()
+    func confirmedCode(_ code : String, pwd:String)
 }
 
 class TwoFACodeViewController : UIViewController, AccessibleView {
-    //var viewModel : TwoFAViewModel!
     @IBOutlet weak var twoFACodeView: TwoFACodeView!
     var delegate : TwoFACodeViewControllerDelegate?
     
@@ -71,11 +70,6 @@ class TwoFACodeViewController : UIViewController, AccessibleView {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
@@ -103,12 +97,12 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
 extension TwoFACodeViewController : TwoFACodeViewDelegate {
 
     func ConfirmedCode(_ code: String, pwd : String) {
-        delegate?.ConfirmedCode(code, pwd:pwd)
+        delegate?.confirmedCode(code, pwd:pwd)
         self.dismiss(animated: true, completion: nil)
     }
     
     func Cancel() {
-        delegate?.Cancel2FA()
+        delegate?.cancel2FA()
         self.dismiss(animated: true, completion: nil)
     }
 }

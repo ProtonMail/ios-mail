@@ -86,8 +86,6 @@ extension String {
                 break;
             }
             
-            var bodyString = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)
-            
             let ContentEnd = data.range(of: lineEnd, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(2, len - 2))
             if ContentEnd.location == NSNotFound {
                 break
@@ -96,17 +94,12 @@ extension String {
             len = len - (ContentEnd.location + ContentEnd.length);
             data = data.subdata(with: NSMakeRange(ContentEnd.location + ContentEnd.length, len)) as NSData
             
-            bodyString = NSString(data: contentType as Data, encoding: String.Encoding.utf8.rawValue)!
-            
             let EncodingEnd = data.range(of: lineEnd, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(2, len - 2))
             if EncodingEnd.location == NSNotFound {
                 break
             }
-            let EncodingType = data.subdata(with: NSMakeRange(0, EncodingEnd.location))
             len = len - (EncodingEnd.location + EncodingEnd.length);
             data = data.subdata(with: NSMakeRange(EncodingEnd.location + EncodingEnd.length, len)) as NSData
-            
-            bodyString = NSString(data: EncodingType, encoding: String.Encoding.utf8.rawValue)!
             
             let secondboundaryRange = data.range(of: nextBoundaryLine, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, len))
             if secondboundaryRange.location == NSNotFound {
@@ -125,12 +118,7 @@ extension String {
                 html = NSString(data: text, encoding: String.Encoding.utf8.rawValue)! as String
             }
             
-            // check html or plain text
-            bodyString = NSString(data: text, encoding: String.Encoding.utf8.rawValue)!
-            
-            firstboundaryRange = secondboundaryRange
-            
-            PMLog.D(nstring: bodyString!)
+            firstboundaryRange = secondboundaryRange            
         }
         
         if ( html.isEmpty && plaintext.isEmpty ) {

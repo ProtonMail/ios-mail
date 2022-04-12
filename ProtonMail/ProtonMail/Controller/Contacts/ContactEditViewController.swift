@@ -24,6 +24,8 @@
 import Foundation
 import Photos
 import MBProgressHUD
+import ProtonCore_UIFoundations
+import ProtonCore_PaymentsUI
 
 protocol ContactEditViewControllerDelegate {
     func deleted()
@@ -59,37 +61,30 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     //const segue
     fileprivate let kToContactTypeSegue : String      = "toContactTypeSegue"
     fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
-    fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
     private var imagePicker: UIImagePickerController? = nil
+    private var paymentsUI: PaymentsUI?
     
     //
     fileprivate var doneItem: UIBarButtonItem!
-    @IBOutlet weak var cancelItem: UIBarButtonItem!
+    private var cancelItem: UIBarButtonItem!
     @IBOutlet weak var displayNameField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
     
+    @IBOutlet weak var topContainerView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var selectProfilePictureLabel: UILabel!
+    @IBOutlet weak var editPhotoButton: UIButton!
+
     @IBAction func tappedSelectProfilePictureButton(_ sender: UIButton) {
         func checkPermission() {
             let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
             switch photoAuthorizationStatus {
-            case .authorized:
-                print("Access is granted by user")
+            case .authorized, .restricted, .denied:
+                break
             case .notDetermined:
-                PHPhotoLibrary.requestAuthorization({
-                    (newStatus) in
-                    print("status is \(newStatus)")
-                    if newStatus == PHAuthorizationStatus.authorized {
-                        
-                    }
-                })
-            case .restricted:
-                print("User do not have access to photo album.")
-            case .denied:
-                print("User has denied the permission.")
+                PHPhotoLibrary.requestAuthorization { _ in }
             default: break
             }
         }
@@ -117,21 +112,27 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.doneItem = UIBarButtonItem(title: LocalString._general_done_button,
+        self.doneItem = UIBarButtonItem(title: LocalString._general_save_action,
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
+        self.cancelItem = Asset.actionSheetClose.image
+            .toUIBarButtonItem(target: self,
+                               action: #selector(self.cancelAction(_:)),
+                               tintColor: ColorProvider.IconNorm)
+
+        let attributes = FontManager.DefaultStrong.foregroundColor(ColorProvider.InteractionNorm)
+        self.doneItem.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = doneItem
+        self.navigationItem.leftBarButtonItem = cancelItem
         self.navigationItem.assignNavItemIndentifiers()
         
-        if viewModel.isNew() {
-            self.title = LocalString._contacts_add_contact
-        } else {
-            self.title = LocalString._update_contact
+        if !viewModel.isNew() {
+            self.title = LocalString._edit_contact
         }
-        doneItem.title = LocalString._general_save_action
-        
-        UITextField.appearance().tintColor = UIColor.ProtonMail.Gray_999DA1
+
+        self.editPhotoButton.setTitleColor(ColorProvider.InteractionNorm, for: .normal)
+
+        UITextField.appearance().tintColor = ColorProvider.TextHint
         self.displayNameField.text = viewModel.getProfile().newDisplayName
         self.displayNameField.delegate = self
         
@@ -139,9 +140,13 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: kContactDetailsHeaderID)
         self.tableView.estimatedRowHeight = 70
         self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
+
+        self.view.backgroundColor = ColorProvider.BackgroundNorm
+        self.topContainerView.backgroundColor = ColorProvider.BackgroundNorm
         
         // profile image picker
         self.imagePicker = UIImagePickerController()
@@ -159,6 +164,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         
         // name textfield bottom border
         displayNameField.addBottomBorder()
+        emptyBackButtonTitleForNextView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,11 +199,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             contactTypeViewController.deleget = self
             let type = sender as! ContactEditTypeInterface
             sharedVMService.contactTypeViewModel(contactTypeViewController, type: type)
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
-            sharedVMService.upgradeAlert(contacts: popup)
-            popup.delegate = self
-            self.setPresentationStyleForSelfController(self, presentingController: popup, style: .overFullScreen)
         } else if segue.identifier == kToSelectContactGroupSegue {
             let destination = segue.destination as! ContactGroupsViewController
             let refreshHandler = (sender as! ContactEditEmailCell).refreshHandler
@@ -213,22 +214,15 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        
-        //show confirmation first if anything changed
+
         if self.viewModel.needsUpdate() {
-            let alertController = UIAlertController(title: LocalString._do_you_want_to_save_the_unsaved_changes,
-                                                    message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: LocalString._general_save_action, style: .default, handler: { (action) -> Void in
-                //save and dismiss
-                self.doneAction(self.doneItem)
-            }))
+            let alertController = UIAlertController(title: LocalString._warning,
+                                                    message: LocalString._changes_will_discarded,
+                                                    preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: LocalString._discard_changes, style: .destructive, handler: { (action) -> Void in
-                //discard and dismiss
+            alertController.addAction(UIAlertAction(title: LocalString._general_discard, style: .destructive, handler: { _ in
                 self.dismiss(animated: true, completion: nil)
             }))
-            alertController.popoverPresentationController?.barButtonItem = sender
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
         } else {
             self.dismiss(animated: true, completion: nil)
@@ -244,13 +238,19 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         let v : UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         
-        viewModel.done { (error : NSError?) in
+        viewModel.done { [weak self] (error : NSError?) in
+            guard let self = self else { return }
             MBProgressHUD.hide(for: v, animated: true)
-            if error == nil {
-                self.delegate?.updated()
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                error!.alertToast()
+            if let error = error {
+                error.alertToast()
+                return
+            }
+            self.delegate?.updated()
+            let isOnline = self.isOnline
+            self.dismiss(animated: true) {
+                if !isOnline {
+                    LocalString._contacts_saved_offline_hint.alertToastBottom()
+                }
             }
         }
     }
@@ -317,6 +317,7 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
     }
     
     func toSelectContactGroups(sender: ContactEditEmailCell) {
+        dismissKeyboard()
         self.performSegue(withIdentifier: kToSelectContactGroupSegue,
                           sender: sender)
     }
@@ -371,42 +372,17 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
     func upgrade() {
         if !showingUpgrade {
             self.showingUpgrade = true
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            presentPlanUpgrade()
         }
+    }
+
+    private func presentPlanUpgrade() {
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
+                                         backendFetch: true,
+                                         updateCredits: false) { _ in }
     }
 }
-
-extension ContactEditViewController : UpgradeAlertVCDelegate {
-    func postToPlan() {
-        NotificationCenter.default.post(name: .switchView,
-                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
-    }
-    func goPlans() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true) {
-                self.postToPlan()
-            }
-        } else {
-            self.postToPlan()
-        }
-    }
-    
-    func learnMore() {
-        self.showingUpgrade = false
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(.paidPlans)
-        }
-    }
-    
-    func cancel() {
-        self.showingUpgrade = false
-    }
-    
-    
-}
-
 
 // MARK: - UITableViewDataSource
 extension ContactEditViewController: UITableViewDataSource {
@@ -490,7 +466,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellphoneCell, for: indexPath) as! ContactEditPhoneCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getCells()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getCells()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .home_address:
@@ -503,7 +479,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditAddressCell, for: indexPath) as! ContactEditAddressCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getAddresses()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getAddresses()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .url:
@@ -516,7 +492,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditUrlCell, for: indexPath) as! ContactEditUrlCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getUrls()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getUrls()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .information:
@@ -529,7 +505,7 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditCellInfoCell, for: indexPath) as! ContactEditInformationCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getInformations()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getInformations()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .custom_field:
@@ -542,17 +518,18 @@ extension ContactEditViewController: UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditFieldCell, for: indexPath) as! ContactEditFieldCell
                 cell.selectionStyle = .none
-                cell.configCell(obj: viewModel.getFields()[row], paid: viewModel.paidUser(), callback: self, becomeFirstResponder: firstResponder)
+                cell.configCell(obj: viewModel.getFields()[row], callback: self, becomeFirstResponder: firstResponder)
                 outCell = cell
             }
         case .notes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditTextViewCell, for: indexPath) as! ContactEditTextViewCell
-            cell.configCell(obj: viewModel.getNotes(), paid: self.viewModel.paidUser(), callback: self)
+            cell.configCell(obj: viewModel.getNotes(), paid: true, callback: self)
             cell.selectionStyle = .none
             outCell = cell
         case .delete:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditDeleteCell, for: indexPath) as! ContactEditAddCell
-            cell.configCell(value: LocalString._delete_contact)
+            cell.configCell(value: LocalString._delete_contact,
+                            color: ColorProvider.NotificationError)
             cell.selectionStyle = .default
             outCell = cell
         case .upgrade:
@@ -649,16 +626,6 @@ extension ContactEditViewController: UITableViewDataSource {
         let sections = self.viewModel.getSections()
         let s = sections[section]
         
-        switch s {
-        case .emails:
-            break
-        default:
-            guard self.viewModel.paidUser() else {
-                self.upgrade()
-                return
-            }
-        }
-        
         if editingStyle == . insert {
             switch s {
             case .emails:
@@ -735,14 +702,16 @@ extension ContactEditViewController: UITableViewDelegate {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView else {
             return nil
         }
+        cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
         let sections = viewModel.getSections()
         let sc = sections[section]
         if sc == .encrypted_header {
-            cell.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
+            cell.configHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
         } else if sc == .delete || sc == .notes {
-            return nil
+            cell.configHeader(title: "", signed: false)
+            return cell
         } else if sc == .emails {
-            cell.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: false)
+            cell.configHeader(title: LocalString._contacts_email_addresses_title, signed: false)
         }
         return cell
     }
@@ -821,20 +790,6 @@ extension ContactEditViewController: UITableViewDelegate {
         let s = sections[section]
         
         switch s {
-        case .upgrade, .share,
-             .email_header, .display_name, .encrypted_header, .notes,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo,
-             .emails, .delete:
-            break
-            
-        default:
-            guard self.viewModel.paidUser() else {
-                self.upgrade()
-                return
-            }
-        }
-        
-        switch s {
         case .email_header, .display_name, .encrypted_header, .notes,
              .type2_warning, .type3_error, .type3_warning, .debuginfo:
             break
@@ -901,15 +856,19 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
                 let v : UIView = self.navigationController?.view ?? self.view
                 MBProgressHUD.showAdded(to: v, animated: true)
-                self.viewModel.delete(complete: { (error) in
+                self.viewModel.delete(complete: { [weak self] (error) in
                     MBProgressHUD.hide(for: v, animated: true)
                     if let err = error {
                         err.alertToast()
-                    } else {
-                        self.navigationController?.dismiss(animated: false, completion: {
-                            self.delegate?.deleted()
-                        })
+                        return
                     }
+                    self?.delegate?.deleted()
+                    let isOnline = self?.isOnline ?? false
+                    self?.navigationController?.dismiss(animated: false, completion: {
+                        if !isOnline {
+                            LocalString._contacts_deleted_offline_hint.alertToastBottom()
+                        }
+                    })
                 })
             }))
             

@@ -22,8 +22,8 @@
 
 
 import Foundation
-import PMCommon
-
+import ProtonCore_DataModel
+import ProtonCore_Networking
 
 extension Message {
     
@@ -102,11 +102,12 @@ extension Message {
     
     /// check if message contains a draft label
     var draft : Bool {
-        get {
-            return self.contains(label: Location.draft)
-        }
+        contains(label: Location.draft) || contains(label: HiddenLocation.draft.rawValue)
     }
 
+    var isSent : Bool {
+        contains(label: Location.sent) || contains(label: HiddenLocation.sent.rawValue)
+    }
     /// get messsage label ids
     ///
     /// - Returns: array
@@ -125,27 +126,13 @@ extension Message {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
-            if let label = l as? Label, label.exclusive == false {
+            if let label = l as? Label, label.type == 1 {
                 if label.labelID.preg_match ("(?!^\\d+$)^.+$") {
                     labelIDs.append(label.labelID )
                 }
             }
         }
         return labelIDs
-    }
-    
-    /// get the lable IDs with the info about exclusive
-    ///
-    /// - Returns: dict
-    func getLabelIDs() -> [String: Bool] {
-        var out : [String : Bool] = [String : Bool]()
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                out[label.labelID] = label.exclusive
-            }
-        }
-        return out
     }
     
     /// check if message replied
@@ -193,19 +180,62 @@ extension Message {
             return self.contains(label: Message.Location.draft) || self.contains(label: "1")
         }
     }
+
+    var hasReceiptRequest: Bool {
+        guard let headerString = self.header,
+              let data = headerString.data(using: .utf8),
+              let parsed = Part(header: data),
+              let _ = parsed.headers.first(where: { $0.name == "Disposition-Notification-To"}) else {
+            return false
+        }
+        return true
+    }
+
+    var hasSentReceipt: Bool {
+        return self.flag.contains(.receiptSent)
+    }
+
+    var isAutoReply: Bool {
+        guard !isSent, !draft else {
+            return false
+        }
+        let autoReplyKeys = ["X-Autoreply", "X-Autorespond", "X-Autoreply-From", "X-Mail-Autoreply"]
+        guard let headersString = header,
+              let headerData = headersString.data(using: .utf8),
+              let parsedHeader = Part(header: headerData),
+              parsedHeader.headers.contains(where: { autoReplyKeys.contains($0.name) }) else {
+            return false
+        }
+        return true
+    }
+
+    var isNewsLetter: Bool {
+        let helper = NewsLetterCheckHelper()
+        return helper.calculateIsNewsLetter(messageHeaderString: self.header ?? "")
+    }
+
+    /// Push notification identifier
+    ///
+    /// This logic replicates the logic used in backend to identify a push notification sent for a specific message. This notificationId allows for example
+    /// to clear a push notification from the Notification Center once the message has been read.
+    var notificationId: String? {
+        let hexStr = Data(messageID.utf8).stringFromToken()
+        guard hexStr.count > 19 else {
+            SystemLogger.log(
+                message: "notificationId is nil because messageId length is \(hexStr.count)",
+                category: .pushNotification,
+                isError: true
+            )
+            return nil
+        }
+
+        let startIndex = hexStr.startIndex
+        let firstPart = hexStr[startIndex...hexStr.index(startIndex, offsetBy: 7)]
+        let secondPart = hexStr[hexStr.index(startIndex, offsetBy: 8)...hexStr.index(startIndex, offsetBy: 11)]
+        let thirdPart = hexStr[hexStr.index(startIndex, offsetBy: 12)...hexStr.index(startIndex, offsetBy: 15)]
+        let fourthPart = hexStr[hexStr.index(startIndex, offsetBy: 16)...hexStr.index(startIndex, offsetBy: 19)]
+        let uuid = "\(firstPart)-\(secondPart)-\(thirdPart)-\(fourthPart)"
+
+        return uuid
+    }
 }
-
-
-
-
-
-
-
-//    var sendOrDraft : Bool {
-//        get {
-//            if self.flag.contains(.rece) || self.flag.contains(.sent) {
-//                return true
-//            }
-//            return false
-//        }
-//    }

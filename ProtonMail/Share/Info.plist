@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>3.1.4</string>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
@@ -76,14 +76,12 @@
 		<string>ShareExtensionEntry</string>
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Allows you quick and secure to unlock your application.</string>
+	<string>Lets you quickly and securely unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Required for saving image attachments to photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
 	<key>UISupportsDocumentBrowser</key>
 	<false/>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 </dict>
 </plist>

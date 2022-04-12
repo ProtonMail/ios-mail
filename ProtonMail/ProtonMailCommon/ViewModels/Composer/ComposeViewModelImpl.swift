@@ -24,7 +24,8 @@
 import Foundation
 import PromiseKit
 import AwaitKit
-import PMCommon
+import ProtonCore_Networking
+import ProtonCore_DataModel
 
 class ComposeViewModelImpl : ComposeViewModel {
     
@@ -51,24 +52,24 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     let messageService : MessageDataService
-    let coreDataService: CoreDataService
+    let coreDataContextProvider: CoreDataContextProviderProtocol
     let user : UserManager
-    private var checkAttachments: (() -> Void?)?
+    /// Only use in share extension, to record if the share items over 25 mb or not
+    private(set) var shareOverLimitationAttachment = false
     
     // for the share target to init composer VM
     init(subject: String, body: String, files: [FileData],
          action : ComposeMessageAction,
          msgService: MessageDataService,
          user: UserManager,
-         coreDataService: CoreDataService,
-         checkAttachments: @escaping (() -> Void?)) {
+         coreDataContextProvider: CoreDataContextProviderProtocol) {
 
         self.messageService = msgService
         self.user = user
-        self.coreDataService = coreDataService
-        self.checkAttachments = checkAttachments
+        self.coreDataContextProvider = coreDataContextProvider
         
         super.init()
+        self.composerContext = coreDataContextProvider.makeComposerMainContext()
         self.message = nil
         self.setSubject(subject)
         self.setBody(body)
@@ -82,9 +83,27 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+        let kDefaultAttachmentFileSize: Int = 25 * 1_000 * 1_000 // 25 mb
+        var currentAttachmentSize: Int = 0
         for f in files {
-            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
+            let size = f.contents.dataSize
+            guard size < (kDefaultAttachmentFileSize - currentAttachmentSize) else {
+                self.shareOverLimitationAttachment = true
+                break
+            }
+            currentAttachmentSize += size
+            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata, isInline: false).done { (attachment) in
                 if let att = attachment {
+                    let context = coreDataContextProvider.rootSavingContext
+                    context.performAndWait {
+                        att.message = self.message!
+                        _ = context.saveUpstreamIfNeeded()
+                    }
+                    if att.objectID.isTemporaryID {
+                        context.performAndWait {
+                            try? context.obtainPermanentIDs(for: [att])
+                        }
+                    }
                     self.uploadAtt(att)
                 }
             }.cauterize()
@@ -103,20 +122,31 @@ class ComposeViewModelImpl : ComposeViewModel {
     ///   - msg: optional value
     ///   - action: tell is the draft new / open exsiting / reply etc
     ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
-    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataService: CoreDataService) {
-        self.coreDataService = coreDataService
+    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager, coreDataContextProvider: CoreDataContextProviderProtocol) {
+        self.coreDataContextProvider = coreDataContextProvider
         self.messageService = msgService
         self.user = user
         
         super.init()
-        if msg == nil || msg!.contains(label: .draft)  {
-            self.message = msg
+        self.composerContext = coreDataContextProvider.makeComposerMainContext()
+        
+        if msg == nil || msg?.draft == true {
+            if let m = msg, let msgToEdit = try? self.composerContext?.existingObject(with: m.objectID) as? Message {
+                self.message = msgToEdit
+            }
             self.setSubject(self.message?.title ?? "")
         } else {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward, context: self.coreDataService.mainManagedObjectContext)
+                //TODO: -v4 change to composer context
+                guard let m = msg, let msgToCopy = try? self.composerContext?.existingObject(with: m.objectID) as? Message else {
+                    self.message = nil
+                    fatalError("This should not happened.")
+                }
+                
+                self.message = messageService.messageDecrypter.copy(message: msgToCopy, copyAttachments: action == ComposeMessageAction.forward, context: self.composerContext!)
+                self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     self.message?.action = action.rawValue as NSNumber?
                     if let title = self.message?.title {
@@ -160,10 +190,6 @@ class ComposeViewModelImpl : ComposeViewModel {
 
     }
     
-    deinit {
-        PMLog.D("ComposeViewModelImpl deinit")
-    }
-    
     fileprivate let k12HourMinuteFormat = "h:mm a"
     fileprivate let k24HourMinuteFormat = "HH:mm"
     private func using12hClockFormat() -> Bool {
@@ -181,10 +207,12 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadAtt(_ att: Attachment!) {
+        if att.headerInfo == nil {
+            att.setupHeaderInfo(isInline: false, contentID: nil)
+        }
         self.updateDraft()
         messageService.upload(att: att)
         self.updateDraft()
-        checkAttachments?()
     }
     
     override func uploadPubkey(_ att: Attachment!) {
@@ -193,19 +221,20 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         messageService.upload(pubKey: att)
         self.updateDraft()
-        checkAttachments?()
     }
     
     override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
         self.user.usedSpace(minus: att.fileSize.int64Value)
         return messageService.delete(att: att).done { (_) in
             self.updateDraft()
-            self.checkAttachments?()
         }
     }
     
     override func getAttachments() -> [Attachment]? {
-        return self.message?.attachments.allObjects as? [Attachment]
+        guard let attachments = self.message?.attachments.allObjects as? [Attachment] else {
+            return []
+        }
+        return attachments.filter { !$0.isSoftDeleted }
     }
     
     override func uploadMimeAttachments() {
@@ -213,59 +242,31 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.updateDraft()
             for att in attachments {
                 messageService.upload(att: att)
-                checkAttachments?()
             }
             self.updateDraft()
         }
     }
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
-        return Promise { seal in
-            let userinfo = self.user.userInfo
-            guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
-                  let key = addr.keys.first else {
-                throw RuntimeError.no_address.error
+        return Promise { [weak self] seal in
+            guard let message = self?.message else {
+                let error = NSError(domain: "", code: -1,
+                                    localizedDescription: LocalString._error_no_object)
+                seal.reject(error)
+                return
             }
-            
-            for att in self.getAttachments() ?? [] {
-                do {
-                    //TODO: work around to wait attachment upload completed, need a better way
-                    while att.keyPacket == nil || att.keyPacket == "" {
-                        Thread.sleep(forTimeInterval: 1.0)
+            let context = self?.coreDataContextProvider.rootSavingContext
+            if let _ = self?.user.userinfo.userAddresses.first(where: { $0.addressID == address_id}) {
+                context?.performAndWait {
+                    if let messageInContext = try? context?.existingObject(with: message.objectID) as? Message {
+                        messageInContext.nextAddressID = address_id
                     }
-                    
-                    guard let sessionPack = self.user.newSchema ?
-                            try att.getSession(userKey: self.user.userPrivateKeys,
-                                               keys: self.user.addressKeys,
-                                               mailboxPassword: self.user.mailboxPassword) :
-                            try att.getSession(keys: self.user.addressPrivateKeys,
-                                               mailboxPassword: self.user.mailboxPassword) else { //DONE
-                        continue
-                    }
-                    guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
-                        continue
-                    }
-                    att.managedObjectContext?.performAndWait {
-                        att.keyPacket = newKeyPack
-                        att.keyChanged = true
-                    }
-                } catch let err as NSError{
-                    Analytics.shared.error(message: .updateAddressIDError, error: err)
-                }
-            }
-            
-            if let context = self.message?.managedObjectContext {
-                context.performAndWait {
-                    self.message?.addressID = address_id
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+                    _ = context?.saveUpstreamIfNeeded()
                 }
             }
 
-            self.updateDraft()
-            
-            seal.resolve(nil)
+            self?.messageService.updateAttKeyPacket(message: message, addressID: address_id)
+            seal.fulfill_()
         }
     }
     
@@ -274,14 +275,19 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
+
         if let _ = model as? ContactGroupVO {
+            complete?(nil, -1)
+            return
+        }
+
+        guard let context = self.composerContext else {
             complete?(nil, -1)
             return
         }
         
         progress()
-        
-        let context = self.coreDataService.mainManagedObjectContext // VALIDATE
+
         guard let c = model as? ContactVO else {
             complete?(nil, -1)
             return
@@ -292,88 +298,90 @@ class ComposeViewModelImpl : ComposeViewModel {
             return
         }
 
-        let getEmail: Promise<KeysResponse> = self.user.apiService.run(route: UserEmailPubKeys.init(email: email))
         let contactService = self.user.contactService
         let getContact = contactService.fetch(byEmails: [email], context: context)
-        when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-            //internal emails
-            if keyRes.recipientType == 1 {
-                if let contact = contacts.first, contact.firstPgpKey != nil {
-                    c.pgpType = .internal_trusted_key
-                } else {
-                    c.pgpType = .internal_normal
-                }
-            } else {
-                if let contact = contacts.first {
-                    if contact.encrypt, contact.firstPgpKey != nil {
-                        c.pgpType = .pgp_encrypt_trusted_key
-                    } else if contact.sign {
-                        c.pgpType = .pgp_signed
-                        if let pwd = self.message?.password, pwd != "" {
-                            c.pgpType = .eo
-                        }
-                    }
-                } else {
-                    if let pwd = self.message?.password, pwd != "" {
-                        c.pgpType = .eo
-                    } else if self.user.userInfo.sign == 1 {
-                        c.pgpType = .pgp_signed
-                    } else {
-                        c.pgpType = .none
-                    }
-                }
+        getContact.done { [weak self] contacts in
+            guard let self = self, let message = self.message else {
+                complete?(PGPType.none.lockImage, PGPType.none.rawValue)
+                return
             }
-            complete?(c.lock, c.pgpType.rawValue)
+
+            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
+                                              apiService: self.user.apiService,
+                                              userSign: self.user.userinfo.sign,
+                                              localContacts: contacts)
+            let isMessageHavingPwd = message.password != .empty
+            helper.calculatePGPType(email: email,
+                                    isMessageHavingPwd: isMessageHavingPwd) { pgpType, errorCode, errorString in
+                c.pgpType = pgpType
+                if let errorCode = errorCode {
+                    complete?(pgpType.lockImage, errorCode)
+                } else {
+                    complete?(pgpType.lockImage, pgpType.rawValue)
+                }
+
+                if let errorString = errorString {
+                    self.showError?(errorString)
+                }
+
+            }
         }.catch(policy: .allErrors) { (error) in
-            PMLog.D(error.localizedDescription)
-            
-            let err = error as NSError
-            var errCode = err.code
-
-            defer {
-                complete?(nil, errCode)
-            }
-
-            if errCode == 33101 {
-                c.pgpType = .failed_server_validation
-                self.showError?(LocalString._signle_address_invalid_error_content)
-                return
-            }
-            
-            // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {
-                self.showError?(LocalString._recipient_not_found)
-                return
-            }
-            
-            if !c.email.isValidEmail() {
-                errCode = 33102
-                c.pgpType = .failed_validation
-            }
+            complete?(nil, -1)
         }
     }
     
     override func checkMails(in contactGroup: ContactGroupVO, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         let mails = contactGroup.getSelectedEmailData().map{$0.email}
-        let reqs = mails.map {
-            self.user.apiService.run(route: UserEmailPubKeys(email: $0))
+        let reqs = mails.map { mail -> Promise<KeysResponse> in
+            return self.user.apiService.run(route: UserEmailPubKeys(email: mail))
         }
-        when(fulfilled: reqs).done { (_) in
+        let context = self.composerContext! // VALIDATE
+        let contactService = self.user.contactService
+        let getContact = contactService.fetch(byEmails: mails, context: context)
+        
+        let keyReqs = when(fulfilled: reqs)
+        when(fulfilled: getContact, keyReqs).done { [weak self] (contacts, keyResponse) in
+            guard let self = self, let message = self.message else {
+                complete?(nil, -1)
+                return
+            }
+
+            let helper = ContactPGPTypeHelper(internetConnectionStatusProvider: .init(),
+                                              apiService: self.user.apiService,
+                                              userSign: self.user.userinfo.sign,
+                                              localContacts: contacts)
+            let isMessageHavingPwd = message.password != .empty
+
+            for (index, keyRes) in keyResponse.enumerated() {
+                guard let mail = mails[safe: index] else {
+                    continue
+                }
+                var contactArray: [PreContact] = []
+                if let contact = contacts.first(where: { $0.email == mail }) {
+                    contactArray.append(contact)
+                }
+                let pgpType = helper.calculatePGPTypeWith(email: mail,
+                                                          keyRes: keyRes,
+                                                          contacts: contacts,
+                                                          isMessageHavingPwd: isMessageHavingPwd)
+                contactGroup.update(mail: mail, pgpType: pgpType)
+            }
             complete?(nil, 0)
         }.catch(policy: .allErrors) { (error) in
-            PMLog.D(error.localizedDescription)
-            
-            let err = error as NSError
-            var errCode = err.code
-
+            var errCode: Int
+            if let error = error as? ResponseError {
+                errCode = error.responseCode ?? -1
+            } else {
+                let error = error as NSError
+                errCode = error.code
+            }
             defer {
                 complete?(nil, errCode)
             }
 
-            // Code=33102 "Recipient could not be found"
-            if errCode == 33102 {
-                self.showError?(LocalString._address_in_group_not_found_error)
+            if errCode == PGPTypeErrorCode.recipientNotFound.rawValue {
+                LocalString._address_in_group_not_found_error.alertToast()
                 return
             }
             
@@ -381,8 +389,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                 if mail.isValidEmail() {
                     continue
                 }
-                errCode = 33102
-                self.showError?(LocalString._address_in_group_not_found_error)
+                errCode = PGPTypeErrorCode.recipientNotFound.rawValue
+                LocalString._address_in_group_not_found_error.alertToast()
                 break
             }
         }
@@ -390,7 +398,11 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func getDefaultSendAddress() -> Address? {
         if let msg = self.message {
-            return self.messageService.defaultAddress(msg)
+            var address: Address?
+            if let id = msg.nextAddressID {
+                address = self.user.userInfo.userAddresses.first(where: { $0.addressID == id })
+            }
+            return address ?? self.messageService.defaultAddress(msg)
         } else {
             if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
                 return addr
@@ -407,7 +419,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-        if let addr = self.user.userInfo.userAddresses.indexOfAddress(addr_id) {
+        if let addr = self.user.userInfo.userAddresses.address(byID: addr_id) {
             return addr.signature
         }
         return nil
@@ -565,7 +577,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                let addr = self.messageService.defaultAddress(msg),
                let key = addr.keys.first,
                let data = key.publicKey.data(using: String.Encoding.utf8) {
-                
+
                 let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
                 var attached: Bool = false
                 // check if key already attahced
@@ -577,76 +589,60 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                
+
                 // attach key
-                if attached == false, let context = msg.managedObjectContext {
+                if attached == false {
                     let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    let attachment = try? AwaitKit.await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
-                    var error: NSError? = nil
-                    error = context.saveUpstreamIfNeeded()
-                    if error != nil {
-                        PMLog.D("toAttachment () with error: \(String(describing: error))")
-                    }
+                    let attachment = try? `await`(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    attachment?.setupHeaderInfo(isInline: false, contentID: nil)
                     self.uploadPubkey(attachment)
                 }
             }
-            
+
             self.updateDraft()
             self.messageService.send(inQueue: self.message, completion: nil)
         }
     }
     
-    override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+    override func collectDraft(_ title: String, body: String, expir: TimeInterval, pwd: String, pwdHit: String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
-        
-//        let objectId = self.message?.objectID
-        let context = self.coreDataService.mainManagedObjectContext
+
+        let context = self.composerContext!
         context.performAndWait {
             if self.message == nil || self.message?.managedObjectContext == nil {
+                guard let sendAddress = getDefaultSendAddress() else {
+                    return
+                }
                 self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
                                                                        bccList: self.toJsonString(self.bccSelectedContacts),
                                                                        ccList: self.toJsonString(self.ccSelectedContacts),
-                                                                       title: title,
+                                                                       title: self.getSubject(),
                                                                        encryptionPassword: "",
                                                                        passwordHint: "",
                                                                        expirationTimeInterval: expir,
                                                                        body: body,
                                                                        attachments: nil,
                                                                        mailbox_pwd: mailboxPassword,
+                                                                       sendAddress: sendAddress,
                                                                        inManagedObjectContext: context)
                 self.message?.password = pwd
                 self.message?.unRead = false
                 self.message?.passwordHint = pwdHit
                 self.message?.expirationOffset = Int32(expir)
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
             } else {
                 self.message?.toList = self.toJsonString(self.toSelectedContacts)
                 self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
                 self.message?.bccList = self.toJsonString(self.bccSelectedContacts)
-                self.message?.title = title
-                self.message?.body = body
+                self.message?.title = self.getSubject()
                 self.message?.time = Date()
                 self.message?.password = pwd
                 self.message?.unRead = false
                 self.message?.passwordHint = pwdHit
                 self.message?.expirationOffset = Int32(expir)
-                
-    //            if let objId = objectId, let msg = context.object(with: objId) as? Message {
-    //                msg.toList = self.toJsonString(self.toSelectedContacts)
-    //                msg.ccList = self.toJsonString(self.ccSelectedContacts)
-    //                msg.bccList = self.toJsonString(self.bccSelectedContacts)
-    //                msg.title = self.getSubject()
-    //                msg.time = Date()
-    //                msg.password = pwd
-    //                msg.unRead = false
-    //                msg.passwordHint = pwdHit
-    //                msg.expirationOffset = Int32(expir)
-    //
-    //            }
+
                 if let msg = self.message {
                     self.messageService.updateMessage(msg,
                                                       expirationTimeInterval: expir,
@@ -655,35 +651,22 @@ class ComposeViewModelImpl : ComposeViewModel {
                                                       mailbox_pwd: mailboxPassword)
                 }
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
+                _ = context.saveUpstreamIfNeeded()
                 
                 if let msg = self.message, msg.objectID.isTemporaryID {
                     do {
                         try context.obtainPermanentIDs(for: [msg])
                     } catch {
-                        PMLog.D("error: \(error)")
                     }
                 }
             }
         }
     }
     
-    override func updateEO(expir:TimeInterval, pwd:String, pwdHit:String) -> Promise<Void> {
+    override func updateEO(expirationTime: TimeInterval, pwd: String, pwdHint: String) -> Promise<Void> {
         return Promise { seal in
-            if message != nil {
-                self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                    self.message?.time = Date()
-                    self.message?.password = pwd
-                    self.message?.passwordHint = pwdHit
-                    self.message?.expirationOffset = Int32(expir)
-                    if expir > 0 {
-                        self.message?.expirationTime = Date(timeIntervalSinceNow: expir)
-                    }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    }
+            if let msg = message {
+                self.user.cacheService.updateExpirationOffset(of: msg, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
                     seal.fulfill_()
                 }
             } else {
@@ -697,18 +680,14 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func deleteDraft() {
-        messageService.delete(message: self.message!, label: Message.Location.draft.rawValue)
+        guard let _message = self.message else {return}
+        messageService.delete(messages: [_message], label: Message.Location.draft.rawValue)
 
     }
     
     override func markAsRead() {
-        if message != nil {
-            self.coreDataService.enqueue(context: message?.managedObjectContext) { (context) in
-                self.message?.unRead = false
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
-            }
+        if let msg = message, msg.unRead {
+            self.messageService.mark(messages: [msg], labelID: Message.Location.draft.rawValue, unRead: false)
         }
     }
     
@@ -718,32 +697,35 @@ class ComposeViewModelImpl : ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
         
-        var mobileSignature = self.user.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
+        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
         let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
-        let signatureHtml = "\(defaultSignature) \(mobileSignature)"
+        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
 
         switch messageAction {
         case .openDraft:
             var body = ""
+            var css: String?
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+                if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                    css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+                }
+            } catch {
                 body = self.message!.bodyToHtml()
             }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .reply, .replyAll:
             
             var body = ""
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+            } catch {
                 body = self.message!.bodyToHtml()
             }
             
@@ -751,36 +733,38 @@ class ComposeViewModelImpl : ComposeViewModel {
                 body = body.encodeHtml()
                 body = body.ln2br()
             }
-            let on = LocalString._composer_on
-            let at = LocalString._general_at_label
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
+            let timeDesc = message!.orginalTime?.formattedWith(timeFormat) ?? ""
             let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
             let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
             
-            var replyHeader = time + ", " + sn!
+            var replyHeader = timeDesc + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
             
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
-            let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
+            var css: String?
+            if CSSMagic.darkStyleSupportLevel(htmlString: result, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(htmlString: result)
+            }
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .forward:
-            let on = LocalString._composer_on
-            let at = LocalString._general_at_label
-            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-            let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            let clockFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
+            let timeDesc = message!.orginalTime?.formattedWith(timeFormat) ?? ""
             
             let fwdm = LocalString._composer_fwd_message
             let from = LocalString._general_from_label
             let dt = LocalString._composer_date_field
             let sj = LocalString._composer_subject_field
-            let t = LocalString._general_to_label
-            let c = LocalString._general_cc_label
+            let t = "\(LocalString._general_to_label):"
+            let c = "\(LocalString._general_cc_label):"
             var forwardHeader =
-                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
+                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(timeDesc)<br>\(sj) \(message!.title)<br>"
             
             if message!.toList != "" {
                 forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
@@ -793,9 +777,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             var body = ""
             
             do {
-                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+            } catch {
                 body = self.message!.bodyToHtml()
             }
             
@@ -814,7 +797,11 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             }
             let body = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            return .init(body: body, remoteContentMode: globalRemoteContentMode)
+            var css: String?
+            if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(htmlString: body)
+            }
+            return .init(body: body, remoteContentMode: globalRemoteContentMode, supplementCSS: css)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
@@ -830,6 +817,28 @@ class ComposeViewModelImpl : ComposeViewModel {
             return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
         }
         
+    }
+
+    override func getNormalAttachmentNum() -> Int {
+        guard let messageObject = self.message else { return 0 }
+        let attachments = messageObject.attachments
+            .allObjects
+            .compactMap({ $0 as? Attachment })
+            .filter({ !$0.inline() && !$0.isSoftDeleted })
+        return attachments.count
+    }
+
+    override func needAttachRemindAlert(subject: String,
+                                        body: String,
+                                        attachmentNum: Int) -> Bool {
+        // If the message contains attachments
+        // It contains keywords or not doesn't important
+        if attachmentNum > 0 { return false }
+
+        let content = "\(subject) \(body.body(strippedFromQuotes: true))"
+        let language = LanguageManager.currentLanguageEnum()
+        return AttachReminderHelper.hasAttachKeyword(content: content,
+                                                     language: language)
     }
 }
 
@@ -936,7 +945,6 @@ extension ComposeViewModelImpl {
             let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String]
             return decoded ?? ["" : ""]
         } catch {
-            PMLog.D(" func parseJson() -> error error \(error)")
         }
         return ["":""]
     }

@@ -8,6 +8,8 @@
 
 import XCTest
 
+import ProtonCore_TestingToolkit
+
 class ForceUpgradeTests: BaseTestCase {
 
     private let loginRobot = LoginRobot()
@@ -28,10 +30,8 @@ class ForceUpgradeTests: BaseTestCase {
             .forceUpgradeDialog()
             .verify.checkDialog()
             .learnMoreButtonTap()
-            .wait(timeInterval: 2.0)
             .back()
             .upgradeButtonTap()
-            .wait(timeInterval: 2.0)
             .back()
             .verify.checkDialog()
     }

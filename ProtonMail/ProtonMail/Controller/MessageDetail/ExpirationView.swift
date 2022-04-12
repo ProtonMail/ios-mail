@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import UIKit
 
 //@IBDesignable
 class ExpirationView: PMView {
@@ -42,32 +42,5 @@ class ExpirationView: PMView {
     
     func durationsBySecond(seconds s: Int) -> (days:Int,hours:Int,minutes:Int,seconds:Int) {
         return (s / (24 * 3600),(s % (24 * 3600)) / 3600, s % 3600 / 60, s % 60)
-    }
-}
-
-class ExpirationCell: UITableViewCell {
-    @IBOutlet weak var expirationView: ExpirationView!
-    private var timer : Timer!
-    private var expiration: Date = .distantFuture
-    var handleExpired: (() -> Void)?
-    
-    @objc private func autoTimer() {
-        let offset = Int(self.expiration.timeIntervalSince(Date()))
-        if offset <= 0 {
-            handleExpired?()
-        }
-        self.expirationView.setExpirationTime(offset)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.expiration = .distantFuture
-        self.timer = nil
-    }
-    
-    internal func set(expiration: Date) {
-        self.expiration = expiration
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(autoTimer), userInfo: nil, repeats: true)
-        self.timer.fire()
     }
 }

@@ -49,34 +49,33 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     func correctCachedData(completion: (() -> Void)?) {
         if let objects = fetchedResultsController?.fetchedObjects as? [Contact] {
-            if let context = self.fetchedResultsController?.managedObjectContext {
-                self.coreDataService.enqueue(context: context) { (context) in
-                    var needsSave = false
-                    for obj in objects {
-                        if obj.fixName() {
-                            needsSave = true
-                        }
-                    }
-                    if needsSave {
-                        if let error = context.saveUpstreamIfNeeded() {
-                            PMLog.D("error: \(error)")
-                        }
-                        self.fetchedResultsController = self.getFetchedResultsController()
-                    }
-                    completion?()
-                    return
+            let context = self.coreDataService.rootSavingContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                var needsSave = false
+                let objectsToUpdate = objects.compactMap { obj -> Contact? in
+                    return try? context.existingObject(with: obj.objectID) as? Contact
                 }
+                
+                for obj in objectsToUpdate {
+                    if obj.fixName() {
+                        needsSave = true
+                    }
+                }
+                if needsSave {
+                    _ = context.saveUpstreamIfNeeded()
+                }
+                completion?()
             }
+        } else {
+            completion?()
         }
-        completion?()
     }
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let fetchedResultsController = contactService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
+            } catch {
             }
             return fetchedResultsController
         }
@@ -98,8 +97,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
         
         do {
             try fetchedResultsController?.performFetch()
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
+        } catch {
         }
         
     }
@@ -168,15 +166,14 @@ final class ContactsViewModelImpl : ContactsViewModel {
         if !isFetching {
             isFetching = true
             
-            self.user.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
+            self.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
-                                                 context: self.coreDataService.mainManagedObjectContext,
                                                  completion: { (task, res, error) in
-                self.isFetching = false
-                self.fetchComplete?(nil, nil)
+                
             })
             self.user.contactService.fetchContacts { (_, error) in
-                
+                self.isFetching = false
+                self.fetchComplete?(nil, nil)
             }
         }
     }

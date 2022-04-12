@@ -22,9 +22,9 @@
     
 
 import Foundation
-import SWRevealViewController
+import SideMenuSwift
 
-class SettingsCoordinator: SWRevealCoordinator {
+class SettingsCoordinator: SideMenuCoordinator {
     typealias VC = SettingsTableViewController
     
     let viewModel : SettingsViewModel
@@ -32,7 +32,7 @@ class SettingsCoordinator: SWRevealCoordinator {
     
     internal weak var viewController: SettingsTableViewController?
     internal weak var navigation: UIViewController?
-    internal weak var swRevealVC: SWRevealViewController?
+    internal weak var sideMenu: SideMenuController?
     internal weak var deepLink: DeepLink?
     
     lazy internal var configuration: ((SettingsTableViewController) -> ())? = { [unowned self] vc in
@@ -53,7 +53,6 @@ class SettingsCoordinator: SWRevealCoordinator {
         case mobileSignature = "setting_mobile_signature"
         case debugQueue      = "setting_debug_queue_segue"
         case pinCode         = "setting_setup_pingcode"
-        case lableManager    = "toManagerLabelsSegue"
         case loginPwd        = "setting_login_pwd"
         case mailboxPwd      = "setting_mailbox_pwd"
         case singlePwd       = "setting_single_password_segue"
@@ -66,9 +65,9 @@ class SettingsCoordinator: SWRevealCoordinator {
         self.services = services
     }
     
-    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory, deeplink: DeepLink?) {
+    init(sideMenu: SideMenuController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
-        self.swRevealVC = rvc
+        self.sideMenu = sideMenu
         self.viewModel = vm
         self.viewController = vc
         self.deepLink = deeplink
@@ -112,13 +111,6 @@ class SettingsCoordinator: SWRevealCoordinator {
                 return false
             }
             next.viewModel = SetPinCodeModelImpl()
-        case .lableManager:
-            guard let next = destination as? LabelsViewController else {
-                return false
-            }
-            
-            let user = services.get(by: UsersManager.self).firstUser!
-            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService, coreDataService: services.get())
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false

@@ -21,7 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import Foundation
+import UIKit
 
 extension UIAlertAction {
     class func okAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
@@ -32,6 +32,12 @@ extension UIAlertAction {
     
     class func closeAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
         return UIAlertAction(title: LocalString._general_close_action,
+                             style: .default,
+                             handler: handler)
+    }
+
+    class func cancelAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
+        return UIAlertAction(title: LocalString._general_cancel_action,
                              style: .default,
                              handler: handler)
     }

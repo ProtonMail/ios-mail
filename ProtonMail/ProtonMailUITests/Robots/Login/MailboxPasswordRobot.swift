@@ -6,11 +6,15 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let mailboxPasswordTextField = "MailboxPasswordViewController.passwordTextField"
-private let decryptButton = "MailboxPasswordViewController.decryptButton"
-private let decryptFailedStaticTextIdentifier = LocalString._the_mailbox_password_is_incorrect
+import PMTestAutomation
 
-class MailboxPasswordRobot {
+fileprivate struct id {
+    static let mailboxPasswordTextField = "MailboxPasswordViewController.passwordTextField"
+    static let decryptButton = "MailboxPasswordViewController.decryptButton"
+    static let decryptFailedStaticTextIdentifier = LocalString._the_mailbox_password_is_incorrect
+}
+
+class MailboxPasswordRobot: CoreElements {
     
     func decryptMailbox(_ mailboxPwd: String) -> InboxRobot {
         return mailboxPassword(mailboxPwd)
@@ -18,12 +22,12 @@ class MailboxPasswordRobot {
     }
 
     private func mailboxPassword(_ mailboxPwd: String) -> MailboxPasswordRobot {
-        Element.wait.forSecureTextFieldWithIdentifier(mailboxPasswordTextField, file: #file, line: #line).typeText(mailboxPwd)
+        secureTextField(id.mailboxPasswordTextField).typeText(mailboxPwd)
         return self
     }
     
     private func decrypt() -> InboxRobot {
-        Element.button.tapByIdentifier(decryptButton)
+        button(id.decryptButton).tap()
         return InboxRobot()
     }
     
@@ -34,19 +38,18 @@ class MailboxPasswordRobot {
     }
     
     private func decryptWithWrongPassword() -> ErrorDialogRobot {
-        Element.button.tapByIdentifier(decryptButton)
+        button(id.decryptButton).tap()
         return ErrorDialogRobot()
     }
     
     class ErrorDialogRobot {
         
-        var verify: Verify! = nil
-        init() { verify = Verify() }
+        var verify = Verify()
         
-        class Verify {
+        internal class Verify: CoreElements {
             
             func verifyDecryptFailedErrorDisplayed() {
-                Element.wait.forStaticTextFieldWithIdentifier(decryptFailedStaticTextIdentifier, file: #file, line: #line)
+                staticText(id.decryptFailedStaticTextIdentifier).wait().checkExists()
             }
             
         }

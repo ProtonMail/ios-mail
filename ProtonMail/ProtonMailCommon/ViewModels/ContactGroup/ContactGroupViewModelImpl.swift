@@ -34,6 +34,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private let contactGroupService: ContactGroupsDataService
     private let labelDataService: LabelsDataService
     private let messageService: MessageDataService
+    private let eventsService: EventsFetching
     
     private var selectedGroupIDs: Set<String> = Set<String>()
     
@@ -53,6 +54,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         self.contactGroupService = user.contactGroupService
         self.labelDataService = user.labelService
         self.messageService = user.messageService
+        self.eventsService = user.eventsService
     }
     
 
@@ -112,7 +114,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+                self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -141,7 +143,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if isFetching == false {
             isFetching = true
             
-            self.messageService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, context: self.coreDataService.mainManagedObjectContext, completion: { (task, res, error) in
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }
@@ -157,8 +159,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if let fetchController = self.fetchedResultsController {
             do {
                 try fetchController.performFetch()
-            } catch let error as NSError {
-                PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
+            } catch {
             }
         }
         return self.fetchedResultsController
@@ -193,7 +194,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    arrayOfPromises.append(self.contactGroupService.deleteContactGroup(groupID: groupID))
+                    arrayOfPromises.append(self.contactGroupService.queueDelete(groupID: groupID))
                 }
                 
                 when(fulfilled: arrayOfPromises).done {

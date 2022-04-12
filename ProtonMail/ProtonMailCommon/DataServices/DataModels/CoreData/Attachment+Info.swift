@@ -32,10 +32,12 @@ import PromiseKit
     
     var isDownloaded: Bool { get }
     var att : Attachment? { get }
+    var id: String? { get }
+    var isInline: Bool { get }
 }
 
 
-class AttachmentInline : AttachmentInfo {
+class MimeAttachment : AttachmentInfo {
     var isDownloaded: Bool {
         get {
             return true
@@ -47,24 +49,32 @@ class AttachmentInline : AttachmentInfo {
             return nil
         }
     }
+
+    var isInline: Bool {
+        self.disposition?.contains(check: "inline") ?? false
+    }
+
+    let id: String? = UUID().uuidString
     
     var fileName: String
     var size : Int
     var mimeType: String
     var localUrl : URL?
+    let disposition: String?
     
-    init(fnam: String, size: Int, mime: String, path: URL?) {
-        self.fileName = fnam
+    init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
+        self.fileName = filename
         self.size = size
         self.mimeType = mime
         self.localUrl = path
+        self.disposition = disposition
     }
     
     func toAttachment(message: Message?, stripMetadata: Bool) -> Promise<Attachment?> {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
-            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata)
+            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata, isInline: false)
         }
         return Promise.value(nil)
     }
@@ -82,6 +92,14 @@ class AttachmentNormal : AttachmentInfo {
         get {
             return attachment
         }
+    }
+
+    var id: String? {
+        att?.attachmentID
+    }
+
+    var isInline: Bool {
+        att?.inline() ?? false
     }
     
     var localUrl : URL? {

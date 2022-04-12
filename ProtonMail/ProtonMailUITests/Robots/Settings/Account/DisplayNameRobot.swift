@@ -6,20 +6,24 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let saveNavBarButtonLabel = LocalString._general_save_action
+import pmtest
+
+fileprivate struct id {
+    static let saveNavBarButtonLabel = LocalString._general_save_action
+}
 
 /**
  Class represents Display name view.
  */
-class DisplayNameRobot {
+class DisplayNameRobot: CoreElements {
 
     func setDisplayNameTextTo(_ text: String) -> DisplayNameRobot {
-        Element.textField.tapByIndex(0).clear().typeText(text)
+        textField().byIndex(0).tap().clearText().typeText(text)
         return self
     }
     
     func save() -> AccountSettingsRobot {
-        Element.button.tapByIdentifier(saveNavBarButtonLabel)
+        button(id.saveNavBarButtonLabel).tap()
         return AccountSettingsRobot()
     }
 }

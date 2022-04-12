@@ -1,0 +1,6 @@
+framework module ProtonCore_AccountSwitcher {
+  umbrella header "ProtonCore-AccountSwitcher-umbrella.h"
+
+  export *
+  module * { export * }
+}

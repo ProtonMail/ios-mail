@@ -20,46 +20,48 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-
-import UIKit
 import Foundation
+import ProtonCore_UIFoundations
+import UIKit
 
 class Snapshot {
-    fileprivate struct Tag {
+    private enum Tag {
         static let snapshot = 101
     }
-    
-    fileprivate struct NibName {
+
+    private enum NibName {
         static let Name = "LaunchScreen"
     }
-    
+
     private lazy var view: UIView = self.getFancyView() ?? self.getDefaultView()
-    
-    internal func show(at window: UIView) {
+
+    func show(at window: UIView) {
         window.addSubview(self.view)
-        view.mas_makeConstraints { (make) -> Void in
-            make?.top.equalTo()(window)
-            make?.left.equalTo()(window)
-            make?.right.equalTo()(window)
-            make?.bottom.equalTo()(window)
-        }
+        [
+            view.topAnchor.constraint(equalTo: window.topAnchor),
+            view.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: window.bottomAnchor)
+        ].activate()
     }
-    
-    internal func remove() {
-        self.view.removeFromSuperview()
+
+    func remove() {
+        view.removeFromSuperview()
     }
-    
+
     private func getFancyView() -> UIView? {
-        guard let view = Bundle.main.loadNibNamed(NibName.Name, owner: nil, options: nil)?.first as? UIView else {
+        guard let view = Bundle.main
+                .loadNibNamed(NibName.Name, owner: nil, options: nil)?.first as? UIView else {
             return nil
         }
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.tag = Tag.snapshot
         return view
     }
-    
+
     private func getDefaultView() -> UIView {
         let view = UIView(frame: CGRect.zero)
-        view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+        view.backgroundColor = ColorProvider.BackgroundNorm
         view.tag = Tag.snapshot
         return view
     }
