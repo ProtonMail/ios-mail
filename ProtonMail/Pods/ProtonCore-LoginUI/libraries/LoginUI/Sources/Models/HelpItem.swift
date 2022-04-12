@@ -24,15 +24,17 @@ import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_UIFoundations
 
-enum HelpItem: CaseIterable {
+public enum HelpItem {
     case forgotUsername
     case forgotPassword
     case otherIssues
     case support
+    case staticText(text: String)
+    case custom(icon: UIImage, title: String, behaviour: (UIViewController) -> Void)
 }
 
 extension HelpItem: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .forgotUsername:
             return CoreString._ls_help_forgot_username
@@ -42,12 +44,16 @@ extension HelpItem: CustomStringConvertible {
             return CoreString._ls_help_other_issues
         case .support:
             return CoreString._ls_help_customer_support
+        case .staticText(let text):
+            return text
+        case let .custom(_, title, _):
+            return title
         }
     }
 }
 
 extension HelpItem {
-    var icon: UIImage {
+    public var icon: UIImage? {
         switch self {
         case .forgotUsername:
             return IconProvider.userCircle
@@ -57,6 +63,10 @@ extension HelpItem {
             return IconProvider.questionCircle
         case .support:
             return IconProvider.speechBubble
+        case .staticText:
+            return nil
+        case let .custom(icon, _, _):
+            return icon
         }
     }
 }

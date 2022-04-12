@@ -134,7 +134,7 @@ extension LoginService {
             completion(.failure(.invalidState))
 
         case .external:
-            if addresses.filter({ $0.type != .externalAddress }).isEmpty {
+            if addresses.filter({ $0.type != .externalAddress && $0.status != .disabled }).isEmpty {
                 completion(.success(.finished(LoginData.userData(UserData(credential: self.authManager.getToken(bySessionUID: sessionId)!, user: user, salts: [], passphrases: [:], addresses: addresses, scopes: self.authManager.scopes ?? [])))))
                 return
             } else {
@@ -309,7 +309,7 @@ extension LoginService {
             return
         }
 
-        if let address = addresses.first(where: { $0.type != .externalAddress && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
+        if let address = addresses.first(where: { $0.type != .externalAddress && $0.status != .disabled && ($0.hasKeys == 0 || $0.keys.isEmpty) }) {
             createAddressKeyAndRefreshUserData(user: user, address: address, mailboxPassword: mailboxPassword, completion: completion)
             return
         }

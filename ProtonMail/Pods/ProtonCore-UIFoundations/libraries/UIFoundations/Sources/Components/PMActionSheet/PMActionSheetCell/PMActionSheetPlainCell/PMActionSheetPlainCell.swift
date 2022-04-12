@@ -43,7 +43,7 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
         self.separator = self.addSeparator(leftRef: self.leftIcon, constant: -16)
     }
 
-    func config(item: PMActionSheetPlainItem) {
+    func config(item: PMActionSheetPlainItem, indexPath: IndexPath) {
         self.backgroundColor = ColorProvider.BackgroundNorm
         let hasLeftIcon: Bool
         if let leftIcon = item.icon {
@@ -69,7 +69,8 @@ final class PMActionSheetPlainCell: UITableViewCell, AccessibleView {
         self.titleLabel.textColor = item.textColor
         self.titleLabel.textAlignment = item.alignment
         self.separator?.isHidden = !item.hasSeparator
-        self.accessibilityIdentifier = item.title
+        self.accessibilityIdentifier = "itemIndex_\(indexPath.section).\(indexPath.row)"
+        self.accessibilityLabel = item.title
         self.setupTitleConstraints(level: item.indentationLevel,
                                    width: item.indentationWidth,
                                    alignment: item.alignment,

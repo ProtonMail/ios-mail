@@ -24,7 +24,7 @@ import XCTest
 import pmtest
 import ProtonCore_CoreTranslation
 
-private let titleName = CoreString._hv_title
+private let titleName = "Human Verification"
 private let hCaptchaButtonCheckName = "hCaptcha checkbox. Select in order to trigger the challenge, or to bypass it if you have an accessibility cookie."
 private let closeButtonAccessibilityId = "closeButton"
 private let captchaSelectedControlLabel = CoreString._hv_captha_method_name

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,10 +23,10 @@
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="QY7-pQ-zCk">
                                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZM1-O3-W7Y">
-                                                <rect key="frame" x="232" y="28" width="560" height="302.5"/>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZM1-O3-W7Y">
+                                                <rect key="frame" x="232" y="28" width="560" height="496"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="AWR-V5-JGo">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="AWR-V5-JGo">
                                                         <rect key="frame" x="8" y="8" width="544" height="26.5"/>
                                                         <subviews>
                                                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6Ai-OT-lAN">
@@ -51,19 +51,55 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" horizontalHuggingPriority="248" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="zrR-Xg-iH3" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="92.5" width="544" height="80"/>
+                                                        <rect key="frame" x="8" y="92.5" width="544" height="273.5"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Username"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
-                                                    <view contentMode="scaleToFill" horizontalHuggingPriority="248" translatesAutoresizingMaskIntoConstraints="NO" id="JpY-ih-Bwz" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="92.5" width="544" height="80"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="title" value="Username"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="08V-dP-p60">
+                                                        <rect key="frame" x="8" y="92.5" width="544" height="273.5"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="yS9-FX-P4o" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
+                                                                <rect key="frame" x="0.0" y="0.0" width="544" height="128"/>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bVB-2C-Ynr">
+                                                                <rect key="frame" x="0.0" y="136" width="544" height="101.5"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oU5-Wk-2fK">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="14.5"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="0.0"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v7f-nY-gd0" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                                                                        <rect key="frame" x="0.0" y="22.5" width="544" height="79"/>
+                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <connections>
+                                                                            <action selector="onDomainsButtonTapped" destination="LQ8-D2-bgN" eventType="touchUpInside" id="aqK-aB-sxy"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="v7f-nY-gd0" firstAttribute="leading" secondItem="bVB-2C-Ynr" secondAttribute="leading" id="37W-b5-N92"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="v7f-nY-gd0" secondAttribute="trailing" id="N6K-fO-BFF"/>
+                                                                    <constraint firstItem="oU5-Wk-2fK" firstAttribute="leading" secondItem="bVB-2C-Ynr" secondAttribute="leading" id="b3l-0E-SFh"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="oU5-Wk-2fK" secondAttribute="trailing" id="kSF-ma-JVY"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="v7f-nY-gd0" secondAttribute="bottom" id="pUD-4V-fLw"/>
+                                                                    <constraint firstItem="oU5-Wk-2fK" firstAttribute="top" secondItem="bVB-2C-Ynr" secondAttribute="top" id="rXL-Vz-Pws"/>
+                                                                    <constraint firstItem="v7f-nY-gd0" firstAttribute="top" secondItem="oU5-Wk-2fK" secondAttribute="bottom" constant="8" id="tSz-bC-R0d"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M1v-QR-phH">
+                                                                <rect key="frame" x="0.0" y="245.5" width="544" height="28"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="28" id="WEL-eO-XAw"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="HxP-mt-FV5">
-                                                        <rect key="frame" x="8" y="172.5" width="544" height="80"/>
+                                                        <rect key="frame" x="8" y="366" width="544" height="80"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k93-oQ-rLI" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
                                                                 <rect key="frame" x="0.0" y="0.0" width="544" height="30"/>
@@ -83,7 +119,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ODc-un-6xP" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                        <rect key="frame" x="8" y="260.5" width="544" height="34"/>
+                                                        <rect key="frame" x="8" y="454" width="544" height="34"/>
                                                         <state key="normal" title="Sign in"/>
                                                         <connections>
                                                             <action selector="onSignInButtonTap:" destination="LQ8-D2-bgN" eventType="touchUpInside" id="JGl-PG-9bC"/>
@@ -96,21 +132,21 @@
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="top" secondItem="HxP-mt-FV5" secondAttribute="bottom" constant="8" id="5fm-95-Jxk"/>
                                                     <constraint firstItem="AWR-V5-JGo" firstAttribute="top" secondItem="ZM1-O3-W7Y" secondAttribute="top" constant="8" id="67E-I5-Rds"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="6QL-Oc-RPg"/>
+                                                    <constraint firstItem="HxP-mt-FV5" firstAttribute="top" secondItem="08V-dP-p60" secondAttribute="bottom" id="6Qw-7L-bLj"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="top" secondItem="cWf-De-PP6" secondAttribute="bottom" constant="24" id="CT5-1u-gcA"/>
                                                     <constraint firstItem="cWf-De-PP6" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="CTw-3i-fP2"/>
                                                     <constraint firstItem="cWf-De-PP6" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="DQW-N2-ABb"/>
                                                     <constraint firstAttribute="trailing" secondItem="AWR-V5-JGo" secondAttribute="trailing" constant="8" id="E2x-0w-Dtq"/>
                                                     <constraint firstItem="cWf-De-PP6" firstAttribute="top" secondItem="AWR-V5-JGo" secondAttribute="bottom" constant="16" id="Iu4-DH-foc"/>
-                                                    <constraint firstItem="JpY-ih-Bwz" firstAttribute="top" secondItem="zrR-Xg-iH3" secondAttribute="top" id="KEX-2W-SYx"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="MHG-6X-0wH"/>
-                                                    <constraint firstItem="JpY-ih-Bwz" firstAttribute="leading" secondItem="zrR-Xg-iH3" secondAttribute="leading" id="OOR-c8-hhT"/>
+                                                    <constraint firstItem="08V-dP-p60" firstAttribute="trailing" secondItem="zrR-Xg-iH3" secondAttribute="trailing" id="MOE-q2-QGs"/>
                                                     <constraint firstItem="zrR-Xg-iH3" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="PXx-ws-tRY"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="bottom" secondItem="ZM1-O3-W7Y" secondAttribute="bottom" constant="-8" id="U33-ok-g80"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="top" secondItem="zrR-Xg-iH3" secondAttribute="bottom" id="eoN-nn-Nvn"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="fHe-8r-vFc"/>
-                                                    <constraint firstItem="JpY-ih-Bwz" firstAttribute="trailing" secondItem="zrR-Xg-iH3" secondAttribute="trailing" id="jht-vy-oe0"/>
+                                                    <constraint firstItem="08V-dP-p60" firstAttribute="leading" secondItem="zrR-Xg-iH3" secondAttribute="leading" id="j7N-ha-r1l"/>
                                                     <constraint firstItem="ODc-un-6xP" firstAttribute="leading" secondItem="ZM1-O3-W7Y" secondAttribute="leading" constant="8" id="lne-bO-y8D"/>
-                                                    <constraint firstItem="JpY-ih-Bwz" firstAttribute="bottom" secondItem="zrR-Xg-iH3" secondAttribute="bottom" id="obl-w3-5XA"/>
+                                                    <constraint firstItem="08V-dP-p60" firstAttribute="top" secondItem="cWf-De-PP6" secondAttribute="bottom" constant="24" id="m6N-56-nh9"/>
                                                     <constraint firstItem="HxP-mt-FV5" firstAttribute="trailing" secondItem="ZM1-O3-W7Y" secondAttribute="trailing" constant="-8" id="yhD-8J-D8b"/>
                                                 </constraints>
                                             </view>
@@ -148,12 +184,17 @@
                         <outlet property="contentView" destination="kZ7-mB-wbY" id="48W-J2-4gV"/>
                         <outlet property="createAccountDescriptionLabel" destination="cWf-De-PP6" id="3MB-JL-ntj"/>
                         <outlet property="createAccountTitleLabel" destination="MD8-O9-kRX" id="RKi-hA-cS6"/>
-                        <outlet property="externalEmailTextField" destination="JpY-ih-Bwz" id="xJq-fR-Leh"/>
-                        <outlet property="internalNameTextField" destination="zrR-Xg-iH3" id="2x1-zV-Uat"/>
+                        <outlet property="domainsBottomSeparatorView" destination="M1v-QR-phH" id="kib-Aw-1G9"/>
+                        <outlet property="domainsButton" destination="v7f-nY-gd0" id="STI-LJ-YN3"/>
+                        <outlet property="domainsLabel" destination="oU5-Wk-2fK" id="ftC-yl-KWY"/>
+                        <outlet property="domainsView" destination="bVB-2C-Ynr" id="ILi-V2-awE"/>
+                        <outlet property="externalEmailTextField" destination="zrR-Xg-iH3" id="tr6-8C-VEQ"/>
+                        <outlet property="internalNameTextField" destination="yS9-FX-P4o" id="il8-L0-rQr"/>
                         <outlet property="nextButton" destination="uvw-1L-jQh" id="GvE-eS-AbP"/>
                         <outlet property="otherAccountButton" destination="k93-oQ-rLI" id="2Ii-Se-KYz"/>
                         <outlet property="scrollView" destination="QY7-pQ-zCk" id="0AN-LL-ff4"/>
                         <outlet property="signinButton" destination="ODc-un-6xP" id="xq2-Dw-GK4"/>
+                        <outlet property="usernameAndDomainsView" destination="08V-dP-p60" id="HKk-oi-Ir5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XGz-f8-QlG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

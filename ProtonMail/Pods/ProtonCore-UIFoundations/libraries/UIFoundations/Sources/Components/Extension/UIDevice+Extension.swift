@@ -1,6 +1,6 @@
 //
 //  UIDevice+Extension.swift
-//  ProtonCore-HumanVerification - Created on 03.06.2021
+//  ProtonCore-UIFoundations - Created on 03.06.2021
 //
 //  Copyright (c) 2021 Proton Technologies AG
 //
@@ -25,6 +25,10 @@ import Foundation
 import UIKit
 
 public extension UIDevice {
+    
+    var isIpad: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
 
     var isSmallIphone: Bool {
         return screenType == .iPhones_4_4S || screenType == .iPhones_5_5s_5c_SE

@@ -35,6 +35,9 @@ public struct APIServiceMock: APIService {
     @FuncStub(APIServiceMock.setSessionUID) public var setSessionUIDStub
     public func setSessionUID(uid: String) { setSessionUIDStub(uid) }
 
+    @PropertyStub(\APIServiceMock.sessionUID, initialGet: .crash) public var sessionUIDStub
+    public var sessionUID: String { sessionUIDStub() }
+    
     @PropertyStub(\APIServiceMock.serviceDelegate, initialGet: .crash) public var serviceDelegateStub
     public var serviceDelegate: APIServiceDelegate? { get { serviceDelegateStub() } set { serviceDelegateStub(newValue) } }
 

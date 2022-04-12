@@ -100,7 +100,9 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
-        scrollView.adjust(forKeyboardVisibilityNotification: nil)
+        DispatchQueue.main.async {
+            self.scrollView.adjust(forKeyboardVisibilityNotification: nil)
+        }
     }
 
     // MARK: Actions

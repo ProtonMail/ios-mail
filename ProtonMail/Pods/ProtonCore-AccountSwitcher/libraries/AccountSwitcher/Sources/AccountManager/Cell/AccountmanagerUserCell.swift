@@ -36,13 +36,39 @@ protocol AccountmanagerUserCellDelegate: AnyObject {
     func prepareSignOut(for userID: String)
 }
 
+final class MoreButton: UIButton {
+    
+    override var isHighlighted: Bool {
+        didSet { refreshBackgroundColor() }
+    }
+    
+    override var isSelected: Bool {
+        didSet { refreshBackgroundColor() }
+    }
+    
+    func refreshBackgroundColor() {
+        if isSelected || isHighlighted {
+            backgroundColor = AccountSwitcherStyle.buttonSelectedColor
+        } else {
+            backgroundColor = nil
+        }
+    }
+    
+    override func layoutSubviews() {
+        let circleLayer = CAShapeLayer()
+        circleLayer.path = UIBezierPath(ovalIn: bounds).cgPath
+        layer.mask = circleLayer
+        super.layoutSubviews()
+    }
+}
+
 final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
 
     @IBOutlet private var shortNameView: UIView!
     @IBOutlet private var shortNameLabel: UILabel!
     @IBOutlet private var name: UILabel!
     @IBOutlet private var mail: UILabel!
-    @IBOutlet private var moreBtn: UIButton!
+    @IBOutlet private var moreBtn: MoreButton!
     @IBOutlet private var separatorView: UIView!
     private var userID: String = ""
     private var isLogin: Bool = false
@@ -66,7 +92,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.name.textColor = ColorProvider.TextNorm
         self.mail.textColor = ColorProvider.TextWeak
         self.shortNameView.backgroundColor = ColorProvider.BrandNorm
-        self.shortNameLabel.textColor = ColorProvider.SidebarTextNorm
+        self.shortNameLabel.textColor = AccountSwitcherStyle.smallTextColor
         self.shortNameLabel.backgroundColor = ColorProvider.BrandNorm
         self.separatorView.backgroundColor = ColorProvider.InteractionWeak
         self.moreBtn.setImage(IconProvider.threeDotsHorizontal, for: .normal)
@@ -107,7 +133,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         }
 
         let signIn = UIAction(title: CoreString._ls_screen_title,
-                              image: IconProvider.signIn) { [weak self] _ in
+                              image: AccountSwitcherStyle.signInIcon) { [weak self] _ in
             guard let self = self else { return }
             self.delegate?.prepareSignIn(for: self.userID)
         }
@@ -128,5 +154,4 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
     @IBAction private func clickMoreBtn(_ sender: UIButton) {
         self.delegate?.showMoreOption(for: self.userID, sender: sender)
     }
-
 }

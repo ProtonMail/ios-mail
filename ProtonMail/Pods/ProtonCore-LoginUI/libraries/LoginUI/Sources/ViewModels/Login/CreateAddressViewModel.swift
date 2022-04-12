@@ -29,7 +29,7 @@ final class CreateAddressViewModel {
     // MARK: - Properties
 
     var address: String {
-        return "\(username)@\(login.signUpDomain)"
+        return "\(username)@\(login.currentlyChosenSignUpDomain)"
     }
     let recoveryEmail: String
     let isLoading = Observable<Bool>(false)

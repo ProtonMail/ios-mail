@@ -62,7 +62,14 @@ extension UIScrollView {
                 return
             }
             let keyboardHeight = superview?.convert(keyboardFrame.cgRectValue, from: nil).size.height ?? 0
-            contentInset.bottom = keyboardHeight
+            let offsetToMove = keyboardHeight - contentInset.top
+            if offsetToMove > 0 {
+                if offsetToMove < bounds.size.height - keyboardHeight {
+                    contentInset.bottom = offsetToMove
+                } else {
+                    contentInset.bottom = keyboardHeight
+                }
+            }
             centerIfNeeded()
 
         case UIResponder.keyboardWillHideNotification, UIResponder.keyboardDidHideNotification:

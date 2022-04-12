@@ -265,7 +265,8 @@ public protocol APIService: API {
     // var doh:  DoH  {get}//depends on NetworkLayer. {get}
     // var queue : [Request] {get}
     func setSessionUID(uid: String)
-
+    
+    var sessionUID: String { get }
     var serviceDelegate: APIServiceDelegate? { get set }
     var authDelegate: AuthDelegate? { get set }
     var humanDelegate: HumanVerifyDelegate? { get set }

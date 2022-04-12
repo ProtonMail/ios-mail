@@ -48,8 +48,9 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     var signupAccountType: SignupAccountType!
     var showOtherAccountButton = true
     var showCloseButton = true
+    var showSeparateDomainsButton = true
     var minimumAccountType: AccountType?
-    var domain: String? { didSet { configureDomainSuffix() } }
+    var tapGesture: UITapGestureRecognizer?
 
     // MARK: Outlets
 
@@ -78,6 +79,11 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             internalNameTextField.spellCheckingType = .no
         }
     }
+    @IBOutlet weak var domainsView: UIView!
+    @IBOutlet weak var domainsLabel: UILabel!
+    @IBOutlet weak var domainsButton: ProtonButton!
+    @IBOutlet weak var usernameAndDomainsView: UIView!
+    @IBOutlet weak var domainsBottomSeparatorView: UIView!
     @IBOutlet weak var externalEmailTextField: PMTextField! {
         didSet {
             externalEmailTextField.title = CoreString._su_email_field_title
@@ -150,6 +156,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             brandLogo.isHidden = false
         }
         
+        setupDomainsView()
         setupGestures()
         setupNotifications()
         otherAccountButton.isHidden = !showOtherAccountButton
@@ -197,14 +204,19 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         nextButton.isSelected = true
         currentlyUsedTextField.isError = false
         lockUI()
-        if signupAccountType == .internal {
-            checkUsername(userName: self.currentlyUsedTextField.value)
-        } else {
+        switch minimumAccountType {
+        case .username:
+            checkUsernameWithoutSpecifyingDomain(userName: currentlyUsedTextField.value)
+        case .external:
             if viewModel.humanVerificationVersion == .v3 {
-                checkEmail(email: self.currentlyUsedTextField.value)
+                checkEmail(email: currentlyUsedTextField.value)
             } else {
-                requestValidationToken(email: self.currentlyUsedTextField.value)
+                requestValidationToken(email: currentlyUsedTextField.value)
             }
+        case .internal:
+            checkUsernameWithinDomain(userName: currentlyUsedTextField.value)
+        case .none:
+            assertionFailure("signupAccountType should be configured during the segue")
         }
     }
 
@@ -212,6 +224,28 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         cancelFocus()
         PMBanner.dismissAll(on: self)
         delegate?.signinButtonPressed()
+    }
+    
+    @IBAction private func onDomainsButtonTapped() {
+        dismissKeyboard()
+        var sheet: PMActionSheet?
+        let currentDomain = viewModel.currentlyChosenSignUpDomain
+        let items = viewModel.allSignUpDomains.map { [weak self] domain in
+            PMActionSheetPlainItem(title: "@\(domain)", icon: nil, isOn: domain == currentDomain) { [weak self] _ in
+                sheet?.dismiss(animated: true)
+                self?.viewModel.currentlyChosenSignUpDomain = domain
+                self?.configureDomainSuffix()
+            }
+        }
+        let header = PMActionSheetHeaderView(title: CoreString._su_domains_sheet_title,
+                                             subtitle: nil,
+                                             leftItem: PMActionSheetPlainItem(title: nil, icon: IconProvider.crossSmall) { _ in sheet?.dismiss(animated: true) },
+                                             rightItem: nil,
+                                             hasSeparator: false)
+        let itemGroup = PMActionSheetItemGroup(items: items, style: .clickable)
+        sheet = PMActionSheet(headerView: header, itemGroups: [itemGroup], showDragBar: false)
+        sheet?.eventsListener = self
+        sheet?.presentAt(self, animated: true)
     }
 
     @objc func onCloseButtonTap(_ sender: UIButton) {
@@ -222,16 +256,29 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     // MARK: Private methods
 
     private func requestDomain() {
-        viewModel.updateAvailableDomain { _ in
-            self.domain = "@\(self.viewModel.signUpDomain)"
+        viewModel.updateAvailableDomain { [weak self] _ in
+            self?.configureDomainSuffix()
         }
     }
 
     private func configureAccountType() {
         internalNameTextField.value = ""
         externalEmailTextField.value = ""
-        currentlyUsedTextField.isHidden = false
-        currentlyNotUsedTextField.isHidden = true
+        switch signupAccountType {
+        case .external:
+            externalEmailTextField.isHidden = false
+            usernameAndDomainsView.isHidden = true
+            domainsView.isHidden = true
+            domainsBottomSeparatorView.isHidden = true
+            internalNameTextField.isHidden = true
+        case .internal:
+            externalEmailTextField.isHidden = true
+            usernameAndDomainsView.isHidden = false
+            domainsView.isHidden = false
+            domainsBottomSeparatorView.isHidden = showOtherAccountButton
+            internalNameTextField.isHidden = false
+        case .none: break
+        }
         let title = signupAccountType == .internal ? CoreString._su_email_address_button
                                                    : CoreString._su_proton_address_button
         otherAccountButton.setTitle(title, for: .normal)
@@ -239,12 +286,41 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configureDomainSuffix() {
-        guard minimumAccountType != .username else { return }
-        internalNameTextField.suffix = domain ?? "@\(viewModel.signUpDomain)"
+        guard minimumAccountType != .username else {
+            domainsView.isHidden = true
+            domainsBottomSeparatorView.isHidden = true
+            return
+        }
+        
+        guard showSeparateDomainsButton else {
+            domainsView.isHidden = true
+            domainsBottomSeparatorView.isHidden = true
+            internalNameTextField.suffix = "@\(viewModel.currentlyChosenSignUpDomain)"
+            return
+        }
+        
+        domainsView.isHidden = false
+        domainsButton.setTitle("@\(viewModel.currentlyChosenSignUpDomain)", for: .normal)
+        if viewModel.allSignUpDomains.count > 1 {
+            domainsButton.isUserInteractionEnabled = true
+            domainsButton.setMode(mode: .image(type: .textWithChevron))
+        } else {
+            domainsButton.isUserInteractionEnabled = false
+            domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
+        }
+    }
+    
+    private func setupDomainsView() {
+        domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
+        domainsLabel.textColor = ColorProvider.TextNorm
+        domainsLabel.text = CoreString._su_domains_sheet_title
     }
     
     private func setupGestures() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard(_:)))
+        tapGesture?.delaysTouchesBegan = false
+        tapGesture?.delaysTouchesEnded = false
+        guard let tapGesture = tapGesture else { return }
         self.view.addGestureRecognizer(tapGesture)
     }
 
@@ -266,8 +342,31 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
         }
     }
 
-    private func checkUsername(userName: String) {
-        viewModel.checkUserName(username: userName) { result in
+    private func checkUsernameWithoutSpecifyingDomain(userName: String) {
+        viewModel.checkUsernameAccount(username: userName) { result in
+            self.nextButton.isSelected = false
+            switch result {
+            case .success:
+                self.delegate?.validatedName(name: userName, signupAccountType: self.signupAccountType)
+            case .failure(let error):
+                self.unlockUI()
+                switch error {
+                case .generic(let message, _, _):
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                case .notAvailable(let message):
+                    self.currentlyUsedTextField.isError = true
+                    if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+                        self.showError(message: message)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func checkUsernameWithinDomain(userName: String) {
+        viewModel.checkInternalAccount(username: userName) { result in
             self.nextButton.isSelected = false
             switch result {
             case .success:
@@ -290,7 +389,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     
     private func checkEmail(email: String) {
-        viewModel.checkEmail(email: email) { result in
+        viewModel.checkExternalEmailAccount(email: email) { result in
             self.nextButton.isSelected = false
             switch result {
             case .success:
@@ -375,4 +474,18 @@ extension SignupViewController: PMTextFieldDelegate {
 
 extension SignupViewController: SignUpErrorCapable {
     var bannerPosition: PMBannerPosition { .top }
+}
+
+extension SignupViewController: PMActionSheetEventsListener {
+    func willPresent() {
+        tapGesture?.cancelsTouchesInView = false
+        domainsButton?.isSelected = true
+    }
+
+    func willDismiss() {
+        tapGesture?.cancelsTouchesInView = true
+        domainsButton?.isSelected = false
+    }
+    
+    func didDismiss() { }
 }

@@ -225,12 +225,17 @@ extension HumanCheckMenuCoordinator: PhoneVerifyViewControllerDelegate {
 // MARK: - CountryPickerViewControllerDelegate
 
 extension HumanCheckMenuCoordinator: CountryPickerViewControllerDelegate {
-    func didCountryPickerClose() {
-        initialMenuViewController?.dismiss(animated: true)
-    }
 
     func didSelectCountryCode(countryCode: CountryCode) {
         phoneVerifyViewController?.updateCountryCode(countryCode.phone_code)
+    }
+    
+    func didCountryPickerClose() {
+        initialMenuViewController?.dismiss(animated: true)
+    }
+    
+    func didCountryPickerDissmised() {
+        phoneVerifyViewController?.countryPickerDissmised()
     }
 }
 

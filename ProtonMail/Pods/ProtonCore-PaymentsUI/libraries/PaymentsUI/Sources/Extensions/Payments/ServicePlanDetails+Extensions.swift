@@ -28,42 +28,19 @@ extension Plan {
     public var titleDescription: String {
         return title
     }
-
-    var storageFormatter: ByteCountFormatter {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .binary
-        formatter.allowedUnits = [.useGB, .useMB, .useKB]
-        formatter.formattingContext = .beginningOfSentence
-        return formatter
-    }
     
-    func roundedToOneDecimal(_ space: Int64) -> Int64 {
-        let gbBase = roundedToOneDecimal(space, roundBase: .gb)
-        let mbBase = roundedToOneDecimal(space, roundBase: .mb)
-        return gbBase > 0 ? gbBase : mbBase > 0 ? mbBase : roundedToOneDecimal(space, roundBase: .kb)
-    }
-    
-    private enum RoundBase: Double {
-        case kb = 1024
-        case mb = 1048576 // 1024 * 1024
-        case gb = 1073741824 // 1024 * 1024 * 1024
-    }
-    
-    private func roundedToOneDecimal(_ space: Int64, roundBase: RoundBase) -> Int64 {
-        let spaceInBase = Double(space) / roundBase.rawValue
-        let roundedSpaceInBase = round(spaceInBase * 10) / 10
-        let roundedSpace = roundedSpaceInBase * roundBase.rawValue
-        return Int64(roundedSpace)
+    var storageformatter: StorageFormatter {
+        return StorageFormatter()
     }
 
     var XGBStorageDescription: String {
         String(format: CoreString._pu_plan_details_storage,
-               storageFormatter.string(fromByteCount: roundedToOneDecimal(maxSpace)))
+               storageformatter.format(value: maxSpace))
     }
 
     var XGBStoragePerUserDescription: String {
         return String(format: CoreString._pu_plan_details_storage_per_user,
-                      storageFormatter.string(fromByteCount: roundedToOneDecimal(maxSpace)))
+                      storageformatter.format(value: maxSpace))
     }
 
     var YAddressesDescription: String {

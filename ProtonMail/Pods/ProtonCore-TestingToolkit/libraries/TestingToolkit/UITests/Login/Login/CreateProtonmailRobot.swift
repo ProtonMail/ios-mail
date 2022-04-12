@@ -25,7 +25,7 @@ private let createProtonmailTitleId = "ChooseUsernameViewController.titleLabel"
 private let usernameFieldId = "ChooseUsernameViewController.addressTextField.textField"
 private let buttonNextId = "ChooseUsernameViewController.nextButton"
 private let buttonCreateAddressId = "CreateAddressViewController.createButton"
-private let createPMAddressTitle = "Create ProtonMail address"
+private let createPMAddressTitle = "Create Proton Mail address"
 
 public final class CreateProtonmailRobot: CoreElements {
     

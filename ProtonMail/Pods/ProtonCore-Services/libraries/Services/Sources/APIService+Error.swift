@@ -118,7 +118,7 @@ public extension NSError {
 
     func isInternetError() -> Bool {
         var isInternetIssue = false
-        if self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
+        if self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
         } else {
             //                        if(error?.code == -1001) {
             //                            // request timed out

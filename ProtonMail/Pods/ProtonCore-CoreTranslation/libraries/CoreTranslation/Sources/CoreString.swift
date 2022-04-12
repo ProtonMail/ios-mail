@@ -223,28 +223,28 @@ public class LocalizedString {
 
     // Login choose username
 
-    /// Screen title for picking Protonmail username
-    public lazy var _ls_username_screen_title = NSLocalizedString("Create ProtonMail address", bundle: Common.bundle, comment: "Screen title for creating ProtonMail address")
+    /// Screen title for picking Proton mail username
+    public lazy var _ls_username_screen_title = NSLocalizedString("Create ProtonMail address", bundle: Common.bundle, comment: "Screen title for creating Proton Mail address")
 
-    /// Info about existing external ProtonMail address
-    public lazy var _ls_username_screen_info = NSLocalizedString("Your Proton Account is associated with %@. To use %@, please create an address.", bundle: Common.bundle, comment: "Info about existing external ProtonMail address")
+    /// Info about existing external Proton Mail address
+    public lazy var _ls_username_screen_info = NSLocalizedString("Your Proton Account is associated with %@. To use %@, please create an address.", bundle: Common.bundle, comment: "Info about existing external Proton Mail address")
 
     /// Username field title
     public lazy var _ls_username_username_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
 
-    /// Action button title for picking Protonmail username
-    public lazy var _ls_username_button_title = NSLocalizedString("Next", bundle: Common.bundle, comment: "Action button title for picking Protonmail username")
+    /// Action button title for picking Proton Mail username
+    public lazy var _ls_username_button_title = NSLocalizedString("Next", bundle: Common.bundle, comment: "Action button title for picking Proton Mail username")
 
     /// Username field error message
     public lazy var _ls_username_username_error = NSLocalizedString("Please enter a username.", bundle: Common.bundle, comment: "Username field error message")
 
     // Login create address
 
-    /// Action button title for creating ProtonMail address
-    public lazy var _ls_create_address_button_title = NSLocalizedString("Create address", bundle: Common.bundle, comment: "Action button title for creating ProtonMail address")
+    /// Action button title for creating Proton Mail address
+    public lazy var _ls_create_address_button_title = NSLocalizedString("Create address", bundle: Common.bundle, comment: "Action button title for creating Proton Mail address")
 
-    /// Info about ProtonMail address usage
-    public lazy var _ls_create_address_info = NSLocalizedString("You will use this email address to log into all Proton services.", bundle: Common.bundle, comment: "Info about ProtonMail address usage")
+    /// Info about Proton Mail address usage
+    public lazy var _ls_create_address_info = NSLocalizedString("You will use this email address to log into all Proton services.", bundle: Common.bundle, comment: "Info about Proton Mail address usage")
 
     /// Recovery address label title
     public lazy var _ls_create_address_recovery_title = NSLocalizedString("Your recovery email address:", bundle: Common.bundle, comment: "Recovery address label title")
@@ -255,8 +255,8 @@ public class LocalizedString {
     /// Terms and conditions link in the note
     public lazy var _ls_create_address_terms_link = NSLocalizedString("Terms and Conditions", bundle: Common.bundle, comment: "Terms and conditions link in the note")
 
-    /// ProtonMail address availability
-    public lazy var _ls_create_address_available = NSLocalizedString("%@ is available", bundle: Common.bundle, comment: "ProtonMail address availability")
+    /// Proton Mail address availability
+    public lazy var _ls_create_address_available = NSLocalizedString("%@ is available", bundle: Common.bundle, comment: "Proton Mail address availability")
 
     // Login unlock mailbox
 
@@ -420,8 +420,8 @@ public class LocalizedString {
     /// Email address button
     public lazy var _su_email_address_button = NSLocalizedString("Use your current email instead", bundle: Common.bundle, comment: "Email address button")
 
-    /// ProtonMail address  button
-    public lazy var _su_proton_address_button = NSLocalizedString("Create a secure ProtonMail address instead", bundle: Common.bundle, comment: "ProtonMail address button")
+    /// Proton Mail address  button
+    public lazy var _su_proton_address_button = NSLocalizedString("Create a secure ProtonMail address instead", bundle: Common.bundle, comment: "Proton Mail address button")
 
     /// Username field title
     public lazy var _su_username_field_title = NSLocalizedString("Username", bundle: Common.bundle, comment: "Username field title")
@@ -442,6 +442,8 @@ public class LocalizedString {
 
     /// Repeat password field title
     public lazy var _su_repeat_password_field_title = NSLocalizedString("Repeat password", bundle: Common.bundle, comment: "Repeat password field title")
+    
+    public lazy var _su_domains_sheet_title = NSLocalizedString("Domain", bundle: Common.bundle, comment: "Title of domains bottom action sheet")
 
     // TODO: CP-2352 — remove the default value once the text is translated to all languages
     

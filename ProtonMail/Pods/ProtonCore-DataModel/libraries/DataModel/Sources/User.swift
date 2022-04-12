@@ -135,6 +135,9 @@ public final class UserInfo: NSObject {
     public var groupingMode: Int = 0
 
     public var weekStart: Int = 0
+
+    // According to the document, default value is 10
+    public var delaySendSeconds: Int = 10
     
     public static func getDefault() -> UserInfo {
         return .init(maxSpace: 0, usedSpace: 0, language: "",
@@ -164,7 +167,8 @@ public final class UserInfo: NSObject {
         inheritParentFolderColor: Int?,
         subscribed: Int?,
         groupingMode: Int?,
-        weekStart: Int?) {
+        weekStart: Int?,
+        delaySendSeconds: Int?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
@@ -203,6 +207,7 @@ public final class UserInfo: NSObject {
         self.subscribed = subscribed ?? 0
         self.groupingMode = groupingMode ?? 1
         self.weekStart = weekStart ?? 0
+        self.delaySendSeconds = delaySendSeconds ?? 10
         
         if let value = linkConfirmation, let mode = LinkOpeningMode(rawValue: value) {
             self.linkConfirmation = mode

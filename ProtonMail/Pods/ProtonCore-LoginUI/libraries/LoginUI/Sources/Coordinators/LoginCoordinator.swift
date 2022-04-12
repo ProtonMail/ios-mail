@@ -44,16 +44,16 @@ final class LoginCoordinator {
     private var navigationController: LoginNavigationViewController?
     private var childCoordinators: [ChildCoordinators: Any] = [:]
     private let externalLinks: ExternalLinks
-    private var performBeforeFlow: WorkBeforeFlow?
-    private var customErrorPresenter: LoginErrorPresenter?
+    private var customization: LoginCustomizationOptions
 
-    init(container: Container, isCloseButtonAvailable: Bool, isSignupAvailable: Bool,
-         performBeforeFlow: WorkBeforeFlow?, customErrorPresenter: LoginErrorPresenter?) {
+    init(container: Container,
+         isCloseButtonAvailable: Bool,
+         isSignupAvailable: Bool,
+         customization: LoginCustomizationOptions) {
         self.container = container
         self.isCloseButtonAvailable = isCloseButtonAvailable
         self.isSignupAvailable = isSignupAvailable
-        self.performBeforeFlow = performBeforeFlow
-        self.customErrorPresenter = customErrorPresenter
+        self.customization = customization
         externalLinks = container.makeExternalLinks()
     }
 
@@ -77,7 +77,7 @@ final class LoginCoordinator {
     private func loginViewController(username: String?) -> UIViewController {
         let loginViewController = UIStoryboard.instantiate(LoginViewController.self)
         loginViewController.viewModel = container.makeLoginViewModel()
-        loginViewController.customErrorPresenter = customErrorPresenter
+        loginViewController.customErrorPresenter = customization.customErrorPresenter
         loginViewController.initialUsername = username
         loginViewController.delegate = self
         loginViewController.showCloseButton = isCloseButtonAvailable
@@ -122,13 +122,14 @@ final class LoginCoordinator {
     private func showHelp() {
         let helpViewController = UIStoryboard.instantiate(HelpViewController.self)
         helpViewController.delegate = self
+        helpViewController.viewModel = HelpViewModel(helpDecorator: customization.helpDecorator)
         navigationController?.present(helpViewController, animated: true, completion: nil)
     }
 
     private func showTwoFactorCode() {
         let twoFactorViewController = UIStoryboard.instantiate(TwoFactorViewController.self)
         twoFactorViewController.viewModel = container.makeTwoFactorViewModel()
-        twoFactorViewController.customErrorPresenter = customErrorPresenter
+        twoFactorViewController.customErrorPresenter = customization.customErrorPresenter
         twoFactorViewController.delegate = self
         navigationController?.pushViewController(twoFactorViewController, animated: true)
     }
@@ -136,7 +137,7 @@ final class LoginCoordinator {
     private func showMailboxPassword() {
         let mailboxPasswordViewController = UIStoryboard.instantiate(MailboxPasswordViewController.self)
         mailboxPasswordViewController.viewModel = container.makeMailboxPasswordViewModel()
-        mailboxPasswordViewController.customErrorPresenter = customErrorPresenter
+        mailboxPasswordViewController.customErrorPresenter = customization.customErrorPresenter
         mailboxPasswordViewController.delegate = self
         navigationController?.pushViewController(mailboxPasswordViewController, animated: true)
     }
@@ -148,7 +149,7 @@ final class LoginCoordinator {
 
         let coordinator = CreateAddressCoordinator(
             container: container, navigationController: navigationController,
-            data: data, customErrorPresenter: customErrorPresenter
+            data: data, customErrorPresenter: customization.customErrorPresenter
         )
         coordinator.delegate = self
         childCoordinators[.createAddress] = coordinator
@@ -156,7 +157,7 @@ final class LoginCoordinator {
     }
 
     private func finish(endLoading: @escaping () -> Void, data: LoginData) {
-        guard let performBeforeFlow = performBeforeFlow else {
+        guard let performBeforeFlow = customization.performBeforeFlow else {
             completeLoginFlow(data: data)
             return
         }
@@ -183,7 +184,9 @@ final class LoginCoordinator {
     private func popAndShowError(error: LoginError) {
         navigationController?.popToRootViewController(animated: true) {
             guard let viewController = self.navigationController?.topViewController else { return }
-            if self.customErrorPresenter?.willPresentError(error: error, from: viewController) == true { return }
+            if self.customization.customErrorPresenter?.willPresentError(error: error, from: viewController) == true {
+                return
+            }
             
             guard let errorCapable = viewController as? LoginErrorCapable else { return }
             errorCapable.showError(error: error)
@@ -254,6 +257,12 @@ extension LoginCoordinator: HelpViewControllerDelegate {
             UIApplication.openURLIfPossible(externalLinks.commonLoginProblems)
         case .support:
             UIApplication.openURLIfPossible(externalLinks.support)
+        case .staticText:
+            break
+        case .custom(_, _, let behaviour):
+            guard let viewController = navigationController?.presentedViewController as? HelpViewController
+            else { return }
+            behaviour(viewController)
         }
     }
 }

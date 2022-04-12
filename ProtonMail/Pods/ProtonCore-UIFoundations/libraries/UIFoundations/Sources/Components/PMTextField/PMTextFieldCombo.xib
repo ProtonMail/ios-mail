@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,6 @@
                 <outlet property="assistiveTextLabel" destination="KwT-5E-H5t" id="X6V-yg-9Gi"/>
                 <outlet property="mainView" destination="iN0-l3-epB" id="hy4-Uc-35w"/>
                 <outlet property="pickerButton" destination="3dA-GC-FgZ" id="J6f-se-fgc"/>
-                <outlet property="pickerLabel" destination="XBk-cH-j3B" id="Sdu-ee-Uev"/>
                 <outlet property="textField" destination="dKl-wh-Uzq" id="5CI-4H-tMk"/>
                 <outlet property="titleLabel" destination="dfC-Ta-TiY" id="xOc-25-sfR"/>
             </connections>
@@ -40,7 +39,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dA-GC-FgZ" userLabel="PickerButton">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dA-GC-FgZ" userLabel="PickerButton" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
                     <rect key="frame" x="0.0" y="52" width="116" height="75"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="116" id="XaQ-HG-Xat"/>
@@ -51,25 +50,16 @@
                         <action selector="onPickerButtonTouchUp:" destination="-1" eventType="touchUpInside" id="bO9-uF-jUe"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBk-cH-j3B" userLabel="PickerLabel">
-                    <rect key="frame" x="16" y="89.5" width="64" height="0.0"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="KwT-5E-H5t" firstAttribute="top" secondItem="3dA-GC-FgZ" secondAttribute="bottom" constant="4" id="1NF-59-wqL"/>
-                <constraint firstItem="dKl-wh-Uzq" firstAttribute="leading" secondItem="XBk-cH-j3B" secondAttribute="trailing" constant="37" id="2fi-r1-UU2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KwT-5E-H5t" secondAttribute="trailing" id="Dno-Cc-et6"/>
                 <constraint firstItem="3dA-GC-FgZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="H2q-Re-09u"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="KwT-5E-H5t" secondAttribute="bottom" id="HyR-sw-G4Y"/>
                 <constraint firstItem="KwT-5E-H5t" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="N74-id-hNZ"/>
-                <constraint firstItem="XBk-cH-j3B" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="PMt-Wp-lhe"/>
                 <constraint firstItem="KwT-5E-H5t" firstAttribute="top" secondItem="dKl-wh-Uzq" secondAttribute="bottom" constant="4" id="Sef-yi-0YF"/>
                 <constraint firstItem="3dA-GC-FgZ" firstAttribute="top" secondItem="dfC-Ta-TiY" secondAttribute="bottom" constant="8" id="Ugc-mx-JKM"/>
-                <constraint firstItem="XBk-cH-j3B" firstAttribute="centerY" secondItem="3dA-GC-FgZ" secondAttribute="centerY" id="WI2-ga-Shp"/>
                 <constraint firstItem="dKl-wh-Uzq" firstAttribute="top" secondItem="dfC-Ta-TiY" secondAttribute="bottom" constant="8" id="dxF-Sr-HEw"/>
                 <constraint firstItem="dKl-wh-Uzq" firstAttribute="leading" secondItem="3dA-GC-FgZ" secondAttribute="trailing" constant="1" id="euh-Dc-cw9"/>
                 <constraint firstItem="dfC-Ta-TiY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fN8-BP-9W4"/>

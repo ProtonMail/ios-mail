@@ -59,8 +59,12 @@ public class PMTextFieldCombo: UIView, AccessibleView {
         }
     }
     @IBOutlet private weak var assistiveTextLabel: UILabel!
-    @IBOutlet weak var pickerButton: UIButton!
-    @IBOutlet private weak var pickerLabel: UILabel!
+    @IBOutlet weak var pickerButton: ProtonButton! {
+        didSet {
+            pickerButton.mode = .image(type: .textWithChevron)
+        }
+    }
+
     // MARK: - Properties
 
     /**
@@ -75,10 +79,10 @@ public class PMTextFieldCombo: UIView, AccessibleView {
      */
     @IBInspectable public var title: String? {
         get {
-            return titleLabel.text
+            return pickerButton.title(for: .normal)
         }
         set {
-            titleLabel.text = newValue
+            pickerButton.setTitle(newValue, for: .normal)
         }
     }
 
@@ -135,11 +139,11 @@ public class PMTextFieldCombo: UIView, AccessibleView {
     /**
     The optional text shown in button title.
     */
-   @IBInspectable public var buttonTitleText: String? {
-       didSet {
-           pickerLabel.text = buttonTitleText
-       }
-   }
+    @IBInspectable public var buttonTitleText: String? {
+        didSet {
+            pickerButton.setTitle(buttonTitleText, for: .normal)
+        }
+    }
 
     /**
      The keyboard style associated with the text object.
@@ -218,17 +222,22 @@ public class PMTextFieldCombo: UIView, AccessibleView {
             textField.spellCheckingType = newValue
         }
     }
+    
+    /**
+     Picker button active method
+     */
+    public func pickerButton(isActive: Bool) {
+        pickerButton.isSelected = isActive
+    }
 
     // MARK: - Outlets
 
     @IBAction func onPickerButtonTouchUp(_ sender: UIButton) {
-        pickerButton.layer.borderWidth = 0
         delegate?.userDidRequestDataSelection(button: sender)
     }
 
     @IBAction func onPickerButtonTouchDown(_ sender: UIButton) {
         textField.resignFirstResponder()
-        pickerButton.layer.borderWidth = 1
     }
 
     // MARK: - Setup
@@ -255,18 +264,7 @@ public class PMTextFieldCombo: UIView, AccessibleView {
         textField.backgroundColor = ColorProvider.InteractionWeakDisabled
         textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         textField.tintColor = ColorProvider.BrandNorm
-
-        pickerButton.layer.cornerRadius = textField.layer.cornerRadius
-        pickerButton.contentHorizontalAlignment = .right
-        let borderColor: UIColor = ColorProvider.BrandNorm
-        pickerButton.layer.borderColor = borderColor.cgColor
-        pickerButton.tintColor = ColorProvider.IconNorm
-        pickerButton.setImage(IconProvider.chevronDown, for: .normal)
-        pickerButton.backgroundColor = ColorProvider.InteractionWeakDisabled
-
-        titleLabel.textColor = ColorProvider.TextNorm
         assistiveTextLabel.textColor = ColorProvider.TextWeak
-        pickerLabel.textColor = ColorProvider.TextNorm
         generateAccessibilityIdentifiers()
     }
 

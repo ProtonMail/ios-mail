@@ -27,6 +27,7 @@ public final class LoginNavigationViewController: DarkModeAwareNavigationViewCon
     public enum TransitionStyle {
         case systemDefault
         case modalLike
+        case fade
     }
 
     public var autoresettingNextTransitionStyle: TransitionStyle = .systemDefault
@@ -99,6 +100,13 @@ extension LoginNavigationViewController: UINavigationControllerDelegate {
         defer { autoresettingNextTransitionStyle = .systemDefault }
         switch autoresettingNextTransitionStyle {
         case .modalLike: return ModalLikeTransition()
+        case .fade:
+            switch operation {
+            case .push:
+                return FadePushAnimator()
+            default:
+                return nil
+            }
         case .systemDefault: return nil
         }
     }
@@ -124,5 +132,29 @@ fileprivate final class ModalLikeTransition: NSObject, UIViewControllerAnimatedT
             toViewController.navigationController?.setNavigationBarHidden(false, animated: false)
             transitionContext.completeTransition($0)
         }
+    }
+}
+
+private class FadePushAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 1.0
+    }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard
+            let toViewController = transitionContext.viewController(forKey: .to)
+        else {
+            return
+        }
+        transitionContext.containerView.addSubview(toViewController.view)
+        toViewController.view.alpha = 0
+
+        let duration = self.transitionDuration(using: transitionContext)
+        UIView.animate(withDuration: duration, animations: {
+            toViewController.view.alpha = 1
+        }, completion: { _ in
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+        })
     }
 }

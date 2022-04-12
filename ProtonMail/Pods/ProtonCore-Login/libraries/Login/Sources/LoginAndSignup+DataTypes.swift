@@ -123,7 +123,8 @@ public struct UserData {
                  inheritParentFolderColor: nil,
                  subscribed: user.subscribed,
                  groupingMode: nil,
-                 weekStart: nil)
+                 weekStart: nil,
+                 delaySendSeconds: nil)
     }
 }
 

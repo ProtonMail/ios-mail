@@ -113,29 +113,27 @@ extension LoginService {
         }
     }
 
-    public func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug("Checking if username is available")
+    public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
 
-        manager.checkAvailable(username) { result in
-            switch result {
-            case .success:
-                completion(.success)
-            case let .failure(error):
-                completion(.failure(error.asAvailabilityError()))
-            }
+        manager.checkAvailableUsernameWithoutSpecifyingDomain(username) { result in
+            completion(result.mapError { $0.asAvailabilityError() })
         }
     }
     
-    public func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        PMLog.debug("Checking if email is available")
+    public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
+        
+        manager.checkAvailableUsernameWithinDomain(username, domain: currentlyChosenSignUpDomain) { result in
+            completion(result.mapError { $0.asAvailabilityError() })
+        }
+    }
+    
+    public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        PMLog.debug(#function)
 
         manager.checkAvailableExternal(email) { result in
-            switch result {
-            case .success:
-                completion(.success)
-            case let .failure(error):
-                completion(.failure(error.asAvailabilityError()))
-            }
+            completion(result.mapError { $0.asAvailabilityError() })
         }
     }
 
@@ -219,10 +217,10 @@ extension LoginService {
     }
 
     public func createAddress(completion: @escaping (Result<Address, CreateAddressError>) -> Void) {
-        PMLog.debug("Creating address")
+        PMLog.debug("Creating address with domain \(currentlyChosenSignUpDomain)")
 
         startGeneratingAddress?()
-        manager.createAddress(domain: signUpDomain) { result in
+        manager.createAddress(domain: currentlyChosenSignUpDomain) { result in
             switch result {
             case let .success(address):
                 completion(.success(address))

@@ -49,6 +49,8 @@ public class PMBanner: UIView, AccessibleView {
     private var initLocation: CGPoint = .zero
     private var lastLocation: CGPoint = .zero
 
+    public let userInfo: [AnyHashable: Any]?
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,13 +60,19 @@ public class PMBanner: UIView, AccessibleView {
     ///   - message: Banner message
     ///   - style: Banner style
     ///   - icon: Banner icon that show on top-left
-    ///   - dismissDuration: Banner will dismis after `dismissDuration` seconds, `Double.infinity` means never dismiss automatically
+    ///   - dismissDuration: Banner will dismiss after `dismissDuration` seconds, `Double.infinity` means never dismiss automatically
     public convenience init(message: String,
                             style: PMBannerStyleProtocol,
                             icon: UIImage? = nil,
                             dismissDuration: TimeInterval = 4,
+                            userInfo: [AnyHashable: Any]? = nil,
                             bannerHandler: ((PMBanner) -> Void)? = nil) {
-        self.init(style: style, message: message, dismissDuration: dismissDuration, icon: icon, bannerHandler: bannerHandler)
+        self.init(style: style,
+                  message: message,
+                  dismissDuration: dismissDuration,
+                  icon: icon,
+                  userInfo: userInfo,
+                  bannerHandler: bannerHandler)
     }
 
     /// Initialize `PMBanner`
@@ -72,13 +80,20 @@ public class PMBanner: UIView, AccessibleView {
     ///   - message: Banner message
     ///   - style: Banner style
     ///   - icon: Banner icon that show on top-left
-    ///   - dismissDuration: Banner will dismis after `dismissDuration` seconds, `Double.infinity` means never dismiss automatically
+    ///   - dismissDuration: Banner will dismiss after `dismissDuration` seconds, `Double.infinity` means never dismiss automatically
     public convenience init(message: NSAttributedString,
                             style: PMBannerStyleProtocol,
                             icon: UIImage? = nil,
                             dismissDuration: TimeInterval = 4,
+                            userInfo: [AnyHashable: Any]? = nil,
                             bannerHandler: ((PMBanner) -> Void)? = nil) {
-        self.init(style: style, message: nil, dismissDuration: dismissDuration, attributedString: message, icon: icon, bannerHandler: bannerHandler)
+        self.init(style: style,
+                  message: nil,
+                  dismissDuration: dismissDuration,
+                  attributedString: message,
+                  icon: icon,
+                  userInfo: userInfo,
+                  bannerHandler: bannerHandler)
     }
 
     private init(style: PMBannerStyleProtocol,
@@ -86,12 +101,14 @@ public class PMBanner: UIView, AccessibleView {
                  dismissDuration: TimeInterval = 4,
                  attributedString: NSAttributedString? = nil,
                  icon: UIImage? = nil,
+                 userInfo: [AnyHashable: Any]?,
                  bannerHandler: ((PMBanner) -> Void)?) {
         self.style = style
         self.dismissDuration = dismissDuration
         self.message = message
         self.attributedString = attributedString
         self.icon = icon
+        self.userInfo = userInfo
         super.init(frame: .zero)
         self.backgroundColor = style.bannerColor
         self.roundCorner(style.borderRadius)
@@ -127,7 +144,7 @@ extension PMBanner {
         self.textButtonHandler = handler
     }
 
-    /// Add appearance style and handler for link seted by `NSAttributedString`
+    /// Add appearance style and handler for link set by `NSAttributedString`
     /// - Parameters:
     ///   - linkAttributed: Appearance style of link
     ///   - linkHandler: A block to execute when the user clicks the link.
@@ -171,6 +188,11 @@ extension PMBanner {
             guard let banner = sub as? PMBanner else { continue }
             banner.dismiss(animated: animated)
         }
+    }
+
+    public static func getBanners(in parent: UIViewController) -> [PMBanner] {
+        guard let superView = parent.view else { return [] }
+        return superView.subviews.compactMap { $0 as? PMBanner }
     }
 }
 

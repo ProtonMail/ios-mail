@@ -1,1 +1,638 @@
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ & %@";
+
+/* Proton Mail address availability */
+"%@ is available" = "%@ 可用";
+
+/* Plan details storage */
+"%@ storage" = "%@ storage";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ storage / user";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "A networking error has occured";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+/* Recovery skip description */
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "備援方法可協助您存取您的帳號，以防您忘記您的密碼或被鎖在帳號之外。";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "帳號已刪除。正在登出...";
+
+/* *
+ *  Login errors */
+"Account setup required" = "Account setup required";
+
+/* Email verification view title */
+"Account verification" = "帳號驗證";
+
+/* Title of account switcher */
+"Accounts" = "Accounts";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Adblocker (NetShield)";
+
+/* Generic error message when no better error can be displayed */
+"An error has occured" = "An error has occured";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Apple通知我們, 他們無法處理購買事宜。";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通知我們您已經升級服務方案，但是缺少一些技術資料。請填寫錯誤回報，我們的客戶支援團隊將與您聯絡。";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "苹果告诉我们你已经升级了服务计划，但我们检测到您自那时以来退出登陆了该帐户。";
+
+/* Alert message of sign out the email address */
+"Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
+
+/* *
+ * Login 2FA */
+"Authenticate" = "驗證";
+
+/* Terms and conditions note */
+"By clicking Create address, you agree with Proton's Terms and Conditions." = "By clicking Create address, you agree with Proton's Terms and Conditions.";
+
+/* Recovery terms and conditions description */
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+/* Cancel button */
+"Cancel" = "取消";
+
+/* captha method name */
+"CAPTCHA" = "驗證碼";
+
+/* Change email address button */
+"Change email address" = "Change email address";
+
+/* Dialog action button title for organization user first login */
+"Change password" = "更改密碼";
+
+/* *
+ * Login upgrade username-only account */
+"Change your password" = "變更您的密碼";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Close";
+
+/* sent baner title */
+"Code sent to %@" = "Code sent to %@";
+
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Complete payment";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "Complete payment?";
+
+/* Dialog button for missing keys error */
+"Complete Setup" = "Complete Setup";
+
+/* Signup summary title */
+"Congratulations" = "恭喜！";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+/* Error applying credit after registration alert */
+"Contact customer support" = "連絡客戶支援部門";
+
+/* In App Purchase error */
+"Contact support@protonvpn.com to complete your purchase." = "聯絡 support@protonvpn.com 來完成您的購買。";
+
+/* Signup password email view title */
+"Create a Proton account with your current email" = "Create a Proton account with your current email";
+
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "改為建立一個安全的 Proton Mail 電子郵件地址";
+
+/* Action button title for creating Proton Mail address */
+"Create address" = "建立電子郵件地址";
+
+/* Create account button */
+"Create an account" = "建立帳號";
+
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Create Proton Mail address";
+
+/* Create user failed error */
+"Create user failed" = "使用者建立失敗";
+
+/* Signup password proton view title */
+"Create your password" = "建立您的密碼";
+
+/* *
+ * Signup */
+"Create your Proton Account" = "建立您的 Proton 帳號";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Creating your account";
+
+/* Plan selection title */
+"Current plan" = "目前方案";
+
+/* Plan details renew expired */
+"Current plan will expire on %@" = "Current plan will expire on %@";
+
+/* Plan details custom email addresses */
+"Custom email addresses" = "Custom email addresses";
+
+/* Customer support button */
+"Customer support" = "客服";
+
+/* *  Account Deletion */
+"Delete account" = "Delete account";
+
+/* Did not receive code button */
+"Did not receive a code?" = "沒收到代碼？";
+
+/* Not receive code button */
+"Did not receive the code?" = "尚未收到驗證碼？";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Dismiss account switcher";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "是否要啟動購買 %@ 的郵件地址？";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domain";
+
+/* Email field title
+   Email label
+   email method name
+   Recovery segmenet email */
+"Email" = "信箱";
+
+/* Email address already used error */
+"Email address already used." = "電子郵件地址已曾使用.";
+
+/* Username field title */
+"Email or username" = "電子郵件地址或使用者名稱";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+
+/* 2FA screen recovery field info */
+"Enter an 8-character recovery code." = "輸入 8 個字元的備援代碼。";
+
+/* 2FA screen field info
+   Email verification code description
+   Verification code hint label */
+"Enter the 6-digit code." = "請輸入 6 位數代碼.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Enter the verification code that was sent to %@";
+
+/* Enter email code label */
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "請輸入傳送到 %@ 的驗證碼。若您在收件匣中找不到該電子郵件，請查看垃圾郵件資料夾。";
+
+/* Login screen subtitle */
+"Enter your Proton Account details." = "輸入您的 Proton 帳號詳細資料。";
+
+/* *
+ *  Payments */
+"Error occured" = "發生錯誤";
+
+/* Error message */
+"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+
+/* Email verification view description */
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+/* Forgot password button title
+   Forgot password help button */
+"Forgot password" = "忘記密碼";
+
+/* Forgot username help button */
+"Forgot username" = "忘記了使用者名稱";
+
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "全功能的郵件信箱，配備進階保護。";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Generating your address";
+
+/* alert message */
+"Get a replacement code sent to %@." = "取得傳送給 %@ 的取代驗證碼。";
+
+/* Verification button */
+"Get verification code" = "取得驗證碼";
+
+/* Help button */
+"Help" = "說明";
+
+/* Plan details high speed message */
+"High speed" = "高速";
+
+/* Plan details highest speed message */
+"Highest speed" = "最高速度";
+
+/* Login help screen title */
+"How can we help?" = "有什麼我們能幫忙的地方？";
+
+/* *
+ *  Human verification */
+"Human verification" = "真人驗證";
+
+/* Title */
+"Human Verification" = "Human verification";
+
+/* request item message */
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "若您在建立帳號時遇上問題，請提出邀請要求，我們會在1個工作天內回覆。";
+
+/* Incorrect mailbox password error */
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+/* Invalid hashed password error */
+"Invalid hashed password" = "Invalid hashed password";
+
+/* Invalid token error */
+"Invalid token error" = "Invalid token error";
+
+/* Invalid token request error */
+"Invalid token request" = "Invalid token request";
+
+/* alert title */
+"Invalid verification code" = "無效的驗證碼";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
+
+/* learn more button */
+"Learn more" = "了解更多";
+
+/* visit item message */
+"Learn more about human verification and why we ask for it." = "了解更多關於人工驗證以及我們要求它的原因。";
+
+/* *
+ * Splash */
+"Made by" = "Made by";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
+
+/* Mailbox password field title */
+"Mailbox password" = "郵箱密碼";
+
+/* Manage accounts button */
+"Manage accounts" = "管理帳號";
+
+/* Plan details medium speed */
+"Medium speed" = "Medium speed";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "多使用者支援";
+
+/* Verification help */
+"Need help with human verification?" = "Need help with human verification?";
+
+/* Help button */
+"Need help?" = "需要幫助嗎？";
+
+/* *
+ * Networking */
+"Network connection error" = "Network connection error";
+
+/* Action button title for picking Proton mail username
+   Next button */
+"Next" = "下一步";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "否, 对于另一个 Proton Mail 帐户";
+
+/* Action
+   OK button */
+"OK" = "確定";
+
+/* *
+ *  Login welcome screen */
+"One account for all Proton services." = "一個帳號，盡享所有 Proton 服務。";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+/* Other sign-in issues button */
+"Other sign-in issues" = "其他登入問題";
+
+/* Password field title */
+"Password" = "密碼";
+
+/* Password empty error */
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Password is too short. Should have at least %@ characters.\nPlease try again.";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "密碼必須包含至少 8 個字元";
+
+/* Password not equal error */
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+
+/* (No Comment) */
+"payment failed" = "付款失敗";
+
+/* Error applying credit after registration alert */
+"Payment failed" = "付款失敗";
+
+/* Signup complete progress step payment validated */
+"Payment validated" = "Payment validated";
+
+/* Recovery segmenet phone */
+"Phone" = "電話號碼";
+
+/* SMS label */
+"Phone number" = "電話號碼";
+
+/* Username field error message */
+"Please enter a username." = "Please enter a username.";
+
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+/* Invalid password hint */
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "請登錄您正在升級服務方案的 Proton Mail 帳戶, 以便我們完成購買。";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "請登錄您正在升級服務方案的 Proton Mail 帳戶, 以便我們完成服務方案啟動。";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "請解鎖應用程式, 繼續您的服務方案啟動";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Priority customer support";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Privacy by default";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "專為專業人士和企業而設的 Proton Mail";
+
+/* Error message */
+"Purchase is not possible." = "Purchase is not possible.";
+
+/* quit button */
+"Quit" = "Quit";
+
+/* 2FA screen recovery field title */
+"Recovery code" = "備援代碼";
+
+/* Recovery email field title */
+"Recovery email" = "備援電子郵件";
+
+/* Recovery phone field title */
+"Recovery phone number" = "備援電話號碼";
+
+/* Remove button */
+"Remove" = "移除";
+
+/* remove account button */
+"Remove account" = "Remove account";
+
+/* Repeat password field title */
+"Repeat password" = "重複輸入密碼";
+
+/* request item title */
+"Request an invite" = "請求邀請";
+
+/* new code alert button */
+"Request new code" = "請求新驗證碼";
+
+/* alert title */
+"Request new code?" = "請求新驗證碼？";
+
+/* resend alert button */
+"Resend" = "重新發送";
+
+/* Button in some alerts */
+"Retry" = "重試";
+
+/* Search country placeholder */
+"Search country" = "搜尋國家";
+
+/* Signup complete progress step keys generation */
+"Securing your account" = "Securing your account";
+
+/* Select plan button */
+"Select" = "請選擇";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "請選擇一個方案";
+
+/* Recovery view title
+   Set recovery method button */
+"Set recovery method" = "設定備援方法";
+
+/* Recovery view title optional */
+"Set recovery method (optional)" = "設定備援方式（選擇性）";
+
+/* *
+ *  Login screen */
+"Sign in" = "登入";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Sign in to another account";
+
+/* Sign out button/ title */
+"Sign out" = "登出";
+
+/* Section title of account manager */
+"Signed in to ProtonMail" = "Signed in to Proton Mail";
+
+/* Section title of account manager */
+"Signed out of Protonmail" = "Signed out of Proton Mail";
+
+/* Skip button */
+"Skip" = "略過";
+
+/* Recovery skip title */
+"Skip recovery method?" = "略過備援方法？";
+
+/* SMS method name */
+"SMS" = "SMS";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！";
+
+/* *
+ *  Login help */
+"Still need help? Contact us directly." = "仍然需要協助？直接聯絡我們。";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Streaming service support";
+
+/* Subscription title */
+"Subscription" = "Subscription";
+
+/* *  Account Manager */
+"switch to" = "切換到";
+
+/* Recovery terms and conditions link
+   Terms and conditions link in the note
+   Terms and conditions view title */
+"Terms and Conditions" = "條款與細則";
+
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "私密和安全通訊的基本。";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+
+/* Complete view description */
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
+"This will help you access your account in case you forget your password or get locked out of your account." = "This will help you access your account in case you forget your password or get locked out of your account.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
+
+/* Dialog message for organization user first login */
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "要以組織成員的身份使用 Proton 應用程式，您必須先使用瀏覽器登入 Proton 來變更您的密碼。";
+
+/* other method alert button */
+"Try other method" = "嘗試其他方法";
+
+/* 2FA screen title */
+"Two-factor authentication" = "兩步驟驗證";
+
+/* 2FA screen field title */
+"Two-factor code" = "兩步驟代碼";
+
+/* Mailbox unlock screen action button title */
+"Unlock" = "解鎖";
+
+/* *
+ * Login unlock mailbox */
+"Unlock your mailbox" = "解除鎖定您的信箱";
+
+/* update button */
+"Update" = "更新";
+
+/* *
+ *  Force upgrade */
+"Update required" = "需要更新";
+
+/* Upgrade plan button */
+"Upgrade" = "升級";
+
+/* Plan selection title */
+"Upgrade your plan" = "Upgrade your plan";
+
+/* 2FA screen recovery button title */
+"Use recovery code" = "使用備援代碼";
+
+/* 2FA screen 2FA button title */
+"Use two-factor code" = "使用兩步驟驗證碼";
+
+/* Email address button */
+"Use your current email instead" = "改為使用您目前的電子郵件地址";
+
+/* Username field title */
+"Username" = "使用者名稱";
+
+/* Email verification code name
+   Verification code label */
+"Verification code" = "驗證碼";
+
+/* Verify button */
+"Verify" = "驗證";
+
+/* Verifying button */
+"Verifying" = "Verifying";
+
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Verifying your payment";
+
+/* visit item title */
+"Visit our Help Center" = "造訪我們的說明中心";
+
+/* Title */
+"Warning" = "警告";
+
+/* Error message */
+"We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "我們已收到有關App Store購買的通知，但將該項購買與您的帳戶不一致。";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "我們已成功啟動您的訂閱。請重新啟動應用程式以開始使用新的服務方案。";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "We will send recovery instructions to this email if you get locked out of your account.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "如果您的帳號被鎖定，我們會向此電子郵件地址或電話號碼傳送備援說明。";
+
+/* Invalid verification alert message */
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+/* alert message */
+"Would you like to receive a new verification code or use an alternative verification method?" = "您想要接收新的驗證碼，還是換一個驗證方法？";
+
+/* In App Purchase error */
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "付款權杖狀態不正確。請重新啟動應用程式。如果錯誤持續，請聯絡客戶支援。";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "是的, 啟用它 ";
+
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+/* Error applying credit after registration alert */
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功登記，但您的付款未被處理。\n欲重新發送付款資訊，請按重試。\n您只會被收取一次款項。\n如果問題持續，請聯絡客戶支援。";
+
+/* Alert message of remove account */
+"You will be signed out and all the data associated with this account will be removed from this device." = "You will be signed out and all the data associated with this account will be removed from this device.";
+
+/* *
+ * Login create address */
+"You will use this email address to log into all Proton services." = "You will use this email address to log into all Proton services.";
+
+/* Complete view title */
+"Your account is being created" = "已建立您的帳號…";
+
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+/* Email method */
+"Your email will only be used for this one-time verification." = "您的電子郵件只會用於此一次驗證。";
+
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+/* SMS method */
+"Your phone number will only be used for this one-time verification." = "您的電話號碼只會用於此一次性驗證。";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+/* Recovery address label title */
+"Your recovery email address:" = "您的備援電子郵件地址：";
 

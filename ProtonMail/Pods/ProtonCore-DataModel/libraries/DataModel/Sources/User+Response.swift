@@ -94,6 +94,7 @@ extension UserInfo {
             self.enableFolderColor = settings["EnableFolderColor"] as? Int ?? 0
             self.inheritParentFolderColor = settings["InheritParentFolderColor"] as? Int ?? 0
             self.groupingMode = settings["ViewMode"] as? Int ?? 0
+            self.delaySendSeconds = settings["DelaySendSeconds"] as? Int ?? 10
         }
     }
 }

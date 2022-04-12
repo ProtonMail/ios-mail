@@ -46,9 +46,20 @@ public final class LoginService: Login {
     let authManager: AuthManager
 
     var defaultSignUpDomain = "protonmail.com"
-    var updatedSignUpDomain: String?
-    public var signUpDomain: String {
-        return updatedSignUpDomain ?? defaultSignUpDomain
+    var updatedSignUpDomains: [String]?
+    var chosenSignUpDomain: String?
+    public var currentlyChosenSignUpDomain: String {
+        get {
+            chosenSignUpDomain ?? updatedSignUpDomains?.first ?? defaultSignUpDomain
+        }
+        set {
+            if allSignUpDomains.contains(newValue) {
+                chosenSignUpDomain = newValue
+            }
+        }
+    }
+    public var allSignUpDomains: [String] {
+        return updatedSignUpDomains ?? [defaultSignUpDomain]
     }
     public var startGeneratingAddress: (() -> Void)?
     public var startGeneratingKeys: (() -> Void)?
@@ -69,17 +80,15 @@ public final class LoginService: Login {
         minimumAccountType = accountType
     }
 
-    public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
-        updatedSignUpDomain = nil
+    public func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void) {
+        updatedSignUpDomains = nil
         availableDomains(type: type) { res in
             switch res {
             case .success(let domains):
-                if let domain = domains.first {
-                    self.updatedSignUpDomain = domain
-                    result(domain)
-                }
+                self.updatedSignUpDomains = domains
+                result(domains)
             case .failure:
-                self.updatedSignUpDomain = nil
+                self.updatedSignUpDomains = nil
                 result(nil)
             }
         }

@@ -50,9 +50,14 @@ public struct AuthenticatorMock: AuthenticatorInterface {
         refreshCredentialStub(oldCredential, completion)
     }
 
-    @FuncStub(Self.checkAvailable) public var checkAvailableStub
-    public func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
-        checkAvailableStub(username, completion)
+    @FuncStub(Self.checkAvailableUsernameWithoutSpecifyingDomain) public var checkAvailableUsernameWithoutSpecifyingDomainStub
+    public func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithoutSpecifyingDomainStub(username, completion)
+    }
+    
+    @FuncStub(Self.checkAvailableUsernameWithinDomain) public var checkAvailableUsernameWithinDomainStub
+    public func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithinDomainStub(username, domain, completion)
     }
     
     @FuncStub(Self.checkAvailableExternal) public var checkAvailableExternalStub

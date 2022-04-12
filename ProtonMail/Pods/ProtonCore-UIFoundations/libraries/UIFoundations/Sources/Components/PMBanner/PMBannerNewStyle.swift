@@ -45,9 +45,9 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var bannerTextColor: UIColor {
         switch self {
         case .success, .error:
-            return ProtonColorPaletteiOS.White
+            return ColorProvider.White
         case .warning:
-            return ProtonColorPaletteiOS.Black
+            return ColorProvider.Black
         case .info:
             return ColorProvider.TextInverted
         }
@@ -57,7 +57,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var assistBgColor: UIColor {
         switch self {
         case .success, .warning, .error:
-            return ProtonColorPaletteiOS.White.withAlphaComponent(0.2)
+            return ColorProvider.White.withAlphaComponent(0.2)
         case .info:
             return ColorProvider.TextInverted.withAlphaComponent(0.2)
         }
@@ -67,7 +67,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var assistHighBgColor: UIColor {
         switch self {
         case .success, .warning, .error:
-            return ProtonColorPaletteiOS.White.withAlphaComponent(0.4)
+            return ColorProvider.White.withAlphaComponent(0.4)
         case .info:
             return ColorProvider.TextInverted.withAlphaComponent(0.4)
         }
@@ -77,9 +77,9 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var assistTextColor: UIColor {
         switch self {
         case .success, .error:
-            return ProtonColorPaletteiOS.White
+            return ColorProvider.White
         case .warning:
-            return ProtonColorPaletteiOS.Black
+            return ColorProvider.Black
         case .info:
             return ColorProvider.TextInverted
         }
@@ -89,7 +89,7 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
     public var bannerIconColor: UIColor {
         switch self {
         case .success, .warning, .error:
-            return ProtonColorPaletteiOS.White
+            return ColorProvider.White
         case .info:
             return ColorProvider.IconInverted
         }

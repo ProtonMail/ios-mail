@@ -36,13 +36,33 @@ public protocol Signup {
     func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void)
     func checkValidationToken(email: String, token: String, completion: @escaping (Result<Void, SignupError>) -> Void)
     
-    func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
-    func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    
+}
+
+public extension Signup {
+    
+    @available(*, deprecated, renamed: "createNewUsernameAccount")
+    func createNewUser(userName: String, password: String, email: String? = nil, phoneNumber: String? = nil, completion: @escaping (Result<(), SignupError>) -> Void) {
+        createNewUsernameAccount(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
+    }
+    
+    @available(*, deprecated, renamed: "createNewExternalAccount")
+    func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        createNewExternalAccount(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
+    }
     
     @available(*, deprecated, message: "Use variant without device token createNewUser(userName:password:email:phoneNumber:completion:)")
-    func createNewUser(userName: String, password: String, deviceToken: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
-    @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:completion:)")
-    func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewUser(userName: String, password: String, deviceToken _: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
+        createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
+    }
+    
+    @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:tokenType:completion:)")
+    func createNewExternalUser(email: String, password: String, deviceToken _: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
+    }
 }
 
 public protocol ChallangeParametersProvider {
@@ -113,21 +133,30 @@ public class SignupService: Signup {
             }
         }
     }
-
-    public func createNewUser(userName: String, password: String, email: String? = nil, phoneNumber: String? = nil, completion: @escaping (Result<(), SignupError>) -> Void) {
-
+    
+    public func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
         getRandomSRPModulus { result in
             switch result {
             case .success(let modulus):
-                self.createUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, modulus: modulus, completion: completion)
+                self.createUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, modulus: modulus, domain: nil, completion: completion)
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    public func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        getRandomSRPModulus { result in
+            switch result {
+            case .success(let modulus):
+                self.createUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, modulus: modulus, domain: domain, completion: completion)
             case .failure(let error):
                 return completion(.failure(error))
             }
         }
     }
 
-    public func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
-
+    public func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
         getRandomSRPModulus { result in
             switch result {
             case .success(let modulus):
@@ -136,16 +165,6 @@ public class SignupService: Signup {
                 return completion(.failure(error))
             }
         }
-    }
-    
-    @available(*, deprecated, message: "Use variant without device token createNewUser(userName:password:email:phoneNumber:completion:)")
-    public func createNewUser(userName: String, password: String, deviceToken: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
-        createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
-    }
-    
-    @available(*, deprecated, message: "Use variant without device token createNewExternalUser(email:password:verifyToken:tokenType:completion:)")
-    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
-        createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType, completion: completion)
     }
 
     // MARK: Private interface
@@ -185,10 +204,10 @@ public class SignupService: Signup {
         return AuthParameters(salt: salt, verifier: verifier, challenge: challenge, productPrefix: clientApp.name)
     }
 
-    private func createUser(userName: String, password: String, email: String?, phoneNumber: String?, modulus: AuthService.ModulusEndpointResponse, completion: @escaping (Result<(), SignupError>) -> Void) {
+    private func createUser(userName: String, password: String, email: String?, phoneNumber: String?, modulus: AuthService.ModulusEndpointResponse, domain: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
         do {
             let authParameters = try gererateAuthParameters(password: password, modulus: modulus.modulus)
-            let userParameters = UserParameters(userName: userName, email: email, phone: phoneNumber, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, productPrefix: authParameters.productPrefix)
+            let userParameters = UserParameters(userName: userName, email: email, phone: phoneNumber, modulusID: modulus.modulusID, salt: authParameters.salt.encodeBase64(), verifer: authParameters.verifier.encodeBase64(), challenge: authParameters.challenge, productPrefix: authParameters.productPrefix, domain: domain)
 
             PMLog.debug("Creating user with username: \(userParameters.userName)")
             authenticator.createUser(userParameters: userParameters) { result in

@@ -33,11 +33,14 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     }
     
     private let headersGetter: () -> [String: String]
+    private let cookiesSynchronization: (URLResponse?) -> Void
     private let onAuthenticationChallengeContinuation: (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void
     
     public init(headersGetter: @escaping () -> [String: String],
+                cookiesSynchronization: @escaping (URLResponse?) -> Void = { _ in },
                 onAuthenticationChallengeContinuation: @escaping (URLAuthenticationChallenge, @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) {
         self.headersGetter = headersGetter
+        self.cookiesSynchronization = cookiesSynchronization
         self.onAuthenticationChallengeContinuation = onAuthenticationChallengeContinuation
     }
     
@@ -127,6 +130,7 @@ public final class AlternativeRoutingRequestInterceptor: NSObject, WKURLSchemeHa
     //    NOTE: It's applicable only to human verification but it doesn't influence other usecases so we can leave single implemention.
     // 4. Changing the "http" scheme back to the custom one "coreios" in the response url
     public func transformAndProcessResponse(_ response: URLResponse, _ apiRange: Range<String.Index>?, _ urlSchemeTask: WKURLSchemeTask) {
+        cookiesSynchronization(response)
         guard let httpResponse = response as? HTTPURLResponse,
               var urlString = httpResponse.url?.absoluteString
         else {

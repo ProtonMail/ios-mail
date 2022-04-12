@@ -78,6 +78,10 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
         countryCode = "+\(responseCode)"
         phoneNumberTextFieldView.buttonTitleText = countryCode
     }
+    
+    func countryPickerDissmised() {
+        phoneNumberTextFieldView.pickerButton(isActive: false)
+    }
 
     // MARK: Private interface
 
@@ -90,7 +94,6 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
         topTitleLabel.text = CoreString._hv_sms_enter_label
         topTitleLabel.textColor = ColorProvider.TextWeak
         sendCodeButton.setTitle(CoreString._hv_email_verification_button, for: UIControl.State())
-        updateCountryCode(initialCountryCode)
         phoneNumberTextFieldView.title = CoreString._hv_sms_label
         phoneNumberTextFieldView.placeholder = "XX XXX XX XX"
         phoneNumberTextFieldView.delegate = self
@@ -100,6 +103,7 @@ class PhoneVerifyViewController: BaseUIViewController, AccessibleView {
         phoneNumberTextFieldView.autocapitalizationType = .none
         phoneNumberTextFieldView.spellCheckingType = .no
         sendCodeButton.setMode(mode: .solid)
+        updateCountryCode(initialCountryCode)
         updateButtonStatus()
     }
 
@@ -156,5 +160,6 @@ extension PhoneVerifyViewController: PMTextFieldComboDelegate {
     func userDidRequestDataSelection(button: UIButton) {
         guard !isBannerShown else { return }
         delegate?.didSelectCountryPicker()
+        phoneNumberTextFieldView.pickerButton(isActive: true)
     }
 }

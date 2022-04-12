@@ -23,8 +23,11 @@ import TrustKit
 import ProtonCore_Networking
 
 public final class SessionMock: Session {
-    
+        
     public init() {}
+    
+    @PropertyStub(\Session.sessionConfiguration, initialGet: .default) public var sessionConfigurationStub
+    public var sessionConfiguration: URLSessionConfiguration { sessionConfigurationStub() }
     
     @ThrowingFuncStub(SessionMock.generate, initialReturn: .crash) public var generateStub
     public func generate(with method: HTTPMethod, urlString: String, parameters: Any?, timeout: TimeInterval?) throws -> SessionRequest {

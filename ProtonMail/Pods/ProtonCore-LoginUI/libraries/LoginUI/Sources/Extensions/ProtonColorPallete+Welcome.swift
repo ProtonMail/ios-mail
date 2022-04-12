@@ -22,10 +22,6 @@
 import ProtonCore_UIFoundations
 
 extension ProtonColorPaletteiOS {
-    
-    static var White: UIColor {
-        UIColor(rgb: 0xFFFFFF)
-    }
 
     enum Welcome {
         static var Background: UIColor {

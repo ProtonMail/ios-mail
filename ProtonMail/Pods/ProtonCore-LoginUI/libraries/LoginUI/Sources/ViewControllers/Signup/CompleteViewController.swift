@@ -88,7 +88,8 @@ class CompleteViewController: UIViewController, AccessibleView {
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
         navigationItem.setHidesBackButton(true, animated: false)
-        animationView.animation = Animation.named("sign-up-create-account", bundle: LoginAndSignup.bundle)
+        animationView.animation = Animation.named(LoginUIImages.animationFile,
+                                                  bundle: LoginAndSignup.bundle)
         animationView.loopMode = .loop
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.play()
@@ -103,19 +104,14 @@ class CompleteViewController: UIViewController, AccessibleView {
             return
         }
         delegate?.accountCreationStart()
-        do {
-            try viewModel?.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
-                self.unlockUI()
-                switch result {
-                case .success(let loginData):
-                    self.delegate?.accountCreationFinish(loginData: loginData)
-                case .failure(let error):
-                    self.delegate?.accountCreationError(error: error)
-                }
+        viewModel?.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
+            self.unlockUI()
+            switch result {
+            case .success(let loginData):
+                self.delegate?.accountCreationFinish(loginData: loginData)
+            case .failure(let error):
+                self.delegate?.accountCreationError(error: error)
             }
-        } catch let error {
-            unlockUI()
-            delegate?.accountCreationError(error: error)
         }
     }
 
@@ -125,19 +121,14 @@ class CompleteViewController: UIViewController, AccessibleView {
             return
         }
         delegate?.accountCreationStart()
-        do {
-            try viewModel?.createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
-                self.unlockUI()
-                switch result {
-                case .success(let loginData):
-                    self.delegate?.accountCreationFinish(loginData: loginData)
-                case .failure(let error):
-                    self.delegate?.accountCreationError(error: error)
-                }
+        viewModel?.createNewExternalAccount(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
+            self.unlockUI()
+            switch result {
+            case .success(let loginData):
+                self.delegate?.accountCreationFinish(loginData: loginData)
+            case .failure(let error):
+                self.delegate?.accountCreationError(error: error)
             }
-        } catch let error {
-            unlockUI()
-            delegate?.accountCreationError(error: error)
         }
     }
 }

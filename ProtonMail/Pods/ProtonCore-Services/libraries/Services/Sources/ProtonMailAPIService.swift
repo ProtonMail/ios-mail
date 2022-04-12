@@ -48,7 +48,7 @@ public enum PMAPIServiceTrustKitProviderWrapper: TrustKitProvider {
     public var trustKit: TrustKit? { PMAPIService.trustKit }
 }
 
-// Protonmail api serivce. all the network requestion must go with this.
+// Proton mail api serivce. all the network requestion must go with this.
 public class PMAPIService: APIService {
     /// ForceUpgradeDelegate
     public weak var forceUpgradeDelegate: ForceUpgradeDelegate?
@@ -126,6 +126,8 @@ public class PMAPIService: APIService {
         self.session = sessionFactory.createSessionInstance(url: apiHostUrl)
         
         self.session.setChallenge(noTrustKit: trustKitProvider.noTrustKit, trustKit: trustKitProvider.trustKit)
+        
+        doh.setUpCookieSynchronization(storage: self.session.sessionConfiguration.httpCookieStorage)
     }
     
     public func setSessionUID(uid: String) {
@@ -358,7 +360,7 @@ public class PMAPIService: APIService {
                                 if customAuthCredential == nil {
                                     self.expireCredential()
                                 }
-                                if path.contains("\(doh.defaultHost)/refresh") { // tempery no need later
+                                if path.contains("\(self.doh.defaultHost)/refresh") { // tempery no need later
                                     completion?(task, nil, error)
                                     self.authDelegate?.onLogout(sessionUID: self.sessionUID)
                                 } else {
@@ -434,13 +436,11 @@ public class PMAPIService: APIService {
                         self.debugError(error)
                         self.updateServerTime(task?.response)
                         
-                        if let tlsErrorDescription = session.failsTLS(request: request) {
+                        if let tlsErrorDescription = self.session.failsTLS(request: request) {
                             error = NSError.protonMailError(APIErrorCode.tls, localizedDescription: tlsErrorDescription)
                         }
-                        
-                        self.doh.handleErrorResolvingProxyDomainIfNeeded(
-                            host: url, error: error
-                        ) { shouldRetry in
+                        self.doh.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+                            host: url, sessionId: userID, response: task?.response, error: error) { shouldRetry in
                             guard shouldRetry else {
                                 if self.doh.errorIndicatesDoHSolvableProblem(error: error) {
                                     self.serviceDelegate?.onDohTroubleshot()

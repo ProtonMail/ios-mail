@@ -39,7 +39,7 @@ extension AuthService {
         var code: Int
     }
     
-    struct UserAvailableEndpoint: Request {
+    struct UserAvailableWithoutSpecifyingDomainEndpoint: Request {
         
         let username: String
         
@@ -58,23 +58,26 @@ extension AuthService {
         var isAuth: Bool {
             return false
         }
-
-//        init(username: String) {
-//            // url
-//            let authInfoUrl = AuthService.url(of: "/users/available")
-//
-//            var urlComponents = URLComponents(url: authInfoUrl, resolvingAgainstBaseURL: false)
-//            urlComponents?.queryItems = [URLQueryItem(name: "Name", value: username)]
-//
-//            // request
-//            var request = URLRequest(url: (urlComponents?.url)!)
-//            request.httpMethod = "GET"
-//
-//            // headers
-//            let headers = AuthService.baseHeaders
-//            headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
-//
-//            self.request = request
-//        }
+    }
+    
+    struct UserAvailableWithinDomainEndpoint: Request {
+        
+        let username: String
+        let domain: String
+        
+        init(username: String, domain: String)  {
+            self.username = username
+            self.domain = domain
+        }
+        
+        var path: String {
+            let usernameWithDomain = "\(username)@\(domain)"
+            let encodedParameter = usernameWithDomain.addingPercentEncoding(withAllowedCharacters: urlQueryValueAllowed)
+            return "/users/available?ParseDomain=1&Name=\(encodedParameter ?? "")"
+        }
+        
+        var method: HTTPMethod { .get }
+        
+        var isAuth: Bool { false }
     }
 }

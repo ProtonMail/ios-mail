@@ -133,7 +133,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func signInElementsDisplayed() {
-        button(loginViewCloseButtonId).checkExists()
+        button(loginViewCloseButtonId).wait().checkExists()
         staticText(titleId).checkExists()
         staticText(loginFieldTitleLabel).checkExists()
         staticText(passwordFieldTitleLabel).checkExists()

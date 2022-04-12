@@ -113,14 +113,23 @@ public class PMLog {
 
         pruneLogs()
 
+        let dataToLog = Data("\(log)\n".utf8)
+
         do {
             let fileHandle = try FileHandle(forWritingTo: logPath)
-            fileHandle.seekToEndOfFile()
-            fileHandle.write("\(log)\n".data(using: .utf8)!)
-            fileHandle.closeFile()
+
+            if #available(iOS 13.4, macOS 10.15.4, *) {
+                try fileHandle.seekToEnd()
+                try fileHandle.write(contentsOf: dataToLog)
+                try fileHandle.close()
+            } else {
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(dataToLog)
+                fileHandle.closeFile()
+            }
         } catch {
             do {
-                try "\(log)\n".data(using: .utf8)?.write(to: logPath)
+                try dataToLog.write(to: logPath)
             } catch {
                 printToConsole(error.localizedDescription)
             }
