@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Commencez";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Revenir en arrière (recommandé)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Aller aux brouillons";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avertissement pour la vérification humaine";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorer l'avertissement et continuer";
 
 /* Action */
 "Import Error" = "Erreur d'importation";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Ce dossier est vide";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Ce message contient des images intégrées.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Attention : vous ne pouvez pas envoyer de message avant d'avoir passé la vérification humaine !";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Attention : site Web potentiellement faux";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nous n'avons pas pu envoyer votre message, peut-être à cause d'une mauvaise connexion réseau. Votre message a été enregistré dans les brouillons et sera envoyé automatiquement la prochaine fois que vous ouvrirez l'application.";

@@ -105,7 +105,7 @@
 	<key>clean_conversation_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>¿Estás seguro de que quieres borrar permanentemente %#@conversación@?</string>
+		<string>¿Estás seguro de que quieres eliminar permanentemente %#@conversation@?</string>
 		<key>conversation</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -121,7 +121,7 @@
 	<key>clean_message_warning</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>¿Estás seguro de que quieres borrar permanentemente %#@mensaje@?</string>
+		<string>¿Estás seguro de que quieres eliminar permanentemente %#@message@?</string>
 		<key>message</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -228,7 +228,7 @@
 			<string>%d conversaciones</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversación@ trasladada a %@</string>
+		<string>%#@Conversation@ movida a %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>

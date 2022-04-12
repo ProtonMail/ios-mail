@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Inizia";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Torna indietro (consigliato)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Vai alle bozze";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avviso di controllo umano";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignora l'avviso e continua";
 
 /* Action */
 "Import Error" = "Errore di importazione";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Questa cartella è vuota";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Questo collegamento porta a un sito Web che potrebbe tentare di rubare le tue informazioni, come password e dettagli della carta di credito.\n%@\n\nPer la tua sicurezza, non continuare.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Questo messaggio contiene immagini incorporate.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Attenzione: prima di passare il controllo umano, non è possibile inviare email!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Attenzione: sospetto sito web falso";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Non è stato possibile inviare il tuo messaggio, forse a causa di una scarsa connessione internet. Il tuo messaggio è stato salvato nelle bozze e verrà inviato automaticamente la prossima volta che aprirai l'app.";

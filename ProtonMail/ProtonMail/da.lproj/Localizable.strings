@@ -447,7 +447,7 @@
 "Checking ...." = "Tjekker....";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "Vælg en anden afsenderadresse";
 
 /* contact placeholder */
 "City" = "By";
@@ -665,7 +665,7 @@
 "Discard draft" = "Kassér udkast";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Afvis tastatur";
 
 /* (No Comment) */
 "Display name" = "Vis navn";
@@ -824,7 +824,7 @@
 "Encrypted contact details" = "Krypterede kontaktoplysninger";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "End-to-end krypteret og signeret besked";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "End-to-end krypteret besked";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Kom i gang";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Gå tilbage (anbefalet)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Gå til kladder";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Robottjek -advarsel";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorer advarsel og fortsæt";
 
 /* Action */
 "Import Error" = "Importfejl";
@@ -1218,7 +1224,7 @@
 "Message body" = "Beskedindhold";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "Beskedindhold";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Besked kunne ikke sendes. Mindst én modtager e-mailadresse/domæne findes ikke eller er fejlagtigt formateret.";
@@ -1499,7 +1505,7 @@
 "Personal" = "Personlig";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
+"PGP-encrypted and signed message" = "PGP-krypteret og signeret besked";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-krypteret besked fra bekræftet adresse";
@@ -1831,10 +1837,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Indstil en adgangskode for at kryptere denne besked til ikke-ProtonMail-btugere.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "Indstil mail-udløb";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
+"Set mail password" = "Angiv mail-adgangskode";
 
 /* Title */
 "Set Password" = "Indstil adgangskode";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Denne mappe er tom";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til et websted, som måske forsøger at stjæle dine oplysninger, f. eks. adgangskoder og kreditkortoplysninger.\n%@\n\nFor din egen sikkerheds skyld bør du ikke fortsætte.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Denne besked indeholder indlejrede billeder.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Advarsel: Du ikke sende e-mails, før du beviser, at du ikke er en robot!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Advarsel: mistanke om falsk websted";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Vi kunne ikke sende din besked, muligvis på grund af en dårlig netværksforbindelse. Din besked blev gemt i Kladder og vil blive sendt automatisk, næste gang du åbner appen.";

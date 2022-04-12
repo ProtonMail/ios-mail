@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Memulai";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Kembali (disarankan)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ke draf";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Peringatan Pemeriksaan Manusia";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Abaikan peringatan dan lanjut";
 
 /* Action */
 "Import Error" = "Kesalahan Impor";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Folder ini kosong";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.\n%@\n\nDemi keamanan Anda, jangan buka tautan ini.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Pesan ini mengandung gambar-gambar yang tersemat.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Peringatan: Sebelum melewati pemeriksaan manusia, Anda tidak bisa mengirim email!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Peringatan: situs web ini terindikasi palsu";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Kami tidak dapat mengirim pesan kepada Anda karena satu dan lain hal, utamanya karena koneksi jaringan yang buruk. Pesan Anda telah tersimpan di Draf dan akan terkirim secara otomatis pada saat Anda membuka aplikasi ini kembali.";
