@@ -32,7 +32,11 @@ class SignupViewModel {
     var loginService: Login
     let challenge: PMChallenge
     let humanVerificationVersion: HumanVerificationVersion
-    var signUpDomain: String { return loginService.signUpDomain }
+    var currentlyChosenSignUpDomain: String {
+        get { loginService.currentlyChosenSignUpDomain }
+        set { loginService.currentlyChosenSignUpDomain = newValue }
+    }
+    var allSignUpDomains: [String] { loginService.allSignUpDomains }
 
     init(apiService: PMAPIService,
          signupService: Signup,
@@ -55,37 +59,29 @@ class SignupViewModel {
         return email.isValidEmail()
     }
 
-    func updateAvailableDomain(result: @escaping (String?) -> Void) {
-        loginService.updateAvailableDomain(type: .signup, result: result)
+    func updateAvailableDomain(result: @escaping ([String]?) -> Void) {
+        loginService.updateAllAvailableDomains(type: .signup, result: result)
     }
 
-    func checkUserName(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-
+    func checkUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         challenge.appendCheckedUsername(username)
-        loginService.checkAvailability(username: username) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
+        loginService.checkAvailabilityForUsernameAccount(username: username, completion: completion)
+    }
+    
+    func checkExternalEmailAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void, editEmail: @escaping () -> Void) {
+        loginService.checkAvailabilityForExternalAccount(email: email) { result in
+            guard case .failure(let error) = result, error.codeInLogin == APIErrorCode.humanVerificationEditEmail else {
+                completion(result)
+                return
             }
+            // transform internal HV error to editEmail closure
+            editEmail()
         }
     }
     
-    func checkEmail(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void, editEmail: @escaping () -> Void) {
-        loginService.checkAvailabilityExternal(email: email) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                if error.codeInLogin == APIErrorCode.humanVerificationEditEmail {
-                    // transform internal HV error to editEmail closure
-                    editEmail()
-                } else {
-                    completion(.failure(error))
-                }
-            }
-        }
+    func checkInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        challenge.appendCheckedUsername(username)
+        loginService.checkAvailabilityForInternalAccount(username: username, completion: completion)
     }
 
     func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {

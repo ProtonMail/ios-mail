@@ -23,8 +23,9 @@ import UIKit
 import ProtonCore_Foundations
 
 public protocol CountryPickerViewControllerDelegate: AnyObject {
-    func didCountryPickerClose()
     func didSelectCountryCode(countryCode: CountryCode)
+    func didCountryPickerClose()
+    func didCountryPickerDissmised()
 }
 
 public class CountryPickerViewController: UIViewController, AccessibleView {
@@ -35,7 +36,11 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton! {
+        didSet {
+            cancelButton.setImage(IconProvider.crossSmall, for: .normal)
+        }
+    }
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
 
     private let contryCodeCell = "country_code_table_cell"
@@ -50,6 +55,11 @@ public class CountryPickerViewController: UIViewController, AccessibleView {
         configureUI()
         setupNotifications()
         generateAccessibilityIdentifiers()
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.didCountryPickerDissmised()
     }
 
     deinit {

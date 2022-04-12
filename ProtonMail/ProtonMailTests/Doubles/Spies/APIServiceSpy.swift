@@ -4,7 +4,6 @@ import ProtonCore_Services
 import Foundation
 
 class APIServiceSpy: APIService {
-
     private(set) var invokedRequestWithMethod: [HTTPMethod] = []
     private(set) var invokedRequestWithPath: [String] = []
     private(set) var invokedRequestWithParameters: [Any?] = []
@@ -14,6 +13,7 @@ class APIServiceSpy: APIService {
     var serviceDelegate: APIServiceDelegate?
     var authDelegate: AuthDelegate?
     var humanDelegate: HumanVerifyDelegate?
+    private(set) var sessionUID: String = ""
 
     var doh: DoH & ServerConfig {
         get { fatalError() }
@@ -22,7 +22,9 @@ class APIServiceSpy: APIService {
 
     var signUpDomain: String = ""
 
-    func setSessionUID(uid: String) {}
+    func setSessionUID(uid: String) {
+        self.sessionUID = uid
+    }
 
     func request(
         method: HTTPMethod,

@@ -43,20 +43,20 @@ extension URLSession: DoHNetworkingEngine {
 }
 
 public protocol DoHProviderPublic {
-    func fetch(host: String, completion: @escaping ([DNS]?) -> Void)
-    func fetch(host: String, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void)
+    func fetch(host: String, sessionId: String?, completion: @escaping ([DNS]?) -> Void)
+    func fetch(host: String, sessionId: String?, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void)
 }
 
 protocol DoHProviderInternal: DoHProviderPublic {
-    func query(host: String) -> String
+    func query(host: String, sessionId: String?) -> String
     func parse(response: String) -> DNS?
     func parse(data response: Data) -> [DNS]?
     var networkingEngine: DoHNetworkingEngine { get }
 }
 
 extension DoHProviderInternal {
-    public func fetch(host: String, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void) {
-        let urlStr = self.query(host: host)
+    public func fetch(host: String, sessionId: String?, timeout: TimeInterval, completion: @escaping ([DNS]?) -> Void) {
+        let urlStr = self.query(host: host, sessionId: sessionId)
         let url = URL(string: urlStr)!
         
         let request = URLRequest(
@@ -70,8 +70,8 @@ extension DoHProviderInternal {
         }
     }
     
-    public func fetch(host: String, completion: @escaping ([DNS]?) -> Void) {
-        self.fetch(host: host, timeout: 5, completion: completion)
+    public func fetch(host: String, sessionId: String?, completion: @escaping ([DNS]?) -> Void) {
+        self.fetch(host: host, sessionId: sessionId, timeout: 5, completion: completion)
     }
     
     private func fetchAsynchronously(request: URLRequest, completion: @escaping (Data?) -> Void) {

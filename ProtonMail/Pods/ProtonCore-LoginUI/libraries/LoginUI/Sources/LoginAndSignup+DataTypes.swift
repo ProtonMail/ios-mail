@@ -46,16 +46,21 @@ public typealias SignupAvailability = LoginFeatureAvailability<SignupParameters>
 public struct SignupParameters {
     
     let mode: SignupMode
+    let separateDomainsButton: Bool
     let passwordRestrictions: SignupPasswordRestrictions
     let summaryScreenVariant: SummaryScreenVariant
     
-    // No way to set signupMode because external email signup flow is temporarily turned off until the updated flow is ready on the BE side
-    public init(passwordRestrictions: SignupPasswordRestrictions, summaryScreenVariant: SummaryScreenVariant) {
+    // No way to set signupMode because external email signup flow is temporarily turned off
+    // until the updated flow is ready on the BE side
+    init(_ separateDomainsButton: Bool,
+         _ passwordRestrictions: SignupPasswordRestrictions,
+         _ summaryScreenVariant: SummaryScreenVariant) {
         if let mode = ProtonCore_LoginUI.TemporaryHacks.signupMode {
             self.mode = mode
         } else {
             self.mode = .internal
         }
+        self.separateDomainsButton = separateDomainsButton
         self.passwordRestrictions = passwordRestrictions
         self.summaryScreenVariant = summaryScreenVariant
     }

@@ -125,6 +125,7 @@ final class SignupCoordinator {
         } else if case .both = signupParameters.mode {
             signupViewController.showOtherAccountButton = true
         }
+        signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
         signupViewController.showCloseButton = isCloseButton
         signupViewController.signupAccountType = signupAccountType
         signupViewController.minimumAccountType = container.login.minimumAccountType
@@ -465,13 +466,17 @@ extension SignupCoordinator: RecoveryViewControllerDelegate {
 // MARK: CountryPickerViewControllerDelegate
 
 extension SignupCoordinator: CountryPickerViewControllerDelegate {
+    func didSelectCountryCode(countryCode: CountryCode) {
+        countryPickerViewController?.dismiss(animated: true)
+        recoveryViewController?.updateCountryCode(countryCode.phone_code)
+    }
+    
     func didCountryPickerClose() {
         countryPickerViewController?.dismiss(animated: true)
     }
     
-    func didSelectCountryCode(countryCode: CountryCode) {
-        countryPickerViewController?.dismiss(animated: true)
-        recoveryViewController?.updateCountryCode(countryCode.phone_code)
+    func didCountryPickerDissmised() {
+        recoveryViewController?.countryPickerDissmised()
     }
 }
 

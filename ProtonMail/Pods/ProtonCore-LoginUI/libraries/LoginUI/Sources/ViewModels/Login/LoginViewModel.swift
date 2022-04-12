@@ -80,9 +80,7 @@ final class LoginViewModel {
         return !password.isEmpty ? Result.success : Result.failure(LoginValidationError.emptyPassword)
     }
 
-    func updateAvailableDomain(result: ((String?) -> Void)? = nil) {
-        login.updateAvailableDomain(type: .login) { res in
-            result?(res)
-        }
+    func updateAvailableDomain(result: (([String]?) -> Void)? = nil) {
+        login.updateAllAvailableDomains(type: .login) { res in result?(res) }
     }
 }

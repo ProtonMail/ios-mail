@@ -291,6 +291,9 @@ public class PMTextField: UIView, AccessibleView {
             textField.spellCheckingType = newValue
         }
     }
+    
+    public var textFieldTopAnchor: NSLayoutYAxisAnchor { textField.topAnchor }
+    public var textFieldBottomAnchor: NSLayoutYAxisAnchor { textField.bottomAnchor }
 
     // MARK: - Setup
 

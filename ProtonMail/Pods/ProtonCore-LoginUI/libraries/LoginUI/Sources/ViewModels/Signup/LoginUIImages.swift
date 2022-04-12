@@ -42,4 +42,16 @@ enum LoginUIImages {
     static var brandLogo: UIImage? {
         nil
     }
+    
+    static var animationFile: String {
+        "sign-up-create-account"
+    }
+}
+
+public extension SignupParameters {
+    
+    init(passwordRestrictions: SignupPasswordRestrictions,
+         summaryScreenVariant: SummaryScreenVariant) {
+        self.init(false, passwordRestrictions, summaryScreenVariant)
+    }
 }

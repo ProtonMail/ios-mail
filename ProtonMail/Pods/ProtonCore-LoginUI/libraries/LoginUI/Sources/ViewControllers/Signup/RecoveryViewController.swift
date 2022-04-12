@@ -164,10 +164,14 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
         navigationBarAdjuster.setUp(for: scrollView, parent: parent)
         scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
-
+    
     func updateCountryCode(_ responseCode: Int) {
         countryCode = "+\(responseCode)"
         recoveryPhoneTextField.buttonTitleText = countryCode
+    }
+    
+    func countryPickerDissmised() {
+        recoveryPhoneTextField.pickerButton(isActive: false)
     }
 
     // MARK: Actions
@@ -329,6 +333,7 @@ extension RecoveryViewController: PMTextFieldComboDelegate {
 
     func userDidRequestDataSelection(button: UIButton) {
         delegate?.recoveryCountryPickerPressed()
+        recoveryPhoneTextField.pickerButton(isActive: true)
     }
 }
 

@@ -203,6 +203,10 @@ public struct ProtonColorPaletteiOS {
 
     // MARK: Blenders
     public let BlenderNorm = ProtonColor(name: "BlenderNorm")
+    
+    // MARK: Two special colors that consistently occur in designs even though they are not part af the palette
+    public let White = ProtonColor(name: "White")
+    public let Black = ProtonColor(name: "Black")
 }
 
 extension ProtonColorPaletteiOS {
@@ -253,19 +257,3 @@ extension ProtonColorPaletteiOS {
     private var sidebarInteractionWeakPressedVpn: Int { abbey }
     private var sidebarSeparatorVpn: Int { tuna }
 }
-
-#if canImport(UIKit)
-
-// MARK: Internal core colors
-
-extension ProtonColorPaletteiOS {
-    static var White: UIColor {
-        UIColor(rgb: 0xFFFFFF)
-    }
-    
-    static var Black: UIColor {
-        UIColor(rgb: 0x000000)
-    }
-}
-
-#endif

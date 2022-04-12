@@ -37,7 +37,9 @@ public protocol AuthenticatorInterface {
 
     func refreshCredential(_ oldCredential: Credential, completion: @escaping Authenticator.Completion)
 
-    func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    func checkAvailableUsernameWithoutSpecifyingDomain(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
+    
+    func checkAvailableUsernameWithinDomain(_ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
     
     func checkAvailableExternal(_ email: String, completion: @escaping (Result<(), AuthErrors>) -> Void)
 
@@ -71,6 +73,11 @@ public protocol AuthenticatorInterface {
 // Workaround for the lack of default parameters in protocols
 
 public extension AuthenticatorInterface {
+    @available(*, deprecated, renamed: "checkAvailableUsernameWithoutSpecifyingDomain")
+    func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
+        checkAvailableUsernameWithoutSpecifyingDomain(username, completion: completion)
+    }
+    
     func authenticate(username: String, password: String, completion: @escaping Authenticator.Completion) {
         authenticate(username: username, password: password, srpAuth: nil, completion: completion)
     }

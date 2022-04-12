@@ -30,7 +30,7 @@ public enum TemporaryHacks {
 
 public enum TemporaryHacks {
     // Can be used only for core example app internal tests
-    public static var signupMode: SignupMode? { nil }
+    public static let signupMode: SignupMode? = nil
 }
 
 #endif

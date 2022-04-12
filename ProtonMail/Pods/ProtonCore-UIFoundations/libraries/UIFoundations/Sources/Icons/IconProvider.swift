@@ -23,9 +23,11 @@ import Foundation
 
 public struct ProtonIcon {
     let name: String
+    let vpnFallbackName: String?
 
-    init(name: String) {
+    init(name: String, vpnFallbackName: String? = nil) {
         self.name = name
+        self.vpnFallbackName = vpnFallbackName
     }
 }
 
@@ -42,18 +44,33 @@ public final class IconProviderBase {
 import UIKit
 
 extension IconProviderBase {
+
     public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> UIImage {
-        ProtonIconSet.instance[keyPath: keypath].uiImage
+        guard let image = ProtonIconSet.instance[keyPath: keypath].uiImage else {
+            assertionFailure("lack of image in assets catalogue indicates the images misconfiguration")
+            return UIImage()
+        }
+        return image
     }
     
-    public func flag(forCountryCode countryCode: String) -> UIImage {
+    public func flag(forCountryCode countryCode: String) -> UIImage? {
         ProtonIconSet.instance.flag(forCountryCode: countryCode).uiImage
     }
 }
 
 extension ProtonIcon {
-    var uiImage: UIImage {
-        UIImage(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)!
+    var uiImage: UIImage? {
+        darkModeAwareValue {
+            image(name: name)
+        } protonFallback: {
+            image(name: name)
+        } vpnFallback: {
+            image(name: vpnFallbackName ?? name)
+        }
+    }
+    
+    private func image(name: String) -> UIImage? {
+        UIImage(named: name, in: PMUIFoundations.bundle, compatibleWith: nil)
     }
 }
 #endif
@@ -61,19 +78,68 @@ extension ProtonIcon {
 #if canImport(AppKit)
 import AppKit
 
-extension IconProviderBase {
-    public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> NSImage {
-        ProtonIconSet.instance[keyPath: keypath].nsImage
+public struct DarkModePreferingIcon {
+    private let keypath: KeyPath<ProtonIconSet, ProtonIcon>
+    
+    init(keypath: KeyPath<ProtonIconSet, ProtonIcon>) {
+        self.keypath = keypath
     }
     
-    public func flag(forCountryCode countryCode: String) -> NSImage {
+    public func darkModePrefering() -> NSImage {
+        guard let image = ProtonIconSet.instance[keyPath: keypath].darkModePreferingNSImage else {
+            assertionFailure("lack of image in assets catalogue indicates the images misconfiguration")
+            return NSImage()
+        }
+        return image
+    }
+    
+    #if canImport(SwiftUI)
+    @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+    public func darkModePrefering() -> Image {
+        let nsImage: NSImage = darkModePrefering()
+        return Image(nsImage: nsImage)
+    }
+    #endif
+}
+
+extension IconProviderBase {
+    
+    public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> DarkModePreferingIcon {
+        DarkModePreferingIcon(keypath: keypath)
+    }
+    
+    /// By default, the fetched color appearance matches NSApp.effectiveAppearance.
+    /// Use .using(appearance: NSAppearance) to customize that.
+    public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> NSImage {
+        guard let image = ProtonIconSet.instance[keyPath: keypath].nsImage else {
+            assertionFailure("lack of image in assets catalogue indicates the images misconfiguration")
+            return NSImage()
+        }
+        return image
+    }
+    
+    public func flag(forCountryCode countryCode: String) -> NSImage? {
         ProtonIconSet.instance.flag(forCountryCode: countryCode).nsImage
     }
 }
 
 extension ProtonIcon {
-    var nsImage: NSImage {
-        PMUIFoundations.bundle.image(forResource: name)!
+    var nsImage: NSImage? {
+        darkModeAwareValue {
+            image(name: name)
+        } protonFallback: {
+            image(name: name)
+        } vpnFallback: {
+            image(name: vpnFallbackName ?? name)
+        }
+    }
+    
+    var darkModePreferingNSImage: NSImage? {
+        image(name: vpnFallbackName ?? name)
+    }
+    
+    private func image(name: String) -> NSImage? {
+        PMUIFoundations.bundle.image(forResource: name)
     }
 }
 #endif
@@ -83,12 +149,23 @@ import SwiftUI
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 extension IconProviderBase {
+
     public subscript(dynamicMember keypath: KeyPath<ProtonIconSet, ProtonIcon>) -> Image {
         ProtonIconSet.instance[keyPath: keypath].image
     }
     
-    public func flag(forCountryCode countryCode: String) -> Image {
-        ProtonIconSet.instance.flag(forCountryCode: countryCode).image
+    public func flag(forCountryCode countryCode: String) -> Image? {
+        #if canImport(UIKit)
+        let uiImage: UIImage? = flag(forCountryCode: countryCode)
+        guard let image = uiImage else { return nil }
+        return Image(uiImage: image)
+        #elseif canImport(AppKit)
+        let nsImage: NSImage? = flag(forCountryCode: countryCode)
+        guard let image = nsImage else { return nil }
+        return Image(nsImage: image)
+        #else
+        return ProtonIconSet.instance.flag(forCountryCode: countryCode).image
+        #endif
     }
 }
 

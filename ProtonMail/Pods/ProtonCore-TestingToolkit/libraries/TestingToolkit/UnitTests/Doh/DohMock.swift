@@ -115,7 +115,16 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.resolveProxyDomainHostUrl) public var resolveProxyDomainHostUrlStub
     public func resolveProxyDomainHostUrl(completion: @escaping (String?) -> Void) { resolveProxyDomainHostUrlStub(completion) }
     
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub
+    @available(*, deprecated, message: "This is a deprecated API")
+    public func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void) {
+        handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub(host, error, callCompletionBlockOn, completion)
+    }
+    
+    @available(*, deprecated, message: "This is a stub for a deprecated API")
     @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorStub
+    @available(*, deprecated, message: "This is a deprecated API")
     public func handleErrorResolvingProxyDomainIfNeeded(
         host: String,
         error: Error?,
@@ -125,11 +134,41 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
         handleErrorResolvingProxyDomainIfNeededWithExecutorStub(host, error, callCompletionBlockUsing, completion)
     }
     
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:sessionId:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithExecutorWithSessionIdStub
+    public func handleErrorResolvingProxyDomainIfNeeded(
+        host: String,
+        sessionId: String?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainIfNeededWithExecutorWithSessionIdStub(host, sessionId, error, callCompletionBlockUsing, completion)
+    }
+    
     @available(*, deprecated, message: "This is a stub for a deprecated API")
-    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainIfNeeded(host:error:callCompletionBlockOn:completion:)) public var handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded (host:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededStub
     @available(*, deprecated, message: "This is a deprecated API")
-    public func handleErrorResolvingProxyDomainIfNeeded(host: String, error: Error?, callCompletionBlockOn: DoHWorkExecutor?, completion: @escaping (Bool) -> Void) {
-        handleErrorResolvingProxyDomainIfNeededWithDeprecatedDoHExecutorStub(host, error, callCompletionBlockOn, completion)
+    public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+        host: String,
+        response: URLResponse?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededStub(host, response, error, callCompletionBlockUsing, completion)
+    }
+    
+    @FuncStub(DohInterfaceMock.handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded (host:sessionId:response:error:callCompletionBlockUsing:completion:)) public var handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub
+    // swiftlint:disable function_parameter_count
+    public func handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(
+        host: String,
+        sessionId: String?,
+        response: URLResponse?,
+        error: Error?,
+        callCompletionBlockUsing: CompletionBlockExecutor,
+        completion: @escaping (Bool) -> Void
+    ) {
+        handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeededWithSessionIdStub(host, sessionId, response, error, callCompletionBlockUsing, completion)
     }
 }
 

@@ -202,6 +202,7 @@ extension PMActionSheet {
 
 // MARK: UI Relative
 extension PMActionSheet {
+
     private func setup() {
         guard self.viewModel.itemGroups != nil else { return }
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -224,6 +225,9 @@ extension PMActionSheet {
         guard self.enableBGTap else { return }
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapBackground(ges:)))
         tap.delegate = self
+        tap.delaysTouchesBegan = false
+        tap.delaysTouchesEnded = false
+        tap.cancelsTouchesInView = false
         self.addGestureRecognizer(tap)
     }
 
@@ -232,11 +236,17 @@ extension PMActionSheet {
         guard self.showDragBar else { return }
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panSheet(ges:)))
         pan.delegate = self
+        pan.delaysTouchesBegan = false
+        pan.delaysTouchesEnded = false
+        pan.cancelsTouchesInView = false
         self.addGestureRecognizer(pan)
 
         // Only fired when content offset is 0 or the normal scroll event works
         let pan2 = UIPanGestureRecognizer(target: self, action: #selector(self.panSheet(ges:)))
         pan2.delegate = self
+        pan2.delaysTouchesBegan = false
+        pan2.delaysTouchesEnded = false
+        pan2.cancelsTouchesInView = false
         self.tableView.addGestureRecognizer(pan2)
     }
 
@@ -270,12 +280,17 @@ extension PMActionSheet {
         table.separatorStyle = .none
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = ColorProvider.BackgroundNorm
+        if #available(iOS 13.0, *) {
+            table.automaticallyAdjustsScrollIndicatorInsets = false
+        }
+        if #available(iOS 15.0, *) {
+            table.sectionHeaderTopPadding = 0
+        }
         table.tableFooterView = UIView(frame: .zero)
         table.register(PMActionSheetPlainCell.nib(), forCellReuseIdentifier: self.viewModel.value.PLAIN_CELL_NAME)
         table.register(PMActionSheetToggleCell.self, forCellReuseIdentifier: self.viewModel.value.TOGGLE_CELL_NAME)
         table.register(PMActionSheetGridCell.self, forCellReuseIdentifier: self.viewModel.value.GRID_CELL_NAME)
         table.register(cellType: PMActionSheetPlainCellHeader.self)
-
         self.tableView = table
         return table
     }
@@ -336,7 +351,7 @@ extension PMActionSheet {
         // Tableview bottom constraint when headerview exist.
         let maxHeight = self.frame.size.height * 0.9 - self.viewModel.value.HEADER_HEIGHT
         let tableHeight = self.viewModel.calcTableViewHeight()
-        let padding = UIDevice.hasPhysicalHome ? 0: self.viewModel.value.PLAIN_CELL_HEIGHT
+        let padding = UIDevice.hasPhysicalHome ? 0 : self.viewModel.value.PLAIN_CELL_HEIGHT
         if maxHeight > tableHeight {
             self.tableView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -1 * padding).isActive = true
             self.tableView.bounces = false
@@ -460,7 +475,7 @@ extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
     private func configPlainCellBy(_ group: PMActionSheetItemGroup, at indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.viewModel.value.PLAIN_CELL_NAME) as! PMActionSheetPlainCell
         let item = group.items[indexPath.row] as! PMActionSheetPlainItem
-        cell.config(item: item)
+        cell.config(item: item, indexPath: indexPath)
         return cell
     }
 
@@ -479,6 +494,7 @@ extension PMActionSheet: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension PMActionSheet: UIGestureRecognizerDelegate {
+    
     override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let containerView = self.containerView else {
             return true
@@ -496,6 +512,11 @@ extension PMActionSheet: UIGestureRecognizerDelegate {
         }
 
         return false
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
     }
 
     private func shouldFirePanGes(ges: UIPanGestureRecognizer) -> Bool {

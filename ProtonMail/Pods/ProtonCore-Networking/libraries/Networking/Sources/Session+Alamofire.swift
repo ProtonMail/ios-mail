@@ -52,6 +52,8 @@ internal class AlamofireSessionDelegate: SessionDelegate {
 
 public class AlamofireSession: Session {
     
+    public var sessionConfiguration: URLSessionConfiguration { session.sessionConfiguration }
+    
     typealias AfSession = Alamofire.Session
     var session: AfSession
     var sessionChallenge: AlamofireSessionDelegate = AlamofireSessionDelegate()

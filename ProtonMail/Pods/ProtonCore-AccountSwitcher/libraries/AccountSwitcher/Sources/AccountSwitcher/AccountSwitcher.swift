@@ -296,7 +296,7 @@ extension AccountSwitcher {
         self.usermail.backgroundColor = ColorProvider.BackgroundNorm
         self.shortUserNameView.backgroundColor = ColorProvider.BrandNorm
         self.shortUserName.backgroundColor = ColorProvider.BrandNorm
-        self.shortUserName.textColor = ColorProvider.SidebarTextNorm
+        self.shortUserName.textColor = AccountSwitcherStyle.smallTextColor
     }
 
     private func setupAccountTable() {

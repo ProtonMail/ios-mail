@@ -31,8 +31,9 @@ public class SigupMock: Signup {
     
     public var requestValidationTokenResult: (Result<Void, SignupError>) = .success(())
     public var checkValidationTokenResult: (Result<Void, SignupError>) = .success(())
-    public var createNewUserResult: (Result<Void, SignupError>) = .success(())
-    public var createNewExternalUserResult: (Result<Void, SignupError>) = .success(())
+    public var createNewUsernameAccountResult: (Result<Void, SignupError>) = .success(())
+    public var createNewExternalAccountResult: (Result<Void, SignupError>) = .success(())
+    public var createNewInternalAccountResult: (Result<Void, SignupError>) = .success(())
     
     public func requestValidationToken(email: String, completion: @escaping (Result<Void, SignupError>) -> Void) {
         completion(requestValidationTokenResult)
@@ -42,19 +43,15 @@ public class SigupMock: Signup {
         completion(checkValidationTokenResult)
     }
     
-    public func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
-        completion(createNewUserResult)
+    public func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
+        completion(createNewUsernameAccountResult)
     }
     
-    public func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
-        completion(createNewExternalUserResult)
+    public func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        completion(createNewExternalAccountResult)
     }
     
-    public func createNewUser(userName: String, password: String, deviceToken: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
-        completion(createNewUserResult)
-    }
-    
-    public func createNewExternalUser(email: String, password: String, deviceToken: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
-        completion(createNewExternalUserResult)
+    public func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+        completion(createNewInternalAccountResult)
     }
 }

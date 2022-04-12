@@ -183,15 +183,12 @@ open class Session {
                             eventMonitors: [EventMonitor] = []) {
         precondition(configuration.identifier == nil, "Alamofire does not support background URLSessionConfigurations.")
 
-        // Retarget the incoming rootQueue for safety, unless it's the main queue, which we know is safe.
-        let serialRootQueue = (rootQueue === DispatchQueue.main) ? rootQueue : DispatchQueue(label: rootQueue.label,
-                                                                                             target: rootQueue)
-        let delegateQueue = OperationQueue(maxConcurrentOperationCount: 1, underlyingQueue: serialRootQueue, name: "\(serialRootQueue.label).sessionDelegate")
+        let delegateQueue = OperationQueue(maxConcurrentOperationCount: 1, underlyingQueue: rootQueue, name: "org.alamofire.session.sessionDelegateQueue")
         let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
 
         self.init(session: session,
                   delegate: delegate,
-                  rootQueue: serialRootQueue,
+                  rootQueue: rootQueue,
                   startRequestsImmediately: startRequestsImmediately,
                   requestQueue: requestQueue,
                   serializationQueue: serializationQueue,
@@ -315,17 +312,15 @@ open class Session {
     /// `RequestInterceptor`.
     ///
     /// - Parameters:
-    ///   - convertible:     `URLConvertible` value to be used as the `URLRequest`'s `URL`.
-    ///   - method:          `HTTPMethod` for the `URLRequest`. `.get` by default.
-    ///   - parameters:      `Encodable` value to be encoded into the `URLRequest`. `nil` by default.
-    ///   - encoder:         `ParameterEncoder` to be used to encode the `parameters` value into the `URLRequest`.
-    ///                      `URLEncodedFormParameterEncoder.default` by default.
-    ///   - headers:         `HTTPHeaders` value to be added to the `URLRequest`. `nil` by default.
-    ///   - interceptor:     `RequestInterceptor` value to be used by the returned `DataRequest`. `nil` by default.
-    ///   - requestModifier: `RequestModifier` which will be applied to the `URLRequest` created from
-    ///                      the provided parameters. `nil` by default.
+    ///   - convertible: `URLConvertible` value to be used as the `URLRequest`'s `URL`.
+    ///   - method:      `HTTPMethod` for the `URLRequest`. `.get` by default.
+    ///   - parameters:  `Encodable` value to be encoded into the `URLRequest`. `nil` by default.
+    ///   - encoder:     `ParameterEncoder` to be used to encode the `parameters` value into the `URLRequest`.
+    ///                  `URLEncodedFormParameterEncoder.default` by default.
+    ///   - headers:     `HTTPHeaders` value to be added to the `URLRequest`. `nil` by default.
+    ///   - interceptor: `RequestInterceptor` value to be used by the returned `DataRequest`. `nil` by default.
     ///
-    /// - Returns:           The created `DataRequest`.
+    /// - Returns:       The created `DataRequest`.
     open func request<Parameters: Encodable>(_ convertible: URLConvertible,
                                              method: HTTPMethod = .get,
                                              parameters: Parameters? = nil,
@@ -789,8 +784,8 @@ open class Session {
     /// technique was used.
     ///
     /// - Parameters:
-    ///   - multipartFormData:      `MultipartFormData` building closure.
-    ///   - url:                    `URLConvertible` value to be used as the `URLRequest`'s `URL`.
+    ///   - multipartFormData:       `MultipartFormData` building closure.
+    ///   - convertible:             `URLConvertible` value to be used as the `URLRequest`'s `URL`.
     ///   - encodingMemoryThreshold: Byte threshold used to determine whether the form data is encoded into memory or
     ///                              onto disk before being uploaded. `MultipartFormData.encodingMemoryThreshold` by
     ///                              default.
@@ -1073,9 +1068,7 @@ open class Session {
             return
         }
 
-        let adapterState = RequestAdapterState(requestID: request.id, session: self)
-
-        adapter.adapt(initialRequest, using: adapterState) { result in
+        adapter.adapt(initialRequest, for: self) { result in
             do {
                 let adaptedRequest = try result.get()
                 try adaptedRequest.validate()

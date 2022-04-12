@@ -14,10 +14,11 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '3.11.0'
+  '3.14.0'
 end
 
 def pm_shared_pods
+  pod 'Alamofire', '5.4.4'
   pod 'ProtonCore-Networking/Alamofire', proton_core_version
   pod 'ProtonCore-Crypto', proton_core_version
   pod 'ProtonCore-Hash', proton_core_version

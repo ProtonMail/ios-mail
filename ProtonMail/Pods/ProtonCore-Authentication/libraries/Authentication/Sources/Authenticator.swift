@@ -171,16 +171,22 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         }
     }
 
-    public func checkAvailable(_ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void) {
-        let route = AuthService.UserAvailableEndpoint(username: username)
+    public func checkAvailableUsernameWithoutSpecifyingDomain(
+        _ username: String, completion: @escaping (Result<(), AuthErrors>) -> Void
+    ) {
+        let route = AuthService.UserAvailableWithoutSpecifyingDomainEndpoint(username: username)
         
         self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
-            case .success:
-                completion(.success(()))
-            }
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
+        }
+    }
+    
+    public func checkAvailableUsernameWithinDomain(
+        _ username: String, domain: String, completion: @escaping (Result<(), AuthErrors>) -> Void
+    ) {
+        let route = AuthService.UserAvailableWithinDomainEndpoint(username: username, domain: domain)
+        self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableResponse, ResponseError>) in
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
         }
     }
     
@@ -188,12 +194,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         let route = AuthService.UserAvailableExternalEndpoint(email: email)
         
         self.apiService.exec(route: route) { (result: Result<AuthService.UserAvailableExternalResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
-            case .success:
-                completion(.success(()))
-            }
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
         }
     }
 
@@ -203,12 +204,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
             route.auth = AuthCredential(auth)
         }
         self.apiService.exec(route: route) { (result: Result<AuthService.SetUsernameResponse, ResponseError>) in
-            switch result {
-            case .failure(let responseError):
-                completion(.failure(.networkingError(responseError)))
-            case .success:
-                completion(.success(()))
-            }
+            completion(result.map { _ in () }.mapError { AuthErrors.networkingError($0) })
         }
     }
 

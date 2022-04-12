@@ -1,23 +1,39 @@
-/* Plan details price time period */
-" / year" = " / rok";
+/* Plan details n uneven amount of addresses & calendars, like: 1 address & 2 calendars */
+"%@ & %@" = "%@ i %@";
 
-/* ProtonMail address availability */
+/* Proton Mail address availability */
 "%@ is available" = "Adres %@ jest dostępny";
 
-/* Plan delails free storage */
+/* Plan details storage */
 "%@ storage" = "%@ przestrzeni dyskowej";
 
-/* Plan delails storage */
-"%@ storage *" = "%@ przestrzeni dyskowej *";
+/* Plan details storage per user */
+"%@ storage / user" = "%@ przestrzeni dyskowej / użytkownika";
+
+/* A generic error message when we have no better message from the backend */
+"A networking error has occured" = "Wystąpił błąd sieci";
+
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Zakup planu Proton Bundle został już zainicjowany. Kliknij przycisk Kontynuuj, aby zakończyć proces płatności i utworzyć konto";
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metoda odzyskiwania pomoże uzyskać dostęp do konta, w przypadku gdy zostanie ono zablokowane lub zapomnisz hasła.";
 
-/* Dialog title for missing keys error */
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Konto zostało usunięte.\nTrwa wylogowywanie...";
+
+/* *
+ *  Login errors */
 "Account setup required" = "Konfiguracja konta jest wymagana";
 
 /* Email verification view title */
 "Account verification" = "Weryfikacja konta";
+
+/* Title of account switcher */
+"Accounts" = "Konta";
+
+/* Plan details adblocker */
+"Adblocker (NetShield)" = "Blokada reklam (NetShield)";
 
 /* Generic error message when no better error can be displayed */
 "An error has occured" = "Wystąpił błąd";
@@ -26,15 +42,16 @@
 "Apple informed us they could not process the purchase." = "Firma Apple poinformowała nas, że nie może przetworzyć zakupu.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Firma Apple poinformowała nas, że ulepszyłeś plan, ale brakuje niektórych danych technicznych. Wypełnij zgłoszenie błędu, a nasz zespół wsparcia klienta skontaktuje się z Tobą.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Firma Apple poinformowała nas o ulepszeniu planu, ale brakuje niektórych danych technicznych. Wypełnij zgłoszenie błędu, a nasz zespół wsparcia klienta skontaktuje się z Tobą.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Firma Apple poinformowała nas, że ulepszyłeś plan, ale wykryliśmy, że wylogowałeś się z konta od tego czasu.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Firma Apple poinformowała nas o ulepszeniu planu, ale w tym czasie nie możesz wylogować się z konta.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Czy na pewno chcesz się wylogować z konta %@?";
 
-/* 2FA screen action button title */
+/* *
+ * Login 2FA */
 "Authenticate" = "Uwierzytelnij";
 
 /* Terms and conditions note */
@@ -43,11 +60,11 @@
 /* Recovery terms and conditions description */
 "By clicking Next, you agree with Proton's Terms and Conditions" = "Klikając przycisk Dalej, akceptujesz regulamin usługi Proton";
 
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
-
 /* Cancel button */
 "Cancel" = "Anuluj";
+
+/* captha method name */
+"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Zmień adres e-mail";
@@ -55,14 +72,30 @@
 /* Dialog action button title for organization user first login */
 "Change password" = "Zmień hasło";
 
-/* Dialog title for organization user first login */
+/* *
+ * Login upgrade username-only account */
 "Change your password" = "Zmień hasło";
+
+/* Button title shown when a error has occured, causes the screen to close */
+"Close" = "Zamknij";
 
 /* sent baner title */
 "Code sent to %@" = "Kod został wysłany do %@";
 
+/* Unfinished operation error dialog retry button */
+"Complete payment" = "Zakończ płatność";
+
+/* Unfinished operation error dialog title */
+"Complete payment?" = "Zakończyć płatność?";
+
 /* Dialog button for missing keys error */
 "Complete Setup" = "Zakończ konfigurację";
+
+/* Signup summary title */
+"Congratulations" = "Gratulacje!";
+
+/* Plan details unavailable contact administrator */
+"Contact an administrator to make changes to your Proton subscription." = "Skontaktuj się z administratorem, aby zmienić subskrypcję.";
 
 /* Error applying credit after registration alert */
 "Contact customer support" = "Skontaktuj się ze wsparciem klienta";
@@ -70,68 +103,79 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Skontaktuj się z support@protonvpn.com, aby zakończyć zakup.";
 
-/* Screen title for creating ProtonMail address */
-"Create ProtonMail address" = "Utwórz adres ProtonMail";
-
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Utwórz konto Proton za pomocą swojego obecnego adresu e-mail";
 
-/* ProtonMail address button */
-"Create a secure ProtonMail address instead" = "Utwórz bezpieczny adres ProtonMail";
+/* Proton Mail address button */
+"Create a secure ProtonMail address instead" = "Utwórz bezpieczny adres Proton Mail";
 
-/* Action button title for creating ProtonMail address */
+/* Action button title for creating Proton Mail address */
 "Create address" = "Utwórz adres";
 
 /* Create account button */
 "Create an account" = "Utwórz konto";
 
+/* *
+ * Login choose username */
+"Create ProtonMail address" = "Utwórz adres Proton Mail";
+
 /* Create user failed error */
 "Create user failed" = "Tworzenie użytkownika nie powiodło się";
-
-/* Signup main view title */
-"Create your Proton Account" = "Utwórz konto Proton";
 
 /* Signup password proton view title */
 "Create your password" = "Utwórz hasło";
 
+/* *
+ * Signup */
+"Create your Proton Account" = "Utwórz konto Proton";
+
+/* Signup complete progress step creation */
+"Creating your account" = "Tworzenie konta";
+
 /* Plan selection title */
 "Current plan" = "Obecny plan";
 
-/* Plan  details renew expired */
+/* Plan details renew expired */
 "Current plan will expire on %@" = "Obecny plan wygaśnie w dniu %@";
 
-/* Plan delails custom email */
+/* Plan details custom email addresses */
 "Custom email addresses" = "Niestandardowe adresy e-mail";
 
 /* Customer support button */
 "Customer support" = "Wsparcie klienta";
 
-/* Device token error */
-"Device token error" = "Błąd tokena urządzenia";
-
-/* Device token unsupported error */
-"Device token unsupported" = "Token urządzenia jest nieobsługiwany";
+/* *  Account Deletion */
+"Delete account" = "Usuń konto";
 
 /* Did not receive code button */
-"Did not receive a code?" = "Nie otrzymałeś kodu?";
+"Did not receive a code?" = "Nie otrzymano kodu?";
 
 /* Not receive code button */
-"Did not receive the code?" = "Nie otrzymałeś kodu?";
+"Did not receive the code?" = "Nie otrzymano kodu?";
+
+/* Button for dismissing account switcher */
+"Dismiss account switcher" = "Odrzuć przełącznik konta";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchase for %@ address?" = "Czy chcesz aktywować zakup dla adresu %@?";
+
+/* Title of domains bottom action sheet */
+"Domain" = "Domena";
 
 /* Email field title
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "Adres e-mail";
+"Email" = "E-mail";
 
 /* Email address already used error */
 "Email address already used." = "Adres e-mail został już wykorzystany.";
 
 /* Username field title */
 "Email or username" = "Adres e-mail lub nazwa użytkownika";
+
+/* Signup summary welcome text */
+"Enjoy the world of privacy." = "Ciesz się prywatnością.";
 
 /* 2FA screen recovery field info */
 "Enter an 8-character recovery code." = "Wpisz 8-cyfrowy kod odzyskiwania.";
@@ -141,7 +185,7 @@
    Verification code hint label */
 "Enter the 6-digit code." = "Wpisz 6-cyfrowy kod.";
 
-/* Enter sms code label */
+/* Verification */
 "Enter the verification code that was sent to %@" = "Wpisz kod weryfikacyjny wysłany do %@";
 
 /* Enter email code label */
@@ -150,7 +194,8 @@
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Wpisz szczegóły konta Proton.";
 
-/* Error alert title */
+/* *
+ *  Payments */
 "Error occured" = "Wystąpił błąd";
 
 /* Error message */
@@ -166,6 +211,12 @@
 /* Forgot username help button */
 "Forgot username" = "Przypomnij nazwę użytkownika";
 
+/* Plan details plus description */
+"Full-featured mailbox with advanced protection." = "W pełni funkcjonalna skrzynka pocztowa z zaawansowaną ochroną.";
+
+/* Signup complete progress step address generation */
+"Generating your address" = "Generowanie adresu";
+
 /* alert message */
 "Get a replacement code sent to %@." = "Kod zastępczy został wysłany do %@.";
 
@@ -175,11 +226,21 @@
 /* Help button */
 "Help" = "Pomoc";
 
+/* Plan details high speed message */
+"High speed" = "Wysoka prędkość";
+
+/* Plan details highest speed message */
+"Highest speed" = "Najwyższa prędkość";
+
 /* Login help screen title */
 "How can we help?" = "Jak możemy pomóc?";
 
-/* Title */
+/* *
+ *  Human verification */
 "Human verification" = "Weryfikacja antyspamowa";
+
+/* Title */
+"Human Verification" = "Weryfikacja antyspamowa";
 
 /* request item message */
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Jeśli masz problem z utworzeniem konta, poproś o zaproszenie, a my odpowiemy w ciągu jednego dnia roboczego.";
@@ -199,11 +260,8 @@
 /* alert title */
 "Invalid verification code" = "Kod weryfikacyjny jest nieprawidłowy";
 
-/* Complete view description */
-"It usually takes no more than a minute." = "Zazwyczaj nie trwa to dłużej niż minutę.";
-
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nie byliśmy w stanie dopasować zakupionego produktu ze sklepu App Store do produktu na naszym serwerze. Wypełnij raport o błędzie, a nasz dział wsparcia klienta skontaktuje się z Tobą.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nie byliśmy w stanie dopasować zakupionego produktu ze sklepu App Store do usługi na naszym serwerze. Wypełnij raport o błędzie, a nasz dział wsparcia klienta skontaktuje się z Tobą.";
 
 /* learn more button */
 "Learn more" = "Dowiedz się więcej";
@@ -211,8 +269,12 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Dowiedz się więcej o weryfikacji antyspamowej.";
 
-/* Made by */
+/* *
+ * Splash */
 "Made by" = "Made by";
+
+/* Plan details visionary description */
+"Mail + VPN bundle for families and small businesses" = "Pakiet poczta + VPN dla rodzin i małych firm";
 
 /* Mailbox password field title */
 "Mailbox password" = "Hasło skrzynki pocztowej";
@@ -220,26 +282,39 @@
 /* Manage accounts button */
 "Manage accounts" = "Zarządzaj kontami";
 
-/* help header title */
+/* Plan details medium speed */
+"Medium speed" = "Umiarkowana prędkość";
+
+/* Plan details multi-user support message */
+"Multi-user support" = "Obsługa wielu użytkowników";
+
+/* Verification help */
 "Need help with human verification?" = "Potrzebujesz pomocy z weryfikacją antyspamową?";
 
 /* Help button */
 "Need help?" = "Potrzebujesz pomocy?";
 
-/* Action button title for picking Protonmail username
+/* *
+ * Networking */
+"Network connection error" = "Wystąpił błąd podczas połączenia z siecią";
+
+/* Action button title for picking Proton mail username
    Next button */
 "Next" = "Dalej";
 
 /* Warning message option when user want to relogin to another account */
-"No, for another ProtonMail account" = "Nie, dla innego konta ProtonMail";
+"No, for another ProtonMail account" = "Nie, dla innego konta Proton Mail";
 
 /* Action
    OK button */
 "OK" = "OK";
 
-/* Signup main view description
-   Welcome screen footer label */
+/* *
+ *  Login welcome screen */
 "One account for all Proton services." = "Jedno konto do wszystkich usług Proton.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "W aplikacji mobilnej dostępne są tylko roczne subskrypcje z automatycznym odnowieniem.";
 
 /* Other sign-in issues button */
 "Other sign-in issues" = "Inne problemy z logowaniem";
@@ -248,9 +323,10 @@
 "Password" = "Hasło";
 
 /* Password empty error */
-"Password can not be empty.
-Please try again." = "Hasło nie może być puste.
-Spróbuj ponownie.";
+"Password can not be empty.\nPlease try again." = "Hasło nie może być puste.\nSpróbuj ponownie.";
+
+/* (No Comment) */
+"Password is too short. Should have at least %@ characters.\nPlease try again." = "Hasło musi zawierać co najmniej %@ znaków.\nSpróbuj ponownie.";
 
 /* Password too short error */
 "Password must contain at least %@ characters." = "Hasło musi zawierać co najmniej %@ znaków.";
@@ -259,15 +335,19 @@ Spróbuj ponownie.";
 "Password must contain at least 8 characters" = "Hasło musi zawierać co najmniej 8 znaków";
 
 /* Password not equal error */
-"Passwords do not match.
-Please try again." = "Hasła nie pasują do siebie.
-Spróbuj ponownie.";
+"Passwords do not match.\nPlease try again." = "Hasła nie pasują do siebie.\nSpróbuj ponownie.";
+
+/* (No Comment) */
+"payment failed" = "płatność nie powiodła się";
 
 /* Error applying credit after registration alert */
 "Payment failed" = "Płatność nie powiodła się";
 
+/* Signup complete progress step payment validated */
+"Payment validated" = "Płatność została zweryfikowana";
+
 /* Recovery segmenet phone */
-"Phone" = "Numer telefonu";
+"Phone" = "Telefon";
 
 /* SMS label */
 "Phone number" = "Numer telefonu";
@@ -275,20 +355,33 @@ Spróbuj ponownie.";
 /* Username field error message */
 "Please enter a username." = "Wpisz nazwę użytkownika.";
 
-/* Invalid username hint */
-"Please enter your Proton Account email or username." = "Wpisz adres e-mail konta Proton lub nazwę użytkownika.";
+/* *
+ * Login validation */
+"Please enter your Proton Account email or username." = "Wpisz adres e-mail lub nazwę użytkownika konta Proton.";
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Wpisz hasło konta Proton.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Zaloguj się do konta ProtonMail, w którym ulepszasz plan, aby zakończyć zakup.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Zaloguj się do konta Proton Mail, w którym ulepszasz plan, aby zakończyć zakup.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Zaloguj się do konta ProtonMail, w którym ulepszasz plan, aby zakończyć zakup.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Zaloguj się do konta Proton Mail, w którym ulepszasz plan, aby zakończyć zakup.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Odblokuj aplikację, aby kontynuować aktywację planu";
+
+/* Plan details priority customer support */
+"Priority customer support" = "Priorytetowe wsparcie klienta";
+
+/* Welcome screen footer label */
+"Privacy by default" = "Domyślna ochrona prywatności";
+
+/* Signup summary free plan description replacement */
+"Proton Free" = "Proton Free";
+
+/* Plan details pro description */
+"ProtonMail for professionals and businesses" = "Proton Mail dla profesjonalistów i biznesów";
 
 /* Error message */
 "Purchase is not possible." = "Zakup nie jest możliwy.";
@@ -329,34 +422,41 @@ Spróbuj ponownie.";
 /* Button in some alerts */
 "Retry" = "Spróbuj ponownie";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Search country placeholder */
 "Search country" = "Szukaj kraju";
 
-/* Plan selection title */
-"Select a plan" = "Wybierz plan";
+/* Signup complete progress step keys generation */
+"Securing your account" = "Zabezpieczenie konta";
 
-/* Selct plan button */
-"Select plan" = "Wybierz plan";
+/* Select plan button */
+"Select" = "Wybierz";
+
+/* *
+ *  Payments UI */
+"Select a plan" = "Wybierz plan";
 
 /* Recovery view title
    Set recovery method button */
 "Set recovery method" = "Ustaw metodę odzyskiwania";
 
-/* Login screen title
-   Sign in button */
+/* Recovery view title optional */
+"Set recovery method (optional)" = "Ustaw metodę odzyskiwania (opcjonalnie)";
+
+/* *
+ *  Login screen */
 "Sign in" = "Zaloguj się";
+
+/* Button for signing into another account */
+"Sign in to another account" = "Zaloguj się do innego konta";
 
 /* Sign out button/ title */
 "Sign out" = "Wyloguj";
 
 /* Section title of account manager */
-"Signed in to ProtonMail" = "Zalogowany do konta ProtonMail";
+"Signed in to ProtonMail" = "Zalogowany do konta Proton Mail";
 
 /* Section title of account manager */
-"Signed out of Protonmail" = "Wylogowany z konta ProtonMail";
+"Signed out of Protonmail" = "Wylogowany z konta Proton Mail";
 
 /* Skip button */
 "Skip" = "Pomiń";
@@ -364,19 +464,50 @@ Spróbuj ponownie.";
 /* Recovery skip title */
 "Skip recovery method?" = "Pominąć metodę odzyskiwania?";
 
+/* SMS method name */
+"SMS" = "SMS";
+
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nie możemy przetworzyć zakupów w aplikacji na iOS wersji beta. Dziękujemy za uczestnictwo w naszym programie beta!";
 
-/* Customer support button */
+/* *
+ *  Login help */
 "Still need help? Contact us directly." = "Nadal potrzebujesz pomocy? Skontaktuj się z nami.";
+
+/* Plan details streaming service support */
+"Streaming service support" = "Wsparcie usług streamingu";
+
+/* Subscription title */
+"Subscription" = "Subskrypcja";
+
+/* *  Account Manager */
+"switch to" = "przełącz na konto";
 
 /* Recovery terms and conditions link
    Terms and conditions link in the note
    Terms and conditions view title */
 "Terms and Conditions" = "Regulamin";
 
-/* Recovery view description */
+/* Unfinished operation dialog description */
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Wystąpił nieoczekiwany błąd i konfiguracja konta nie została zakończona.\nSpróbuj ponownie.";
+
+/* Plan details free description */
+"The basic for private and secure communications." = "Podstawowa ochrona prywatności i bezpieczna komunikacja.";
+
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proces zakupu w aplikacji został rozpoczęty. Wykonaj instrukcję firmy Apple, aby zakończyć lub anulować zakup.";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Podczas próby połączenia z interfejsem API Proton weryfikacja certyfikatu TLS nie powiodła się. Twoje obecne połączenie internetowe może być monitorowane. Aby zachować bezpieczeństwo danych, dostęp aplikacji do interfejsu API został tymczasowo zablokowany. Aby zalogować się lub uzyskać dostęp do konta, wybierz nową sieć i spróbuj połączyć się ponownie.";
+
+/* Complete view description */
+"This should take no more than a minute." = "Zazwyczaj nie trwa to dłużej niż minutę.";
+
+/* TODO: CP-2352 — remove the string once the new text (below) is translated to all languages */
 "This will help you access your account in case you forget your password or get locked out of your account." = "Metoda odzyskiwania pomoże uzyskać dostęp do konta, w przypadku gdy zostanie ono zablokowane lub zapomnisz hasła.";
+
+/* Delete account explaination under button */
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "Ta czynność spowoduje trwałe usunięcie konta. Nie będziesz mógł reaktywować tego konta.";
 
 /* Dialog message for organization user first login */
 "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Aby używać aplikacji Proton jako użytkownik organizacji, musisz zmienić swoje hasło. Zaloguj się do konta Proton przez przeglądarkę.";
@@ -390,32 +521,25 @@ Spróbuj ponownie.";
 /* 2FA screen field title */
 "Two-factor code" = "Kod uwierzytelniający";
 
-/* General title for several error alerts */
-"Unknown error" = "Wystąpił nieznany błąd";
-
-/* Plan delails unlimited data */
-"Unlimited folders / labels / filters" = "Nieograniczona liczba folderów / etykiet / filtrów";
-
 /* Mailbox unlock screen action button title */
 "Unlock" = "Odblokuj";
 
-/* Mailbox unlock screen title */
+/* *
+ * Login unlock mailbox */
 "Unlock your mailbox" = "Odblokuj swoją skrzynkę pocztową";
 
 /* update button */
 "Update" = "Zaktualizuj";
 
-/* alert title */
+/* *
+ *  Force upgrade */
 "Update required" = "Aktualizacja jest wymagana";
 
 /* Upgrade plan button */
 "Upgrade" = "Ulepsz";
 
 /* Plan selection title */
-"Upgrade plan" = "Ulepsz plan";
-
-/* Plan footer description */
-"Upon confirming your purchase of a paid plan, your iTunes account will be charged the amount displayed, which includes taxes and additional platform fees (which are not charged by Proton directly)." = "Po potwierdzeniu zakupu płatnego planu, Twoje konto iTunes zostanie obciążone podaną kwotą, zawierającą podatki i dodatkowe opłaty wewnętrzne platformy (nie są to opłaty pobierane bezpośrednio przez firmę Proton).";
+"Upgrade your plan" = "Ulepsz plan";
 
 /* 2FA screen recovery button title */
 "Use recovery code" = "Użyj kodu odzyskiwania";
@@ -439,11 +563,11 @@ Spróbuj ponownie.";
 /* Verifying button */
 "Verifying" = "Weryfikacja";
 
+/* Signup complete progress step payment verification */
+"Verifying your payment" = "Weryfikowanie płatności";
+
 /* visit item title */
 "Visit our Help Center" = "Odwiedź centrum pomocy";
-
-/* Plan footer title */
-"Visit protonmail.com to upgrade to Professional and Visionary plans, or to customize your plan." = "Odwiedź protonmail.com, aby dostosować plan lub ulepszyć go do wersji Professional lub Visionary.";
 
 /* Title */
 "Warning" = "Ostrzeżenie";
@@ -453,6 +577,12 @@ Spróbuj ponownie.";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Twoja subskrypcja została aktywowana. Uruchom ponownie aplikację, aby rozpocząć korzystanie z nowego planu.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email if you get locked out of your account." = "Jeśli zablokujesz konto, wyślemy instrukcję odzyskiwania na ten adres e-mail.";
+
+/* Recovery view description */
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Jeśli zablokujesz konto, wyślemy instrukcję odzyskiwania na ten adres e-mail lub numer telefonu.";
 
 /* Invalid verification alert message */
 "Would you like to receive a new verification code or use an alternate email address?" = "Czy chcesz otrzymać nowy kod weryfikacyjny lub użyć innego adresu e-mail?";
@@ -466,36 +596,43 @@ Spróbuj ponownie.";
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Tak, aktywuj go dla ";
 
+/* Plan footer purchased description */
+"You cannot manage subscriptions inside the mobile application." = "Nie możesz zarządzać subskrypcjami poprzez aplikację mobilną.";
+
 /* Error applying credit after registration alert */
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Zarejestrowałeś się pomyślnie, ale Twoja płatność nie została przetworzona. Aby ponownie wysłać informację dotyczącą płatności, kliknij przycisk Ponów próbę. Twoje konto zostanie obciążone tylko raz. Jeśli ten problem się powtarza, skontaktuj się ze wsparciem klienta.";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Rejestracja przebiegła pomyślnie, ale Twoja płatność nie została przetworzona. Aby ponownie wysłać informację dotyczącą płatności, kliknij przycisk Ponów próbę. Twoje konto zostanie obciążone tylko raz. Jeśli ten problem się powtarza, skontaktuj się ze wsparciem klienta.";
 
 /* Alert message of remove account */
 "You will be signed out and all the data associated with this account will be removed from this device." = "Zostaniesz wylogowany i wszystkie dane powiązane z tym kontem zostaną usunięte z tego urządzenia.";
 
-/* Info about ProtonMail address usage */
+/* *
+ * Login create address */
 "You will use this email address to log into all Proton services." = "Będziesz używać tego adresu e-mail do logowania się do wszystkich usług Proton.";
 
-/* Info about existing external ProtonMail address */
-"Your Proton Account is associated with %@. To use %@, please create an address." = "Twoje konto Proton jest powiązane z adresem %1$@. Utwórz adres, aby korzystać z usługi %2$@.";
-
 /* Complete view title */
-"Your account is being created" = "Tworzenie konta";
+"Your account is being created" = "Tworzenie konta…";
 
 /* Dialog text for missing keys error */
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Brak kluczy na Twoim koncie. Zaloguj się przez przeglądarkę, aby automatycznie wygenerować brakujące klucze. Następnie wróć do aplikacji i zaloguj się ponownie.";
 
-/* Enter email label */
+/* Email method */
 "Your email will only be used for this one-time verification." = "Adres e-mail zostanie użyty tylko do jednorazowej weryfikacji.";
 
-/* Enter SMS label */
+/* Signup summary paid plan description */
+"Your payment was confirmed and your %@ account successfully created." = "Płatność została potwierdzona. Konto %@ zostało utworzone.";
+
+/* SMS method */
 "Your phone number will only be used for this one-time verification." = "Numer telefonu zostanie użyty tylko do jednorazowej weryfikacji.";
 
 /* Plan details renew automatically expired */
 "Your plan will automatically renew on %@" = "Twój plan odnowi się automatycznie %@";
 
+/* Info about existing external Proton Mail address */
+"Your Proton Account is associated with %@. To use %@, please create an address." = "Twoje konto Proton jest powiązane z adresem %@. Utwórz adres, aby korzystać z usługi %@.";
+
+/* Signup summary free plan description */
+"Your Proton Free account was successfully created." = "Konto Proton Free zostało utworzone.";
+
 /* Recovery address label title */
 "Your recovery email address:" = "Twój adres pomocniczy:";
-
-/* Section title of account switcher */
-"switch to" = "zostaniesz przełączony na konto";
 

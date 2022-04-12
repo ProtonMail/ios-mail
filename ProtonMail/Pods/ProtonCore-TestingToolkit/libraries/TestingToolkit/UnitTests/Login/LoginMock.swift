@@ -34,17 +34,29 @@ import ProtonCore_Login
 public class LoginMock: Login {
     
     public init() {}
-
-    public let signUpDomain: String = "protonmail.com"
-
-    @FuncStub(Login.checkAvailability) public var checkAvailabilityStub
-    public func checkAvailability(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        checkAvailabilityStub(username, completion)
+    
+    @PropertyStub(\LoginMock.currentlyChosenSignUpDomain, initialGet: .empty) public var currentlyChosenSignUpDomainStub
+    public var currentlyChosenSignUpDomain: String {
+        get { currentlyChosenSignUpDomainStub() }
+        set { currentlyChosenSignUpDomainStub(newValue) }
     }
     
-    @FuncStub(Login.checkAvailabilityExternal) public var checkAvailabilityExternalStub
-    public func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
-        checkAvailabilityExternalStub(email, completion)
+    @PropertyStub(\LoginMock.allSignUpDomains, initialGet: .empty) public var allSignUpDomainsStub
+    public var allSignUpDomains: [String] { allSignUpDomainsStub() }
+    
+    @FuncStub(Login.checkAvailabilityForUsernameAccount) public var checkAvailabilityForUsernameAccountStub
+    public func checkAvailabilityForUsernameAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        checkAvailabilityForUsernameAccountStub(username, completion)
+    }
+    
+    @FuncStub(Login.checkAvailabilityForInternalAccount) public var checkAvailabilityForInternalAccountStub
+    public func checkAvailabilityForInternalAccount(username: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        checkAvailabilityForInternalAccountStub(username, completion)
+    }
+    
+    @FuncStub(Login.checkAvailabilityForExternalAccount) public var checkAvailabilityForExternalAccountStub
+    public func checkAvailabilityForExternalAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
+        checkAvailabilityForExternalAccountStub(email, completion)
     }
 
     @FuncStub(Login.setUsername) public var setUsernameStub
@@ -96,8 +108,8 @@ public class LoginMock: Login {
         updateAccountTypeStub(accountType)
     }
 
-    @FuncStub(Login.updateAvailableDomain) public var updateAvailableDomainStub
-    public func updateAvailableDomain(type: AvailableDomainsType, result: @escaping (String?) -> Void) {
+    @FuncStub(Login.updateAllAvailableDomains) public var updateAvailableDomainStub
+    public func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void) {
         updateAvailableDomainStub(type, result)
     }
     

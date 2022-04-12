@@ -35,7 +35,10 @@ public struct Google: DoHProviderInternal {
 
     public let url = "https://dns.google.com"
 
-    func query(host: String) -> String {
+    func query(host: String, sessionId: String?) -> String {
+        if let sessionId = sessionId {
+            return self.url + "/resolve?type=TXT&name=" + sessionId + "." + host
+        }
         return self.url + "/resolve?type=TXT&name=" + host
     }
 

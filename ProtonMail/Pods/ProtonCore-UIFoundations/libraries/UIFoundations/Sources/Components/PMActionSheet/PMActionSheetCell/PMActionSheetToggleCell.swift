@@ -56,7 +56,8 @@ extension PMActionSheetToggleCell {
         self.textLabel?.textColor = item.textColor
         self.toggle.isOn = item.isOn
         self.toggle.onTintColor = item.toggleColor
-
+        self.accessibilityIdentifier = "itemIndex_\(indexPath.section).\(indexPath.row)"
+        self.accessibilityLabel = item.title
         self.indexPath = indexPath
         self.delegate = delegate
         generateAccessibilityIdentifiers()

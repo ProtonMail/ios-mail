@@ -70,49 +70,33 @@ class CompleteViewModel {
     
     var progressCompletion: (() -> Void)?
 
-    func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {
-        self.progressStepWait(progressStep: .createAccount)
-        loginService.checkAvailability(username: userName) { result in
-            switch result {
-            case .success:
-                self.signupService.createNewUser(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
-                    switch result {
-                    case .success:
-                        self.login(name: userName, password: password) { result in
-                            completion(result)
-                        }
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            completion(.failure(error))
-                        }
-                    }
-                }
-            case .failure(let error):
-                switch error {
-                case .notAvailable:
-                    self.login(name: userName, password: password) { result in
-                        completion(result)
-                    }
-                case .generic:
-                    completion(.failure(error))
-                }
-            }
+    func createNewUser(userName: String, password: String, email: String?, phoneNumber: String?,
+                       completion: @escaping (Result<(LoginData), Error>) -> Void) {
+        DispatchQueue.main.async {
+            self.progressStepWait(progressStep: .createAccount)
+        }
+        switch self.loginService.minimumAccountType {
+        case .username:
+            createNewUsernameAccount(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
+        case .internal, .external:
+            createNewInternalAccount(userName: userName, password: password, email: email, phoneNumber: phoneNumber, completion: completion)
         }
     }
 
-    func createNewExternalUser(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(LoginData), Error>) -> Void) throws {
+    func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String,
+                                  completion: @escaping (Result<(LoginData), Error>) -> Void) {
         DispatchQueue.main.async {
             self.progressStepWait(progressStep: .createAccount)
-            self.signupService.createNewExternalUser(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
-                switch result {
-                case .success:
-                    self.login(name: email, password: password) { result in
-                        completion(result)
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
+        }
+        self.signupService.createNewExternalAccount(email: email, password: password, verifyToken: verifyToken, tokenType: tokenType) { result in
+            switch result {
+            case .success:
+                self.login(name: email, password: password) { result in
+                    completion(result)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    completion(.failure(error))
                 }
             }
         }
@@ -143,6 +127,66 @@ class CompleteViewModel {
     }
 
     // MARK: Private methods
+    
+    private func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?,
+                                          completion: @escaping (Result<(LoginData), Error>) -> Void) {
+        loginService.checkAvailabilityForUsernameAccount(username: userName) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(LoginError.invalidState))
+                return
+            }
+            switch result {
+            case .success:
+                self.signupService.createNewUsernameAccount(userName: userName, password: password, email: email, phoneNumber: phoneNumber) { result in
+                    switch result {
+                    case .success:
+                        self.login(name: userName, password: password, completion: completion)
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                switch error {
+                case .notAvailable:
+                    self.login(name: userName, password: password, completion: completion)
+                case .generic:
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    private func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?,
+                                          completion: @escaping (Result<(LoginData), Error>) -> Void) {
+        loginService.checkAvailabilityForInternalAccount(username: userName) { [weak self] result in
+            guard let self = self else {
+                completion(.failure(LoginError.invalidState))
+                return
+            }
+            switch result {
+            case .success:
+                self.signupService.createNewInternalAccount(userName: userName, password: password, email: email, phoneNumber: phoneNumber, domain: self.loginService.currentlyChosenSignUpDomain) { result in
+                    switch result {
+                    case .success:
+                        self.login(name: userName, password: password, completion: completion)
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                switch error {
+                case .notAvailable:
+                    self.login(name: userName, password: password, completion: completion)
+                case .generic:
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
 
     private func login(name: String, password: String, completion: @escaping (Result<(LoginData), Error>) -> Void) {
         loginService.login(username: name, password: password) { result in

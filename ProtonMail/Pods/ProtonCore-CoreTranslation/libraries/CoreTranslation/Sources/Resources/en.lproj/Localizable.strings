@@ -105,7 +105,7 @@
  * Login choose username
  */
 
-"Create ProtonMail address" = "Create ProtonMail address";
+"Create ProtonMail address" = "Create Proton Mail address";
 "Your Proton Account is associated with %@. To use %@, please create an address." = "Your Proton Account is associated with %@. To use %@, please create an address.";
 "Username" = "Username";
 "Next" = "Next";
@@ -152,7 +152,7 @@
 "Warning" = "Warning";
 "Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
 "Yes, activate it for " = "Yes, activate it for ";
-"No, for another ProtonMail account" = "No, for another ProtonMail account";
+"No, for another ProtonMail account" = "No, for another Proton Mail account";
 "payment failed" = "payment failed";
 "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
 "Retry" = "Retry";
@@ -163,11 +163,11 @@
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
 "Apple informed us they could not process the purchase." = "Apple informed us they could not process the purchase.";
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
 "Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
 "Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
 "Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
 
@@ -212,7 +212,7 @@
 "Next" = "Next";
 "Sign in" = "Sign in";
 "Use your current email instead" = "Use your current email instead";
-"Create a secure ProtonMail address instead" = "Create a secure ProtonMail address instead";
+"Create a secure ProtonMail address instead" = "Create a secure Proton Mail address instead";
 "Username" = "Username";
 "Email" = "Email";
 "Create your password" = "Create your password";
@@ -220,6 +220,7 @@
 "Password" = "Password";
 "Password must contain at least 8 characters" = "Password must contain at least 8 characters";
 "Repeat password" = "Repeat password";
+"Domain" = "Domain";
 "Set recovery method" = "Set recovery method";
 "Set recovery method (optional)" = "Set recovery method (optional)";
 // TODO: CP-2352 — remove the string once the new text (below) is translated to all languages
@@ -290,7 +291,7 @@
 "Multi-user support" = "Multi-user support";
 "The basic for private and secure communications." = "The basic for private and secure communications.";
 "Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
-"ProtonMail for professionals and businesses" = "ProtonMail for professionals and businesses";
+"ProtonMail for professionals and businesses" = "Proton Mail for professionals and businesses";
 "Mail + VPN bundle for families and small businesses" = "Mail + VPN bundle for families and small businesses";
 "Complete payment?" = "Complete payment?";
 "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";

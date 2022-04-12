@@ -22,7 +22,6 @@
 import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
-import ProtonCore_HumanVerification
 import ProtonCore_UIFoundations
 
 protocol HelpViewControllerDelegate: AnyObject {
@@ -84,39 +83,29 @@ final class HelpViewController: UIViewController, AccessibleView {
 // MARK: - Table view delegates
 
 extension HelpViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: PMCell.reuseIdentifier, for: indexPath) as! PMCell
-            cell.configure(item: HelpItem.allCases[indexPath.row])
-            return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: PMTitleCell.reuseIdentifier, for: indexPath) as! PMTitleCell
-            cell.title = CoreString._ls_help_more_help
-            return cell
-        case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: PMCell.reuseIdentifier, for: indexPath) as! PMCell
-            cell.configure(item: HelpItem.allCases.last!)
-            return cell
-        default:
-            fatalError()
-        }
-    }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        viewModel.helpSections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return HelpItem.allCases.count - 1
-        case 1:
-            return 1
-        case 2:
-            return 1
+        viewModel.helpSections[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let helpItem = viewModel.helpSections[indexPath.section][indexPath.row]
+        switch helpItem {
+        case .staticText(let text):
+            let cell = tableView.dequeueReusableCell(withIdentifier: PMTitleCell.reuseIdentifier,
+                                                     for: indexPath) as! PMTitleCell
+            cell.title = text
+            return cell
         default:
-            fatalError()
+            let cell = tableView.dequeueReusableCell(withIdentifier: PMCell.reuseIdentifier,
+                                                     for: indexPath) as! PMCell
+            cell.configure(item: helpItem)
+            return cell
         }
     }
 }
@@ -124,14 +113,7 @@ extension HelpViewController: UITableViewDataSource {
 extension HelpViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        switch indexPath.section {
-        case 0:
-            delegate?.userDidRequestHelp(item: HelpItem.allCases[indexPath.row])
-        case 2:
-            delegate?.userDidRequestHelp(item: HelpItem.allCases.last!)
-        default:
-            break
-        }
+        let helpItem = viewModel.helpSections[indexPath.section][indexPath.row]
+        delegate?.userDidRequestHelp(item: helpItem)
     }
 }
