@@ -97,7 +97,7 @@
 "Add birthday" = "Adicionar aniversário";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add cc and bcc";
+"Add cc and bcc" = "Adicionar cc e cco";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adicionar contatos";
@@ -447,7 +447,7 @@
 "Checking ...." = "Verificando...";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "Escolher endereço de envio diferente";
 
 /* contact placeholder */
 "City" = "Cidade";
@@ -471,7 +471,7 @@
 "Close" = "Fechar";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close cc and bcc";
+"Close cc and bcc" = "Fechar cc e cco";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Fechando";
@@ -665,7 +665,7 @@
 "Discard draft" = "Descartar rascunho";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Dispensar teclado";
 
 /* (No Comment) */
 "Display name" = "Nome de exibição";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Começar";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Voltar (recomendado)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ir para rascunhos";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Aviso de verificação humana";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorar aviso e continuar";
 
 /* Action */
 "Import Error" = "Erro de importação";
@@ -1218,7 +1224,7 @@
 "Message body" = "Corpo da mensagem";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "Conteúdo da mensagem";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "A mensagem não pôde ser enviada. Pelo menos um endereço/domínio do destinatário não existe ou está mal formatado.";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Esta pasta está vazia";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Esse link leva a um site que pode estar tentando roubar suas informações, como senhas e detalhes de cartão de crédito.\n%@\n\nPara sua segurança, não prossiga.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Esta mensagem contém imagens incorporadas.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Aviso: Antes de passar na verificação humana, você não pode enviar e-mail!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Aviso: Site suspeito de ser falso";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Não foi possível enviar sua mensagem, possivelmente por causa de uma má conexão de rede. Sua mensagem foi salva no Rascunhos e será enviada automaticamente na próxima vez que você abrir o aplicativo.";

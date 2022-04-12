@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Erste Schritte";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Zurück (empfohlen)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Zu Entwürfen wechseln";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Warnhinweis zur menschliche Überprüfung";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Warnung ignorieren und fortfahren";
 
 /* Action */
 "Import Error" = "Fehler beim Importieren";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Dieser Ordner ist leer";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dieser Link führt zu einer Website, die möglicherweise versucht, deine Informationen wie Passwörter und Kreditkartendaten zu stehlen.\n%@\n\nZu deiner Sicherheit solltest du nicht fortfahren.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Diese Nachricht enthält eingebettete Grafiken.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Achtung! Ohne die Bestätigung, dass Sie ein Mensch sind, können Sie keine E-Mail senden!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Warnung: Verdacht auf gefälschte Website";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ProtonMail konnten Ihre Nachricht nicht senden, möglicherweise wegen einer schlechten Netzwerkverbindung. Ihre Nachricht wurde unter Entwürfe gespeichert und wird automatisch gesendet, wenn Sie die App das nächste Mal öffnen.";

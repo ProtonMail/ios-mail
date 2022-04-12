@@ -44,7 +44,7 @@
 "<no object>" = "<sin objeto>";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 Message moved to archive" = "1 mensaje trasladado al archivo";
+"1 Message moved to archive" = "1 mensaje movido al archivo";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 mensaje movido a spam";
@@ -97,7 +97,7 @@
 "Add birthday" = "Agregar cumpleaños";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Añadir cc y bcc";
+"Add cc and bcc" = "Añadir CC y CCO";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Agregar contactos";
@@ -471,7 +471,7 @@
 "Close" = "Cerrar";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Cerrar cc y bcc";
+"Close cc and bcc" = "Cerrar CC y CCO";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Cerrando";
@@ -665,7 +665,7 @@
 "Discard draft" = "Descartar borrador";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Descartar el teclado";
+"Dismiss keyboard" = "Descartar teclado";
 
 /* (No Comment) */
 "Display name" = "Nombre a mostrar";
@@ -693,7 +693,7 @@
 "Do you want to discard your changes?" = "¿Quieres descartar los cambios?";
 
 /* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "¿Quieres enviar tu mensaje de todos modos?";
+"Do you want to send your message anyway?" = "¿Quieres enviar el mensaje de todos modos?";
 
 /* Action */
 "Don't remind me again" = "No volver a recordarme";
@@ -848,7 +848,7 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Introduce un código PIN entre 4 y 12 caracteres.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Introduzca un nuevo código PIN";
+"Enter new PIN code" = "Introduce el código PIN nuevo";
 
 /* (No Comment) */
 "Enter Verification Code" = "Introduce el código de verificación";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Comenzar";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Volver (recomendado)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ir a borradores";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Advertencia de verificación humana";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorar la advertencia y continuar";
 
 /* Action */
 "Import Error" = "Error al importar";
@@ -1166,7 +1172,7 @@
 "Log out" = "Cerrar sesión";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Logged out of %@" = "Cierre de sesión de %@";
+"Logged out of %@" = "Sesión cerrada de %@";
 
 /* error title */
 "Logs" = "Registros";
@@ -1376,7 +1382,7 @@
 "Nickname" = "Apodo";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "No attachment found";
+"No attachment found" = "No se ha encontrado ningún archivo adjunto";
 
 /* Title */
 "No connectivity detected…" = "No se ha detectado ninguna conectividad…";
@@ -1780,7 +1786,7 @@
 "Send message without subject?" = "¿Enviar mensaje sin asunto?";
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "Send read receipt";
+"Send read receipt" = "Enviar acuse de recibo";
 
 /* (No Comment) */
 "Send Verification Code" = "Enviar código de verificación";
@@ -1831,7 +1837,7 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Establece una contraseña para cifrar este mensaje para usuarios que no sean de ProtonMail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Establecer la caducidad del correo";
+"Set mail expiration" = "Establecer la expiración del correo";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "Establecer la contraseña del correo";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Esta carpeta está vacía";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Este enlace conduce a un sitio web que podría estar intentando robar su información, como contraseñas y datos de tarjetas de crédito.\n%@\n\nPor su seguridad, no continúe.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Este mensaje contiene imágenes incrustadas.";
 
@@ -2147,7 +2156,7 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Este mensaje puede ser un intento de suplantación. Comprueba el remitente y el contenido y asegúrate que sean legítimos.";
 
 /* The title of auto reply banner */
-"This message was automatically generated" = "Este mensaje se generó automáticamente";
+"This message was automatically generated" = "Este mensaje fue generado automáticamente";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Este mensaje caducará en %1$dD %2$dH %3$dM";
@@ -2269,7 +2278,7 @@
 "Unsubscribe" = "Cancelar suscripción";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Darse de baja de la lista de correo";
+"Unsubscribe from mailing list" = "Cancelar suscripción de la lista de correo";
 
 /* Error message */
 "Unsupported file type" = "Tipo de archivo no soportado";
@@ -2344,7 +2353,10 @@
 "Warning" = "Advertencia";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Advertencia: ¡Antes de pasar el control humano no puedes enviar correos electrónicos!";
+"Warning: Before you pass the human check you can't send email!" = "Advertencia: ¡No puedes enviar correos electrónicos antes de pasar el control humano!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Advertencia: presunto sitio web falso";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "No hemos podido enviar tu mensaje, posiblemente debido a una mala conexión de red. Tu mensaje ha sido guardado en Borradores y será enviado automáticamente la próxima vez que abras la aplicación.";
@@ -2401,7 +2413,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ como predeterminada porque es una característica de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Has desactivado el Face ID en los ajustes del sistema. El Face ID se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a los ajustes y activa de nuevo el Face ID, o vuelve a iniciar sesión.";
+"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Has desactivado Face ID en los ajustes del sistema. Face ID se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a los ajustes y activa de nuevo el Face ID, o vuelve a iniciar sesión.";
 
 /* Message */
 "You have %d new emails!" = "¡Tienes %d correos nuevos!";

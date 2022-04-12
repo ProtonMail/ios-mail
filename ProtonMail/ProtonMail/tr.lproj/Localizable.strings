@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Başlayalım";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Geri dön (önerilir)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Taslaklar kutusuna git";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "İnsan doğrulaması uyarısı";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Uyarıyı yok sayıp ilerle";
 
 /* Action */
 "Import Error" = "İçe aktarma sorunu";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Bu klasör boş";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir web sitesine gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Bu iletide gömülü görseller var.";
 
@@ -2346,6 +2355,9 @@
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Uyarı: İnsan doğrulamasını tamamlamadan e-posta gönderemezsiniz!";
 
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Uyarı: Şüpheli sahte web sitesi";
+
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklar kutusuna kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
 
@@ -2466,7 +2478,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifrelenmiş e-posta hesabınız kuruldu ve şifrelenmiş iletileri gönderip almaya hazır.";
 
 /* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da geçersiz kılındığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da kapatıldığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
 
 /* (No Comment) */
 "Your signature has been updated." = "İmzanız güncellendi.";

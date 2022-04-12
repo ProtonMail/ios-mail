@@ -393,7 +393,7 @@
 "Cancelling" = "キャンセル中";
 
 /* Warning message */
-"Cannot empty folder right now." = "Cannot empty folder right now.";
+"Cannot empty folder right now." = "現在、フォルダーを空にできません。";
 
 /* (No Comment) */
 "Cant' decrypt this attachment!" = "この添付ファイルを復号できません。";
@@ -491,7 +491,7 @@
 "Compose" = "新規作成";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "メッセージの作成";
+"Compose message" = "メッセージを作成";
 
 /* Title */
 "Compose to" = "新規作成";
@@ -824,7 +824,7 @@
 "Encrypted contact details" = "暗号化された連絡先の詳細";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "エンドツーエンド暗号化された署名付きメッセージ";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "エンドツーエンド暗号化されたメッセージ";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "始めましょう";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "戻る (推奨)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "下書きを開く";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "人間による操作であることの確認";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "警告を無視して続行";
 
 /* Action */
 "Import Error" = "インポート エラー";
@@ -1100,7 +1106,7 @@
 "Label as..." = "ラベル付け";
 
 /* Title */
-"Label as…" = "…としてラベル付け";
+"Label as…" = "ラベルを付ける";
 
 /* (No Comment) */
 "Label Management" = "ラベルの管理";
@@ -1499,7 +1505,7 @@
 "Personal" = "個人";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
+"PGP-encrypted and signed message" = "PGP 暗号化、署名されたメッセージ";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "検証済みアドレスからの、 PGP 暗号化されたメッセージ";
@@ -1831,7 +1837,7 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "ProtonMailを使用していないユーザー用に、メッセージの暗号化パスワードを設定してください。";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "メール期限を設定";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
 "Set mail password" = "メールパスワードを設定";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "このフォルダは空です";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "このリンクはパスワードやクレジットカードなどの情報を盗もうとするウェブサイトに誘導している可能性があります。\n%@\n\nセキュリティのため、アクセスしないでください。";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "このメッセージには埋め込み画像が含まれています。";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "警告: 人間による操作であることが確認できるまでメールの送信はできません!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "警告: 偽のウェブサイトの疑いがあります";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "ネットワーク接続が不安定なため、メッセージを送信できませんでした。 メッセージは下書きに保存され、次回アプリを開いたときに自動的に送信されます。";

@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Rozpocznij";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Wróć (zalecane)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Przejdź do Szkiców";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Ostrzeżenie weryfikacji antyspamowej";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignoruj ostrzeżenie i kontynuuj";
 
 /* Action */
 "Import Error" = "Błąd importu";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Folder jest pusty";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Link prowadzi do strony internetowej, która może próbować wykraść informacje, takie jak hasła i dane karty płatniczej.\n%@\n\nZe względów bezpieczeństwa nie otwieraj linku.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Ta wiadomość zawiera osadzone obrazy.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Ostrzeżenie: Nie możesz wysyłać wiadomości, zanim nie sprawdzimy, że jesteś człowiekiem!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Ostrzeżenie: podejrzana strona internetowa";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nie mogliśmy wysłać wiadomości, prawdopodobnie ze względu na słabe połączenie internetowe. Wiadomość została zapisana w folderze Szkice i zostanie wysłana automatycznie przy następnym uruchomieniu aplikacji.";

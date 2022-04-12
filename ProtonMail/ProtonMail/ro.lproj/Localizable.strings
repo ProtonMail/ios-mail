@@ -97,7 +97,7 @@
 "Add birthday" = "Adăugare dată naștere";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Adăugați cc și bcc";
+"Add cc and bcc" = "Adăugare C și CA";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Adăugare contacte";
@@ -182,7 +182,7 @@
 "Always on" = "Permanent pornit";
 
 /* Onboarding title */
-"And more…" = "Și mai mult…";
+"And more…" = "Și mai multe…";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversare";
@@ -400,7 +400,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "CI";
+"Cc" = "C";
 
 /* *
  *  PhoneVerifyViewController */
@@ -471,7 +471,7 @@
 "Close" = "Închidere";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Închideți cc și bcc";
+"Close cc and bcc" = "Închidere C și CA";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Închidere";
@@ -665,7 +665,7 @@
 "Discard draft" = "Aruncare ciornă";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Respingeți tastatura";
+"Dismiss keyboard" = "Ascundere tastatură";
 
 /* (No Comment) */
 "Display name" = "Nume afișat";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Începeți";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Întoarceți-vă (recomandat)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Accesare folder «Ciorne»";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Avertizare verificare persoană";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignorați avertismentul și continuați";
 
 /* Action */
 "Import Error" = "Eroare importare";
@@ -1218,7 +1224,7 @@
 "Message body" = "Conținut mesaj";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Conținutul mesajului";
+"Message content" = "Conținut mesaj";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
@@ -1355,7 +1361,7 @@
 "New Label" = "Etichetă nouă";
 
 /* Onboarding title */
-"New look, same protection" = "Un aspect nou, aceeași protecție";
+"New look, same protection" = "Un aspect nou, aceeași protecție.";
 
 /* Title */
 "New mailbox password" = "Parola nouă mesaje";
@@ -1499,7 +1505,7 @@
 "Personal" = "Personale";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "Mesaj criptat cu PGP și semnat";
+"PGP-encrypted and signed message" = "Mesaj criptat cu PGP și semnat.";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Mesaj criptat cu PGP de la adresă verificată";
@@ -1831,10 +1837,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Setați o parolă de criptare a acestui mesaj pentru cei ce nu folosesc ProtonMail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Setați expirarea corespondenței";
+"Set mail expiration" = "Setare expirare mesaj";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Setați parola de e-mail";
+"Set mail password" = "Setare parolă mesaj";
 
 /* Title */
 "Set Password" = "Setare parolă";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Acest folder este gol";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Acest link duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.\n%@\n\nPentru siguranța dumneavoastră, nu continuați.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Acest mesaj conține imagini încorporate.";
 
@@ -2346,6 +2355,9 @@
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Avertisment: Nu puteți trimite mesaje până nu dovediți că sunteți o persoană!";
 
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Avertisment: site suspect de fals";
+
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nu s-a putut trimite mesajul, probabil din cauza unei conexiuni slabe la rețea. Mesajul a fost salvat în «Ciorne» și va fi trimis automat data viitoare la deschiderea aplicației.";
 
@@ -2447,7 +2459,7 @@
 "Your changes will be discarded" = "Modificările vor fi anulate";
 
 /* Onboarding content */
-"Your encrypted email has been entirely redesigned for ease of use." = "E-mailul dumneavoastră criptat a fost reproiectat în întregime pentru a fi mai ușor de utilizat.";
+"Your encrypted email has been entirely redesigned for ease of use." = "E-mailul criptat a fost reproiectat în întregime pentru a fi mai ușor de utilizat.";
 
 /* Title of user feedback view */
 "Your feedback" = "Experiența personală";
@@ -2456,7 +2468,7 @@
 "Your folders" = "Foldere";
 
 /* (No Comment) */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare la ambele capete. Pentru a trimite automat mesaje securizate contactelor, invitați-le la ProtonMail! Mai puteți cripta și manual mesajele către acestea, dacă nu folosesc ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Mesajele sunt acum protejate cu criptare în ambele părți. Pentru a trimite automat mesaje securizate contactelor, invitați-le la ProtonMail! Mai puteți cripta și manual mesajele către acestea, dacă nu folosesc ProtonMail.";
 
 /* The section title of label manager table */
 "Your labels" = "Etichete";

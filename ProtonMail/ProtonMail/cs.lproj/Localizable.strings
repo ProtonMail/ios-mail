@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Začněte";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Go back (recommended)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Přejít do konceptů";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Upozornění kontroly lidskosti";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignore warning and continue";
 
 /* Action */
 "Import Error" = "Chyba importu";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Tato složka je prázdná";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Tato zpráva obsahuje vložené obrázky.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Varování: Do doby než projdete lidskou kontrolou, nemůžete odesílat e-maily!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Warning: suspected fake website";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nebylo možné zaslat Vaši zprávu protože může být špatné nastavení síťového spojení. Zpráva byla uchována ve formátu konceptu a bude automaticky opět zaslána, jakmile se otevře aplikace.";

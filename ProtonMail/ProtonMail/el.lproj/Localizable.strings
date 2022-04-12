@@ -97,7 +97,7 @@
 "Add birthday" = "Προσθήκη γενεθλίων";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add cc and bcc";
+"Add cc and bcc" = "Προσθήκη Κοιν. και Κρυφής Κοιν.";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Προσθήκη επαφών";
@@ -447,7 +447,7 @@
 "Checking ...." = "Γίνεται έλεγχος...";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "Επιλογή διαφορετικής διεύθυνσης αποστολέα";
 
 /* contact placeholder */
 "City" = "Πόλη";
@@ -471,7 +471,7 @@
 "Close" = "Κλείσιμο";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close cc and bcc";
+"Close cc and bcc" = "Κλείσιμο Κοιν. και Κρυφής Κοιν.";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Κλείσιμο";
@@ -665,7 +665,7 @@
 "Discard draft" = "Απόρριψη προχείρου";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Παράβλεψη πληκτρολογίου";
 
 /* (No Comment) */
 "Display name" = "Εμφανιζόμενο Όνομα";
@@ -824,7 +824,7 @@
 "Encrypted contact details" = "Κρυπτογραφημένα στοιχεία επαφής";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο από άκρο σε άκρο";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "Μήνυμα κρυπτογραφημένο από άκρο σε άκρο";
@@ -962,6 +962,9 @@
 /* title of the next button */
 "Get Started" = "Ξεκινήστε";
 
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Go back (recommended)";
+
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Μετάβαση στα πρόχειρα";
 
@@ -1003,6 +1006,9 @@
 
 /* human check warning title */
 "Human Check Warning" = "Προειδοποίηση Ελέγχου για Άνθρωπο";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Ignore warning and continue";
 
 /* Action */
 "Import Error" = "Σφάλμα κατά την Εισαγωγή";
@@ -1218,7 +1224,7 @@
 "Message body" = "Σώμα μηνύματος";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "Περιεχόμενο μηνύματος";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Δεν ήταν δυνατή η αποστολή μηνύματος. Τουλάχιστον μία διεύθυνση email παραλήπτη/domain δεν υπάρχει ή δεν έχει μορφοποιηθεί σωστά.";
@@ -1499,7 +1505,7 @@
 "Personal" = "Προσωπικό";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
+"PGP-encrypted and signed message" = "Μήνυμα υπογεγραμμένο και κρυπτογραφημένο με PGP";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "Κρυπτογραφημένο μήνυμα με PGP απο επαληθευμένη διεύθυνση";
@@ -1831,10 +1837,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Ορισμός κωδικού κρυπτογράφησης μηνύματος για χρήστες εκτός ProtonMail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "Ορισμός λήξης μηνύματος";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
+"Set mail password" = "Ορισμός κωδικού πρόσβασης μηνύματος";
 
 /* Title */
 "Set Password" = "Ορισμός Κωδικού Πρόσβασης";
@@ -2128,6 +2134,9 @@
 /* The secondary title of no result message */
 "This folder is empty" = "Αυτός ο φάκελος είναι κενός";
 
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Αυτό το μήνυμα περιέχει ενσωματωμένες εικόνες.";
 
@@ -2345,6 +2354,9 @@
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't send email!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Warning: suspected fake website";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
