@@ -11,12 +11,18 @@ class ConversationViewModel {
 
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
-        didSet { refreshView?() }
+        didSet {
+            guard messagesDataSource != oldValue else {
+                return
+            }
+            refreshView?()
+        }
     }
     private(set) var displayRule = MessageDisplayRule.showNonTrashedOnly
     var refreshView: (() -> Void)?
     var dismissView: (() -> Void)?
     var reloadRows: (([IndexPath]) -> Void)?
+    var leaveFocusedMode: (() -> Void)?
     var dismissDeletedMessageActionSheet: ((String) -> Void)?
 
     var showNewMessageArrivedFloaty: ((String) -> Void)?
@@ -60,6 +66,13 @@ class ConversationViewModel {
     private var recordNumOfMessages = 0
     private(set) var isExpandedAtLaunch = false
 
+    /// Focused mode means that the messages above the first expanded one are hidden from view.
+    private(set) var focusedMode = true
+
+    var firstExpandedMessageIndex: Int? {
+        messagesDataSource.firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false })
+    }
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
@@ -98,6 +111,14 @@ class ConversationViewModel {
         recordNumOfMessages = conversation.numMessages.intValue
         self.connectionStatusProvider = internetStatusProvider
         self.displayRule = self.isTrashFolder ? .showTrashedOnly: .showNonTrashedOnly
+    }
+
+    func scrollViewDidScroll() {
+        if focusedMode {
+            focusedMode = false
+
+            leaveFocusedMode?()
+        }
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
@@ -314,7 +335,7 @@ extension ConversationViewModel {
             if !isExpandedAtLaunch && recordNumOfMessages == messagesDataSource.count && !shouldIgnoreUpdateOnce {
                 if let path = self.expandSpecificMessage(dataModels: &self.messagesDataSource) {
                     tableView.reloadRows(at: [path], with: .automatic)
-                    self.conversationViewController?.scheduleAutoScroll(to: path, position: .top)
+                    self.conversationViewController?.attemptAutoScroll(to: path, position: .top)
                     setCellIsExpandedAtLaunch()
                 }
             }

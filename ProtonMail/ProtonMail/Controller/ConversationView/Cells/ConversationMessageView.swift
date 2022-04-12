@@ -5,7 +5,12 @@ class ConversationMessageView: UIView {
 
     var tapAction: (() -> Void)?
 
-    let cellControl = UIControl(frame: .zero)
+    let cellControl: UIControl = {
+        let control = UIControl(frame: .zero)
+        control.clipsToBounds = true
+        return control
+    }()
+
     let container = SubviewsFactory.container
 
     let contentStackView = UIStackView.stackView(axis: .horizontal, alignment: .center, spacing: 4)
@@ -73,7 +78,7 @@ class ConversationMessageView: UIView {
             container.topAnchor.constraint(equalTo: cellControl.topAnchor, constant: 4),
             container.leadingAnchor.constraint(equalTo: cellControl.leadingAnchor, constant: 8),
             container.trailingAnchor.constraint(equalTo: cellControl.trailingAnchor, constant: -8),
-            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4)
+            container.bottomAnchor.constraint(equalTo: cellControl.bottomAnchor, constant: -4).setPriority(as: .defaultHigh)
         ].activate()
 
         [
@@ -86,7 +91,7 @@ class ConversationMessageView: UIView {
         [
             initialsContainer.centerXAnchor.constraint(equalTo: initialsView.centerXAnchor),
             initialsContainer.centerYAnchor.constraint(equalTo: initialsView.centerYAnchor),
-            initialsContainer.heightAnchor.constraint(equalToConstant: 28),
+            initialsContainer.heightAnchor.constraint(equalToConstant: 28).setPriority(as: .defaultHigh),
             initialsContainer.widthAnchor.constraint(equalToConstant: 28)
         ].activate()
 

@@ -38,6 +38,7 @@ class ConversationViewTrashedHintCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .clear
+        clipsToBounds = true
         setUpSubviews()
         setUpLayout()
     }
@@ -63,6 +64,7 @@ class ConversationViewTrashedHintCell: UITableViewCell {
             customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2)
+                .setPriority(as: .defaultHigh)
         ].activate()
     }
 
