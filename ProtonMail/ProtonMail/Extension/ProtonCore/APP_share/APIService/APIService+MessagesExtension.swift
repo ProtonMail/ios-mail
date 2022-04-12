@@ -37,8 +37,9 @@ extension APIService {
         var headers = api.header
         headers[HTTPHeader.apiVersion] = api.version
         if priority != nil {
-            headers["Priority"] = priority
+            headers["priority"] = priority
         }
+        //print("GET REQUEST: path:\(api.path), parameters: \(api.parameters), headers: \(headers)")
         self.request(method: .get,
                      path: api.path,
                      parameters: api.parameters,
@@ -53,7 +54,7 @@ extension APIService {
         let path = MessagePath.base + "/\(messageID)"
         var headers: [String:Any] = [:]
         if priority != nil {
-            headers["Priority"] = priority
+            headers["priority"] = priority
         }
         self.request(method: .get,
                      path: path,
