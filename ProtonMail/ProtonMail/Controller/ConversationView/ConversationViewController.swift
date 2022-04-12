@@ -20,14 +20,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     private var cachedViewControllers: [IndexPath: ConversationExpandedMessageViewController] = [:]
     private(set) var shouldReloadWhenAppIsActive = false
 
-    private var autoScrollState: AutoScrollState = .notRequested
-
-    private enum AutoScrollState {
-        case notRequested
-        case pendingRequest(IndexPath, UITableView.ScrollPosition)
-        case disabledByUserInitiatedScroll
-    }
-
     init(coordinator: ConversationCoordinatorProtocol,
          viewModel: ConversationViewModel,
          applicationStateProvider: ApplicationStateProvider = UIApplication.shared) {
@@ -80,10 +72,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         guard !customView.tableView.visibleCells.isEmpty,
               !viewModel.isExpandedAtLaunch else { return }
 
-        if let row = viewModel.messagesDataSource
-            .firstIndex(where: { $0.messageViewModel?.state.isExpanded ?? false }) {
+        if viewModel.firstExpandedMessageIndex != nil {
             viewModel.setCellIsExpandedAtLaunch()
-            self.scheduleAutoScroll(to: IndexPath(row: row, section: 1), position: .top)
         } else if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
@@ -154,23 +144,30 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.checkNavigationTitle()
+        viewModel.scrollViewDidScroll()
 
-        if scrollView.isTracking {
-            self.autoScrollState = .disabledByUserInitiatedScroll
+        self.checkNavigationTitle()
+    }
+
+    private func leaveFocusedMode() {
+        // the idea is to keep the expanded cell in exactly the same spot after expansion
+        // to ensure that, we add the difference in content size to the offset
+
+        let contentHeightBeforeExpansion = customView.tableView.contentSize.height
+
+        customView.tableView.reloadData()
+
+        let contentHeightAfterExpansion = customView.tableView.contentSize.height
+        let previouslyHiddenContentHeight = contentHeightAfterExpansion - contentHeightBeforeExpansion
+
+        DispatchQueue.main.async {
+            self.customView.tableView.contentOffset.y += previouslyHiddenContentHeight
         }
     }
 
-    func scheduleAutoScroll(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
+    func attemptAutoScroll(to indexPath: IndexPath, position: UITableView.ScrollPosition) {
         if self.customView.tableView.indexPathExists(indexPath) {
             self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
-        }
-
-        switch self.autoScrollState {
-        case .notRequested, .pendingRequest:
-            self.autoScrollState = .pendingRequest(indexPath, position)
-        case .disabledByUserInitiatedScroll:
-            break
         }
     }
 
@@ -277,6 +274,10 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
 
+        viewModel.leaveFocusedMode = { [weak self] in
+            self?.leaveFocusedMode()
+        }
+
         viewModel.dismissDeletedMessageActionSheet = { [weak self] messageID in
             guard messageID == self?.selectedMessageID else { return }
             self?.dismissActionSheet()
@@ -370,15 +371,41 @@ private extension ConversationViewController {
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
         switch indexPath.section {
         case 0:
+            guard headerShouldBeVisible(at: indexPath.row) else {
+                return 0
+            }
+
             return UITableView.automaticDimension
         case 1:
+            guard messageShouldBeVisible(at: indexPath.row) else {
+                return 0
+            }
+
             guard let viewType = self.viewModel.messagesDataSource[safe: indexPath.row] else {
                 return UITableView.automaticDimension
             }
+
             return countHeightFor(viewType: viewType, estimated: estimated)
         default:
             fatalError("Not supported section")
         }
+    }
+
+    private func headerShouldBeVisible(at index: Int) -> Bool {
+        switch self.viewModel.headerSectionDataSource[index] {
+        case .trashedHint:
+            return !viewModel.focusedMode
+        default:
+            return true
+        }
+    }
+
+    private func messageShouldBeVisible(at index: Int) -> Bool {
+        guard viewModel.focusedMode, let firstExpandedMessageIndex = viewModel.firstExpandedMessageIndex else {
+            return true
+        }
+
+        return index >= firstExpandedMessageIndex
     }
 
     private func headerCell(
@@ -484,21 +511,6 @@ private extension ConversationViewController {
             customView.tableView.beginUpdates()
             customView.tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
-
-            if isLoaded {
-                self.attemptAutoScroll()
-            }
-        }
-    }
-
-    private func attemptAutoScroll() {
-        switch self.autoScrollState {
-        case let .pendingRequest(indexPath, position):
-            self.autoScrollState = .notRequested
-            guard self.customView.tableView.indexPathExists(indexPath) else { return }
-            self.customView.tableView.scrollToRow(at: indexPath, at: position, animated: true)
-        default:
-            break
         }
     }
 
@@ -1037,7 +1049,7 @@ extension ConversationViewController {
 
             self?.cellTapped(messageId: messageId)
             let indexPath = IndexPath(row: Int(index), section: 1)
-            self?.scheduleAutoScroll(to: indexPath, position: .top)
+            self?.attemptAutoScroll(to: indexPath, position: .top)
         }
     }
 
@@ -1047,7 +1059,7 @@ extension ConversationViewController {
         }
         cellTapped(messageId: messageId)
         let indexPath = IndexPath(row: index, section: 1)
-        self.scheduleAutoScroll(to: indexPath, position: .top)
+        self.attemptAutoScroll(to: indexPath, position: .top)
     }
 }
 
@@ -1063,4 +1075,3 @@ extension ConversationViewController: PMActionSheetEventsListener {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 }
-
