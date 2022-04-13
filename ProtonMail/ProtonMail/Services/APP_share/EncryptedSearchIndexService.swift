@@ -261,7 +261,6 @@ extension EncryptedSearchIndexService {
                 break
             }
         }
-        // TODO set last indexed message time/id
         return true
     }
 

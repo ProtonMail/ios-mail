@@ -22,7 +22,7 @@ import UIKit
 class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel: SettingsLocalStorageViewModel!
     internal var coordinator: SettingsDeviceCoordinator?
-    
+
     struct Key {
         static let cellHeight: CGFloat = 144.0
         static let cellHeightDownloadedMessages: CGFloat = 140.0
@@ -31,36 +31,33 @@ class SettingsLocalStorageViewController: ProtonMailTableViewController, ViewMod
         static let headerHeight: CGFloat = 8.0
         static let headerCell: String = "header_cell"
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.updateTitle()
-        
+
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(LocalStorageTableViewCell.self)
-        
+
         self.tableView.estimatedSectionFooterHeight = Key.footerHeight
-        //self.tableView.sectionFooterHeight = //UITableView.automaticDimension
-        //self.tableView.sectionHeaderHeight = Key.headerHeight
-        //self.tableView.estimatedSectionHeaderHeight = Key.headerHeight
         self.tableView.estimatedRowHeight = Key.cellHeight
         self.tableView.rowHeight = UITableView.automaticDimension
     }
-    
+
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
-    
+
     func set(coordinator: SettingsDeviceCoordinator) {
         self.coordinator = coordinator
     }
-    
+
     func set(viewModel: SettingsLocalStorageViewModel) {
         self.viewModel = viewModel
     }
-    
+
     private func updateTitle() {
         self.title = LocalString._settings_title_of_local_storage
     }
@@ -70,18 +67,18 @@ extension SettingsLocalStorageViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return Key.headerHeightFirstCell
         }
         return Key.headerHeight
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = ColorProvider.BackgroundSecondary
@@ -101,17 +98,17 @@ extension SettingsLocalStorageViewController {
 
         return headerView
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 2 {
             return Key.footerHeight
         }
         return CGFloat.leastNormalMagnitude
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .cachedData:
@@ -122,7 +119,7 @@ extension SettingsLocalStorageViewController {
             return Key.cellHeightDownloadedMessages
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let section = indexPath.section
         let eSection = self.viewModel.sections[section]
@@ -131,10 +128,10 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_cached_data_button, for: UIControl.State.normal)
-                let cachedData: String = "" //This should be the size of the messages in core data
+                let cachedData: String = "" // This should be the size of the messages in core data
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_cached_data_text)
                 localStorageCell.configCell(eSection.title, infoText, cachedData){
-                    //TODO button action
+                    //TODO implement button action
                     print("Button pressed in cached data")
                 }
             }
@@ -143,11 +140,11 @@ extension SettingsLocalStorageViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: LocalStorageTableViewCell.CellID, for: indexPath)
             if let localStorageCell = cell as? LocalStorageTableViewCell {
                 localStorageCell.button.setTitle(LocalString._settings_local_storage_attachments_button, for: UIControl.State.normal)
-                let attachments: String = ""//This should be the size of the attachments of the emails
+                let attachments: String = ""// This should be the size of the attachments of the emails
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
                 let infoText = NSMutableAttributedString(string: LocalString._settings_local_storage_attachments_text, attributes: attr)
                 localStorageCell.configCell(eSection.title, infoText, attachments){
-                    //TODO button action
+                    //TODO implement button action
                     print("Button pressed in attachments")
                 }
             }
@@ -171,7 +168,7 @@ extension SettingsLocalStorageViewController {
                 let attr = FontManager.CaptionWeak.lineBreakMode(.byWordWrapping)
 
                 let infoText = NSMutableAttributedString(string: full, attributes: attr)
-                
+
                 if let subrange = full.range(of: seeDetails){
                     let nsRange = NSRange(subrange, in: full)
                     infoText.addAttribute(NSAttributedString.Key.foregroundColor, value: ColorProvider.InteractionNorm, range: nsRange)
@@ -183,7 +180,7 @@ extension SettingsLocalStorageViewController {
             return cell
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         header?.contentView.subviews.forEach { $0.removeFromSuperview() }
@@ -204,27 +201,25 @@ extension SettingsLocalStorageViewController {
                 NSLayoutConstraint.activate([
                     textLabel.topAnchor.constraint(equalTo: headerCell.contentView.topAnchor, constant: 8),
                     textLabel.leadingAnchor.constraint(equalTo: headerCell.contentView.leadingAnchor, constant: 16),
-                    //textLabel.bottomAnchor.constraint(equalTo: headerCell.contentView.bottomAnchor, constant: -8),    TODO
-                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16) //TODO there seems to be a problem with this constraint and the width of the table
+                    textLabel.trailingAnchor.constraint(equalTo: headerCell.contentView.trailingAnchor, constant: -16)
                 ])
                 break
             }
         }
         return header
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
-        
+
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .cachedData, .attachments:
-            break //Do nothing
+            break
         case .downloadedMessages:
             let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
             let vc = SettingsEncryptedSearchViewController()
             vc.set(viewModel: vm)
-            //vc.set(coordinator: self.coordinator!)
             show(vc, sender: self)
             break
         }
