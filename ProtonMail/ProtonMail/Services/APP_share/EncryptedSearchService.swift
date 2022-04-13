@@ -1147,7 +1147,7 @@ extension EncryptedSearchService {
             let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
             bccList.add(r)
         }
-        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject, sender, cleanedBody, toList, ccList, bccList)
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject, sender, cleanedBody, toList, ccList, bccList, message.AddressID)
 
         let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
         var encryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil

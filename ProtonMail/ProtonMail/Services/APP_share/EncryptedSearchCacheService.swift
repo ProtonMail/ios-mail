@@ -226,7 +226,7 @@ extension EncryptedSearchCacheService {
                 bccList.add(r)
             }
 
-            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject, sender, emailContent, toList, ccList, bccList)
+            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject, sender, emailContent, toList, ccList, bccList, esMessage.AddressID)
 
             return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time!.timeIntervalSince1970), locationValue: Int64(Message.Location.allmail.rawValue)!, unreadValue: msg.unRead, isStarredValue: msg.starred, labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
         }
