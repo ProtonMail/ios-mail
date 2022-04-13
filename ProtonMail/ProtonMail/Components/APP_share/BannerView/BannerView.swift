@@ -550,6 +550,10 @@ extension BannerView {
             url = URL(string: "downloading://")
         } else if link == LocalString._encrypted_search_banner_slow_search_link {
             url = URL(string: "slowsearch://")
+        } else if link == LocalString._encrypted_search_info_search_paused_link {
+                url = URL(string: "paused://")
+        } else if link == LocalString._encrypted_search_info_search_partial_link {
+                url = URL(string: "partial://")
         } else {
             url = URL(string: link)
         }
@@ -561,7 +565,6 @@ extension BannerView {
             formattedString.addAttribute(.link, value: attributes, range: range)
         }
 
-        //print("formated string: \(formattedString)")
         return formattedString
     }
 
