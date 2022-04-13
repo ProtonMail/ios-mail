@@ -36,7 +36,6 @@ protocol SearchViewUIProtocol: UIViewController {
     func reloadTable()
     func showSlowSearchBanner()
     func removeSearchInfoBanner()
-    func stopSearchInfoActivityIndicator()
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter {
@@ -51,7 +50,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private var slowSearchBanner: BannerView? = nil
     private var popupView: PopUpView? = nil
     private var grayedOutView: UIView? = nil
-    private var searchInfoActivityIndicator: UIActivityIndicatorView? = nil
+    private var actionBar: PMActionBar?
     private var actionSheet: PMActionSheet?
 
     // MARK: - Private Constants
@@ -234,21 +233,40 @@ extension SearchViewController {
         if let userID = usersManager.firstUser?.userInfo.userId {
             let state = EncryptedSearchService.shared.getESState(userID: userID)
             switch state {
-            case .downloading, .paused, .refresh:
+            case .downloading, .refresh:
                 text = LocalString._encrypted_search_info_search_downloading
                 link = LocalString._encrypted_search_info_search_downloading_link
                 break
-            case .complete, .undetermined, .background, .backgroundStopped, .partial, .lowstorage, .disabled:
+            case .paused:
+                text = LocalString._encrypted_search_info_search_paused
+                link = LocalString._encrypted_search_info_search_paused_link
+                break
+            case .partial:  // storage limit reached
+                text = LocalString._encrypted_search_info_search_partial_prefix +
+                       EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
+                       LocalString._encrypted_search_info_search_partial_suffix
+                link = LocalString._encrypted_search_info_search_partial_link
+                break
+            case .lowstorage:  // storage low
+                text = LocalString._encrypted_search_info_search_lowstorage_prefix +
+                       EncryptedSearchIndexService.shared.getOldestMessageInSearchIndex(for: userID).asString +
+                       LocalString._encrypted_search_info_search_lowstorage_suffix
+                break
+            case .complete, .undetermined, .background, .backgroundStopped, .disabled:
                 return
             }
 
             DispatchQueue.main.async {
-                let dismissActionCallback: BannerView.dismissActionBlock? = {
-                    self.searchInfoActivityIndicator?.stopAnimating()
-                }
+                let dismissActionCallback: BannerView.dismissActionBlock? = {}
                 let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                     switch state {
-                    case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped, .partial:
+                    case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
+                        break
+                    case .partial:
+                        let vm = SettingsEncryptedSearchDownloadedMessagesViewModel(encryptedSearchDownloadedMessagesCache: userCachedStatus)
+                        let vc = SettingsEncryptedSearchDownloadedMessagesViewController()
+                        vc.set(viewModel: vm)
+                        self.show(vc, sender: self)
                         break
                     case .downloading, .paused, .refresh:
                         let vm = SettingsEncryptedSearchViewModel(encryptedSearchCache: userCachedStatus)
@@ -267,21 +285,6 @@ extension SearchViewController {
                 //self.tableView.translatesAutoresizingMaskIntoConstraints = false
                 //self.tableView.topAnchor.constraint(equalTo: self.searchInfoBanner!.bottomAnchor).isActive = true
                 //self.view.layoutIfNeeded()  // update table layout change
-
-                // Show spinner
-                if #available(iOS 13.0, *) {
-                    self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .medium)
-                } else {
-                    self.searchInfoActivityIndicator = UIActivityIndicatorView(style: .white)
-                }
-                self.searchInfoActivityIndicator?.startAnimating()
-                self.searchInfoActivityIndicator?.hidesWhenStopped = true
-                self.searchInfoActivityIndicator?.translatesAutoresizingMaskIntoConstraints = false
-                self.view.addSubview(self.searchInfoActivityIndicator!)
-                NSLayoutConstraint.activate([
-                    self.searchInfoActivityIndicator!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                    self.searchInfoActivityIndicator!.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-                ])
             }
         }
     }
@@ -289,7 +292,6 @@ extension SearchViewController {
     internal func removeSearchInfoBanner() {
         self.searchInfoBanner?.remove(animated: false)
         self.searchInfoBanner = nil
-        self.stopSearchInfoActivityIndicator()
 
         if userCachedStatus.isEncryptedSearchOn == false {
             // Clear existing search results
@@ -297,11 +299,6 @@ extension SearchViewController {
             // Run search on server
             self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: true)
         }
-    }
-    
-    internal func stopSearchInfoActivityIndicator() {
-        self.searchInfoActivityIndicator?.stopAnimating()
-        self.searchInfoActivityIndicator?.isHidden = true
     }
 }
 
