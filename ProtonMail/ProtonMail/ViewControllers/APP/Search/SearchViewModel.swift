@@ -666,7 +666,6 @@ extension SearchViewModel {
         }
         DispatchQueue.main.async {
             self.uiDelegate?.activityIndicator(isAnimating: false)
-            self.uiDelegate?.stopSearchInfoActivityIndicator()
         }
 
         self.currentPage = currentPage

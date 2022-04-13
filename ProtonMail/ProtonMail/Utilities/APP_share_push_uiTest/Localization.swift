@@ -1311,6 +1311,13 @@ class LocalizedString {
 
     lazy var _encrypted_search_info_search_downloading = NSLocalizedString("Messages are being downloaded for content search. Some results may not be shown. %1$@", comment: "Text for the search info banner when indexing is ongoing.")
     lazy var _encrypted_search_info_search_downloading_link = NSLocalizedString("See progress.", comment: "Text for the link to show the current indexing progress")
+    lazy var _encrypted_search_info_search_paused = NSLocalizedString("Message downloading paused. Find out how to %1$@", comment: "Text for the search info banner when indexing is paused.")
+    lazy var _encrypted_search_info_search_paused_link = NSLocalizedString("resume manually.", comment: "Text for the link to show when indexing is paused.")
+    lazy var _encrypted_search_info_search_partial_prefix = NSLocalizedString("Messages from before ", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
+    lazy var _encrypted_search_info_search_partial_suffix = NSLocalizedString(", will not be searched. To search within them, increase the %1$@", comment: "Text for the search info banner when indexing is stopped because of storage limit reached.")
+    lazy var _encrypted_search_info_search_partial_link = NSLocalizedString("local storage limit.", comment: "Text for the link to show when indexing is stopped because of storage limit reached.")
+    lazy var _encrypted_search_info_search_lowstorage_prefix = NSLocalizedString("Messages from before ", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
+    lazy var _encrypted_search_info_search_lowstorage_suffix = NSLocalizedString(", will not be searched. To search within them, free up storage sapce on this device.", comment: "Text for the search info banner when indexing is stopped because of storage exceeded.")
     lazy var _encrypted_search_banner_slow_search = NSLocalizedString("Search taking too long? %1$@ from this search for faster results.", comment: "Text for the banner when content search is slow.")
     lazy var _encrypted_search_banner_slow_search_link = NSLocalizedString("Exclude message content", comment: "Text for the link in the banner when content search is slow.")
 
