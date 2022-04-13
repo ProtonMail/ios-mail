@@ -42,6 +42,7 @@ class BannerView: PMView {
     private var link: String? = ""
     private var appearance: Appearance?
     private var icon: UIImageView? = nil
+    private var messageLabel: UILabel? = nil
 
     typealias tapAttributedTextActionBlock = () -> Void
     var callback: tapAttributedTextActionBlock?
@@ -182,6 +183,11 @@ class BannerView: PMView {
             self.messageTextview.attributedText = attributed
             self.messageTextview.linkTextAttributes = yourAttributes
         }
+
+        self.messageLabel = UILabel()
+        self.messageLabel?.text = message
+        self.messageLabel?.isHidden = true
+        self.addSubview(self.messageLabel!)
 
         self.messageTextview.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
@@ -383,21 +389,30 @@ extension BannerView: UIGestureRecognizerDelegate {
                 ])
             }
         } else if self.appearance == .esBlack {
-            // Set constraints for the text
-            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            // Use a label instead of the uitextview - set constraints
+            self.messageTextview.isHidden = true
+            self.messageLabel?.isHidden = false
+            self.messageLabel?.textColor = self.appearance?.textColor
+            self.messageLabel?.font = self.appearance?.fontSize
+            self.messageLabel?.numberOfLines = 2
+            self.messageLabel?.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
-                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+                self.messageLabel!.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 16),
+                self.messageLabel!.centerYAnchor.constraint(equalTo: self.centerYAnchor)
             ])
+            if bannerWidth <= 396 {
+                NSLayoutConstraint.activate([
+                    self.messageLabel!.widthAnchor.constraint(equalToConstant: bannerWidth - 48 - 16)
+                ])
+            }
+
             // Set constraints for icon
             self.icon?.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                self.icon!.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
-                self.icon!.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-                self.icon!.trailingAnchor.constraint(equalTo: self.messageTextview.leadingAnchor, constant: -8),
-                self.icon!.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24)
+                self.icon!.trailingAnchor.constraint(equalTo: self.messageLabel!.leadingAnchor, constant: -8),
+                self.icon!.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                self.icon!.widthAnchor.constraint(equalToConstant: 21),
+                self.icon!.heightAnchor.constraint(equalToConstant: 21)
             ])
         }
     }
