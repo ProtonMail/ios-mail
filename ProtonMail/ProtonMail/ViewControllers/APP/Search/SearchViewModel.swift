@@ -75,15 +75,7 @@ final class SearchViewModel: NSObject {
     private var fetchController: NSFetchedResultsController<Message>?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
-    private var localObjectsIndexingObserver: NSKeyValueObservation? {
-        didSet {
-            DispatchQueue.main.async { [weak self] in
-                let isHidden = self?.localObjectsIndexingObserver == nil
-                self?.uiDelegate?.setupProgressBar(isHidden: isHidden)
-            }
-        }
-    }
-    private var dbContents: [LocalObjectsIndexRow] = []
+    private var dbContents: Array<LocalObjectsIndexRow> = []
     private var currentPage = 0
     private var query = ""
 
@@ -576,8 +568,7 @@ extension SearchViewModel {
                                           Message.Attributes.sender,
                                           Message.Attributes.toList]
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
-            self?.localObjectsIndexingObserver = nil
+            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
             completion()
         })
 
@@ -590,14 +581,6 @@ extension SearchViewModel {
             }
 
             self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(
-                \Progress.completedUnitCount,
-                options: NSKeyValueObservingOptions.new) { [weak self] progress, _ in
-                    DispatchQueue.main.async {
-                        let completionRate = Float(progress.completedUnitCount) / Float(count)
-                        self?.uiDelegate?.update(progress: completionRate)
-                    }
-            }
         }
     }
 
