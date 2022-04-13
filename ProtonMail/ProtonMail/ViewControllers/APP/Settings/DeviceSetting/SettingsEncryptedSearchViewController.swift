@@ -87,9 +87,8 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
 
         //Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
-
-        //add banner
-        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh || EncryptedSearchService.shared.state == .lowstorage {
+        
+        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
             self.showInfoBanner()
         }
     }
@@ -528,6 +527,7 @@ extension SettingsEncryptedSearchViewController {
 
                 UIView.performWithoutAnimation {
                     self.tableView.reloadRows(at: [path], with: .none)
+                    self.showInfoBanner()
                 }
             }
         }
@@ -538,6 +538,9 @@ extension SettingsEncryptedSearchViewController {
             if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
                 DispatchQueue.main.async {
                     UIView.performWithoutAnimation {
+                        if let banner = self.banner {
+                            banner.remove(animated: false)
+                        }
                         self.tableView.reloadData()
                     }
                 }
@@ -545,11 +548,32 @@ extension SettingsEncryptedSearchViewController {
         }
     }
 
-    private func showInfoBanner(){
-        if (self.banner == nil) {
-            self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
-            self.view.addSubview(self.banner)
+    private func showInfoBanner() {
+        if self.banner != nil {
+            UIView.performWithoutAnimation {
+                self.banner.remove(animated: false)
+            }
+        }
 
+        var positionOfBanner: CGFloat = 516
+        // If search message content is switched on the state is still disabled -> show banner same as when downloading
+        if EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
+            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
+                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressNoWifi + 16
+            } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
+                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressLowBattery + 16
+            } else {
+                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgress + 16
+            }
+        } else if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
+            positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressFinished + 16
+        } else if EncryptedSearchService.shared.state == .refresh {
+            positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressIndexUpdate + 16
+        }
+        self.banner = BannerView(appearance: .esBlack, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: positionOfBanner, dismissDuration: Double.infinity)
+
+        UIView.performWithoutAnimation {
+            self.view.addSubview(self.banner)
             self.banner.drop(on: self.view, from: .top)
         }
     }
