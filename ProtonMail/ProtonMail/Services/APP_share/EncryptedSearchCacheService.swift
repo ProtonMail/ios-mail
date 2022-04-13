@@ -226,9 +226,24 @@ extension EncryptedSearchCacheService {
                 bccList.add(r)
             }
 
-            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject, sender, emailContent, toList, ccList, bccList, esMessage.AddressID)
+            let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(esMessage.Subject,
+                                                                                                                             sender,
+                                                                                                                             emailContent,
+                                                                                                                             toList,
+                                                                                                                             ccList,
+                                                                                                                             bccList,
+                                                                                                                             esMessage.AddressID,
+                                                                                                                             esMessage.ConversationID,
+                                                                                                                             Int64(esMessage.Flags),
+                                                                                                                             esMessage.Unread == 1,
+                                                                                                                             esMessage.isStarred,
+                                                                                                                             esMessage.IsReplied == 1,
+                                                                                                                             esMessage.IsRepliedAll == 1,
+                                                                                                                             esMessage.IsForwarded == 1,
+                                                                                                                             esMessage.NumAttachments,
+                                                                                                                             Int64(esMessage.ExpirationTime!.timeIntervalSince1970))
 
-            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time!.timeIntervalSince1970), locationValue: Int64(Message.Location.allmail.rawValue)!, unreadValue: msg.unRead, isStarredValue: msg.starred, labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
+            return EncryptedsearchMessage(esMessage.ID, timeValue: Int64(msg.time!.timeIntervalSince1970), orderValue: Int64(truncating: msg.order), labelidsValue: esMessage.LabelIDs.joined(separator: ";"), encryptedValue: encryptedContent, decryptedValue: decryptedMessageContent)
         }
         return nil
     }

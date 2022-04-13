@@ -65,12 +65,9 @@ extension EncryptedSearchIndexService {
         static let Table_Searchable_Messages = "SearchableMessage"
         static let Column_Searchable_Message_Id = "ID"
         static let Column_Searchable_Message_Time = "Time"
-        static let Column_Searchable_Message_Labels = "LabelIDs"
-        static let Column_Searchable_Message_Has_Body = "HasBody"
-        static let Column_Searchable_Message_Is_Starred = "IsStarred"
-        static let Column_Searchable_Message_Unread = "Unread"
-        static let Column_Searchable_Message_Location = "Location"
         static let Column_Searchable_Message_Order = "MessageOrder"
+        static let Column_Searchable_Message_Labels = "LabelIDs"
+        static let Column_Searchable_Message_Location = "Location"
         static let Column_Searchable_Message_Decryption_Failed = "DecryptionFailed"
 
         static let Column_Searchable_Message_Encrypted_Content = "EncryptedContent"
@@ -82,13 +79,8 @@ extension EncryptedSearchIndexService {
     struct DatabaseEntries {
         var messageID:Expression<String> = Expression(value: "")
         var time:Expression<CLong> = Expression(value: 0)
+        var order:Expression<CLong> = Expression(value: 0)
         var labelIDs:Expression<String> = Expression(value: "")
-        var isStarred:Expression<Bool?> = Expression(value: nil)
-        var unread:Expression<Bool> = Expression(value: false)
-        var location:Expression<Int> = Expression(value: -1)
-        var order:Expression<CLong?> = Expression(value: nil)
-        var hasBody:Expression<Bool> = Expression(value: false)
-        var decryptionFailed:Expression<Bool> = Expression(value: false)
         var encryptionIV: Expression<String?> = Expression(value: nil)
         var encryptedContent:Expression<String?> = Expression(value: nil)
         var encryptedContentFile: Expression<String?> = Expression(value: nil)
@@ -96,20 +88,22 @@ extension EncryptedSearchIndexService {
     }
 
     func createSearchIndexTable(using handleToSQliteDB: Connection) -> Void {
-        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id), time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time), labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels), isStarred: Expression<Bool?>(DatabaseConstants.Column_Searchable_Message_Is_Starred), unread: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Unread), location: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Location), order: Expression<CLong?>(DatabaseConstants.Column_Searchable_Message_Order), hasBody: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Has_Body), decryptionFailed: Expression<Bool>(DatabaseConstants.Column_Searchable_Message_Decryption_Failed), encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV), encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content), encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File), encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size))
+        self.databaseSchema = DatabaseEntries(messageID: Expression<String>(DatabaseConstants.Column_Searchable_Message_Id),
+                                              time: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Time),
+                                              order: Expression<CLong>(DatabaseConstants.Column_Searchable_Message_Order),
+                                              labelIDs: Expression<String>(DatabaseConstants.Column_Searchable_Message_Labels),
+                                              encryptionIV: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encryption_IV),
+                                              encryptedContent: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content),
+                                              encryptedContentFile: Expression<String?>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File),
+                                              encryptedContentSize: Expression<Int>(DatabaseConstants.Column_Searchable_Message_Encrypted_Content_Size))
 
         do {
             try handleToSQliteDB.run(self.searchableMessages.create(ifNotExists: true) {
                 t in
                 t.column(self.databaseSchema.messageID, primaryKey: true)
                 t.column(self.databaseSchema.time, defaultValue: 0)
+                t.column(self.databaseSchema.order, defaultValue: 0)
                 t.column(self.databaseSchema.labelIDs)
-                t.column(self.databaseSchema.isStarred, defaultValue: nil)
-                t.column(self.databaseSchema.unread, defaultValue: false)
-                t.column(self.databaseSchema.location, defaultValue: -1)
-                t.column(self.databaseSchema.order, defaultValue: nil)
-                t.column(self.databaseSchema.hasBody, defaultValue: false)
-                t.column(self.databaseSchema.decryptionFailed, defaultValue: false)
                 t.column(self.databaseSchema.encryptionIV, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContent, defaultValue: nil)
                 t.column(self.databaseSchema.encryptedContentFile, defaultValue: nil)
@@ -120,13 +114,28 @@ extension EncryptedSearchIndexService {
         }
     }
 
-    func addNewEntryToSearchIndex(for userID: String, messageID:String, time: Int, labelIDs: Set<String>, isStarred:Bool, unread:Bool, location:Int, order:Int, hasBody:Bool, decryptionFailed:Bool, encryptionIV:String?, encryptedContent:String?, encryptedContentFile:String, encryptedContentSize:Int) -> Int64? {
+    func addNewEntryToSearchIndex(userID: String,
+                                  messageID:String,
+                                  time: Int,
+                                  order:Int,
+                                  labelIDs: Set<String>,
+                                  encryptionIV:String?,
+                                  encryptedContent:String?,
+                                  encryptedContentFile:String,
+                                  encryptedContentSize:Int) -> Int64? {
         var rowID:Int64? = -1
 
         let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] = [.downloading, .refresh, .background, .complete, .partial]
         if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
             do {
-                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID, self.databaseSchema.time <- time, self.databaseSchema.labelIDs <- labelIDs.joined(separator: ";"), self.databaseSchema.isStarred <- isStarred, self.databaseSchema.unread <- unread, self.databaseSchema.location <- location, self.databaseSchema.order <- order, self.databaseSchema.hasBody <- hasBody, self.databaseSchema.decryptionFailed <- decryptionFailed, self.databaseSchema.encryptionIV <- encryptionIV, self.databaseSchema.encryptedContent <- encryptedContent, self.databaseSchema.encryptedContentFile <- encryptedContentFile, self.databaseSchema.encryptedContentSize <- encryptedContentSize)
+                let insert: Insert? = self.searchableMessages.insert(self.databaseSchema.messageID <- messageID,
+                                                                     self.databaseSchema.time <- time,
+                                                                     self.databaseSchema.order <- order,
+                                                                     self.databaseSchema.labelIDs <- labelIDs.joined(separator: ";"),
+                                                                     self.databaseSchema.encryptionIV <- encryptionIV,
+                                                                     self.databaseSchema.encryptedContent <- encryptedContent,
+                                                                     self.databaseSchema.encryptedContentFile <- encryptedContentFile,
+                                                                     self.databaseSchema.encryptedContentSize <- encryptedContentSize)
                 let handleToSQliteDB: Connection? = self.connectToSearchIndex(for: userID)
                 rowID = try handleToSQliteDB?.run(insert!)
             } catch {
@@ -158,7 +167,15 @@ extension EncryptedSearchIndexService {
         let dbName: String = self.getSearchIndexName(userID)
         let pathToDB: String = self.getSearchIndexPathToDB(dbName)
 
-        dbParams = EncryptedsearchDBParams(pathToDB, table: DatabaseConstants.Table_Searchable_Messages, id_: DatabaseConstants.Column_Searchable_Message_Id, time: DatabaseConstants.Column_Searchable_Message_Time, location: DatabaseConstants.Column_Searchable_Message_Location, read: DatabaseConstants.Column_Searchable_Message_Unread, starred: DatabaseConstants.Column_Searchable_Message_Is_Starred, labels: DatabaseConstants.Column_Searchable_Message_Labels, initVector: DatabaseConstants.Column_Searchable_Message_Encryption_IV, content: DatabaseConstants.Column_Searchable_Message_Encrypted_Content, contentFile: DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File)
+        dbParams = EncryptedsearchDBParams(pathToDB,
+                                           table: DatabaseConstants.Table_Searchable_Messages,
+                                           id_: DatabaseConstants.Column_Searchable_Message_Id,
+                                           time: DatabaseConstants.Column_Searchable_Message_Time,
+                                           order: DatabaseConstants.Column_Searchable_Message_Order,
+                                           labels: DatabaseConstants.Column_Searchable_Message_Labels,
+                                           initVector: DatabaseConstants.Column_Searchable_Message_Encryption_IV,
+                                           content: DatabaseConstants.Column_Searchable_Message_Encrypted_Content,
+                                           contentFile: DatabaseConstants.Column_Searchable_Message_Encrypted_Content_File)
 
         return dbParams!
     }
