@@ -133,7 +133,7 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
             if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh {
                 if #available(iOS 12, *) {
                     print("ES-NETWORK viewwillappear - check network state")
-                    let _ = EncryptedSearchService.shared.checkIfNetworkAvailable()
+                    EncryptedSearchService.shared.checkIfNetworkAvailable()
                 } else {
                     // Fallback on earlier versions
                 }
@@ -255,7 +255,7 @@ extension SettingsEncryptedSearchViewController {
 
                     // If cell is active -> start building a search index
                     if self.viewModel.isEncryptedSearch {
-                        self.showAlertContentSearchEnabled(for: indexPath, cell: switchCell)
+                        self.showAlertContentSearchEnabled()
                     } else {
                         if EncryptedSearchService.shared.state == .refresh {
                             // Pause indexing
@@ -300,10 +300,20 @@ extension SettingsEncryptedSearchViewController {
                     let status = self.viewModel.downloadViaMobileData
                     self.viewModel.downloadViaMobileData = !status
 
+                    // Update UI
+                    DispatchQueue.main.async {
+                        let pathDownloadViaMobileData: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadViaMobileData.rawValue)
+                        let pathDownloadedMessages: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchViewModel.SettingSection.downloadedMessages.rawValue)
+                        UIView.performWithoutAnimation {
+                            self.tableView.reloadRows(at: [pathDownloadViaMobileData], with: .none)
+                            self.tableView.reloadRows(at: [pathDownloadedMessages], with: .none)
+                        }
+                    }
+
                     if #available(iOS 12, *) {
                         // Check network connection
                         print("ES-NETWORK toggle mobile data switch!")
-                        let _ = EncryptedSearchService.shared.checkIfNetworkAvailable()
+                        EncryptedSearchService.shared.checkIfNetworkAvailable()
                     } else {
                         // Fallback on earlier versions
                     }
@@ -568,7 +578,7 @@ extension SettingsEncryptedSearchViewController {
         }
     }
 
-    func showAlertContentSearchEnabled(for index: IndexPath, cell: SwitchTableViewCell) {
+    func showAlertContentSearchEnabled() {
         // Create the alert
         let alert = UIAlertController(title: LocalString._encrypted_search_alert_title, message: LocalString._encrypted_search_alert_text, preferredStyle: UIAlertController.Style.alert)
         // Add the buttons
@@ -640,7 +650,6 @@ extension SettingsEncryptedSearchViewController {
 
                 UIView.performWithoutAnimation {
                     self.tableView.reloadRows(at: [path], with: .none)
-                    //self.showInfoBanner()
                 }
             }
         }
@@ -668,26 +677,11 @@ extension SettingsEncryptedSearchViewController {
             }
         }
 
-        var positionOfBanner: CGFloat = 516
-        // If search message content is switched on the state is still disabled -> show banner same as when downloading
-        if EncryptedSearchService.shared.state == .disabled || EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused {
-            if EncryptedSearchService.shared.pauseIndexingDueToWiFiNotDetected || EncryptedSearchService.shared.pauseIndexingDueToNetworkConnectivityIssues || EncryptedSearchService.shared.pauseIndexingDueToLowStorage {
-                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressNoWifi + 16
-            } else if EncryptedSearchService.shared.pauseIndexingDueToLowBattery {
-                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressLowBattery + 16
-            } else {
-                positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgress + 16
-            }
-        } else if EncryptedSearchService.shared.state == .complete || EncryptedSearchService.shared.state == .partial {
-            positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressFinished + 16
-        } else if EncryptedSearchService.shared.state == .refresh {
-            positionOfBanner = Key.headerHeightFirstCell + (Key.headerHeight * 2) + (Key.footerHeight * 2) + (Key.cellHeight * 2) + Key.cellHeightDownloadProgressIndexUpdate + 16
-        }
+        let point: CGPoint = self.tableView.superview?.convert(self.tableView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 88)
+        let positionOfBanner: CGFloat = point.y + self.tableView.contentSize.height + 16
         self.banner = BannerView(appearance: .esBlack, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: positionOfBanner, dismissDuration: Double.infinity)
 
-        UIView.performWithoutAnimation {
-            self.view.addSubview(self.banner)
-            self.banner.drop(on: self.view, from: .top, animate: false)
-        }
+        self.view.addSubview(self.banner)
+        self.banner.displayBanner(on: self.view)
     }
 }
