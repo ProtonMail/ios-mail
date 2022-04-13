@@ -22,8 +22,8 @@ import UIKit
     static var CellID: String {
         return "\(self)"
     }
-    //typealias ActionStatus = (_ value: Float) -> Void
-    typealias sliderActionBlock = (_ cell: SliderTableViewCell?, _ newValue: Float) -> Void
+
+    typealias sliderActionBlock = (Float) -> Void
     var callback: sliderActionBlock?
     
     override func awakeFromNib() {
@@ -55,12 +55,10 @@ import UIKit
         
         self.slider.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.slider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 44),
-            self.slider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -36),
-            self.slider.widthAnchor.constraint(equalToConstant: 375),
-            self.slider.heightAnchor.constraint(equalToConstant: 36),
-            self.slider.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            self.slider.rightAnchor.constraint(equalTo: self.contentView.rightAnchor)
+            self.slider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 64),
+            self.slider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -48),
+            self.slider.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 16),
+            self.slider.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -16)
         ])
     }
     
@@ -69,21 +67,18 @@ import UIKit
     @IBOutlet weak var slider: UISlider!
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
-        let value: Float = sender.value
-        print("slider: \(sender.value)")
-        callback?(self, value)
+        self.callback?(sender.value)
     }
     
-    func configCell(_ topLine: String, _ bottomLine: String, currentValue sliderValue: Float, maxValue sliderMaxValue: Float, minValue sliderMinValue: Float, complete: sliderActionBlock?) {
-        
+    func configCell(_ topLine: String, _ bottomLine: String, currentSliderValue: Float, sliderMinValue: Float, sliderMaxValue: Float, complete: sliderActionBlock?) {
         topLabel.text = topLine
         bottomLabel.text = bottomLine
-        slider.isContinuous = false
-        slider.setValue(sliderValue, animated: false)
-        slider.minimumValue = sliderMinValue
-        slider.maximumValue = sliderMaxValue
+
+        self.slider.setValue(currentSliderValue, animated: false)
+        self.slider.minimumValue = sliderMinValue
+        self.slider.maximumValue = sliderMaxValue
         callback = complete
-        
+
         self.layoutIfNeeded()
     }
 }

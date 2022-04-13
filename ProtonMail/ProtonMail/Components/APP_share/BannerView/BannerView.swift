@@ -120,8 +120,7 @@ class BannerView: PMView {
         self.offset = offset
         self.dismissDuration = dismissDuration
 
-        //super.init(frame: CGRect.zero)
-        super.init(frame: CGRect(x: 0, y: 0, width: 343, height: 72))
+        super.init(frame: CGRect.zero)
 
         self.roundCorners()
         
@@ -153,14 +152,12 @@ class BannerView: PMView {
         if icon! {
             self.addIcon()
             
-            /*self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
-                self.messageTextview.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 48),
-                self.messageTextview.widthAnchor.constraint(equalToConstant: 279),
-                self.messageTextview.heightAnchor.constraint(equalToConstant: 40)
-            ])*/
+                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
+                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+                self.messageTextview.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            ])
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -395,17 +392,18 @@ extension BannerView {
     }
 
     private func addIcon() {
-        let image = UIImage(named: "ic-exclamation-circle")
-        let imageView = UIImageView(image: image!)
-        imageView.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
-        self.addSubview(imageView)
-        
-        /*imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25.5),
-            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 25.5),
-            imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 17.5),
-            imageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -304.5)
-        ])*/
+        if let image = UIImage(named: "ic-exclamation-circle") {
+            let tintableImage = image.withRenderingMode(.alwaysTemplate)
+            let imageView = UIImageView(image: tintableImage)
+            imageView.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
+            imageView.tintColor = ColorProvider.IconInverted
+            self.addSubview(imageView)
+            
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 17.5)
+            ])
+        }
     }
 }
