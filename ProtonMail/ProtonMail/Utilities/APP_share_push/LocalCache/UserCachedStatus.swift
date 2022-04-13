@@ -85,6 +85,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let encrypedSearchFlag = "encrypted_search_flag"
 
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
+        static let encryptedSearchIndexComplete = "encrypted_search_index_complete"
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
 
         static let primaryUserSessionId = "primary_user_session_id"
@@ -200,6 +201,18 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
         set {
             setValue(newValue, forKey: Key.encryptedSearchStorageLimit)
+        }
+    }
+
+    var indexComplete: Bool {
+        get {
+            if getShared().object(forKey: Key.encryptedSearchIndexComplete) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.encryptedSearchIndexComplete)
+        }
+        set {
+            setValue(newValue, forKey: Key.encryptedSearchIndexComplete)
         }
     }
 

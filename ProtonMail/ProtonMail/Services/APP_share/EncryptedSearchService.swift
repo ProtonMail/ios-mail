@@ -543,53 +543,65 @@ public class EncryptedSearchService {
 
 extension EncryptedSearchService {
     func determineEncryptedSearchState(){
-        //check if encrypted search is switched on in settings
-        if !userCachedStatus.isEncryptedSearchOn {
-            self.state = .disabled
-            print("ENCRYPTEDSEARCH-STATE: disabled")
-        } else {
-            if self.pauseIndexingDueToLowStorage {
-                self.state = .lowstorage
-                print("ENCRYPTEDSEARCH-STATE: lowstorage")
-                return
-            }
-            if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {   //TODO paused by user?
-                self.state = .paused
-                print("ENCRYPTEDSEARCH-STATE: paused")
-                return
-            }
-            if self.indexBuildingInProgress {
-                self.state = .downloading
-                print("ENCRYPTEDSEARCH-STATE: downloading")
+        // Run on a separate thread so that UI is not blocked
+        DispatchQueue.global(qos: .userInitiated).async {
+            //check if encrypted search is switched on in settings
+            if !userCachedStatus.isEncryptedSearchOn {
+                self.state = .disabled
+                print("ENCRYPTEDSEARCH-STATE: disabled")
             } else {
-                //check if search index exists and the number of messages in the search index
-                let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-                let userID: String? = usersManager.firstUser?.userInfo.userId
-                if userID == nil {
-                    print("Error: userID unknown!")
-                    self.state = .undetermined
-                    print("ENCRYPTEDSEARCH-STATE: undetermined")
+                if self.pauseIndexingDueToLowStorage {
+                    self.state = .lowstorage
+                    print("ENCRYPTEDSEARCH-STATE: lowstorage")
                     return
                 }
-                if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
-                    self.getTotalMessages {
-                        let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID!)
-                        if self.totalMessages == numberOfEntriesInSearchIndex {
-                            self.state = .complete
-                            print("ENCRYPTEDSEARCH-STATE: complete")
-                        } else {
+                if self.pauseIndexingDueToOverheating || self.pauseIndexingDueToLowBattery || self.pauseIndexingDueToNetworkConnectivityIssues || self.pauseIndexingDueToWiFiNotDetected {   //TODO paused by user?
+                    self.state = .paused
+                    print("ENCRYPTEDSEARCH-STATE: paused")
+                    return
+                }
+                if self.indexBuildingInProgress {
+                    self.state = .downloading
+                    print("ENCRYPTEDSEARCH-STATE: downloading")
+                } else {
+                    //Check if search index is complete
+                    if userCachedStatus.indexComplete {
+                        self.state = .complete
+                        print("ENCRYPTEDSEARCH-STATE: complete")
+                        return
+                    } else {
+                        //check if search index exists and the number of messages in the search index
+                        let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+                        let userID: String? = usersManager.firstUser?.userInfo.userId
+                        if userID == nil {
+                            print("Error: userID unknown!")
+                            self.state = .undetermined
+                            print("ENCRYPTEDSEARCH-STATE: undetermined")
+                            return
+                        }
+                        if EncryptedSearchIndexService.shared.checkIfSearchIndexExists(for: userID!) {
+                            self.checkIfIndexingIsComplete() {
+                                self.state = .complete
+                                print("ENCRYPTEDSEARCH-STATE: complete")
+                                
+                                // update user cached status
+                                userCachedStatus.indexComplete = true
+                                
+                                self.updateUIIndexingComplete()
+                            }
+                            // Set state to partial in the meantime - if it is complete it will get updated once determined
                             self.state = .partial
                             print("ENCRYPTEDSEARCH-STATE: partial")
+                        } else {
+                            print("Error search index does not exist for user!")
+                            self.state = .undetermined
+                            print("ENCRYPTEDSEARCH-STATE: undetermined")
                         }
                     }
-                } else {
-                    print("Error search index does not exist for user!")
-                    self.state = .undetermined
-                    print("ENCRYPTEDSEARCH-STATE: undetermined")
                 }
+                //TODO refresh?
+                //self.state = .refresh
             }
-            //TODO refresh?
-            //self.state = .refresh
         }
     }
 
@@ -647,6 +659,10 @@ extension EncryptedSearchService {
                 if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
                     self.state = .complete
                     print("ENCRYPTEDSEARCH-STATE: complete")
+                    
+                    // update user cached status
+                    userCachedStatus.indexComplete = true
+                    
                     self.cleanUpAfterIndexing()
                     return
                 }
@@ -673,6 +689,11 @@ extension EncryptedSearchService {
             if EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID) == self.totalMessages {
                 self.state = .complete
                 print("ENCRYPTEDSEARCH-STATE: complete")
+                
+                // update user cached status
+                userCachedStatus.indexComplete = true
+                
+                // cleanup
                 self.cleanUpAfterIndexing()
             }
             completionHandler()
@@ -888,6 +909,13 @@ extension EncryptedSearchService {
     }
     
     func deleteSearchIndex(){
+        //update state
+        self.state = .disabled
+        print("ENCRYPTEDSEARCH-STATE: disabled")
+        
+        // update user cached status
+        userCachedStatus.indexComplete = false
+
         let users: UsersManager = sharedServices.get(by: UsersManager.self)
         let uid: String? = users.firstUser?.userInfo.userId
         if let userID = uid {
@@ -907,10 +935,6 @@ extension EncryptedSearchService {
                     self.cancelBGProcessingTask()
                     self.cancelBGAppRefreshTask()
                 }
-                
-                //update state
-                self.state = .disabled
-                print("ENCRYPTEDSEARCH-STATE: disabled")
                 
                 //update viewmodel
                 self.viewModel?.isEncryptedSearch = false
@@ -2033,19 +2057,21 @@ extension EncryptedSearchService {
     
     // Called to slow down indexing - so that a user can normally use the app
     func slowDownIndexing(){
-        print("ES: Slow down indexing...")
-        if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
-            self.messageIndexingQueue.maxConcurrentOperationCount = 10
-            self.slowDownIndexBuilding = true
+        if self.state == .downloading || self.state == .background || self.state == .refresh {
+            if self.indexBuildingInProgress && !self.slowDownIndexBuilding {
+                self.messageIndexingQueue.maxConcurrentOperationCount = 10
+                self.slowDownIndexBuilding = true
+            }
         }
     }
     
     // speed up indexing again when in foreground
     func speedUpIndexing(){
-        print("ES: Speed up indexing...")
-        if self.indexBuildingInProgress && self.slowDownIndexBuilding {
-            self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-            self.slowDownIndexBuilding = false
+        if self.state == .downloading || self.state == .background || self.state == .refresh {
+            if self.indexBuildingInProgress && self.slowDownIndexBuilding {
+                self.messageIndexingQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+                self.slowDownIndexBuilding = false
+            }
         }
     }
     
@@ -2055,6 +2081,7 @@ extension EncryptedSearchService {
     private func continueIndexingInBackground() {
         self.state = .background
         print("ENCRYPTEDSEARCH-STATE: background")
+        self.speedUpIndexing()
         self.backgroundTask = UIApplication.shared.beginBackgroundTask(){ [weak self] in
             self?.endBackgroundTask()
         }
@@ -2066,6 +2093,7 @@ extension EncryptedSearchService {
         if self.state != .complete {
             print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
             self.state = .backgroundStopped
+            self.slowDownIndexing()
             self.pauseAndResumeIndexingDueToInterruption(isPause: true)
         }
         UIApplication.shared.endBackgroundTask(self.backgroundTask)
@@ -2112,6 +2140,9 @@ extension EncryptedSearchService {
             self.state = .backgroundStopped
             print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
 
+            //slow down indexing again - will be speed up if user switches to ES screen
+            self.slowDownIndexing()
+
             //send notification - debugging - TODO remove
             self.sendNotification(text: "BGPROCESSING-TASK stop indexing in BG")
         }
@@ -2122,6 +2153,9 @@ extension EncryptedSearchService {
         } else {
             self.state = .background
             print("ENCRYPTEDSEARCH-STATE: background")
+            
+            // in the background we can index with full speed
+            self.speedUpIndexing()
 
             //send a notification - debugging - TODO remove
             self.sendNotification(text: "BGPROCESSING-TASK start indexing in BG")
@@ -2131,6 +2165,10 @@ extension EncryptedSearchService {
                 //if indexing is finshed during background task - set to complete
                 self.state = .complete
                 print("ENCRYPTEDSEARCH-STATE: complete")
+                
+                // update user cached status
+                userCachedStatus.indexComplete = true
+                
                 task.setTaskCompleted(success: true)
             }
         }
@@ -2173,6 +2211,9 @@ extension EncryptedSearchService {
             self.state = .backgroundStopped
             print("ENCRYPTEDSEARCH-STATE: backgroundStopped")
             
+            //slow down indexing again - will be speed up if user switches to ES screen
+            self.slowDownIndexing()
+            
             //send notification - debugging - TODO remove
             self.sendNotification(text: "BGAPPREFRESH-TASK stop indexing in BG")
         }
@@ -2184,6 +2225,9 @@ extension EncryptedSearchService {
             self.state = .background
             print("ENCRYPTEDSEARCH-STATE: background")
 
+            // in the background we can index with full speed
+            self.speedUpIndexing()
+
             //send a notification - debugging - TODO remove
             self.sendNotification(text: "BGAPPREFRESH-TASK start indexing in BG")
 
@@ -2192,6 +2236,10 @@ extension EncryptedSearchService {
                 //if indexing is finshed during background task - set to complete
                 self.state = .complete
                 print("ENCRYPTEDSEARCH-STATE: complete")
+                
+                // update user cached status
+                userCachedStatus.indexComplete = true
+                
                 task.setTaskCompleted(success: true)
             }
         }

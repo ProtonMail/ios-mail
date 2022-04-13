@@ -90,6 +90,15 @@ class SettingsEncryptedSearchViewModel {
             encryptedSearchCache.downloadViaMobileData = newValue
         }
     }
+    
+    var indexComplete: Bool {
+        get {
+            return encryptedSearchCache.indexComplete
+        }
+        set {
+            encryptedSearchCache.indexComplete = newValue
+        }
+    }
 
     var isIndexingComplete = Bindable<Bool>()
     var interruptStatus = Bindable<String>()
