@@ -1294,6 +1294,7 @@ class LocalizedString {
     lazy var _encrypted_search_alert_text = NSLocalizedString("Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time.", comment: "Text for the alert to enable encrypted search")
     lazy var _encrypted_search_alert_cancel_button = NSLocalizedString("Cancel", comment: "Button to cancel encrypted search")
     lazy var _encrypted_search_alert_enable_button = NSLocalizedString("Enable", comment: "Button to enable encrypted search")
+    lazy var _encrypted_search_info_banner_text = NSLocalizedString("The download will stop if the ProtonMail app is closed.", comment: "Info banner to inform the user that indexing might be stopped when the app is closed.")
     
     // MARK: - Title of MessageSwipeActions
     lazy var _swipe_action_none = NSLocalizedString("Swipe to set up swipable actions", comment: "")
