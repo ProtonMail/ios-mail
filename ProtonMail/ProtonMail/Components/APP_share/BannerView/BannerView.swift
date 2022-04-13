@@ -40,6 +40,7 @@ class BannerView: PMView {
     private var buttonConfig: ButtonConfiguration?
     private var secondButtonConfig: ButtonConfiguration?
     private var link: String? = ""
+    private var hasIcon: Bool = false
 
     typealias tapAttributedTextActionBlock = () -> Void
     var callback: tapAttributedTextActionBlock?
@@ -150,14 +151,15 @@ class BannerView: PMView {
         
         //add icon
         if icon! {
+            self.hasIcon = true
             self.addIcon()
-            
-            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
+            //self.messageTextview.frame = CGRect(x: 90, y: 16, width: 279, height: 40)
+            //self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            /*NSLayoutConstraint.activate([
                 self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
                 self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
                 self.messageTextview.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-            ])
+            ])*/
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -183,7 +185,7 @@ class BannerView: PMView {
         self.messageTextview.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
 
-        //self.sizeToFit()
+        self.sizeToFit()
         self.layoutIfNeeded()
     }
 
@@ -207,7 +209,20 @@ extension BannerView: UIGestureRecognizerDelegate {
         let horizontalStackWidth: CGFloat = bannerWidth - 20 - 20
         let verticalStackWidth: CGFloat = horizontalStackWidth - 41 - 8
         let textViewWidht = verticalStackWidth - 20
-        let sizeOfText = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
+
+        if self.hasIcon {
+            // Set constraints for the icon?
+
+            // Set constraints for the text
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.messageTextview.topAnchor.constraint(equalTo: baseView.topAnchor, constant: 16),
+                self.messageTextview.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 48+xPadding),
+                self.messageTextview.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -16-xPadding),
+                self.messageTextview.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: -16)
+            ])
+        }
+        let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
 
         var buttonHeight = secondButton.frame.height
         if !secondButton.isHidden {
@@ -395,15 +410,9 @@ extension BannerView {
         if let image = UIImage(named: "ic-exclamation-circle") {
             let tintableImage = image.withRenderingMode(.alwaysTemplate)
             let imageView = UIImageView(image: tintableImage)
-            imageView.frame = CGRect(x: 0, y: 0, width: 21, height: 21)
+            imageView.frame = CGRect(x: 17.5, y: 25.5, width: 24, height: 24)
             imageView.tintColor = ColorProvider.IconInverted
             self.addSubview(imageView)
-            
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 17.5)
-            ])
         }
     }
 }
