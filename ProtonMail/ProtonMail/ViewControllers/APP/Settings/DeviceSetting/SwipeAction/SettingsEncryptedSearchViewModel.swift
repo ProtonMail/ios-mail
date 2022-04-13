@@ -100,6 +100,15 @@ class SettingsEncryptedSearchViewModel {
         }
     }
 
+    var indexStatus: Int {
+        get {
+            return encryptedSearchCache.indexStatus
+        }
+        set {
+            encryptedSearchCache.indexStatus = newValue
+        }
+    }
+
     var isIndexingComplete = Bindable<Bool>()
     var interruptStatus = Bindable<String>()
     var interruptAdvice = Bindable<String>()
