@@ -22,74 +22,77 @@ import UIKit
     static var CellID: String {
         return "\(self)"
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        let parentView: UIView = self.contentView
 
-        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
-        self.button.backgroundColor = ColorProvider.InteractionWeak
-        self.button.layer.cornerRadius = 8
-        self.button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.button.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 96),
-            //self.button.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16),
-            self.button.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 295),
-            self.button.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
-        ])
+        let parentView: UIView = self.contentView
 
         self.topLabel.textColor = ColorProvider.TextNorm
         self.topLabel.font = UIFont.systemFont(ofSize: 17)
+        self.topLabel.numberOfLines = 1
         self.topLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.topLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 16),
-            //self.topLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -104),
-            //self.topLabel.widthAnchor.constraint(equalToConstant: 243),
-            self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
+            self.topLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.topLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
-        
+
         self.middleLabel.textColor = ColorProvider.TextWeak
         self.middleLabel.font = UIFont.systemFont(ofSize: 14)
+        self.middleLabel.numberOfLines = 2
         self.middleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.middleLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 48),
-            //self.middleLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -56),
+            self.middleLabel.topAnchor.constraint(equalTo: self.topLabel.bottomAnchor, constant: 8),
             self.middleLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.middleLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
-        
+
         self.bottomLabel.textColor = ColorProvider.TextNorm
         self.bottomLabel.font = UIFont.systemFont(ofSize: 14)
+        self.bottomLabel.numberOfLines = 1
         self.bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.bottomLabel.topAnchor.constraint(equalTo: parentView.topAnchor, constant: 102),
-            //self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
-            self.bottomLabel.widthAnchor.constraint(equalToConstant: 263),
-            //self.bottomLabel.heightAnchor.constraint(equalToConstant: 20),    top/bottom
-            self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16)
+            //self.bottomLabel.topAnchor.constraint(equalTo: self.middleLabel.bottomAnchor, constant: 14),
+            self.bottomLabel.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -22),
+            self.bottomLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
+            self.bottomLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -96)
         ])
+
+        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.button.titleLabel?.numberOfLines = 1
+        self.button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        self.button.tintColor = ColorProvider.InteractionWeak
+        self.button.backgroundColor = ColorProvider.InteractionWeak
+        self.button.layer.cornerRadius = 8
+        self.button.sizeToFit()
+        self.button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.button.centerYAnchor.constraint(equalTo: self.bottomLabel.centerYAnchor),
+            self.button.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
+        ])
+
+        self.layoutIfNeeded()
     }
-    
+
     typealias buttonActionBlock = () -> Void
     var callback: buttonActionBlock?
-    
+
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var middleLabel: UILabel!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var button: UIButton!
-    
+
     @IBAction func buttonPressed(_ sender: UIButton) {
         callback?()
     }
-    
+
     func configCell(_ topLine: String, _ middleLine: NSMutableAttributedString, _ bottomLine: String, _ complete: buttonActionBlock?) {
         topLabel.text = topLine
         middleLabel.attributedText = middleLine
         bottomLabel.text = bottomLine
         callback = complete
-        
+
         self.layoutIfNeeded()
     }
 }

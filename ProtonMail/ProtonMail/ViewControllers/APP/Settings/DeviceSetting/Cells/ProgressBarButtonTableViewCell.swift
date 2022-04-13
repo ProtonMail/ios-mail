@@ -45,9 +45,7 @@ import UIKit
         NSLayoutConstraint.activate([
             self.progressView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 24),
             self.progressView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
-            self.progressView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16),
-            //self.progressView.widthAnchor.constraint(equalToConstant: 343),
-            //self.progressView.heightAnchor.constraint(equalToConstant: 8)
+            self.progressView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
 
         self.estimatedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -69,17 +67,17 @@ import UIKit
             self.currentProgressLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
 
-        //self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        self.pauseButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.pauseButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.pauseButton.titleLabel?.numberOfLines = 1
         self.pauseButton.setTitleColor(ColorProvider.TextNorm, for: .normal)
         self.pauseButton.tintColor = ColorProvider.InteractionWeak
+        self.pauseButton.backgroundColor = ColorProvider.InteractionWeak
         self.pauseButton.layer.cornerRadius = 8
+        self.pauseButton.sizeToFit()
         self.pauseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.pauseButton.topAnchor.constraint(equalTo: self.estimatedTimeLabel.bottomAnchor, constant: 16),
             self.pauseButton.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
-            self.pauseButton.widthAnchor.constraint(equalToConstant: 69),
-            self.pauseButton.heightAnchor.constraint(equalToConstant: 32)
+            self.pauseButton.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: -16)
         ])
 
         //status label is hidden by default
@@ -93,6 +91,8 @@ import UIKit
             self.statusLabel.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 16),
             self.statusLabel.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: -16)
         ])
+        
+        self.layoutIfNeeded()
     }
     
     @IBOutlet weak var progressView: UIProgressView!
