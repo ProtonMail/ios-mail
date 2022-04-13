@@ -1115,10 +1115,8 @@ extension EncryptedSearchService {
 
     func decryptAndExtractDataSingleMessage(for message: ESMessage, userID: String,  completionHandler: @escaping () -> Void) -> Void {
         var body: String? = ""
-        var decryptionFailed: Bool = true
         do {
             body = try self.decryptBodyIfNeeded(message: message)
-            decryptionFailed = false
         } catch {
             print("Error when decrypting messages: \(error).")
         }
@@ -1127,7 +1125,7 @@ extension EncryptedSearchService {
         let encryptedContent: EncryptedsearchEncryptedMessageContent? = self.createEncryptedContent(message: message, cleanedBody: emailContent, userID: userID)
 
         // add message to search index db
-        self.addMessageKewordsToSearchIndex(userID, message, encryptedContent, decryptionFailed)
+        self.addMessageKewordsToSearchIndex(userID: userID, message: message, encryptedContent: encryptedContent)
         completionHandler()
     }
 
@@ -1148,7 +1146,24 @@ extension EncryptedSearchService {
             let r: EncryptedsearchRecipient? = EncryptedsearchRecipient(s!.Name, email: s!.Address)
             bccList.add(r)
         }
-        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject, sender, cleanedBody, toList, ccList, bccList, message.AddressID)
+        let isStarred: Bool = false // TODO
+        let expirationTime: Int64 = 0 // TODO
+        let decryptedMessageContent: EncryptedsearchDecryptedMessageContent? = EncryptedsearchNewDecryptedMessageContent(message.Subject,
+                                                                                                                         sender,
+                                                                                                                         cleanedBody,
+                                                                                                                         toList,
+                                                                                                                         ccList,
+                                                                                                                         bccList,
+                                                                                                                         message.AddressID,
+                                                                                                                         message.ConversationID,
+                                                                                                                         Int64(message.Flags),
+                                                                                                                         message.Unread == 1,
+                                                                                                                         isStarred,
+                                                                                                                         message.IsReplied == 1,
+                                                                                                                         message.IsRepliedAll == 1,
+                                                                                                                         message.IsForwarded == 1,
+                                                                                                                         message.NumAttachments,
+                                                                                                                         expirationTime)
 
         let cipher: EncryptedsearchAESGCMCipher? = self.getCipher(userID: userID)
         var encryptedMessageContent: EncryptedsearchEncryptedMessageContent? = nil
@@ -1197,15 +1212,11 @@ extension EncryptedSearchService {
         }
     }
 
-    func addMessageKewordsToSearchIndex(_ userID: String, _ message: ESMessage, _ encryptedContent: EncryptedsearchEncryptedMessageContent?, _ decryptionFailed: Bool) -> Void {
-        let location: Int = Int(Message.Location.allmail.rawValue)!
-        let time: Int = Int(message.Time)
-        let order: Int = message.Order
-
+    func addMessageKewordsToSearchIndex(userID: String, message: ESMessage, encryptedContent: EncryptedsearchEncryptedMessageContent?) -> Void {
         let ciphertext: String? = encryptedContent?.ciphertext
         let encryptedContentSize: Int = ciphertext?.count ?? 0
 
-        let _: Int64? = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: userID, messageID: message.ID, time: time, labelIDs: message.LabelIDs, isStarred: message.Starred!, unread: (message.Unread != 0), location: location, order: order, hasBody: decryptionFailed, decryptionFailed: decryptionFailed, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(userID: userID, messageID: message.ID, time: Int(message.Time), order: message.Order, labelIDs: message.LabelIDs, encryptionIV: encryptedContent?.iv, encryptedContent: ciphertext, encryptedContentFile: "", encryptedContentSize: encryptedContentSize)
     }
 
     // MARK: - Search Functions
@@ -1372,7 +1383,7 @@ extension EncryptedSearchService {
                                 group.leave()
                             }
                         } else {
-                            print("ES-TEST: message \(id) found in local cache: \(message?.messageID)")
+                            print("ES-TEST: message \(id) found in local cache: \(String(describing: message?.messageID))")
                             messages.append(message!)
                             group.leave()
                         }
@@ -1428,7 +1439,9 @@ extension EncryptedSearchService {
         let header: String? = nil
         let mimeType: String? = nil
 
-        let esMessage: ESMessage = ESMessage(id: msg.id_, order: order, conversationID: conversationID, subject: subject, unread: msg.unread ? 1:0, type: type, senderAddress: senderAddress, senderName: senderName, sender: sender, toList: toList, ccList: ccList, bccList: bccList, time: Double(msg.time), size: size, isEncrypted: isEncrypted, expirationTime: expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: spamScore, addressID: addressID, numAttachments: numAttachments, flags: flags, labelIDs: labelIDs, externalID: externalID, body: searchResult?.getBodyPreview(), header: header, mimeType: mimeType, userID: userID)
+        let unread: Int = msg.decryptedContent!.unread ? 1:0
+
+        let esMessage: ESMessage = ESMessage(id: msg.id_, order: order, conversationID: conversationID, subject: subject, unread: unread, type: type, senderAddress: senderAddress, senderName: senderName, sender: sender, toList: toList, ccList: ccList, bccList: bccList, time: Double(msg.time), size: size, isEncrypted: isEncrypted, expirationTime: expirationTime, isReplied: isReplied, isRepliedAll: isRepliedAll, isForwarded: isForwarded, spamScore: spamScore, addressID: addressID, numAttachments: numAttachments, flags: flags, labelIDs: labelIDs, externalID: externalID, body: searchResult?.getBodyPreview(), header: header, mimeType: mimeType, userID: userID)
 
         return esMessage.toMessage()
     }
