@@ -41,9 +41,13 @@ class BannerView: PMView {
     private var secondButtonConfig: ButtonConfiguration?
     private var link: String? = ""
     private var hasIcon: Bool = false
+    private var appearance: Appearance?
 
     typealias tapAttributedTextActionBlock = () -> Void
     var callback: tapAttributedTextActionBlock?
+    var handleAttributedTextTap: tapAttributedTextActionBlock?
+    typealias dismissActionBlock = () -> Void
+    var dismissAction: dismissActionBlock?
 
     @IBOutlet private weak var button: UIButton!
     @IBOutlet private var backgroundView: UIView!
@@ -65,7 +69,8 @@ class BannerView: PMView {
         case red // TODO: rename according to semantic, not appearance
         case purple
         case gray
-        case black
+        case black  // TODO change to es-black
+        case esGray
         
         var backgroundColor: UIColor {
             switch self {
@@ -73,18 +78,24 @@ class BannerView: PMView {
             case .purple: return ColorProvider.BrandNorm
             case .gray: return .lightGray
             case .black: return UIColor(RRGGBB: UInt(0x25272C))
+            case .esGray: return ColorProvider.BackgroundSecondary
             }
         }
 
         var textColor: UIColor {
-            return .white
+            switch self {
+            case .red, .purple, .gray:
+                return .white
+            case .black, .esGray:
+                return ColorProvider.TextWeak
+            }
         }
 
         var backgroundAlpha: CGFloat {
             switch self {
             case .red, .purple, .gray:
                 return 0.75
-            case .black:
+            case .black, .esGray:
                 return 1
             }
         }
@@ -93,7 +104,7 @@ class BannerView: PMView {
             switch self {
             case .red, .purple, .gray:
                 return UIFont.systemFont(ofSize: 17)
-            case .black:
+            case .black, .esGray:
                 return UIFont.systemFont(ofSize: 14)
             }
         }
@@ -116,10 +127,14 @@ class BannerView: PMView {
          dismissDuration: TimeInterval = 4,
          link: String? = "",
          icon: Bool? = false,
-         complete: tapAttributedTextActionBlock? = nil)
+         handleAttributedTextTap: tapAttributedTextActionBlock? = nil,
+         dismissAction: dismissActionBlock? = nil)
     {
         self.offset = offset
         self.dismissDuration = dismissDuration
+
+        self.appearance = appearance
+        self.dismissAction = dismissAction
 
         super.init(frame: CGRect.zero)
 
@@ -146,7 +161,7 @@ class BannerView: PMView {
             self.messageTextview.addGestureRecognizer(tap)
             
             self.link = link
-            self.callback = complete
+            self.handleAttributedTextTap = handleAttributedTextTap
         }
         
         //add icon
@@ -222,6 +237,7 @@ extension BannerView: UIGestureRecognizerDelegate {
                 self.messageTextview.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: -16)
             ])
         }
+
         let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
 
         var buttonHeight = secondButton.frame.height
@@ -229,7 +245,18 @@ extension BannerView: UIGestureRecognizerDelegate {
             buttonHeight = buttonHeight + space
         }
 
-        let size = CGSize(width: bannerWidth, height: sizeOfText.height + buttonHeight + yPadding)
+        var bannerHeight: CGFloat = 0.0
+        if self.appearance == .esGray {
+            self.messageTextview.font = self.appearance?.fontSize
+            self.messageTextview.textColor = self.appearance?.textColor
+            bannerHeight = 92.0//self.messageTextview.bounds.height + (2 * 16.0)
+        } else {
+            let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
+            bannerHeight = sizeOfText.height + buttonHeight + yPadding
+        }
+        
+        let size = CGSize(width: bannerWidth, height: bannerHeight)
+
         self.frame = CGRect(origin: .zero, size: size)
         let initAnchor = CGPoint(x: (baseView.bounds.width / 2),
                                  y: from == .bottom ? (baseView.bounds.height - self.bounds.height / 2) - offset
@@ -248,6 +275,36 @@ extension BannerView: UIGestureRecognizerDelegate {
         springBehavior.frequency = 2
         dyAnimator.addBehavior(springBehavior)
         self.springBehavior = springBehavior
+
+        // Set some constraints
+        if self.appearance == .esGray {
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -48),
+                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+            ])
+
+            // Add dismiss icon + callback
+            if let image = UIImage(named: "mail_label_cross_icon") {
+                let tintableImage = image.withRenderingMode(.alwaysTemplate)
+                let imageView = UIImageView(image: tintableImage)
+                imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+                imageView.tintColor = ColorProvider.IconWeak
+                imageView.isUserInteractionEnabled = true
+                let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismiss))
+                imageView.addGestureRecognizer(tapRecognizer)
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                self.addSubview(imageView)
+                NSLayoutConstraint.activate([
+                    imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 34),
+                    imageView.leadingAnchor.constraint(equalTo: self.messageTextview.trailingAnchor, constant: 8),
+                    imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+                    imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -34)
+                ])
+            }
+        }
 
         UIView.animate(withDuration: 0.3,
                        delay: 0,
@@ -360,13 +417,18 @@ extension BannerView: UIGestureRecognizerDelegate {
         
         let characterIndex = layoutManager.characterIndex(for: location, in: myTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
         if range.contains(characterIndex) {
-            callback?()
+            self.handleAttributedTextTap?()
             /*let value = myTextView.attributedText.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) as! [String:URL]
             let url = value["NSLink"]!
             if (url.absoluteString).starts(with: "downloading") {
                 //TODO move to Settings ES screen
             }*/
         }
+    }
+    
+    @objc func dismiss(_ sender: UITapGestureRecognizer) {
+        self.remove(animated: true)
+        self.dismissAction?()
     }
 }
 
@@ -385,12 +447,8 @@ extension BannerView {
         let formattedString = NSMutableAttributedString(string: fullString)
 
         var url: URL? = nil
-        if link == LocalString._encrypted_search_info_search_partial_link {
-            url = URL(string: "partial://")
-        } else if link == LocalString._encrypted_search_info_search_downloading_link {
+        if link == LocalString._encrypted_search_info_search_downloading_link {
             url = URL(string: "downloading://")
-        } else if link == LocalString._encrypted_search_info_search_paused_link {
-            url = URL(string: "paused://")
         } else {
             url = URL(string: link)
         }
