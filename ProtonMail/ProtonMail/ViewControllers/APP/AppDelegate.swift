@@ -186,7 +186,9 @@ extension AppDelegate: UIApplicationDelegate {
         setupUITestsMocks()
         #endif
         
-        //register background processing task for building the encrypted search index
+        
+
+        // Register background tasks for building the encrypted search index
         if #available(iOS 13, *) {
             EncryptedSearchService.shared.registerBGProcessingTask()
             EncryptedSearchService.shared.registerBGAppRefreshTask()
