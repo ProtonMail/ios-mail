@@ -40,8 +40,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         // Create the table
         EncryptedSearchIndexService.shared.createSearchIndexTable(using: self.connection)
         // Add one entry in the table
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedData(), encryptedContent: Data("content".utf8).base64EncodedData(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedData().count)
-        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedData(), encryptedContent: Data("content".utf8).base64EncodedData(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedData().count)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: self.testMessageID, time: 1637058775, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 1, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedString(), encryptedContent: Data("content".utf8).base64EncodedString(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedString().count)
+        _ = EncryptedSearchIndexService.shared.addNewEntryToSearchIndex(for: self.testUserID, messageID: "uniqueID2", time: 1637141557, labelIDs: ["5", "1"], isStarred: false, unread: false, location: 1, order: 2, hasBody: true, decryptionFailed: false, encryptionIV: Data("iv".utf8).base64EncodedString(), encryptedContent: Data("content".utf8).base64EncodedString(), encryptedContentFile: "linktofile", encryptedContentSize: Data("content".utf8).base64EncodedString().count)
     }
 
     override func tearDownWithError() throws {
@@ -164,8 +164,8 @@ class EncryptedSearchIndexServiceTests: XCTestCase {
         let order: Int = 1
         let hasBody: Bool = true
         let decryptionFailed: Bool = false
-        let encryptionIV: Data = Data("iv".utf8).base64EncodedData()
-        let encryptedContent: Data = Data("content".utf8).base64EncodedData()
+        let encryptionIV: String = Data("iv".utf8).base64EncodedString()
+        let encryptedContent: String = Data("content".utf8).base64EncodedString()
         let encryptedContentFile: String = "test"
         let encryptedContentSize: Int = encryptedContent.count
 
