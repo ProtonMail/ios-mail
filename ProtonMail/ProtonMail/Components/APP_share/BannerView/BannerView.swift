@@ -40,8 +40,8 @@ class BannerView: PMView {
     private var buttonConfig: ButtonConfiguration?
     private var secondButtonConfig: ButtonConfiguration?
     private var link: String? = ""
-    private var hasIcon: Bool = false
     private var appearance: Appearance?
+    private var icon: UIImageView? = nil
 
     typealias tapAttributedTextActionBlock = () -> Void
     var callback: tapAttributedTextActionBlock?
@@ -69,7 +69,7 @@ class BannerView: PMView {
         case red // TODO: rename according to semantic, not appearance
         case purple
         case gray
-        case black  // TODO change to es-black
+        case esBlack
         case esGray
         
         var backgroundColor: UIColor {
@@ -77,16 +77,16 @@ class BannerView: PMView {
             case .red: return .red
             case .purple: return ColorProvider.BrandNorm
             case .gray: return .lightGray
-            case .black: return UIColor(RRGGBB: UInt(0x25272C))
+            case .esBlack: return UIColor(RRGGBB: UInt(0x25272C))
             case .esGray: return ColorProvider.BackgroundSecondary
             }
         }
 
         var textColor: UIColor {
             switch self {
-            case .red, .purple, .gray:
+            case .red, .purple, .gray, .esBlack:
                 return .white
-            case .black, .esGray:
+            case .esGray:
                 return ColorProvider.TextWeak
             }
         }
@@ -95,7 +95,7 @@ class BannerView: PMView {
             switch self {
             case .red, .purple, .gray:
                 return 0.75
-            case .black, .esGray:
+            case .esBlack, .esGray:
                 return 1
             }
         }
@@ -104,7 +104,7 @@ class BannerView: PMView {
             switch self {
             case .red, .purple, .gray:
                 return UIFont.systemFont(ofSize: 17)
-            case .black, .esGray:
+            case .esBlack, .esGray:
                 return UIFont.systemFont(ofSize: 14)
             }
         }
@@ -126,7 +126,6 @@ class BannerView: PMView {
          offset: CGFloat,
          dismissDuration: TimeInterval = 4,
          link: String? = "",
-         icon: Bool? = false,
          handleAttributedTextTap: tapAttributedTextActionBlock? = nil,
          dismissAction: dismissActionBlock? = nil)
     {
@@ -162,19 +161,6 @@ class BannerView: PMView {
             
             self.link = link
             self.handleAttributedTextTap = handleAttributedTextTap
-        }
-        
-        //add icon
-        if icon! {
-            self.hasIcon = true
-            self.addIcon()
-            //self.messageTextview.frame = CGRect(x: 90, y: 16, width: 279, height: 40)
-            //self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
-            /*NSLayoutConstraint.activate([
-                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
-                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-                self.messageTextview.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-            ])*/
         }
         
         self.backgroundView.backgroundColor = appearance.backgroundColor
@@ -225,17 +211,8 @@ extension BannerView: UIGestureRecognizerDelegate {
         let verticalStackWidth: CGFloat = horizontalStackWidth - 41 - 8
         let textViewWidht = verticalStackWidth - 20
 
-        if self.hasIcon {
-            // Set constraints for the icon?
-
-            // Set constraints for the text
-            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                self.messageTextview.topAnchor.constraint(equalTo: baseView.topAnchor, constant: 16),
-                self.messageTextview.leadingAnchor.constraint(equalTo: baseView.leadingAnchor, constant: 48+xPadding),
-                self.messageTextview.trailingAnchor.constraint(equalTo: baseView.trailingAnchor, constant: -16-xPadding),
-                self.messageTextview.bottomAnchor.constraint(equalTo: baseView.bottomAnchor, constant: -16)
-            ])
+        if self.appearance == .esBlack {
+            self.addIcon()
         }
 
         let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
@@ -249,7 +226,11 @@ extension BannerView: UIGestureRecognizerDelegate {
         if self.appearance == .esGray {
             self.messageTextview.font = self.appearance?.fontSize
             self.messageTextview.textColor = self.appearance?.textColor
-            bannerHeight = 92.0//self.messageTextview.bounds.height + (2 * 16.0)
+            bannerHeight = 92.0//self.messageTextview.bounds.height + (2 * 16.0)    //TODO banner height wrong when more than one line
+        } else if self.appearance == .esBlack {
+            self.messageTextview.font = self.appearance?.fontSize
+            self.messageTextview.textColor = self.appearance?.textColor
+            bannerHeight = 72.0//self.messageTextview.bounds.height + (2 * 16.0)
         } else {
             let sizeOfText: CGSize = self.messageTextview.sizeThatFits(CGSize(width: textViewWidht, height: CGFloat.greatestFiniteMagnitude))
             bannerHeight = sizeOfText.height + buttonHeight + yPadding
@@ -304,6 +285,23 @@ extension BannerView: UIGestureRecognizerDelegate {
                     imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -34)
                 ])
             }
+        } else if self.appearance == .esBlack {
+            // Set constraints for the text
+            self.messageTextview.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.messageTextview.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+                self.messageTextview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 48),
+                self.messageTextview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+                self.messageTextview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+            ])
+            // Set constraints for icon
+            self.icon?.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.icon!.topAnchor.constraint(equalTo: self.topAnchor, constant: 24),
+                self.icon!.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+                self.icon!.trailingAnchor.constraint(equalTo: self.messageTextview.leadingAnchor, constant: -8),
+                self.icon!.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24)
+            ])
         }
 
         UIView.animate(withDuration: 0.3,
@@ -469,10 +467,10 @@ extension BannerView {
     private func addIcon() {
         if let image = UIImage(named: "ic-exclamation-circle") {
             let tintableImage = image.withRenderingMode(.alwaysTemplate)
-            let imageView = UIImageView(image: tintableImage)
-            imageView.frame = CGRect(x: 17.5, y: 25.5, width: 24, height: 24)
-            imageView.tintColor = ColorProvider.IconInverted
-            self.addSubview(imageView)
+            self.icon = UIImageView(image: tintableImage)
+            self.icon!.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+            self.icon!.tintColor = ColorProvider.IconInverted
+            self.addSubview(self.icon!)
         }
     }
 }
