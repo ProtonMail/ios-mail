@@ -147,19 +147,22 @@ extension SettingsEncryptedSearchDownloadedMessagesViewController {
         case .storageLimit:
             let cell = tableView.dequeueReusableCell(withIdentifier: SliderTableViewCell.CellID, for: indexPath)
             if let sliderCell = cell as? SliderTableViewCell {
-                let factor: Float = 1 //update if MB or GB
-                let representation: String = factor == 1 ? "MB" : "GB"
-                
-                let sliderValue: Float = self.viewModel.storageLimit * factor
-                let freeDiskSpaceInMB: Float = Float(EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!)/Float(1_000_000)
-                let maxValue: Float = freeDiskSpaceInMB * factor
-                let minValue: Float = self.viewModel.minStorageSize * factor
+                //let factor: Float = 1 //update if MB or GB
+                //let representation: String = factor == 1 ? "MB" : "GB"
+                //let freeDiskSpaceInMB: Float = Float(EncryptedSearchIndexService.shared.getFreeDiskSpace().asInt64!)/Float(1_000_000)
+                let sliderSteps: [Float] = [0,1,2,3,4,5]
                 
                 let bottomLinePrefix: String = "Current selection: "
-                let bottomLine: String = bottomLinePrefix + String(sliderValue) + representation
-                sliderCell.configCell(eSection.title, bottomLine, currentValue: sliderValue, maxValue: maxValue, minValue: minValue){_,newSliderValue in
-                    self.viewModel.storageLimit = newSliderValue
-                    sliderCell.bottomLabel.text = bottomLinePrefix + String(newSliderValue) + representation
+                let bottomLine: String = bottomLinePrefix + String(self.viewModel.storageLimit) //+ representation
+                sliderCell.configCell(eSection.title, bottomLine, currentSliderValue: self.viewModel.storageLimit, sliderMinValue: sliderSteps[0], sliderMaxValue: sliderSteps[sliderSteps.count-1]){ newSliderValue in
+
+                    let newIndex: Int = Int((newSliderValue).rounded())
+                    sliderCell.slider.setValue(Float(newIndex), animated: false)  //snap to increments
+                    
+                    let actualValue:Float = sliderSteps[newIndex]
+                    
+                    self.viewModel.storageLimit = actualValue
+                    sliderCell.bottomLabel.text = bottomLinePrefix + String(actualValue)// + representation
 
                     //update storageusage row with storage limit
                     let path: IndexPath = IndexPath.init(row: 0, section: SettingsEncryptedSearchDownloadedMessagesViewModel.SettingsSection.storageUsage.rawValue)

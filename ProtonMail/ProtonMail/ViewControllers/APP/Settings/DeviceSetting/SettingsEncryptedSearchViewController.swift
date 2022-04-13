@@ -71,14 +71,21 @@ class SettingsEncryptedSearchViewController: ProtonMailTableViewController, View
         setupProgressUpdateObserver()
         setupIndexingFinishedObserver()
 
+        print("ES-VIEW didload")
         //Determine current encrypted search state
         EncryptedSearchService.shared.determineEncryptedSearchState()
+        if EncryptedSearchService.shared.state == .undetermined {
+            print("Error cannot determine state of ES! set to disabled")
+            //TODO is that the correct way?
+            EncryptedSearchService.shared.state = .disabled
+            self.viewModel.isEncryptedSearch = false
+        }
 
         //Speed up indexing when on this view
         EncryptedSearchService.shared.speedUpIndexing()
         
         //add banner
-        if self.hideSections == false {
+        if EncryptedSearchService.shared.state == .downloading || EncryptedSearchService.shared.state == .paused || EncryptedSearchService.shared.state == .refresh || EncryptedSearchService.shared.state == .lowstorage {
             self.showInfoBanner()
         }
     }
@@ -453,18 +460,18 @@ extension SettingsEncryptedSearchViewController {
     }
     
     private func showInfoBanner(){
-        if (self.banner != nil) {
-            self.banner.remove(animated: false)
-        }
-        self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 516, dismissDuration: Double.infinity, icon: true)
+        //if (self.banner != nil) {
+        //    self.banner.remove(animated: false)
+        //}
+        self.banner = BannerView(appearance: .black, message: LocalString._encrypted_search_info_banner_text, buttons: nil, button2: nil, offset: 468, dismissDuration: Double.infinity, icon: true)
         self.view.addSubview(self.banner)
 
-        //self.banner.translatesAutoresizingMaskIntoConstraints = false
-        //NSLayoutConstraint.activate([
-        //    self.banner.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16),
-        //    self.banner.widthAnchor.constraint(equalToConstant: 343),
-        //    self.banner.heightAnchor.constraint(equalToConstant: 72)
-        //])
+        self.banner.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.banner.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
+            self.banner.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -16),
+            self.banner.heightAnchor.constraint(equalToConstant: 72)
+        ])
 
         self.banner.drop(on: self.view, from: .top)
     }
