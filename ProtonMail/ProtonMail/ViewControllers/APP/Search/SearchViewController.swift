@@ -31,9 +31,7 @@ import UIKit
 
 protocol SearchViewUIProtocol: UIViewController {
     var listEditing: Bool { get }
-
-    func update(progress: Float)
-    func setupProgressBar(isHidden: Bool)
+    func checkNoResultView()
     func activityIndicator(isAnimating: Bool)
     func refreshActionBarItems()
     func reloadTable()
@@ -59,28 +57,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private var grayedOutView: UIView? = nil
     private var searchInfoActivityIndicator: UIActivityIndicatorView? = nil
     private var actionSheet: PMActionSheet?
-
-    // TODO: need better UI solution for this progress bar
-    private lazy var progressBar: UIProgressView = {
-        let bar = UIProgressView()
-        bar.trackTintColor = .black
-        bar.progressTintColor = .white
-        bar.progressViewStyle = .bar
-
-        let label = UILabel(
-            font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize),
-            text: "Indexing local messages",
-            textColor: .gray
-        )
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        bar.addSubview(label)
-        bar.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
-        bar.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
-        bar.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
-
-        return bar
-    }()
 
     // MARK: - Private Constants
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
@@ -124,7 +100,6 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
 
         self.setupSearchBar()
         self.setupTableview()
-        self.setupProgressBar()
         self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
     }
@@ -210,15 +185,6 @@ extension SearchViewController {
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
 
-    private func setupProgressBar() {
-        self.progressBar.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.progressBar)
-        self.progressBar.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
-        self.progressBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
-    }
-
     private func setupActivityIndicator() {
         activityIndicator.color = ColorProvider.BrandNorm
         activityIndicator.isHidden = true
@@ -268,7 +234,7 @@ extension SearchViewController {
     internal func showSearchInfoBanner() {
         var text: String = ""
         var link: String = ""
-        
+
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
             let state = EncryptedSearchService.shared.getESState(userID: userID)
@@ -300,6 +266,12 @@ extension SearchViewController {
                 self.searchInfoBanner = BannerView(appearance: .esGray, message: text, buttons: nil, offset: 104.0, dismissDuration: Double.infinity, link: link, handleAttributedTextTap: handleAttributedTextCallback, dismissAction: dismissActionCallback)
                 self.view.addSubview(self.searchInfoBanner!)
                 self.searchInfoBanner!.drop(on: self.view, from: .top)
+
+                // TODO update constriants to shift down table
+                //self.view.layoutIfNeeded()  // finish pending layout changes
+                //self.tableView.translatesAutoresizingMaskIntoConstraints = false
+                //self.tableView.topAnchor.constraint(equalTo: self.searchInfoBanner!.bottomAnchor).isActive = true
+                //self.view.layoutIfNeeded()  // update table layout change
 
                 // Show spinner
                 if #available(iOS 13.0, *) {
@@ -839,14 +811,6 @@ extension SearchViewController {
 }
 
 extension SearchViewController: SearchViewUIProtocol {
-    func update(progress: Float) {
-        self.progressBar.setProgress(progress, animated: true)
-    }
-
-    func setupProgressBar(isHidden: Bool) {
-        self.progressBar.isHidden = isHidden
-    }
-
     func checkNoResultView() {
         if self.activityIndicator.isAnimating {
             self.noResultLabel.isHidden = true
