@@ -334,6 +334,8 @@ extension AppDelegate: UIApplicationDelegate {
                         EncryptedSearchService.shared.pauseAndResumeIndexingDueToInterruption(isPause: false, userID: userID)
                     }
                 }
+                // if app was in background - reset counter for estimating time to be more accurate
+                EncryptedSearchService.shared.estimateIndexTimeRounds = 0
             }
         }
     }
