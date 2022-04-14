@@ -28,6 +28,7 @@ class TagView: UIView {
 
     init() {
         super.init(frame: .zero)
+        self.translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         setUpLayout()
     }

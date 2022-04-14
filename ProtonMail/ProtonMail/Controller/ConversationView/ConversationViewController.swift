@@ -500,13 +500,13 @@ private extension ConversationViewController {
         isLoaded: Bool
     ) {
         let height = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-
         let newHeightInfo = HeightStoreInfo(height: height,
                                             isHeaderExpanded: isHeaderExpanded,
                                             loaded: isLoaded)
         if storedSizeHelper
             .updateStoredSizeIfNeeded(newHeightInfo: newHeightInfo, messageID: messageId) {
             cell.setNeedsLayout()
+            cell.layoutIfNeeded()
             UIView.setAnimationsEnabled(false)
             customView.tableView.beginUpdates()
             customView.tableView.endUpdates()
