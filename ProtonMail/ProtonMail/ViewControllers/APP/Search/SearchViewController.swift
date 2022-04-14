@@ -51,6 +51,9 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     @IBOutlet private var noResultLabel: UILabel!
     @IBOutlet private var toolBar: PMToolBarView!
     private let searchBar = SearchBarView()
+    private var enableSearchInfoBanner: Bool = false
+    private var hasTableBeenShiftedToDisplayBanner: Bool = false
+    private var tableShiftOffset: CGFloat = 0.0
     private var searchInfoBanner: BannerView?
     private var slowSearchBanner: BannerView?
     private var popupView: PopUpView?
@@ -127,21 +130,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
                 self.searchBar.textField.becomeFirstResponder()
             }
 
-            // remove search info banner if encrypted search is disabled or complete
-            let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
-            if let userID = usersManager.firstUser?.userInfo.userId {
-                if self.searchInfoBanner != nil {
-                    let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
-                    [.complete, .disabled, .undetermined]
-                    if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
-                        UIView.performWithoutAnimation {
-                            self.removeSearchInfoBanner()
-                        }
-                    } else {
-                        UIView.performWithoutAnimation {
-                            self.showSearchInfoBanner()
-                        }
-                    }
+            // Show a search info banner depending on the ES state
+            if self.enableSearchInfoBanner {
+                UIView.performWithoutAnimation {
+                    self.showSearchInfoBanner()
                 }
             }
         }
@@ -245,6 +237,9 @@ extension SearchViewController {
         var text: String = ""
         var link: String = ""
 
+        // Remove any existing banner
+        self.removeSearchInfoBanner()
+
         let usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
         if let userID = usersManager.firstUser?.userInfo.userId {
             let state = EncryptedSearchService.shared.getESState(userID: userID)
@@ -269,7 +264,12 @@ extension SearchViewController {
             }
 
             DispatchQueue.main.async {
-                let dismissActionCallback: BannerView.dismissActionBlock? = {}
+                let dismissActionCallback: BannerView.dismissActionBlock? = {
+                    if self.hasTableBeenShiftedToDisplayBanner {
+                        self.shiftTableUpAsBannerHasBeenRemoved()
+                        self.hasTableBeenShiftedToDisplayBanner = false
+                    }
+                }
                 let handleAttributedTextCallback: BannerView.tapAttributedTextActionBlock? = {
                     switch state {
                     case .complete, .disabled, .undetermined, .lowstorage, .background, .backgroundStopped:
@@ -298,17 +298,6 @@ extension SearchViewController {
                                                    dismissAction: dismissActionCallback)
                 self.view.addSubview(self.searchInfoBanner!)
                 self.searchInfoBanner?.displayBanner(on: self.view)
-
-                // Shift tableview down to make place for the banner
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.2) {
-                        var frame = self.tableView.frame
-                        // Size of banner + distance to top of table view
-                        let tableOffset = ((self.searchInfoBanner?.frame.height ?? 60) + 20)
-                        frame.origin.y += tableOffset
-                        self.tableView.frame = frame
-                    }
-                }
             }
         }
     }
@@ -317,11 +306,35 @@ extension SearchViewController {
         self.searchInfoBanner?.remove(animated: false)
         self.searchInfoBanner = nil
 
-        if userCachedStatus.isEncryptedSearchOn == false {
+        /*if userCachedStatus.isEncryptedSearchOn == false {
             // Clear existing search results
             self.viewModel.cleanExistingSearchResults()
             // Run search on server
             self.viewModel.fetchRemoteData(query: self.query, fromStart: true, forceSearchOnServer: true)
+        }*/
+    }
+
+    internal func shiftTableDownToMakeSpaceForBanner() {
+        // Shift tableview down to make place for the banner
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                var frame = self.tableView.frame
+                // Size of banner + distance to top of table view
+                self.tableShiftOffset = ((self.searchInfoBanner?.frame.height ?? 60) + 20)
+                frame.origin.y += self.tableShiftOffset
+                self.tableView.frame = frame
+            }
+        }
+    }
+
+    internal func shiftTableUpAsBannerHasBeenRemoved() {
+        // Shift tableview back up as banner has been removed
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                var frame = self.tableView.frame
+                frame.origin.y -= self.tableShiftOffset
+                self.tableView.frame = frame
+            }
         }
     }
 }
@@ -974,7 +987,12 @@ extension SearchViewController: UITextFieldDelegate {
                     let expectedESStates: [EncryptedSearchService.EncryptedSearchIndexState] =
                     [.downloading, .paused, .refresh, .lowstorage, .partial]
                     if expectedESStates.contains(EncryptedSearchService.shared.getESState(userID: userID)) {
+                        self.enableSearchInfoBanner = true
                         self.showSearchInfoBanner()    // display only when ES is on
+                        if self.hasTableBeenShiftedToDisplayBanner == false {
+                            self.shiftTableDownToMakeSpaceForBanner()
+                            self.hasTableBeenShiftedToDisplayBanner = true
+                        }
                     }
                 }
             }
