@@ -668,10 +668,10 @@ class ComposeViewModelImpl: ComposeViewModel {
 
         switch messageAction {
         case .openDraft:
-            var body = ""
+            let body: String
             var css: String?
             do {
-                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!)
                 if CSSMagic.darkStyleSupportLevel(htmlString: body, isNewsLetter: false, isPlainText: false) == .protonSupport {
                     css = CSSMagic.generateCSSForDarkMode(htmlString: body)
                 }
@@ -683,7 +683,7 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             var body = ""
             do {
-                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!)
             } catch {
                 body = self.message!.bodyToHtml()
             }
@@ -736,7 +736,7 @@ class ComposeViewModelImpl: ComposeViewModel {
             var body = ""
 
             do {
-                body = try self.messageService.messageDecrypter.decrypt(message: self.message!) ?? ""
+                body = try self.messageService.messageDecrypter.decrypt(message: self.message!)
             } catch {
                 body = self.message!.bodyToHtml()
             }
