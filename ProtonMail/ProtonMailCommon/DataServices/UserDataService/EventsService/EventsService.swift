@@ -141,7 +141,7 @@ extension EventsService {
         }
         self.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userInfo.userId))
-            self.userManager.apiService.exec(route: eventAPI) { (task, response: EventCheckResponse) in
+            self.userManager.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { (task, response) in
 
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
@@ -152,7 +152,7 @@ extension EventsService {
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.userManager.apiService.exec(route: getLatestEventID) { (task, eventIDResponse: EventLatestIDResponse) in
+                    self.userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { (task, eventIDResponse) in
                         if let err = eventIDResponse.error {
                             completion?(task, nil, err.toNSError)
                             return
@@ -296,7 +296,7 @@ extension EventsService {
 
     func fetchLatestEventID(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest()
-        userManager.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
+        userManager.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
             guard !IDRes.eventID.isEmpty,
                   let self = self else {
                 completion?(task, nil, nil)

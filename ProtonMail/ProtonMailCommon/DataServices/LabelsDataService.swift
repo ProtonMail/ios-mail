@@ -151,7 +151,7 @@ class LabelsDataService: Service, HasLocalStorage {
     func fetchV4ContactGroup() -> Promise<Void> {
         return Promise { seal in
             let groupRes = GetV4LabelsRequest(type: .contactGroup)
-            self.apiService.exec(route: groupRes) { (_, res: GetLabelsResponse) in
+            self.apiService.exec(route: groupRes, responseObject: GetLabelsResponse()) { (_, res) in
                 if let error = res.error {
                     seal.reject(error)
                     return
@@ -316,7 +316,7 @@ class LabelsDataService: Service, HasLocalStorage {
 
     func createNewLabel(name: String, color: String, type: PMLabelType = .label, parentID: String? = nil, notify: Bool = true, objectID: String? = nil, completion: ((String?, NSError?) -> Void)?) {
         let route = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: true)
-        self.apiService.exec(route: route) { (task, response: CreateLabelRequestResponse) in
+        self.apiService.exec(route: route, responseObject: CreateLabelRequestResponse()) { (task, response) in
             if let err = response.error {
                 completion?(nil, err.toNSError)
             } else {
@@ -332,7 +332,7 @@ class LabelsDataService: Service, HasLocalStorage {
 
     func updateLabel(_ label: Label, name: String, color: String, parentID: String?, notify: Bool, completion: ((NSError?) -> Void)?) {
         let api = UpdateLabelRequest(id: label.labelID, name: name, color: color, parentID: parentID, notify: notify)
-        self.apiService.exec(route: api) { (task, response: UpdateLabelRequestResponse) in
+        self.apiService.exec(route: api, responseObject: UpdateLabelRequestResponse()) { (task, response) in
             if let err = response.error {
                 completion?(err.toNSError)
             } else {
@@ -358,7 +358,7 @@ class LabelsDataService: Service, HasLocalStorage {
                      subLabelIDs: [NSManagedObjectID] = [],
                      completion: (() -> Void)?) {
         let api = DeleteLabelRequest(lable_id: label.labelID)
-        self.apiService.exec(route: api) { (_, _) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (_, _) in
 
         }
         let ids = subLabelIDs + [label.objectID]

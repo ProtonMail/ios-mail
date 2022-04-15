@@ -55,6 +55,7 @@ class ExpandedHeaderView: UIView {
         initialsContainer.addSubview(initialsLabel)
     }
 
+    // swiftlint:disable function_body_length
     private func setUpLayout() {
         [
             initialsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),

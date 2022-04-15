@@ -25,7 +25,7 @@ import Foundation
 extension ConversationDataService {
     func deleteConversations(with conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationDeleteRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { (task, response: ConversationDeleteResponse) in
+        self.apiService.exec(route: request, responseObject: ConversationDeleteResponse()) { (task, response) in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -42,7 +42,7 @@ extension ConversationDataService {
 
     func markAsRead(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationReadRequest(conversationIDs: conversationIDs)
-        self.apiService.exec(route: request) { (task, response: ConversationReadResponse) in
+        self.apiService.exec(route: request, responseObject: ConversationReadResponse()) { (task, response) in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -58,7 +58,7 @@ extension ConversationDataService {
 
     func markAsUnread(conversationIDs: [String], labelID: String, completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationUnreadRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { (task, response: ConversationUnreadResponse) in
+        self.apiService.exec(route: request, responseObject: ConversationUnreadResponse()) { (task, response) in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -78,7 +78,7 @@ extension ConversationDataService {
                isSwipeAction: Bool,
                completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationLabelRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { [weak self] (task, response: ConversationLabelResponse) in
+        self.apiService.exec(route: request, responseObject: ConversationLabelResponse()) { [weak self] (task, response) in
             if let err = response.error {
                 completion?(.failure(err))
                 return
@@ -103,7 +103,7 @@ extension ConversationDataService {
                  isSwipeAction: Bool,
                  completion: ((Result<Void, Error>) -> Void)?) {
         let request = ConversationUnlabelRequest(conversationIDs: conversationIDs, labelID: labelID)
-        self.apiService.exec(route: request) { [weak self] (task, response: ConversationUnlabelResponse) in
+        self.apiService.exec(route: request, responseObject: ConversationUnlabelResponse()) { [weak self] (task, response) in
             if let err = response.error {
                 completion?(.failure(err))
                 return

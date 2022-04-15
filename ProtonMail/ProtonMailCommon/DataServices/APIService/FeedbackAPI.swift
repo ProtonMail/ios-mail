@@ -93,7 +93,7 @@ final class UserFeedbackService: UserFeedbackServiceProtocol {
             return
         }
         let request = UserFeedbackRequest(with: feedback)
-        apiService.exec(route: request) { (task, response: UserFeedbackResponse) in
+        apiService.exec(route: request, responseObject: UserFeedbackResponse()) { task, response in
             guard response.error == nil else {
                 handler(.service(response.error))
                 return

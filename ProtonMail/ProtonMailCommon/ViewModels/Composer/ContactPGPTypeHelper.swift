@@ -56,7 +56,7 @@ struct ContactPGPTypeHelper {
 
     func getPGPType(email: String, isMessageHavingPwd: Bool, completion: @escaping PGPTypeCheckCompletionBlock) {
         let request = UserEmailPubKeys(email: email)
-        apiService.exec(route: request) { (result: KeysResponse) in
+        apiService.exec(route: request, responseObject: KeysResponse()) { result in
             if let error = result.error {
                 var errCode = error.responseCode ?? -1
                 var pgpType = PGPType.none
