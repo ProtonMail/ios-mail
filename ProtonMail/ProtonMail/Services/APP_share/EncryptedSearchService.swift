@@ -408,7 +408,8 @@ extension EncryptedSearchService {
         self.getTotalMessages(userID: userID) {
             let numberOfEntriesInSearchIndex: Int = EncryptedSearchIndexService.shared.getNumberOfEntriesInSearchIndex(for: userID)
             print("ES-DEBUG: entries in search index: \(numberOfEntriesInSearchIndex), total messages: \(userCachedStatus.encryptedSearchTotalMessages)")
-            if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages {
+            if numberOfEntriesInSearchIndex == userCachedStatus.encryptedSearchTotalMessages ||
+                self.getESState(userID: userID) == .complete {
                 self.setESState(userID: userID, indexingState: .complete)
 
                 // cleanup
@@ -1002,6 +1003,9 @@ extension EncryptedSearchService {
 
         group.notify(queue: .main) {
             if userCachedStatus.encryptedSearchProcessedMessages >= userCachedStatus.encryptedSearchTotalMessages {
+                // temporary fix - if there are more messages processed then total messages set to complete
+                // this fixes the issue of lost messages during indexing
+                self.setESState(userID: userID, indexingState: .complete)
                 completionHandler()
             } else {
                 let expectedESStates: [EncryptedSearchIndexState] = [.downloading, .background, .refresh]
