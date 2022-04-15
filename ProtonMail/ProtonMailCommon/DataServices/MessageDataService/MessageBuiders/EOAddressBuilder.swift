@@ -52,7 +52,7 @@ class EOAddressBuilder: PackageBuilder {
             // create outside encrypt packet
             let token = String.randomString(32) as String
             let based64Token = token.encodeBase64() as String
-            let encryptedToken = try based64Token.encrypt(withPwd: self.password) ?? ""
+            let encryptedToken = try based64Token.encryptNonOptional(password: self.password)
 
             // start build auth package
             let authModuls: AuthModulusResponse = try `await`(

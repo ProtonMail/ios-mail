@@ -723,7 +723,7 @@ extension UsersManager: APIServiceDelegate {
         #else
         let processInfo = userCachedStatus as? SystemUpTimeProtocol
         #endif
-        Crypto.updateTime(serverTime, processInfo: processInfo)
+        MailCrypto.updateTime(serverTime, processInfo: processInfo)
     }
 
     var appVersion: String {

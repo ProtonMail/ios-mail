@@ -298,8 +298,8 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
                 let userkeys = userInfo.userKeys
                 for key in userkeys {
                     do {
-                        pt_contact = try? card.data.decryptMessageWithSinglKey(key.privateKey,
-                                                                               passphrase: user.mailboxPassword)
+                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                                                                                           passphrase: user.mailboxPassword)
                         break
                     }
                 }

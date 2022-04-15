@@ -46,7 +46,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
                                               privateKeys: dataSource.userPrivateKeys,
                                               passphrase: passphrase,
                                               newScheme: dataSource.newSchema) else {
-                  throw Crypto.CryptoError.decryptionFailed
+                  throw MailCrypto.CryptoError.decryptionFailed
               }
 
         if message.isPgpMime || message.isSignedMime {

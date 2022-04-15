@@ -23,6 +23,7 @@
 import Foundation
 import Groot
 import PromiseKit
+import ProtonCore_Crypto
 import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services

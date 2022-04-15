@@ -113,7 +113,7 @@ extension AppDelegate: APIServiceDelegate {
     }
 
     func onUpdate(serverTime: Int64) {
-        Crypto.updateTime(serverTime, processInfo: userCachedStatus)
+        MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
     }
 
     var appVersion: String {

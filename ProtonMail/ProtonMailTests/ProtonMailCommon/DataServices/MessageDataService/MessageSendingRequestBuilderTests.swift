@@ -312,7 +312,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         sut = MessageSendingRequestBuilder(expirationOffset: nil)
         let key = Key(keyID: "1",
                       privateKey: OpenPGPDefines.privateKey)
-        let encrypted = try "test".encrypt(withKey: key, userKeys: [], mailbox_pwd: OpenPGPDefines.passphrase)!
+        let encrypted = try "test".encrypt(withKey: key, userKeys: [], mailbox_pwd: OpenPGPDefines.passphrase)
 
         let (keyPacket, dataPacket) = try sut.preparePackages(encrypted: encrypted)
 

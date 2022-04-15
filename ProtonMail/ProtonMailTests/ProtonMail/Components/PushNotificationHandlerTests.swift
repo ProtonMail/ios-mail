@@ -16,6 +16,7 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
+import ProtonCore_Crypto
 @testable import ProtonMail
 
 final class PushNotificationHandlerTests: XCTestCase {
