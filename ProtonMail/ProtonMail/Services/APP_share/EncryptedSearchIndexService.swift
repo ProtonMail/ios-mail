@@ -489,7 +489,7 @@ extension EncryptedSearchIndexService {
 
         // Check if db handle exists
         let handle: Connection? = self.connectToSearchIndex(for: userID)
-        
+
         // Check if db table exists
         let table = Table(DatabaseConstants.Table_Searchable_Messages)
         do {
@@ -497,6 +497,8 @@ extension EncryptedSearchIndexService {
             let _ = try handle?.scalar(table.exists)
             self.searchIndexSemaphore.signal()
         } catch {
+            print("Error: search index db table does not exist yet, create it now.")
+            self.searchIndexSemaphore.signal()
             self.createSearchIndexTable(using: handle!)
         }
     }
