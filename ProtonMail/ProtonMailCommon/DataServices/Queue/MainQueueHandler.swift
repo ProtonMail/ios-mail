@@ -628,11 +628,7 @@ extension MainQueueHandler {
                     att.keyPacket = newKeyPack
                     att.keyChanged = true
                 }
-                guard let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message) else {
-                            // error: object is not a Message
-                            completion?(nil, nil, NSError.badParameter("decrypted body"))
-                            return
-                        }
+                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
                 message.addressID = addressID
                 if message.nextAddressID == addressID {
                     message.nextAddressID = nil

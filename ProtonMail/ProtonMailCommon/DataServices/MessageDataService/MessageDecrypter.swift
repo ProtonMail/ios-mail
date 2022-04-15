@@ -21,7 +21,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 protocol MessageDecrypterProtocol {
-    func decrypt(message: Message) throws -> String?
+    func decrypt(message: Message) throws -> String
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
@@ -34,7 +34,7 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         self.userDataSource = userDataSource
     }
 
-    func decrypt(message: Message) throws -> String? {
+    func decrypt(message: Message) throws -> String {
         let addressKeys = self.getAddressKeys(for: message.addressID)
         if addressKeys.isEmpty {
             return message.body

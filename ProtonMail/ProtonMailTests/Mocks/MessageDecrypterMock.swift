@@ -20,7 +20,7 @@ import Foundation
 @testable import ProtonMail
 
 final class MessageDecrypterMock: MessageDecrypterProtocol {
-    func decrypt(message: Message) throws -> String? {
+    func decrypt(message: Message) throws -> String {
         return "Test body"
     }
     

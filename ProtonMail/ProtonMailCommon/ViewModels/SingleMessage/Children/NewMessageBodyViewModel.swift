@@ -346,9 +346,7 @@ extension NewMessageBodyViewModel {
 
         do {
             let decryptedMessage = try messageDataProcessor.messageDecrypter.decrypt(message: message)
-            if decryptedMessage != nil {
-                self.delegate?.hideDecryptionErrorBanner()
-            }
+            self.delegate?.hideDecryptionErrorBanner()
             return decryptedMessage
         } catch {
             self.delegate?.showDecryptionErrorBanner()
