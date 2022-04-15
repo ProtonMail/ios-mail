@@ -24,6 +24,7 @@ import Foundation
 import CoreData
 import PromiseKit
 import Crypto
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 // TODO::fixme import header
@@ -97,21 +98,25 @@ extension Attachment {
 
     func sign(byKey key: Key, userKeys: [Data], passphrase: String) -> Data? {
         do {
-            let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                          passphrase: passphrase,
-                                                                          key: key)
-            var signature: String?
+            let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(
+                userKeys: userKeys,
+                passphrase: passphrase,
+                key: key
+            )
+            let signature: String
             if let fileData = fileData {
-                let out = try fileData.signAttachmentNonOptional(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase)
-                signature = out
-            } else if let localURL = localURL,
-                      let fileData = NSMutableData(contentsOf: localURL),
-                      let out = try Crypto().signDetached(plainData: fileData,
-                                                          privateKey: key.privateKey,
-                                                          passphrase: addressKeyPassphrase) {
-                signature = out
-            }
-            guard let signature = signature else {
+                signature = try fileData.signAttachmentNonOptional(
+                    byPrivKey: key.privateKey,
+                    passphrase: addressKeyPassphrase
+                )
+            } else if let localURL = localURL {
+                let fileData = try Data(contentsOf: localURL)
+                signature = try Crypto.signDetachedNonOptional(
+                    plainData: fileData,
+                    privateKey: key.privateKey,
+                    passphrase: addressKeyPassphrase
+                )
+            } else {
                 return nil
             }
             var error: NSError?
@@ -165,9 +170,9 @@ extension Attachment {
                                                                userKeys: userPrivKeys,
                                                                passphrase: passphrase,
                                                                keys: addrPrivKeys) :
-                                    try data.decryptAttachment(keydata,
-                                                               passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeysArray) {
+                                    try data.decryptAttachmentNonOptional(keydata,
+                                                                          passphrase: passphrase,
+                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -185,9 +190,9 @@ extension Attachment {
                                                                userKeys: userPrivKeys,
                                                                passphrase: passphrase,
                                                                keys: addrPrivKeys) :
-                                    try data.decryptAttachment(keydata,
-                                                               passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeysArray) {
+                                    try data.decryptAttachmentNonOptional(keydata,
+                                                                          passphrase: passphrase,
+                                                                          privKeys: addrPrivKeys.binPrivKeysArray) {
                                 let strBase64: String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }

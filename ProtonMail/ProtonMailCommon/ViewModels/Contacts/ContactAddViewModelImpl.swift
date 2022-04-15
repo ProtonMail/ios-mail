@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Crypto
 import UIKit
 import OpenPGP
 
@@ -202,12 +203,17 @@ class ContactAddViewModelImpl: ContactEditViewModel {
     }
 
     override func done(complete : @escaping ContactEditSaveComplete) {
+        let onError: (NSError) -> Void = { error in
+            DispatchQueue.main.async {
+                complete(error)
+            }
+        }
+
         let mailboxPassword = user.mailboxPassword
+
         guard let userkey = user.userInfo.firstUserKey(),
               case _ = user.authCredential else {
-            DispatchQueue.main.async {
-                complete(NSError.lockError())
-            }
+            onError(NSError.lockError())
             return
         }
 
@@ -215,9 +221,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
             if e.newEmail.isEmpty || !e.newEmail.isValidEmail() {
-                DispatchQueue.main.async {
-                    complete(RuntimeError.invalidEmail.toError())
-                }
+                onError(RuntimeError.invalidEmail.toError())
                 return
             }
             a_emails.append(e.toContactEmail())
@@ -250,12 +254,21 @@ class ContactAddViewModelImpl: ContactEditViewModel {
 
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        // TODO:: fix the try?
-        let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
-                                                       privateKey: userkey.privateKey,
-                                                       passphrase: mailboxPassword)
+
+        let signed_vcard2: String
+        do {
+            signed_vcard2 = try Crypto().signDetached(
+                plainText: vcard2Str,
+                privateKey: userkey.privateKey,
+                passphrase: mailboxPassword
+            )
+        } catch {
+            onError(error as NSError)
+            return
+        }
+
         // card 2 object
-        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
+        let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
 
         var isCard3Set: Bool = false
         //
@@ -365,13 +378,26 @@ class ContactAddViewModelImpl: ContactEditViewModel {
         vcard3.setUid(uuid)
 
         let vcard3Str = PMNIEzvcard.write(vcard3)
-        // TODO:: fix the try!
-        let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
-        let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
-                                                       privateKey: userkey.privateKey,
-                                                       passphrase: mailboxPassword)
+
+        let encrypted_vcard3, signed_vcard3: String
+        do {
+            encrypted_vcard3 = try vcard3Str.encryptNonOptional(
+                withPubKey: userkey.publicKey,
+                privateKey: "",
+                passphrase: ""
+            )
+            signed_vcard3 = try Crypto().signDetached(
+                plainText: vcard3Str,
+                privateKey: userkey.privateKey,
+                passphrase: mailboxPassword
+            )
+        } catch {
+            onError(error as NSError)
+            return
+        }
+
         // card 3 object
-        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
+        let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3, s: signed_vcard3 )
 
         var cards: [CardData] = [card2]
         if isCard3Set {

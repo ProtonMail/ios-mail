@@ -329,11 +329,8 @@ extension Message {
         var errorMessages: [String] = []
         for key in keys {
             do {
-                if let decryptedBody = try body.decryptMessageWithSinglKey(key.privateKey, passphrase: passphrase) {
-                    return decryptedBody
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
+                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: passphrase)
+                return decryptedBody
             } catch let error {
                 if firstError == nil {
                     firstError = error
@@ -353,15 +350,12 @@ extension Message {
         var errorMessages: [String] = []
         for key in keys {
             do {
-                let addressKeyPassphrase = try Crypto.getAddressKeyPassphrase(userKeys: userKeys,
-                                                                              passphrase: passphrase,
-                                                                              key: key)
-                if let decryptedBody = try body.decryptMessageWithSinglKey(key.privateKey,
-                                                                           passphrase: addressKeyPassphrase) {
-                    return decryptedBody
-                } else {
-                    throw Crypto.CryptoError.unexpectedNil
-                }
+                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                                  passphrase: passphrase,
+                                                                                  key: key)
+                let decryptedBody = try body.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                                                                                    passphrase: addressKeyPassphrase)
+                return decryptedBody
             } catch let error {
                 if firstError == nil {
                     firstError = error

@@ -1566,10 +1566,10 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
                 message.body = try clearBody.encrypt(withKey: key,
                                                      userKeys: self.userDataSource!.userPrivateKeys,
-                                                     mailbox_pwd: mailbox_pwd) ?? ""
+                                                     mailbox_pwd: mailbox_pwd)
             } else {// fallback
                 let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
-                message.body = try clearBody.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
+                message.body = try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd)
             }
         } catch {
             message.body = ""

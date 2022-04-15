@@ -17,6 +17,7 @@
 
 import Foundation
 import OpenPGP
+import ProtonCore_Crypto
 import ProtonCore_DataModel
 
 struct ContactDecryptionResult {
@@ -191,8 +192,8 @@ extension ContactParser {
         var decryptError = false
         for key in userKeys {
             do {
-                decryptedText = try encryptedText.decryptMessageWithSinglKey(key.privateKey,
-                                                                             passphrase: passphrase)
+                decryptedText = try encryptedText.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                                                                                         passphrase: passphrase)
                 signKey = key
                 decryptError = false
                 break
