@@ -206,8 +206,7 @@ class ReportBugsViewController: ProtonMailViewController {
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        let code = error.code
-        guard DoHMail.default.codeCheck(code: code) else {
+        guard DoHMail.default.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
 

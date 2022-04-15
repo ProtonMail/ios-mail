@@ -90,6 +90,7 @@ extension SignInCoordinatorEnvironment {
                                   doh: doh,
                                   apiServiceDelegate: apiServiceDelegate,
                                   forceUpgradeDelegate: forceUpgradeDelegate,
+                                  humanVerificationVersion: .v2,
                                   minimumAccountType: minimumAccountType,
                                   isCloseButtonAvailable: isCloseButtonAvailable,
                                   paymentsAvailability: payment,

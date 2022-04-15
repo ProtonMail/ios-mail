@@ -133,7 +133,6 @@ extension MenuViewModel: MenuVMProtocol {
             return self.labelItems[safe:row]
         case .more:
             return self.moreItems[safe:row]
-        default: return nil
         }
     }
 
@@ -144,7 +143,6 @@ extension MenuViewModel: MenuVMProtocol {
             return self.folderItems.getNumberOfRows()
         case .labels: return self.labelItems.count
         case .more: return self.moreItems.count
-        default: return 0
         }
     }
 

@@ -1,0 +1,6 @@
+framework module ProtonCore_TestingToolkit {
+  umbrella header "ProtonCore-TestingToolkit-UnitTests_Core-UnitTests_DataModel-umbrella.h"
+
+  export *
+  module * { export * }
+}

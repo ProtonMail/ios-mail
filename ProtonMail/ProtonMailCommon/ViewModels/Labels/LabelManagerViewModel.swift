@@ -292,7 +292,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func enableUseFolderColor(isEnable: Bool) {
         self.uiDelegate?.showLoadingHUD()
         let req = EnableFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req) { [weak self](_, response: MailSettingsResponse) in
+        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)
         }
@@ -301,7 +301,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
     func enableInherit(isEnable: Bool) {
         self.uiDelegate?.showLoadingHUD()
         let req = InheritParentFolderColorRequest(isEnable: isEnable)
-        self.user.apiService.exec(route: req) { [weak self] (_, response: MailSettingsResponse) in
+        self.user.apiService.exec(route: req, responseObject: MailSettingsResponse()) { [weak self] _, response in
             guard let self = self else { return }
             self.handle(mailSettingsResponse: response)
         }
@@ -447,7 +447,7 @@ extension LabelManagerViewModel {
     private func orderLabel(labelIDs: [String], parentID: String?) {
         let reqType: PMLabelType = self.type == .folder ? .folder: .label
         let req = LabelOrderRequest(siblingLabelID: labelIDs, parentID: parentID, type: reqType)
-        self.user.apiService.exec(route: req) { [weak self] (_, res: Response) in
+        self.user.apiService.exec(route: req, responseObject: VoidResponse()) { [weak self] _, res in
             guard let self = self else { return }
             if let error = res.error {
                 self.sortoutRawData(data: self.rawData)

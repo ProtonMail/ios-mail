@@ -15,13 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
-import UIKit
 import Foundation
 @testable import ProtonMail
+import UIKit
 
 final class NewMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegate {
-    
-    enum UserInterfaceStyle : Int {
+    enum UserInterfaceStyle: Int {
         case unspecified = 0
         case light = 1
         case dark = 2
@@ -51,19 +50,11 @@ final class NewMessageBodyViewModelDelegateMock: NewMessageBodyViewModelDelegate
         isReloadWebViewCalled = true
     }
 
-    func showReloadError() {
+    func showReloadError() {}
 
-    }
+    func updateBannerStatus() {}
 
-    func updateBannerStatus() {
+    func showDecryptionErrorBanner() {}
 
-    }
-
-    func showDecryptionErrorBanner() {
-
-    }
-
-    func hideDecryptionErrorBanner() {
-
-    }
+    func hideDecryptionErrorBanner() {}
 }

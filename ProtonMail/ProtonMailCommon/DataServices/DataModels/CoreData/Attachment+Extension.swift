@@ -101,8 +101,8 @@ extension Attachment {
                                                                           passphrase: passphrase,
                                                                           key: key)
             var signature: String?
-            if let fileData = fileData,
-               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase) {
+            if let fileData = fileData {
+                let out = try fileData.signAttachmentNonOptional(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase)
                 signature = out
             } else if let localURL = localURL,
                       let fileData = NSMutableData(contentsOf: localURL),

@@ -67,10 +67,10 @@ class ChangeLoginPWDViewModel: ChangePasswordViewModel {
     }
 
     func setNewPassword(_ current: String,
-                               newPassword: String,
-                               confirmNewPassword: String,
-                               tFACode: String?,
-                               complete: @escaping ChangePasswordComplete) {
+                        newPassword: String,
+                        confirmNewPassword: String,
+                        tFACode: String?,
+                        complete: @escaping ChangePasswordComplete) {
         let currentPassword = current // .trim();
         let newpwd = newPassword // .trim();
         let confirmpwd = confirmNewPassword // .trim();

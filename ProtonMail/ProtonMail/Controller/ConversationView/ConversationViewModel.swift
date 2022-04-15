@@ -7,8 +7,8 @@ enum MessageDisplayRule {
     case showAll
 }
 
+// swiftlint:disable type_body_length
 class ConversationViewModel {
-
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet {
