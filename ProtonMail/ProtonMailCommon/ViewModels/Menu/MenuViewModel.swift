@@ -158,14 +158,14 @@ extension MenuViewModel: MenuVMProtocol {
         guard let user = self.currentUser else {
             return false
         }
-        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userinfo.userId)
+        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userID)
     }
 
     func removeAllQueuedMessageOfCurrentUser() {
         guard let user = self.currentUser else {
             return
         }
-        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userinfo.userId, completeHander: nil)
+        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
 
     func signOut(userID: String, completion: (() -> Void)?) {

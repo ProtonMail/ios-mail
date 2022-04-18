@@ -65,7 +65,7 @@ protocol ConversationProvider: AnyObject {
 
 final class ConversationDataService: Service, ConversationProvider {
     let apiService: APIService
-    let userID: String
+    let userID: UserID
     let coreDataService: CoreDataService
     let labelDataService: LabelsDataService
     let lastUpdatedStore: LastUpdatedStoreProtocol
@@ -75,7 +75,7 @@ final class ConversationDataService: Service, ConversationProvider {
     let undoActionManager: UndoActionManagerProtocol
 
     init(api: APIService,
-         userID: String,
+         userID: UserID,
          coreDataService: CoreDataService,
          labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,
@@ -101,13 +101,13 @@ extension ConversationDataService {
         let context = coreDataService.rootSavingContext
         context.performAndWait {
             let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
-            conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID, Conversation.Attributes.isSoftDeleted, NSNumber(false))
+            conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", Conversation.Attributes.userID, self.userID.rawValue, Conversation.Attributes.isSoftDeleted, NSNumber(false))
             if let conversations = try? context.fetch(conversationFetch) as? [NSManagedObject] {
                 conversations.forEach { context.delete($0) }
             }
 
             let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-            contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
+            contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@", ContextLabel.Attributes.userID, self.userID.rawValue, ContextLabel.Attributes.isSoftDeleted, NSNumber(false))
             if let contextlabels = try? context.fetch(contextLabelFetch) as? [NSManagedObject] {
                 contextlabels.forEach { context.delete($0) }
             }

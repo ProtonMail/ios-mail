@@ -449,16 +449,16 @@ class MailboxViewModel: StorageLimit {
     func lastUpdateTime() -> LabelCount? {
         switch currentViewMode {
         case .singleMessage:
-            return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID, context: coreDataContextProvider.mainContext, type: .singleMessage)
+            return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.user.userID.rawValue, context: coreDataContextProvider.mainContext, type: .singleMessage)
         case .conversation:
-            return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID, context: coreDataContextProvider.mainContext, type: .conversation)
+            return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.user.userID.rawValue, context: coreDataContextProvider.mainContext, type: .conversation)
         }
     }
 
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.messageService.userID) {
+        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.user.userID.rawValue) {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 

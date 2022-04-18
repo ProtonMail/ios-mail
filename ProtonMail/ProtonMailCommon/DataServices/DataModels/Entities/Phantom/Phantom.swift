@@ -35,3 +35,39 @@ extension Phantom: Equatable where RawValue: Equatable {
 }
 
 extension Phantom: Hashable where RawValue: Hashable {}
+
+extension Phantom: ExpressibleByIntegerLiteral where RawValue: ExpressibleByIntegerLiteral {
+    typealias IntegerLiteralType = RawValue.IntegerLiteralType
+    init(integerLiteral value: IntegerLiteralType) {
+        self.init(rawValue: RawValue(integerLiteral: value))
+    }
+}
+
+extension Phantom: ExpressibleByStringLiteral where RawValue: ExpressibleByStringLiteral {
+    typealias StringLiteralType = RawValue.StringLiteralType
+
+    init(stringLiteral: StringLiteralType) {
+        self.init(rawValue: RawValue(stringLiteral: stringLiteral))
+    }
+
+    init(_ stringLiteral: StringLiteralType) {
+        self.init(rawValue: RawValue(stringLiteral: stringLiteral))
+    }
+}
+
+extension Phantom: ExpressibleByUnicodeScalarLiteral where RawValue: ExpressibleByUnicodeScalarLiteral {
+    typealias UnicodeScalarLiteralType = RawValue.UnicodeScalarLiteralType
+
+    init(unicodeScalarLiteral: UnicodeScalarLiteralType) {
+        self.init(rawValue: RawValue(unicodeScalarLiteral: unicodeScalarLiteral))
+    }
+}
+
+// swiftlint:disable:next line_length
+extension Phantom: ExpressibleByExtendedGraphemeClusterLiteral where RawValue: ExpressibleByExtendedGraphemeClusterLiteral {
+    typealias ExtendedGraphemeClusterLiteralType = RawValue.ExtendedGraphemeClusterLiteralType
+
+    init(extendedGraphemeClusterLiteral: ExtendedGraphemeClusterLiteralType) {
+        self.init(rawValue: RawValue(extendedGraphemeClusterLiteral: extendedGraphemeClusterLiteral))
+    }
+}

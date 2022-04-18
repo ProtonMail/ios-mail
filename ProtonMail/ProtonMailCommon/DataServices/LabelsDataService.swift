@@ -43,13 +43,13 @@ protocol LabelProviderProtocol: AnyObject {
 class LabelsDataService: Service, HasLocalStorage {
 
     let apiService: APIService
-    private let userID: String
+    private let userID: UserID
     private let coreDataService: CoreDataService
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
     weak var viewModeDataSource: ViewModeDataSource?
 
-    init(api: APIService, userID: String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService) {
+    init(api: APIService, userID: UserID, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService) {
         self.apiService = api
         self.userID = userID
         self.coreDataService = coreDataService
@@ -60,11 +60,11 @@ class LabelsDataService: Service, HasLocalStorage {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             let labelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-            labelFetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID)
+            labelFetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID.rawValue)
             let labelDeleteRequest = NSBatchDeleteRequest(fetchRequest: labelFetch)
 
             let contextLabelRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-            contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID)
+            contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID.rawValue)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: contextLabelRequest)
 
             let moc = self.coreDataService.operationContext
@@ -108,10 +108,10 @@ class LabelsDataService: Service, HasLocalStorage {
                     return
                 }
                 for (index, _) in labels.enumerated() {
-                    labels[index]["UserID"] = self.userID
+                    labels[index]["UserID"] = self.userID.rawValue
                 }
                 for (index, _) in folders.enumerated() {
-                    folders[index]["UserID"] = self.userID
+                    folders[index]["UserID"] = self.userID.rawValue
                 }
 
                 folders.append(["ID": "0"]) // case inbox   = "0"
@@ -163,7 +163,7 @@ class LabelsDataService: Service, HasLocalStorage {
                     return
                 }
                 for (index, _) in labels.enumerated() {
-                    labels[index]["UserID"] = self.userID
+                    labels[index]["UserID"] = self.userID.rawValue
                 }
                 // save
                 let context = self.coreDataService.operationContext
@@ -232,27 +232,27 @@ class LabelsDataService: Service, HasLocalStorage {
     private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
         switch type {
         case .all:
-            return NSPredicate(format: "(labelID MATCHES %@) AND ((%K == 1) OR (%K == 3)) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.type, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND ((%K == 1) OR (%K == 3)) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
         case .folder:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
         case .folderWithInbox:
             // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
             let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
 
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .folderWithOutbox:
             // 7 - sent, 6 - archive, 3 - trash
             let defaults = NSPredicate(format: "labelID IN %@", [6, 7, 3])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 3) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
 
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .label:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
         case .contactGroup:
-            return NSPredicate(format: "(%K == 2) AND (%K == %@) AND (%K == 0)", Label.Attributes.type, Label.Attributes.userID, self.userID, Label.Attributes.isSoftDeleted)
+            return NSPredicate(format: "(%K == 2) AND (%K == %@) AND (%K == 0)", Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue, Label.Attributes.isSoftDeleted)
         }
     }
 
@@ -261,7 +261,7 @@ class LabelsDataService: Service, HasLocalStorage {
             let context = self.coreDataService.operationContext
             context.performAndWait {
                 do {
-                    label["UserID"] = self.userID
+                    label["UserID"] = self.userID.rawValue
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
                     _ = context.saveUpstreamIfNeeded()
                 } catch {
@@ -290,7 +290,7 @@ class LabelsDataService: Service, HasLocalStorage {
             return nil
         }
         let context = self.coreDataService.mainContext
-        let id = userID ?? self.userID
+        let id = userID ?? self.userID.rawValue
         return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, context: context, type: viewMode)
     }
 
@@ -298,7 +298,7 @@ class LabelsDataService: Service, HasLocalStorage {
         guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
             return 0
         }
-        return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
+        return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID.rawValue, type: viewMode)
     }
 
     func getUnreadCounts(by labelIDs: [String], completion: @escaping ([String: Int]) -> Void) {
@@ -306,11 +306,11 @@ class LabelsDataService: Service, HasLocalStorage {
             return completion([:])
         }
 
-        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
+        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID.rawValue, type: viewMode, completion: completion)
     }
 
     func resetCounter(labelID: String, userID: String? = nil, viewMode: ViewMode? = nil) {
-        let id = userID ?? self.userID
+        let id = userID ?? self.userID.rawValue
         self.lastUpdatedStore.resetCounter(labelID: labelID, userID: id, type: viewMode)
     }
 

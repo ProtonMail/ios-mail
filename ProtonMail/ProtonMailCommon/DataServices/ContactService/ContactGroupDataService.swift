@@ -53,9 +53,9 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     private weak var queueManager: QueueManager?
-    private let userID: String
+    private let userID: UserID
 
-    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: String) {
+    init(api: APIService, labelDataService: LabelsDataService, coreDataService: CoreDataService, queueManager: QueueManager, userID: UserID) {
         self.apiService = api
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
@@ -299,7 +299,7 @@ extension ContactGroupsDataService {
             context.perform {
                 // Create a temporary label for display, the label will be removed after getting response
                 let groupLabel = Label.makeGroupLabel(context: context,
-                                                      userID: userID,
+                                                      userID: userID.rawValue,
                                                       color: color,
                                                       name: name,
                                                       emailIDs: emailIDs)

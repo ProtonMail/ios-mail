@@ -360,7 +360,7 @@ extension EventsService {
                                     _ = msg.message?.removeValue(forKey: "Unread")
                                 }
                                 msg.message?["messageStatus"] = 1
-                                msg.message?["UserID"] = self.userManager.userInfo.userId
+                                msg.message?["UserID"] = self.userManager.userID.rawValue
                             }
                             msg.message?["messageStatus"] = 1
                         }
@@ -512,7 +512,7 @@ extension EventsService {
 
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
                                     for (index, _) in labels.enumerated() {
-                                        labels[index]["UserID"] = self.userManager.userInfo.userId
+                                        labels[index]["UserID"] = self.userManager.userID.rawValue
                                         labels[index]["ConversationID"] = conversationData["ID"]
                                     }
                                     conversationData["Labels"] = labels
@@ -686,7 +686,7 @@ extension EventsService {
                             case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
                                 do {
                                     if var new_or_update_label = label.label {
-                                        new_or_update_label["UserID"] = self.userManager.userInfo.userId
+                                        new_or_update_label["UserID"] = self.userManager.userID.rawValue
                                         let result = EventsService.removeConflictV3FieldOfLabelEvent(event: new_or_update_label)
                                         try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: result, in: context)
                                     }

@@ -25,7 +25,7 @@ import Foundation
 
 final class MockQueueHandler: QueueHandler {
     
-    private(set) var userID: String
+    private(set) var userID: UserID
     private(set) var handleCount = 0
     private(set) var handledTasks: [QueueManager.Task] = []
     private var result: QueueManager.TaskAction = .none
@@ -35,7 +35,7 @@ final class MockQueueHandler: QueueHandler {
         return q
     }()
     
-    init(userID: String) {
+    init(userID: UserID) {
         self.userID = userID
     }
     

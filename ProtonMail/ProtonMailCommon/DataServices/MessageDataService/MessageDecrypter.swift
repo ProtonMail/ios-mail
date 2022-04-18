@@ -270,7 +270,7 @@ extension MessageDecrypter {
         newMessage.conversationID = message.conversationID
         newMessage.setAsDraft()
 
-        newMessage.userID = self.userDataSource?.userInfo.userId ?? ""
+        newMessage.userID = self.userDataSource?.userID.rawValue ?? ""
         return newMessage
     }
 
@@ -322,7 +322,7 @@ extension MessageDecrypter {
         attachment.localURL = oldAttachment.localURL
         attachment.keyPacket = oldAttachment.keyPacket
         attachment.isTemp = true
-        attachment.userID = self.userDataSource?.userInfo.userId ?? ""
+        attachment.userID = self.userDataSource?.userID.rawValue ?? ""
 
         self.updateKeyPacketIfNeeded(attachment: attachment,
                                      addressID: newMessage.addressID)

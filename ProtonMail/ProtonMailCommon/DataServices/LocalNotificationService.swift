@@ -80,10 +80,10 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         }
     }
 
-    private var userID: String
+    private var userID: UserID
     let notificationHandler: NotificationHandler
 
-    init(userID: String, notificationHandler: NotificationHandler = UNUserNotificationCenter.current()) {
+    init(userID: UserID, notificationHandler: NotificationHandler = UNUserNotificationCenter.current()) {
         self.userID = userID
         self.notificationHandler = notificationHandler
     }
@@ -129,14 +129,14 @@ class LocalNotificationService: LocalNotificationHandler, Service {
         let group = DispatchGroup()
         group.enter()
         notificationHandler.getPendingNotificationRequests { all in
-            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }
+            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID.rawValue }
                 .map { $0.identifier }
             self.notificationHandler.removePendingNotificationRequests(withIdentifiers: belongToUser)
             group.leave()
         }
         group.enter()
         notificationHandler.getDeliveredNotifications { all in
-            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }
+            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID.rawValue }
                 .map { $0.request.identifier }
             self.notificationHandler.removeDeliveredNotifications(withIdentifiers: belongToUser)
             group.leave()

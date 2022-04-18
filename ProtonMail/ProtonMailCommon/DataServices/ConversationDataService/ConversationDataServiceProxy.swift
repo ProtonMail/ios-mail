@@ -26,7 +26,7 @@ import ProtonCore_Services
 
 final class ConversationDataServiceProxy: ConversationProvider {
     let apiService: APIService
-    let userID: String
+    let userID: UserID
     let coreDataService: CoreDataService
     let labelDataService: LabelsDataService
     let lastUpdatedStore: LastUpdatedStoreProtocol
@@ -34,10 +34,10 @@ final class ConversationDataServiceProxy: ConversationProvider {
     private weak var viewModeDataSource: ViewModeDataSource?
     private weak var queueManager: QueueManager?
     let conversationDataService: ConversationDataService
-    private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID)
+    private lazy var localConversationUpdater = LocalConversationUpdater(userID: userID.rawValue)
 
     init(api: APIService,
-         userID: String,
+         userID: UserID,
          coreDataService: CoreDataService,
          labelDataService: LabelsDataService,
          lastUpdatedStore: LastUpdatedStoreProtocol,

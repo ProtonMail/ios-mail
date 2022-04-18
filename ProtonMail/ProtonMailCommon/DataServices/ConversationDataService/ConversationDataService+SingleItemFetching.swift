@@ -52,12 +52,12 @@ extension ConversationDataService {
                             return
                         }
 
-                        conversationDict["UserID"] = self.userID
+                        conversationDict["UserID"] = self.userID.rawValue
                         if var labels = conversationDict["Labels"] as? [[String: Any]] {
 
                             for index in labels.indices {
 
-                                labels[index]["UserID"] = self.userID
+                                labels[index]["UserID"] = self.userID.rawValue
 
                                 labels[index]["ConversationID"] = conversationID
 
@@ -75,7 +75,7 @@ extension ConversationDataService {
                             self.modifyNumMessageIfNeeded(conversation: conversation)
                         }
                         for (index, _) in messagesDict.enumerated() {
-                            messagesDict[index]["UserID"] = self.userID
+                            messagesDict[index]["UserID"] = self.userID.rawValue
                         }
                         let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
                         if let messages = message as? [Message] {

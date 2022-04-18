@@ -249,7 +249,7 @@ class WindowsCoordinator: CoordinatorNew {
                     NSError.alertBadToken()
                 }
 
-                let handler = LocalNotificationService(userID: user.userinfo.userId)
+                let handler = LocalNotificationService(userID: user.userID)
                 handler.showSessionRevokeNotification(email: user.defaultEmail)
             }
         }

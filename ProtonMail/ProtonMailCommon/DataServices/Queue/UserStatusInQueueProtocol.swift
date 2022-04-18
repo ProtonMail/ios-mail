@@ -16,6 +16,6 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 protocol UserStatusInQueueProtocol {
-    func isAnyQueuedMessage(of userID: String) -> Bool
-    func deleteAllQueuedMessage(of userID: String, completeHander: (() -> Void)?)
+    func isAnyQueuedMessage(of userID: UserID) -> Bool
+    func deleteAllQueuedMessage(of userID: UserID, completeHander: (() -> Void)?)
 }

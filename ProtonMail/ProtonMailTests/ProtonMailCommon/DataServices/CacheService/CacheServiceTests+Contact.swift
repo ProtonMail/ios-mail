@@ -36,7 +36,7 @@ extension CacheServiceTest {
         XCTAssertEqual(contactToCheck.contactID, "_9E6ypCp6i9m7sUDdX9sYi3WDmPGUkidbhpA-d3qszlhMaglnj-OvfJLk2zdUsTaNy3ZavFFW3JvFn_VE_2wdg==")
         XCTAssertEqual(contactToCheck.name, "Test")
         XCTAssertEqual(contactToCheck.emails.count, 1)
-        XCTAssertEqual(contactToCheck.userID, sut.userID)
+        XCTAssertEqual(contactToCheck.userID, sut.userID.rawValue)
         XCTAssertEqual(contactToCheck.cardData, "[{\"Data\":\"BEGIN:VCARD\\r\\nVERSION:4.0\\r\\nPRODID:pm-ez-vcard 0.0.1\\r\\nUID:protonmail-ios-8260FE2E-B019-4B18-B901-787F95131063\\r\\nFN:Test\\r\\nItem1.EMAIL;TYPE=:test@test.com\\r\\nEND:VCARD\\r\\n\",\"Type\":2,\"Signature\":\"-----BEGIN PGP SIGNATURE-----\\nVersion: GopenPGP 2.1.3\\nComment: https:\\/\\/gopenpgp.org\\n\\nwsBzBAABCgAnBQJgOySzCRBWRx+SquDI6BYhBH1iPl3sKPKRrnFgC1ZHH5Kq4Mjo\\nAADgYAgA3XXJ88i\\/AMxL1OZpx\\/fB\\/WTXalqzLmKq7TUrQienSLs8v9t32mbzpWqP\\nmqsQV9FHKNSOvGTSZ8nsQy6tZtFZfK5gE2m2fK8o+1brCVE3g4oACJ1mHoI4JatC\\ncpAgR4EXN4Dw3glwzNvLs\\/Ly2Oj99gNjORAI3kvpW655b9av+jKWA94Dn661ZMFd\\nicCJV43XhgDcYn0zrYkgOIZXR2awdMuGcQNqC65tkaBkE1OIMF0cJ43u5ugKnGkd\\ncm8LqiLW+cvpqev+59kBnAng2XpbbBnA3SxepbpQUdxegOimatW0pWsM2c+Vn3kU\\nbfB2elX7xAXdTI5bnYYQoqeqyIozJw==\\n=95OA\\n-----END PGP SIGNATURE-----\"}]")
         XCTAssertEqual(contactToCheck.size, 162)
     }

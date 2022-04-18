@@ -74,8 +74,8 @@ extension ConversationDataService {
                 }
                 if shouldReset {
                     self.cleanAll()
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
-                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .singleMessage)
+                    self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .conversation)
                     self.lastUpdatedStore.clear()
                 }
                 let messcount = responseDict?["Total"] as? Int ?? 0
@@ -86,11 +86,11 @@ extension ConversationDataService {
                         var conversationsDict = response.conversationsDict
 
                         for index in conversationsDict.indices {
-                            conversationsDict[index]["UserID"] = self.userID
+                            conversationsDict[index]["UserID"] = self.userID.rawValue
                             let conversationID = conversationsDict[index]["ID"]
                             if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
                                 for index in labels.indices {
-                                    labels[index]["UserID"] = self.userID
+                                    labels[index]["UserID"] = self.userID.rawValue
                                     labels[index]["ConversationID"] = conversationID
                                 }
                                 conversationsDict[index]["Labels"] = labels
@@ -113,7 +113,7 @@ extension ConversationDataService {
 
                             if let lastConversation = conversations.last, let firstConversation = conversations.first {
                                 let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID,
-                                                                                         userID: self.userID,
+                                                                                         userID: self.userID.rawValue,
                                                                                          context: context,
                                                                                          type: .conversation)
                                 if unreadOnly {
@@ -226,11 +226,11 @@ extension ConversationDataService {
                         }
 
                         for index in conversationsDict.indices {
-                            conversationsDict[index]["UserID"] = self.userID
+                            conversationsDict[index]["UserID"] = self.userID.rawValue
                             let conversationID = conversationsDict[index]["ID"]
                             if var labels = conversationsDict[index]["Labels"] as? [[String: Any]] {
                                 for (index, _) in labels.enumerated() {
-                                    labels[index]["UserID"] = self.userID
+                                    labels[index]["UserID"] = self.userID.rawValue
                                     labels[index]["ConversationID"] = conversationID
                                 }
                                 conversationsDict[index]["Labels"] = labels

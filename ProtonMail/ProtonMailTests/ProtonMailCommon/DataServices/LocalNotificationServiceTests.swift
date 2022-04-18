@@ -22,7 +22,7 @@ class LocalNotificationServiceTests: XCTestCase {
 
     var sut: LocalNotificationService!
     var notificationHandlerMock: MockNotificationHandler!
-    var userID: String = "sdifosnvdnoids"
+    var userID: UserID = "sdifosnvdnoids"
 
     override func setUp() {
         super.setUp()
