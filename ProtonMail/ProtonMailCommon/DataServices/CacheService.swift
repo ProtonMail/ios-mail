@@ -27,14 +27,14 @@ import Groot
 import ProtonCore_DataModel
 
 class CacheService: Service {
-    let userID: String
+    let userID: UserID
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let coreDataService: CoreDataService
     private var context: NSManagedObjectContext {
         return self.coreDataService.rootSavingContext
     }
 
-    init(userID: String, lastUpdatedStore: LastUpdatedStoreProtocol, coreDataService: CoreDataService) {
+    init(userID: UserID, lastUpdatedStore: LastUpdatedStoreProtocol, coreDataService: CoreDataService) {
         self.userID = userID
         self.lastUpdatedStore = lastUpdatedStore
         self.coreDataService = coreDataService
@@ -229,10 +229,10 @@ class CacheService: Service {
 
     func markMessageAndConversationDeleted(labelID: String) {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID)
+        messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID.rawValue)
 
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID)
+        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID.rawValue)
 
         context.performAndWait {
             if let messages = try? context.fetch(messageFetch) as? [Message] {
@@ -277,7 +277,7 @@ class CacheService: Service {
     func cleanReviewItems(completion: (() -> Void)? = nil) {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND (%K == %@)", Message.Attributes.messageType, Message.Attributes.userID, self.userID)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 1) AND (%K == %@)", Message.Attributes.messageType, Message.Attributes.userID, self.userID.rawValue)
             do {
                 if let messages = try self.context.fetch(fetchRequest) as? [Message] {
                     for msg in messages {
@@ -407,7 +407,7 @@ extension CacheService {
         }
 
         for (index, _) in messagesArray.enumerated() {
-            messagesArray[index]["UserID"] = self.userID
+            messagesArray[index]["UserID"] = self.userID.rawValue
         }
         let messagesCount = response["Total"] as? Int ?? 0
 
@@ -458,7 +458,7 @@ extension CacheService {
 extension CacheService {
     func updateLastUpdatedTime(labelID: String, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
         context.performAndWait {
-            let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID, context: context, type: msgType)
+            let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID.rawValue, context: context, type: msgType)
             if isUnread {
                 // Update unread date query time
                 if updateTime.isUnreadNew {
@@ -486,46 +486,46 @@ extension CacheService {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLabelIDs()
         for lID in labelIDs {
-            let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: .singleMessage)
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID.rawValue, type: .singleMessage)
             var count = unreadCount + offset
             if count < 0 {
                 count = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: false)
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID.rawValue, unread: count, total: nil, type: .singleMessage, shouldSave: false)
 
             // Conversation Count
-            let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: .conversation)
+            let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID.rawValue, type: .conversation)
             var conversationCount = conversationUnreadCount + offset
             if conversationCount < 0 {
                 conversationCount = 0
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: false)
+            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID.rawValue, unread: conversationCount, total: nil, type: .conversation, shouldSave: false)
         }
     }
 
     func updateCounterSync(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
         let offset = plus ? 1 : -1
         // Message Count
-        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: .singleMessage)
+        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID.rawValue, type: .singleMessage)
         var count = unreadCount + offset
         if count < 0 {
             count = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID.rawValue, unread: count, total: nil, type: .singleMessage, shouldSave: true)
 
         // Conversation Count
-        let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: .conversation)
+        let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID.rawValue, type: .conversation)
         var conversationCount = conversationUnreadCount + offset
         if conversationCount < 0 {
             conversationCount = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID.rawValue, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
     }
 
     func updateCounterInsideContext(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
         let offset = plus ? 1 : -1
         // Message Count
-        let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, context: context, type: .singleMessage)
+        let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID.rawValue, context: context, type: .singleMessage)
         let unreadCount = Int(labelCount?.unread ?? 0)
         var count = unreadCount + offset
         if count < 0 {
@@ -534,7 +534,7 @@ extension CacheService {
         labelCount?.unread = Int32(count)
 
         // Conversation Count
-        let contextLabelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, context: context, type: .conversation)
+        let contextLabelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID.rawValue, context: context, type: .conversation)
         let conversationUnreadCount = Int(contextLabelCount?.unread ?? 0)
         var conversationCount = conversationUnreadCount + offset
         if conversationCount < 0 {
@@ -558,7 +558,7 @@ extension CacheService {
                     label.labelID = labelID
                 }
                 var response = serverResponse
-                response["UserID"] = self.userID
+                response["UserID"] = self.userID.rawValue
                 try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
                 _ = self.context.saveUpstreamIfNeeded()
             } catch {
@@ -571,7 +571,7 @@ extension CacheService {
         context.perform {
             do {
                 var response = serverReponse
-                response["UserID"] = self.userID
+                response["UserID"] = self.userID.rawValue
                 if response["ParentID"] == nil {
                     response["ParentID"] = ""
                 }
@@ -644,13 +644,13 @@ extension CacheService {
                                                                 fromJSONArray: serverResponse,
                                                                 in: self.context) as? [Contact]
                 contacts?.forEach { (c) in
-                    c.userID = self.userID
+                    c.userID = self.userID.rawValue
                     if shouldFixName {
                         _ = c.fixName(force: true)
                     }
                     if let emails = c.emails.allObjects as? [Email] {
                         emails.forEach { (e) in
-                            e.userID = self.userID
+                            e.userID = self.userID.rawValue
                         }
                     }
                 }

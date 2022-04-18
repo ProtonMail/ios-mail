@@ -23,7 +23,7 @@
 import Foundation
 
 protocol QueueHandler {
-    var userID: String { get }
+    var userID: UserID { get }
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void)
 }
 
@@ -37,7 +37,6 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
 
     typealias ReadBlock = (() -> Void)
     typealias TaskID = UUID
-    typealias UserID = String
 
     private let queue = DispatchQueue(label: "Protonmail.QueueManager.Queue")
 
@@ -69,7 +68,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
 
     func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
         self.queue.sync {
-            guard !task.userID.isEmpty else {
+            guard !task.userID.rawValue.isEmpty else {
                 return false
             }
             let action = task.action
@@ -245,7 +244,7 @@ extension QueueManager {
         _ = self.miscQueue.insert(uuid: signoutTask.uuid, object: signoutTask, index: 0)
     }
 
-    private func handleSignin(userID: String) {
+    private func handleSignin(userID: UserID) {
         if let task = self.getMessageTasks(of: userID)
             .first(where: { $0.action == MessageAction.signout &&
                     $0.userID == userID }) {
@@ -540,7 +539,7 @@ extension QueueManager {
         let uuid: TaskID
         let messageID: String
         let action: MessageAction
-        let userID: String
+        let userID: UserID
         /// The taskID in this array should be done to execute this task
         var dependencyIDs: [TaskID]
         let isConversation: Bool
@@ -548,7 +547,7 @@ extension QueueManager {
         init(uuid: TaskID = UUID(),
              messageID: String,
              action: MessageAction,
-             userID: String,
+             userID: UserID,
              dependencyIDs: [TaskID],
              isConversation: Bool) {
             self.uuid = uuid
@@ -562,7 +561,7 @@ extension QueueManager {
         func encode(with coder: NSCoder) {
             coder.encode(uuid, forKey: "uuid")
             coder.encode(messageID, forKey: "messageID")
-            coder.encode(userID, forKey: "userID")
+            coder.encode(userID.rawValue, forKey: "userID")
             coder.encode(try? JSONEncoder().encode(action), forKey: "action")
             coder.encode(dependencyIDs, forKey: "dependencyIDs")
             coder.encode(isConversation, forKey: "isConversation")
@@ -583,7 +582,7 @@ extension QueueManager {
             self.init(uuid: uuid,
                       messageID: messageID,
                       action: action,
-                      userID: userID,
+                      userID: UserID(rawValue: userID),
                       dependencyIDs: dependencyIDs,
                       isConversation: isConversation)
         }

@@ -38,6 +38,8 @@ protocol UserDataSource: AnyObject {
     var userInfo: UserInfo { get }
     var addressPrivateKeys: [Data] { get }
     var authCredential: AuthCredential { get }
+    var userID: UserID { get }
+
     func getAddressKey(address_id: String) -> Key?
     func getAllAddressKey(address_id: String) -> [Key]?
     func getAddressPrivKey(address_id: String) -> String
@@ -71,7 +73,7 @@ class UserManager: Service, HasLocalStorage {
                 self.contactService.cleanUp(),
                 self.contactGroupService.cleanUp(),
                 self.userService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userinfo.userId)
+                lastUpdatedStore.cleanUp(userId: self.userID.rawValue)
             ]
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
@@ -82,10 +84,10 @@ class UserManager: Service, HasLocalStorage {
                 })
             }
             wait.done {
-                userCachedStatus.removeMobileSignature(uid: self.userInfo.userId)
-                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userInfo.userId)
-                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userInfo.userId)
-                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userInfo.userId)
+                userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
+                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
+                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
+                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
                 seal.fulfill_()
             }.catch { (_) in
                 seal.fulfill_()
@@ -136,7 +138,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
-                                         userID: self.userInfo.userId,
+                                         userID: self.userID,
                                          coreDataService: sharedServices.get(by: CoreDataService.self),
                                          lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
                                          cacheService: self.cacheService,
@@ -149,7 +151,7 @@ class UserManager: Service, HasLocalStorage {
                                                labelDataService: self.labelService,
                                                coreDataService: sharedServices.get(by: CoreDataService.self),
                                                queueManager: sharedServices.get(by: QueueManager.self),
-                                               userID: self.userInfo.userId)
+                                               userID: self.userID)
         return service
     }()
 
@@ -157,7 +159,7 @@ class UserManager: Service, HasLocalStorage {
 
     lazy var messageService: MessageDataService = { [unowned self] in
         let service = MessageDataService(api: self.apiService,
-                                         userID: self.userinfo.userId,
+                                         userID: self.userID,
                                          labelDataService: self.labelService,
                                          contactDataService: self.contactService,
                                          localNotificationService: self.localNotificationService,
@@ -188,7 +190,7 @@ class UserManager: Service, HasLocalStorage {
 
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
         let service = ConversationDataServiceProxy(api: apiService,
-                                                   userID: userinfo.userId,
+                                                   userID: userID,
                                                    coreDataService: sharedServices.get(by: CoreDataService.self),
                                                    labelDataService: labelService,
                                                    lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
@@ -199,7 +201,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var labelService: LabelsDataService = { [unowned self] in
-        let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
+        let service = LabelsDataService(api: self.apiService, userID: self.userID, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
         service.viewModeDataSource = self
         return service
     }()
@@ -210,12 +212,12 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var localNotificationService: LocalNotificationService = { [unowned self] in
-        let service = LocalNotificationService(userID: self.userinfo.userId)
+        let service = LocalNotificationService(userID: self.userID)
         return service
     }()
 
     lazy var cacheService: CacheService = { [unowned self] in
-        let service = CacheService(userID: self.userinfo.userId, lastUpdatedStore: self.lastUpdatedStore, coreDataService: sharedServices.get(by: CoreDataService.self))
+        let service = CacheService(userID: self.userID, lastUpdatedStore: self.lastUpdatedStore, coreDataService: sharedServices.get(by: CoreDataService.self))
         return service
     }()
 
@@ -298,7 +300,7 @@ class UserManager: Service, HasLocalStorage {
             #if !APP_EXTENSION
             guard let self = self,
                   let firstUser = self.parentManager?.firstUser,
-                  firstUser.userInfo.userId == self.userInfo.userId else { return }
+                  firstUser.userID == self.userID else { return }
             self.activatePayments()
             userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeLeft, rightToLeft: info.swipeRight)
             // When app launch, the app will show a skeleton view
@@ -526,16 +528,16 @@ extension UserManager {
 
     var defaultSignatureStatus: Bool {
         get {
-            if let status = userCachedStatus.getDefaultSignaureSwitchStatus(uid: userInfo.userId) {
+            if let status = userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
                 let oldStatus = userService.defaultSignatureStauts
-                userCachedStatus.setDefaultSignatureSwitchStatus(uid: userInfo.userId, value: oldStatus)
+                userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }
         }
         set {
-            userCachedStatus.setDefaultSignatureSwitchStatus(uid: userInfo.userId, value: newValue)
+            userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
@@ -548,20 +550,20 @@ extension UserManager {
             #endif
             let role = userInfo.role
             if role > 0 || isEnterprise {
-                if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userInfo.userId) {
+                if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
                     // Migrate from local cache
                     let status = self.userService.switchCacheOff == false
-                    userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: status)
+                    userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: status)
                     return status
                 }
             } else {
-                userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: true)
+                userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true
             } }
         set {
-            userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: newValue)
+            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
@@ -574,14 +576,14 @@ extension UserManager {
             #endif
             let role = userInfo.role
             if role > 0 || isEnterprise {
-                return userCachedStatus.getMobileSignature(by: userInfo.userId)
+                return userCachedStatus.getMobileSignature(by: userID.rawValue)
             } else {
-                userCachedStatus.removeMobileSignature(uid: userInfo.userId)
-                return userCachedStatus.getMobileSignature(by: userInfo.userId)
+                userCachedStatus.removeMobileSignature(uid: userID.rawValue)
+                return userCachedStatus.getMobileSignature(by: userID.rawValue)
             }
         }
         set {
-            userCachedStatus.setMobileSignature(uid: userInfo.userId, signature: newValue)
+            userCachedStatus.setMobileSignature(uid: userID.rawValue, signature: newValue)
         }
     }
 

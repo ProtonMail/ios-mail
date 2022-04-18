@@ -29,7 +29,7 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 final class MainQueueHandler: QueueHandler {
-    let userID: String
+    let userID: UserID
     private let cacheService: CacheService
     private let coreDataService: CoreDataService
     private let apiService: APIService
@@ -51,7 +51,7 @@ final class MainQueueHandler: QueueHandler {
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
          user: UserManager) {
-        self.userID = user.userinfo.userId
+        self.userID = user.userID
         self.cacheService = cacheService
         self.coreDataService = coreDataService
         self.apiService = apiService
@@ -69,7 +69,7 @@ final class MainQueueHandler: QueueHandler {
         let completeHandler = handleTaskCompletion(task, notifyQueueManager: completion)
         let action = task.action
 
-        let UID = task.userID
+        let UID = task.userID.rawValue
         let uuid = task.uuid
         let isConversation = task.isConversation
 

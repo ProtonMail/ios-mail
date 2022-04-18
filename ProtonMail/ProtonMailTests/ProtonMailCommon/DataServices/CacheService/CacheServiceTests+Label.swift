@@ -70,7 +70,7 @@ extension CacheServiceTest {
 
         let labelToCheck = try XCTUnwrap(Label.labelForLabelID(labelID, inManagedObjectContext: testContext))
         XCTAssertEqual(labelToCheck.labelID, labelID)
-        XCTAssertEqual(labelToCheck.userID, sut.userID)
+        XCTAssertEqual(labelToCheck.userID, sut.userID.rawValue)
         XCTAssertEqual(labelToCheck.color, "#c26cc7")
         XCTAssertEqual(labelToCheck.name, "new")
         XCTAssertEqual(labelToCheck.type, 1)

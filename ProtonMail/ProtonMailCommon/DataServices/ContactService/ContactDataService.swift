@@ -48,11 +48,11 @@ class ContactDataService: Service, HasLocalStorage {
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataService
     private let apiService: APIService
-    private let userID: String
+    private let userID: UserID
     private var lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
-    init(api: APIService, labelDataService: LabelsDataService, userID: String, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userID: UserID, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, cacheService: CacheService, queueManager: QueueManager) {
         self.userID = userID
         self.apiService = api
         self.addressBookService = AddressBookService()
@@ -72,7 +72,7 @@ class ContactDataService: Service, HasLocalStorage {
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
                 let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-                fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID)
+                fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID.rawValue)
                 let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
                 request1.resultType = .resultTypeObjectIDs
                 if let result = try? context.execute(request1) as? NSBatchDeleteResult,
@@ -82,7 +82,7 @@ class ContactDataService: Service, HasLocalStorage {
                 }
 
                 let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
-                fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
+                fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
                 let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
                 request2.resultType = .resultTypeObjectIDs
                 if let result = try? context.execute(request2) as? NSBatchDeleteResult,
@@ -92,7 +92,7 @@ class ContactDataService: Service, HasLocalStorage {
                 }
 
                 let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
-                fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID)
+                fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID.rawValue)
                 let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
                 if let result = try? context.execute(request3) as? NSBatchDeleteResult,
                    let objectIdArray = result.result as? [NSManagedObjectID] {
@@ -130,7 +130,7 @@ class ContactDataService: Service, HasLocalStorage {
         fetchRequest.sortDescriptors = [strComp]
 
         if !isCombineContact {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID, Contact.Attributes.isSoftDeleted)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID.rawValue, Contact.Attributes.isSoftDeleted)
         } else {
             fetchRequest.predicate = NSPredicate(format: "%K == 0", Contact.Attributes.isSoftDeleted)
         }
@@ -291,7 +291,7 @@ class ContactDataService: Service, HasLocalStorage {
                 return
             }
 
-            let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID }
+            let noDetails: [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID.rawValue }
             let fetchs: [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID) }
             firstly {
                 when(resolved: fetchs)
@@ -301,7 +301,7 @@ class ContactDataService: Service, HasLocalStorage {
                     allEmails = newFetched
                 }
 
-                let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID }
+                let details: [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID.rawValue }
                 var parsers: [Promise<PreContact>] = details.map {
                     return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                 }
@@ -541,7 +541,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     func allAccountEmails() -> [Email] {
         let context = coreDataService.mainContext
-        return allEmailsInManagedObjectContext(context).filter { $0.userID == userID }
+        return allEmailsInManagedObjectContext(context).filter { $0.userID == userID.rawValue }
     }
 
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
@@ -557,7 +557,7 @@ class ContactDataService: Service, HasLocalStorage {
 
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
-        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
+        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
         fetchRequest.predicate = predicate
         do {
             if let emails = try context.fetch(fetchRequest) as? [Email] {
@@ -579,7 +579,7 @@ extension ContactDataService {
             guard let self = self else { return }
             do {
                 let contact = try Contact.makeTempContact(context: context,
-                                                          userID: userID,
+                                                          userID: userID.rawValue,
                                                           name: name,
                                                           cardDatas: cardDatas,
                                                           emails: emails)
@@ -669,7 +669,7 @@ extension ContactDataService {
 
     func allContactVOs() -> [ContactVO] {
         allEmails()
-            .filter { $0.userID == userID }
+            .filter { $0.userID == userID.rawValue }
             .map { ContactVO(id: $0.contactID, name: $0.name, email: $0.email, isProtonMailContact: true) }
     }
 

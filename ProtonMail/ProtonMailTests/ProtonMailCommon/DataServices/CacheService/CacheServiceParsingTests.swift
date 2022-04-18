@@ -57,7 +57,7 @@ class CacheServiceParsingTests: XCTestCase {
 
         wait(for: [expect], timeout: 1)
 
-        let lastUpdate = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID, context: testContext, type: .singleMessage))
+        let lastUpdate = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, context: testContext, type: .singleMessage))
         XCTAssertFalse(lastUpdate.isNew)
         XCTAssertEqual(lastUpdate.startTime, Date(timeIntervalSince1970: 1614266155))
         XCTAssertEqual(lastUpdate.endTime, Date(timeIntervalSince1970: 1614093303))
@@ -69,7 +69,7 @@ class CacheServiceParsingTests: XCTestCase {
 
         for msg in msgs {
             XCTAssertEqual(msg.messageStatus, NSNumber(value: 1))
-            XCTAssertEqual(msg.userID, sut.userID)
+            XCTAssertEqual(msg.userID, sut.userID.rawValue)
             XCTAssertTrue(msgIDsToMatch.contains(msg.messageID))
         }
     }
@@ -93,7 +93,7 @@ class CacheServiceParsingTests: XCTestCase {
         //Load fake sending draft message
         let fakeData = testDraftMessageMetaData.parseObjectAny()!
         let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: fakeData, in: testContext) as! Message
-        fakeMsg.userID = sut.userID
+        fakeMsg.userID = sut.userID.rawValue
         fakeMsg.isSending = true
         fakeMsg.messageStatus = 1
         try testContext.save()
@@ -135,7 +135,7 @@ extension CacheServiceParsingTests {
     fileprivate func fetchMessgaes(by label: Message.Location) -> [Message] {
         let fetchReq = Message.fetchRequest()
         fetchReq.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d) AND (%K == %@)",
-                                         label.rawValue, Message.Attributes.messageStatus, 0, Message.Attributes.userID, sut.userID)
+                                         label.rawValue, Message.Attributes.messageStatus, 0, Message.Attributes.userID, sut.userID.rawValue)
         return (try? testContext.fetch(fetchReq) as? [Message]) ?? []
     }
 

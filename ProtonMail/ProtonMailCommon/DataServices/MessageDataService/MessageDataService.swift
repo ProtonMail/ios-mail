@@ -43,7 +43,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     var pushNotificationMessageID: String?
 
     let apiService: APIService
-    let userID: String
+    let userID: UserID
     weak var userDataSource: UserDataSource?
     let labelDataService: LabelsDataService
     let contactDataService: ContactDataService
@@ -58,7 +58,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
 
-    init(api: APIService, userID: String, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, queueManager: QueueManager?, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, user: UserManager, cacheService: CacheService) {
+    init(api: APIService, userID: UserID, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, queueManager: QueueManager?, coreDataService: CoreDataService, lastUpdatedStore: LastUpdatedStoreProtocol, user: UserManager, cacheService: CacheService) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
@@ -162,15 +162,15 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                         return
                     }
                     self.lastUpdatedStore.clear()
-                    _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
+                    _ = self.lastUpdatedStore.updateEventID(by: self.userID.rawValue, eventID: IDRes.eventID).ensure {
                         completion?(task, responseDict, error)
                     }
                 }
 
                 self.fetchMessages(byLabel: labelID, time: time, forceClean: false, isUnread: unreadOnly, queued: queued, completion: completionWrapper) {
                     self.cleanMessage(removeAllDraft: removeAllDraft, cleanBadgeAndNotifications: false).then { (_) -> Promise<Void> in
-                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .singleMessage)
-                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID, type: .conversation)
+                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .singleMessage)
+                        self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID.rawValue, type: .conversation)
                         if cleanContact {
                             return self.contactDataService.cleanUp()
                         } else {
@@ -189,7 +189,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     }
 
     func isEventIDValid(context: NSManagedObjectContext) -> Bool {
-        let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
+        let eventID = lastUpdatedStore.lastEventID(userID: self.userID.rawValue)
         return eventID != "" && eventID != "0"
     }
 
@@ -197,7 +197,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     /// workaround
     func syncMailSetting(labelID: String = "0") {
         self.queueManager?.queue {
-            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID))
+            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID.rawValue))
             self.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { response in
                 guard response.responseCode == 1000 else {
                     return
@@ -383,7 +383,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if var messagesArray = responseDict?["Messages"] as? [[String: Any]] {
                     for (index, _) in messagesArray.enumerated() {
-                        messagesArray[index]["UserID"] = self.userID
+                        messagesArray[index]["UserID"] = self.userID.rawValue
                     }
                     let context = self.coreDataService.operationContext
                     self.coreDataService.enqueue(context: context) { (context) in
@@ -464,7 +464,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
-                            msg["UserID"] = self.userID
+                            msg["UserID"] = self.userID.rawValue
 
                             do {
                                 if newMessage.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = newMessage.time?.timeIntervalSince1970 {
@@ -559,7 +559,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
-                                msg["UserID"] = self.userID
+                                msg["UserID"] = self.userID.rawValue
                                 do {
                                     if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                         message_n.messageStatus = 1
@@ -613,7 +613,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
-                            msg["UserID"] = self.userID
+                            msg["UserID"] = self.userID.rawValue
                             do {
                                 if let messageOut = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                     messageOut.messageStatus = 1
@@ -688,7 +688,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                                      Message.Attributes.messageStatus,
                                                      0,
                                                      Message.Attributes.userID,
-                                                     self.userID,
+                                                     self.userID.rawValue,
                                                      Message.Attributes.unRead,
                                                      NSNumber(true),
                                                      Message.Attributes.isSoftDeleted,
@@ -699,7 +699,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                                      Message.Attributes.messageStatus,
                                                      0,
                                                      Message.Attributes.userID,
-                                                     self.userID,
+                                                     self.userID.rawValue,
                                                      Message.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
@@ -715,7 +715,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                                      ContextLabel.Attributes.labelID,
                                                      labelID,
                                                      ContextLabel.Attributes.userID,
-                                                     self.userID,
+                                                     self.userID.rawValue,
                                                      ContextLabel.Attributes.unreadCount,
                                                      ContextLabel.Attributes.isSoftDeleted,
                                                      NSNumber(false))
@@ -724,7 +724,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                                                      ContextLabel.Attributes.labelID,
                                                      labelID,
                                                      ContextLabel.Attributes.userID,
-                                                     self.userID,
+                                                     self.userID.rawValue,
                                                      ContextLabel.Attributes.isSoftDeleted,
                                                      NSNumber(false))
             }
@@ -761,8 +761,8 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     func cleanUp() -> Promise<Void> {
         return self.cleanMessage(cleanBadgeAndNotifications: true).done { (_) in
             self.lastUpdatedStore.clear()
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID.rawValue, type: .singleMessage)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID.rawValue, type: .conversation)
             self.signout()
         }
     }
@@ -803,7 +803,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
                 contextLabelFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
                                                           ContextLabel.Attributes.userID,
-                                                          self.userID,
+                                                          self.userID.rawValue,
                                                           ContextLabel.Attributes.isSoftDeleted,
                                                           NSNumber(false))
                 if let labels = try? context.fetch(contextLabelFetch) as? [ContextLabel] {
@@ -813,7 +813,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 let conversationFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Conversation.Attributes.entityName)
                 conversationFetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
                                                           Conversation.Attributes.userID,
-                                                          self.userID,
+                                                          self.userID.rawValue,
                                                           Conversation.Attributes.isSoftDeleted,
                                                           NSNumber(false))
                 if let conversations = try? context.fetch(conversationFetch) as? [Conversation] {
@@ -839,7 +839,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         // Or they would come back when user pull down to refresh
         fetch.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
                                       Message.Attributes.userID,
-                                      self.userID,
+                                      self.userID.rawValue,
                                       Message.Attributes.isSoftDeleted,
                                       NSNumber(false))
 
@@ -892,7 +892,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
 
             if var messagesArray = response?["Messages"] as? [[String: Any]] {
                 for (index, _) in messagesArray.enumerated() {
-                    messagesArray[index]["UserID"] = self.userID
+                    messagesArray[index]["UserID"] = self.userID.rawValue
                 }
                 let context = self.coreDataService.rootSavingContext
                 self.coreDataService.enqueue(context: context) { (context) in
@@ -943,7 +943,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         let context = self.coreDataService.operationContext
         self.coreDataService.enqueue(context: context) { (context) in
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID.rawValue)
             do {
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
                     var badIDs: [String] = []
@@ -1025,7 +1025,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 errorBlock(nil, nil, NSError.badParameter(messageID))
                 return
             }
-            guard let userManager = self.parent, userManager.userinfo.userId == UID else {
+            guard let userManager = self.parent, userManager.userID.rawValue == UID else {
                 errorBlock(nil, nil, NSError.userLoggedOut())
                 return
             }
@@ -1503,7 +1503,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 }).done({
                     self.contactDataService.fetchContacts { (_, error) in
                         if error == nil {
-                            _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
+                            _ = self.lastUpdatedStore.updateEventID(by: self.userID.rawValue, eventID: response.eventID).ensure {
                                 completion?(task, nil, error)
                             }
                         } else {
@@ -1638,7 +1638,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         message.expirationOffset = Int32(expirationTimeInterval)
         message.messageStatus = 1
         message.setAsDraft()
-        message.userID = self.userID
+        message.userID = self.userID.rawValue
         message.addressID = sendAddress.addressID
 
         if expirationTimeInterval > 0 {

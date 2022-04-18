@@ -62,8 +62,8 @@ class CacheServiceTest: XCTestCase {
     
     func testMoveMessageToArchive() {
         let label: String = Message.Location.inbox.rawValue
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
-        let unreadCountOfArchive: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
+        let unreadCountOfArchive: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
 
         let result = sut.move(message: self.testMessage, from: label, to: Message.Location.archive.rawValue)
         XCTAssertTrue(result)
@@ -73,10 +73,10 @@ class CacheServiceTest: XCTestCase {
         let newLabels: [String] = msg.getLabelIDs()
         XCTAssertFalse(newLabels.contains(label))
 
-        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, unreadCountOfInboxAfterMove)
 
-        let unreadCountOfArchiveAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfArchiveAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfArchive, unreadCountOfArchiveAfterMove)
     }
     
@@ -86,9 +86,9 @@ class CacheServiceTest: XCTestCase {
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: label)
         loadTestDataOfUnreadCount(defaultUnreadCount: 0, labelID: Message.Location.archive.rawValue)
 
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 1)
-        let unreadCountOfArchive: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfArchive: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfArchive, 0)
 
         let result = sut.move(message: self.testMessage, from: label, to: Message.Location.archive.rawValue)
@@ -98,16 +98,16 @@ class CacheServiceTest: XCTestCase {
         XCTAssertFalse(newLabels.contains(label))
         XCTAssertTrue(newLabels.contains(Message.Location.archive.rawValue))
 
-        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInboxAfterMove, 0)
-        let unreadCountOfArchiveAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfArchiveAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfArchiveAfterMove, 1)
     }
     
     func testMoveMessageToTrash() {
         let label: String = Message.Location.inbox.rawValue
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
-        let unreadCountOfTrash: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
+        let unreadCountOfTrash: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
 
         let result = sut.move(message: self.testMessage, from: label, to: Message.Location.trash.rawValue)
         XCTAssertTrue(result)
@@ -116,10 +116,10 @@ class CacheServiceTest: XCTestCase {
         XCTAssertFalse(newLabels.contains(label))
         XCTAssertTrue(newLabels.contains(Message.Location.trash.rawValue))
 
-        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, unreadCountOfInboxAfterMove)
 
-        let unreadCountOfTrashAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfTrashAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.archive.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfTrash, unreadCountOfTrashAfterMove)
     }
     
@@ -128,9 +128,9 @@ class CacheServiceTest: XCTestCase {
         self.testMessage.unRead = true
         loadTestDataOfUnreadCount(defaultUnreadCount: 1, labelID: label)
 
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 1)
-        let unreadCountOfTrash: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfTrash: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfTrash, 0)
 
         let result = sut.move(message: self.testMessage, from: label, to: Message.Location.trash.rawValue)
@@ -140,9 +140,9 @@ class CacheServiceTest: XCTestCase {
         XCTAssertFalse(newLabels.contains(label))
         XCTAssertTrue(newLabels.contains(Message.Location.trash.rawValue))
 
-        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInboxAfterMove: Int = lastUpdatedStore.unreadCount(by: label, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInboxAfterMove, 0)
-        let unreadCountOfTrashAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfTrashAfterMove: Int = lastUpdatedStore.unreadCount(by: Message.Location.trash.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         //Move to trash will mark msg as read
         XCTAssertEqual(unreadCountOfTrashAfterMove, 0)
     }
@@ -164,7 +164,7 @@ class CacheServiceTest: XCTestCase {
         
         XCTAssertNil(Message.messageForMessageID(msgID, inManagedObjectContext: self.testContext))
 
-        let unreadCountOfInboxAfterDelete: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInboxAfterDelete: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInboxAfterDelete, 0)
     }
 
@@ -189,7 +189,7 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.mark(message: self.testMessage, labelID: Message.Location.inbox.rawValue, unRead: false))
         
         XCTAssertFalse(self.testMessage.unRead)
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 0)
     }
     
@@ -198,7 +198,7 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.mark(message: self.testMessage, labelID: Message.Location.inbox.rawValue, unRead: true))
         
         XCTAssertTrue(self.testMessage.unRead)
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 1)
     }
     
@@ -209,7 +209,7 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.mark(message: self.testMessage, labelID: Message.Location.inbox.rawValue, unRead: false))
         
         XCTAssertFalse(self.testMessage.unRead)
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 0)
     }
     
@@ -220,7 +220,7 @@ class CacheServiceTest: XCTestCase {
         XCTAssertTrue(sut.mark(message: self.testMessage, labelID: Message.Location.inbox.rawValue, unRead: true))
         
         XCTAssertTrue(self.testMessage.unRead)
-        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID, type: .singleMessage)
+        let unreadCountOfInbox: Int = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: sut.userID.rawValue, type: .singleMessage)
         XCTAssertEqual(unreadCountOfInbox, 1)
     }
     
@@ -252,9 +252,9 @@ class CacheServiceTest: XCTestCase {
 
 extension CacheServiceTest {
     func loadTestDataOfUnreadCount(defaultUnreadCount: Int, labelID: String) {
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .singleMessage)
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .singleMessage, shouldSave: true)
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, context: testContext, type: .conversation)
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .conversation, shouldSave: true)
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, context: testContext, type: .singleMessage)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID.rawValue, unread: defaultUnreadCount, total: nil, type: .singleMessage, shouldSave: true)
+        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID.rawValue, context: testContext, type: .conversation)
+        lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID.rawValue, unread: defaultUnreadCount, total: nil, type: .conversation, shouldSave: true)
     }
 }
