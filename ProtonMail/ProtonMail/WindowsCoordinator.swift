@@ -286,7 +286,7 @@ class WindowsCoordinator: CoordinatorNew {
                             NotificationCenter.default.post(name: .switchView, object: nil)
                         }
                     case .userWantsToGoToTroubleshooting:
-                        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+                        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
                         troubleshootingVC.onDismiss = { [weak self] in
                             // restart the process after user returns from troubleshooting
                             self?.go(dest: .signInWindow(signInDestination))

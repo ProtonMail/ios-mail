@@ -147,18 +147,9 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             let user = self.viewModel.user
             next.viewModel = CaptchaViewModelImpl(api: user.apiService)
             next.delegate = self.viewController
-        case .troubleShoot:
-            guard let nav = destination as? UINavigationController else {
-                return false
-            }
-
-            let tsVC = NetworkTroubleShootCoordinator(segueNav: nav,
-                                                      vm: NetworkTroubleShootViewModelImpl(),
-                                                      services: services)
-            tsVC.start()
         case .feedback, .feedbackView:
             return false
-        case .search:
+        case .search, .troubleShoot:
             assertionFailure("should not be used anymore")
         case .newFolder, .newLabel, .onboardingForNew, .onboardingForUpdate:
             break
@@ -186,6 +177,8 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             guard let message = sender as? Message else { return }
 
             navigateToComposer(existingMessage: message)
+        case .troubleShoot:
+            presentTroubleShootView()
         case .search:
             presentSearch()
         default:
@@ -417,5 +410,11 @@ extension MailboxCoordinator {
             composer.start()
             composer.follow(deeplink)
         }
+    }
+
+    private func presentTroubleShootView() {
+        let view = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
+        let nav = UINavigationController(rootViewController: view)
+        self.viewController?.present(nav, animated: true, completion: nil)
     }
 }

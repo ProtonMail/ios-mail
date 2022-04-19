@@ -117,7 +117,6 @@
                         <outlet property="menuButton" destination="G3s-bn-rVj" id="dRo-vS-Pzj"/>
                         <outlet property="textView" destination="5sX-Zk-W85" id="CLI-h2-uS2"/>
                         <outlet property="textViewHeightConstraint" destination="lGA-Cq-8Mn" id="3yw-w6-nre"/>
-                        <segue destination="KJr-Mu-WLW" kind="presentation" identifier="toTroubleShootSegue" id="Gho-wU-eDO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trg-Ug-uZy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -804,7 +803,6 @@
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="zIE-XJ-wkG"/>
                         <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="dts-X9-0aN"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
-                        <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1134,22 +1132,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YvQ-Md-waf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6796" y="1671"/>
-        </scene>
-        <!--ref_troubleshoot_nav_controller-->
-        <scene sceneID="kGo-UL-kqf">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="9Tt-Bl-2aN" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="q8t-Ng-rYc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2748" y="2087"/>
-        </scene>
-        <!--ref_troubleshoot_nav_controller-->
-        <scene sceneID="YEn-9r-KPa">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="KJr-Mu-WLW" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gFj-eN-8RO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="426" y="3570"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
