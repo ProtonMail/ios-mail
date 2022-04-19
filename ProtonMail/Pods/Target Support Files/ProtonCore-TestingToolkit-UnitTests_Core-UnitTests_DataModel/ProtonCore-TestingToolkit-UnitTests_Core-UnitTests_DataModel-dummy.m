@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_ProtonCore_TestingToolkit_UnitTests_Core_UnitTests_DataModel : NSObject
-@end
-@implementation PodsDummy_ProtonCore_TestingToolkit_UnitTests_Core_UnitTests_DataModel
-@end
