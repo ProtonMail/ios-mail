@@ -93,6 +93,7 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Mailbox/ActionTypesTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NetworkTroubleShootViewModelTests.swift
 
 excluded:
   - ${PWD}/Pods

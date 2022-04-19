@@ -28,7 +28,7 @@ protocol DohCacheProtocol {
 }
 
 protocol DohStatusProtocol {
-    var status: DoHStatus { get set}
+    var status: DoHStatus { get set }
 }
 
 extension DoH: DohStatusProtocol {

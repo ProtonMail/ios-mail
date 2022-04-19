@@ -23,7 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-@IBDesignable class SwitchTableViewCell: UITableViewCell {
+final class SwitchTableViewCell: UITableViewCell {
     static var CellID: String {
         return "\(self)"
     }
@@ -69,6 +69,7 @@ import UIKit
         topLineLabel.attributedText = NSMutableAttributedString(string: topline, attributes: leftAttributes)
 
         bottomLineLabel.text = bottomLine
+        bottomLineLabel.textColor = ColorProvider.TextWeak
         switchView.isOn = status
         callback = complete
         self.bottomLineLabel.isUserInteractionEnabled = false
@@ -87,11 +88,5 @@ import UIKit
             bottomLineLabel.isHidden = false
         }
         self.layoutIfNeeded()
-    }
-}
-
-extension SwitchTableViewCell: IBDesignableLabeled {
-    override func prepareForInterfaceBuilder() {
-        self.labelAtInterfaceBuilder()
     }
 }

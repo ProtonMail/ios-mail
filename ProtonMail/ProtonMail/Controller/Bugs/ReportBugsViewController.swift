@@ -39,7 +39,6 @@ class ReportBugsViewController: ProtonMailViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
 
-    private var kSegueToTroubleshoot: String = "toTroubleShootSegue"
     private var reportSent: Bool = false
 
     class func instance() -> ReportBugsViewController {
@@ -215,7 +214,9 @@ class ReportBugsViewController: ProtonMailViewController {
                                                 message: message,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
-            self.performSegue(withIdentifier: self.kSegueToTroubleshoot, sender: nil)
+            let troubleShootView = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
+            let nav = UINavigationController(rootViewController: troubleShootView)
+            self.present(nav, animated: true, completion: nil)
         }))
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
 

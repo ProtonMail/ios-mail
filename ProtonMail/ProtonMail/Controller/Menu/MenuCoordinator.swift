@@ -452,7 +452,7 @@ extension MenuCoordinator {
     }
 
     private func navigateToTroubleshooting() {
-        let troubleshootingVC = UIStoryboard.Storyboard.alert.storyboard.make(NetworkTroubleShootViewController.self)
+        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
         troubleshootingVC.onDismiss = { [weak self] in
             self?.navigateToAccountManager()
         }

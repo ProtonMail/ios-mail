@@ -27,7 +27,7 @@ extension UIStoryboard {
     enum Storyboard: String {
         case inbox = "Menu"
         case signIn = "SignIn"
-        case alert = "Alerts"
+
         case contact = "Contact"
         var restorationIdentifier: String {
             return rawValue
