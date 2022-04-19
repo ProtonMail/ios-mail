@@ -74,9 +74,9 @@ end
 
 def pm_pushService
   pod 'ProtonCore-Crypto', proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
   pod 'ProtonCore-Doh', proton_core_version
   pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+  pod 'ProtonCore-DataModel', proton_core_version
 end
 
 target 'ProtonMail' do
@@ -108,6 +108,7 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking/Alamofire', proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification/Alamofire', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/Authentication/UsingCrypto+Alamofire', proton_core_version
   pm_pods
 end
 
