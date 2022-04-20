@@ -215,6 +215,18 @@ class NewMessageBodyViewController: UIViewController {
                 self?.viewModel.recalculateCellHeight?(true)
             }
         }
+
+        // TODO do autoscroll here?
+        // Wait 2 seconds to do the scroll -> find a better solution as above later
+        //DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            // print("ES-AUTOSCROLL: delayed after 1 seconds")
+            // webView.scrollView.isScrollEnabled = true
+            // webView.scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: true)
+            // webView.scrollView.contentOffset = CGPoint(x: 0, y: 100)
+            // webView.evaluateJavaScript("window.scrollTo(\(20), \(100));")
+            // webView.scrollView.isScrollEnabled = false
+            // webView.evaluateJavaScript("window.scrollTo(\(0), \(200));")
+        //}
     }
 
     @objc
