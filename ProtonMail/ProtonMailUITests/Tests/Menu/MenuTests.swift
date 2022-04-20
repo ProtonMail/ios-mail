@@ -26,6 +26,7 @@ class MenuTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .navigateBackToSettings()
+            .close()
             .menuDrawer()
             .accountsList()
             .verify.accountShortNameIsCorrect(emoji)
@@ -45,6 +46,7 @@ class MenuTests : BaseTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .navigateBackToSettings()
+            .close()
             .menuDrawer()
             .accountsList()
 
@@ -59,6 +61,7 @@ class MenuTests : BaseTestCase {
             .setDisplayNameTextTo(testData.onePassUser.name)
             .save()
             .navigateBackToSettings()
+            .close()
             .menuDrawer()
             .accountsList()
             .verify.accountShortNameIsCorrect("1")
