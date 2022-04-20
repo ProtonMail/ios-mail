@@ -71,19 +71,14 @@ class SettingsDeviceViewController: ProtonMailTableViewController {
 
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
-        // the original call to `setup` relies on `menuButton` being connected via an IBOutlet
-        // which doesn't make much sense if there is no xib involved
-        // building the button by hand seems to be the least hacky solution
-        let menuButton = UIBarButtonItem(
-            image: Asset.topMenu.image,
+        let closeBtn = UIBarButtonItem(
+            image: Asset.actionSheetClose.image,
             style: .plain,
             target: self,
-            action: #selector(self.openMenu)
+            action: #selector(self.close)
         )
-        menuButton.accessibilityLabel = LocalString._menu_button
-        //Self.setup(self, menuButton, shouldShowSideMenu())
-        navigationItem.leftBarButtonItem = menuButton
-        menuButton.action = #selector(self.openMenu)
+        closeBtn.accessibilityLabel = LocalString._general_close_action
+        navigationItem.leftBarButtonItem = closeBtn
     }
 
     deinit {
@@ -104,6 +99,11 @@ class SettingsDeviceViewController: ProtonMailTableViewController {
         }
 
         self.tableView.reloadData()
+    }
+
+    @objc
+    private func close() {
+        dismiss(animated: true)
     }
 
     private func inAppLanguage(_ indexPath: IndexPath) {
