@@ -2626,15 +2626,16 @@ extension EncryptedSearchService {
             return bodyAsHtml
         }
 
-        var htmlWithHighlightedKeywords = bodyAsHtml
+        // replace occurences of &nbsp; with normal spaces as it cause problems when highlighting
+        var htmlWithHighlightedKeywords = bodyAsHtml.replacingOccurrences(of: "&nbsp;", with: " ")
         do {
             let doc: Document = try SwiftSoup.parse(htmlWithHighlightedKeywords)
             if let body = doc.body() {
                 try self.highlightSearchKeyWordsInHtml(parentNode: body, keyWords: self.searchQuery)
             }
-            htmlWithHighlightedKeywords = try doc.html()
+
             // fix bug with newlines and whitespaces added
-            htmlWithHighlightedKeywords = self.makeHighlightingPartOneLine(htmlString: htmlWithHighlightedKeywords)
+            htmlWithHighlightedKeywords = try self.documentToHTMLString(document: doc)
         } catch {
             print("Error when parsing the Html DOM tree for highlighting keywords")
         }
@@ -2642,31 +2643,26 @@ extension EncryptedSearchService {
         return htmlWithHighlightedKeywords
     }
 
-    private func makeHighlightingPartOneLine(htmlString: String) -> String {
-        // Find mark tag
-        let indicesBeginTag = htmlString.indices(of: "<mark>")
-        let indicesEndTag = htmlString.indices(of: "</mark>")
-
-        // Check if there are mark tags in the htmlstring
-        guard indicesBeginTag.isEmpty == false else {
-            return htmlString
-        }
-
-        var htmlStringOneLine = htmlString
-        for offset in 0...(indicesBeginTag.count-1) {
-            if let startIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesBeginTag[offset], limitedBy: htmlStringOneLine.endIndex) {
-                if let endIndex = htmlStringOneLine.index(htmlStringOneLine.startIndex, offsetBy: indicesEndTag[offset]+"</mark>".count, limitedBy: htmlStringOneLine.endIndex) {
-                    let begin = String(htmlStringOneLine[..<startIndex])
-                    var replace = String(htmlStringOneLine[startIndex..<endIndex])
-                    let end = String(htmlStringOneLine[endIndex...])
-
-                    replace = replace.components(separatedBy: .whitespacesAndNewlines).joined()
-                    htmlStringOneLine = begin + replace + end
+    private func documentToHTMLString(document: Document) throws -> String {
+        var html = ""
+        let body = document.body()
+        for node in body!.children() {
+            let htmlString = try node.outerHtml()
+            if htmlString.contains(check: "<mark>") {
+                // split string by newlines
+                let stringArray = htmlString.components(separatedBy: "\n")
+                // rebuild string
+                var newHtmlString: String = ""
+                for substring in stringArray {
+                    // remove leading whitespaces only
+                    newHtmlString += substring.replacingOccurrences(of: "^\\s+", with: "", options: .regularExpression)
                 }
+                html += newHtmlString
+            } else {
+                html += htmlString
             }
         }
-
-        return htmlStringOneLine
+        return html
     }
 
     private func highlightSearchKeyWordsInHtml(parentNode: Element?, keyWords: [String]) throws {
@@ -2727,8 +2723,10 @@ extension EncryptedSearchService {
     private func findKeywordsPositions(text: String, keywords: [String]) -> [(Int, Int)] {
         var positions = [(Int, Int)]()
         let cleanedText: String = self.removeDiacritics(text: text)
+        let cleanedAndLowercasedText = cleanedText.localizedLowercase
+
         for keyword in keywords {
-            let indices = cleanedText.indices(of: keyword)
+            let indices = cleanedAndLowercasedText.indices(of: keyword)
             if !indices.isEmpty {
                 for index in indices {
                     positions.append((index, index + keyword.count))
