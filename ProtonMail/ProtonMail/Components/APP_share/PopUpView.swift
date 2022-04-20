@@ -77,8 +77,8 @@ extension PopUpView {
 
         // sizing
         let popUpWidth: CGFloat = baseView.bounds.width
-        let popUpHeight: CGFloat = 376.0
-        
+        let popUpHeight: CGFloat = 276.0
+
         let size: CGSize = CGSize(width: popUpWidth, height: popUpHeight)
         self.frame = CGRect(origin: .zero, size: size)
 
@@ -118,8 +118,7 @@ extension PopUpView {
         NSLayoutConstraint.activate([
             self.imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
             self.imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 118.64),
-            self.imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -77.42),
-            self.imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -231.07)
+            self.imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -77.42)
         ])
 
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -127,22 +126,20 @@ extension PopUpView {
         self.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         self.titleLabel.textColor = ColorProvider.TextNorm
         NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 176),
+            self.titleLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 42),
             self.titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            self.titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            self.titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -176)
+            self.titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
-        
+
         self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         self.descriptionLabel.textAlignment = .center
         self.descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         self.descriptionLabel.textColor = ColorProvider.TextWeak
         self.descriptionLabel.numberOfLines = 3
         NSLayoutConstraint.activate([
-            self.descriptionLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 208),
+            self.descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 8),
             self.descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            self.descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            self.descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -128)
+            self.descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
 
         self.button.translatesAutoresizingMaskIntoConstraints = false
@@ -153,19 +150,19 @@ extension PopUpView {
         self.button.backgroundColor = ColorProvider.BrandNorm
         self.button.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
-            self.button.topAnchor.constraint(equalTo: self.topAnchor, constant: 264),
+            self.button.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 16),
             self.button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24),
             self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
-            self.button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -64)
+            self.button.heightAnchor.constraint(equalToConstant: 48)
         ])
 
         self.layoutIfNeeded()
     }
-    
+
     func remove(){
         self.removeFromSuperview()
     }
-    
+
     @objc func dismiss(_ sender: UITapGestureRecognizer) {
         self.remove()
         self.dismissAction?()
