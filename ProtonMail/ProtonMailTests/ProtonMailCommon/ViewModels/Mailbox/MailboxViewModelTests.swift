@@ -1048,6 +1048,34 @@ class MailboxViewModelTests: XCTestCase {
         createSut(labelID: "qweasd", labelType: .folder, isCustom: false, labelName: nil)
         XCTAssertTrue(sut.getActionBarActions().isEmpty)
     }
+
+    func testSendsHapticFeedbackOnceWhenSwipeActionIsActivatedAndOnceItIsDeactivated() {
+        var signalsSent = 0
+
+        sut.sendHapticFeedback = {
+            signalsSent += 1
+        }
+
+        for _ in (1...3) {
+            sut.swipyCellDidSwipe(triggerActivated: false)
+        }
+
+        for _ in (1...3) {
+            sut.swipyCellDidSwipe(triggerActivated: true)
+        }
+
+        XCTAssert(signalsSent == 1)
+
+        for _ in (1...3) {
+            sut.swipyCellDidSwipe(triggerActivated: true)
+        }
+
+        for _ in (1...3) {
+            sut.swipyCellDidSwipe(triggerActivated: false)
+        }
+
+        XCTAssert(signalsSent == 2)
+    }
 }
 
 extension MailboxViewModelTests {
