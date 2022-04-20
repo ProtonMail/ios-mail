@@ -217,7 +217,7 @@ extension SearchViewController {
         self.popupView!.translatesAutoresizingMaskIntoConstraints = false
         self.popupView!.layer.cornerRadius = 8
         NSLayoutConstraint.activate([
-            self.popupView!.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.bounds.height-376),
+            self.popupView!.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.bounds.height-276),
             self.popupView!.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.popupView!.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.popupView!.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
