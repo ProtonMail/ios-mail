@@ -79,7 +79,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
             case .downtimeNotes:
                 return "Check Proton Status for our system status."
             case .otherNotes:
-                return "Contact us directly through our support form, email (support@protonmail.com), or Twitter."
+                return "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter."
             }
         }
 
@@ -175,7 +175,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                 return attributedString
 
             case .otherNotes:
-                let holder = "Contact us directly through our support form, email (support@protonmail.com), or Twitter."
+                let holder = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter."
                 let field1 = "support form"
                 let field2 = "email"
                 let field3 = "Twitter"
@@ -190,7 +190,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                 }
                 if let subrange = full.range(of: field2) {
                     let nsRange = NSRange(subrange, in: full)
-                    attributedString.addAttributes([.link: "mailto:support@protonmail.com"], range: nsRange)
+                    attributedString.addAttributes([.link: "mailto:support@protonmail.zendesk.com"], range: nsRange)
                 }
                 if let subrange = full.range(of: field3) {
                     let nsRange = NSRange(subrange, in: full)
@@ -350,7 +350,7 @@ extension NetworkTroubleShootViewController: SwitchTwolineCellDelegate, MFMailCo
 
     func openMFMail() {
         let mailComposer = MFMailComposeViewController()
-        mailComposer.setToRecipients(["support@protonmail.com"])
+        mailComposer.setToRecipients(["support@protonmail.zendesk.com"])
         mailComposer.setSubject("Subject..")
         mailComposer.setMessageBody("Please share your problem.", isHTML: false)
         present(mailComposer, animated: true, completion: nil)
