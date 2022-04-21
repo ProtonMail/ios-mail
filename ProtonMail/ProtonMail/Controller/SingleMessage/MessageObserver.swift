@@ -28,7 +28,7 @@ class MessageObserver: NSObject, NSFetchedResultsControllerDelegate {
     private let singleMessageFetchedController: NSFetchedResultsController<NSFetchRequestResult>?
     private var messageHasChanged: ((Message) -> Void)?
 
-    init(messageId: String, messageService: MessageDataService) {
+    init(messageId: MessageID, messageService: MessageDataService) {
         self.messageService = messageService
         singleMessageFetchedController = messageService.fetchedMessageControllerForID(messageId)
     }

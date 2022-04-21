@@ -26,33 +26,6 @@ import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
-enum ComposeMessageAction: Int, CustomStringConvertible {
-    case reply = 0
-    case replyAll = 1
-    case forward = 2
-    case newDraft = 3
-    case openDraft = 4
-    case newDraftFromShare = 5
-
-    /// localized description
-    var description: String {
-        get {
-            switch self {
-            case .reply:
-                return LocalString._general_reply_button
-            case .replyAll:
-                return LocalString._general_replyall_button
-            case .forward:
-                return LocalString._general_forward_button
-            case .newDraft, .newDraftFromShare:
-                return LocalString._general_draft_action
-            case .openDraft:
-                return ""
-            }
-        }
-    }
-}
-
 protocol FileData {
     var name: String { get set }
     var ext: String { get set }
@@ -72,11 +45,26 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 }
 
 class ComposeViewModel: NSObject {
-    @objc dynamic var message: Message?
+    let composerMessageHelper: ComposerMessageHelper
+    let messageService: MessageDataService
+    let coreDataContextProvider: CoreDataContextProviderProtocol
+
+    init(
+        msgDataService: MessageDataService,
+        contextProvider: CoreDataContextProviderProtocol,
+        user: UserManager
+    ) {
+        self.messageService = msgDataService
+        self.coreDataContextProvider = contextProvider
+        self.composerMessageHelper = ComposerMessageHelper(msgDataService: msgDataService,
+                                                           contextProvider: contextProvider,
+                                                           user: user,
+                                                           cacheService: user.cacheService)
+    }
+
     /// Only to notify ComposeContainerViewModel that contacts changed
     @objc dynamic private(set) var contactsChange: Int = 0
-    var composerContext: NSManagedObjectContext?
-    var messageAction: ComposeMessageAction = .newDraft
+    var messageAction : ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
     }
@@ -88,13 +76,13 @@ class ComposeViewModel: NSObject {
     }
 
     var showError: ((String) -> Void)?
-
-    private var _subject: String! = ""
-    var body: String! = ""
-
-    var hasDraft: Bool {
-        get {
-            return message?.isDetailDownloaded ?? false
+    
+    private var _subject : String! = ""
+    var body : String! = ""
+    
+    var hasDraft : Bool {
+        get{
+            return composerMessageHelper.message?.isDetailDownloaded ?? false
         }
     }
 

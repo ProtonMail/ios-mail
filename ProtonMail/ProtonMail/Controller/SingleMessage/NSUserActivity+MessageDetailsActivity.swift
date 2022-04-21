@@ -24,7 +24,7 @@ import Foundation
 
 extension NSUserActivity {
 
-    static func messageDetailsActivity(messageId: String) -> NSUserActivity {
+    static func messageDetailsActivity(messageId: MessageID) -> NSUserActivity {
         let activity = NSUserActivity(activityType: "Handoff.Message")
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = false
@@ -35,7 +35,7 @@ extension NSUserActivity {
 
         let deeplink = DeepLink(String(describing: MenuViewController.self))
         deeplink.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
-        deeplink.append(.init(name: String(describing: SingleMessageViewController.self), value: messageId))
+        deeplink.append(.init(name: String(describing: SingleMessageViewController.self), value: messageId.rawValue))
 
         if let deeplinkData = try? JSONEncoder().encode(deeplink) {
             activity.addUserInfoEntries(from: ["deeplink": deeplinkData])

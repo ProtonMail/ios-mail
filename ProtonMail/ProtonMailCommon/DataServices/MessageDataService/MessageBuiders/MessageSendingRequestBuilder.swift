@@ -241,7 +241,7 @@ extension MessageSendingRequestBuilder {
 
             att.localURL = nil
             messageDataService
-                .fetchAttachmentForAttachment(att,
+                .fetchAttachmentForAttachment(AttachmentEntity(att),
                                               customAuthCredential: att.message.cachedAuthCredential,
                                               downloadTask: { (_: URLSessionDownloadTask) -> Void in },
                                               completion: { _, _, _ -> Void in

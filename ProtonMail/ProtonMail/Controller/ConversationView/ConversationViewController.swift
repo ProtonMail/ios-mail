@@ -9,7 +9,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let coordinator: ConversationCoordinatorProtocol
     private let applicationStateProvider: ApplicationStateProvider
     private(set) lazy var customView = ConversationView()
-    private var selectedMessageID: String?
+    private var selectedMessageID: MessageID?
     private let conversationNavigationViewPresenter = ConversationNavigationViewPresenter()
     private let conversationMessageCellPresenter = ConversationMessageCellPresenter()
     private let actionSheetPresenter = MessageViewActionSheetPresenter()
@@ -171,7 +171,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
-    func cellTapped(messageId: String) {
+    func cellTapped(messageId: MessageID) {
         guard let index = self.viewModel.messagesDataSource
                 .firstIndex(where: { $0.message?.messageID == messageId }),
               let messageViewModel = self.viewModel.messagesDataSource[safe: index]?.messageViewModel else {
@@ -306,7 +306,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 }
 
 private extension ConversationViewController {
-    private func presentActionSheet(for message: Message,
+    private func presentActionSheet(for message: MessageEntity,
                                     isBodyDecrpytable: Bool,
                                     messageRenderStyle: MessageRenderStyle,
                                     shouldShowRenderModeOption: Bool) {
@@ -316,21 +316,20 @@ private extension ConversationViewController {
                           Message.HiddenLocation.draft.rawValue]
         // swiftlint:disable sorted_first_last
         // Better to disable linter rule here keep it this way for readability
-        guard let labels = message.labels.allObjects as? [Label],
-              let location = labels
+        guard let location = message.labels
                 .sorted(by: { label1, label2 in
-                    return label1.labelID < label2.labelID
+                    return label1.labelID.rawValue < label2.labelID.rawValue
                 })
                 .first(where: {
-                        !forbidden.contains($0.labelID)
-                    && ($0.type.intValue == 3 || Int($0.labelID) != nil)
+                    !forbidden.contains($0.labelID.rawValue)
+                    && ($0.type == .folder || Int($0.labelID.rawValue) != nil)
                 }) else { return }
         // swiftlint:enable sorted_first_last
         self.selectedMessageID = message.messageID
-        let viewModel = MessageViewActionSheetViewModel(title: message.subject,
+        let viewModel = MessageViewActionSheetViewModel(title: message.title,
                                                         labelID: location.labelID,
                                                         includeStarring: true,
-                                                        isStarred: message.starred,
+                                                        isStarred: message.isStarred,
                                                         isBodyDecryptable: isBodyDecrpytable,
                                                         hasMoreThanOneRecipient: message.isHavingMoreThanOneContact,
                                                         messageRenderStyle: messageRenderStyle,
@@ -495,7 +494,7 @@ private extension ConversationViewController {
 
     private func recalculateHeight(
         for cell: ConversationExpandedMessageCell,
-        messageId: String,
+        messageId: MessageID,
         isHeaderExpanded: Bool,
         isLoaded: Bool
     ) {
@@ -555,7 +554,7 @@ private extension ConversationViewController {
         }
     }
 
-    private func update(draft: Message) {
+    private func update(draft: MessageEntity) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         guard !draft.isSending else {
             LocalString._mailbox_draft_is_uploading.alertToast()
@@ -571,7 +570,7 @@ private extension ConversationViewController {
                     self.present(alert, animated: true, completion: nil)
                     return
                 }
-                guard let objectID = container?.objectID else {
+                guard let objectID = container?.objectID.rawValue else {
                     MBProgressHUD.hide(for: self.view, animated: true)
                     return
                 }
@@ -591,7 +590,7 @@ private extension ConversationViewController {
 
 private extension Array where Element == ConversationViewItemType {
 
-    func message(with id: String) -> Message? {
+    func message(with id: MessageID) -> MessageEntity? {
         compactMap(\.message)
             .first(where: { $0.messageID == id })
     }
@@ -608,7 +607,7 @@ private extension ConversationViewController {
         customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
         customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        if viewModel.labelId == Message.Location.spam.rawValue || viewModel.labelId == Message.Location.trash.rawValue {
+        if viewModel.labelId == Message.Location.spam.labelID || viewModel.labelId == Message.Location.trash.labelID {
             customView.toolBar.trashButtonView.removeFromSuperview()
         } else {
             customView.toolBar.deleteButtonView.removeFromSuperview()
@@ -651,8 +650,8 @@ private extension ConversationViewController {
         let isUnread = viewModel.conversation.isUnread(labelID: viewModel.labelId)
         let isStarred = viewModel.conversation.starred
 
-        let messagesCountInTrash = viewModel.conversation.getNumMessages(labelID: Message.Location.trash.rawValue)
-        let isAllMessagesInTrash = messagesCountInTrash == viewModel.conversation.numMessages.intValue
+        let messagesCountInTrash = viewModel.conversation.getNumMessages(labelID: Message.Location.trash.labelID)
+        let isAllMessagesInTrash = messagesCountInTrash == viewModel.conversation.messageCount
         let actionSheetViewModel = ConversationActionSheetViewModel(title: viewModel.conversation.subject,
                                                                     labelID: viewModel.labelId,
                                                                     isUnread: isUnread,
@@ -755,7 +754,7 @@ private extension ConversationViewController {
         }
     }
 
-    private func handleMoreAction(messageId: String, message: Message) {
+    private func handleMoreAction(messageId: MessageID, message: MessageEntity) {
         let viewModel = viewModel.messagesDataSource.first(where: { $0.message?.messageID == messageId })
         let isBodyDecryptable = viewModel?.messageViewModel?.state.expandedViewModel?
             .messageContent.messageBodyViewModel.isBodyDecryptable ?? false
@@ -772,7 +771,7 @@ private extension ConversationViewController {
 }
 
 enum ActionSheetDataSource {
-    case message(_ message: Message)
+    case message(_ message: MessageEntity)
     case conversation
 }
 
@@ -828,7 +827,7 @@ extension ConversationViewController: LabelAsActionSheetPresentProtocol {
             )
     }
 
-    private func showLabelAsActionSheet(for message: Message) {
+    private func showLabelAsActionSheet(for message: MessageEntity) {
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                    messages: [message])
 
@@ -927,7 +926,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         }
     }
 
-    private func showMoveToActionSheet(for message: Message) {
+    private func showMoveToActionSheet(for message: MessageEntity) {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
         let moveToViewModel = MoveToActionSheetViewModelMessages(
@@ -995,47 +994,46 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                      listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        guard let self = self else { return }
-                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
-                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
-                                self?.showMoveToActionSheetForConversation()
-                            }
-                            self.coordinator.handle(navigationAction: .addNewFolder)
-                        } else {
-                            self.showAlertFolderCreationNotAllowed()
-                        }
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        guard isHavingUnsavedChanges, let conversation = self?.viewModel.conversation else {
-                            return
-                        }
-                        self?.moveToActionHandler
-                    .handleMoveToAction(conversations: [conversation], isFromSwipeAction: false, completion: nil)
-                     })
+                guard let self = self else { return }
+                if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                    self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showMoveToActionSheetForConversation()
+                    }
+                    self.coordinator.handle(navigationAction: .addNewFolder)
+                } else {
+                    self.showAlertFolderCreationNotAllowed()
+                }
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isHavingUnsavedChanges in
+                defer {
+                    self?.dismissActionSheet()
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                guard isHavingUnsavedChanges, let conversation = self?.viewModel.conversation else {
+                    return
+                }
+                self?.moveToActionHandler
+                    .handleMoveToAction(conversations: [conversation],
+                                        isFromSwipeAction: false,
+                                        completion: nil)
+            })
     }
 
 }
 
 // MARK: - New Message floaty view
 extension ConversationViewController {
-    private func showNewMessageFloatyView(messageId: String) {
+    private func showNewMessageFloatyView(messageId: MessageID) {
 
         let floatyView = customView.showNewMessageFloatyView(messageId: messageId, didHide: {})
 
@@ -1053,8 +1051,9 @@ extension ConversationViewController {
         }
     }
 
-    func showMessage(of messageId: String) {
-        guard let index = viewModel.messagesDataSource.firstIndex(where: { $0.message?.messageID == messageId }) else {
+    func showMessage(of messageId: MessageID) {
+        guard let index = viewModel.messagesDataSource
+                .firstIndex(where: { $0.message?.messageID == messageId }) else {
             return
         }
         cellTapped(messageId: messageId)

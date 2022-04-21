@@ -23,14 +23,14 @@
 import Foundation
 
 extension Message {
-
+    
     enum HiddenLocation: String {
-        case draft = "1" // 1 can't be removed
-        case sent  = "2" // 2 can't be removed
+        case draft = "1" //1 can't be removed
+        case sent  = "2" //2 can't be removed
     }
-
-    /// Predefined location. matches with exclusive lable id
-    enum Location: String {
+    
+    /// Predefined location. matches with exclusive label id
+    enum Location: String, CaseIterable {
         case inbox   = "0"
         case draft   = "8"  // "8"   //1 can't be removed
         case sent    = "7"  // "7"    //2 can't be removed
@@ -39,7 +39,6 @@ extension Message {
         case spam    = "4"
         case trash   = "3"
         case allmail = "5"
-        // 8 , 7  another type of draft,sent
         var localizedTitle: String {
             switch self {
             case .inbox:
@@ -80,6 +79,14 @@ extension Message {
             case .allmail:
                 return LocalString._locations_all_mail_title
             }
+        }
+
+        var labelID: LabelID {
+            return LabelID(rawValue)
+        }
+
+        init?(_ labelID: LabelID) {
+            self.init(rawValue: labelID.rawValue)
         }
     }
 }

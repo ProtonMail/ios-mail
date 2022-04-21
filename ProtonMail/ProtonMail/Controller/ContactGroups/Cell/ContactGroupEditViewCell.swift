@@ -43,8 +43,8 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var shortNameLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var deleteButtonImage: UIImageView!
-
-    var emailID: String = ""
+    
+    var emailID: EmailID = ""
     var name: String = ""
     var email: String = ""
     var state: ContactGroupEditViewCellState = .none
@@ -63,8 +63,8 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
             viewModel.removeEmail(emailID: emailID)
         }
     }
-
-    func config(emailID: String,
+    
+    func config(emailID: EmailID,
                 name: String,
                 email: String,
                 queryString: String,

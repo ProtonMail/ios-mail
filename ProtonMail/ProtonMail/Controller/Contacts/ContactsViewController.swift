@@ -22,9 +22,12 @@
 
 import UIKit
 import Contacts
-import CoreData
 import MBProgressHUD
 import ProtonCore_UIFoundations
+
+protocol ContactsVCUIProtocol: AnyObject {
+    func reloadTable()
+}
 
 class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactsViewModel
@@ -81,9 +84,10 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView.sectionIndexColor = ColorProvider.BrandNorm
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
-
-        // get all contacts
-        self.viewModel.setupFetchedResults(delegate: self)
+        
+        //get all contacts
+        self.viewModel.setupFetchedResults()
+        self.viewModel.setup(uiDelegate: self)
         self.prepareSearchBar()
 
         prepareNavigationItemRightDefault(self.viewModel.user)
@@ -163,10 +167,13 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         switch segue.identifier {
         case kContactDetailsSugue:
             let contactDetailsViewController = viewController as! ContactDetailViewController
-
-            let contact = sender as? Contact
-            sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact!)
-
+            
+            guard let entity = sender as? ContactEntity,
+                  let contact = self.viewModel.getContactObject(by: entity.contactID) else {
+                      return
+                  }
+            sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact)
+            
         case "toCompose", kAddContactSugue:
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
@@ -257,7 +264,7 @@ extension ContactsViewController: UITableViewDataSource {
         if let contactCell = cell as? ContactsTableViewCell {
             if let contact = self.viewModel.item(index: indexPath) {
                 contactCell.config(name: contact.name,
-                                   email: contact.getDisplayEmails(),
+                                   email: contact.displayEmails,
                                    highlight: self.searchString)
             }
         }
@@ -356,17 +363,16 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     }
 }
 
-// MARK: - NSFetchedResultsControllerDelegate
-extension ContactsViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.reloadData()
-    }
-}
-
 // detect view dismiss above iOS 13
 @available (iOS 13, *)
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true
+    }
+}
+
+extension ContactsViewController: ContactsVCUIProtocol {
+    func reloadTable() {
+        self.tableView.reloadData()
     }
 }

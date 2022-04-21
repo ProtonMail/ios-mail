@@ -263,6 +263,20 @@ included:
   - ${PWD}/ProtonMailCommon/ViewModels/Mailbox/MailBoxSwipeActionHelper.swift
   - ${PWD}/ProtonMailCommon/DataServices/MessageDataService/MessageProvider.swift
   - ${PWD}/ProtonMailCommon/Utilities/ConnectionStatus/ConnectionMonitor.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Conversation/ContextLabelEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Conversation/ConversationEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Attachment/AttachmentEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Contact/ContactEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/contact/EmailEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Helpers/MIMEType.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Label/LabelEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/ComposeMessageAction.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageEntity+extendVariables.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageEntity.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/MessageFlag.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Message/SpamScore.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Phantom/Phantom.swift
+  - ${PWD}/ProtonMailCommon/DataServices/DataModels/Entities/Phantom/PhantomTags.swift
   - ${PWD}/ProtonMail/Controller/SignIn/BioCodeViewController.swift
   - ${PWD}/ProtonMail/Controller/MessageDetail/LinkOpeningValidator.swift
 

@@ -368,7 +368,7 @@ extension SearchViewController {
         return searchVM
     }
 
-    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool) {
+    private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool) {
         guard let handler = moveToActionHandler else { return }
         let moveToViewModel =
             MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
@@ -418,7 +418,7 @@ extension SearchViewController {
         return searchVM
     }
 
-    private func showLabelAsActionSheet(messages: [Message]) {
+    private func showLabelAsActionSheet(messages: [MessageEntity]) {
         guard let handler = labelAsActionHandler else { return }
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: handler.getLabelMenuItems(),
                                                                    messages: messages)
@@ -455,8 +455,7 @@ extension SearchViewController {
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let folderLabels = viewModel.user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let folderLabels = viewModel.user.labelService.getMenuFolderLabels()
         let viewModel = LabelEditViewModel(user: viewModel.user, label: nil, type: type, labels: folderLabels)
         let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,
@@ -487,7 +486,7 @@ extension SearchViewController {
         }
     }
 
-    private func prepareForDraft(_ message: Message) {
+    private func prepareForDraft(_ message: MessageEntity) {
         self.updateTapped(status: true)
         self.viewModel.fetchMessageDetail(message: message) { [weak self] error in
             self?.updateTapped(status: false)
@@ -504,22 +503,21 @@ extension SearchViewController {
             self.showComposer(message: message)
         }
     }
-
-    private func showComposer(message: Message) {
-        let viewModel = self.viewModel.getComposeViewModel(message: message)
-        guard let navigationController = self.navigationController else { return }
+    private func showComposer(message: MessageEntity) {
+        guard let viewModel = self.viewModel.getComposeViewModel(message: message),
+              let navigationController = self.navigationController else { return }
         let coordinator = ComposeContainerViewCoordinator(presentingViewController: navigationController,
                                                           editorViewModel: viewModel,
                                                           services: ServiceFactory.default)
         coordinator.start()
     }
 
-    private func prepareFor(message: Message) {
+    private func prepareFor(message: MessageEntity) {
         guard self.viewModel.viewMode == .singleMessage else {
             self.prepareConversationFor(message: message)
             return
         }
-        if message.draft {
+        if message.isDraft {
             self.prepareForDraft(message)
             return
         }
@@ -534,7 +532,7 @@ extension SearchViewController {
         coordinator.start()
     }
 
-    private func prepareConversationFor(message: Message) {
+    private func prepareConversationFor(message: MessageEntity) {
         guard let navigation = self.navigationController else {
             self.updateTapped(status: false)
             return
@@ -545,23 +543,23 @@ extension SearchViewController {
         self.viewModel.getConversation(conversationID: conversationID, messageID: messageID) { [weak self] result in
             guard let self = self else { return }
 
-        switch result {
-        case .success(let conversation):
-            let coordinator = ConversationCoordinator(
-                labelId: self.viewModel.labelID,
-                navigationController: navigation,
-                conversation: conversation,
-                user: self.viewModel.user,
-                internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
-                targetID: messageID
-            )
-            coordinator.start()
-        case .failure(let error):
-            error.alert(at: nil)
-        }
-
             self.updateTapped(status: false)
             MBProgressHUD.hide(for: self.view, animated: true)
+
+            switch result {
+            case .success(let conversation):
+                let coordinator = ConversationCoordinator(
+                    labelId: self.viewModel.labelID,
+                    navigationController: navigation,
+                    conversation: conversation,
+                    user: self.viewModel.user,
+                    internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                    targetID: messageID
+                )
+                coordinator.start()
+            case .failure(let error):
+                error.alert(at: nil)
+            }
         }
     }
 
@@ -675,7 +673,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
         cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
 
-        mailboxCell.id = message.messageID
+        mailboxCell.id = message.messageID.rawValue
         mailboxCell.cellDelegate = self
         mailboxCell.generateCellAccessibilityIdentifiers(message.title)
         return mailboxCell
@@ -689,7 +687,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = self.viewModel.messages[indexPath.row]
         guard !listEditing else {
-            self.handleEditingDataSelection(of: message.messageID,
+            self.handleEditingDataSelection(of: message.messageID.rawValue,
                                             indexPath: indexPath)
             return
         }

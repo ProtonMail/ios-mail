@@ -35,6 +35,8 @@ enum MIMEType {
     case audio
     case epub
     case ics
+    case html
+    case mutipartMixed
     case unknownFile
 
     static let msWordMIME = ["application/doc",
@@ -75,19 +77,31 @@ enum MIMEType {
 
     static let epubMIME = ["application/epub+zip"]
     static let icsMIME = ["text/calendar"]
+    static let jpgMIME = ["image/jpeg",
+                          "image/jpg"]
+    static let pngMIME = "image/png"
+    static let zipMIME = "application/zip"
+    static let pdfMIME = "application/pdf"
+    static let txtMIME = "text/plain"
+    static let htmlMIME = "text/html"
+    static let mutipartMixedMIME = "multipart/mixed"
 
     // swiftlint:disable cyclomatic_complexity
     init(rawValue: String) {
-        if rawValue == "image/jpeg" || rawValue == "image/jpg" {
+        if MIMEType.jpgMIME.contains(rawValue) {
             self = .jpg
-        } else if rawValue == "image/png" {
+        } else if MIMEType.pngMIME == rawValue {
             self = .png
-        } else if rawValue == "application/zip" {
+        } else if MIMEType.zipMIME == rawValue {
             self = .zip
-        } else if rawValue == "application/pdf" {
+        } else if MIMEType.pdfMIME == rawValue {
             self = .pdf
-        } else if rawValue == "text/plain" {
+        } else if MIMEType.txtMIME == rawValue {
             self = .txt
+        } else if MIMEType.htmlMIME == rawValue {
+            self = .html
+        } else if MIMEType.mutipartMixedMIME == rawValue {
+            self = .mutipartMixed
         } else if MIMEType.msWordMIME.contains(rawValue) {
             self = .doc
         } else if MIMEType.msExcelMIME.contains(rawValue) {

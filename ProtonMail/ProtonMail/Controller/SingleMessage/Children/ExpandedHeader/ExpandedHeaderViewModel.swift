@@ -39,7 +39,7 @@ class ExpandedHeaderViewModel {
     var senderEmail: NSAttributedString {
         var style = FontManager.body3RegularInteractionNorm
         style = style.addTruncatingTail(mode: .byTruncatingMiddle)
-        return "\((message.sender?.toContact()?.email ?? ""))".apply(style: style)
+        return "\((message.sender?.email ?? ""))".apply(style: style)
     }
 
     var time: NSAttributedString {
@@ -54,7 +54,7 @@ class ExpandedHeaderViewModel {
     }
 
     var size: NSAttributedString? {
-        let value = message.size.intValue
+        let value = message.size
         return value.toByteCount.apply(style: .CaptionWeak)
     }
 
@@ -63,18 +63,20 @@ class ExpandedHeaderViewModel {
     }
 
     var toData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(
-            from: message.toList.toContacts(),
+        let list = message.toList.compactMap({ $0 as? ContactVO })
+        return createRecipientRowViewModel(
+            from: list,
             title: "\(LocalString._general_to_label):"
         )
     }
 
     var ccData: ExpandedHeaderRecipientsRowViewModel? {
-        createRecipientRowViewModel(from: message.ccList.toContacts(), title: "\(LocalString._general_cc_label):")
+        let list = message.ccList.compactMap({ $0 as? ContactVO })
+        return createRecipientRowViewModel(from: list, title: "\(LocalString._general_cc_label):")
     }
 
     var originImage: UIImage? {
-        let id = message.messageLocation?.rawValue ?? labelId
+        let id = message.messageLocation?.labelID ?? labelId
         if let image = message.getLocationImage(in: id) {
             return image
         }
@@ -82,25 +84,31 @@ class ExpandedHeaderViewModel {
     }
 
     var originTitle: NSAttributedString? {
-        if let locationName = message.messageLocation?.title {
+        if let locationName = message.messageLocation?.localizedTitle {
             return locationName.apply(style: .CaptionWeak)
         }
         return message.customFolder?.name.apply(style: .CaptionWeak)
     }
     private(set) var senderContact: ContactVO?
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet {
             reloadView?()
         }
     }
 
-    private let labelId: String
+    private let labelId: LabelID
     let user: UserManager
 
     private var senderName: String {
-        let contactsEmails = user.contactService.allEmails().filter { $0.userID == message.userID }
-        return message.displaySender(contactsEmails)
+        guard let senderInfo = self.message.sender else {
+            assert(false, "Sender with no name or address")
+            return ""
+        }
+        guard let contactName = user.contactService.getName(of: senderInfo.email) else {
+            return senderInfo.name.isEmpty ? senderInfo.email: senderInfo.name
+        }
+        return contactName
     }
 
     private var userContacts: [ContactVO] {
@@ -114,13 +122,13 @@ class ExpandedHeaderViewModel {
         return dateFormatter
     }
 
-    init(labelId: String, message: Message, user: UserManager) {
+    init(labelId: LabelID, message: MessageEntity, user: UserManager) {
         self.labelId = labelId
         self.message = message
         self.user = user
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
     }
 

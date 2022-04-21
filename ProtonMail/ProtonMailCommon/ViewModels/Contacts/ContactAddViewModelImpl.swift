@@ -33,11 +33,11 @@ class ContactAddViewModelImpl: ContactEditViewModel {
                                               .information,
                                               .notes]
 
-    var contact: Contact? // optional if nil add new contact
-    var emails: [ContactEditEmail] = []
-    var cells: [ContactEditPhone] = []
-    var urls: [ContactEditUrl] = []
-    var addresses: [ContactEditAddress] = []
+    private(set) var contactEntity: ContactEntity?
+    var emails : [ContactEditEmail] = []
+    var cells : [ContactEditPhone] = []
+    var urls : [ContactEditUrl] = []
+    var addresses : [ContactEditAddress] = []
     var informations: [ContactEditInformation] = []
     var fields: [ContactEditField] = []
     var notes: ContactEditNote = ContactEditNote(note: "", isNew: true)
@@ -46,13 +46,13 @@ class ContactAddViewModelImpl: ContactEditViewModel {
 
     override init(user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
-        self.contact = nil
+        self.contactEntity = nil
     }
 
     init(contactVO: ContactVO, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
-        self.contact = nil
-
+        self.contactEntity = nil
+        
         let email = self.newEmail()
         email.newEmail = contactVO.displayEmail ?? ""
 
@@ -134,7 +134,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
                                      email: "",
                                      isNew: true,
                                      keys: nil,
-                                     contactID: self.contact?.contactID,
+                                     contactID: self.contactEntity?.contactID.rawValue,
                                      encrypt: nil,
                                      sign: nil ,
                                      scheme: nil,

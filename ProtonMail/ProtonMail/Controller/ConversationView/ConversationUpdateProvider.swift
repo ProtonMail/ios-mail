@@ -18,7 +18,7 @@
 import CoreData
 
 class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
-    private let conversationID: String
+    private let conversationID: ConversationID
     private let contextProvider: CoreDataContextProviderProtocol
     private var conversationDidUpdate: (() -> Void)?
 
@@ -28,7 +28,7 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
             Conversation.Attributes.conversationID,
-            self.conversationID
+            self.conversationID.rawValue
         )
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Conversation.order), ascending: true)
@@ -41,7 +41,8 @@ class ConversationUpdateProvider: NSObject, NSFetchedResultsControllerDelegate {
         )
     }()
 
-    init(conversationID: String, contextProvider: CoreDataContextProviderProtocol) {
+    init(conversationID: ConversationID,
+         contextProvider: CoreDataContextProviderProtocol) {
         self.conversationID = conversationID
         self.contextProvider = contextProvider
     }

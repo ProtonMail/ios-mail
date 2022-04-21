@@ -21,20 +21,20 @@ import ProtonCore_UIFoundations
 
 protocol SearchVMProtocol {
     var user: UserManager { get }
-    var messages: [Message] { get }
+    var messages: [MessageEntity] { get }
     var selectedIDs: Set<String> { get }
-    var selectedMessages: [Message] { get }
-    var labelID: String { get }
+    var selectedMessages: [MessageEntity] { get }
+    var labelID: LabelID { get }
     var viewMode: ViewMode { get }
 
     func viewDidLoad()
     func cleanLocalIndex()
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
-    func fetchMessageDetail(message: Message,
+    func fetchMessageDetail(message: MessageEntity,
                             completeHandler: @escaping ((NSError?) -> Void))
-    func getComposeViewModel(message: Message) -> ContainableComposeViewModel
-    func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel
+    func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel?
+    func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
     // TODO: The logic is quite similar what we did in mailBoxVC, try to share the logic
@@ -48,9 +48,9 @@ protocol SearchVMProtocol {
     func deleteSelectedMessage()
     func handleActionSheetAction(_ action: MailListSheetAction)
     func getFolderMenuItems() -> [MenuLabel]
-    func getConversation(conversationID: String,
-                         messageID: String,
-                         completion: @escaping (Result<Conversation, Error>) -> Void)
+    func getConversation(conversationID: ConversationID,
+                         messageID: MessageID,
+                         completion: @escaping (Result<ConversationEntity, Error>) -> Void)
 }
 
 final class SearchViewModel: NSObject {
@@ -60,8 +60,7 @@ final class SearchViewModel: NSObject {
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
     weak var uiDelegate: SearchViewUIProtocol?
-
-    private(set) var messages: [Message] = [] {
+    private(set) var messages: [MessageEntity] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.uiDelegate?.reloadTable()
@@ -89,10 +88,10 @@ final class SearchViewModel: NSObject {
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
-    var labelID: String { Message.Location.allmail.rawValue }
+    var labelID: LabelID { Message.Location.allmail.labelID }
     var viewMode: ViewMode { self.user.getCurrentViewMode() }
-    var selectedMessages: [Message] {
-        self.messages.filter { selectedIDs.contains($0.messageID) }
+    var selectedMessages: [MessageEntity] {
+        self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
 
     init(user: UserManager,
@@ -152,8 +151,9 @@ extension SearchViewModel: SearchVMProtocol {
             let context = self.coreDataContextProvider.mainContext
             context.perform { [weak self] in
                 let messagesInContext = messageBoxes
-                    .compactMap { context.object(with: $0.objectID) as? Message }
+                    .compactMap { context.object(with: $0.objectID.rawValue) as? Message }
                     .filter { $0.managedObjectContext != nil }
+                    .map(MessageEntity.init)
                 if pageToLoad > 0 {
                     self?.messages.append(contentsOf: messagesInContext)
                 } else {
@@ -170,32 +170,36 @@ extension SearchViewModel: SearchVMProtocol {
         }
     }
 
-    func fetchMessageDetail(message: Message, completeHandler: @escaping ((NSError?) -> Void)) {
+    func fetchMessageDetail(message: MessageEntity, completeHandler: @escaping ((NSError?) -> Void)) {
         let service = self.user.messageService
         service.ForcefetchDetailForMessage(message) { _, _, _, error in
             completeHandler(error)
         }
     }
 
-    func getComposeViewModel(message: Message) -> ContainableComposeViewModel {
-        ContainableComposeViewModel(msg: message,
-                                    action: .openDraft,
-                                    msgService: user.messageService,
-                                    user: user,
-                                    coreDataContextProvider: coreDataContextProvider)
+    func getComposeViewModel(message: MessageEntity) -> ContainableComposeViewModel? {
+        guard let msgObject = coreDataContextProvider.mainContext
+                .object(with: message.objectID.rawValue) as? Message else {
+            return nil
+        }
+        return ContainableComposeViewModel(msg: msgObject,
+                                           action: .openDraft,
+                                           msgService: user.messageService,
+                                           user: user,
+                                           coreDataContextProvider: coreDataContextProvider)
     }
 
-    func getMessageCellViewModel(message: Message) -> NewMailboxMessageViewModel {
+    func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
         let replacingEmails = self.user.contactService.allEmails()
-        let initial = message.initial(replacingEmails: replacingEmails,
-                                      groupContacts: groupContacts)
-        let sender = message.sender(replacingEmails: replacingEmails,
-                                    groupContacts: groupContacts)
+        let initial = message.getInitial(replacingEmails: replacingEmails,
+                                         groupContacts: groupContacts)
+        let sender = message.getSender(replacingEmails: replacingEmails,
+                                       groupContacts: groupContacts)
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(
             of: .folder,
             context: CoreDataService.shared.mainContext
-        )
+        ).compactMap { LabelEntity(label: $0) }
         let isSelected = self.selectedMessages.contains(message)
         let isEditing = self.uiDelegate?.listEditing ?? false
         return .init(
@@ -206,13 +210,13 @@ extension SearchViewModel: SearchVMProtocol {
             isRead: !message.unRead,
             sender: sender,
             time: date(of: message, weekStart: weekStart),
-            isForwarded: message.forwarded,
-            isReply: message.replied,
-            isReplyAll: message.repliedAll,
-            topic: message.subject,
-            isStarred: message.starred,
-            hasAttachment: message.numAttachments.intValue > 0,
-            tags: message.createTags,
+            isForwarded: message.isForwarded,
+            isReply: message.isReplied,
+            isReplyAll: message.isRepliedAll,
+            topic: message.title,
+            isStarred: message.isStarred,
+            hasAttachment: message.numAttachments > 0,
+            tags: message.createTags(),
             messageCount: 0,
             folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels)
         )
@@ -242,7 +246,7 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getActionSheetViewModel() -> MailListActionSheetViewModel {
-        return .init(labelId: labelID,
+        return .init(labelId: labelID.rawValue,
                      title: .actionSheetTitle(selectedCount: selectedIDs.count,
                                               viewMode: .singleMessage))
     }
@@ -254,7 +258,7 @@ extension SearchViewModel: SearchVMProtocol {
             // if all unread -> read
             // if all read -> unread
             // if mixed read and unread -> unread
-            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: ids, labelID: labelID)
+            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: ids, labelID: labelID.rawValue)
             self.mark(IDs: ids, unread: isAnyReadMessage)
         case .trash:
             self.move(toLabel: .trash)
@@ -303,35 +307,43 @@ extension SearchViewModel: SearchVMProtocol {
 
         let foldersController = user.labelService.fetchedResultsController(.folderWithInbox)
         try? foldersController?.performFetch()
-        let folders = (foldersController?.fetchedObjects as? [Label]) ?? []
+        let folders = (foldersController?.fetchedObjects as? [Label])?.compactMap({ LabelEntity(label: $0) }) ?? []
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return defaultItems + folderItems
     }
 
-    func getConversation(conversationID: String,
-                         messageID: String,
-                         completion: @escaping (Result<Conversation, Error>) -> Void) {
+    func getConversation(conversationID: ConversationID,
+                         messageID: MessageID,
+                         completion: @escaping (Result<ConversationEntity, Error>) -> Void) {
         self.user.conversationService.fetchConversation(with: conversationID,
-                                                        includeBodyOf: messageID,
-                                                        completion: completion)
+                                                        includeBodyOf: messageID) { result in
+            switch result {
+            case .success(let conversation):
+                completion(.success(ConversationEntity(conversation)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    var labelId: String {
+    var labelId: LabelID {
         self.labelID
     }
 
-    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
+    func handleMoveToAction(conversations: [ConversationEntity],
+                            isFromSwipeAction: Bool,
+                            completion: (() -> Void)? = nil) {
         // search view doesn't support conversation mode
     }
 }
@@ -339,20 +351,20 @@ extension SearchViewModel: MoveToActionSheetProtocol {
 // MARK: Action bar / sheet related
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message],
+    func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID }) {
+                .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
                 // Add to message which does not have this label
-                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID) })
+                let messageToApply = messages.filter({ !$0.contains(location: label.location) })
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true,
                                      shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID) })
+                let messageToRemove = messages.filter({ $0.contains(location: label.location) })
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false,
@@ -366,12 +378,12 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 
         if shouldArchive {
             messageService.move(messages: messages,
-                                to: Message.Location.archive.rawValue,
+                                to: Message.Location.archive.labelID,
                                 queue: true)
         }
     }
 
-    func handleLabelAsAction(conversations: [Conversation],
+    func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
                              completion: (() -> Void)?) {
@@ -401,18 +413,18 @@ extension SearchViewModel {
 
     private func mark(IDs messageIDs: NSMutableSet, unread: Bool) {
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-        messageService.mark(messages: messages, labelID: self.labelID, unRead: unread)
+        messageService.mark(messages: messages.map(MessageEntity.init), labelID: self.labelID, unRead: unread)
     }
 
     private func move(toLabel: Message.Location) {
         let messageIDs = NSMutableSet(set: selectedIDs)
         let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
-        var fLabels: [String] = []
+        var fLabels: [LabelID] = []
         for msg in messages {
             // the label that is not draft, sent, starred, allmail
-            fLabels.append(msg.firstValidFolder() ?? self.labelID)
+            fLabels.append(LabelID(msg.firstValidFolder() ?? self.labelID.rawValue))
         }
-        messageService.move(messages: messages, from: fLabels, to: toLabel.rawValue)
+        messageService.move(messages: messages.map(MessageEntity.init), from: fLabels, to: toLabel.labelID)
     }
 
     private func delete(IDs: NSMutableSet) {
@@ -423,26 +435,32 @@ extension SearchViewModel {
     }
 
     private func delete(message: Message) {
-        messageService.move(messages: [message], from: [self.labelID], to: Message.Location.trash.rawValue)
+        messageService.move(messages: [message].map(MessageEntity.init),
+                            from: [self.labelID],
+                            to: Message.Location.trash.labelID)
     }
 
-    private func label(IDs messageIDs: NSMutableSet, with labelID: String, apply: Bool) {
-        let messages = self.messageService.fetchMessages(withIDs: messageIDs, in: coreDataContextProvider.mainContext)
+    private func label(IDs messageIDs: NSMutableSet, with labelID: LabelID, apply: Bool) {
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs,
+                                                         in: coreDataContextProvider.mainContext)
+            .map(MessageEntity.init)
         messageService.label(messages: messages, label: labelID, apply: apply)
     }
 
     private func handleUnstarAction() {
         let starredItemsIds = selectedMessages
-            .filter { $0.starred }
+            .filter { $0.isStarred }
             .map(\.messageID)
-        label(IDs: NSMutableSet(array: starredItemsIds), with: Message.Location.starred.rawValue, apply: false)
+            .map(\.rawValue)
+        label(IDs: NSMutableSet(array: starredItemsIds), with: Message.Location.starred.labelID, apply: false)
     }
 
     private func handleStarAction() {
         let unstarredItemsIds = selectedMessages
-            .filter { !$0.starred }
+            .filter { !$0.isStarred }
             .map(\.messageID)
-        label(IDs: NSMutableSet(array: unstarredItemsIds), with: Message.Location.starred.rawValue, apply: true)
+            .map(\.rawValue)
+        label(IDs: NSMutableSet(array: unstarredItemsIds), with: Message.Location.starred.labelID, apply: true)
     }
 
     private func handleMarkReadAction() {
@@ -548,7 +566,7 @@ extension SearchViewModel {
                     return nil
                 }
                 return context.object(with: newId) as? Message
-            }
+            }.map(MessageEntity.init)
             self.messages = messages
         }
     }
@@ -579,7 +597,7 @@ extension SearchViewModel {
         }
     }
 
-    private func date(of message: Message, weekStart: WeekStart) -> String {
+    private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
     }

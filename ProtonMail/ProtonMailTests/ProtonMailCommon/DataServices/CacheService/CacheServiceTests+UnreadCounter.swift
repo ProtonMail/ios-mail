@@ -110,7 +110,7 @@ extension CacheServiceTest {
         _ = testContext.saveUpstreamIfNeeded()
 
         let expect = expectation(description: "attachment delete completion")
-        sut.delete(attachment: attachment) {
+        sut.delete(attachment: AttachmentEntity(attachment)) {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)

@@ -29,7 +29,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
     func testActionSheet_openInInbox() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -53,7 +53,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
@@ -77,7 +77,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions2)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
@@ -100,7 +100,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions3)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: false,
                                               isStarred: true,
                                               isBodyDecryptable: false,
@@ -124,7 +124,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
     func testActionSheet_openInTrash() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -148,7 +148,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -171,7 +171,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions2)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
@@ -195,7 +195,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions3)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
@@ -220,7 +220,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
     func testActionSheet_openInSpam() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -244,7 +244,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: false,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -267,7 +267,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions2)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: true,
@@ -291,7 +291,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions3)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: true,
                                               isStarred: true,
                                               isBodyDecryptable: false,
@@ -316,7 +316,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
 
     func testActionSheet_withDarkModeEnable() {
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,
@@ -341,7 +341,7 @@ class MessageViewActionSheetViewModelTests: XCTestCase {
         XCTAssertEqual(sut.items, expectedOptions)
 
         sut = MessageViewActionSheetViewModel(title: testTitle,
-                                              labelID: Message.Location.inbox.rawValue,
+                                              labelID: Message.Location.inbox.labelID,
                                               includeStarring: true,
                                               isStarred: false,
                                               isBodyDecryptable: true,

@@ -23,16 +23,17 @@
 import Foundation
 import PromiseKit
 
-@objc protocol AttachmentInfo: AnyObject {
+protocol AttachmentInfo : AnyObject {
     var fileName: String { get }
     var size: Int { get }
     var mimeType: String { get }
     var localUrl: URL? { get }
 
     var isDownloaded: Bool { get }
-    var att: Attachment? { get }
-    var id: String? { get }
+    var id: AttachmentID? { get }
     var isInline: Bool { get }
+    var objectID: ObjectID? { get }
+    var contentID: String? { get }
 }
 
 class MimeAttachment: AttachmentInfo {
@@ -42,24 +43,20 @@ class MimeAttachment: AttachmentInfo {
         }
     }
 
-    var att: Attachment? {
-        get {
-            return nil
-        }
-    }
-
     var isInline: Bool {
         self.disposition?.contains(check: "inline") ?? false
     }
 
-    let id: String? = UUID().uuidString
-
+    let id: AttachmentID? = AttachmentID(UUID().uuidString)
+    let objectID: ObjectID? = nil
+    
     var fileName: String
     var size: Int
     var mimeType: String
     var localUrl: URL?
     let disposition: String?
-
+    let contentID: String? = nil
+    
     init(filename: String, size: Int, mime: String, path: URL?, disposition: String?) {
         self.fileName = filename
         self.size = size
@@ -78,52 +75,27 @@ class MimeAttachment: AttachmentInfo {
     }
 }
 
+
 class AttachmentNormal: AttachmentInfo {
-    var fileName: String {
-        get {
-            return attachment.fileName
-        }
-    }
-
-    var att: Attachment? {
-        get {
-            return attachment
-        }
-    }
-
-    var id: String? {
-        att?.attachmentID
-    }
-
-    var isInline: Bool {
-        att?.inline() ?? false
-    }
-
-    var localUrl: URL? {
-        get {
-            return attachment.localURL
-        }
-    }
-
-    var size: Int {
-        get {
-            return self.attachment.fileSize.intValue
-        }
-    }
-    var mimeType: String {
-        get {
-            return attachment.mimeType
-        }
-    }
-    var isDownloaded: Bool {
-        get {
-            return attachment.downloaded
-        }
-    }
-
-    var attachment: Attachment
-
-    init(att: Attachment) {
-        self.attachment = att
+    let fileName: String
+    let id: AttachmentID?
+    let objectID: ObjectID?
+    let isInline: Bool
+    let localUrl: URL?
+    let size: Int
+    let mimeType: String
+    let isDownloaded: Bool
+    let contentID: String?
+    
+    init(_ attachment: AttachmentEntity) {
+        self.fileName = attachment.name
+        self.id = attachment.id
+        self.isInline = attachment.isInline
+        self.localUrl = attachment.localURL
+        self.size = attachment.fileSize.intValue
+        self.mimeType = attachment.rawMimeType
+        self.isDownloaded = attachment.downloaded
+        self.objectID = attachment.objectID
+        self.contentID = attachment.getContentID()
     }
 }

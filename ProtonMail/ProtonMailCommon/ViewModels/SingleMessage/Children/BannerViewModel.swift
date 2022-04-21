@@ -46,7 +46,7 @@ class BannerViewModel {
     var reloadBanners: (() -> Void)?
 
     var canUnsubscribe: Bool {
-        let unsubscribeMethods = self.message.getUnsubscribeMethods
+        let unsubscribeMethods = self.message.unsubscribeMethods
         let isAvailable = unsubscribeMethods?.oneClick != nil || unsubscribeMethods?.httpClient != nil
         return isAvailable && !message.flag.contains(.unsubscribed)
     }
@@ -55,7 +55,7 @@ class BannerViewModel {
         message.isAutoReply
     }
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet {
             reloadBanners?()
         }
@@ -65,7 +65,7 @@ class BannerViewModel {
         message.spam
     }
 
-    init(message: Message,
+    init(message: MessageEntity,
          shouldAutoLoadRemoteContent: Bool,
          expirationTime: Date?,
          shouldAutoLoadEmbeddedImage: Bool,
@@ -106,13 +106,13 @@ class BannerViewModel {
         return Int(self.expirationTime.timeIntervalSince(referenceDate))
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
     }
 
     @objc
     func unsubscribe() {
-        let unsubscribeMethods = message.getUnsubscribeMethods
+        let unsubscribeMethods = message.unsubscribeMethods
         if unsubscribeMethods?.oneClick != nil {
             unsubscribeService.oneClickUnsubscribe(messageId: message.messageID)
         } else if let httpClient = unsubscribeMethods?.httpClient {

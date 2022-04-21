@@ -20,17 +20,17 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 final class ReceiptService {
-    private let labelID: String
+    private let labelID: LabelID
     private let apiService: APIService
     private let eventsService: EventsFetching
 
-    init(labelID: String, apiService: APIService, eventsService: EventsFetching) {
+    init(labelID: LabelID, apiService: APIService, eventsService: EventsFetching) {
         self.labelID = labelID
         self.apiService = apiService
         self.eventsService = eventsService
     }
 
-    func sendReceipt(messageID: String) {
+    func sendReceipt(messageID: MessageID) {
         let request = ReceiptRequest(messageID: messageID)
         apiService.exec(route: request, responseObject: VoidResponse()) { [weak self] _, _ in
             guard let id = self?.labelID else { return }

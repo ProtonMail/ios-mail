@@ -145,8 +145,8 @@ extension MenuViewModel: MenuVMProtocol {
         case .more: return self.moreItems.count
         }
     }
-
-    func clickCollapsedArrow(labelID: String) {
+    
+    func clickCollapsedArrow(labelID: LabelID) {
         guard let idx = self.rawData.firstIndex(where: {$0.location.labelID == labelID}) else {
             return
         }
@@ -167,17 +167,17 @@ extension MenuViewModel: MenuVMProtocol {
         }
         self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
-
-    func signOut(userID: String, completion: (() -> Void)?) {
-        guard let user = self.usersManager.getUser(by: UserID(rawValue: userID)) else {
+    
+    func signOut(userID: UserID, completion: (() -> Void)?) {
+        guard let user = self.usersManager.getUser(by: userID) else {
             completion?()
             return
         }
         self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
-
-    func removeDisconnectAccount(userID: String) {
-        guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) else {return}
+    
+    func removeDisconnectAccount(userID: UserID) {
+        guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
         self.usersManager.removeDisconnectedUser(user)
     }
 
@@ -220,9 +220,9 @@ extension MenuViewModel: MenuVMProtocol {
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
-
-    func activateUser(id: String) {
-        guard let user = self.usersManager.getUser(by: UserID(rawValue: id)) else {
+    
+    func activateUser(id: UserID) {
+        guard let user = self.usersManager.getUser(by: id) else {
             return
         }
         self.usersManager.active(by: user.auth.sessionID)
@@ -232,9 +232,9 @@ extension MenuViewModel: MenuVMProtocol {
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
     }
-
-    func prepareLogin(userID: String) {
-        if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID}) {
+    
+    func prepareLogin(userID: UserID) {
+        if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) {
             let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         } else {
@@ -293,7 +293,7 @@ extension MenuViewModel: NSFetchedResultsControllerDelegate {
         }
 
         let dbItems = (controller.fetchedObjects as? [Label]) ?? []
-        self.handle(dbLabels: dbItems)
+        self.handle(dbLabels: dbItems.compactMap(LabelEntity.init))
     }
 }
 
@@ -318,7 +318,7 @@ extension MenuViewModel {
             guard let labels = result.fetchedObjects as? [Label] else {
                 return
             }
-            self.handle(dbLabels: labels)
+            self.handle(dbLabels: labels.compactMap(LabelEntity.init))
         } catch {
         }
     }
@@ -364,8 +364,8 @@ extension MenuViewModel {
         } catch {
         }
     }
-
-    private func handle(dbLabels: [Label]) {
+    
+    private func handle(dbLabels: [LabelEntity]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
         self.updateUnread { [weak self] in
@@ -406,7 +406,7 @@ extension MenuViewModel {
     }
 
     // Get the tableview row of the given labelID
-    private func getFolderItemRow(by labelID: String, source: [MenuLabel]) -> Int? {
+    private func getFolderItemRow(by labelID: LabelID, source: [MenuLabel]) -> Int? {
         var num = 0
         // DFS
         var queue = source
@@ -431,7 +431,7 @@ extension MenuViewModel {
 
         self.labelDataService?.getUnreadCounts(by: labels) { labelUnreadDict in
             for item in tmp {
-                item.unread = labelUnreadDict[item.location.labelID] ?? 0
+                item.unread = labelUnreadDict[item.location.rawLabelID] ?? 0
             }
             if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
                 UIApplication.setBadge(badge: unreadOfInbox)
@@ -471,7 +471,7 @@ extension MenuViewModel {
     @objc private func primaryAccountLogout() {
         guard self.usersManager.users.count > 0,
               let user = self.currentUser else {return}
-        self.activateUser(id: user.userInfo.userId)
+        self.activateUser(id: UserID(user.userInfo.userId))
     }
 
     private func updatePrimaryUserView() {

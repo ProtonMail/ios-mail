@@ -41,26 +41,26 @@ class CacheService: Service {
     }
 
     // MARK: - Message related functions
-    func move(message: Message, from fLabel: String, to tLabel: String) -> Bool {
+    func move(message: MessageEntity, from fLabel: LabelID, to tLabel: LabelID) -> Bool {
         var hasError = false
         context.performAndWait {
-            guard let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message else {
+            guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
             }
 
-            if let lid = msgToUpdate.remove(labelID: fLabel), msgToUpdate.unRead {
+            if let lid = msgToUpdate.remove(labelID: fLabel.rawValue), msgToUpdate.unRead {
                 self.updateCounterInsideContext(plus: false, with: lid, context: context)
                 if let id = msgToUpdate.selfSent(labelID: lid) {
                     self.updateCounterInsideContext(plus: false, with: id, context: context)
                 }
             }
-            if let lid = msgToUpdate.add(labelID: tLabel) {
+            if let lid = msgToUpdate.add(labelID: tLabel.rawValue) {
                 // if move to trash. clean labels.
                 var labelsFound = msgToUpdate.getNormalLabelIDs()
                 labelsFound.append(Message.Location.starred.rawValue)
                 // prevent the unread being substracted once more
-                if fLabel != Message.Location.allmail.rawValue {
+                if fLabel != Message.Location.allmail.labelID {
                     labelsFound.append(Message.Location.allmail.rawValue)
                 }
                 if lid == Message.Location.trash.rawValue {
@@ -88,27 +88,20 @@ class CacheService: Service {
         return !hasError
     }
 
-    func delete(message: Message, label: String) -> Bool {
-        var contextToUse = self.context
-        guard let msgContext = message.managedObjectContext else {
-            return false
-        }
-
-        if msgContext.concurrencyType == .mainQueueConcurrencyType && msgContext != self.coreDataService.mainContext {
-            contextToUse = msgContext
-        }
+    func delete(message: MessageEntity, label: LabelID) -> Bool {
+        let contextToUse = self.context
 
         var hasError = false
         contextToUse.performAndWait {
-            guard let msgToUpdate = try? contextToUse.existingObject(with: message.objectID) as? Message else {
+            guard let msgToUpdate = try? contextToUse.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
             }
 
-            if let lid = msgToUpdate.remove(labelID: label), msgToUpdate.unRead {
-                self.updateCounterSync(plus: false, with: lid, context: context)
+            if let lid = msgToUpdate.remove(labelID: label.rawValue), msgToUpdate.unRead {
+                self.updateCounterSync(plus: false, with: LabelID(lid), context: context)
                 if let id = msgToUpdate.selfSent(labelID: lid) {
-                    self.updateCounterSync(plus: false, with: id, context: context)
+                    self.updateCounterSync(plus: false, with: LabelID(id), context: context)
                 }
             }
             var labelsFound = msgToUpdate.getNormalLabelIDs()
@@ -133,10 +126,10 @@ class CacheService: Service {
         return true
     }
 
-    func mark(message: Message, labelID: String, unRead: Bool) -> Bool {
+    func mark(message: MessageEntity, labelID: LabelID, unRead: Bool) -> Bool {
         var hasError = false
         context.performAndWait {
-            guard let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message else {
+            guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                 hasError = true
                 return
             }
@@ -151,7 +144,7 @@ class CacheService: Service {
                 PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
             }
             if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
-                conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID)
+                conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
             }
             self.updateCounterSync(markUnRead: unRead, on: msgToUpdate, context: context)
 
@@ -161,7 +154,7 @@ class CacheService: Service {
             }
         }
 
-        if let conversation = Conversation.conversationForConversationID(message.conversationID, inManagedObjectContext: self.coreDataService.mainContext) {
+        if let conversation = Conversation.conversationForConversationID(message.conversationID.rawValue, inManagedObjectContext: self.coreDataService.mainContext) {
             (conversation.labels as? Set<ContextLabel>)?.forEach {
                 self.coreDataService.mainContext.refresh(conversation, mergeChanges: true)
                 self.coreDataService.mainContext.refresh($0, mergeChanges: true)
@@ -174,28 +167,28 @@ class CacheService: Service {
         return true
     }
 
-    func label(messages: [Message], label: String, apply: Bool) -> Bool {
+    func label(messages: [MessageEntity], label: LabelID, apply: Bool) -> Bool {
         var result = false
         var hasError = false
         context.performAndWait {
             for message in messages {
-                guard let msgToUpdate = try? context.existingObject(with: message.objectID) as? Message else {
+                guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
                     hasError = true
                     continue
                 }
 
                 if apply {
-                    if msgToUpdate.add(labelID: label) != nil && msgToUpdate.unRead {
+                    if msgToUpdate.add(labelID: label.rawValue) != nil && msgToUpdate.unRead {
                         self.updateCounterSync(plus: true, with: label, context: context)
                     }
                 } else {
-                    if msgToUpdate.remove(labelID: label) != nil && msgToUpdate.unRead {
+                    if msgToUpdate.remove(labelID: label.rawValue) != nil && msgToUpdate.unRead {
                         self.updateCounterSync(plus: false, with: label, context: context)
                     }
                 }
 
                 if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
-                    conversation.applyLabelChangesOnOneMessage(labelID: label, apply: apply)
+                    conversation.applyLabelChangesOnOneMessage(labelID: label.rawValue, apply: apply)
                 }
             }
 
@@ -227,12 +220,12 @@ class CacheService: Service {
         }
     }
 
-    func markMessageAndConversationDeleted(labelID: String) {
+    func markMessageAndConversationDeleted(labelID: LabelID) {
         let messageFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         messageFetch.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)", "\(labelID)", Message.Attributes.userID, self.userID.rawValue)
 
         let contextLabelFetch = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID, Conversation.Attributes.userID, self.userID.rawValue)
+        contextLabelFetch.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)", ContextLabel.Attributes.labelID, labelID.rawValue, Conversation.Attributes.userID, self.userID.rawValue)
 
         context.performAndWait {
             if let messages = try? context.fetch(messageFetch) as? [Message] {
@@ -271,6 +264,43 @@ class CacheService: Service {
                 }
             }
             _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
+    func deleteMessage(by labelID: LabelID) -> Bool {
+        var result = false
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)",
+                                             labelID.rawValue,
+                                             Message.Attributes.userID,
+                                             self.userID.rawValue)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        context.performAndWait {
+            do {
+                if let oldMessages = try context.fetch(fetchRequest) as? [Message] {
+                    for message in oldMessages {
+                        context.delete(message)
+                    }
+                    if context.saveUpstreamIfNeeded() == nil {
+                        result = true
+                    }
+                }
+            } catch {
+            }
+        }
+        return result
+    }
+
+    func deleteMessage(messageID: MessageID, completion: (() -> Void)? = nil) {
+        context.perform {
+            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.context) {
+                let labelObjs = msg.mutableSetValue(forKey: Message.Attributes.labels)
+                labelObjs.removeAllObjects()
+                self.context.delete(msg)
+            }
+            _ = self.context.saveUpstreamIfNeeded()
+            completion?()
         }
     }
 
@@ -326,8 +356,8 @@ class CacheService: Service {
             if let messages = try? self.context.fetch(fetch) as? [Message] {
                 messages.forEach { (msg) in
                     if msg.unRead {
-                        let labels: [String] = msg.getLabelIDs()
-                        labels.forEach { (label) in
+                        let labels = msg.getLabelIDs().map{ LabelID($0) }
+                        labels.forEach { label in
                             self.updateCounterSync(plus: false, with: label, context: self.context)
                         }
                     }
@@ -376,9 +406,9 @@ class CacheService: Service {
 
 // MARK: - Attachment related functions
 extension CacheService {
-    func delete(attachment: Attachment, completion: (() -> Void)?) {
+    func delete(attachment: AttachmentEntity, completion: (() -> Void)?) {
         context.perform {
-            if let att = try? self.context.existingObject(with: attachment.objectID) as? Attachment {
+            if let att = try? self.context.existingObject(with: attachment.objectID.rawValue) as? Attachment {
                 att.isSoftDeleted = true
                 _ = self.context.saveUpstreamIfNeeded()
             }
@@ -400,7 +430,7 @@ extension CacheService {
 }
 
 extension CacheService {
-    func parseMessagesResponse(labelID: String, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?) {
+    func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], completion: ((Error?) -> Void)?) {
         guard var messagesArray = response["Messages"] as? [[String: Any]] else {
             completion?(NSError.unableToParseResponse(response))
             return
@@ -412,8 +442,8 @@ extension CacheService {
         let messagesCount = response["Total"] as? Int ?? 0
 
         context.perform {
-            // Prevent the draft is overriden while sending
-            if labelID == Message.Location.draft.rawValue, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: self.context) {
+            //Prevent the draft is overriden while sending
+            if labelID == Message.Location.draft.labelID, let sendingMessageIDs = Message.getIDsofSendingMessage(managedObjectContext: self.context) {
                 let idsSet = Set(sendingMessageIDs)
                 var msgIDsOfMessageToRemove: [String] = []
 
@@ -456,9 +486,9 @@ extension CacheService {
 
 // MARK: - Counter related functions
 extension CacheService {
-    func updateLastUpdatedTime(labelID: String, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
+    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date, msgCount: Int, msgType: ViewMode) {
         context.performAndWait {
-            let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID, userID: self.userID.rawValue, context: context, type: msgType)
+            let updateTime = self.lastUpdatedStore.lastUpdateDefault(by: labelID.rawValue, userID: self.userID.rawValue, context: context, type: msgType)
             if isUnread {
                 // Update unread date query time
                 if updateTime.isUnreadNew {
@@ -503,26 +533,26 @@ extension CacheService {
         }
     }
 
-    func updateCounterSync(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
+    func updateCounterSync(plus: Bool, with labelID: LabelID, context: NSManagedObjectContext) {
         let offset = plus ? 1 : -1
         // Message Count
-        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID.rawValue, type: .singleMessage)
+        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID.rawValue, userID: self.userID.rawValue, type: .singleMessage)
         var count = unreadCount + offset
         if count < 0 {
             count = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID.rawValue, unread: count, total: nil, type: .singleMessage, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID.rawValue, userID: self.userID.rawValue, unread: count, total: nil, type: .singleMessage, shouldSave: true)
 
         // Conversation Count
-        let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID.rawValue, type: .conversation)
+        let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID.rawValue, userID: self.userID.rawValue, type: .conversation)
         var conversationCount = conversationUnreadCount + offset
         if conversationCount < 0 {
             conversationCount = 0
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID.rawValue, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
+        lastUpdatedStore.updateUnreadCount(by: labelID.rawValue, userID: self.userID.rawValue, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
     }
 
-    func updateCounterInsideContext(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
+    private func updateCounterInsideContext(plus: Bool, with labelID: String, context: NSManagedObjectContext) {
         let offset = plus ? 1 : -1
         // Message Count
         let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID.rawValue, context: context, type: .singleMessage)
@@ -584,10 +614,10 @@ extension CacheService {
             }
         }
     }
-
-    func updateLabel(_ label: Label, name: String, color: String, completion: (() -> Void)?) {
+    
+    func updateLabel(_ label: LabelEntity, name: String, color: String, completion: (() -> Void)?) {
         context.perform {
-            if let labelToUpdate = try? self.context.existingObject(with: label.objectID) as? Label {
+            if let labelToUpdate = try? self.context.existingObject(with: label.objectID.rawValue) as? Label {
                 labelToUpdate.name = name
                 labelToUpdate.color = color
                 _ = self.context.saveUpstreamIfNeeded()
@@ -598,9 +628,9 @@ extension CacheService {
         }
     }
 
-    func deleteLabel(_ label: Label, completion: (() -> Void)?) {
+    func deleteLabel(_ label: LabelEntity, completion: (() -> Void)?) {
         context.perform {
-            if let labelToDelete = try? self.context.existingObject(with: label.objectID) {
+            if let labelToDelete = try? self.context.existingObject(with: label.objectID.rawValue) {
                 self.context.delete(labelToDelete)
                 _ = self.context.saveUpstreamIfNeeded()
             }
@@ -665,12 +695,12 @@ extension CacheService {
         }
     }
 
-    func updateContact(contactID: String, cardsJson: [String: Any], completion: ((Result<[Contact], NSError>) -> Void)?) {
+    func updateContact(contactID: ContactID, cardsJson: [String: Any], completion: ((Result<[Contact], NSError>) -> Void)?) {
         context.perform {
             do {
                 // remove all emailID associated with the current contact in the core data
                 // since the new data will be added to the core data (parse from response)
-                if let originalContact = Contact.contactForContactID(contactID, inManagedObjectContext: self.context) {
+                if let originalContact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: self.context) {
                     if let emailObjects = originalContact.emails.allObjects as? [Email] {
                         for emailObject in emailObjects {
                             self.context.delete(emailObject)
@@ -690,10 +720,10 @@ extension CacheService {
         }
     }
 
-    func deleteContact(by contactID: String, completion: ((NSError?) -> Void)?) {
+    func deleteContact(by contactID: ContactID, completion: ((NSError?) -> Void)?) {
         context.perform {
             var err: NSError?
-            if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: self.context) {
+            if let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: self.context) {
                 self.context.delete(contact)
             }
             if let error = self.context.saveUpstreamIfNeeded() {

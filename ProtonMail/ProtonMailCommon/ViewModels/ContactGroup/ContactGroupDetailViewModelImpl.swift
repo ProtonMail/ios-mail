@@ -59,7 +59,7 @@ class ContactGroupDetailViewModelImpl: NSObject, ContactGroupDetailViewModel {
         super.init()
         setupEmailIDsArray()
 
-        let fetchedController = labelsDataService.labelFetchedController(by: groupID)
+        let fetchedController = labelsDataService.labelFetchedController(by: LabelID(groupID))
         try? fetchedController.performFetch()
         fetchedController.delegate = self
         self.fetchedController = fetchedController

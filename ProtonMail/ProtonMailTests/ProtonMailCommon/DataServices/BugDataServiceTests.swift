@@ -101,7 +101,7 @@ final class BugDataServiceTests: XCTestCase {
         let body = "I am body"
 
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportPhishing(messageID: messageID, messageBody: body) { [weak self] error in
+        self.service.reportPhishing(messageID: MessageID(messageID), messageBody: body) { [weak self] error in
             guard let self = self else {
                 XCTAssert(false, "Self is nil")
                 return
@@ -139,7 +139,7 @@ final class BugDataServiceTests: XCTestCase {
         let stubbedError = NSError(domain: "error.com", code: 3, userInfo: [:])
 
         let completionExpectations = expectation(description: "Wait async operation")
-        self.service.reportPhishing(messageID: messageID, messageBody: body) { error in
+        self.service.reportPhishing(messageID: MessageID(messageID), messageBody: body) { error in
             XCTAssertEqual(error?.code ?? -1, stubbedError.code)
             completionExpectations.fulfill()
         }

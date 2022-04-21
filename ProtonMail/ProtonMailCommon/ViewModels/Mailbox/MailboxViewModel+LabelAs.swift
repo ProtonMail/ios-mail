@@ -24,18 +24,18 @@ import ProtonCore_UIFoundations
 
 // MARK: - Label as functions
 extension MailboxViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
+    func handleLabelAsAction(messages: [MessageEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, markType) in currentOptionsStatus {
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID}) {
+                .contains(where: { $0.rawLabelID == label.location.rawLabelID}) {
                 // Add to message which does not have this label
-                let messageToApply = messages.filter({ !$0.contains(label: label.location.labelID )})
+                let messageToApply = messages.filter({ !$0.contains(location: label.location )})
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true,
                                      shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = messages.filter({ $0.contains(label: label.location.labelID )})
+                let messageToRemove = messages.filter({ $0.contains(location: label.location )})
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false,
@@ -49,12 +49,12 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
 
         if shouldArchive {
             messageService.move(messages: messages,
-                                to: Message.Location.archive.rawValue,
+                                to: Message.Location.archive.labelID,
                                 queue: true)
         }
     }
-
-    func handleLabelAsAction(conversations: [Conversation], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType], completion: (() -> Void)? = nil) {
+    
+    func handleLabelAsAction(conversations: [ConversationEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType], completion: (() -> Void)? = nil) {
         let group = DispatchGroup()
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
             defer {
@@ -70,14 +70,14 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                 .contains(where: { $0.labelID == label.location.labelID}) {
                 group.enter()
                 // Add to message which does not have this label
-                let conversationsToApply = conversations.filter({ !$0.getLabelIds().contains(label.location.labelID )})
+                let conversationsToApply = conversations.filter({ !$0.getLabelIDs().contains(label.location.labelID )})
                 conversationProvider.label(conversationIDs: conversationsToApply.map(\.conversationID),
                                           as: label.location.labelID,
                                           isSwipeAction: false,
                                           completion: fetchEvents)
             } else if markType != .dash { // Ignore the option in dash
                 group.enter()
-                let conversationsToRemove = conversations.filter({ $0.getLabelIds().contains(label.location.labelID )})
+                let conversationsToRemove = conversations.filter({ $0.getLabelIDs().contains(label.location.labelID )})
                 conversationProvider.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
                                             as: label.location.labelID,
                                             isSwipeAction: false,
@@ -91,7 +91,7 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
             group.enter()
             conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
                                      from: "",
-                                     to: Message.Location.archive.rawValue,
+                                     to: Message.Location.archive.labelID,
                                      isSwipeAction: false,
                                      completion: fetchEvents)
         }

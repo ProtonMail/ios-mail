@@ -100,8 +100,8 @@ extension MailboxViewModel {
     }
 
     func getActionBarActions() -> [ActionTypes] {
-        // default inbox
-        if let type = Message.Location.init(rawValue: self.labelID) {
+        //default inbox
+        if let type = Message.Location(self.labelID) {
             switch type {
             case .inbox, .starred, .archive, .allmail, .sent, .draft:
                 return [.trash, .readUnread, .moveTo, .labelAs, .more]
@@ -125,13 +125,13 @@ extension MailboxViewModel {
     func handleBarActions(_ action: ActionTypes, selectedIDs: Set<String>) {
         switch action {
         case .readUnread:
-            // if all unread -> read
-            // if all read -> unread
-            // if mixed read and unread -> unread
-            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID)
+            //if all unread -> read
+            //if all read -> unread
+            //if mixed read and unread -> unread
+            let isAnyReadMessage = checkToUseReadOrUnreadAction(messageIDs: selectedIDs, labelID: labelID.rawValue)
             self.mark(IDs: selectedIDs, unread: isAnyReadMessage)
         case .trash:
-            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.rawValue)
+            self.move(IDs: selectedIDs, from: labelID, to: Message.Location.trash.labelID)
         case .delete:
             self.delete(IDs: selectedIDs)
         case .reply:

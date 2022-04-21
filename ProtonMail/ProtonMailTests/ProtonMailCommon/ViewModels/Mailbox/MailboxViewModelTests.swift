@@ -487,7 +487,7 @@ class MailboxViewModelTests: XCTestCase {
         labelProviderMock.customFolderToReturn = [testData]
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
-        XCTAssertEqual(sut.customFolders, [testData])
+        XCTAssertEqual(sut.customFolders, [LabelEntity(label: testData)])
     }
 
     func testFetchContacts() {
@@ -516,8 +516,8 @@ class MailboxViewModelTests: XCTestCase {
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
         sut.move(IDs: ids,
-                 from: Message.Location.inbox.rawValue,
-                 to: Message.Location.trash.rawValue) {
+                 from: Message.Location.inbox.labelID,
+                 to: Message.Location.trash.labelID) {
             XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.callMove.lastArguments
             XCTAssertTrue(argument?.first.contains("1") ?? false)
@@ -744,9 +744,10 @@ class MailboxViewModelTests: XCTestCase {
                                       notify: false)
         // select the folder to move
         sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
@@ -769,9 +770,10 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testHandleConversatinoMoveToAction_withNoDestination() {
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         XCTAssertNil(self.sut.selectedMoveToFolder)
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
@@ -783,10 +785,11 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inTrash_moveIsCalled() {
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.trash.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         sut.delete(conversation: conversationToMove, isSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
@@ -794,8 +797,8 @@ class MailboxViewModelTests: XCTestCase {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.firstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.rawValue)
+                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
+                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
                 XCTAssertFalse(argument.a4)
 
                 XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -808,10 +811,11 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inSpam_moveIsCalled() {
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.spam.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         sut.delete(conversation: conversationToMove, isSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
@@ -819,8 +823,8 @@ class MailboxViewModelTests: XCTestCase {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.firstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.rawValue)
+                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
+                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
                 XCTAssertFalse(argument.a4)
 
                 XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -833,10 +837,11 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inDraft_moveIsCalled() {
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.draft.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         sut.delete(conversation: conversationToMove, isSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.callDelete.wasNotCalled)
@@ -844,8 +849,8 @@ class MailboxViewModelTests: XCTestCase {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.firstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.rawValue)
+                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
+                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
                 XCTAssertFalse(argument.a4)
 
                 XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -858,18 +863,19 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testDeleteConversationActionForSwipeAction_inInbox_moveIsCalled() {
-        let conversationToMove = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToMove.conversationID = "1"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1"
         createSut(labelID: Message.Location.inbox.rawValue, labelType: .folder, isCustom: false, labelName: nil)
         let expectation1 = expectation(description: "Closure called")
+        let conversationToMove = ConversationEntity(conversationObject)
 
         sut.delete(conversation: conversationToMove, isSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.callMove.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, conversationToMove.firstValidFolder() ?? "")
-                XCTAssertEqual(argument.a3, Message.Location.trash.rawValue)
+                XCTAssertEqual(argument.a2, conversationToMove.getFirstValidFolder() ?? "")
+                XCTAssertEqual(argument.a3, Message.Location.trash.labelID)
                 XCTAssertFalse(argument.a4)
 
                 XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -892,12 +898,13 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let conversationToAddLabel = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToAddLabel.conversationID = "1234"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1234"
         let label = LabelLocation(id: "label1")
         // select label1
         sut.selectedLabelAsLabels.insert(label)
         let expectation1 = expectation(description: "Closure called")
+        let conversationToAddLabel = ConversationEntity(conversationObject)
 
         sut.handleLabelAsAction(conversations: [conversationToAddLabel],
                                 shouldArchive: true,
@@ -915,7 +922,7 @@ class MailboxViewModelTests: XCTestCase {
                 let argument2 = try XCTUnwrap(self.conversationProviderMock.callMove.lastArguments)
                 XCTAssertTrue(argument2.first.contains(conversationToAddLabel.conversationID))
                 XCTAssertEqual(argument2.a2, "")
-                XCTAssertEqual(argument2.a3, Message.Location.archive.rawValue)
+                XCTAssertEqual(argument2.a3, Message.Location.archive.labelID)
                 XCTAssertFalse(argument2.a4)
 
                 // Check event api is called
@@ -943,12 +950,13 @@ class MailboxViewModelTests: XCTestCase {
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
         let label = LabelLocation(id: "label1")
 
-        let conversationToRemoveLabel = Conversation(context: coreDataServiceMock.mainContext)
-        conversationToRemoveLabel.conversationID = "1234"
+        let conversationObject = Conversation(context: coreDataServiceMock.mainContext)
+        conversationObject.conversationID = "1234"
         // Add label to be removed
-        conversationToRemoveLabel.applyLabelChanges(labelID: label.labelID, apply: true, context: coreDataServiceMock.mainContext)
+        conversationObject.applyLabelChanges(labelID: label.labelID.rawValue, apply: true, context: coreDataServiceMock.mainContext)
 
         let expectation1 = expectation(description: "Closure called")
+        let conversationToRemoveLabel = ConversationEntity(conversationObject)
 
         sut.handleLabelAsAction(conversations: [conversationToRemoveLabel],
                                 shouldArchive: false,
@@ -1067,8 +1075,8 @@ extension MailboxViewModelTests {
                    isCustom: Bool,
                    labelName: String?,
                    totalUserCount: Int = 1) {
-        let label = LabelInfo(labelID: labelID, name: labelName ?? "")
-        sut = MailboxViewModel(labelID: labelID,
+        let label = LabelInfo(labelID: LabelID(labelID), name: labelName ?? "")
+        sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
                                labelType: labelType,
                                userManager: userManagerMock,

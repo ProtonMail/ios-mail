@@ -67,15 +67,10 @@ class ContactGroupsViewCell: UITableViewCell, AccessibleCell {
         self.count = count
         self.setDetailString()
     }
-
+    
     private func setDetailString() {
-        if self.count <= 1 {
-            self.detailLabel.attributedText = String.init(format: LocalString._contact_groups_member_count_description,
-                                                          self.count).apply(style: FontManager.DefaultSmallWeak)
-        } else {
-            self.detailLabel.attributedText = String.init(format: LocalString._contact_groups_members_count_description,
-                                                          self.count).apply(style: FontManager.DefaultSmallWeak)
-        }
+        let text = String(format: LocalString._contact_groups_member_count_description, self.count)
+        self.detailLabel.attributedText = text.apply(style: FontManager.DefaultSmallWeak)
     }
 
     func config(labelID: String,

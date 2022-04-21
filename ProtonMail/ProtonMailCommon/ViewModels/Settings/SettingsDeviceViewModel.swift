@@ -178,7 +178,7 @@ class SettingsDeviceViewModelImpl: SettingsDeviceViewModel {
         for user in users.users {
             user.messageService.cleanLocalMessageCache { (_, _, error) in
                 user.conversationService.cleanAll()
-                user.conversationService.fetchConversations(for: Message.Location.inbox.rawValue,
+                user.conversationService.fetchConversations(for: Message.Location.inbox.labelID,
                                                             before: 0,
                                                             unreadOnly: false,
                                                             shouldReset: false) { result in

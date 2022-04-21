@@ -75,13 +75,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     @objc var contactSubtitle: String? {
         get {
             let count = self.contactCount
-            if count <= 1 {
-                return String.init(format: LocalString._contact_groups_member_count_description,
-                                   count)
-            } else {
-                return String.init(format: LocalString._contact_groups_members_count_description,
-                                    count)
-            }
+            return String(format: LocalString._contact_groups_member_count_description, count)
         }
     }
 

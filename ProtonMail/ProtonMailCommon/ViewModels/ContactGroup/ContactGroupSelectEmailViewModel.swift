@@ -26,11 +26,11 @@ protocol ContactGroupSelectEmailViewModel {
     var havingUnsavedChanges: Bool { get }
 
     func getTotalEmailCount() -> Int
-    func getCellData(at indexPath: IndexPath) -> (ID: String, name: String, email: String, isSelected: Bool)
+    func getCellData(at indexPath: IndexPath) -> (ID: EmailID, name: String, email: String, isSelected: Bool)
     func save()
-
-    func selectEmail(ID: String)
-    func deselectEmail(ID: String)
-
+    
+    func selectEmail(ID: EmailID)
+    func deselectEmail(ID: EmailID)
+    
     func search(query: String?)
 }

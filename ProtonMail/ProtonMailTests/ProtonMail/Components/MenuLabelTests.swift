@@ -40,7 +40,9 @@ final class MenuLabelTests: XCTestCase {
                 XCTAssert(false, "Initialization failed")
                 return
             }
-            self.menuLabels = Array(labels: rawData, previousRawData: [])
+            self.menuLabels = Array(labels: rawData
+                                        .compactMap{LabelEntity(label: $0)},
+                                    previousRawData: [])
             XCTAssertEqual(self.menuLabels.count, rawData.count)
         } catch {
             XCTAssert(false, "Initialization failed")
@@ -57,13 +59,13 @@ final class MenuLabelTests: XCTestCase {
         XCTAssertEqual(folders.getNumberOfRows(), 13)
         
         let targetID = "McToVpfXly8nccAey391VY652WNF7rtZEeiq6M3E07UYfGu5Bq4pcxpI7jMJQl8zaCZV3T9H8SQ9rHnyOgFKKA=="
-        guard let index = folders.getRow(of: targetID) else {
+        guard let index = folders.getRow(of: LabelID(targetID)) else {
             XCTAssert(false, "Get target folder row failed")
             return
         }
         XCTAssertEqual(index, 3)
         
-        guard let label = folders.getLabel(of: targetID) else {
+        guard let label = folders.getLabel(of: LabelID(targetID)) else {
             XCTAssert(false, "Query target folder row failed")
             return
         }
@@ -71,14 +73,14 @@ final class MenuLabelTests: XCTestCase {
         XCTAssertEqual(label.deepLevel, 1)
         
         let parentID = "cQj3yw8Pr_FUEs-rvDZr5cMTUo4mGBN_pIoOORQCUKYq_XWErpzIEYODkr4QU7nYt2NQGVKX5db0Cn7DIlrk5w=="
-        XCTAssertEqual(label.parentID, parentID)
+        XCTAssertEqual(label.parentID?.rawValue, parentID)
         
         guard let root = folders.getRootItem(of: label) else {
             XCTAssert(false, "Get root item failed")
             return
         }
         
-        XCTAssertEqual(root.location.labelID, parentID)
+        XCTAssertEqual(root.location.rawLabelID, parentID)
         XCTAssertEqual(root.name, "saved")
         XCTAssertEqual(root.deepLevel, 3)
         XCTAssertEqual(root.contain(item: label), true)
@@ -94,7 +96,7 @@ final class MenuLabelTests: XCTestCase {
         }
         
         let id = "qOEDAmcFE4c9_sD-JV2h6BNPN8pRsWXngWFVA1v0baVCZ8unJvKtaPPE769uFUr85nNowKGVtD2o6zFGXBOHfA=="
-        XCTAssertEqual(label.location.labelID, id)
+        XCTAssertEqual(label.location.rawLabelID, id)
         XCTAssertEqual(label.name, "sub_sub1")
     }
     
@@ -114,5 +116,76 @@ final class MenuLabelTests: XCTestCase {
         
         XCTAssertEqual(folders[0].flattenSubFolders().count, 1)
         XCTAssertEqual(folders[1].flattenSubFolders().count, 4)
+    }
+
+    func testSetParentID() {
+        let sut = MenuLabel(location: .inbox)
+        let parentID = LabelID(String.randomString(10))
+
+        sut.set(parentID: parentID)
+        XCTAssertEqual(sut.parentID, parentID)
+    }
+
+    func testContain_withNonParentIDItem_returnFalse() {
+        let item = MenuLabel(location: .customize(String.randomString(10)))
+        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        XCTAssertFalse(sut.contain(item: item))
+    }
+
+    func testContain_withItemChild_returnTrue() {
+        let item = MenuLabel(location: .customize(String.randomString(10)))
+        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        item.set(parentID: sut.location.labelID)
+
+        XCTAssertTrue(sut.contain(item: item))
+    }
+
+    func testContain_withItemGrandChild_returnTrue() {
+        // └── sut
+        //     └── itemChild
+        //         └── itemGrandChild
+        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10)))
+        let itemChild = MenuLabel(location: .customize(String.randomString(10)))
+        let sut = MenuLabel(location: .customize(String.randomString(10)))
+
+        sut.subLabels.append(itemChild)
+        itemChild.set(parentID: sut.location.labelID)
+        itemChild.subLabels.append(itemGrandChild)
+        itemGrandChild.set(parentID: itemChild.location.labelID)
+
+        XCTAssertTrue(sut.contain(item: itemGrandChild))
+    }
+
+    func testContain_withNewItem_returnFalse() {
+        let item = MenuLabel(location: .customize(String.randomString(10)))
+        let sut = MenuLabel(location: .customize(String.randomString(10)))
+        item.set(parentID: LabelID(String.randomString(10)))
+
+        XCTAssertFalse(sut.contain(item: item))
+    }
+
+    func testCanInsert() {
+        // └── sut
+        //     └── itemChild
+        //         └── itemGrandChild
+        let itemGrandChild = MenuLabel(location: .customize(String.randomString(10)))
+        itemGrandChild.indentationLevel = 2
+
+        let itemChild = MenuLabel(location: .customize(String.randomString(10)))
+        itemChild.indentationLevel = 1
+
+        let sut = MenuLabel(location: .customize(String.randomString(10)))
+
+        sut.subLabels.append(itemChild)
+        itemChild.set(parentID: sut.location.labelID)
+        itemChild.subLabels.append(itemGrandChild)
+        itemGrandChild.set(parentID: itemChild.location.labelID)
+
+        // Try to insert child of itemGrandChild
+        let itemToInsert = MenuLabel(location: .customize(String.randomString(10)))
+        itemToInsert.set(parentID: itemGrandChild.location.labelID)
+        itemGrandChild.subLabels.append(itemToInsert)
+
+        XCTAssertFalse(sut.canInsert(item: itemToInsert))
     }
 }

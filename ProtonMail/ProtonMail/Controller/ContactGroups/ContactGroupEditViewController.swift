@@ -200,8 +200,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
-                (emailIDs: Set<Email>) -> Void in
-
+                (emailIDs: Set<EmailEntity>) -> Void in
                 self.viewModel.setEmails(emails: emailIDs)
             }
 

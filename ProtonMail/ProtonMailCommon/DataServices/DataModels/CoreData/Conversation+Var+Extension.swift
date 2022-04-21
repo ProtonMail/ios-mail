@@ -55,83 +55,14 @@ extension Conversation {
         return nil
     }
 
-    func getFolderIcons(customFolderLabels: [Label]) -> [UIImage] {
-        let labelIds = getLabelIds()
-        let standardFolders: [String] = [
-            Message.Location.inbox,
-            Message.Location.trash,
-            Message.Location.spam,
-            Message.Location.archive,
-            Message.Location.sent,
-            Message.Location.draft
-        ].map({ $0.rawValue })
-
-        // Display order: Inbox, Custom, Drafts, Sent, Archive, Spam, Trash
-        let standardFolderWithOrder: [Message.Location: Int] = [
-            .inbox: 0,
-            .draft: 2,
-            .sent: 3,
-            .archive: 4,
-            .spam: 5,
-            .trash: 6
-        ]
-
-        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String: Label] in
-            var newValue = result
-            newValue[label.labelID] = label
-            return newValue
-        }
-
-        var addedDict: [UIImage: Bool] = [:]
-        let filteredLabelIds = labelIds.filter { labelId in
-            return (customLabelIdsMap[labelId] != nil) || standardFolders.contains(labelId)
-        }
-
-        let sortedLabelIds = filteredLabelIds.sorted { labelId1, labelId2 in
-            var orderOfLabelId1 = Int.max
-            if let location = Message.Location.init(rawValue: labelId1) {
-                orderOfLabelId1 = standardFolderWithOrder[location] ?? Int.max
-            } else {
-                orderOfLabelId1 = 1
-            }
-
-            var orderOfLabelId2 = Int.max
-            if let location = Message.Location.init(rawValue: labelId2) {
-                orderOfLabelId2 = standardFolderWithOrder[location] ?? Int.max
-            } else {
-                orderOfLabelId2 = 1
-            }
-
-            return orderOfLabelId1 < orderOfLabelId2
-        }
-
-        var isCustomFolderIconAdded = false
-        return Array(sortedLabelIds.compactMap { lableId in
-            var icon: UIImage?
-            if standardFolders.contains(lableId) {
-                if let location = Message.Location.init(rawValue: lableId) {
-                    icon = location.originImage()
-                }
-            } else if !isCustomFolderIconAdded {
-                isCustomFolderIconAdded = true
-                icon = Asset.mailCustomFolder.image
-            }
-            if let iconToAdd = icon,
-               addedDict.updateValue(true, forKey: iconToAdd) == nil { // filter duplicated icon
-                return iconToAdd
-            } else {
-                return nil
-            }
-        }.prefix(3))
-    }
-
-    func getOrderedLabels() -> [Label] {
+    func getOrderedLabels() -> [LabelEntity] {
         let labels = self.getLabels()
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
         let allLabels = NSArray(array: labels).filtered(using: predicate)
         return allLabels
             .compactMap({ $0 as? Label })
             .sorted(by: { $0.order.intValue < $1.order.intValue })
+            .compactMap(LabelEntity.init)
     }
 
     var tagViewModels: [TagViewModel] {

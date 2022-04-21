@@ -22,9 +22,11 @@ import ProtonCore_DataModel
 
 protocol MessageDecrypterProtocol {
     func decrypt(message: Message) throws -> String
+    func decrypt(message: MessageEntity) throws -> (String?, [MimeAttachment]?)
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message
+    func verify(message: MessageEntity, verifier: [Data]) -> SignStatus
 }
 
 final class MessageDecrypter: MessageDecrypterProtocol {
@@ -74,6 +76,45 @@ final class MessageDecrypter: MessageDecrypterProtocol {
         return body
     }
 
+    func decrypt(message: MessageEntity) throws -> (String?, [MimeAttachment]?) {
+        let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
+        if addressKeys.isEmpty {
+            return (message.body, nil)
+        }
+        guard let dataSource = self.userDataSource,
+              case let passphrase = dataSource.mailboxPassword,
+              var body = try self.decryptBody(message: message,
+                                              addressKeys: addressKeys,
+                                              privateKeys: dataSource.userPrivateKeys,
+                                              passphrase: passphrase,
+                                              newScheme: dataSource.newSchema) else {
+                  throw MailCrypto.CryptoError.decryptionFailed
+              }
+
+        if message.isPGPMime || message.isSignedMime {
+            let result = self.postProcessMIME(body: body)
+            body = result.0
+            return (body, result.1)
+        } else if message.isPGPInline {
+            let result = self.postProcessPGPInline(
+                isPlainText: message.isPlainText,
+                isMultipartMixed: message.isMultipartMixed,
+                body: body)
+            body = result.0
+            return (body, result.1)
+        }
+        if message.isPlainText {
+            if message.isDraft {
+                return (body, nil)
+            } else {
+                body = body.encodeHtml()
+                return (body.ln2br(), nil)
+            }
+        }
+        return (body, nil)
+    }
+
+
     func copy(message: Message,
               copyAttachments: Bool,
               context: NSManagedObjectContext) -> Message {
@@ -95,6 +136,31 @@ final class MessageDecrypter: MessageDecrypterProtocol {
             _ = context.saveUpstreamIfNeeded()
         }
         return newMessage
+    }
+
+    func verify(message: MessageEntity, verifier: [Data]) -> SignStatus {
+        guard let keys = self.userDataSource?.addressKeys,
+              let passphrase = self.userDataSource?.mailboxPassword else {
+                  return .failed
+              }
+
+        do {
+            let time = Int64(round(message.time?.timeIntervalSince1970 ?? 0))
+            if let verify = self.userDataSource!.newSchema ?
+                try message.body.verifyMessage(verifier: verifier,
+                                       userKeys: self.userDataSource!.userPrivateKeys,
+                                       keys: keys, passphrase: passphrase, time: time) :
+                try message.body.verifyMessage(verifier: verifier,
+                                               binKeys: keys.binPrivKeysArray,
+                                               passphrase: passphrase,
+                                               time: time) {
+                guard let verification = verify.signatureVerificationError else {
+                    return .ok
+                }
+                return SignStatus(rawValue: verification.status) ?? .notSigned
+            }
+        } catch {}
+        return .failed
     }
 }
 
@@ -127,7 +193,74 @@ extension MessageDecrypter {
         return body
     }
 
-    func postProcessMIME(body: String) -> (String, [MimeAttachment]) {
+    func decryptBody(message: MessageEntity,
+                     addressKeys: [Key],
+                     privateKeys: [Data],
+                     passphrase: String,
+                     newScheme: Bool) throws -> String? {
+
+        var body: String?
+        if newScheme {
+            body = try self.decryptBody(message,
+                             keys: addressKeys,
+                             userKeys: privateKeys,
+                             passphrase: passphrase)
+        } else {
+            body = try self.decryptBody(message,
+                             keys: addressKeys,
+                             passphrase: passphrase)
+        }
+        return body
+    }
+
+    private func decryptBody(_ message: MessageEntity,
+                             keys: [Key],
+                             userKeys: [Data],
+                             passphrase: String) throws -> String? {
+        var firstError : Error?
+        var errorMessages: [String] = []
+        for key in keys {
+            do {
+                let addressKeyPassphrase = try MailCrypto.getAddressKeyPassphrase(userKeys: userKeys,
+                                                                              passphrase: passphrase,
+                                                                              key: key)
+                let decryptedBody = try message.body.decryptMessageWithSingleKeyNonOptional(key.privateKey,
+                                                                           passphrase: addressKeyPassphrase)
+                return decryptedBody
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                    errorMessages.append(error.localizedDescription)
+                }
+            }
+        }
+        return nil
+    }
+
+    func decryptBody(_ message: MessageEntity,
+                     keys: [Key],
+                     passphrase: String) throws -> String? {
+        var firstError : Error?
+        var errorMessages: [String] = []
+        for key in keys {
+            do {
+                let decryptedBody = try message.body.decryptMessageWithSingleKeyNonOptional(key.privateKey, passphrase: passphrase)
+                return decryptedBody
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                    errorMessages.append(error.localizedDescription)
+                }
+            }
+        }
+
+        if let error = firstError {
+            throw error
+        }
+        return nil
+    }
+
+    func postProcessMIME(body: String) -> (String, [MimeAttachment])  {
         guard let mimeMessage = MIMEMessage(string: body) else {
             return (body.multipartGetHtmlContent(), [])
         }

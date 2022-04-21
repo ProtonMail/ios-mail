@@ -28,16 +28,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 
     weak var viewController: SingleMessageViewController?
 
-    private let labelId: String
-    let message: Message
+    private let labelId: LabelID
+    let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
     private let navigationController: UINavigationController
     var pendingActionAfterDismissal: (() -> Void)?
 
     init(navigationController: UINavigationController,
-         labelId: String,
-         message: Message,
+         labelId: LabelID,
+         message: MessageEntity,
          user: UserManager,
          coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
         self.navigationController = navigationController
@@ -146,9 +146,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         default:
             return
         }
-
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
+        guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
         let viewModel = ContainableComposeViewModel(
-            msg: message,
+            msg: msg,
             action: composeAction,
             msgService: user.messageService,
             user: user,
@@ -178,8 +179,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentAttachmentListView(decryptedBody: String?) {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+        let attachments: [AttachmentInfo] = message.attachments
+            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
         let viewModel = AttachmentListViewModel(attachments: attachments,
                                                 user: user,
@@ -241,7 +242,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     private func presentCreateFolder(type: PMLabelType) {
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let folderLabels = user.labelService.getMenuFolderLabels()
         let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
         let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,

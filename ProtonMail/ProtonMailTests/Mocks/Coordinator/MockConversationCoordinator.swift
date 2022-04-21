@@ -21,11 +21,11 @@ import Foundation
 class MockConversationCoordinator: ConversationCoordinatorProtocol {
     var viewController: ConversationViewController?
 
-    var conversation: Conversation
+    var conversation: ConversationEntity
 
     var pendingActionAfterDismissal: (() -> Void)?
 
-    init(conversation: Conversation) {
+    init(conversation: ConversationEntity) {
         self.conversation = conversation
     }
 

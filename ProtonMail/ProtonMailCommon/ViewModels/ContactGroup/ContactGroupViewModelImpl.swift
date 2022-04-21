@@ -35,10 +35,14 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private let eventsService: EventsFetching
 
     private var selectedGroupIDs: Set<String> = Set<String>()
-
-    private var isSearching: Bool = false
-    private var filtered: [Label] = []
-
+    
+    
+    private(set) var isSearching: Bool = false
+    private(set) var searchText: String?
+    private var filtered: [LabelEntity] = []
+    private weak var uiDelegate: ContactGroupsUIProtocol?
+    private var labelEntities: [LabelEntity] = []
+    
     /**
      Init the view model with state
      
@@ -108,7 +112,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     func fetchLatestContactGroup(completion: @escaping (Error?) -> Void) {
         if self.isFetching == false {
             self.isFetching = true
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
                 completion(error)
             })
@@ -131,8 +135,8 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-
-            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            
+            self.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }
@@ -142,32 +146,38 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         self.fetchContacts()
     }
 
-    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func set(uiDelegate: ContactGroupsUIProtocol) {
+        self.uiDelegate = uiDelegate
+    }
+    
+    func setFetchResultController() {
         self.fetchedResultsController = self.labelDataService.fetchedResultsController(.contactGroup)
-        self.fetchedResultsController?.delegate = delegate
-        if let fetchController = self.fetchedResultsController {
-            do {
-                try fetchController.performFetch()
-            } catch {
+        self.fetchedResultsController?.delegate = self
+        guard let fetchController = self.fetchedResultsController else { return }
+        do {
+            try fetchController.performFetch()
+            guard let results = fetchController.fetchedObjects as? [Label] else {
+                return
             }
-        }
-        return self.fetchedResultsController
+            self.labelEntities = results.compactMap(LabelEntity.init)
+        } catch { }
     }
 
     func search(text: String?, searchActive: Bool) {
         self.isSearching = searchActive
-
-        guard self.isSearching, let objects = self.fetchedResultsController?.fetchedObjects as? [Label] else {
+        self.searchText = text
+        
+        guard self.isSearching else {
             self.filtered = []
             return
         }
 
         guard let query = text, !query.isEmpty else {
-            self.filtered = objects
+            self.filtered = self.labelEntities
             return
         }
-
-        self.filtered = objects.compactMap {
+        
+        self.filtered = self.labelEntities.compactMap {
             let name = $0.name
             if name.range(of: query, options: [.caseInsensitive]) != nil {
                 return $0
@@ -203,7 +213,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if self.isSearching {
             return filtered.count
         }
-        return self.fetchedResultsController?.fetchedObjects?.count ?? 0
+        return self.labelEntities.count
     }
 
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool) {
@@ -213,16 +223,17 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             }
 
             let label = filtered[indexPath.row]
-            return (label.labelID, label.name, label.color, label.emails.count, false, true)
+            return (label.labelID.rawValue, label.name, label.color, label.emailRelations?.count ?? 0, false, true)
         }
-        guard let label = fetchedResultsController?.object(at: indexPath) as? Label else {
+        guard let object = fetchedResultsController?.object(at: indexPath) as? Label else {
             return ("", "", "", 0, false, false)
         }
-        return (label.labelID, label.name, label.color, label.emails.count, false, true)
-
+        let label = LabelEntity(label: object)
+        return (label.labelID.rawValue, label.name, label.color, label.emailRelations?.count ?? 0, false, true)
+        
     }
-
-    func labelForRow(at indexPath: IndexPath) -> Label? {
+    
+    func labelForRow(at indexPath: IndexPath) -> LabelEntity? {
         if self.isSearching {
             guard self.filtered.count > indexPath.row else {
                 return nil
@@ -230,10 +241,22 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             let label = filtered[indexPath.row]
             return label
         }
-        return fetchedResultsController?.object(at: indexPath) as? Label
+        guard let object = fetchedResultsController?.object(at: indexPath) as? Label else {
+            return nil
+        }
+        return LabelEntity(label: object)
     }
 
     func searchingActive() -> Bool {
         return self.isSearching
+    }
+}
+
+extension ContactGroupsViewModelImpl: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        let objects = self.fetchedResultsController?.fetchedObjects as? [Label] ?? []
+        self.labelEntities = objects.map(LabelEntity.init)
+        self.search(text: self.searchText, searchActive: self.isSearching)
+        self.uiDelegate?.reloadTable()
     }
 }

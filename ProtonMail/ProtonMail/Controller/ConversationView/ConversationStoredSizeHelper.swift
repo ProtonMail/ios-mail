@@ -18,18 +18,18 @@
 import CoreGraphics
 
 class ConversationStoredSizeHelper {
-    var storedSize: [String: HeightStoreInfo] = [:]
+    var storedSize: [MessageID: HeightStoreInfo] = [:]
 
-    func getStoredSize(of messageID: String) -> HeightStoreInfo? {
+    func getStoredSize(of messageID: MessageID) -> HeightStoreInfo? {
         return storedSize[messageID]
     }
 
-    func resetStoredSize(of messageID: String) {
+    func resetStoredSize(of messageID: MessageID) {
         storedSize[messageID] = nil
     }
 
     /// - Returns: true if the size has changed
-    func updateStoredSizeIfNeeded(newHeightInfo: HeightStoreInfo, messageID: String) -> Bool {
+    func updateStoredSizeIfNeeded(newHeightInfo: HeightStoreInfo, messageID: MessageID) -> Bool {
         let storedHeightInfo = storedSize[messageID]
 
         if let oldHeight = storedHeightInfo, oldHeight == newHeightInfo {

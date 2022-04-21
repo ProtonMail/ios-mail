@@ -57,9 +57,11 @@ final class Message: NSManagedObject {
     /// "ExpirationTime":0,
     @NSManaged var expirationTime: Date?
     /// Flags : bitsets for maybe different flag. defined in [Message.Flag]
-    @NSManaged var flags: NSNumber
-    /// "Header":"(No Header)",
-    @NSManaged var header: String?
+    @NSManaged public var flags: NSNumber
+    @available(*, deprecated, message: "use `ParsedHeaders` instead")
+    ///"Header":"(No Header)",
+    @NSManaged public var header: String?
+    @NSManaged public var parsedHeaders: String
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     @NSManaged var isSoftDeleted: Bool

@@ -21,11 +21,15 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import CoreData
+//import CoreData
 import PromiseKit
 import MBProgressHUD
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
+
+protocol ContactGroupsUIProtocol: UIViewController {
+    func reloadTable()
+}
 
 /**
  When the core data that provides data to this controller has data changes,
@@ -76,9 +80,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.extendedLayoutIncludesOpaqueBars = true
 
         prepareTable()
-        prepareFetchedResultsController()
         prepareSearchBar()
-
+        self.viewModel.setFetchResultController()
+        self.viewModel.set(uiDelegate: self)
+        
         if self.viewModel.initEditing() {
             isEditingState = true
             tableView.allowsMultipleSelection = true
@@ -116,11 +121,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }
-
-    private func prepareFetchedResultsController() {
-        _ = self.viewModel.setFetchResultController(delegate: self)
-    }
-
+    
     private func prepareRefreshController() {
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = ColorProvider.BackgroundNorm
@@ -357,14 +358,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
 
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
-            let contactGroup = sender as! Label
-            sharedVMService.contactGroupDetailViewModel(contactGroupDetailViewController,
-                                                        user: self.viewModel.user,
-                                                        groupID: contactGroup.labelID,
-                                                        name: contactGroup.name,
-                                                        color: contactGroup.color,
-                                                        emailIDs: (contactGroup.emails as? Set<Email>) ?? Set<Email>())
-        } else if segue.identifier == kAddContactSugue {
+            guard let contactGroup = sender as? LabelEntity else { return }
+            sharedVMService
+                .contactGroupDetailViewModel(contactGroupDetailViewController,
+                                             user: self.viewModel.user,
+                                             contactGroup: contactGroup)
+        } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
         } else if segue.identifier == kAddContactGroupSugue {
@@ -469,7 +468,11 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
         }
 
         let user = self.viewModel.user
-        let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.viewModel.coreDataService)
+        let viewModel = ContainableComposeViewModel(msg: nil,
+                                                    action: .newDraft,
+                                                    msgService: user.messageService,
+                                                    user: user,
+                                                    coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
         let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
         contactGroupVO.selectAllEmailFromGroup()
         viewModel.addToContacts(contactGroupVO)
@@ -567,62 +570,6 @@ extension ContactGroupsViewController: UITableViewDelegate {
     }
 }
 
-extension ContactGroupsViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChange anObject: Any,
-                    at indexPath: IndexPath?,
-                    for type: NSFetchedResultsChangeType,
-                    newIndexPath: IndexPath?) {
-        if self.viewModel.searchingActive() {
-            return
-        }
-        switch type {
-        case .insert:
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .update:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                guard let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell else {
-                    return
-                }
-                let data = self.viewModel.dateForRow(at: newIndexPath)
-                cell.config(labelID: data.ID,
-                            name: data.name,
-                            queryString: self.queryString,
-                            count: data.count,
-                            color: data.color,
-                            wasSelected: viewModel.isSelected(groupID: data.ID),
-                            showSendEmailIcon: data.showEmailIcon,
-                            delegate: self)
-            }
-        case .move: // group order might change! (renaming)
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-            return
-        @unknown default:
-            return
-        }
-    }
-}
-
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
@@ -657,5 +604,11 @@ extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProto
 extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true
+    }
+}
+
+extension ContactGroupsViewController: ContactGroupsUIProtocol {
+    func reloadTable() {
+        self.tableView.reloadData()
     }
 }

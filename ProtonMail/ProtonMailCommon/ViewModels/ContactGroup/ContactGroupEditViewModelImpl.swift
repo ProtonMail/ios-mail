@@ -29,20 +29,21 @@ import PromiseKit
  1. Use the return value (confirmation) of the API call to update the view model. Currently, the code updates it locally without considering if the API call is successfully or not
  */
 class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
+    
     /// the state of the controller, can only be either create or edit
     var state: ContactGroupEditViewControllerState
 
     /// the contact group data
     var contactGroup: ContactGroupData {
         didSet {
-            prepareEmails()
+            self.prepareEmailArray()
         }
     }
 
     /// all of the emails in the contact group
     /// not using NSSet so the tableView can easily get access to a specific row
-    var emailsInGroup: [Email]
-
+    var emailsInGroup: [EmailEntity]
+    
     /// this array structures the layout of the tableView in ContactGroupEditViewController
     var tableContent: [[ContactGroupEditTableCellType]]
 
@@ -63,7 +64,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
          groupID: String? = nil,
          name: String?,
          color: String?,
-         emailIDs: Set<Email>) {
+         emailIDs: Set<EmailEntity>) {
         self.state = state
         self.emailsInGroup = []
         self.tableContent = []
@@ -74,7 +75,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                              emailIDs: emailIDs)
         self.user = user
         self.contactGroupService = user.contactGroupService
-        prepareEmails()
+        self.prepareEmailArray()
     }
 
     /**
@@ -117,29 +118,25 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             self.tableContent[1].append(.email)
         }
 
-        if emailCount == 1 {
-            tableSectionTitle[1] = String.init(format: LocalString._contact_groups_member_count_description,
-                                               emailCount)
-        } else if emailCount > 1 {
-            tableSectionTitle[1] = String.init(format: LocalString._contact_groups_members_count_description,
-                                               emailCount)
-        } else { // 0, don't show
+        if emailCount == 0 {
             tableSectionTitle[1] = ""
+        } else {
+            tableSectionTitle[1] = String(format: LocalString._contact_groups_member_count_description,
+                                          emailCount)
         }
     }
 
     /**
      Load email content and prepare the tableView for displaying them
      */
-    private func prepareEmails() {
-        self.emailsInGroup = contactGroup.emailIDs.map {$0}
-        self.emailsInGroup.sort {
-            if $0.name == $1.name {
-                return $0.email < $1.email
+    private func prepareEmailArray() {
+        self.emailsInGroup = Array(self.contactGroup.emailIDs)
+            .sorted { first, second in
+                if first.name == second.name {
+                    return first.email < second.email
+                }
+                return first.name < second.name
             }
-            return $0.name < $1.name
-        }
-
         // update
         updateTableContent(emailCount: self.emailsInGroup.count)
         self.delegate?.updateAddressSection()
@@ -151,11 +148,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      // TODO: bundle it with the textField delegate, so we can keep the contactGroup status up-to-date
      */
     func setName(name: String) {
-        if name.count == 0 {
-            contactGroup.name = nil
-        } else {
-            contactGroup.name = name
-        }
+        contactGroup.name = name.isEmpty ? nil: name
     }
 
     /**
@@ -169,22 +162,17 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /**
      - Parameter emails: Set the emails that will be in the contact group
      */
-    func setEmails(emails: Set<Email>) {
+    func setEmails(emails: Set<EmailEntity>) {
         contactGroup.emailIDs = emails
     }
 
     /**
      Remove an email from the listing in the contact group.
      */
-    func removeEmail(emailID: String) {
-        for emailObj in emailsInGroup {
-            if emailObj.emailID == emailID {
-                // remove email from set
-                contactGroup.emailIDs.remove(emailObj)
-                prepareEmails()
-                return
-            }
-        }
+    func removeEmail(emailID: EmailID) {
+        guard let idx = self.contactGroup.emailIDs.firstIndex(where: { $0.emailID == emailID }) else { return }
+        self.contactGroup.emailIDs.remove(at: idx)
+        self.prepareEmailArray()
     }
 
     /**
@@ -216,7 +204,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /**
      - Returns: the emails in the contact group
      */
-    func getEmails() -> Set<Email> {
+    func getEmails() -> Set<EmailEntity> {
         return contactGroup.emailIDs
     }
 
@@ -302,8 +290,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     private func createContactGroupDetail(name: String,
                                           color: String,
-                                          emailList: Set<Email>) -> Promise<Void> {
-        let ids = emailList.map { $0.emailID }
+                                          emailList: Set<EmailEntity>) -> Promise<Void> {
+        let ids = emailList.map { $0.emailID.rawValue }
         return self.contactGroupService.queueCreate(name: name,
                                                     color: color,
                                                     emailIDs: ids)
@@ -321,7 +309,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     private func updateContactGroupDetail(name: String,
                                           color: String,
-                                          updatedEmailList: Set<Email>) -> Promise<Void> {
+                                          updatedEmailList: Set<EmailEntity>) -> Promise<Void> {
         let service = self.contactGroupService
         guard let id = self.contactGroup.ID else {
             return Promise.init(error: ContactGroupEditError.TypeCastingError)
@@ -333,8 +321,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
         return service.queueUpdate(groupID: id,
                                    name: name,
                                    color: color,
-                                   addedEmailIDs: toAdd.map { $0.emailID },
-                                   removedEmailIDs: toDelete.map { $0.emailID })
+                                   addedEmailIDs: toAdd.map { $0.emailID.rawValue },
+                                   removedEmailIDs: toDelete.map { $0.emailID.rawValue })
     }
 
     /**
@@ -377,12 +365,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      - Parameter indexPath: the indexPath that is asking for data
      - Returns: a tuple of email name and email address
      */
-    func getEmail(at indexPath: IndexPath) -> (String, String, String) {
-        let index = indexPath.row
-        guard index < emailsInGroup.count else {
+    func getEmail(at indexPath: IndexPath) -> (EmailID, String, String) {
+        guard let data = emailsInGroup[safe: indexPath.row] else {
             return ("", "", "")
         }
 
-        return (emailsInGroup[index].emailID, emailsInGroup[index].name, emailsInGroup[index].email)
+        return (data.emailID, data.name, data.email)
     }
 }

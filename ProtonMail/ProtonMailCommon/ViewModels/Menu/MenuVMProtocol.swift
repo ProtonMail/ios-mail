@@ -37,17 +37,17 @@ protocol MenuVMProtocol: AnyObject {
     func menuViewInit()
     func getMenuItem(indexPath: IndexPath) -> MenuLabel?
     func numberOfRowsIn(section: Int) -> Int
-    func clickCollapsedArrow(labelID: String)
+    func clickCollapsedArrow(labelID: LabelID)
     func isCurrentUserHasQueuedMessage() -> Bool
     func removeAllQueuedMessageOfCurrentUser()
-    func signOut(userID: String, completion: (() -> Void)?)
-    func removeDisconnectAccount(userID: String)
+    func signOut(userID: UserID, completion: (() -> Void)?)
+    func removeDisconnectAccount(userID: UserID)
     func highlight(label: MenuLabel)
     func appVersion() -> String
     func getAccountList() -> [AccountSwitcher.AccountData]
     func getUnread(of userID: String) -> Int
-    func activateUser(id: String)
-    func prepareLogin(userID: String)
+    func activateUser(id: UserID)
+    func prepareLogin(userID: UserID)
     func prepareLogin(mail: String)
     func set(menuWidth: CGFloat)
     func getColor(of label: MenuLabel) -> UIColor

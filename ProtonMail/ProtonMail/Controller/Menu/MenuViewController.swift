@@ -193,7 +193,8 @@ extension MenuViewController {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            self.viewModel.signOut(userID: self.viewModel.currentUser?.userinfo.userId ?? "", completion: nil)
+            self.viewModel.signOut(userID: UserID(self.viewModel.currentUser?.userinfo.userId ?? ""),
+                                   completion: nil)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
@@ -398,7 +399,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
     }
 
     func clickCollapsedArrow(labelID: String) {
-        self.viewModel.clickCollapsedArrow(labelID: labelID)
+        self.viewModel.clickCollapsedArrow(labelID: LabelID(labelID))
     }
 
     private func createHeaderView(section: MenuSection) -> UIView {
@@ -494,19 +495,19 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
 
 extension MenuViewController: AccountSwitchDelegate {
     func switchTo(userID: String) {
-        self.viewModel.activateUser(id: userID)
+        self.viewModel.activateUser(id: UserID(userID))
     }
 
     func signinAccount(for mail: String, userID: String?) {
         if let id = userID {
-            self.viewModel.prepareLogin(userID: id)
+            self.viewModel.prepareLogin(userID: UserID(id))
         } else {
             self.viewModel.prepareLogin(mail: mail)
         }
     }
 
     func signoutAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        self.viewModel.signOut(userID: userID) { [weak self] in
+        self.viewModel.signOut(userID: UserID(userID)) { [weak self] in
             guard let _self = self else {return}
             let list = _self.viewModel.getAccountList()
             viewModel.updateAccountList(list: list)
@@ -514,9 +515,9 @@ extension MenuViewController: AccountSwitchDelegate {
     }
 
     func removeAccount(userID: String, viewModel: AccountManagerVMDataSource) {
-        self.viewModel.signOut(userID: userID) { [weak self] in
+        self.viewModel.signOut(userID: UserID(userID)) { [weak self] in
             guard let _self = self else {return}
-            _self.viewModel.removeDisconnectAccount(userID: userID)
+            _self.viewModel.removeDisconnectAccount(userID: UserID(userID))
             let list = _self.viewModel.getAccountList()
             viewModel.updateAccountList(list: list)
         }

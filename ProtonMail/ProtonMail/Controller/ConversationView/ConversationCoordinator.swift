@@ -2,7 +2,7 @@ import SafariServices
 
 protocol ConversationCoordinatorProtocol: AnyObject {
     var viewController: ConversationViewController? { get set }
-    var conversation: Conversation { get }
+    var conversation: ConversationEntity { get }
     var pendingActionAfterDismissal: (() -> Void)? { get set }
 
     func start(openFromNotification: Bool)
@@ -13,20 +13,20 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
 
     weak var viewController: ConversationViewController?
 
-    private let labelId: String
+    private let labelId: LabelID
     private let navigationController: UINavigationController
-    let conversation: Conversation
+    let conversation: ConversationEntity
     private let user: UserManager
-    private let targetID: String?
+    private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
 
-    init(labelId: String,
+    init(labelId: LabelID,
          navigationController: UINavigationController,
-         conversation: Conversation,
+         conversation: ConversationEntity,
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
-         targetID: String? = nil) {
+         targetID: MessageID? = nil) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
@@ -92,10 +92,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     // MARK: - Private methods
-
     private func presentCreateFolder(type: PMLabelType) {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let folderLabels = user.labelService.getMenuFolderLabels()
         let viewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
         let viewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: sharedServices,
@@ -141,13 +139,17 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         presentCompose(viewModel: viewModel)
     }
 
-    private func presentCompose(message: Message, action: ComposeMessageAction) {
+    private func presentCompose(message: MessageEntity, action: ComposeMessageAction) {
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
+        guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
+            return
+        }
         let viewModel = ContainableComposeViewModel(
-            msg: message,
+            msg: rawMessage,
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self)
+            coreDataContextProvider: contextProvider
         )
 
         presentCompose(viewModel: viewModel)
@@ -170,11 +172,11 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.viewController?.present(destination, animated: true)
     }
 
-    private func presentAttachmentListView(message: Message, inlineCIDS: [String]?) {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+    private func presentAttachmentListView(message: MessageEntity, inlineCIDS: [String]?) {
+        let attachmentInfos: [AttachmentInfo] = message.attachments.map(AttachmentNormal.init) +
+        (message.mimeAttachments ?? [])
 
-        let viewModel = AttachmentListViewModel(attachments: attachments,
+        let viewModel = AttachmentListViewModel(attachments: attachmentInfos,
                                                 user: user,
                                                 inlineCIDS: inlineCIDS)
         let viewController = AttachmentListViewController(viewModel: viewModel)

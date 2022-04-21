@@ -23,7 +23,7 @@
 import UIKit
 
 extension Message {
-    func getFolderIcons(customFolderLabels: [Label]) -> [UIImage] {
+    func getFolderIcons(customFolderLabels: [LabelEntity]) -> [UIImage] {
         let labelIds = getLabelIDs()
         let standardFolders: [String] = [
             Message.Location.inbox,
@@ -34,9 +34,9 @@ extension Message {
             Message.Location.draft
         ].map({ $0.rawValue })
 
-        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String: Label] in
+        let customLabelIdsMap = customFolderLabels.reduce([:]) { result, label -> [String : LabelEntity] in
             var newValue = result
-            newValue[label.labelID] = label
+            newValue[label.labelID.rawValue] = label
             return newValue
         }
 

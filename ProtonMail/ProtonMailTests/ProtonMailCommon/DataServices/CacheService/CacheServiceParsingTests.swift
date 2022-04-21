@@ -50,7 +50,7 @@ class CacheServiceParsingTests: XCTestCase {
     func testParseMessagesResponse() throws {
         let testData = try XCTUnwrap(testFetchingMessagesDataInInbox.parseObjectAny())
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.rawValue, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { (error) in
             XCTAssertNil(error)
             expect.fulfill()
         }
@@ -78,7 +78,7 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testBadFormatedFetchingMessagesDataInInbox.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.inbox.rawValue, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.inbox.labelID, isUnread: false, response: testData) { (error) in
             XCTAssertNotNil(error)
             expect.fulfill()
         }
@@ -102,7 +102,7 @@ class CacheServiceParsingTests: XCTestCase {
         let testData = try XCTUnwrap(testFetchingMessagesDataInDraft.parseObjectAny())
 
         let expect = expectation(description: "Parsing Messages data")
-        sut.parseMessagesResponse(labelID: Message.Location.draft.rawValue, isUnread: false, response: testData) { (error) in
+        sut.parseMessagesResponse(labelID: Message.Location.draft.labelID, isUnread: false, response: testData) { (error) in
             XCTAssertNil(error)
             expect.fulfill()
         }

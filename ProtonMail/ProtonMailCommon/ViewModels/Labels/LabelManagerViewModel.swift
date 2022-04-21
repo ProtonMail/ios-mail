@@ -199,7 +199,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
 
     func queryLabel(id: String?) -> MenuLabel? {
         guard let labelID = id else { return nil }
-        return self.rawData.first(where: { $0.location.labelID == labelID })
+        return self.rawData.first(where: { $0.location.rawLabelID == labelID })
     }
 
     func move(sourceIndex: IndexPath, to destIndex: IndexPath) {
@@ -210,7 +210,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
 
         // Make sure source and target are in the same level
         if sourceLabel.indentationLevel != targetLabel.indentationLevel {
-            while let parentLabel = self.queryLabel(id: targetLabel.parentID) {
+            while let parentLabel = self.queryLabel(id: targetLabel.parentID?.rawValue) {
                 if parentLabel.indentationLevel == sourceLabel.indentationLevel {
                     targetLabel = parentLabel
                     break
@@ -218,7 +218,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             }
         }
 
-        if sourceLabel.parentID?.isEmpty ?? true {
+        if sourceLabel.parentID?.rawValue.isEmpty ?? true {
             guard let index = self.data.firstIndex(of: sourceLabel),
                   let targetIndex = self.data.firstIndex(of: targetLabel) else {
                 self.sortoutRawData(data: self.rawData)
@@ -231,13 +231,13 @@ extension LabelManagerViewModel: LabelManagerProtocol {
             self.data.remove(at: index)
             self.data.insert(sourceLabel, at: targetIndex)
 
-            let labelIDs = self.data.map { $0.location.labelID }
+            let labelIDs = self.data.map { $0.location.rawLabelID }
             self.orderLabel(labelIDs: labelIDs, parentID: nil)
 //            self.uiDelegate?.reload(section: sectionIndex)
             return
         }
 
-        guard let parentLabel = self.queryLabel(id: sourceLabel.parentID),
+        guard let parentLabel = self.queryLabel(id: sourceLabel.parentID?.rawValue),
               let index = parentLabel.subLabels.firstIndex(of: sourceLabel),
               let targetIndex = parentLabel.subLabels.firstIndex(of: targetLabel) else {
             self.sortoutRawData(data: self.rawData)
@@ -250,9 +250,9 @@ extension LabelManagerViewModel: LabelManagerProtocol {
 
         parentLabel.subLabels.remove(at: index)
         parentLabel.subLabels.insert(sourceLabel, at: targetIndex)
-        let labelIDs = parentLabel.subLabels.map { $0.location.labelID }
+        let labelIDs = parentLabel.subLabels.map { $0.location.rawLabelID }
         self.orderLabel(labelIDs: labelIDs,
-                        parentID: parentLabel.location.labelID)
+                        parentID: parentLabel.location.rawLabelID)
     }
 
     /// Drag function
@@ -267,7 +267,7 @@ extension LabelManagerViewModel: LabelManagerProtocol {
         let sourceItem = self.data(of: sourceIndex)
         let destItem = self.data(of: destIndex)
 
-        if let parentLabel = self.queryLabel(id: sourceItem.parentID) {
+        if let parentLabel = self.queryLabel(id: sourceItem.parentID?.rawValue) {
             guard let index = parentLabel.subLabels.firstIndex(of: sourceItem) else {
                 self.uiDelegate?.hideLoadingHUD()
                 return
@@ -366,7 +366,9 @@ extension LabelManagerViewModel {
     }
 
     private func sortoutDBData(dbItems: [Label]) {
-        let datas: [MenuLabel] = Array(labels: dbItems, previousRawData: [])
+        let datas: [MenuLabel] = Array(labels: dbItems
+                                        .compactMap(LabelEntity.init),
+                                       previousRawData: [])
         self.sortoutRawData(data: datas)
     }
 

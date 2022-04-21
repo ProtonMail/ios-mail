@@ -53,7 +53,7 @@ extension ComposeSaveHintProtocol {
 
         let banner = PMBanner(message: LocalString._composer_draft_saved, style: TempPMBannerNewStyle.info)
         banner.addButton(text: LocalString._menu_trash_title) { [weak self] _ in
-            messageService.move(messages: messages,
+            messageService.move(messages: messages.map(MessageEntity.init),
                                 from: [LabelLocation.draft.labelID],
                                 to: LabelLocation.trash.labelID)
             banner.dismiss(animated: false)
@@ -78,7 +78,7 @@ extension ComposeSaveHintProtocol {
         let banner = PMBanner(message: LocalString._composer_draft_moved_to_trash,
                               style: TempPMBannerNewStyle.info)
         banner.addButton(text: LocalString._messages_undo_action) { [weak self] _ in
-            messageService.move(messages: messages,
+            messageService.move(messages: messages.map(MessageEntity.init),
                                 from: [LabelLocation.trash.labelID],
                                 to: LabelLocation.draft.labelID)
             banner.dismiss(animated: false)

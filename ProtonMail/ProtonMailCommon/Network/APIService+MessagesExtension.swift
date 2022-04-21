@@ -44,8 +44,8 @@ extension APIService {
                      completion: completion)
     }
 
-    func messageDetail(messageID: String, completion: @escaping CompletionBlock) {
-        let path = MessagePath.base + "/\(messageID)"
+    func messageDetail(messageID: MessageID, completion: @escaping CompletionBlock) {
+        let path = MessagePath.base + "/\(messageID.rawValue)"
         self.request(method: .get,
                      path: path,
                      parameters: nil,

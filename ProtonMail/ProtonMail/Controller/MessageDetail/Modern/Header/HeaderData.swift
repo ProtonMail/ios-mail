@@ -31,21 +31,21 @@ class HeaderData: NSObject {
     let bcc: [ContactVO]?
     let isStarred: Bool
     let time: Date?
-    let labels: [Label]?
-    let score: Message.SpamScore
+    let labels: [LabelEntity]?
+    let score: SpamScore
     let isSent: Bool
-
-    init(message: Message) {
-        self.title = message.subject
-        self.sender = message.senderContactVO
-        self.to = message.toList.toContacts()
-        self.cc = message.ccList.toContacts()
-        self.bcc = message.bccList.toContacts()
-        self.isStarred = message.starred
+    
+    init(message: MessageEntity) {
+        self.title = message.title
+        self.sender = message.sender ?? ContactVO(name: "Unknown", email: "Unknown")
+        self.to = message.toList.compactMap { $0 as? ContactVO }
+        self.cc = message.ccList.compactMap { $0 as? ContactVO }
+        self.bcc = message.bccList.compactMap { $0 as? ContactVO }
+        self.isStarred = message.isStarred
         self.time = message.time
-        self.labels = message.labels.allObjects as? [Label]
-        self.score = message.getScore()
-        self.isSent = message.contains(label: .sent)
+        self.labels = message.labels
+        self.score = message.spamScore
+        self.isSent = message.isSent
     }
 }
 

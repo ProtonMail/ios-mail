@@ -242,8 +242,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
         }
         let emails = viewModel.getEmails()
         let email = emails[0]
-        let contact = viewModel.getContact()
-        let contactVO = ContactVO(id: contact.contactID,
+        let contact = viewModel.contact
+        let contactVO = ContactVO(id: contact.contactID.rawValue,
                                   name: contact.name,
                                   email: email.newEmail,
                                   isProtonMailContact: false)
@@ -281,8 +281,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kEditContactSegue {
-            let contact = sender as! Contact
+        if (segue.identifier == kEditContactSegue) {
+            guard let contact = sender as? ContactEntity else { return }
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, user: self.viewModel.user, contact: contact)
@@ -302,7 +302,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol, 
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.getContact())
+        self.performSegue(withIdentifier: kEditContactSegue, sender: viewModel.contact)
     }
 
     func shouldShowSideMenu() -> Bool {
@@ -596,8 +596,8 @@ extension ContactDetailViewController: UITableViewDelegate {
             }
             let emails = viewModel.getEmails()
             let email = emails[row]
-            let contact = viewModel.getContact()
-            let contactVO = ContactVO(id: contact.contactID,
+            let contact = viewModel.contact
+            let contactVO = ContactVO(id: contact.contactID.rawValue,
                                       name: contact.name,
                                       email: email.newEmail,
                                       isProtonMailContact: false)

@@ -74,10 +74,11 @@ class ViewModelServiceImpl {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactAddViewModelImpl(contactVO: contactVO, user: user, coreDataService: self.coreDataService))
     }
-
-    func contactEditViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
+    
+    func contactEditViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: ContactEntity) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactEditViewModelImpl(c: contact, user: user, coreDataService: self.coreDataService))
+        let viewModel = ContactEditViewModelImpl(contactEntity: contact, user: user, coreDataService: self.coreDataService)
+        vmp.setModel(vm: viewModel)
     }
 
     func contactTypeViewModel(_ vmp: ViewModelProtocolBase, type: ContactEditTypeInterface) {
@@ -91,7 +92,7 @@ class ViewModelServiceImpl {
                                                       selectedGroupIDs: Set<String>,
                                                       refreshHandler: @escaping (Set<String>) -> Void) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(user: user, coreDateService: CoreDataService.shared,
+        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(user: user,
                                                              groupCountInformation: groupCountInformation,
                                                              selectedGroupIDs: selectedGroupIDs,
                                                              refreshHandler: refreshHandler))
@@ -104,27 +105,20 @@ class ViewModelServiceImpl {
     }
 
     func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
-                                              user: UserManager,
-                                              groupID: String,
-                                              name: String,
-                                              color: String,
-                                              emailIDs: Set<Email>) {
+                                     user: UserManager,
+                                     contactGroup: LabelEntity) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupDetailViewModelImpl(user: user,
-                                                         groupID: groupID,
-                                                         name: name,
-                                                         color: color,
-                                                         emailIDs: emailIDs,
-                                                         labelsDataService: user.labelService))
+        let viewModel = ContactGroupDetailViewModel(user: user, contactGroup: contactGroup, labelsDataService: user.labelService)
+        vmp.setModel(vm: viewModel)
     }
-
+    
     func contactGroupEditViewModel(_ vmp: ViewModelProtocolBase,
-                                            user: UserManager,
-                                            state: ContactGroupEditViewControllerState,
-                                            groupID: String? = nil,
-                                            name: String? = nil,
-                                            color: String? = nil,
-                                            emailIDs: Set<Email> = Set<Email>()) {
+                                   user: UserManager,
+                                   state: ContactGroupEditViewControllerState,
+                                   groupID: String? = nil,
+                                   name: String? = nil,
+                                   color: String? = nil,
+                                   emailIDs: Set<EmailEntity> = []) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state,
                                                        user: user,
@@ -144,8 +138,8 @@ class ViewModelServiceImpl {
 
     func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
                                                    user: UserManager,
-                                                   selectedEmails: Set<Email>,
-                                                   refreshHandler: @escaping (Set<Email>) -> Void) {
+                                                   selectedEmails: Set<EmailEntity>,
+                                                   refreshHandler: @escaping (Set<EmailEntity>) -> Void) {
         activeViewControllerNew = vmp
         vmp.setModel(vm: ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
                                                               contactService: user.contactService,

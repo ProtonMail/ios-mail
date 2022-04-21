@@ -25,16 +25,16 @@ import ProtonCore_Services
 
 class MarkLegitimateService {
 
-    private let labelId: String
+    private let labelId: LabelID
     private let apiService: APIService
     private let eventsService: EventsFetching
-    init(labelId: String, apiService: APIService, eventsService: EventsFetching) {
+    init(labelId: LabelID, apiService: APIService, eventsService: EventsFetching) {
         self.labelId = labelId
         self.apiService = apiService
         self.eventsService = eventsService
     }
 
-    func markAsLegitimate(messageId: String) {
+    func markAsLegitimate(messageId: MessageID) {
         let request = MarkLegitimate(messageId: messageId),
         _ = apiService.exec(route: request, responseObject: VoidResponse()) { [weak self, labelId] _, _ in
             self?.eventsService.fetchEvents(labelID: labelId)
