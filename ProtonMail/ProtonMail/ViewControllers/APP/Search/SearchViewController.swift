@@ -347,6 +347,10 @@ extension SearchViewController {
             self.cancelEditingMode()
         } else {
             self.viewModel.cleanLocalIndex()
+            // clean ES search query to disable keyword highlighting
+            if UserInfo.isEncryptedSearchEnabled {
+                EncryptedSearchService.shared.searchQuery = []
+            }
             self.dismiss(animated: true, completion: nil)
         }
     }
