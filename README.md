@@ -5,7 +5,7 @@
 
 iOS-mail — ProtonMail iOS client app
 
-The app is intended for all users of the ProtonMail service. Whether they are paid or free, they can compose and read emails, manage folders and labels, manage some account settings and create a new account. The app supports iOS 11-14.
+The app is intended for all users of the ProtonMail service. Whether they are paid or free, they can compose and read emails, manage folders and labels, manage some account settings and create a new account. The app supports iOS versions 11 and above.
 
 ## License
 
@@ -65,17 +65,17 @@ See [LICENSE](LICENSE) file
 
 ## Setup
 
-1. Have macOS up to date and install Xcode 11.1
+1. Have macOS up to date and install Xcode 13.2.1
 2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in the ProtonMail.xcodeproj file. Each shared scheme has a post-build action, and builds will fail on machines with no xUnique installed. Please follow xUnique's [installation instructions](https://github.com/truebit/xUnique)
 3. We use swiftlint. If you don't have it, you can install it via [Homebrew](https://brew.sh), by opening ProtonMail directory and run `brew bundle` in the Terminal.
-4. `DOMPurify`(@b06b6b2ac8) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
-5. Open `ProtonMail/ProtonMail.xcworkspace` and click the run button
+4. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+5. Open `ProtonMail/ProtonMail.xcworkspace` and update project settings to use your own provisioning profile.
+6. Run the app.
 
 ## Live version
 
-Current live version 1.11.13
+Current live version 3.1.4
 
-- [Changelogs](Changelog.md)
 - [Apple Store](https://apps.apple.com/app/protonmail-encrypted-email/id979659905)
 
 ## Articles
@@ -85,13 +85,8 @@ Current live version 1.11.13
 
 ## Our Team
 
-- [Feng](https://github.com/zhj4478)
-- [Anatoly](https://github.com/abjurato)
-- [Henry](https://github.com/henrybear327)
-- [Emil](https://github.com/emnproton)
-
-## TODO
-
- - [ ] UI redesign
- - [ ] multiple user support
- - [ ] share frameworks
+- [Anson](https://github.com/xxi511)
+- [Mustapha](https://github.com/justarandomdev)
+- [Steven](https://github.com/Linquas)
+- [Jacek](https://github.com/jacekkra)
+- [Xavi](https://github.com/xavigil)
