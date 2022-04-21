@@ -242,7 +242,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             userCachedStatus.resetTourValue()
         }
         #endif
-        if let destination = userCachedStatus.getOnboardingDestination() {
+        if let destination = self.viewModel.getOnboardingDestination() {
             userCachedStatus.resetTourValue()
             self.coordinator?.go(to: destination)
         }
