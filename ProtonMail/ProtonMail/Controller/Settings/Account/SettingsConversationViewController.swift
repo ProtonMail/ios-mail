@@ -1,19 +1,14 @@
-import UIKit
-import ProtonCore_UIFoundations
 import MBProgressHUD
+import ProtonCore_UIFoundations
+import UIKit
 
 class SettingsConversationViewController: UITableViewController {
-
-    private enum Key {
-        static let headerCell: String = "header_cell"
-        static let headerCellHeight: CGFloat = 32.0
-    }
 
     private let viewModel: SettingsConversationViewModel
 
     init(viewModel: SettingsConversationViewModel) {
         self.viewModel = viewModel
-        super.init(style: .plain)
+        super.init(style: .grouped)
     }
 
     override func viewDidLoad() {
@@ -23,10 +18,9 @@ class SettingsConversationViewController: UITableViewController {
         tableView.backgroundView = nil
         tableView.backgroundColor = ColorProvider.BackgroundSecondary
         tableView.register(SwitchTableViewCell.self)
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         tableView.tableFooterView = UIView()
         tableView.rowHeight = 48.0
-        tableView.separatorInset = .zero
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         setUpLoadingObservation()
         setUpRequestFailedObservation()
     }
@@ -75,16 +69,11 @@ class SettingsConversationViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        Key.headerCellHeight
-    }
-
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        UIView()
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        LocalString._conversation_settings_footer_title
     }
 
     required init?(coder: NSCoder) {
         nil
     }
-
 }
