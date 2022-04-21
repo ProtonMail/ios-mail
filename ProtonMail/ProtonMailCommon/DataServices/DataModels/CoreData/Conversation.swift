@@ -177,7 +177,7 @@ extension Conversation {
     func getContextLabel(location: LabelLocation) -> ContextLabel? {
         guard self.managedObjectContext != nil else { return nil }
         let contextLabels = self.labels.compactMap { $0 as? ContextLabel }
-        return contextLabels.first(where: { $0.labelID == location.labelID })
+        return contextLabels.first(where: { $0.labelID == location.labelID.rawValue })
     }
 }
 

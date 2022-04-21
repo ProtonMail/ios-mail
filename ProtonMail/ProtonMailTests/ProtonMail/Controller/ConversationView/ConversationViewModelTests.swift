@@ -27,7 +27,7 @@ class ConversationViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         let contextProvider = MockCoreDataContextProvider()
-        let fakeConversation = Conversation(context: contextProvider.mainContext)
+        let fakeConversation = ConversationEntity(Conversation(context: contextProvider.mainContext))
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
         let reachabilityStub = ReachabilityStub()

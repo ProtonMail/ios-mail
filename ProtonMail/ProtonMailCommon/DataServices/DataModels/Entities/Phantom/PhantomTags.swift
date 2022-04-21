@@ -1,3 +1,4 @@
+// swiftlint:disable:this file_name
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
@@ -15,7 +16,32 @@
 // You should have received a copy of the GNU General Public License
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Foundation
+
+enum ObjectIDTag {}
+typealias ObjectID = Phantom<ObjectIDTag, NSManagedObjectID>
+
+enum ContactIDTag {}
+typealias ContactID = Phantom<ContactIDTag, String>
+
+enum EmailIDTag {}
+typealias EmailID = Phantom<EmailIDTag, String>
+
+enum LabelIDTag {}
+typealias LabelID = Phantom<LabelIDTag, String>
 
 enum UserIDTag {}
 typealias UserID = Phantom<UserIDTag, String>
+
+enum MessageIDTag {}
+typealias MessageID = Phantom<MessageIDTag, String>
+
+enum ConversationIDTag {}
+typealias ConversationID = Phantom<ConversationIDTag, String>
+
+enum AttachmentIDTag {}
+typealias AttachmentID = Phantom<AttachmentIDTag, String>
+
+enum AddressIDTag {}
+typealias AddressID = Phantom<AddressIDTag, String>

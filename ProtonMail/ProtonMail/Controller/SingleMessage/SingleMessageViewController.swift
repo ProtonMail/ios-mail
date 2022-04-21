@@ -106,7 +106,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
     }
 
     private func reloadMessageRelatedData() {
-        starButtonSetUp(starred: viewModel.message.starred)
+        starButtonSetUp(starred: viewModel.message.isStarred)
     }
 
     private func setUpSelf() {
@@ -122,7 +122,7 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         navigationItem.leftBarButtonItem = backButtonItem
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
-        starButtonSetUp(starred: viewModel.message.starred)
+        starButtonSetUp(starred: viewModel.message.isStarred)
 
         // Accessibility
         navigationItem.leftBarButtonItem?.accessibilityLabel = LocalString._menu_inbox_title
@@ -173,7 +173,7 @@ extension SingleMessageViewController {
         customView.toolBar.setUpMoreAction(target: self, action: #selector(self.moreButtonTapped))
         customView.toolBar.setUpDeleteAction(target: self, action: #selector(self.deleteAction))
 
-        if viewModel.labelId == Message.Location.spam.rawValue || viewModel.labelId == Message.Location.trash.rawValue {
+        if viewModel.labelId == Message.Location.spam.labelID || viewModel.labelId == Message.Location.trash.labelID {
             customView.toolBar.trashButtonView.removeFromSuperview()
         } else {
             customView.toolBar.deleteButtonView.removeFromSuperview()
@@ -217,10 +217,10 @@ extension SingleMessageViewController {
         let hasMoreThanOneRecipient = viewModel.message.isHavingMoreThanOneContact
         let renderStyle = viewModel.contentViewModel.messageBodyViewModel.currentMessageRenderStyle
         let shouldDisplayRMOptions = viewModel.contentViewModel.messageBodyViewModel.shouldDisplayRenderModeOptions
-        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.subject,
+        let actionSheetViewModel = MessageViewActionSheetViewModel(title: viewModel.message.title,
                                                                    labelID: viewModel.labelId,
                                                                    includeStarring: false,
-                                                                   isStarred: viewModel.message.starred,
+                                                                   isStarred: viewModel.message.isStarred,
                                                                    isBodyDecryptable: isBodyDecryptable,
                                                                    hasMoreThanOneRecipient: hasMoreThanOneRecipient,
                                                                    messageRenderStyle: renderStyle,
@@ -324,8 +324,9 @@ extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
     }
 
     func showLabelAsActionSheet() {
-        let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
-                                                                   messages: [viewModel.message])
+        let labelAsViewModel = LabelAsActionSheetViewModelMessages(
+            menuLabels: labelAsActionHandler.getLabelMenuItems(),
+            messages: [viewModel.message])
 
         labelAsActionSheetPresenter
             .present(on: self.navigationController ?? self,
@@ -405,40 +406,37 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                      listener: self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        guard let self = self else { return }
-                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
-                            self.coordinator.pendingActionAfterDismissal = { [weak self] in
-                                self?.showMoveToActionSheet()
-                            }
-                            self.coordinator.navigate(to: .addNewFolder)
-                        } else {
-                            self.showAlertFolderCreationNotAllowed()
-                        }
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
-                            return
-                        }
-                        self?.moveToActionHandler
-                                .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
-                     })
+                guard let self = self else { return }
+                if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                    self.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showMoveToActionSheet()
+                    }
+                    self.coordinator.navigate(to: .addNewFolder)
+                } else {
+                    self.showAlertFolderCreationNotAllowed()
+                }
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isHavingUnsavedChanges in
+                defer {
+                    self?.dismissActionSheet()
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                guard isHavingUnsavedChanges, let msg = self?.viewModel.message else {
+                    return
+                }
+                self?.moveToActionHandler
+                    .handleMoveToAction(messages: [msg], isFromSwipeAction: false)
+            })
     }
 
     private func allowToCreateFolders(existingFolders: Int) -> Bool {

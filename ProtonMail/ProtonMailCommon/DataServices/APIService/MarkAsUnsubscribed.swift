@@ -2,9 +2,9 @@ import ProtonCore_Networking
 
 struct MarkAsUnsubscribed: Request {
 
-    private let messageId: String
+    private let messageId: MessageID
 
-    init(messageId: String) {
+    init(messageId: MessageID) {
         self.messageId = messageId
     }
 
@@ -18,7 +18,7 @@ struct MarkAsUnsubscribed: Request {
 
     var parameters: [String: Any]? {
         [
-            "IDs": [messageId]
+            "IDs": [messageId.rawValue]
         ]
     }
 

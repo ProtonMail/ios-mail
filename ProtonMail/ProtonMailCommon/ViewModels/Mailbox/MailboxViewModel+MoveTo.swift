@@ -22,17 +22,17 @@
 
 // MARK: - Move to functions
 extension MailboxViewModel: MoveToActionSheetProtocol {
-    var labelId: String {
+    var labelId: LabelID {
         return labelID
     }
 
-    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, isSwipeAction: isFromSwipeAction, queue: true)
         selectedMoveToFolder = nil
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
+    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
         guard let destination = selectedMoveToFolder else {
             completion?()
             return

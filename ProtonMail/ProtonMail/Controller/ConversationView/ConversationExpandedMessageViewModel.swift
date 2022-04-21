@@ -8,7 +8,7 @@ class ConversationExpandedMessageViewModel {
         didSet { messageContent.resetLoadedHeight = { [weak self] in self?.resetLoadedHeight?() } }
     }
 
-    var message: Message {
+    var message: MessageEntity {
         didSet {
             messageContent.messageHasChanged(message: message)
             recalculateCellHeight?(false)
@@ -17,12 +17,12 @@ class ConversationExpandedMessageViewModel {
 
     let messageContent: SingleMessageContentViewModel
 
-    init(message: Message, messageContent: SingleMessageContentViewModel) {
+    init(message: MessageEntity, messageContent: SingleMessageContentViewModel) {
         self.message = message
         self.messageContent = messageContent
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
     }
 

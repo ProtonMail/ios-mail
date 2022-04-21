@@ -19,14 +19,14 @@ import ProtonCore_Networking
 
 struct ReceiptRequest: Request {
 
-    private let messageID: String
+    private let messageID: MessageID
 
-    init(messageID: String) {
+    init(messageID: MessageID) {
         self.messageID = messageID
     }
 
     var path: String {
-        "/mail/v4/messages/\(messageID)/receipt"
+        "/mail/v4/messages/\(messageID.rawValue)/receipt"
     }
 
     var method: HTTPMethod {

@@ -175,8 +175,8 @@ final class MessageEvent {
 
 extension MessageEvent {
     var isDraft: Bool {
-        let draftID = LabelLocation.draft.labelID
-        let hiddenDraftID = LabelLocation.hiddenDraft.labelID
+        let draftID = LabelLocation.draft.rawLabelID
+        let hiddenDraftID = LabelLocation.hiddenDraft.rawLabelID
 
         if let location = self.message?["Location"] as? Int,
            location == Int(draftID) || location == Int(hiddenDraftID) {

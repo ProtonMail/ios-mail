@@ -29,9 +29,8 @@ class BugDataService: Service {
     init(api: APIService) {
         self.apiService = api
     }
-
-    func reportPhishing(messageID: String, messageBody: String, completion: ((NSError?) -> Void)?) {
-        let route = ReportPhishing(msgID: messageID, mimeType: "text/html", body: messageBody)
+    func reportPhishing(messageID: MessageID, messageBody: String, completion: ((NSError?) -> Void)?) {
+        let route = ReportPhishing(msgID: messageID.rawValue, mimeType: "text/html", body: messageBody)
         self.apiService.exec(route: route, responseObject: VoidResponse()) { res in
             completion?(res.error?.toNSError)
         }

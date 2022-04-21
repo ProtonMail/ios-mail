@@ -25,7 +25,7 @@ class MockLabelProvider: LabelProviderProtocol {
     }
 
     var labelToReturnInGetLabel: Label?
-    func getLabel(by labelID: String) -> Label? {
+    func getLabel(by labelID: LabelID) -> Label? {
         return labelToReturnInGetLabel
     }
 }

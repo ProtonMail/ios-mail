@@ -1,6 +1,6 @@
 extension ConversationViewItemType {
 
-    var message: Message? {
+    var message: MessageEntity? {
         messageViewModel?.message
     }
 

@@ -191,7 +191,7 @@ class UserManager: Service, HasLocalStorage {
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
         let service = ConversationDataServiceProxy(api: apiService,
                                                    userID: userID,
-                                                   coreDataService: sharedServices.get(by: CoreDataService.self),
+                                                   contextProvider: sharedServices.get(by: CoreDataService.self),
                                                    labelDataService: labelService,
                                                    lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), eventsService: eventsService,
                                                    undoActionManager: undoActionManager,
@@ -201,7 +201,7 @@ class UserManager: Service, HasLocalStorage {
     }()
 
     lazy var labelService: LabelsDataService = { [unowned self] in
-        let service = LabelsDataService(api: self.apiService, userID: self.userID, coreDataService: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
+        let service = LabelsDataService(api: self.apiService, userID: self.userID, contextProvider: sharedServices.get(by: CoreDataService.self), lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self), cacheService: self.cacheService)
         service.viewModeDataSource = self
         return service
     }()
@@ -228,7 +228,7 @@ class UserManager: Service, HasLocalStorage {
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
         let manager = UndoActionManager(apiService: self.apiService) { [weak self] in
-            self?.eventsService.fetchEvents(labelID: Message.Location.allmail.rawValue)
+            self?.eventsService.fetchEvents(labelID: Message.Location.allmail.labelID)
         }
         return manager
     }()
@@ -489,7 +489,7 @@ extension UserManager: UserDataSource {
     }
 
     func getUnReadCount(by labelID: String) -> Int {
-        return self.labelService.unreadCount(by: labelID)
+        return self.labelService.unreadCount(by: LabelID(labelID))
     }
 }
 

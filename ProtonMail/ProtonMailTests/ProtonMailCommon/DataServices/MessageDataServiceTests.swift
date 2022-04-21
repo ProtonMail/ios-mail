@@ -28,7 +28,7 @@ import Groot
 class MessageDataServiceTests: XCTestCase {
     var coreDataService: CoreDataService!
     var testContext: NSManagedObjectContext!
-    let customLabelId = "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw=="
+    let customLabelId: LabelID = "Vg_DqN6s-xg488vZQBkiNGz0U-62GKN6jMYRnloXY-isM9s5ZR-rWCs_w8k9Dtcc-sVC-qnf8w301Q-1sA6dyw=="
 
     override func setUpWithError() throws {
         coreDataService = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
@@ -48,63 +48,63 @@ class MessageDataServiceTests: XCTestCase {
     }
 
     func testFindMessagesWithSourceIdsWithMessageInSpamToInbox() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.spam.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.spam.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.inbox.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.inbox.labelID)
 
         XCTAssertEqual(result.count, 1)
         let pair = try XCTUnwrap(result.first)
-        XCTAssertEqual(pair.1, Message.Location.spam.rawValue)
-        XCTAssertEqual(pair.0, message)
+        XCTAssertEqual(pair.1, Message.Location.spam.labelID)
+        XCTAssertEqual(pair.0, MessageEntity(message))
     }
 
     func testFindMessagesWithSourceIdsWithMessageInCustomFolderToInbox() throws {
         let message = try XCTUnwrap(makeTestMessageIn(customLabelId))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.inbox.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.inbox.labelID)
 
         XCTAssertEqual(result.count, 1)
         let pair = try XCTUnwrap(result.first)
         XCTAssertEqual(pair.1, customLabelId)
-        XCTAssertEqual(pair.0, message)
+        XCTAssertEqual(pair.0, MessageEntity(message))
     }
 
     func testFindMessagesWithSourceIdsWithMessageInSpamToSamePlace() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.spam.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.spam.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.spam.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.spam.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
 
     func testFindMessagesWithSourceIdsWithMessageInDraftToSpam() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.draft.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.draft.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.spam.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.spam.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
 
     func testFindMessagesWithSourceIdsWithMessageInSentToSpam() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.sent.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.sent.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.spam.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.spam.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
 
     func testFindMessagesWithSourceIdsWithMessageInDraftToInbox() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.draft.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.draft.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.inbox.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.inbox.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
 
     func testFindMessagesWithSourceIdsWithMessageInSentToInbox() throws {
-        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.sent.rawValue))
+        let message = try XCTUnwrap(makeTestMessageIn(Message.Location.sent.labelID))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.inbox.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.inbox.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
@@ -112,19 +112,19 @@ class MessageDataServiceTests: XCTestCase {
     func testFindMessagesWithSourceIdsWithMessageHavingRandomLabelIdToInbox() throws {
         let message = try XCTUnwrap(makeTestMessageIn("sjldfjisdflngw"))
         let sut = MessageDataService.findMessagesWithSourceIds
-        let result = sut([message], [customLabelId], Message.Location.inbox.rawValue)
+        let result = sut([MessageEntity(message)], [customLabelId], Message.Location.inbox.labelID)
 
         XCTAssertEqual(result.count, 0)
     }
 
-    private func makeTestMessageIn(_ labelId: String) -> Message? {
+    private func makeTestMessageIn(_ labelId: LabelID) -> Message? {
         let parsedObject = testMessageMetaData.parseObjectAny()!
         let message = try? GRTJSONSerialization
             .object(withEntityName: Message.Attributes.entityName,
                     fromJSONDictionary: parsedObject,
                     in: testContext) as? Message
         message?.remove(labelID: "0")
-        message?.add(labelID: labelId)
+        message?.add(labelID: labelId.rawValue)
         try? testContext.save()
         return message
     }

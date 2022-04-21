@@ -90,7 +90,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     var recalculateCellHeight: ((_ isLoaded: Bool) -> Void)?
 
-    private(set) var message: Message
+    private(set) var message: MessageEntity
     private let messageDataProcessor: MessageDataProcessProtocol
     let userAddressUpdater: UserAddressUpdaterProtocol
     // [cid, base64String]
@@ -212,7 +212,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     let linkConfirmation: LinkOpeningMode
 
-    init(message: Message,
+    init(message: MessageEntity,
          messageDataProcessor: MessageDataProcessProtocol,
          userAddressUpdater: UserAddressUpdaterProtocol,
          shouldAutoLoadRemoteImages: Bool,
@@ -239,7 +239,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         embeddedContentPolicy = shouldAutoLoadEmbeddedImages ? .allowed : .disallowed
     }
 
-    func messageHasChanged(message: Message, isError: Bool = false) {
+    func messageHasChanged(message: MessageEntity, isError: Bool = false) {
         if isError {
             delegate?.showReloadError()
         } else {
@@ -261,7 +261,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
 
     /// - Returns: Should reload webView or not
     @discardableResult
-    private func reload(from message: Message) -> Bool {
+    private func reload(from message: MessageEntity) -> Bool {
         guard let remoteContentMode = WebContents.RemoteContentPolicy(rawValue: self.remoteContentPolicy) else {
             return true
         }
@@ -305,7 +305,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
                 rawBody = "<div>\(rawBody)</div>"
             }
             // If the detail hasn't download, don't show encrypted body to user
-            let originalBody = message.isDetailDownloaded ? message.bodyToHtml(): .empty
+            let originalBody = message.isDetailDownloaded ? message.htmlBody: .empty
             bodyParts = BodyParts(originalBody: originalBody,
                                   isNewsLetter: message.isNewsLetter,
                                   isPlainText: message.isPlainText)
@@ -319,7 +319,7 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
     private(set) var shouldShowEmbeddedBanner = false
 
     private func checkBannerStatus(_ bodyToCheck: String) {
-        let isHavingEmbeddedImages = message.isHavingEmbeddedImages(decryptedBody: bodyToCheck)
+        let isHavingEmbeddedImages = self.containsEmbeddedImages(in: bodyToCheck, attachments: message.attachments)
         let helper = BannerHelper(embeddedContentPolicy: embeddedContentPolicy,
                                   remoteContentPolicy: remoteContentPolicy,
                                   isHavingEmbeddedImages: isHavingEmbeddedImages)
@@ -329,10 +329,27 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
             self?.delegate?.updateBannerStatus()
         }
     }
+
+    private func containsEmbeddedImages(in decryptedBody: String?, attachments: [AttachmentEntity]) -> Bool {
+        guard let body = decryptedBody else {
+            let embedded = attachments
+                .filter({ $0.isInline && $0.getContentID()?.isEmpty == false })
+            return !embedded.isEmpty
+        }
+        let contentIDs = attachments.compactMap { $0.getContentID() }
+        let embedded = contentIDs.filter { id in
+            return body.preg_match("src=\"\(id)\"") ||
+                body.preg_match("src=\"cid:\(id)\"") ||
+                body.preg_match("data-embedded-img=\"\(id)\"") ||
+                body.preg_match("data-src=\"cid:\(id)\"") ||
+                body.preg_match("proton-src=\"cid:\(id)\"")
+        }
+        return !embedded.isEmpty
+    }
 }
 
 extension NewMessageBodyViewModel {
-    private func decryptBody(from message: Message) -> String? {
+    private func decryptBody(from message: MessageEntity) -> String? {
         let expiration = message.expirationTime
         let referenceDate = Date.getReferenceDate(processInfo: userCachedStatus)
         let expired = (expiration ?? .distantFuture).compare(referenceDate) == .orderedAscending
@@ -345,9 +362,11 @@ extension NewMessageBodyViewModel {
         }
 
         do {
-            let decryptedMessage = try messageDataProcessor.messageDecrypter.decrypt(message: message)
-            self.delegate?.hideDecryptionErrorBanner()
-            return decryptedMessage
+            let decryptedPair = try messageDataProcessor.messageDecrypter.decrypt(message: message)
+            if decryptedPair.0 != nil {
+                self.delegate?.hideDecryptionErrorBanner()
+            }
+            return decryptedPair.0
         } catch {
             self.delegate?.showDecryptionErrorBanner()
             if !self.hasAutoRetried {
@@ -360,11 +379,10 @@ extension NewMessageBodyViewModel {
         }
     }
 
-    private func downloadEmbedImage(_ message: Message, body: String) {
+    private func downloadEmbedImage(_ message: MessageEntity, body: String) {
         guard self.embeddedStatus == .none,
               message.isDetailDownloaded,
-              let allAttachments = message.attachments.allObjects as? [Attachment],
-              case let inlines = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
+              case let inlines = message.attachments.filter({ $0.isInline && $0.getContentID()?.isEmpty == false }),
               !inlines.isEmpty else {
                   if self.bodyParts?.originalBody != body {
                       self.bodyParts = BodyParts(originalBody: body,
@@ -381,10 +399,10 @@ extension NewMessageBodyViewModel {
         for inline in inlines {
             group.enter()
             let work = DispatchWorkItem {
-                self.messageDataProcessor.base64AttachmentData(att: inline) { based64String in
+                self.messageDataProcessor.base64AttachmentData(inline) { based64String in
                     defer { group.leave() }
                     guard !based64String.isEmpty,
-                          let contentID = inline.contentID() else { return }
+                          let contentID = inline.getContentID() else { return }
                     stringsQueue.sync {
                         let value = "src=\"data:\(inline.mimeType);base64,\(based64String)\""
                         self.embeddedBase64["src=\"cid:\(contentID)\""] = value

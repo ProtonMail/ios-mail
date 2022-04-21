@@ -94,6 +94,14 @@ included:
   - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/CacheService/MainQueueHandlerHelperTests.swift
   - ${PWD}/ProtonMailTests/ProtonMail/Controller/LinkOpeningValidatorTests.swift
   - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/NetworkTroubleShootViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/Menu/LabelLocationTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/DataModels/MessageLocationTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/ViewModels/ConversationActionSheetViewModelTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/ConversationEntityTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MessageEntityTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MessageFlagTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/MiMeTypeTests.swift
+  - ${PWD}/ProtonMailTests/ProtonMailCommon/DataServices/Enities/PhantomTests
 
 excluded:
   - ${PWD}/Pods

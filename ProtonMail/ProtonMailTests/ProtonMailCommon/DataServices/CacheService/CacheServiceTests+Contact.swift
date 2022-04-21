@@ -58,7 +58,7 @@ extension CacheServiceTest {
         contactDict["Cards"] = testUpdatedContactCardData.parseJson()!
 
         let updateExpect = expectation(description: "Update Contact")
-        sut.updateContact(contactID: contactToUpdate.contactID, cardsJson: contactDict) { (result) in
+        sut.updateContact(contactID: ContactID(contactToUpdate.contactID), cardsJson: contactDict) { (result) in
             switch result {
             case .failure(_):
                 XCTFail()
@@ -84,7 +84,7 @@ extension CacheServiceTest {
         XCTAssertNotNil(Contact.contactForContactID(contactID, inManagedObjectContext: testContext))
 
         let deleteExpect = expectation(description: "Delete contact")
-        sut.deleteContact(by: contactID, completion: { error in
+        sut.deleteContact(by: ContactID(contactID), completion: { error in
             deleteExpect.fulfill()
         })
         wait(for: [deleteExpect], timeout: 1)

@@ -70,7 +70,7 @@ final class LabelEditCoordinator: DefaultCoordinator {
                                            useFolderColor: useFolderColor,
                                            inheritParentColor: isInherit,
                                            delegate: self,
-                                           parentID: viewModel.parentID)
+                                           parentID: viewModel.parentID?.rawValue ?? "")
         let parentVC = LabelParentSelectViewController.instance(hasNavigation: false)
         parentVC.set(viewModel: parentVm)
         self.viewController?.navigationController?.show(parentVC, sender: nil)
@@ -83,6 +83,6 @@ final class LabelEditCoordinator: DefaultCoordinator {
 
 extension LabelEditCoordinator: LabelParentSelectDelegate {
     func select(parentID: String) {
-        self.viewModel?.update(parentID: parentID)
+        self.viewModel?.update(parentID: LabelID(parentID))
     }
 }

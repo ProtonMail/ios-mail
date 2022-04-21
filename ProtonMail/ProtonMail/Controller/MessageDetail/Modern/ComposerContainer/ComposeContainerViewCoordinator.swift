@@ -104,8 +104,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
 
         // Mainly for inline attachment update
         // The inline attachment comes from `htmlEditor` and `ComposeViewController` can't access `ComposeContainerViewCoordinator`
-        self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
-            self?.attachmentsObservation = childViewModel.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
+        self.messageObservation = childViewModel.composerMessageHelper.observe(\.message, options: [.initial]) { [weak self] helper, _ in
+            self?.attachmentsObservation = helper.message?.observe(\.attachments, options: [.new, .old]) { [weak self] message, change in
                 let attachments = message.attachments.allObjects.compactMap { $0 as? Attachment }
                 self?.setAttachments(attachments, shouldUpload: false)
                 #if APP_EXTENSION
@@ -178,7 +178,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     func addAttachment(_ attachment: Attachment, shouldUpload: Bool = true) {
-        guard let message = self.editor.viewModel.message,
+        guard let message = self.editor.viewModel.composerMessageHelper.message,
               let context = message.managedObjectContext else { return }
         context.performAndWait {
             attachment.message = message
@@ -200,7 +200,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     func setAttachments(_ attachments: [Attachment], shouldUpload: Bool = true) {
-        guard let message = self.editor.viewModel.message,
+        guard let message = self.editor.viewModel.composerMessageHelper.message,
               let context = message.managedObjectContext else { return }
         context.performAndWait {
             attachments.forEach { $0.message = message }

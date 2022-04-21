@@ -22,12 +22,12 @@
 
 import Foundation
 
-// Timer for view model could merge with Base
-class ViewModelTimer {
-
-    private var timer: Timer?
-    private var fetchingStopped: Bool = true
-
+//Timer for view model could merge with Base
+class ViewModelTimer: NSObject {
+    
+    private var timer : Timer?
+    private var fetchingStopped : Bool = true
+    
     // MARK: - Private methods
     func setupTimer(_ run: Bool = true, timerInterval: TimeInterval = 30) {
         self.timer = Timer.scheduledTimer(timeInterval: timerInterval,

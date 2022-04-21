@@ -135,7 +135,7 @@ class MailboxCoordinatorTests: XCTestCase {
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsActive() throws {
         applicationStateStub = .active
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
-        let conversationID = "testID"
+        let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 
         sut.fetchConversationFromBEIfNeeded(conversationID: conversationID) {
@@ -150,7 +150,7 @@ class MailboxCoordinatorTests: XCTestCase {
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsInactive() throws {
         applicationStateStub = .inactive
         reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
-        let conversationID = "testID"
+        let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
         expectation1.isInverted = true
 

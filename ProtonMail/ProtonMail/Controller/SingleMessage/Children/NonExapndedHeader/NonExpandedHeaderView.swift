@@ -159,6 +159,10 @@ private enum SubviewsFactory {
     static var originImageView: UIImageView {
         let imageView = self.imageView
         imageView.tintColor = ColorProvider.IconWeak
+        [
+            imageView.heightAnchor.constraint(equalToConstant: 16),
+            imageView.widthAnchor.constraint(equalToConstant: 16)
+        ].activate()
         return imageView
     }
 

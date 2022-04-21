@@ -52,7 +52,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
 
         reachabilityStub = ReachabilityStub()
         internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
-        sut = NewMessageBodyViewModel(message: messageStub,
+        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
                                       messageDataProcessor: messageDataProcessMock,
                                       userAddressUpdater: userAddressUpdaterMock,
                                       shouldAutoLoadRemoteImages: false,
@@ -74,7 +74,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
         XCTAssertEqual(sut.remoteContentPolicy, WebContents.RemoteContentPolicy.disallowed.rawValue)
         XCTAssertEqual(sut.embeddedContentPolicy, .disallowed)
 
-        sut = NewMessageBodyViewModel(message: messageStub,
+        sut = NewMessageBodyViewModel(message: MessageEntity(messageStub),
                                       messageDataProcessor: messageDataProcessMock,
                                       userAddressUpdater: userAddressUpdaterMock,
                                       shouldAutoLoadRemoteImages: true,
@@ -91,7 +91,7 @@ class NewMessageBodyViewModelTests: XCTestCase {
     func testReloadMessageWith() {
         XCTAssertEqual(sut.currentMessageRenderStyle, .dark)
         XCTAssertNil(sut.contents)
-        sut.messageHasChanged(message: messageStub)
+        sut.messageHasChanged(message: MessageEntity(messageStub))
         XCTAssertNotNil(sut.contents)
         XCTAssertEqual(sut.contents?.renderStyle, .dark)
 

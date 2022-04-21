@@ -24,8 +24,9 @@ import Foundation
 import Groot
 
 extension ConversationDataService {
-    func fetchConversation(with conversationID: String, includeBodyOf messageID: String?, completion: ((Result<Conversation, Error>) -> Void)?) {
-        let request = ConversationDetailsRequest(conversationID: conversationID, messageID: messageID)
+    func fetchConversation(with conversationID: ConversationID, includeBodyOf messageID: MessageID?, completion: ((Result<Conversation, Error>) -> Void)?) {
+        let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
+                                                 messageID: messageID?.rawValue)
         self.apiService.GET(request) { (task, responseDict, error) in
             if let err = error {
                 DispatchQueue.main.async {
@@ -40,8 +41,8 @@ extension ConversationDataService {
                     }
                     return
                 }
-
-                let context = self.coreDataService.rootSavingContext
+                
+                let context = self.contextProvider.rootSavingContext
                 context.perform {
                     do {
                         guard var conversationDict = response.conversation, var messagesDict = response.messages else {
@@ -59,7 +60,7 @@ extension ConversationDataService {
 
                                 labels[index]["UserID"] = self.userID.rawValue
 
-                                labels[index]["ConversationID"] = conversationID
+                                labels[index]["ConversationID"] = conversationID.rawValue
 
                             }
 
@@ -79,7 +80,7 @@ extension ConversationDataService {
                         }
                         let message = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesDict, in: context)
                         if let messages = message as? [Message] {
-                            messages.first(where: { $0.messageID == messageID })?.isDetailDownloaded = true
+                            messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
                             if let conversation = conversation as? Conversation {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
                             }

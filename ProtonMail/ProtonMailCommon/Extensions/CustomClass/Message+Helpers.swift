@@ -52,10 +52,13 @@ extension Message {
         customFolder != nil
     }
 
-    var customFolder: Label? {
+    var customFolder: LabelEntity? {
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
         let allLabels = labels.filtered(using: predicate)
-        return allLabels.compactMap { $0 as? Label }.first(where: { $0.type == 3 })
+        return allLabels
+            .compactMap { $0 as? Label }
+            .compactMap(LabelEntity.init)
+            .first(where: { $0.type == .folder })
     }
 
     var messageLocation: Message.Location? {
@@ -128,13 +131,14 @@ extension Message {
         }
     }
 
-    var orderedLabels: [Label] {
+    var orderedLabels: [LabelEntity] {
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
         let allLabels = labels.filtered(using: predicate)
         return allLabels
             .compactMap { $0 as? Label }
             .filter { $0.type == 1 }
             .sorted(by: { $0.order.intValue < $1.order.intValue })
+            .compactMap(LabelEntity.init)
     }
 
     func displaySender(_ replacingEmails: [Email]) -> String {

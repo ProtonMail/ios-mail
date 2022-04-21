@@ -1,7 +1,7 @@
 import ProtonCore_UIFoundations
 
 extension ConversationViewController {
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: Message) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .reply, .replyAll, .forward:
             handleOpenComposerAction(action, message: message)
@@ -31,7 +31,7 @@ extension ConversationViewController {
         }
     }
 
-    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: Message) {
+    private func handleOpenComposerAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .reply:
             coordinator.handle(navigationAction: .reply(message: message))
@@ -44,7 +44,7 @@ extension ConversationViewController {
         }
     }
 
-    private func handleOpenViewAction(_ action: MessageViewActionSheetAction, message: Message) {
+    private func handleOpenViewAction(_ action: MessageViewActionSheetAction, message: MessageEntity) {
         switch action {
         case .viewHeaders:
             if let url = viewModel.getMessageHeaderUrl(message: message) {
@@ -86,7 +86,7 @@ extension ConversationViewController {
 
 private extension UIViewController {
 
-    func contentController(for message: Message) -> SingleMessageContentViewController? {
+    func contentController(for message: MessageEntity) -> SingleMessageContentViewController? {
         recursiveChildren
             .compactMap { $0 as? SingleMessageContentViewController }
             .first(where: { message.messageID == $0.viewModel.message.messageID })

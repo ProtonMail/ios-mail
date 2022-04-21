@@ -205,7 +205,7 @@ class MailboxCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
                   ).first,
                   let navigationController = viewController?.navigationController else { return }
 
-            followToDetails(message: message,
+            followToDetails(message: MessageEntity(message),
                             navigationController: navigationController,
                             deeplink: deeplink)
 
@@ -255,8 +255,7 @@ extension MailboxCoordinator {
 
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
-        let coreDataService = self.services.get(by: CoreDataService.self)
-        let folderLabels = user.labelService.getMenuFolderLabels(context: coreDataService.mainContext)
+        let folderLabels = user.labelService.getMenuFolderLabels()
         let labelEditViewModel = LabelEditViewModel(user: user, label: nil, type: type, labels: folderLabels)
         let labelEditViewController = LabelEditViewController.instance()
         let coordinator = LabelEditCoordinator(services: self.services,
@@ -273,7 +272,8 @@ extension MailboxCoordinator {
     private func presentSingleMessage() {
         guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
               let message = self.viewModel.item(index: indexPathForSelectedRow),
-              let navigationController = viewController?.navigationController else { return }
+              let navigationController = viewController?.navigationController
+        else { return }
         let coordinator = SingleMessageCoordinator(
             navigationController: navigationController,
             labelId: viewModel.labelID,
@@ -287,7 +287,8 @@ extension MailboxCoordinator {
     private func presentConversation() {
         guard let navigationController = viewController?.navigationController,
               let selectedRowIndexPath = viewController?.tableView.indexPathForSelectedRow,
-              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath) else { return }
+              let conversation = viewModel.itemOfConversation(index: selectedRowIndexPath)
+        else { return }
         let coordinator = ConversationCoordinator(
             labelId: viewModel.labelID,
             navigationController: navigationController,
@@ -327,7 +328,7 @@ extension MailboxCoordinator {
         navigationController.modalPresentationStyle = .fullScreen
         self.viewController?.present(navigationController, animated: true)
     }
-    private func followToDetails(message: Message,
+    private func followToDetails(message: MessageEntity,
                                  navigationController: UINavigationController,
                                  deeplink: DeepLink?) {
         switch self.viewModel.locationViewMode {
@@ -354,7 +355,7 @@ extension MailboxCoordinator {
         }
     }
 
-    func fetchConversationFromBEIfNeeded(conversationID: String, goToDetailPage: @escaping () -> Void) {
+    func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
         guard internetStatusProvider.currentStatus != .notConnected else {
             goToDetailPage()
             return
@@ -376,19 +377,21 @@ extension MailboxCoordinator {
         }
     }
 
-    private func showConversationView(conversationID: String,
+    private func showConversationView(conversationID: ConversationID,
                                       contextProvider: CoreDataContextProviderProtocol,
                                       navigationController: UINavigationController,
-                                      targetID: String?) {
+                                      targetID: MessageID?) {
         if let conversation = Conversation
-            .conversationForConversationID(conversationID,
+            .conversationForConversationID(conversationID.rawValue,
                                            inManagedObjectContext: contextProvider.mainContext) {
-            let coordinator = ConversationCoordinator(labelId: self.viewModel.labelID,
-                                                      navigationController: navigationController,
-                                                      conversation: conversation,
-                                                      user: self.viewModel.user,
-                                                      internetStatusProvider: InternetConnectionStatusProvider(),
-                                                      targetID: targetID)
+            let entity = ConversationEntity(conversation)
+            let coordinator = ConversationCoordinator(
+                labelId: self.viewModel.labelID,
+                navigationController: navigationController,
+                conversation: entity,
+                user: self.viewModel.user,
+                internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+                targetID: targetID)
             coordinator.start(openFromNotification: true)
         }
     }

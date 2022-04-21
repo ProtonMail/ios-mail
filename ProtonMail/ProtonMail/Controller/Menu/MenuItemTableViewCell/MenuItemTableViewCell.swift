@@ -80,8 +80,8 @@ class MenuItemTableViewCell: UITableViewCell, AccessibleCell {
         self.name.textColor = UIColor(hexColorCode: self.nameColor)
         self.iconColor = label.iconColor
         self.icon.tintColor = UIColor(hexColorCode: self.iconColor)
-
-        self.labelID = label.location.labelID
+        
+        self.labelID = label.location.rawLabelID
         self.delegate = delegate
         self.setupIcon(label: label, useFillIcon: useFillIcon)
         let num = label.expanded ? label.unread: label.aggreateUnread

@@ -32,11 +32,11 @@ struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
-    init(menuLabels: [MenuLabel], messages: [Message]) {
+    init(menuLabels: [MenuLabel], messages: [MessageEntity]) {
         self.menuLabels = menuLabels
         menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
         initialLabelSelectionCount.forEach { (label, _) in
-            for msg in messages where msg.contains(label: label.location.labelID) {
+            for msg in messages where msg.contains(location: label.location) {
                 if let labelCount = initialLabelSelectionCount[label] {
                     initialLabelSelectionCount[label] = labelCount + 1
                 } else {
@@ -62,11 +62,11 @@ struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
-    init(menuLabels: [MenuLabel], conversations: [Conversation]) {
+    init(menuLabels: [MenuLabel], conversations: [ConversationEntity]) {
         self.menuLabels = menuLabels
         menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
         initialLabelSelectionCount.forEach { (label, _) in
-            for conv in conversations where conv.getLabelIds().contains(label.location.labelID) {
+            for conv in conversations where conv.getLabelIDs().contains(label.location.labelID) {
                 if let labelCount = initialLabelSelectionCount[label] {
                     initialLabelSelectionCount[label] = labelCount + 1
                 } else {
@@ -92,7 +92,7 @@ struct LabelAsActionSheetViewModelConversationMessages: LabelAsActionSheetViewMo
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
     private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
 
-    init(menuLabels: [MenuLabel], conversationMessages: [Message]) {
+    init(menuLabels: [MenuLabel], conversationMessages: [MessageEntity]) {
         self.menuLabels = menuLabels
         menuLabels.forEach { initialLabelSelectionCount[$0] = 0 }
         initialLabelSelectionCount.forEach { (label, _) in

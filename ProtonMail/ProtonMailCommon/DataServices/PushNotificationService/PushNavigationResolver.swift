@@ -80,7 +80,7 @@ private extension PushNavigationResolver {
             completion(nil)
             return
         }
-        fetchMessage(userManager: userManager, uid: uid, messageId: messageId) { success in
+        fetchMessage(userManager: userManager, uid: uid, messageId: MessageID(messageId)) { success in
             guard success else {
                 logPushNotificationError(message: "Fail fetching message.", redactedInfo: "messageId \(messageId)")
                 completion(nil)
@@ -126,7 +126,7 @@ private extension PushNavigationResolver {
         }
     }
 
-    private func fetchMessage(userManager: UserManager, uid: String, messageId: String, callback: @escaping (_ success: Bool) -> Void) {
+    private func fetchMessage(userManager: UserManager, uid: String, messageId: MessageID, callback: @escaping (_ success: Bool) -> Void) {
         userManager.messageService.fetchNotificationMessageDetail(messageId) { (_, _, _, error) -> Void in
             callback(error == nil)
         }

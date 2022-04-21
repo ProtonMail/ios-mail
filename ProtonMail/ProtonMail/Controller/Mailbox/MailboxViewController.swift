@@ -203,7 +203,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if [Message.Location.spam,
             Message.Location.archive,
             Message.Location.trash,
-            Message.Location.sent].map(\.rawValue).contains(viewModel.labelID)
+            Message.Location.sent].map(\.labelID).contains(viewModel.labelID)
             && viewModel.isCurrentUserSelectedUnreadFilterInInbox {
             unreadMessageFilterButtonTapped(unreadFilterButton as Any)
         }
@@ -679,7 +679,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         switch self.viewModel.locationViewMode {
         case .singleMessage:
-            guard let message: Message = self.viewModel.item(index: indexPath) else {
+            guard let message = self.viewModel.item(index: indexPath) else {
                 return
             }
             let viewModel = buildNewMailboxMessageViewModel(
@@ -687,7 +687,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 customFolderLabels: self.viewModel.customFolders,
                 weekStart: viewModel.user.userinfo.weekStartValue
             )
-            mailboxCell.id = message.messageID
+            mailboxCell.id = message.messageID.rawValue
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             if message.expirationTime != nil &&
@@ -702,10 +702,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             let viewModel = buildNewMailboxMessageViewModel(
                 conversation: conversation,
+                conversationTagViewModels: getTagViewModelFrom(conversation: conversation),
                 customFolderLabels: self.viewModel.customFolders,
                 weekStart: viewModel.user.userinfo.weekStartValue
             )
-            mailboxCell.id = conversation.conversationID
+            mailboxCell.id = conversation.conversationID.rawValue
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
             configureSwipeAction(mailboxCell, indexPath: indexPath, conversation: conversation)
@@ -720,12 +721,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         inputCell?.accessibilityCustomActions = [accessibilityAction]
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: Message) {
+    // Temp: needs to refactor the code of generating TagViewModel
+    private func getTagViewModelFrom(conversation: ConversationEntity) -> [TagViewModel] {
+        guard let object = viewModel.coreDataContextProvider.mainContext.object(with: conversation.objectID.rawValue) as? Conversation else {
+            return []
+        }
+        return object.createTags()
+    }
+
+    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: MessageEntity) {
         cell.delegate = self
 
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
-                                                                                        isStarred: message.contains(label: .starred),
+                                                                                        isStarred: message.isStarred,
                                                                                         isUnread: message.unRead)
 
         if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, message: message) {
@@ -745,7 +754,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
         let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
-                                                                                        isStarred: message.contains(label: .starred),
+                                                                                        isStarred: message.isStarred,
                                                                                         isUnread: message.unRead)
 
         if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, message: message) {
@@ -764,7 +773,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, conversation: Conversation) {
+    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, conversation: ConversationEntity) {
         let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
         let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
                                                                                         isStarred: conversation.starred,
@@ -796,7 +805,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, message: Message) {
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, message: MessageEntity) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.reloadTableViewDataSource(animate: false)
             return
@@ -809,7 +818,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         guard !self.processSwipeActions(action,
                                         indexPath: indexPathOfCell,
-                                        itemID: message.messageID) else {
+                                        itemID: message.messageID.rawValue) else {
             return
         }
 
@@ -822,7 +831,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         cell.swipeToOrigin {}
     }
 
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, conversation: Conversation) {
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, conversation: ConversationEntity) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.reloadTableViewDataSource(animate: false)
             return
@@ -835,7 +844,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         guard !self.processSwipeActions(action,
                                         indexPath: indexPathOfCell,
-                                        itemID: conversation.conversationID) else {
+                                        itemID: conversation.conversationID.rawValue) else {
             return
         }
 
@@ -929,7 +938,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     private func delete(_ index: IndexPath, itemID: String, isSwipeAction: Bool = false) {
         guard viewModel.checkIsIndexPathMatch(with: itemID, indexPath: index),
-              self.viewModel.labelID != Message.Location.trash.rawValue else {
+              self.viewModel.labelID != Message.Location.trash.labelID else {
                   let cell = self.tableView.cellForRow(at: index) as? SwipyCell
                   cell?.swipeToOrigin { }
                   return
@@ -953,10 +962,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
         if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
+            self.viewModel.label(msg: message, with: Message.Location.starred.labelID)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.labelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.rawValue) { [weak self] result in
+                                         labelID: Message.Location.starred.labelID) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
@@ -970,10 +979,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
         if let message = self.viewModel.item(index: indexPath) {
-            self.viewModel.label(msg: message, with: Message.Location.starred.rawValue, apply: false)
+            self.viewModel.label(msg: message, with: Message.Location.starred.labelID, apply: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.unlabelConversations(conversationIDs: [conversation.conversationID],
-                                         labelID: Message.Location.starred.rawValue) { [weak self] result in
+                                         labelID: Message.Location.starred.labelID) { [weak self] result in
                 guard let self = self else { return }
                 if let _ = try? result.get() {
                     self.viewModel.eventsService.fetchEvents(labelID: self.viewModel.labelId)
@@ -1003,7 +1012,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.viewModel.mark(messages: [message], unread: false)
         } else if let conversation = viewModel.itemOfConversation(index: indexPath) {
             viewModel.markConversationAsRead(conversationIDs: [conversation.conversationID],
-                                             currentLabelID: viewModel.labelId,
+                                             currentLabelID: viewModel.labelID,
                                              completion: nil)
         }
     }
@@ -1245,8 +1254,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             {
                 let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
                 if count <= 0 && !self.fetchingMessage {
-                    let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.rawValue
-
+                    let isNotInInbox = self.viewModel.labelID != Message.Location.inbox.labelID
                     self.noResultImage.image = isNotInInbox ? UIImage(named: "mail_folder_no_result_icon") : UIImage(named: "mail_no_result_icon")
                     self.noResultImage.isHidden = false
 
@@ -1307,10 +1315,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             break
         }
     }
-
-    private func tappedMessage(_ message: Message) {
+    
+    private func tappedMessage(_ message: MessageEntity) {
         if getTapped() == false {
-            guard viewModel.isInDraftFolder || message.draft else {
+            guard viewModel.isInDraftFolder || message.isDraft else {
                 self.coordinator?.go(to: .details)
                 self.tableView.indexPathsForSelectedRows?.forEach {
                     self.tableView.deselectRow(at: $0, animated: true)
@@ -1318,7 +1326,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.updateTapped(status: false)
                 return
             }
-            guard !message.messageID.isEmpty else {
+            guard !message.messageID.rawValue.isEmpty else {
                 if self.checkHuman() {
                     // TODO::QA
                     self.coordinator?.go(to: .composeShow)
@@ -1362,7 +1370,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     self?.updateTapped(status: false)
                     return
                 }
-                guard let objectId = msg?.objectID else {
+                guard let objectId = msg?.objectID.rawValue else {
                     self?.tableView.indexPathsForSelectedRows?.forEach {
                         self?.tableView.deselectRow(at: $0, animated: true)
                     }
@@ -1385,7 +1393,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func openCachedDraft(_ message: Message) {
+    private func openCachedDraft(_ message: MessageEntity) {
         coordinator?.go(to: .composeShow, sender: message)
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: true)
@@ -1713,7 +1721,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
         }
     }
 
-    private func showLabelAsActionSheet(messages: [Message], isFromSwipeAction: Bool = false) {
+    private func showLabelAsActionSheet(messages: [MessageEntity], isFromSwipeAction: Bool = false) {
         let labelAsViewModel = LabelAsActionSheetViewModelMessages(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                    messages: messages)
 
@@ -1763,8 +1771,8 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
                 self?.hideSelectionMode()
             })
     }
-
-    private func showLabelAsActionSheet(conversations: [Conversation], isFromSwipeAction: Bool = false) {
+    
+    private func showLabelAsActionSheet(conversations: [ConversationEntity], isFromSwipeAction: Bool = false) {
         let labelAsViewModel = LabelAsActionSheetViewModelConversations(menuLabels: labelAsActionHandler.getLabelMenuItems(),
                                                                         conversations: conversations)
 
@@ -1863,7 +1871,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
         }
     }
 
-    private func showMoveToActionSheet(messages: [Message], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
+    private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
         let moveToViewModel =
             MoveToActionSheetViewModelMessages(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                messages: messages,
@@ -1873,52 +1881,51 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,
                      addNewFolder: { [weak self] in
-                        guard let self = self else { return }
-                        if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
-                            self.coordinator?.pendingActionAfterDismissal = { [weak self] in
-                                self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
-                            }
-                            self.coordinator?.go(to: .newFolder)
-                        } else {
-                            self.showAlertFolderCreationNotAllowed()
-                        }
-                     },
-                     selected: { [weak self] menuLabel, isOn in
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.hideSelectionMode()
-                        }
-                        guard isHavingUnsavedChanges,
-                              let destination = self?.moveToActionHandler.selectedMoveToFolder else {
-                            return
-                        }
-
-                        self?.moveToActionHandler
-                                .handleMoveToAction(messages: messages, isFromSwipeAction: isFromSwipeAction)
-                        if isFromSwipeAction {
-                            let title = String.localizedStringWithFormat(LocalString._inbox_swipe_to_move_banner_title,
-                                                                         messages.count,
-                                                                         destination.name)
-                            self?.showMessageMoved(title: title,
-                                                   undoActionType: .custom(destination.location.labelID))
-                        }
-                     })
+                guard let self = self else { return }
+                if self.allowToCreateFolders(existingFolders: self.viewModel.getCustomFolderMenuItems().count) {
+                    self.coordinator?.pendingActionAfterDismissal = { [weak self] in
+                        self?.showMoveToActionSheet(messages: messages, isEnableColor: isEnableColor, isInherit: isInherit)
+                    }
+                    self.coordinator?.go(to: .newFolder)
+                } else {
+                    self.showAlertFolderCreationNotAllowed()
+                }
+            }, selected: { [weak self] menuLabel, isOn in
+                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            }, cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            }, done: { [weak self] isHavingUnsavedChanges in
+                defer {
+                    self?.dismissActionSheet()
+                    self?.hideSelectionMode()
+                }
+                guard isHavingUnsavedChanges,
+                      let destination = self?.moveToActionHandler.selectedMoveToFolder else {
+                    return
+                }
+                
+                self?.moveToActionHandler
+                    .handleMoveToAction(messages: messages, isFromSwipeAction: isFromSwipeAction)
+                if isFromSwipeAction {
+                    let title = String.localizedStringWithFormat(
+                        LocalString._inbox_swipe_to_move_banner_title,
+                        messages.count,
+                        destination.name)
+                    self?.showMessageMoved(
+                        title: title,
+                        undoActionType: .custom(destination.location.rawLabelID))
+                }
+            })
     }
 
-    private func showMoveToActionSheet(conversations: [Conversation], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
+    private func showMoveToActionSheet(conversations: [ConversationEntity], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
         let moveToViewModel =
             MoveToActionSheetViewModelConversations(menuLabels: moveToActionHandler.getFolderMenuItems(),
                                                     conversations: conversations,
@@ -1968,7 +1975,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
                                                                          conversations.count,
                                                                          destination.name)
                             self?.showMessageMoved(title: title,
-                                                   undoActionType: .custom(destination.location.labelID))
+                                                   undoActionType: .custom(destination.location.rawLabelID))
                         }
                      })
     }
@@ -2312,12 +2319,12 @@ extension MailboxViewController {
                 if contextLabel.messageCount.intValue != 0 {
                     return
                 }
-                if coordinator?.conversationCoordinator?.conversation.conversationID == contextLabel.conversationID {
+                if coordinator?.conversationCoordinator?.conversation.conversationID.rawValue == contextLabel.conversationID {
                     navigationController?.popViewController(animated: true)
                 }
             }
             if let message = anObject as? Message {
-                if coordinator?.singleMessageCoordinator?.message.messageID == message.messageID {
+                if coordinator?.singleMessageCoordinator?.message.messageID == MessageID(message.messageID) {
                     navigationController?.popViewController(animated: true)
                 }
             }
@@ -2419,7 +2426,7 @@ extension MailboxViewController: UITableViewDelegate {
     private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
         if listEditing {
-            handleEditingDataSelection(of: message.messageID, indexPath: indexPath)
+            handleEditingDataSelection(of: message.messageID.rawValue, indexPath: indexPath)
         } else {
             self.tapped(at: indexPath)
         }
@@ -2428,7 +2435,7 @@ extension MailboxViewController: UITableViewDelegate {
     private func handleConversationSelection(indexPath: IndexPath) {
         guard let conversation = viewModel.itemOfConversation(index: indexPath) else { return }
         if listEditing {
-            handleEditingDataSelection(of: conversation.conversationID, indexPath: indexPath)
+            handleEditingDataSelection(of: conversation.conversationID.rawValue, indexPath: indexPath)
         } else {
             self.coordinator?.go(to: .details)
         }

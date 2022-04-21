@@ -40,8 +40,8 @@ class ContactsViewModel: ViewModelTimer {
     func set(searching isSearching: Bool) {
         fatalError("This method must be overridden")
     }
-
-    func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
+    
+    func setupFetchedResults() {
         fatalError("This method must be overridden")
     }
 
@@ -61,8 +61,8 @@ class ContactsViewModel: ViewModelTimer {
     func rowCount(section: Int) -> Int {
         fatalError("This method must be overridden")
     }
-
-    func item(index: IndexPath) -> Contact? {
+    
+    func item(index: IndexPath) -> ContactEntity? {
         fatalError("This method must be overridden")
     }
 
@@ -78,7 +78,23 @@ class ContactsViewModel: ViewModelTimer {
     }
 
     //
-    func delete(contactID: String, complete : @escaping ContactDeleteComplete) {
+    func delete(contactID: ContactID, complete : @escaping ContactDeleteComplete) {
+        fatalError("This method must be overridden")
+    }
+
+    func importContacts() {
+        fatalError("This method must be overridden")
+    }
+    
+    func transformCoreDataObjects() {
+        fatalError("This method must be overridden")
+    }
+
+    func setup(uiDelegate: ContactsVCUIProtocol?) {
+        fatalError("This method must be overridden")
+    }
+
+    func getContactObject(by contactID: ContactID) -> Contact? {
         fatalError("This method must be overridden")
     }
 }

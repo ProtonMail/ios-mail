@@ -24,7 +24,7 @@ import ProtonCore_UIFoundations
 
 class SingleMessageViewModel {
 
-    var message: Message {
+    var message: MessageEntity {
         didSet {
             propagateMessageData()
         }
@@ -35,7 +35,7 @@ class SingleMessageViewModel {
 
     private let messageService: MessageDataService
     let user: UserManager
-    let labelId: String
+    let labelId: LabelID
     private let messageObserver: MessageObserver
 
     var refreshView: (() -> Void)?
@@ -52,8 +52,8 @@ class SingleMessageViewModel {
         return formatter
     }()
 
-    init(labelId: String,
-         message: Message,
+    init(labelId: LabelID,
+         message: MessageEntity,
          user: UserManager,
          childViewModels: SingleMessageChildViewModels,
          internetStatusProvider: InternetConnectionStatusProvider,
@@ -84,7 +84,7 @@ class SingleMessageViewModel {
 
     func viewDidLoad() {
         messageObserver.observe { [weak self] in
-            self?.message = $0
+            self?.message = MessageEntity($0)
         }
     }
 
@@ -94,7 +94,9 @@ class SingleMessageViewModel {
     }
 
     func starTapped() {
-        messageService.label(messages: [message], label: Message.Location.starred.rawValue, apply: !message.starred)
+        messageService.label(messages: [message],
+                             label: Message.Location.starred.labelID,
+                             apply: !message.isStarred)
     }
 
     func handleToolBarAction(_ action: MailboxViewModel.ActionTypes) {
@@ -106,7 +108,7 @@ class SingleMessageViewModel {
         case .trash:
             messageService.move(messages: [message],
                                 from: [labelId],
-                                to: Message.Location.trash.rawValue,
+                                to: Message.Location.trash.labelID,
                                 queue: true)
         default:
             return
@@ -121,27 +123,28 @@ class SingleMessageViewModel {
         case .trash:
             messageService.move(messages: [message],
                                 from: [labelId],
-                                to: Message.Location.trash.rawValue,
+                                to: Message.Location.trash.labelID,
                                 queue: true)
         case .archive:
             messageService.move(messages: [message],
                                 from: [labelId],
-                                to: Message.Location.archive.rawValue,
+                                to: Message.Location.archive.labelID,
                                 queue: true)
         case .spam:
             messageService.move(messages: [message],
                                 from: [labelId],
-                                to: Message.Location.spam.rawValue,
+                                to: Message.Location.spam.labelID,
                                 queue: true)
         case .delete:
-            messageService.delete(messages: [message], label: labelId)
+            messageService.delete(messages: [message],
+                                  label: labelId)
         case .reportPhishing:
             reportPhishing(completion)
             return
         case .inbox, .spamMoveToInbox:
             messageService.move(messages: [message],
                                 from: [labelId],
-                                to: Message.Location.inbox.rawValue,
+                                to: Message.Location.inbox.labelID,
                                 queue: true)
         case .viewInDarkMode:
             contentViewModel.messageBodyViewModel.reloadMessageWith(style: .dark)
@@ -163,7 +166,7 @@ class SingleMessageViewModel {
                                                                  ?? LocalString._error_no_object) { _ in
             self.messageService.move(messages: [self.message],
                                      from: [self.labelId],
-                                     to: Message.Location.spam.rawValue,
+                                     to: Message.Location.spam.labelID,
                                      queue: true)
             completion()
         }
@@ -174,7 +177,7 @@ class SingleMessageViewModel {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "headers-" + time + "-" + title.joined(separator: "-")
-        guard let header = message.header else {
+        guard let header = message.rawHeader else {
             assert(false, "No header in message")
             return nil
         }
@@ -186,7 +189,8 @@ class SingleMessageViewModel {
         let time = dateFormatter.string(from: message.time ?? Date())
         let title = message.title.components(separatedBy: CharacterSet.alphanumerics.inverted)
         let filename = "body-" + time + "-" + title.joined(separator: "-")
-        guard let body = try? messageService.messageDecrypter.decrypt(message: message) else {
+        guard let decryptedPair = try? messageService.messageDecrypter.decrypt(message: message),
+              let body = decryptedPair.0 else {
             return nil
         }
         return try? self.writeToTemporaryUrl(body, filename: filename)
@@ -204,33 +208,33 @@ class SingleMessageViewModel {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(messages: [Message], isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
     }
 
-    func handleMoveToAction(conversations: [Conversation], isFromSwipeAction: Bool, completion: (() -> Void)?) {
+    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?) {
         fatalError("Not implemented")
     }
 }
 
 // MARK: - Label as functions
 extension SingleMessageViewModel: LabelAsActionSheetProtocol {
-    func handleLabelAsAction(messages: [Message],
+    func handleLabelAsAction(messages: [MessageEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType]) {
         for (label, status) in currentOptionsStatus {
             guard status != .dash else { continue } // Ignore the option in dash
             if selectedLabelAsLabels
-                .contains(where: { $0.labelID == label.location.labelID }) {
+                .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
                 // Add to message which does not have this label
-                if !message.contains(label: label.location.labelID) {
+                if !message.contains(location: label.location) {
                     messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: true)
                 }
             } else {
-                if message.contains(label: label.location.labelID) {
+                if message.contains(location: label.location) {
                     messageService.label(messages: messages,
                                          label: label.location.labelID,
                                          apply: false)
@@ -241,15 +245,15 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
         selectedLabelAsLabels.removeAll()
 
         if shouldArchive {
-            if let fLabel = message.firstValidFolder() {
+            if let fLabel = message.getFirstValidFolder() {
                 messageService.move(messages: messages,
                                     from: [fLabel],
-                                    to: Message.Location.archive.rawValue)
+                                    to: Message.Location.archive.labelID)
             }
         }
     }
 
-    func handleLabelAsAction(conversations: [Conversation],
+    func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
                              currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
                              completion: (() -> Void)?) {

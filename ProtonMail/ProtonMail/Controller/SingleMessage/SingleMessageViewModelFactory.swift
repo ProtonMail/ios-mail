@@ -37,7 +37,7 @@ class SingleMessageContentViewModelFactory {
         return .init(context: context, childViewModels: childViewModels, user: user, internetStatusProvider: internetStatusProvider)
     }
 
-    private func messageBody(message: Message,
+    private func messageBody(message: MessageEntity,
                              user: UserManager,
                              isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
         .init(
@@ -52,7 +52,7 @@ class SingleMessageContentViewModelFactory {
         )
     }
 
-    private func banner(labelId: String, message: Message, user: UserManager) -> BannerViewModel {
+    private func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
@@ -78,9 +78,9 @@ class SingleMessageContentViewModelFactory {
         )
     }
 
-    private func attachments(message: Message) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+    private func attachments(message: MessageEntity) -> AttachmentViewModel {
+        let attachments: [AttachmentInfo] = message.attachments
+            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
 
         return .init(attachments: attachments)
     }
@@ -89,8 +89,8 @@ class SingleMessageContentViewModelFactory {
 
 class SingleMessageViewModelFactory {
 
-    func createViewModel(labelId: String,
-                         message: Message,
+    func createViewModel(labelId: LabelID,
+                         message: MessageEntity,
                          user: UserManager,
                          isDarkModeEnableClosure: @escaping () -> Bool) -> SingleMessageViewModel {
         let childViewModels = SingleMessageChildViewModels(
@@ -103,7 +103,7 @@ class SingleMessageViewModelFactory {
         return .init(labelId: labelId, message: message, user: user, childViewModels: childViewModels, internetStatusProvider: InternetConnectionStatusProvider(), isDarkModeEnableClosure: isDarkModeEnableClosure)
     }
 
-    private func messageBody(message: Message,
+    private func messageBody(message: MessageEntity,
                              user: UserManager,
                              isDarkModeEnableClosure: @escaping () -> Bool) -> NewMessageBodyViewModel {
         .init(
@@ -118,7 +118,7 @@ class SingleMessageViewModelFactory {
         )
     }
 
-    private func banner(labelId: String, message: Message, user: UserManager) -> BannerViewModel {
+    private func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,
@@ -144,9 +144,9 @@ class SingleMessageViewModelFactory {
         )
     }
 
-    private func attachments(message: Message) -> AttachmentViewModel {
-        let attachments: [AttachmentInfo] = message.attachments.compactMap { $0 as? Attachment }
-            .map(AttachmentNormal.init) + (message.tempAtts ?? [])
+    private func attachments(message: MessageEntity) -> AttachmentViewModel {
+        let attachments: [AttachmentInfo] = message.attachments
+            .map(AttachmentNormal.init) + (message.mimeAttachments ?? [])
 
         return .init(attachments: attachments)
     }

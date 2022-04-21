@@ -31,7 +31,7 @@ extension CacheServiceTest {
         label.type = NSNumber(value: 1)
 
         let expect = expectation(description: "Update label")
-        sut.updateLabel(label, name: "New name", color: "New Color") {
+        sut.updateLabel(LabelEntity(label: label), name: "New name", color: "New Color") {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
@@ -50,7 +50,7 @@ extension CacheServiceTest {
         label.type = NSNumber(value: 1)
 
         let expect = expectation(description: "Update label")
-        sut.deleteLabel(label) {
+        sut.deleteLabel(LabelEntity(label: label)) {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)

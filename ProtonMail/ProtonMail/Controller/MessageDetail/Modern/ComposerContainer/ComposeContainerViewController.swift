@@ -511,8 +511,8 @@ extension ComposeContainerViewController: AttachmentController {
                     seal.fulfill_()
                     return
                 }
-
-                guard let message = self.coordinator.editor.viewModel.message,
+                
+                guard let message = self.coordinator.editor.viewModel.composerMessageHelper.message,
                       message.managedObjectContext != nil else {
                     self.error(LocalString._system_cant_copy_the_file)
                     seal.fulfill_()

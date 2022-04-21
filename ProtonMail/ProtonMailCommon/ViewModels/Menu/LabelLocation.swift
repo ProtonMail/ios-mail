@@ -22,7 +22,32 @@
 
 import UIKit
 
-enum LabelLocation: Equatable, Hashable {
+enum LabelLocation: Equatable, Hashable, CaseIterable {
+    static var allCases: [LabelLocation] = [
+        .provideFeedback,
+        .inbox,
+        .hiddenDraft,
+        .draft,
+        .hiddenSent,
+        .sent,
+        .starred,
+        .archive,
+        .spam,
+        .trash,
+        .allmail,
+        .customize(""),
+        .bugs,
+        .contacts,
+        .settings,
+        .signout,
+        .lockapp,
+        .subscription,
+        .addLabel,
+        .addFolder,
+        .accountManger,
+        .addAccount
+    ]
+
     case provideFeedback
 
     case inbox
@@ -49,6 +74,10 @@ enum LabelLocation: Equatable, Hashable {
     case accountManger
     case addAccount
 
+    init(labelID: LabelID) {
+        self.init(id: labelID.rawValue)
+    }
+    
     init(id: String) {
         switch id {
         case "Provide feedback": self = .provideFeedback
@@ -76,8 +105,8 @@ enum LabelLocation: Equatable, Hashable {
             self = .customize(id)
         }
     }
-
-    var labelID: String {
+    
+    var rawLabelID: String {
         switch self {
         case .provideFeedback: return "Provide feedback"
         case .inbox: return "0"
@@ -106,6 +135,10 @@ enum LabelLocation: Equatable, Hashable {
         }
     }
 
+    var labelID: LabelID {
+        return LabelID.init(rawValue: rawLabelID)
+    }
+    
     var localizedTitle: String {
         switch self {
         case .provideFeedback: return LocalString._provide_feedback
@@ -194,6 +227,6 @@ enum LabelLocation: Equatable, Hashable {
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.labelID == rhs.labelID
+        return lhs.rawLabelID == rhs.rawLabelID
     }
 }

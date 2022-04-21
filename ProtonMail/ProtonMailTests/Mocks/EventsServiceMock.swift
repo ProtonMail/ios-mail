@@ -17,15 +17,15 @@ class EventsServiceMock: EventsFetching {
 
     @FuncStub(EventsServiceMock.fetchEvents(byLabel:notificationMessageID:completion:)) var callFetchEvents
     func fetchEvents(
-        byLabel labelID: String,
-        notificationMessageID: String?,
+        byLabel labelID: LabelID,
+        notificationMessageID: MessageID?,
         completion: CompletionBlock?
     ) {
         callFetchEvents(labelID, notificationMessageID, completion)
     }
 
     @FuncStub(EventsServiceMock.fetchEvents(labelID:)) var callFetchEventsByLabelID
-    func fetchEvents(labelID: String) { callFetchEventsByLabelID(labelID) }
+    func fetchEvents(labelID: LabelID) { callFetchEventsByLabelID(labelID) }
 
     @FuncStub(EventsServiceMock.fetchLatestEventID) var callFetchLatestEventID
     func fetchLatestEventID(completion: CompletionBlock?) {

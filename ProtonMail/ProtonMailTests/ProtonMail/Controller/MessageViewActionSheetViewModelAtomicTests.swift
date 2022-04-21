@@ -123,7 +123,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
 
     func testShouldNotIncludeTrashIfLabelIdIsTrash() {
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -135,7 +135,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
 
     func testShouldNotIncludeArchiveIfLabelIdIsArchiveOrSpam() {
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.archive.rawValue,
+                                              labelID: Message.Location.archive.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -144,7 +144,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
                                               shouldShowRenderModeOption: false)
         XCTAssertFalse(sut.items.contains(.archive))
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -180,7 +180,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
 
     func testShouldIncludeInboxIfLabelIdIsArchiveOrTrash() {
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.archive.rawValue,
+                                              labelID: Message.Location.archive.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -189,7 +189,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.inbox))
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -213,7 +213,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
 
     func testShouldIncludeSpamMoveToInboxIfLabelIdIsSpam() {
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -225,7 +225,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
 
     func testShouldIncludeDeleteIfDraftSentSpamTrash() {
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.draft.rawValue,
+                                              labelID: Message.Location.draft.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -234,7 +234,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.sent.rawValue,
+                                              labelID: Message.Location.sent.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -243,7 +243,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.spam.rawValue,
+                                              labelID: Message.Location.spam.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),
@@ -252,7 +252,7 @@ final class MessageViewActionSheetViewModelAtomicTests: XCTestCase {
                                               shouldShowRenderModeOption: false)
         XCTAssert(sut.items.contains(.delete))
         sut = MessageViewActionSheetViewModel(title: "",
-                                              labelID: Message.Location.trash.rawValue,
+                                              labelID: Message.Location.trash.labelID,
                                               includeStarring: Bool.random(),
                                               isStarred: Bool.random(),
                                               isBodyDecryptable: Bool.random(),

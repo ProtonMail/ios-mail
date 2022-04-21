@@ -27,10 +27,11 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
 class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol {
-    typealias viewModelType = ContactGroupDetailViewModel
 
-    var viewModel: ContactGroupDetailViewModel!
+    typealias viewModelType = ContactGroupDetailVMProtocol
 
+    var viewModel: ContactGroupDetailVMProtocol!
+    
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
     @IBOutlet weak var groupDetailLabel: UILabel!
@@ -44,7 +45,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     private let kToContactGroupEditSegue = "toContactGroupEditSegue"
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
 
-    func set(viewModel: ContactGroupDetailViewModel) {
+    func set(viewModel: ContactGroupDetailVMProtocol) {
         self.viewModel = viewModel
         self.viewModel.reloadView = { [weak self] in
             self?.reload()
@@ -68,9 +69,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                     user: user,
                                                     coreDataContextProvider: sharedServices.get(by: CoreDataService.self))
 
-            let contactGroupVO = ContactGroupVO(ID: self.viewModel.getGroupID(), name: self.viewModel.getName())
-            contactGroupVO.selectAllEmailFromGroup()
-            viewModel.addToContacts(contactGroupVO)
+        let contactGroupVO = ContactGroupVO(ID: self.viewModel.groupID.rawValue, name: self.viewModel.name)
+        contactGroupVO.selectAllEmailFromGroup()
+        viewModel.addToContacts(contactGroupVO)
 
         let coordinator = ComposeContainerViewCoordinator(presentingViewController: self, editorViewModel: viewModel)
         coordinator.start()
@@ -127,13 +128,12 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
 
     private func prepareHeader() {
-        groupNameLabel.attributedText = viewModel.getName().apply(style: .Default)
-
+        groupNameLabel.attributedText = viewModel.name.apply(style: .Default)
+        
         groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
 
         groupImage.setupImage(tintColor: UIColor.white,
-                              backgroundColor: UIColor.init(hexString: viewModel.getColor(),
-                                                            alpha: 1))
+                              backgroundColor: UIColor.init(hexString: viewModel.color, alpha: 1))
         if let image = sendButton.imageView?.image {
             sendButton.imageView?.contentMode = .center
             sendButton.imageView?.image = UIImage.resize(image: image, targetSize: CGSize.init(width: 20, height: 20))
@@ -154,13 +154,14 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
 
             if let sender = sender as? ContactGroupDetailViewController,
                 let viewModel = sender.viewModel {
-                sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
-                                                          user: self.viewModel.user,
-                                                          state: .edit,
-                                                          groupID: viewModel.getGroupID(),
-                                                          name: viewModel.getName(),
-                                                          color: viewModel.getColor(),
-                                                          emailIDs: viewModel.getEmailIDs())
+                sharedVMService.contactGroupEditViewModel(
+                    contactGroupEditViewController,
+                    user: self.viewModel.user,
+                    state: .edit,
+                    groupID: viewModel.groupID.rawValue,
+                    name: viewModel.name,
+                    color: viewModel.color,
+                    emailIDs: Set(viewModel.emails))
             } else {
                 // TODO: handle error
                 return
@@ -189,11 +190,11 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.getTotalEmails()
+        return viewModel.emails.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 && viewModel.getTotalEmails() > 0 {
+        if section == 0 && !viewModel.emails.isEmpty {
             return LocalString._menu_contacts_title
         }
         return nil
@@ -202,11 +203,12 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kContactGroupViewCellIdentifier,
                                                  for: indexPath) as! ContactGroupEditViewCell
-
-        let ret = viewModel.getEmail(at: indexPath)
-        cell.config(emailID: ret.emailID,
-                    name: ret.name,
-                    email: ret.email,
+        guard let data = viewModel.emails[safe: indexPath.row] else {
+            return cell
+        }
+        cell.config(emailID: data.emailID,
+                    name: data.name,
+                    email: data.email,
                     queryString: "",
                     state: .detailView)
 

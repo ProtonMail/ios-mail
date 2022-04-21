@@ -87,7 +87,7 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
         guard let item = self.labels.getFolderItem(by: path) else {
             return
         }
-        self.update(parentID: item.location.labelID)
+        self.update(parentID: item.location.rawLabelID)
     }
 
     /// could this row be selected
@@ -108,14 +108,14 @@ final class LabelParentSelectVM: LabelParentSelctVMProtocol {
             return false
         }
 
-        let targetID = item.location.labelID
+        let targetID = item.location.rawLabelID
         if self.originalParentID == targetID ||
-            self.label?.parentID == targetID {
+            self.label?.parentID?.rawValue == targetID {
             self.allowed[row] = true
             return true
         }
 
-        if self.label?.location.labelID == targetID {
+        if self.label?.location.rawLabelID == targetID {
             self.allowed[row] = false
             return false
         }

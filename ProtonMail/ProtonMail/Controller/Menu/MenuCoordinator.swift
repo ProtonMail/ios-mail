@@ -204,14 +204,16 @@ extension MenuCoordinator {
         sideMenu.setContentViewController(to: destination)
         sideMenu.hideMenu(animated: true, completion: nil)
     }
-
-    private func queryLabel(id: String) -> Label? {
+    
+    private func queryLabel(id: LabelID) -> LabelEntity? {
         guard let user = self.usersManager.firstUser else {
             return nil
         }
         let labelService = user.labelService
-        let label = labelService.label(by: id)
-        return label
+        guard let label = labelService.label(by: id) else {
+            return nil
+        }
+        return LabelEntity(label: label)
     }
 }
 
@@ -258,7 +260,7 @@ extension MenuCoordinator {
         switch labelInfo.location {
         case .customize(let id):
             if labelInfo.type == .folder,
-               let label = self.queryLabel(id: id) {
+               let label = self.queryLabel(id: LabelID(id)) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
                                              label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .folder,
@@ -284,7 +286,7 @@ extension MenuCoordinator {
                     }
                 })
             } else if labelInfo.type == .label,
-                      let label = self.queryLabel(id: id) {
+                      let label = self.queryLabel(id: LabelID(id)) {
                 viewModel = MailboxViewModel(labelID: label.labelID,
                                              label: LabelInfo(labelID: label.labelID, name: label.name),
                                              labelType: .label,
@@ -517,8 +519,8 @@ extension MenuCoordinator {
         if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
             window.enumerateViewControllerHierarchy { controller, stop in
                 if let conversationVC = controller as? ConversationViewController,
-                   conversationVC.viewModel.conversation.conversationID == message.conversationID {
-                    conversationVC.showMessage(of: message.messageID)
+                   conversationVC.viewModel.conversation.conversationID.rawValue == message.conversationID {
+                    conversationVC.showMessage(of: MessageID(message.messageID))
                     isFound = true
                     stop = true
                 }
@@ -543,7 +545,7 @@ extension MenuCoordinator: CoordinatorDelegate {
         guard let user = self.usersManager.firstUser else {
             return
         }
-        self.vm.activateUser(id: user.userInfo.userId)
+        self.vm.activateUser(id: UserID(user.userInfo.userId))
         let label = MenuLabel(location: .inbox)
         self.navigateToMailBox(labelInfo: label, deepLink: nil)
     }

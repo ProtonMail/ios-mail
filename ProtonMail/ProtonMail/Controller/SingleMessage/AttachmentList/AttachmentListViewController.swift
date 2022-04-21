@@ -32,7 +32,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
     private var bannerHeightConstraint: NSLayoutConstraint?
     private var isInternetBannerPresented = false
     private var previewer: QuickViewViewController?
-    private var lastClickAttachmentID: String?
+    private var lastClickAttachmentID: AttachmentID?
     private var realAttachment: Bool { userCachedStatus.realAttachments }
 
     // Used in Quick Look dataSource
@@ -146,7 +146,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             let byteCountFormatter = ByteCountFormatter()
             let sizeString = "\(byteCountFormatter.string(fromByteCount: Int64(attachment.size)))"
 
-            let isDownloading = viewModel.isAttachmentDownloading(id: attachment.att?.attachmentID ?? "")
+            let isDownloading = viewModel.isAttachmentDownloading(id: attachment.id ?? "")
             cellToConfig.configure(mimeType: attachment.mimeType,
                                    fileName: attachment.fileName,
                                    fileSize: sizeString,

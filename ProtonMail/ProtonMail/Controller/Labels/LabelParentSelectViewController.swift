@@ -135,7 +135,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
             cell.update(iconColor: self.viewModel.getFolderColor(label: label), alpha: 0.4)
         }
         cell.update(badge: 0)
-        let isParent = label.location.labelID == self.viewModel.parentID
+        let isParent = label.location.rawLabelID == self.viewModel.parentID
         cell.accessoryType = isParent ? .checkmark: .none
         cell.addSeparator(padding: 0)
         return cell
@@ -149,7 +149,7 @@ extension LabelParentSelectViewController: UITableViewDelegate, UITableViewDataS
         }
 
         let parentID = self.viewModel.parentID
-        let row = parentID.isEmpty ? 0: (self.viewModel.labels.getRow(of: parentID) ?? 0) + 1
+        let row = parentID.isEmpty ? 0: (self.viewModel.labels.getRow(of: LabelID(parentID)) ?? 0) + 1
         let previous = IndexPath(row: row, section: 0)
         let cell = tableView.cellForRow(at: previous)
         cell?.accessoryType = .none

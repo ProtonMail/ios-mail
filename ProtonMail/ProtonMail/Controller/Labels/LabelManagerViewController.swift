@@ -368,7 +368,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
             if parentID == sourceLabel.location.labelID {
                 return sourceIndexPath
             }
-            while let parentLabel = self.viewModel.queryLabel(id: parentID) {
+            while let parentLabel = self.viewModel.queryLabel(id: parentID?.rawValue) {
                 guard parentLabel.indentationLevel == sourceLevel else {
                     parentID = parentLabel.parentID
                     continue
@@ -376,7 +376,7 @@ extension LabelManagerViewController: UITableViewDelegate, UITableViewDataSource
                 guard sourceLabel.parentID == parentLabel.parentID else {
                     return sourceIndexPath
                 }
-                if sourceLabel.location.labelID == parentLabel.location.labelID {
+                if sourceLabel.location.rawLabelID == parentLabel.location.rawLabelID {
                     return sourceIndexPath
                 }
 

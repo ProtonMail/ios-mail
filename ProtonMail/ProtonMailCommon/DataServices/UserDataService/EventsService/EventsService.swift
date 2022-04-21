@@ -42,10 +42,10 @@ protocol EventsFetching: AnyObject {
 
     func begin(subscriber: EventsConsumer)
 
-    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?)
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?)
     func fetchLatestEventID(completion: CompletionBlock?)
-    func fetchEvents(labelID: String)
-    func processEvents(counts: [[String: Any]]?)
+    func fetchEvents(labelID: LabelID)
+    func processEvents(counts: [[String : Any]]?)
     func processEvents(conversationCounts: [[String: Any]]?)
     func processEvents(mailSettings: [String: Any]?)
     func processEvents(space usedSpace: Int64?)
@@ -134,7 +134,7 @@ extension EventsService {
     ///   - labelID: Label/location/folder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLabel labelID: String, notificationMessageID: String?, completion: CompletionBlock?) {
+    func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: CompletionBlock?) {
         guard status == .running else {
             completion?(nil, nil, EventError.notRunning as NSError)
             return
@@ -286,7 +286,7 @@ extension EventsService {
         }
     }
 
-    func fetchEvents(labelID: String) {
+    func fetchEvents(labelID: LabelID) {
         fetchEvents(
             byLabel: labelID,
             notificationMessageID: nil,
@@ -320,7 +320,7 @@ extension EventsService {
      :param: task       NSURL session task
      :param: completion complete call back
      */
-    fileprivate func processEvents(messages: [[String: Any]], notificationMessageID: String?, task: URLSessionDataTask!, completion: CompletionBlock?) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?, task: URLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -333,7 +333,7 @@ extension EventsService {
             let context = self.coreDataService.operationContext
             self.coreDataService.enqueue(context: context) { (context) in
                 var error: NSError?
-                var messagesNoCache: [String] = []
+                var messagesNoCache : [MessageID] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch msg.Action {
@@ -355,7 +355,7 @@ extension EventsService {
                                     continue
                                 }
                             }
-                            if let notify_msg_id = notificationMessageID {
+                            if let notify_msg_id = notificationMessageID?.rawValue {
                                 if notify_msg_id == msg.ID {
                                     _ = msg.message?.removeValue(forKey: "Unread")
                                 }
@@ -409,7 +409,7 @@ extension EventsService {
 
                                 if messageObject.messageStatus == 0 {
                                     if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(messageObject.messageID)
+                                        messagesNoCache.append(MessageID(messageObject.messageID))
                                     } else {
                                         messageObject.messageStatus = 1
                                     }
@@ -417,19 +417,19 @@ extension EventsService {
 
                                 if messageObject.managedObjectContext == nil {
                                     if let messageid = msg.message?["ID"] as? String {
-                                        messagesNoCache.append(messageid)
+                                        messagesNoCache.append(MessageID(messageid))
                                     }
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
-                                    messagesNoCache.append(messageid)
+                                    messagesNoCache.append(MessageID(messageid))
                                 }
                             }
                         } catch {
                             // when GRTJSONSerialization insert failed
                             if let messageid = msg.message?["ID"] as? String {
-                                messagesNoCache.append(messageid)
+                                messagesNoCache.append(MessageID(messageid))
                             }
                         }
                     default:
@@ -539,7 +539,8 @@ extension EventsService {
                         _ = context.saveUpstreamIfNeeded()
                     }
 
-                    self.userManager.conversationService.fetchConversations(with: conversationsNeedRefetch, completion: nil)
+                    let conversationIDs = conversationsNeedRefetch.map {ConversationID($0)}
+                    self.userManager.conversationService.fetchConversations(with: conversationIDs, completion: nil)
                 }
             }
         }

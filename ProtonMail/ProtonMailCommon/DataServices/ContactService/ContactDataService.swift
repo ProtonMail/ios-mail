@@ -217,9 +217,9 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func update(contactID: String,
+    func update(contactID: ContactID,
                 cards: [CardData], completion: ContactUpdateComplete?) {
-        let api = ContactUpdateRequest(contactid: contactID, cards: cards)
+        let api = ContactUpdateRequest(contactid: contactID.rawValue, cards:cards)
         self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
             if let error = response.error {
                 completion?(nil, error.toNSError)
@@ -250,8 +250,8 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter contactID: delete contact id
      - Parameter completion: async delete prcess complete response
      **/
-    func delete(contactID: String, completion: @escaping ContactDeleteComplete) {
-        let api = ContactDeleteRequest(ids: [contactID])
+    func delete(contactID: ContactID, completion: @escaping ContactDeleteComplete) {
+        let api = ContactDeleteRequest(ids: [contactID.rawValue])
         self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
@@ -261,7 +261,7 @@ class ContactDataService: Service, HasLocalStorage {
                         self.cacheService.deleteContact(by: contactID) { _ in
                         }
                     } else {
-                        let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context)
+                        let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context)
                         contact?.isSoftDeleted = false
                         _ = context.saveUpstreamIfNeeded()
                     }
@@ -544,6 +544,40 @@ class ContactDataService: Service, HasLocalStorage {
         return allEmailsInManagedObjectContext(context).filter { $0.userID == userID.rawValue }
     }
 
+    /// Get name from user contacts by the given mail address
+    /// - Parameter mailAddress: mail address
+    /// - Returns: Contact name or nil if user contact can't find the given address
+    func getName(of mailAddress: String) -> String? {
+        let fetchController = self.resultController()
+        try? fetchController?.performFetch()
+        let contacts = fetchController?.fetchedObjects?
+            .compactMap { $0 as? Contact }
+            .map(ContactEntity.init) ?? []
+        let mails = self.allEmails()
+            .compactMap(EmailEntity.init)
+            .filter { $0.email == mailAddress }
+            .sorted { mail1, mail2 in
+                guard let time1 = mail1.contactCreateTime,
+                      let time2 = mail2.contactCreateTime else {
+                          return true
+                      }
+                return time1 < time2
+            }
+        for mail in mails {
+            guard let contact = contacts
+                    .first(where: { $0.contactID == mail.contactID }) else {
+                        continue
+                    }
+            let priority: [String] = [contact.name,
+                                      mail.name]
+            guard let value = priority.first(where: { !$0.isEmpty }) else {
+                continue
+            }
+            return value
+        }
+        return nil
+    }
+    
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
         do {

@@ -2,14 +2,14 @@ import Foundation
 import ProtonCore_Networking
 
 struct SingleMessageContentViewContext {
-    let labelId: String
-    let message: Message
+    let labelId: LabelID
+    let message: MessageEntity
     let viewMode: ViewMode
 }
 
 class SingleMessageContentViewModel {
 
-    private(set) var message: Message {
+    private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
     }
 
@@ -86,7 +86,7 @@ class SingleMessageContentViewModel {
         self.messageService = user.messageService
     }
 
-    func messageHasChanged(message: Message) {
+    func messageHasChanged(message: MessageEntity) {
         self.message = message
         self.messageHadChanged?()
     }

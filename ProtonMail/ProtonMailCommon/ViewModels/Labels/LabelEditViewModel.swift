@@ -33,7 +33,7 @@ protocol LabelEditVMProtocol: AnyObject {
     var name: String { get }
     var iconColor: String { get }
     var viewTitle: String { get }
-    var parentID: String { get }
+    var parentID: LabelID? { get }
     var networkingAlertTitle: String { get }
     var notify: Bool { get }
     var deleteMessage: String { get }
@@ -49,7 +49,7 @@ protocol LabelEditVMProtocol: AnyObject {
     func set(uiDelegate: LabelEditUIProtocol)
     func update(name: String)
     func update(iconColor: String)
-    func update(parentID: String)
+    func update(parentID: LabelID)
     func update(notify: Bool)
     func save()
     func delete()
@@ -117,7 +117,7 @@ final class LabelEditViewModel {
             self.uiDelegate?.checkDoneButtonStatus()
         }
     }
-    private(set) var parentID: String {
+    private(set) var parentID: LabelID? {
         didSet {
             self.uiDelegate?.checkDoneButtonStatus()
         }
@@ -136,7 +136,7 @@ final class LabelEditViewModel {
         self.user = user
         self.type = type
         self.name = label?.name ?? ""
-        self.parentID = label?.parentID ?? ""
+        self.parentID = label?.parentID
         self.iconColor = label?.iconColor ?? ColorManager.forLabel[0]
         self.notify = label?.notify ?? true
         self.label = label
@@ -186,7 +186,8 @@ extension LabelEditViewModel: LabelEditVMProtocol {
     }
 
     var parentLabelName: String {
-        guard let parentLabel = self.labels.getLabel(of: self.parentID) else {
+        guard let parentID = self.parentID,
+              let parentLabel = self.labels.getLabel(of: parentID) else {
             return LocalString._general_none
         }
         return parentLabel.name
@@ -196,13 +197,13 @@ extension LabelEditViewModel: LabelEditVMProtocol {
         guard let label = self.label else {
             let nameChanged = !self.name.isEmpty
             let colorChanged = self.iconColor != self.colors[0]
-            let parentChanged = !self.parentID.isEmpty
+            let parentChanged = self.parentID?.rawValue.isEmpty == false
             let notifyChanged = !self.notify
             return nameChanged || colorChanged || parentChanged || notifyChanged
         }
         if self.name != label.name ||
             self.iconColor != label.iconColor ||
-            self.parentID != (label.parentID ?? "") ||
+            self.parentID != label.parentID ||
             self.notify != label.notify {
             return true
         }
@@ -252,7 +253,8 @@ extension LabelEditViewModel: LabelEditVMProtocol {
 
     /// Does name duplicated in the selected parent folder?
     var doesNameDuplicate: Bool {
-        guard let parent = self.labels.getLabel(of: self.parentID) else {
+        guard let parentID = self.parentID,
+              let parent = self.labels.getLabel(of: parentID) else {
             return false
         }
         if let label = self.label,
@@ -274,14 +276,14 @@ extension LabelEditViewModel: LabelEditVMProtocol {
         self.iconColor = iconColor
     }
 
-    func update(parentID: String) {
+    func update(parentID: LabelID) {
         self.parentID = parentID
         self.uiDelegate?.updateParentFolderName()
         guard self.user.userInfo.inheritParentFolderColor == 1 else {
             return
         }
 
-        if parentID.isEmpty {
+        if parentID.rawValue.isEmpty == true {
             if let index = self.section.firstIndex(of: .colorInherited) {
                 self.section.remove(at: index)
                 self.section.insert(.palette, at: index)
@@ -312,11 +314,13 @@ extension LabelEditViewModel: LabelEditVMProtocol {
         guard let label = self.label,
               let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
         self.uiDelegate?.showLoadingHUD()
+        
+        let subFolders = label.flattenSubFolders()
+            .compactMap { self.user.labelService.label(by: $0.location.labelID) }
+            .compactMap(LabelEntity.init)
 
-        let subFolders: [NSManagedObjectID] = label.flattenSubFolders()
-            .compactMap { self.user.labelService.label(by: $0.location.labelID)?.objectID }
-
-        self.user.labelService.deleteLabel(dbLabel, subLabelIDs: subFolders) {
+        self.user.labelService.deleteLabel(LabelEntity(label: dbLabel),
+                                           subLabels: subFolders) {
             [weak self] in
             guard let self = self else { return }
             self.uiDelegate?.hideLoadingHUD()
@@ -345,7 +349,8 @@ extension LabelEditViewModel {
 
             guard enableFolderColor == 1 else { return }
             if isInherit == 1 {
-                let item: EditSection = self.parentID.isEmpty ? .palette: .colorInherited
+                let id = self.parentID?.rawValue ?? ""
+                let item: EditSection = id.isEmpty == true ? .palette: .colorInherited
                 self.section.append(item)
             } else {
                 self.section.append(.palette)
@@ -359,7 +364,7 @@ extension LabelEditViewModel {
         guard let dbLabel = self.user.labelService.label(by: label.location.labelID) else { return }
 
         self.uiDelegate?.showLoadingHUD()
-        self.user.labelService.updateLabel(dbLabel,
+        self.user.labelService.updateLabel(LabelEntity(label: dbLabel),
                                            name: self.name,
                                            color: self.iconColor,
                                            parentID: self.parentID,
