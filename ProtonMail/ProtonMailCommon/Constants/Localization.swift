@@ -1367,7 +1367,8 @@ class LocalizedString {
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
 
-    lazy var _conversation_settings_row_title = NSLocalizedString("Enable conversations", comment: "")
+    lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails in the same conversation together.", comment: "")
+    lazy var _conversation_settings_row_title = NSLocalizedString("Conversation grouping", comment: "")
     lazy var _conversation_settings_screen_top_title = NSLocalizedString("Conversation mode", comment: "")
     lazy var _account_settings_conversation_row_title = NSLocalizedString("Conversation", comment: "")
 
