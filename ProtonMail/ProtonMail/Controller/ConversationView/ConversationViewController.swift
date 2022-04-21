@@ -214,10 +214,10 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         navigationItem.backButtonTitle = .empty
         navigationItem.rightBarButtonItem = starBarButton
         let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
-        navigationItem.leftBarButtonItem = backButtonItem
+        navigationItem.backBarButtonItem = backButtonItem
 
         // Accessibility
-        navigationItem.leftBarButtonItem?.accessibilityLabel = LocalString._menu_inbox_title
+        navigationItem.backBarButtonItem?.accessibilityLabel = LocalString._general_back_action
         starBarButton.isAccessibilityElement = true
         starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }
