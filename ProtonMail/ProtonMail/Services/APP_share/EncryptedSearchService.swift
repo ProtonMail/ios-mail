@@ -2646,7 +2646,7 @@ extension EncryptedSearchService {
     private func documentToHTMLString(document: Document) throws -> String {
         var html = ""
         let body = document.body()
-        for node in body!.children() {
+        for node in body!.getChildNodes() {
             let htmlString = try node.outerHtml()
             if htmlString.contains(check: "<mark>") {
                 // split string by newlines
@@ -2733,7 +2733,33 @@ extension EncryptedSearchService {
                 }
             }
         }
-        return positions
+        // Make sure there are no overlaps when highlighting - if necessary merge the highlighted parts
+        return self.sanitizePositions(occurrences: positions)
+    }
+
+    private func sanitizePositions(occurrences: [(Int, Int)]) -> [(Int, Int)] {
+        if occurrences.count < 2 {
+            return occurrences
+        }
+
+        // Sort from first position to last
+        let sorted = occurrences.sorted { $0 < $1 }
+
+        // Make sure there is no intersecting highlighting zones by merging them
+        var noIntersections: [(Int, Int)] = []
+        var previousValue: (Int, Int) = sorted.first!
+        for i in 1...(sorted.count-1) {
+            if (previousValue.1 >= sorted[i].0) {
+                // There is an intersection, we merge the two zones
+                previousValue = (previousValue.0, max(previousValue.1, sorted[i].1))
+            } else {
+                // no intersection
+                noIntersections.append(previousValue)
+                previousValue = sorted[i]
+            }
+        }
+        noIntersections.append(previousValue)
+        return noIntersections
     }
 
     // TODO
