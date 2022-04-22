@@ -399,10 +399,19 @@ extension NewMessageBodyViewController {
         case .linkActivated where navigationAction.request.url != nil:
             defer { decisionHandler(.cancel) }
             guard var url = navigationAction.request.url else { return }
+
             if url.absoluteString == String.fullDecryptionFailedViewLink {
                 self.delegate?.openFullCryptoPage()
                 return
             }
+
+            if let currentURL = webView.url,
+               url.absoluteString.hasPrefix(currentURL.absoluteString),
+               let fragment = url.fragment {
+                scrollTo(anchor: fragment, in: webView)
+                return
+            }
+
             url = url.removeProtonSchemeIfNeeded()
 
             let isFromPhishingMail = viewModel.message.spam == .autoPhishing
@@ -457,6 +466,31 @@ extension NewMessageBodyViewController {
                                                 previewProvider: { nil },
                                                 actionProvider: { UIMenu(title: "", children: $0) })
         completionHandler(config)
+    }
+
+    private func scrollTo(anchor: String, in webView: WKWebView) {
+        let script = """
+anchor = document.getElementById('\(anchor)')
+anchor.offsetTop
+"""
+
+        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
+        webView.configuration.preferences.javaScriptEnabled = true
+
+        webView.evaluateJavaScript(script) { [weak self] output, error in
+            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
+
+            if let error = error {
+                assertionFailure("\(error)")
+                return
+            }
+
+            guard let self = self, let offset = output as? CGFloat else { return }
+
+            let target = CGPoint(x: 0, y: offset)
+            let contentOffset = self.view.convert(target, to: self.scrollViewContainer.scroller)
+            self.scrollViewContainer.scroller.setContentOffset(contentOffset, animated: true)
+        }
     }
 
     private func makeLinkConfirmationAlert(title: String,
