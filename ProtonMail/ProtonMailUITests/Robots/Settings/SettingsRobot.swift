@@ -10,6 +10,7 @@ import pmtest
 
 fileprivate struct id {
     static func accountCellIdentifier(_ name: String) -> String { return "SettingsTwoLinesCell.\(name)" }
+    static let closeButtonIdentifier = LocalString._general_close_action
     static let menuNavBarButtonIdentifier = "UINavigationItem.revealToggle"
     static let menuButton = LocalString._menu_button
     static let pinCellIdentifier = "SettingsGeneralCell.App_PIN"
@@ -44,6 +45,12 @@ class SettingsRobot: CoreElements {
         cell(id.pinCellIdentifier).tap()
         return PinRobot()
     }
+
+    func close() -> MailboxRobotInterface {
+        button(id.closeButtonIdentifier).tap()
+        return MailboxRobotInterface()
+    }
+
     /**
      * Contains all the validations that can be performed by [SettingsRobot].
      */

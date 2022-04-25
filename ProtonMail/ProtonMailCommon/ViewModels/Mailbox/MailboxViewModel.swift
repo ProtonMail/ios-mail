@@ -75,13 +75,24 @@ class MailboxViewModel: StorageLimit {
     private let welcomeCarrouselCache: WelcomeCarrouselCacheProtocol
 
     var viewModeIsChanged: (() -> Void)?
+    var sendHapticFeedback:(() -> Void)?
     let totalUserCountClosure: () -> Int
     var isHavingUser: Bool {
         return totalUserCountClosure() > 0
     }
     let getOtherUsersClosure: (String) -> [UserManager]
 
-    init(labelID : LabelID,
+    /// `swipyCellDidSwipe` will be setting this value repeatedly during a swipe gesture.
+    /// We only want to send a haptic signal one a state change.
+    private var swipingTriggerActivated = false {
+        didSet {
+            if swipingTriggerActivated != oldValue {
+                sendHapticFeedback?()
+            }
+        }
+    }
+
+    init(labelID: LabelID,
          label: LabelInfo?,
          labelType: PMLabelType,
          userManager: UserManager,
@@ -1002,40 +1013,39 @@ extension MailboxViewModel {
 
 // MARK: - Swipe actions
 extension MailboxViewModel {
-    func isSwipeActionValid(_ action: MessageSwipeAction, message: MessageEntity) -> Bool {
+    func isSwipeActionValid(_ action: MessageSwipeAction, item: SwipeableItem) -> Bool {
         guard let location = messageLocation else {
             return true
         }
+
         let helper = MailBoxSwipeActionHelper()
-        var result = helper.checkIsSwipeActionValidOn(location: location,
-                                               action: action)
+
+        let result: Bool
         if location == .allmail {
-            result = helper.checkIsSwipeActionValidOnMessage(isDraft: message.isDraft,
-                                                             isUnread: message.unRead,
-                                                             isStar: message.contains(location: .starred),
-                                                             isInTrash: message.contains(location: .trash),
-                                                             isInArchive: message.contains(location: .archive),
-                                                             isInSent: message.contains(location: .sent),
-                                                             isInSpam: message.contains(location: .spam),
-                                                             action: action)
-        }
-        return result
-    }
-    
-    func isSwipeActionValid(_ action: MessageSwipeAction, conversation: ConversationEntity) -> Bool {
-        guard let location = messageLocation else {
-            return true
-        }
-        let helper = MailBoxSwipeActionHelper()
-        var result = helper.checkIsSwipeActionValidOn(location: location,
-                                               action: action)
-        if location == .allmail {
-            result = helper.checkIsSwipeActionValidOnConversation(isUnread: conversation.isUnread(labelID: labelID),
-                                                           isStar: conversation.starred,
-                                                           isInArchive: conversation.contains(of: Message.Location.archive.labelID),
-                                                           isInSpam: conversation.contains(of: Message.Location.spam.labelID),
-                                                           isInSent: conversation.contains(of: Message.Location.sent.labelID),
-                                                           action: action)
+            switch item {
+            case .message(let message):
+                result = helper.checkIsSwipeActionValidOnMessage(
+                    isDraft: message.isDraft,
+                    isUnread: message.unRead,
+                    isStar: message.contains(location: .starred),
+                    isInTrash: message.contains(location: .trash),
+                    isInArchive: message.contains(location: .archive),
+                    isInSent: message.contains(location: .sent),
+                    isInSpam: message.contains(location: .spam),
+                    action: action
+                )
+            case .conversation(let conversation):
+                result = helper.checkIsSwipeActionValidOnConversation(
+                    isUnread: conversation.isUnread(labelID: labelID),
+                    isStar: conversation.starred,
+                    isInArchive: conversation.contains(of: Message.Location.archive.labelID),
+                    isInSpam: conversation.contains(of: Message.Location.spam.labelID),
+                    isInSent: conversation.contains(of: Message.Location.sent.labelID),
+                    action: action
+                )
+            }
+        } else {
+            result = helper.checkIsSwipeActionValidOn(location: location, action: action)
         }
         return result
     }
@@ -1061,6 +1071,21 @@ extension MailboxViewModel {
         case .moveTo:
             return .moveTo
         }
+    }
+
+    func swipyCellDidFinishSwiping() {
+        // the value needs to be reset, otherwise there will be a feedback upon starting another swipe
+        swipingTriggerActivated = false
+    }
+
+    func swipyCellDidSwipe(triggerActivated: Bool) {
+        /*
+         This method is called continuously during a swipe.
+         If the trigger has been activated, the `triggerActivated` value is `true` on every  subsequent call, so it's
+         impossible to intercept the exact moment of activation without storing this value to a property and checking
+         against `oldValue`.
+         */
+        swipingTriggerActivated = triggerActivated
     }
 }
 

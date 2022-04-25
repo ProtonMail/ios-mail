@@ -132,6 +132,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     let connectionStatusProvider = InternetConnectionStatusProvider()
 
+    private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+
     func inactiveViewModel() {
         guard self.viewModel != nil else {
             return
@@ -196,6 +198,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.isDiffableDataSourceEnabled = UserInfo.isDiffableDataSourceEnabled
         self.viewModel.viewModeIsChanged = { [weak self] in
             self?.handleViewModeIsChanged()
+        }
+
+        self.viewModel.sendHapticFeedback = { [weak self] in
+            self?.hapticFeedbackGenerator.impactOccurred()
         }
 
         configureUnreadFilterButton()
@@ -696,7 +702,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 mailboxCell.startUpdateExpiration()
             }
 
-            configureSwipeAction(mailboxCell, indexPath: indexPath, message: message)
+            configureSwipeAction(mailboxCell, indexPath: indexPath, item: .message(message))
         case .conversation:
             guard let conversation = self.viewModel.itemOfConversation(index: indexPath) else {
                 return
@@ -710,7 +716,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             mailboxCell.id = conversation.conversationID.rawValue
             mailboxCell.cellDelegate = self
             messageCellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
-            configureSwipeAction(mailboxCell, indexPath: indexPath, conversation: conversation)
+            configureSwipeAction(mailboxCell, indexPath: indexPath, item: .conversation(conversation))
         }
         #if DEBUG
             mailboxCell.generateCellAccessibilityIdentifiers(mailboxCell.customView.messageContentView.titleLabel.text!)
@@ -730,43 +736,33 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         return object.createTags()
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, message: MessageEntity) {
+    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, item: SwipeableItem) {
         cell.delegate = self
 
-        let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
-        let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
-                                                                                        isStarred: message.isStarred,
-                                                                                        isUnread: message.unRead)
+        let actions: [SwipyCellDirection: SwipeActionSettingType] = [
+            .left: userCachedStatus.leftToRightSwipeActionType,
+            .right: userCachedStatus.rightToLeftSwipeActionType
+        ]
 
-        if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, message: message) {
-            let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
-            cell.addSwipeTrigger(forState: .state(0, .left),
-                                 withMode: .exit,
-                                 swipeView: leftToRightSwipeView,
-                                 swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
-                guard let self = self else { return }
-                self.isSwipingCell = true
-                self.handleSwipeAction(on: cell, action: leftToRightMsgAction, message: message)
-                delay(0.5) {
-                    self.isSwipingCell = false
-                }
+        for (direction, action) in actions {
+            let msgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(
+                action,
+                isStarred: item.isStarred,
+                isUnread: item.isUnread(labelID: viewModel.labelID)
+            )
+
+            guard msgAction != .none && viewModel.isSwipeActionValid(msgAction, item: item) else {
+                continue
             }
-        }
 
-        let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
-        let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
-                                                                                        isStarred: message.isStarred,
-                                                                                        isUnread: message.unRead)
-
-        if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, message: message) {
-            let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
-            cell.addSwipeTrigger(forState: .state(0, .right),
+            let swipeView = makeSwipeView(messageSwipeAction: msgAction)
+            cell.addSwipeTrigger(forState: .state(0, direction),
                                  withMode: .exit,
-                                 swipeView: rightToLeftSwipeView,
-                                 swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
+                                 swipeView: swipeView,
+                                 swipeColor: msgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
                 guard let self = self else { return }
                 self.isSwipingCell = true
-                self.handleSwipeAction(on: cell, action: rightToLeftMsgAction, message: message)
+                self.handleSwipeAction(on: cell, action: msgAction, item: item)
                 delay(0.5) {
                     self.isSwipingCell = false
                 }
@@ -774,78 +770,20 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
 
-    private func configureSwipeAction(_ cell: SwipyCell, indexPath: IndexPath, conversation: ConversationEntity) {
-        let leftToRightAction = userCachedStatus.leftToRightSwipeActionType
-        let leftToRightMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(leftToRightAction,
-                                                                                        isStarred: conversation.starred,
-                                                                                        isUnread: conversation.isUnread(labelID: viewModel.labelId))
-
-        if leftToRightMsgAction != .none && viewModel.isSwipeActionValid(leftToRightMsgAction, conversation: conversation) {
-            let leftToRightSwipeView = makeSwipeView(messageSwipeAction: leftToRightMsgAction)
-            cell.addSwipeTrigger(forState: .state(0, .left),
-                                 withMode: .exit,
-                                 swipeView: leftToRightSwipeView,
-                                 swipeColor: leftToRightMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
-                self?.handleSwipeAction(on: cell, action: leftToRightMsgAction, conversation: conversation)
-            }
-        }
-
-        let rightToLeftAction = userCachedStatus.rightToLeftSwipeActionType
-        let rightToLeftMsgAction = viewModel.convertSwipeActionTypeToMessageSwipeAction(rightToLeftAction,
-                                                                                        isStarred: conversation.starred,
-                                                                                        isUnread: conversation.isUnread(labelID: viewModel.labelId))
-
-        if rightToLeftMsgAction != .none && viewModel.isSwipeActionValid(rightToLeftMsgAction, conversation: conversation) {
-            let rightToLeftSwipeView = makeSwipeView(messageSwipeAction: rightToLeftMsgAction)
-            cell.addSwipeTrigger(forState: .state(0, .right),
-                                 withMode: .exit,
-                                 swipeView: rightToLeftSwipeView,
-                                 swipeColor: rightToLeftMsgAction.actionColor) { [weak self] (cell, trigger, state, mode) in
-                self?.handleSwipeAction(on: cell, action: rightToLeftMsgAction, conversation: conversation)
-            }
-        }
-    }
-
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, message: MessageEntity) {
+    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, item: SwipeableItem) {
         guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
             self.reloadTableViewDataSource(animate: false)
             return
         }
 
-        guard self.viewModel.isSwipeActionValid(action, message: message) else {
+        guard self.viewModel.isSwipeActionValid(action, item: item) else {
             cell.swipeToOrigin {}
             return
         }
 
         guard !self.processSwipeActions(action,
                                         indexPath: indexPathOfCell,
-                                        itemID: message.messageID.rawValue) else {
-            return
-        }
-
-        // Since the read action will try to swipe the cell to origin. It conflicts with the animation of removing the cell from tableView.
-        // Here to prevent the cell swiping to origin to remove weird animation.
-        guard !unreadFilterButton.isSelected && action != .read else {
-            return
-        }
-
-        cell.swipeToOrigin {}
-    }
-
-    private func handleSwipeAction(on cell: SwipyCell, action: MessageSwipeAction, conversation: ConversationEntity) {
-        guard let indexPathOfCell = self.tableView.indexPath(for: cell) else {
-            self.reloadTableViewDataSource(animate: false)
-            return
-        }
-
-        guard self.viewModel.isSwipeActionValid(action, conversation: conversation) else {
-            cell.swipeToOrigin {}
-            return
-        }
-
-        guard !self.processSwipeActions(action,
-                                        indexPath: indexPathOfCell,
-                                        itemID: conversation.conversationID.rawValue) else {
+                                        itemID: item.itemID) else {
             return
         }
 
@@ -2538,9 +2476,13 @@ extension MailboxViewController: SwipyCellDelegate {
                 swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = false })
             }
         }
+
+        hapticFeedbackGenerator.prepare()
     }
 
     func swipyCellDidFinishSwiping(_ cell: SwipyCell, atState state: SwipyCellState, triggerActivated activated: Bool) {
+        viewModel.swipyCellDidFinishSwiping()
+
         tableView.visibleCells.forEach { cell in
             if let swipyCell = cell as? SwipyCell {
                 swipyCell.gestureRecognizers?.compactMap({ $0 as? UIPanGestureRecognizer }).forEach({ $0.isEnabled = true })
@@ -2549,7 +2491,7 @@ extension MailboxViewController: SwipyCellDelegate {
     }
 
     func swipyCell(_ cell: SwipyCell, didSwipeWithPercentage percentage: CGFloat, currentState state: SwipyCellState, triggerActivated activated: Bool) {
-
+        viewModel.swipyCellDidSwipe(triggerActivated: activated)
     }
 }
 

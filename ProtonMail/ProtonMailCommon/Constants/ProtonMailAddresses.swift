@@ -20,5 +20,6 @@ import Foundation
 enum ProtonMailAddresses: String, CaseIterable {
     case protonmailCom = "protonmail.com"
     case protonmailCh = "protonmail.ch"
+    case protonMe = "proton.me"
     case pmMe = "pm.me"
 }

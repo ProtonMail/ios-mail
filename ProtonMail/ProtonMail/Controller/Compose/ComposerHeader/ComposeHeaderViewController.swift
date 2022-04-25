@@ -654,19 +654,6 @@ extension ContactPicker {
         return contactList
     }
 
-    // TODO:: the hard code at here should be moved to enum / struture
-    var hasOutsideEmails: Bool {
-        let contactsSelected = NSArray(array: self.contactsSelected)
-        if let contacts = contactsSelected.value(forKey: ContactVO.Attributes.email) as? [String] {
-            for contact in contacts {
-                if contact.lowercased().range(of: "@protonmail.ch") == nil && contact.lowercased().range(of: "@protonmail.com") == nil && contact.lowercased().range(of: "@pm.me") == nil {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
     var hasPGPPinned: Bool {
         for contact in self.contactsSelected {
             if contact.hasPGPPined {
