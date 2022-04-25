@@ -129,7 +129,7 @@ extension NetworkTroubleShootViewController: SwitchTwolineCellDelegate, MFMailCo
 
     func openMFMail() {
         let mailComposer = MFMailComposeViewController()
-        mailComposer.setToRecipients(["support@protonmail.com"])
+        mailComposer.setToRecipients(["support@protonmail.zendesk.com"])
         mailComposer.setSubject(LocalString._troubleshoot_support_subject)
         mailComposer.setMessageBody(LocalString._troubleshoot_support_body, isHTML: false)
         present(mailComposer, animated: true, completion: nil)

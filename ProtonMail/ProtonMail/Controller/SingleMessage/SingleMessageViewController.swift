@@ -119,13 +119,13 @@ class SingleMessageViewController: UIViewController, UIScrollViewDelegate, Compo
         navigationTitleLabel.label.alpha = 0
 
         let backButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(tapBackButton))
-        navigationItem.leftBarButtonItem = backButtonItem
+        navigationItem.backBarButtonItem = backButtonItem
         navigationItem.rightBarButtonItem = starBarButton
         navigationItem.titleView = navigationTitleLabel
         starButtonSetUp(starred: viewModel.message.isStarred)
 
         // Accessibility
-        navigationItem.leftBarButtonItem?.accessibilityLabel = LocalString._menu_inbox_title
+        navigationItem.backBarButtonItem?.accessibilityLabel = LocalString._general_back_action
         starBarButton.isAccessibilityElement = true
         starBarButton.accessibilityLabel = LocalString._star_btn_in_message_view
     }

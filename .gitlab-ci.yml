@@ -60,7 +60,7 @@ unit_tests:
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
-    # - pip install xUnique
+    - pip3 install --user xUnique
   script:
     - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
     - cd ProtonMail
@@ -242,6 +242,7 @@ enterprise-test:
     - git submodule init
     - git submodule update --init --recursive
     - *set_up_brew_dependecies
+    - pip3 install --user xUnique
   script:
     - *enterprise_config_setting
     - fastlane ios enterprise usingTimeStamp:true

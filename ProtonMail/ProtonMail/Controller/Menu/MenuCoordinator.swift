@@ -109,6 +109,9 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
     }
 
     func go(to labelInfo: MenuLabel, deepLink: DeepLink? = nil) {
+        // in some cases we should highlight a different row in the side menu, or none at all
+        var labelToHighlight: MenuLabel? = labelInfo
+
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
@@ -118,6 +121,7 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
             self.navigateToSubscribe()
         case .settings:
             self.navigateToSettings(deepLink: deepLink)
+            labelToHighlight = nil
         case .contacts:
             self.navigateToContact()
         case .bugs:
@@ -132,13 +136,16 @@ final class MenuCoordinator: DefaultCoordinator, CoordinatorDismissalObserver {
         case .addFolder:
             self.navigateToCreateFolder(type: .folder)
         case .provideFeedback:
-            self.navigateToMailBox(labelInfo: MenuLabel(location: .inbox), deepLink: deepLink, showFeedbackActionSheet: true)
-            self.vm.highlight(label: MenuLabel(location: .inbox))
-            return
+            let inboxLabel = MenuLabel(location: .inbox)
+            self.navigateToMailBox(labelInfo: inboxLabel, deepLink: deepLink, showFeedbackActionSheet: true)
+            labelToHighlight = inboxLabel
         default:
             break
         }
-        self.vm.highlight(label: labelInfo)
+
+        if let labelToHighlight = labelToHighlight {
+            self.vm.highlight(label: labelToHighlight)
+        }
     }
 }
 
@@ -370,9 +377,18 @@ extension MenuCoordinator {
 
     private func navigateToSettings(deepLink: DeepLink?) {
         let navigation = UINavigationController()
+        navigation.modalPresentationStyle = .fullScreen
+
         let settings = SettingsDeviceCoordinator(navigationController: navigation, services: self.services)
         settings.start()
-        self.setupContentVC(destination: navigation)
+
+        guard let sideMenu = self.viewController?.sideMenuController else {
+            return
+        }
+
+        sideMenu.present(navigation, animated: true) {
+            sideMenu.hideMenu()
+        }
     }
 
     private func navigateToContact() {

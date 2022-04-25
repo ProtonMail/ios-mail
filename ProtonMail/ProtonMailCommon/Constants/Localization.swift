@@ -1167,7 +1167,7 @@ class LocalizedString {
     lazy var _firewall_interference_description = NSLocalizedString("Disable any proxies or firewalls, or contact your network administrator.", comment: "Firewall interference description.")
     lazy var _proton_is_down_description = NSLocalizedString("Check Proton Status for our system status.", comment: "Proton is down description.")
     lazy var _proton_is_down_action_title = NSLocalizedString("Proton Status", comment: "Name of the link of Proton Status")
-    lazy var _no_solution_description = NSLocalizedString("Contact us directly through our support form, email (support@protonmail.com), or Twitter.", comment: "No other solution description.")
+    lazy var _no_solution_description = NSLocalizedString("Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.", comment: "No other solution description.")
 
     lazy var _troubleshoot_support_subject = NSLocalizedString("Subject..", comment: "The subject of the email draft created in the network troubleshoot view.")
     lazy var _troubleshoot_support_body = NSLocalizedString("Please share your problem.", comment: "The body of the email draft created in the network troubleshoot view.")
@@ -1384,7 +1384,8 @@ class LocalizedString {
     lazy var _dmarc_failed_banner_message = NSLocalizedString("This email has failed its domain’s authentication requirements. It may be spoofed or improperly forwarded!", comment: "The error message that the incoming mail failed dmarc authentication")
     lazy var _discard_warning = NSLocalizedString("Do you want to discard the changes?", comment: "Warning message")
 
-    lazy var _conversation_settings_row_title = NSLocalizedString("Enable conversations", comment: "")
+    lazy var _conversation_settings_footer_title = NSLocalizedString("Group emails in the same conversation together.", comment: "")
+    lazy var _conversation_settings_row_title = NSLocalizedString("Conversation grouping", comment: "")
     lazy var _conversation_settings_screen_top_title = NSLocalizedString("Conversation mode", comment: "")
     lazy var _account_settings_conversation_row_title = NSLocalizedString("Conversation", comment: "")
 
