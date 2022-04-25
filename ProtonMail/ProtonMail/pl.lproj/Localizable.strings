@@ -1875,7 +1875,7 @@
 "Signature Updated" = "Podpis został zaktualizowany";
 
 /* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Jesteś zalogowany jako %@";
+"Signed in as %@" = "Zalogowano jako %@";
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Wylogowano z konta %1$@ i zalogowano do %2$@";

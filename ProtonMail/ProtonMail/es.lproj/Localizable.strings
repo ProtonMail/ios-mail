@@ -1816,10 +1816,10 @@
 "Sending will be available\nwhen attachments are uploaded" = "El envío estará disponible\ncuando se carguen los archivos adjuntos";
 
 /* menu title */
-"Sent" = "Enviado";
+"Sent" = "Enviados";
 
 /* mail location title */
-"SENT" = "Enviado";
+"SENT" = "Enviados";
 
 /* encryption lock description for auto reply */
 "Sent by ProtonMail with zero access encryption" = "Enviado por ProtonMail con cifrado de acceso cero";

@@ -2135,7 +2135,7 @@
 "This folder is empty" = "Ce dossier est vide";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ce lien mène à un site Web qui pourrait essayer de voler vos informations, telles que les mots de passe et les détails de la carte de crédit.\n%@\n\nPour votre sécurité, ne continuez pas.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Ce message contient des images intégrées.";
