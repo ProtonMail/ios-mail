@@ -41,6 +41,7 @@ class MailboxViewModelTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var messageProviderMock: MockMessageProvider!
     var eventsServiceMock: EventsServiceMock!
+    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -84,6 +85,7 @@ class MailboxViewModelTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         messageProviderMock = MockMessageProvider()
         eventsServiceMock = EventsServiceMock()
+        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -1056,6 +1058,24 @@ class MailboxViewModelTests: XCTestCase {
         createSut(labelID: "qweasd", labelType: .folder, isCustom: false, labelName: nil)
         XCTAssertTrue(sut.getActionBarActions().isEmpty)
     }
+
+    func testGetOnboardingDestination() {
+        // Fresh install
+        self.welcomeCarrouselCache.lastTourVersion = nil
+        var destination = self.sut.getOnboardingDestination()
+        XCTAssertEqual(destination, .onboardingForNew)
+
+        // The last tour version is the same as defined TOUR_VERSION
+        // Shouldn't show welcome carrousel
+        self.welcomeCarrouselCache.lastTourVersion = Constants.App.TourVersion
+        destination = self.sut.getOnboardingDestination()
+        XCTAssertNil(destination)
+
+        // Update the app
+        self.welcomeCarrouselCache.lastTourVersion = 1
+        destination = self.sut.getOnboardingDestination()
+        XCTAssertEqual(destination, .onboardingForUpdate)
+    }
 }
 
 extension MailboxViewModelTests {
@@ -1091,6 +1111,7 @@ extension MailboxViewModelTests {
                                conversationProvider: conversationProviderMock,
                                messageProvider: messageProviderMock,
                                eventsService: eventsServiceMock,
+                               welcomeCarrouselCache: welcomeCarrouselCache,
                                totalUserCountClosure: {
             return totalUserCount
         },
