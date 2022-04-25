@@ -207,7 +207,9 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         }
     }
     var shouldDisplayRenderModeOptions: Bool {
-        return message.isNewsLetter ? false : isDarkModeEnableClosure()
+        if message.isNewsLetter ||
+           self.bodyParts?.darkModeCSS?.isEmpty ?? false { return false }
+        return isDarkModeEnableClosure()
     }
 
     let linkConfirmation: LinkOpeningMode
