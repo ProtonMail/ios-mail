@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import ProtonCore_DataModel
 import UIKit
 
 class NewMailboxMessageCellPresenter {
@@ -87,8 +88,15 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
-        let sender = viewModel.sender
-            .apply(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
+        var sender = viewModel.sender
+            .applyMutable(style: viewModel.isRead ? FontManager.DefaultWeak : FontManager.DefaultStrongBold)
+
+        // Highlight search keywords
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                sender = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: sender)
+            }
+        }
         view.senderLabel.attributedText = sender
         view.senderLabel.lineBreakMode = .byTruncatingTail
 
@@ -111,8 +119,15 @@ class NewMailboxMessageCellPresenter {
 
         view.starImageView.isHidden = !viewModel.isStarred
 
-        let topic = viewModel.topic
-            .apply(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
+        var topic = viewModel.topic
+            .applyMutable(style: viewModel.isRead ? FontManager.DefaultSmallWeak : FontManager.DefaultSmallStrong)
+
+        // Highlight search keywords
+        if UserInfo.isEncryptedSearchEnabled {
+            if userCachedStatus.isEncryptedSearchOn {
+                topic = EncryptedSearchService.shared.addKeywordHighlightingToAttributedString(stringToHighlight: topic)
+            }
+        }
         view.titleLabel.attributedText = topic
         view.titleLabel.lineBreakMode = .byTruncatingTail
 
