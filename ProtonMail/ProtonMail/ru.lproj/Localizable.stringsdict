@@ -244,7 +244,7 @@
 			<string>%d цепочек писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ помечен</string>
+		<string>%#@Conversation@ помечено</string>
 	</dict>
 	<key>swipe_to_label_title</key>
 	<dict>
@@ -284,7 +284,7 @@
 			<string>%d цепочек писем</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@ перемещён в %@</string>
+		<string>%#@Conversation@ перемещено в %@</string>
 	</dict>
 	<key>swipe_to_move_title</key>
 	<dict>

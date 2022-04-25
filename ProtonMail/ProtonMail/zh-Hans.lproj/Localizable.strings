@@ -963,7 +963,7 @@
 "Get Started" = "入门";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "返回（推荐）";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "转至草稿";
@@ -1008,7 +1008,7 @@
 "Human Check Warning" = "身份验证提示";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "忽视警告并继续";
 
 /* Action */
 "Import Error" = "导入出错";
@@ -2135,7 +2135,7 @@
 "This folder is empty" = "此文件夹为空";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "此邮件含有嵌入图像。";
@@ -2356,7 +2356,7 @@
 "Warning: Before you pass the human check you can't send email!" = "警告： 通过人机验证后您才能发送电子邮件！";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "警告：疑似虚假网站";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "邮件发送失败，网络可能存在问题。邮件已存为草稿，下次启动程序时将自动发送。";

@@ -97,7 +97,7 @@
 "Add birthday" = "Lägg till födelsedag";
 
 /* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add cc and bcc" = "Add cc and bcc";
+"Add cc and bcc" = "Visa cc/bcc-fält";
 
 /* The title for the view where user can manage emails in the contact group */
 "Add contacts" = "Lägg till kontakter";
@@ -283,7 +283,7 @@
 "Authentication Failed Wrong username or password" = "Autentiseringen misslyckades: fel användarnamn eller lösenord.";
 
 /* Title */
-"Auto Lock Time" = "Auto lock time";
+"Auto Lock Time" = "Tid till automatisk låsning";
 
 /* (No Comment) */
 "Auto Show Images" = "Visa bilder automatiskt";
@@ -353,7 +353,7 @@
 
 /* *
  *  MessageViewController */
-"Can't download message body, please try again." = "Can't download message body, please try again.";
+"Can't download message body, please try again." = "Kan inte ladda ner meddelandetexten, försök igen.";
 
 /* (No Comment) */
 "Can't find the clicked message please try again!" = "Kan inte hitta det klickade meddelandet, försök igen!";
@@ -462,7 +462,7 @@
 "Clear local cache" = "Rensa lokal cache";
 
 /* settings general section title */
-"Clear Local Message Cache" = "Clear local message cache";
+"Clear Local Message Cache" = "Rensa lokal meddelande-cache";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Rensa stil";
@@ -471,7 +471,7 @@
 "Close" = "Stäng";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close cc and bcc" = "Close cc and bcc";
+"Close cc and bcc" = "Dölj cc/bcc-fält";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Stänger";
@@ -963,7 +963,7 @@
 "Get Started" = "Kom igång";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "Gå tillbaka (rekommenderas)";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Gå till utkast";
@@ -1221,7 +1221,7 @@
 "Menu" = "Meny";
 
 /* Title of the view showing the message body */
-"Message body" = "Message body";
+"Message body" = "Meddelandetext";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
 "Message content" = "Message content";

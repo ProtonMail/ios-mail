@@ -447,7 +447,7 @@
 "Checking ...." = "Controleren...";
 
 /* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Choose different sender address";
+"Choose different sender address" = "Ander afzenderadres kiezen";
 
 /* contact placeholder */
 "City" = "Plaats";
@@ -665,7 +665,7 @@
 "Discard draft" = "Verwijder concept";
 
 /* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Dismiss keyboard";
+"Dismiss keyboard" = "Toetsenbord verbergen";
 
 /* (No Comment) */
 "Display name" = "Weergavenaam";
@@ -824,7 +824,7 @@
 "Encrypted contact details" = "Versleutelde contactpersoonsgegevens";
 
 /* encryption lock description */
-"End-to-end encrypted and signed message" = "End-to-end encrypted and signed message";
+"End-to-end encrypted and signed message" = "End-to-end versleuteld en ondertekend bericht";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "End-to-end versleuteld bericht";
@@ -963,7 +963,7 @@
 "Get Started" = "Aan de slag";
 
 /* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Go back (recommended)";
+"Go back (recommended)" = "Ga terug (aanbevolen)";
 
 /* title of alert acton of incorrect email format error */
 "Go to drafts" = "Ga naar concepten";
@@ -1008,7 +1008,7 @@
 "Human Check Warning" = "Waarschuwing van persoonsverificatie";
 
 /* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Ignore warning and continue";
+"Ignore warning and continue" = "Waarschuwing negeren en doorgaan";
 
 /* Action */
 "Import Error" = "Fout bij importeren";
@@ -1224,7 +1224,7 @@
 "Message body" = "Berichtinhoud";
 
 /* The title of content of message in the composer that suggests the current selection is the content of the message. */
-"Message content" = "Message content";
+"Message content" = "Berichtinhoud";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
@@ -1505,7 +1505,7 @@
 "Personal" = "Persoonlijk";
 
 /* encryption lock description */
-"PGP-encrypted and signed message" = "PGP-encrypted and signed message";
+"PGP-encrypted and signed message" = "PGP-versleuteld en ondertekend bericht";
 
 /* encryption lock description */
 "PGP-encrypted message from verified address" = "PGP-versleuteld bericht van geverifieerd e-mailadres";
@@ -1837,10 +1837,10 @@
 "Set a password to encrypt this message for non-ProtonMail users." = "Stel een wachtwoord in om dit bericht te versleutelen voor niet-ProtonMail gebruikers.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "Set mail expiration";
+"Set mail expiration" = "Verloopdatum mail instellen";
 
 /* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "Set mail password";
+"Set mail password" = "Wachtwoord mail instellen";
 
 /* Title */
 "Set Password" = "Stel wachtwoord in";
@@ -2135,7 +2135,7 @@
 "This folder is empty" = "Deze map is leeg";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Deze link leidt naar een website die mogelijk uw informatie, zoals wachtwoorden en kredietkaartgegevens, tracht te stelen.\n%@\n\nGa voor uw veiligheid niet verder.";
 
 /* No comment provided by engineer. */
 "This message contains embedded images." = "Dit bericht bevat ingesloten afbeeldingen.";
@@ -2356,7 +2356,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Waarschuwing: Voordat u bewezen heeft een natuurlijk persoon te zijn kunt u geen e-mail versturen!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Warning: suspected fake website";
+"Warning: suspected fake website" = "Waarschuwing: vermoedelijk valse website";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "We konden uw bericht niet versturen, mogelijk vanwege een slechte netwerkverbinding. Uw bericht is opgeslagen in Concepten en wordt de volgende keer dat u de app opent automatisch verzonden.";
