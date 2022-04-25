@@ -547,6 +547,10 @@ extension String {
         NSAttributedString(string: self, attributes: style)
     }
 
+    func applyMutable(style: [NSAttributedString.Key: Any]) -> NSMutableAttributedString {
+        NSMutableAttributedString(string: self, attributes: style)
+    }
+
 }
 
 extension Dictionary where Key == NSAttributedString.Key, Value == Any {
