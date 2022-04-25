@@ -243,6 +243,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
+        self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
         self.updateTimeLabel.textColor = ColorProvider.TextHint
 
         self.updateUnreadButton()
