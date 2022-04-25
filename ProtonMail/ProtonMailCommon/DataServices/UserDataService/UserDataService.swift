@@ -199,7 +199,7 @@ class UserDataService: Service, HasLocalStorage {
 
     func signOutFromServer() {
         let api = AuthDeleteRequest()
-        self.apiService.exec(route: api) { (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             // probably we want to notify user the session will seem active on website in case of error
         }
     }
@@ -228,7 +228,7 @@ class UserDataService: Service, HasLocalStorage {
         let new_displayName = displayName.trim()
         let new_signature = signature.trim()
         let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
-        self.apiService.exec(route: api) { task, response in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
             if response.error == nil {
                 userInfo.userAddresses = userInfo.userAddresses.map { addr in
                     guard addr.addressID == addressId else { return addr }
@@ -258,7 +258,7 @@ class UserDataService: Service, HasLocalStorage {
         }
 
         let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-        self.apiService.exec(route: api) { (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
                 userInfo.showImages = newStatus
             }
@@ -283,7 +283,7 @@ class UserDataService: Service, HasLocalStorage {
         }
 
         let api = UpdateShowImages(status: newStatus.rawValue, authCredential: currentAuth)
-        self.apiService.exec(route: api) { (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
                 userInfo.showImages = newStatus
             }
@@ -302,7 +302,7 @@ class UserDataService: Service, HasLocalStorage {
             return
         }
         let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-        self.apiService.exec(route: api) { (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             if response.error == nil {
                 userInfo.linkConfirmation = status
             }
@@ -593,7 +593,7 @@ class UserDataService: Service, HasLocalStorage {
         }
 
         let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
-        self.apiService.exec(route: addressOrder) { task, response in
+        self.apiService.exec(route: addressOrder, responseObject: VoidResponse()) { task, response in
             if response.error == nil {
                 userInfo.userAddresses = email_domains
             }
@@ -694,7 +694,7 @@ class UserDataService: Service, HasLocalStorage {
             return
         }
         let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
-        self.apiService.exec(route: notifySetting) { task, response in
+        self.apiService.exec(route: notifySetting, responseObject: VoidResponse()) { task, response in
             if response.error == nil {
                 userInfo.notify = (isOn ? 1 : 0)
             }
@@ -711,7 +711,7 @@ class UserDataService: Service, HasLocalStorage {
         }
 
         let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
-        self.apiService.exec(route: signatureSetting) { (task, response) in
+        self.apiService.exec(route: signatureSetting, responseObject: VoidResponse()) { (task, response) in
             completion(task, nil, response.error?.toNSError)
         }
     }
@@ -742,7 +742,7 @@ class UserDataService: Service, HasLocalStorage {
 
     func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {
         let req = GetAddressesRequest()
-        apiService.exec(route: req) { (_, res: AddressesResponse) in
+        apiService.exec(route: req, responseObject: AddressesResponse()) { (_, res) in
             if let error = res.error {
                 completion?(.failure(error))
             } else {

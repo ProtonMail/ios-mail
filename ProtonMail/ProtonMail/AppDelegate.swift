@@ -39,6 +39,8 @@ class AppDelegate: UIResponder {
     }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
     private var currentState: UIApplication.State = .active
+    private var hasConfigureForWillLaunch = false
+    private var hasConfigureForDidLaunch = false
 }
 
 // MARK: - this is workaround to track when the SideMenuController first time load
@@ -156,102 +158,28 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
-        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
 
-        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
-        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
-        sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
-        sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
-        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+        guard application.isProtectedDataAvailable else {
+            // pre-warm, don't do anything
+            return false
+        }
+        self.configForWillLaunch()
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SystemLogger.log(message: #function, category: .appLifeCycle)
-        #if DEBUG
-        if CommandLine.arguments.contains("-disableAnimations") {
-            UIView.setAnimationsEnabled(false)
+        guard application.isProtectedDataAvailable else {
+            NotificationCenter.default
+                .addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification,
+                             object: nil,
+                             queue: .main) { [weak self] _ in
+                    self?.configForWillLaunch()
+                    self?.configForDidLaunch(launchOptions: launchOptions)
+                }
+            return false
         }
-        Analytics.shared.setup(isInDebug: true, environment: .production)
-        #else
-
-        #if Enterprise
-        Analytics.shared.setup(isInDebug: false, environment: .enterprise)
-        #else
-        Analytics.shared.setup(isInDebug: false, environment: .production)
-        #endif
-
-        #endif
-
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-
-        configureAppearance()
-
-        // start network notifier
-        sharedInternetReachability.startNotifier()
-
-        // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
-        // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
-        if #available(iOS 13.0, *), let code = Bundle.main.preferredLocalizations.first {
-            LanguageManager.saveLanguage(byCode: code)
-        }
-        // setup language
-        LanguageManager.setupCurrentLanguage()
-
-        if #available(iOS 15.0, *) {
-            UITableView.appearance().sectionHeaderTopPadding = .zero
-        }
-
-        let pushService: PushNotificationService = sharedServices.get()
-        UNUserNotificationCenter.current().delegate = pushService
-        pushService.registerForRemoteNotifications()
-        pushService.setLaunchOptions(launchOptions)
-
-        #if DEBUG
-        NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
-            (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
-        }
-        NotificationCenter.default.addObserver(forName: Keymaker.Const.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
-            "Removed main key from memory".alertToastBottom()
-        }
-        #endif
-        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
-            #if DEBUG
-                "Obtained main key".alertToastBottom()
-            #endif
-
-            if self.currentState != .active {
-                keymaker.updateAutolockCountdownStart()
-            }
-        }
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
-                                               object: nil)
-
-        if #available(iOS 12.0, *) {
-//            let intent = WipeMainKeyIntent()
-//            let suggestions = [INShortcut(intent: intent)!]
-//            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
-        }
-
-        if #available(iOS 13.0, *) {
-            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
-        } else {
-            self.coordinator.start()
-        }
-
-        UIBarButtonItem.enableMenuSwizzle()
-        #if DEBUG
-        setupUITestsMocks()
-        #endif
+        self.configForDidLaunch(launchOptions: launchOptions)
         return true
     }
 
@@ -490,6 +418,7 @@ extension AppDelegate {
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backArrowImage
         if #available(iOS 15.0, *) {
             setupNavigationBarAppearance()
+            UITableView.appearance().sectionHeaderTopPadding = .zero
         }
     }
 
@@ -504,6 +433,125 @@ extension AppDelegate {
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().compactScrollEdgeAppearance = appearance
+    }
+}
+
+// MARK: Launch configuration
+extension AppDelegate {
+    private func configForWillLaunch() {
+        guard self.hasConfigureForWillLaunch == false else { return }
+        self.hasConfigureForWillLaunch = true
+
+        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
+
+        let usersManager = UsersManager(doh: DoHMail.default, delegate: self)
+        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
+        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
+        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        sharedServices.add(QueueManager.self, for: queueManager)
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager, lastUpdatedStore: lastUpdatedStore, queueManager: queueManager))
+        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
+        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+    }
+
+    private func configForDidLaunch(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        guard self.hasConfigureForDidLaunch == false else { return }
+        self.hasConfigureForDidLaunch = true
+
+        #if DEBUG
+        if CommandLine.arguments.contains("-disableAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
+        #endif
+        self.configureAnalytics()
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        configureAppearance()
+        
+        //start network notifier
+        sharedInternetReachability.startNotifier()
+        self.configureLanguage()
+        self.configurePushService(launchOptions: launchOptions)
+        self.registerKeyMakerNotification()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didSignOutNotification(_:)),
+                                               name: NSNotification.Name.didSignOut,
+                                               object: nil)
+        
+        if #available(iOS 13.0, *) {
+            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
+        } else {
+            self.coordinator.start()
+        }
+
+        UIBarButtonItem.enableMenuSwizzle()
+        #if DEBUG
+        setupUITestsMocks()
+        #endif
+    }
+
+    private func configureAnalytics() {
+        #if DEBUG
+            Analytics.shared.setup(isInDebug: true, environment: .production)
+        #else
+            #if Enterprise
+            Analytics.shared.setup(isInDebug: false, environment: .enterprise)
+            #else
+            Analytics.shared.setup(isInDebug: false, environment: .production)
+            #endif
+        #endif
+    }
+
+    private func configureLanguage() {
+        // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
+        // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
+        if #available(iOS 13.0, *),
+            let code = Bundle.main.preferredLocalizations.first {
+            LanguageManager.saveLanguage(byCode: code)
+        }
+        //setup language
+        LanguageManager.setupCurrentLanguage()
+    }
+
+    private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        let pushService : PushNotificationService = sharedServices.get()
+        UNUserNotificationCenter.current().delegate = pushService
+        pushService.registerForRemoteNotifications()
+        pushService.setLaunchOptions(launchOptions)
+    }
+
+    private func registerKeyMakerNotification() {
+        #if DEBUG
+        NotificationCenter.default
+            .addObserver(forName: Keymaker.Const.errorObtainingMainKey,
+                         object: nil,
+                         queue: .main) { notification in
+                (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
+            }
+
+        NotificationCenter.default
+            .addObserver(forName: Keymaker.Const.removedMainKeyFromMemory,
+                         object: nil,
+                         queue: .main) { notification in
+                "Removed main key from memory".alertToastBottom()
+            }
+        #endif
+
+        NotificationCenter.default
+            .addObserver(forName: Keymaker.Const.obtainedMainKey,
+                         object: nil,
+                         queue: .main) { notification in
+                #if DEBUG
+                "Obtained main key".alertToastBottom()
+                #endif
+
+                if self.currentState != .active {
+                    keymaker.updateAutolockCountdownStart()
+                }
+            }
     }
 }
 

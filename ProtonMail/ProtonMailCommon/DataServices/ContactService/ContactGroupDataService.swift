@@ -94,7 +94,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void> {
         return Promise { seal in
             let route = UpdateLabelRequest(id: groupID, name: name, color: color)
-            self.apiService.exec(route: route) { (response: CreateLabelRequestResponse) in
+            self.apiService.exec(route: route, responseObject: CreateLabelRequestResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -118,7 +118,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
     func deleteContactGroup(groupID: String) -> Promise<Void> {
         return Promise { seal in
             let eventAPI = DeleteLabelRequest(lable_id: groupID)
-            self.apiService.exec(route: eventAPI) { (response: DeleteLabelRequestResponse) in
+            self.apiService.exec(route: eventAPI, responseObject: DeleteLabelRequestResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -166,7 +166,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
             let emails = emailList.map { $0.emailID }
 
             let route = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route) { (response: ContactLabelAnArrayOfContactEmailsResponse) in
+            self.apiService.exec(route: route, responseObject: ContactLabelAnArrayOfContactEmailsResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {
@@ -228,7 +228,7 @@ class ContactGroupsDataService: Service, HasLocalStorage, ContactGroupsProviderP
 
             let emails = emailList.map { $0.emailID }
             let route = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            self.apiService.exec(route: route) { (response: ContactUnlabelAnArrayOfContactEmailsResponse) in
+            self.apiService.exec(route: route, responseObject: ContactUnlabelAnArrayOfContactEmailsResponse()) { response in
                 if let error = response.error {
                     seal.reject(error)
                 } else {

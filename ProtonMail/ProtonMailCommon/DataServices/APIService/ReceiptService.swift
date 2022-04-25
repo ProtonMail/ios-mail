@@ -32,7 +32,7 @@ final class ReceiptService {
 
     func sendReceipt(messageID: String) {
         let request = ReceiptRequest(messageID: messageID)
-        apiService.exec(route: request) { [weak self] _, _ in
+        apiService.exec(route: request, responseObject: VoidResponse()) { [weak self] _, _ in
             guard let id = self?.labelID else { return }
             self?.eventsService.fetchEvents(labelID: id)
         }

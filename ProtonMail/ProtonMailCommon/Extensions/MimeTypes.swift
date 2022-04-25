@@ -167,3 +167,11 @@ extension String {
         }
     }
 }
+
+extension AttachmentConvertible {
+    func containsExifMetadata(mimeType: String) -> Bool {
+        ["image", "video"].reduce(false) { partialResult, type in
+            partialResult || mimeType.lowercased().contains(type)
+        }
+    }
+}

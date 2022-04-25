@@ -108,7 +108,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                             }
                         } else {
                             let counterRoute = MessageCount()
-                            self.apiService.exec(route: counterRoute) { (response: MessageCountResponse) in
+                            self.apiService.exec(route: counterRoute, responseObject: MessageCountResponse()) { response in
                                 if response.error == nil {
                                     self.parent?.eventsService.processEvents(counts: response.counts)
                                 }
@@ -147,7 +147,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
         let queue = queued ? queueManager?.queue : noQueue
         queue? {
             let getLatestEventID = EventLatestIDRequest()
-            self.apiService.exec(route: getLatestEventID) { [weak self] (task, IDRes: EventLatestIDResponse) in
+            self.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { [weak self] (task, IDRes) in
                 guard !IDRes.eventID.isEmpty,
                       let self = self else {
                     completion?(task, nil, nil)
@@ -198,7 +198,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     func syncMailSetting(labelID: String = "0") {
         self.queueManager?.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userID))
-            self.apiService.exec(route: eventAPI) { (response: EventCheckResponse) in
+            self.apiService.exec(route: eventAPI, responseObject: EventCheckResponse()) { response in
                 guard response.responseCode == 1000 else {
                     return
                 }
@@ -309,7 +309,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             switch viewMode {
             case .singleMessage:
                 let counterApi = MessageCount()
-                self.apiService.exec(route: counterApi) { (task, response: MessageCountResponse) in
+                self.apiService.exec(route: counterApi, responseObject: MessageCountResponse()) { (task, response) in
                     guard response.error == nil else {
                         completion?()
                         return
@@ -319,7 +319,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 }
             case .conversation:
                 let conversationCountApi = ConversationCountRequest(addressID: nil)
-                self.apiService.exec(route: conversationCountApi) { (task, response: ConversationCountResponse) in
+                self.apiService.exec(route: conversationCountApi, responseObject: ConversationCountResponse()) { (task, response) in
                     guard response.error == nil else {
                         completion?()
                         return
@@ -920,7 +920,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
             }
         }
         let api = SearchMessage(keyword: query, page: page)
-        self.apiService.exec(route: api) { (task, response: SearchMessageResponse) in
+        self.apiService.exec(route: api, responseObject: SearchMessageResponse()) { (task, response) in
             if let error = response.error {
                 completionWrapper(task, nil, error.toNSError)
             } else {
@@ -1487,7 +1487,7 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
 
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest()
-        self.apiService.exec(route: getLatestEventID) { (task, response: EventLatestIDResponse) in
+        self.apiService.exec(route: getLatestEventID, responseObject: EventLatestIDResponse()) { (task, response) in
             guard response.error == nil && !response.eventID.isEmpty else {
                 completion?(task, nil, response.error?.toNSError)
                 return

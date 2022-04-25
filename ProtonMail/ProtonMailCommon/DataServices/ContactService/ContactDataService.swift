@@ -163,7 +163,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func add(cards: [[CardData]], authCredential: AuthCredential?, objectID: String? = nil, completion: ContactAddComplete?) {
         let route = ContactAddRequest(cards: cards, authCredential: authCredential)
-        self.apiService.exec(route: route) { [weak self] (response: ContactAddResponse) in
+        self.apiService.exec(route: route, responseObject: ContactAddResponse()) { [weak self] response in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
             var contacts_json: [[String: Any]] = []
@@ -220,7 +220,7 @@ class ContactDataService: Service, HasLocalStorage {
     func update(contactID: String,
                 cards: [CardData], completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest(contactid: contactID, cards: cards)
-        self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+        self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
             if let error = response.error {
                 completion?(nil, error.toNSError)
             } else if var contactDict = response.contact {
@@ -252,7 +252,7 @@ class ContactDataService: Service, HasLocalStorage {
      **/
     func delete(contactID: String, completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest(ids: [contactID])
-        self.apiService.exec(route: api) { [weak self] (task, response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             guard let self = self else { return }
             let context = self.coreDataService.operationContext
             context.perform {
@@ -513,7 +513,7 @@ class ContactDataService: Service, HasLocalStorage {
     func details(contactID: String) -> Promise<Contact> {
         return Promise { seal in
             let api = ContactDetailRequest(cid: contactID)
-            self.apiService.exec(route: api) { (task, response: ContactDetailResponse) in
+            self.apiService.exec(route: api, responseObject: ContactDetailResponse()) { (task, response) in
                 if let error = response.error {
                     seal.reject(error)
                 } else if let contactDict = response.contact {

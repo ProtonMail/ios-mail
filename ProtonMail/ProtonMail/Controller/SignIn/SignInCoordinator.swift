@@ -139,7 +139,9 @@ final class SignInCoordinator: DefaultCoordinator {
         isStarted = true
         switch startingPoint {
         case .form:
-            login.presentLoginFlow(over: actualViewController, username: username) { [weak self] in
+            let customization = LoginCustomizationOptions(username: username)
+            login.presentLoginFlow(over: actualViewController,
+                                   customization: customization) { [weak self] in
                 self?.processLoginResult($0)
             }
         case .mailboxPassword:
@@ -253,9 +255,8 @@ final class SignInCoordinator: DefaultCoordinator {
     }
 
     private func checkDoh(_ error: NSError, wrapIn flowError: (Error) -> FlowError) -> Bool {
-        let code = error.code
-
-        guard environment.doh.codeCheck(code: code) else { return false }
+        guard environment.doh
+                .errorIndicatesDoHSolvableProblem(error: error) else { return false }
 
         let result: FlowResult = .errored(flowError(error as Error))
         guard environment.shouldShowAlertOnError else { onFinish(result); return true }

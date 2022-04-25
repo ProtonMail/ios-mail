@@ -729,7 +729,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        query = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        query = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
         searchBar.clearButton.isHidden = query.isEmpty == true
         return true
     }

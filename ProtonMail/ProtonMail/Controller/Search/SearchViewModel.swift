@@ -461,16 +461,17 @@ extension SearchViewModel {
 }
 
 extension SearchViewModel {
+    // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
         let context = coreDataContextProvider.rootSavingContext
         var count = 0
         context.performAndWait {
+            let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            overallCountRequest.resultType = .countResultType
+            overallCountRequest.predicate = NSPredicate(format: "%K == %@",
+                                                        Message.Attributes.userID,
+                                                        self.user.userinfo.userId)
             do {
-                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-                overallCountRequest.resultType = .countResultType
-                overallCountRequest.predicate = NSPredicate(format: "%K == %@",
-                                                            Message.Attributes.userID,
-                                                            self.user.userinfo.userId)
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch {

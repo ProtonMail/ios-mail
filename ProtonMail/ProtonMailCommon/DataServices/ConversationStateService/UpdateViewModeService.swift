@@ -32,7 +32,7 @@ class UpdateViewModeService: ViewModeUpdater {
 
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?) {
         let request = UpdateViewModeRequest(viewMode: viewMode)
-        apiService.exec(route: request) { (dataTask, response: UpdateViewModeResponse) in
+        apiService.exec(route: request, responseObject: UpdateViewModeResponse()) { dataTask, response in
             if let error = dataTask?.error {
                 completion?(.failure(error))
             } else {

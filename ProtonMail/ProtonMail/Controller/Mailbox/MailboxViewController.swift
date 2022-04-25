@@ -249,6 +249,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
         // Setup top actions
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
+        self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
         self.updateTimeLabel.textColor = ColorProvider.TextHint
 
         self.updateUnreadButton()
@@ -669,8 +670,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        let code = error.code
-        guard DoHMail.default.codeCheck(code: code) else {
+        guard DoHMail.default.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
         self.showError(error)

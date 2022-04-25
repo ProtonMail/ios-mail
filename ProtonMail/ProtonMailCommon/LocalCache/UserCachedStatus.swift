@@ -22,7 +22,9 @@
 
 import Foundation
 import ProtonCore_Keymaker
+#if !APP_EXTENSION
 import ProtonCore_Payments
+#endif
 
 let userCachedStatus = UserCachedStatus()
 

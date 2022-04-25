@@ -799,9 +799,6 @@ class ComposeViewModelImpl: ComposeViewModel {
     }
 
     override func isEmptyDraft() -> Bool {
-        let head = "<html><head></head><body>"
-        let foot = "</body></html>"
-
         if let message = self.message,
            message.subject.isEmpty,
            (message.toList == "[]" || message.toList.isEmpty),
