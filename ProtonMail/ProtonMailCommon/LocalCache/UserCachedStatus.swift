@@ -59,8 +59,8 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let historyTimeStamp = "history_timestamp"
 
         // Global Cache
-        static let lastSplashViersion = "last_splash_viersion" // global cache
-        static let lastTourViersion = "last_tour_viersion" // global cache
+        static let lastSplashVersion = "last_splash_viersion" // global cache
+        static let lastTourVersion = "last_tour_viersion" // global cache
         static let lastLocalMobileSignature = "last_local_mobile_signature_mainkeyProtected" // user cache but could restore
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
@@ -236,10 +236,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             let jsonString = dict.json()
             setValue(jsonString, forKey: Key.realAttachments)
         }
-    }
-
-    func resetTourValue() {
-        setValue(Constants.App.TourVersion, forKey: Key.lastTourViersion)
     }
 
     var mobileSignature: String {
@@ -480,8 +476,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     func cleanGlobal() {
         getShared().removeObject(forKey: Key.dohFlag)
 
-        getShared().removeObject(forKey: Key.lastSplashViersion)
-        getShared().removeObject(forKey: Key.lastTourViersion)
+        getShared().removeObject(forKey: Key.lastSplashVersion)
 
         // touch id
         getShared().removeObject(forKey: Key.autoLogoutTime)
@@ -730,16 +725,13 @@ extension UserCachedStatus: SystemUpTimeProtocol {
     }
 }
 
-extension UserCachedStatus {
-    func getOnboardingDestination() -> MailboxCoordinator.Destination? {
-        guard let tourVersion = getShared().int(forKey: Key.lastTourViersion) else {
-            return .onboardingForNew
-        }
-        if tourVersion == Constants.App.TourVersion {
-            return nil
-        } else {
-            return .onboardingForUpdate
-        }
+extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
+    var lastTourVersion: Int? {
+        getShared().int(forKey: Key.lastTourVersion)
+    }
+
+    func resetTourValue() {
+        setValue(Constants.App.TourVersion, forKey: Key.lastTourVersion)
     }
 }
 #endif

@@ -72,6 +72,7 @@ class MailboxViewModel: StorageLimit {
     private let contactProvider: ContactProviderProtocol
     let conversationProvider: ConversationProvider
     private let messageProvider: MessageProvider
+    private let welcomeCarrouselCache: WelcomeCarrouselCacheProtocol
 
     var viewModeIsChanged: (() -> Void)?
     let totalUserCountClosure: () -> Int
@@ -95,6 +96,7 @@ class MailboxViewModel: StorageLimit {
          conversationProvider: ConversationProvider,
          messageProvider: MessageProvider,
          eventsService: EventsFetching,
+         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
          totalUserCountClosure: @escaping () -> Int,
          getOtherUsersClosure: @escaping (String) -> [UserManager]
     ) {
@@ -116,6 +118,7 @@ class MailboxViewModel: StorageLimit {
         self.labelProvider = labelProvider
         self.messageProvider = messageProvider
         self.conversationProvider = conversationProvider
+        self.welcomeCarrouselCache = welcomeCarrouselCache
         self.conversationStateProvider.add(delegate: self)
     }
 
@@ -695,6 +698,17 @@ class MailboxViewModel: StorageLimit {
             return item(index: indexPath)?.time
         case .conversation:
             return itemOfConversation(index: indexPath)?.getTime(labelID: labelID)
+        }
+    }
+
+    func getOnboardingDestination() -> MailboxCoordinator.Destination? {
+        guard let tourVersion = self.welcomeCarrouselCache.lastTourVersion else {
+            return .onboardingForNew
+        }
+        if tourVersion == Constants.App.TourVersion {
+            return nil
+        } else {
+            return .onboardingForUpdate
         }
     }
 

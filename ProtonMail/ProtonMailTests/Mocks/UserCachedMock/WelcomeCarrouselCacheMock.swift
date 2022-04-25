@@ -1,4 +1,4 @@
-@testable import ProtonMail// Copyright (c) 2021 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of ProtonMail.
 //
@@ -18,20 +18,11 @@
 import Foundation
 @testable import ProtonMail
 
-final class SystemUpTimeMock: SystemUpTimeProtocol {
-    var localServerTime: TimeInterval
-    var localSystemUpTime: TimeInterval
-    var systemUpTime: TimeInterval
+final class WelcomeCarrouselCacheMock: WelcomeCarrouselCacheProtocol {
 
-    func updateLocalSystemUpTime(time: TimeInterval) {
-        self.localSystemUpTime = time
-    }
+    var lastTourVersion: Int?
 
-    init(localServerTime: TimeInterval,
-         localSystemUpTime: TimeInterval,
-         systemUpTime: TimeInterval) {
-        self.localServerTime = localServerTime
-        self.localSystemUpTime = localSystemUpTime
-        self.systemUpTime = systemUpTime
+    func resetTourValue() {
+        self.lastTourVersion = Constants.App.TourVersion
     }
 }
