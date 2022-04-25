@@ -445,16 +445,25 @@ extension EventsService {
                                         let uid: String? = users.firstUser?.userInfo.userId
                                         if let userID = uid {
                                             if msg.Action == IncrementalUpdateType.insert {
-                                                EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                                EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
+                                                    // Update cache if existing
+                                                    let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                }
                                             } else if msg.Action == IncrementalUpdateType.update_draft {
                                                 EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: messageObject, userID: userID) {
                                                     // Wait until delete is done - then insert updated message
-                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
+                                                        // Update cache if existing
+                                                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                    }
                                                 }
                                             } else if msg.Action == IncrementalUpdateType.update_flags {
                                                 EncryptedSearchService.shared.deleteMessageFromSearchIndex(message: messageObject, userID: userID) {
                                                     // Wait until delete is done - then insert updated message
-                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID, completionHandler: {})
+                                                    EncryptedSearchService.shared.insertSingleMessageToSearchIndex(message: messageObject, userID: userID) {
+                                                        // Update cache if existing
+                                                        let _ = EncryptedSearchCacheService.shared.updateCachedMessage(userID: userID, message: messageObject)
+                                                    }
                                                 }
                                             }
                                         } else {
