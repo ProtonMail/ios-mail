@@ -131,6 +131,10 @@ class ComposeViewModel: NSObject {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
 
+    func deleteDraft() {
+        NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
+    }
+
     func uploadAtt(_ att: Attachment!) {
         NSException(name: NSExceptionName(rawValue: "name"), reason: "reason", userInfo: nil).raise()
     }
@@ -208,6 +212,10 @@ class ComposeViewModel: NSObject {
     }
 
     func getNormalAttachmentNum() -> Int {
+        fatalError("This method must be overridden")
+    }
+
+    func isEmptyDraft() -> Bool {
         fatalError("This method must be overridden")
     }
 }
