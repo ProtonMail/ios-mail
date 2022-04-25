@@ -296,7 +296,9 @@ extension MessageSendingRequestBuilder {
                     continue
                 }
                 let attachment = preAttachment.att
-                let attName = QuotedPrintable.encode(string: attachment.fileName)
+                // The format is =?charset?encoding?encoded-text?=
+                // encoding = B means base64
+                let attName = "=?utf-8?B?\(attachment.fileName.encodeBase64())?="
                 let contentID = attachment.contentID() ?? ""
 
                 let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
