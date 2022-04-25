@@ -101,8 +101,8 @@ extension Attachment {
                                                                           passphrase: passphrase,
                                                                           key: key)
             var signature: String?
-            if let fileData = fileData,
-               let out = try fileData.signAttachment(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase) {
+            if let fileData = fileData {
+                let out = try fileData.signAttachmentNonOptional(byPrivKey: key.privateKey, passphrase: addressKeyPassphrase)
                 signature = out
             } else if let localURL = localURL,
                       let fileData = NSMutableData(contentsOf: localURL),
@@ -309,7 +309,12 @@ extension UIImage: AttachmentConvertible {
                     attachment.fileSize = fileData.count as NSNumber
                     attachment.isTemp = false
                     attachment.keyPacket = ""
-                    let dataToWrite = stripMetadata ? fileData.strippingExif() : fileData
+                    let dataToWrite: Data
+                    if self.containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                        dataToWrite = fileData.strippingExif()
+                    } else {
+                        dataToWrite = fileData
+                    }
                     try? attachment.writeToLocalURL(data: dataToWrite)
                     if isInline {
                         attachment.setupHeaderInfo(isInline: true, contentID: fileName)
@@ -357,7 +362,14 @@ extension Data: AttachmentConvertible {
                 attachment.fileSize = self.count as NSNumber
                 attachment.isTemp = false
                 attachment.keyPacket = ""
-                try? attachment.writeToLocalURL(data: stripMetadata ? self.strippingExif() : self)
+                let dataToWrite: Data
+                if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                    dataToWrite = self.strippingExif()
+                } else {
+                    dataToWrite = self
+                }
+                try? attachment.writeToLocalURL(data: dataToWrite)
+                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }
@@ -398,7 +410,12 @@ extension URL: AttachmentConvertible {
                 attachment.fileSize = NSNumber(value: self.dataSize)
                 attachment.isTemp = false
                 attachment.keyPacket = ""
-                attachment.localURL = stripMetadata ? self.strippingExif() : self
+                if containsExifMetadata(mimeType: attachment.mimeType) && stripMetadata {
+                    attachment.localURL = self.strippingExif()
+                } else {
+                    attachment.localURL = self
+                }
+                attachment.message = message
                 if isInline {
                     attachment.setupHeaderInfo(isInline: true, contentID: fileName)
                 }

@@ -30,8 +30,10 @@ class PinCodeSetUpViewController: ProtonMailViewController {
 
         var errorMessage: String {
             switch self {
-            case .pinTooShort: return LocalString._pin_code_setup1_textfield_pin_too_short
-            case .pinTooLong: return LocalString._pin_code_setup1_textfield_pin_too_long
+            case .pinTooShort:
+                return LocalString._pin_code_setup1_textfield_pin_too_short
+            case .pinTooLong:
+                return LocalString._pin_code_setup1_textfield_pin_too_long
             }
         }
     }
@@ -59,7 +61,8 @@ class PinCodeSetUpViewController: ProtonMailViewController {
         nextButton.setMode(mode: .solid)
         nextButton.setTitle(LocalString._pin_code_setup1_button_title, for: .normal)
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.dismissView))
+        let item = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.dismissView))
+        navigationItem.leftBarButtonItem = item
         self.emptyBackButtonTitleForNextView()
     }
 

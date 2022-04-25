@@ -297,7 +297,9 @@ extension MessageSendingRequestBuilder {
                     continue
                 }
                 let attachment = preAttachment.att
-                let attName = QuotedPrintable.encode(string: attachment.fileName)
+                // The format is =?charset?encoding?encoded-text?=
+                // encoding = B means base64
+                let attName = "=?utf-8?B?\(attachment.fileName.encodeBase64())?="
                 let contentID = attachment.contentID() ?? ""
 
                 let bodyToAdd = self.buildAttachmentBody(boundaryMsg: boundaryMsg,
@@ -339,33 +341,33 @@ extension MessageSendingRequestBuilder {
                         userKeys: [Data],
                         keys: [Key],
                         newSchema: Bool) -> Promise<MessageSendingRequestBuilder> {
-            async {
-                let plainText = self.generatePlainTextBody()
+        async {
+            let plainText = self.generatePlainTextBody()
 
-                guard let encrypted = try plainText.encrypt(withKey: senderKey,
-                                                            userKeys: userKeys,
-                                                            mailbox_pwd: passphrase) else {
-                    throw BuilderError.encryptedPlainTextMsgFailedToCreate
-                }
+            guard let encrypted = try plainText.encrypt(withKey: senderKey,
+                                                        userKeys: userKeys,
+                                                        mailbox_pwd: passphrase) else {
+                throw BuilderError.encryptedPlainTextMsgFailedToCreate
+            }
 
-                let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
+            let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
-                guard let sessionKey = try self.getSessionKey(from: keyPacket,
-                                                              isNewSchema: newSchema,
-                                                              userKeys: userKeys,
-                                                              senderKey: senderKey,
-                                                              addressKeys: keys,
-                                                              passphrase: passphrase) else {
-                    throw BuilderError.sessionKeyFailedToCreate
-                }
+            guard let sessionKey = try self.getSessionKey(from: keyPacket,
+                                                          isNewSchema: newSchema,
+                                                          userKeys: userKeys,
+                                                          senderKey: senderKey,
+                                                          addressKeys: keys,
+                                                          passphrase: passphrase) else {
+                throw BuilderError.sessionKeyFailedToCreate
+            }
 
-                self.plainTextSessionKey = sessionKey.key
-                self.plainTextSessionAlgo = sessionKey.algo
-                self.plainTextDataPackage = dataPacket.base64EncodedString()
+            self.plainTextSessionKey = sessionKey.key
+            self.plainTextSessionAlgo = sessionKey.algo
+            self.plainTextDataPackage = dataPacket.base64EncodedString()
 
-                self.clearPlainTextBody = plainText
+            self.clearPlainTextBody = plainText
 
-                return self
+            return self
         }
     }
 

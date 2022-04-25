@@ -65,7 +65,8 @@ extension NSError {
 
     func isInternetError() -> Bool {
         var isInternetIssue = false
-        if self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse != nil {
+        let identifier = "com.alamofire.serialization.response.error.response"
+        if self.userInfo[identifier] as? HTTPURLResponse != nil {
         } else {
             if self.code == -1_009 ||
                 self.code == -1_004 ||

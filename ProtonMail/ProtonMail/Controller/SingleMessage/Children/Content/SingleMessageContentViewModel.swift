@@ -1,4 +1,5 @@
 import Foundation
+import ProtonCore_Networking
 
 struct SingleMessageContentViewContext {
     let labelId: String
@@ -159,7 +160,7 @@ class SingleMessageContentViewModel {
 
     func sendDarkModeMetric(isApply: Bool) {
         let request = MetricDarkMode(applyDarkStyle: isApply)
-        self.user.apiService.exec(route: request) { _ in
+        self.user.apiService.exec(route: request, responseObject: Response()) { _ in
 
         }
     }

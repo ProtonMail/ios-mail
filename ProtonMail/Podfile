@@ -68,7 +68,15 @@ def pm_share
 end
 
 def pm_siri
-  pm_shared_pods
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
+end
+
+def pm_pushService
+  pod 'ProtonCore-Crypto', proton_core_version
+  pod 'ProtonCore-TestingToolkit/UnitTests/DataModel',  proton_core_version
+  pod 'ProtonCore-Doh', proton_core_version
+  pod 'ProtonCore-Keymaker/UsingCrypto', proton_core_version
 end
 
 target 'ProtonMail' do
@@ -76,7 +84,7 @@ target 'ProtonMail' do
 end
 
 target 'PushService' do
-  pm_shared_pods
+  pm_pushService
 end
 
 target 'ProtonMailDev' do
@@ -84,7 +92,7 @@ target 'ProtonMailDev' do
 end
 
 target 'PushServiceDev' do
-  pm_shared_pods
+  pm_pushService
 end
 
 target 'ProtonMailTests' do

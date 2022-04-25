@@ -21,7 +21,7 @@ final class UnsubscribeService {
 
     func oneClickUnsubscribe(messageId: String) {
         let request = OneClickUnsubscribe(messageId: messageId)
-        apiService.exec(route: request) { [weak self, labelId] _, _ in
+        apiService.exec(route: request, responseObject: VoidResponse()) { [weak self, labelId] _, _ in
             self?.markAsUnsubscribed(messageId: messageId, finish: {
                 self?.eventsService.fetchEvents(labelID: labelId)
             })
@@ -30,7 +30,7 @@ final class UnsubscribeService {
 
     func markAsUnsubscribed(messageId: String, finish: @escaping (() -> Void)) {
         let request = MarkAsUnsubscribed(messageId: messageId)
-        apiService.exec(route: request) { _ in
+        apiService.exec(route: request, responseObject: VoidResponse()) { _ in
             finish()
         }
     }

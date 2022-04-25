@@ -59,7 +59,7 @@ class PinCodeConfirmationViewController: ProtonMailViewController {
         guard step == .done else { return }
         viewModel?.isPinMatched { [weak self] isMatch in
             if isMatch {
-                self?.viewModel?.done(completion: { (shouldPop) in
+                self?.viewModel?.done(completion: { shouldPop in
                     if shouldPop {
                         self?.dismissPinScreen()
                     }

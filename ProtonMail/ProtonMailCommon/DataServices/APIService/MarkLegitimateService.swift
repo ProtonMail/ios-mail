@@ -36,7 +36,7 @@ class MarkLegitimateService {
 
     func markAsLegitimate(messageId: String) {
         let request = MarkLegitimate(messageId: messageId),
-        _ = apiService.exec(route: request) { [weak self, labelId] _, _ in
+        _ = apiService.exec(route: request, responseObject: VoidResponse()) { [weak self, labelId] _, _ in
             self?.eventsService.fetchEvents(labelID: labelId)
         }
     }

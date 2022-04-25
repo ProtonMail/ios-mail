@@ -222,7 +222,7 @@ extension MainQueueHandler {
         }
 
         let api = EmptyMessage(labelID: location.rawValue)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
         self.setupTimerToCleanSoftDeletedMessage()
@@ -230,7 +230,7 @@ extension MainQueueHandler {
 
     private func empty(labelID: String, completion: CompletionBlock?) {
         let api = EmptyMessage(labelID: labelID)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
         self.setupTimerToCleanSoftDeletedMessage()
@@ -379,7 +379,7 @@ extension MainQueueHandler {
                 if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
                     let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
-                    self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
+                    self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
                             if let err = response.error {
                                 completionWrapper(task, nil, err.toNSError)
@@ -391,7 +391,7 @@ extension MainQueueHandler {
                 } else {
                     let addr = self.messageDataService.fromAddress(message) ?? message.cachedAddress ?? self.messageDataService.defaultAddress(message)
                     let api = CreateDraft(message: message, fromAddr: addr)
-                    self.apiService.exec(route: api) { (task, response: UpdateDraftResponse) in
+                    self.apiService.exec(route: api, responseObject: UpdateDraftResponse()) { (task, response) in
                         context.perform {
                             if let err = response.error {
                                 completionWrapper(task, nil, err.toNSError)
@@ -587,7 +587,7 @@ extension MainQueueHandler {
             }
 
             let api = DeleteAttachment(attID: att.attachmentID, authCredential: authCredential)
-            self.apiService.exec(route: api) { (task, response: Response) in
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
                 completion!(task, nil, response.error?.toNSError)
             }
         }
@@ -682,7 +682,7 @@ extension MainQueueHandler {
                 return
             }
             let api = MessageActionRequest(action: action, ids: messageIds)
-            self.apiService.exec(route: api) { (task, response: Response) in
+            self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
                 completion!(task, nil, response.error?.toNSError)
             }
         }
@@ -706,7 +706,7 @@ extension MainQueueHandler {
         }
 
         let api = MessageActionRequest(action: action, ids: messageIDs)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion!(task, nil, response.error?.toNSError)
         }
     }
@@ -775,7 +775,7 @@ extension MainQueueHandler {
 
         let type: PMLabelType = isFolder ? .folder: .label
         let api = CreateLabelRequest(name: name, color: color, type: type, parentID: parentID, notify: notify, expanded: expanded)
-        self.apiService.exec(route: api) { (task, response: CreateLabelRequestResponse) in
+        self.apiService.exec(route: api, responseObject: CreateLabelRequestResponse()) { (task, response) in
             guard response.error == nil else {
                 completion?(nil, nil, response.error?.toNSError)
                 return
@@ -787,7 +787,7 @@ extension MainQueueHandler {
 
     private func updateLabel(labelID: String, name: String, color: String, completion: CompletionBlock?) {
         let api = UpdateLabelRequest(id: labelID, name: name, color: color)
-        self.apiService.exec(route: api) { [weak self] (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { [weak self] (task, response) in
             self?.user?.eventsService.fetchEvents(labelID: labelID)
             completion?(task, nil, response.error?.toNSError)
         }
@@ -795,14 +795,14 @@ extension MainQueueHandler {
 
     private func deleteLabel(labelID: String, completion: CompletionBlock?) {
         let api = DeleteLabelRequest(lable_id: labelID)
-        self.apiService.exec(route: api) { (task, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task, response) in
             completion?(task, nil, response.error?.toNSError)
         }
     }
 
     private func signout(completion: CompletionBlock?) {
         let api = AuthDeleteRequest()
-        self.apiService.exec(route: api) { (task: URLSessionDataTask?, response: Response) in
+        self.apiService.exec(route: api, responseObject: VoidResponse()) { (task: URLSessionDataTask?, response) in
             completion?(task, nil, response.error?.toNSError)
             // probably we want to notify user the session will seem active on website in case of error
         }
