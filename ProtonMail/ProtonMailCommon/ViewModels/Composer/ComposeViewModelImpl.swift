@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import SwiftSoup
 import PromiseKit
 import ProtonCore_Networking
 import ProtonCore_DataModel
@@ -99,11 +100,11 @@ class ComposeViewModelImpl: ComposeViewModel {
 
             } else {
                 //TODO: -v4 change to composer context
-                guard let m = msg, let msgToCopy = try? self.composerMessageHelper.context.existingObject(with: m.objectID) as? Message else {
+                guard let m = msg else {
                     fatalError("This should not happened.")
                 }
 
-                composerMessageHelper.copyAndCreateDraft(from: msgToCopy,
+                composerMessageHelper.copyAndCreateDraft(from: m,
                                                          shouldCopyAttachment: action == ComposeMessageAction.forward)
                 composerMessageHelper.updateMessageByMessageAction(action)
 
@@ -563,6 +564,12 @@ class ComposeViewModelImpl: ComposeViewModel {
         composerMessageHelper.updateDraft()
     }
 
+    override func deleteDraft() {
+        guard let message = self.composerMessageHelper.message else { return }
+        messageService.delete(messages: [MessageEntity(message)],
+                              label: Message.Location.draft.labelID)
+    }
+
     override func markAsRead() {
         composerMessageHelper.markAsRead()
     }
@@ -570,18 +577,9 @@ class ComposeViewModelImpl: ComposeViewModel {
     override func getHtmlBody() -> WebContents {
         let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.autoLoadRemoteImages ? .allowed : .disallowed
 
-        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
-        signature = signature.ln2br()
-
-        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
-        mobileSignature = mobileSignature.ln2br()
-
-        let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
-        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
-
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
-        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
+        let signatureHtml = self.htmlSignature()
 
         switch messageAction {
         case .openDraft:
@@ -718,6 +716,24 @@ class ComposeViewModelImpl: ComposeViewModel {
         return AttachReminderHelper.hasAttachKeyword(content: content,
                                                      language: language)
     }
+
+    override func isEmptyDraft() -> Bool {
+        if let message = self.composerMessageHelper.message,
+           message.subject.isEmpty,
+           (message.toList == "[]" || message.toList.isEmpty),
+           (message.ccList == "[]" || message.ccList.isEmpty),
+           (message.bccList == "[]" || message.bccList.isEmpty),
+           message.numAttachments.intValue == 0 {
+            let decryptedBody = (try? self.user.messageService.messageDecrypter.decrypt(message: message)) ?? .empty
+            let bodyDocument = try? SwiftSoup.parse(decryptedBody)
+            let body = try? bodyDocument?.body()?.text()
+
+            let signatureDocument = try? SwiftSoup.parse(self.htmlSignature())
+            let signature = try? signatureDocument?.body()?.text()
+            return (body?.isEmpty ?? false) || body == signature
+        }
+        return false
+    }
 }
 
 extension ComposeViewModelImpl {
@@ -825,5 +841,19 @@ extension ComposeViewModelImpl {
         } catch {
         }
         return ["": ""]
+    }
+
+    func htmlSignature() -> String {
+        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
+        signature = signature.ln2br()
+
+        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
+        mobileSignature = mobileSignature.ln2br()
+
+        let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
+
+        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
+        return signatureHtml
     }
 }

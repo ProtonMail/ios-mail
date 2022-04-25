@@ -257,6 +257,7 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             }
             topVC.showMessageSendingHintBanner()
         } else {
+            if self.viewModel.isEmptyDraft() { return }
             topVC.showDraftSaveHintBanner(cache: userCachedStatus,
                                           messageService: messageService,
                                           coreDataContextProvider: coreDataContextProvider)
@@ -493,21 +494,17 @@ class ComposeViewController: HorizontallyScrollableWebViewContainer, ViewModelPr
             self.dismiss()
         }
 
-        guard self.viewModel.hasDraft ||
-                self.headerView.hasContent ||
-                (self.attachments?.count ?? 0) > 0 else {
-            dismiss()
-            return
-        }
-
         self.stopAutoSave()
 		// Remove the EO when we save the draft
         self.headerView.expirationTimeInterval = 0
         self.collectDraftData().done { [weak self] _ in
             guard let self = self else { return }
-            return self.viewModel.updateDraft()
+            if self.viewModel.isEmptyDraft() {
+                return self.viewModel.deleteDraft()
+            } else {
+                return self.viewModel.updateDraft()
+            }
         }.catch { _ in
-
         }.finally {
             dismiss()
         }
