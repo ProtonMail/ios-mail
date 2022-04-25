@@ -698,6 +698,7 @@
 		3DEC41DAA96DDC09965636F4627DCFF1 /* InAppFeedbackStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A699A4E228459EF62FB3E4ADE88D93D1 /* InAppFeedbackStateService.swift */; };
 		3E03474F352AED8B7A5C618676325D2A /* InternetConnectionStatusProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FF6A1672E8CB714D2C654038071590 /* InternetConnectionStatusProvider.swift */; };
 		3E1ABE6F2811208E00A6014F /* SystemUpTimeMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD8F6A95E9D4D1687BB4DDB2C73C905 /* SystemUpTimeMock.swift */; };
+		3E1ABE73281143D100A6014F /* ComposeViewModelImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1ABE72281143D100A6014F /* ComposeViewModelImplTests.swift */; };
 		3E6DE41E7B389A3A0266E931DA934C26 /* ContactGroupDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D6C2D97D6821AA2531F40550C0BE53 /* ContactGroupDataService.swift */; };
 		3E6E920CDF3BE3A9E85FFA68F8947A57 /* HumanCheckStatusProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9641B0F5DFC7197F7EE10F8BDB23543 /* HumanCheckStatusProviderProtocol.swift */; };
 		3E724EF52DDD6B35673BF9F8E3B72E62 /* PMPersistentQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A05398C79EAECBC2E82E416B095FC49 /* PMPersistentQueueTests.swift */; };
@@ -3283,6 +3284,7 @@
 		3DE497130C5CA8A54C2F3664D662A315 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "pt-BR"; path = "../../ProtonMail/pt-BR.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		3DE4E5F927C84D91C86831B9243C1FC5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3E08B8C80244FDBD275865A7C7214F59 /* UsersManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsersManagerTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/UsersManager/UsersManagerTests.swift; sourceTree = SOURCE_ROOT; };
+		3E1ABE72281143D100A6014F /* ComposeViewModelImplTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImplTests.swift; sourceTree = "<group>"; };
 		3E34C84EA9D69134A34A7E1F81876135 /* TaskCompletionHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TaskCompletionHelperTests.swift; path = ProtonMailTests/ProtonMailCommon/DataServices/TaskCompletionHelperTests.swift; sourceTree = SOURCE_ROOT; };
 		3E494605B2B07C12F16F1F186BC45977 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = tr; path = ../../ProtonMail/tr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		3E9C644BCCC51C9E7EC5933C97B4E629 /* MBProgressHUD+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+Helper.swift"; sourceTree = "<group>"; };
@@ -5150,6 +5152,14 @@
 				43EBF832B83067FEF0F183FAD1449584 /* ComposerAttachmentCellTableViewCell.xib */,
 			);
 			path = ComposerAttachmentCell;
+			sourceTree = "<group>";
+		};
+		3E1ABE71281143D100A6014F /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				3E1ABE72281143D100A6014F /* ComposeViewModelImplTests.swift */,
+			);
+			path = Compose;
 			sourceTree = "<group>";
 		};
 		43C66F5502602EC00CAE01A4AA17B325 /* Formatters */ = {
@@ -7250,6 +7260,7 @@
 		E66FBCA901B160366EEE7396742BF201 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				3E1ABE71281143D100A6014F /* Compose */,
 				D65ED57633F349127EA00409A0E36FDF /* Contacts */,
 				9A585DF4905C63E026F4166ED0B43439 /* Mailbox */,
 				2D11B72D39E13D577DC05BF3DADE7696 /* BannerViewModelTests.swift */,
@@ -9191,6 +9202,7 @@
 				07DC3D5277BAFB5B1E8AF7E044AD9146 /* MenuViewModelTests.swift in Sources */,
 				36C52FBA006F9CDEF26FC2CEC0973C28 /* MessageActionCodableTests.swift in Sources */,
 				E5F6442392E2D0686582700560B31DFC /* MessageDataProcessMock.swift in Sources */,
+				3E1ABE73281143D100A6014F /* ComposeViewModelImplTests.swift in Sources */,
 				2C34C8036EE9CEDFB3E2AA8FA2F0AF02 /* MessageDataServiceTests.swift in Sources */,
 				C1B42CEED28F499C21DD7B5455792C5B /* MessageDecrypterMock.swift in Sources */,
 				62FDA17C57475C61324DBA7BC08BA43D /* MessageDecrypterTestData.swift in Sources */,

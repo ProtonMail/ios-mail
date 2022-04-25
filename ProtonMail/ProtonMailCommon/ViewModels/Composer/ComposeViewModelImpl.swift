@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import SwiftSoup
 import PromiseKit
 import ProtonCore_Networking
 import ProtonCore_DataModel
@@ -644,6 +645,12 @@ class ComposeViewModelImpl: ComposeViewModel {
         messageService.saveDraft(self.message)
     }
 
+    override func deleteDraft() {
+        guard let message = self.message else { return }
+        messageService.delete(messages: [message],
+                              label: Message.Location.draft.rawValue)
+    }
+
     override func markAsRead() {
         if let msg = message, msg.unRead {
             self.messageService.mark(messages: [msg], labelID: Message.Location.draft.rawValue, unRead: false)
@@ -653,18 +660,9 @@ class ComposeViewModelImpl: ComposeViewModel {
     override func getHtmlBody() -> WebContents {
         let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.autoLoadRemoteImages ? .allowed : .disallowed
 
-        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
-        signature = signature.ln2br()
-
-        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
-        mobileSignature = mobileSignature.ln2br()
-
-        let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
-        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
-
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
-        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
+        let signatureHtml = self.htmlSignature()
 
         switch messageAction {
         case .openDraft:
@@ -799,6 +797,27 @@ class ComposeViewModelImpl: ComposeViewModel {
         return AttachReminderHelper.hasAttachKeyword(content: content,
                                                      language: language)
     }
+
+    override func isEmptyDraft() -> Bool {
+        let head = "<html><head></head><body>"
+        let foot = "</body></html>"
+
+        if let message = self.message,
+           message.subject.isEmpty,
+           (message.toList == "[]" || message.toList.isEmpty),
+           (message.ccList == "[]" || message.ccList.isEmpty),
+           (message.bccList == "[]" || message.bccList.isEmpty),
+           message.numAttachments.intValue == 0 {
+            let decryptedBody = (try? self.user.messageService.messageDecrypter.decrypt(message: message)) ?? .empty
+            let bodyDocument = try? SwiftSoup.parse(decryptedBody)
+            let body = try? bodyDocument?.body()?.text()
+
+            let signatureDocument = try? SwiftSoup.parse(self.htmlSignature())
+            let signature = try? signatureDocument?.body()?.text()
+            return (body?.isEmpty ?? false) || body == signature
+        }
+        return false
+    }
 }
 
 extension ComposeViewModelImpl {
@@ -906,5 +925,19 @@ extension ComposeViewModelImpl {
         } catch {
         }
         return ["": ""]
+    }
+
+    func htmlSignature() -> String {
+        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
+        signature = signature.ln2br()
+
+        var mobileSignature = self.user.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
+        mobileSignature = mobileSignature.ln2br()
+
+        let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let mobileBr = defaultSignature.isEmpty ? "<div><br></div><div><br></div>": "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
+
+        let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
+        return signatureHtml
     }
 }

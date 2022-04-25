@@ -86,15 +86,15 @@ extension MessageDataService {
 
     @discardableResult
     func delete(messages: [Message], label: String) -> Bool {
-        guard !messages.isEmpty else {
-            return false
-        }
-
+        guard !messages.isEmpty else { return false }
+        // If the messageID is UUID, that means the message hasn't gotten response from BE
+        let messagesIds = messages
+            .map(\.messageID)
+            .filter { UUID(uuidString: $0) == nil }
         for message in messages {
             _ = self.cacheService.delete(message: message, label: label)
         }
 
-        let messagesIds = messages.map(\.messageID)
         self.queue(.delete(currentLabelID: nil, itemIDs: messagesIds), isConversation: false)
         return true
     }

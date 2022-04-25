@@ -250,13 +250,14 @@ extension MainQueueHandler {
 
 // MARK: queue actions for single message
 extension MainQueueHandler {
-    fileprivate func draft(save messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
+    /// - parameter messageObjectID: message objectID string
+    fileprivate func draft(save messageObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = self.coreDataService.operationContext
         var isAttachmentKeyChanged = false
         self.coreDataService.enqueue(context: context) { (context) in
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageID) else {
+            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageObjectID) else {
                 // error: while trying to get objectID
-                completion?(nil, nil, NSError.badParameter(messageID))
+                completion?(nil, nil, NSError.badParameter(messageObjectID))
                 return
             }
 
@@ -268,7 +269,7 @@ extension MainQueueHandler {
             do {
                 guard let message = try context.existingObject(with: objectID) as? Message else {
                     // error: object is not a Message
-                    completion?(nil, nil, NSError.badParameter(messageID))
+                    completion?(nil, nil, NSError.badParameter(messageObjectID))
                     return
                 }
 
@@ -296,6 +297,16 @@ extension MainQueueHandler {
                         let parseError = NSError.unableToParseResponse("messageID")
                         NSError.alertSavingDraftError(details: parseError.localizedDescription)
                         completion?(task, nil, error)
+                        return
+                    }
+
+                    guard let message = try? context.existingObject(with: objectID) as? Message else {
+                        // If the message is nil
+                        // That means this message is deleted
+                        // Should send delete API to make sure this message is deleted
+                        let mockAction: MessageAction = .delete(currentLabelID: nil, itemIDs: [])
+                        self.messageDelete([messageID], writeQueueUUID: UUID(), action: mockAction.rawValue, UID: UID, completion: nil)
+                        completion?(task, nil, nil)
                         return
                     }
 
@@ -686,7 +697,11 @@ extension MainQueueHandler {
     ///   - completion: call back
     fileprivate func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         guard user?.userinfo.userId == UID else {
-            completion!(nil, nil, NSError.userLoggedOut())
+            completion?(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        guard !messageIDs.isEmpty else {
+            completion?(nil, nil, nil)
             return
         }
 
