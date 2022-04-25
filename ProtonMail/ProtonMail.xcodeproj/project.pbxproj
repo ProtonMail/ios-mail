@@ -3052,6 +3052,7 @@
 		092051B550AA459664BDAA47E1302426 /* ReachabilityStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityStub.swift; sourceTree = "<group>"; };
 		097A82D6D121778D73C0FD65B975D91F /* String+Toast+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Toast+Extension.swift"; sourceTree = "<group>"; };
 		09850548088C72E18863E9118187897A /* SwipeActionRightToLeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionRightToLeftTableViewCell.swift; sourceTree = "<group>"; };
+		0998325D8F4E3F2E645840D5027E41D2 /* MIMETypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMETypeTests.swift; sourceTree = "<group>"; };
 		09B7BD7737149F2EE90881D4898AEC16 /* MailboxViewModel+MoveTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailboxViewModel+MoveTo.swift"; sourceTree = "<group>"; };
 		0A8B854E9663E924BA98511AB6033591 /* UserInfo+ViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+ViewMode.swift"; sourceTree = "<group>"; };
 		0ABB1BADD0CC0A08BA06B3A3327B0D79 /* LabelColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelColorCell.swift; sourceTree = "<group>"; };
@@ -5939,6 +5940,7 @@
 				FE5A94385D293070A2A3165E93C78DF0 /* Data+OpenPGP_TestSamples */,
 				9B77069927AACE5CA4A08B9A308AD30D /* General */,
 				4A7C4B26537A089491D66B410956D660 /* DataAttachmentDecryptionTests.swift */,
+				0998325D8F4E3F2E645840D5027E41D2 /* MIMETypeTests.swift */,
 				9B75781E3F002F45FA52E6457310FA48 /* PMNIBirthday_FormattedBirthdayTests.swift */,
 			);
 			path = Extensions;
