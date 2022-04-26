@@ -120,14 +120,14 @@ class CacheServiceParsingTests: XCTestCase {
         let testMessageData = testMessageDetailData.parseObjectAny()!
         let testMessage = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: testMessageData, in: testContext) as! Message
         try testContext.save()
-        XCTAssertFalse(testMessage.isAutoReply)
+        XCTAssertFalse(MessageEntity(testMessage).isAutoReply)
     }
 
     func testMessageWithAutoReplyHeaderShouldBeDetectedAsBeingAnAutoReply() throws {
         let testMessageData = testMessageDetailDataWithAutoReply.parseObjectAny()!
         let testMessage = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: testMessageData, in: testContext) as! Message
         try testContext.save()
-        XCTAssertTrue(testMessage.isAutoReply)
+        XCTAssertTrue(MessageEntity(testMessage).isAutoReply)
     }
 }
 

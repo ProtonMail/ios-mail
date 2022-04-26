@@ -136,11 +136,8 @@ final class Message: NSManagedObject {
     // @NSManaged var tag: String
 
     // temp cache memory only
-    var checkingSign: Bool = false
     var checkedSign: Bool = false
     var pgpType: PGPType = .none
-    var unencrypt_outside: Bool = false
-    typealias ObjectIDContainer = ObjectBox<Message>
 
     var tempAtts: [MimeAttachment]?
 }

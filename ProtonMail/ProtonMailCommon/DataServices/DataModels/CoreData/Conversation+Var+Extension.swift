@@ -24,37 +24,6 @@ import UIKit
 import ProtonCore_UIFoundations
 
 extension Conversation {
-    var starred: Bool {
-        return contains(of: Message.Location.starred.rawValue)
-    }
-
-    var draft: Bool {
-        return contains(of: Message.Location.draft.rawValue)
-    }
-
-    func initial(_ replacingEmails: [Email]) -> String {
-        guard let senderName = getSendersName(replacingEmails).first else {
-            return "?"
-        }
-        return senderName.initials()
-    }
-
-    func getLabelIds() -> [String] {
-        self.labels.compactMap({ $0 as? ContextLabel }).map({ $0.labelID })
-    }
-
-    func firstValidFolder() -> String? {
-        for labelId in getLabelIds() {
-            if !labelId.preg_match("(?!^\\d+$)^.+$") {
-                if labelId != "1", labelId != "2", labelId != "10", labelId != "5" {
-                    return labelId
-                }
-            }
-        }
-
-        return nil
-    }
-
     func getOrderedLabels() -> [LabelEntity] {
         let labels = self.getLabels()
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")

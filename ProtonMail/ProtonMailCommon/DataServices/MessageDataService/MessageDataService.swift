@@ -1421,20 +1421,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
     @objc fileprivate func didSignOutNotification(_ notification: Notification) {
         _ = cleanUp()
     }
-    
-    func queue(_ conversation: ConversationEntity, action: MessageAction) {
-        switch action {
-        case .saveDraft, .uploadAtt, .uploadPubkey, .deleteAtt, .send, .emptyTrash, .emptySpam:
-            fatalError()
-        default:
-            let task = QueueManager.Task(messageID: conversation.conversationID.rawValue,
-                                         action: action,
-                                         userID: self.userID,
-                                         dependencyIDs: [],
-                                         isConversation: true)
-            _ = self.queueManager?.addTask(task)
-        }
-    }
 
     func queue(_ message: Message, action: MessageAction) {
         if message.objectID.isTemporaryID {
@@ -1526,38 +1512,6 @@ class MessageDataService: Service, HasLocalStorage, MessageDataProcessProtocol, 
                 }.cauterize()
             }
         }
-    }
-
-    // const (
-    //  ok         = 0
-    //  notSigned  = 1
-    //  noVerifier = 2
-    //  failed     = 3
-    //  )
-    func verifyBody(_ message: MessageEntity, verifier: [Data], passphrase: String) -> SignStatus {
-        let keys = self.userDataSource!.addressKeys
-        guard let passphrase = self.userDataSource?.mailboxPassword else {
-            return .failed
-        }
-
-        do {
-            let time: Int64 = Int64(round(message.time?.timeIntervalSince1970 ?? 0))
-            if let verify = self.userDataSource!.newSchema ?
-                try message.body.verifyMessage(verifier: verifier,
-                                       userKeys: self.userDataSource!.userPrivateKeys,
-                                       keys: keys, passphrase: passphrase, time: time) :
-                try message.body.verifyMessage(verifier: verifier,
-                                               binKeys: keys.binPrivKeysArray,
-                                               passphrase: passphrase,
-                                               time: time) {
-                guard let verification = verify.signatureVerificationError else {
-                    return .ok
-                }
-                return SignStatus(rawValue: verification.status) ?? .notSigned
-            }
-        } catch {
-        }
-        return .failed
     }
     
     func encryptBody(_ message: MessageEntity,

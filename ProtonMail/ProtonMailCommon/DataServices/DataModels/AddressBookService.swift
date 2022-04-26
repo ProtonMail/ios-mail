@@ -24,9 +24,6 @@ import Foundation
 import Contacts
 
 class AddressBookService: Service {
-    enum RuntimeError: Error {
-        case cant_get_contacts
-    }
 
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
 

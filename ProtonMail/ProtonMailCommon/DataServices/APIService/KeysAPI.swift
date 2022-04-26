@@ -236,37 +236,6 @@ final class UpdatePrivateKeyRequest: Request {
     }
 }
 
-extension Array where Element: Package {
-    var parameters: [Any]? {
-        var out: [Any] = []
-        for item in self {
-            out.append(item.parameters as Any)
-        }
-        return  out
-    }
-    var json: String {
-        return self.parameters!.toJson()
-    }
-}
-
-extension Array where Element: Any {
-    func toJson(prettyPrinted: Bool = false) -> String {
-        let options: JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self
-        if JSONSerialization.isValidJSONObject(anyObject) {
-            do {
-                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
-                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                    return string as String
-                }
-            } catch {
-            }
-        }
-        return ""
-    }
-
-}
-
 // MARK: active a key when Activation is not null --- Response
 final class ActivateKey: Request {
     let addressID: String

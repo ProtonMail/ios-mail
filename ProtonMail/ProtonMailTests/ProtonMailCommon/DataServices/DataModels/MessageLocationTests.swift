@@ -39,44 +39,6 @@ class MessageLocationTests: XCTestCase {
                        LocalString._locations_all_mail_title)
     }
 
-    func testGetTitle() {
-        XCTAssertEqual(Message.Location.inbox.title,
-                       LocalString._locations_inbox_title)
-        XCTAssertEqual(Message.Location.starred.title,
-                       LocalString._locations_starred_title)
-        XCTAssertEqual(Message.Location.draft.title,
-                       LocalString._locations_draft_title)
-        XCTAssertEqual(Message.Location.sent.title,
-                       LocalString._locations_outbox_title)
-        XCTAssertEqual(Message.Location.trash.title,
-                       LocalString._locations_trash_title)
-        XCTAssertEqual(Message.Location.archive.title,
-                       LocalString._locations_archive_title)
-        XCTAssertEqual(Message.Location.spam.title,
-                       LocalString._locations_spam_title)
-        XCTAssertEqual(Message.Location.allmail.title,
-                       LocalString._locations_all_mail_title)
-    }
-
-    func testGetActionTitle() {
-        XCTAssertEqual(Message.Location.inbox.title,
-                       LocalString._locations_inbox_title)
-        XCTAssertEqual(Message.Location.starred.title,
-                       LocalString._locations_starred_title)
-        XCTAssertEqual(Message.Location.draft.title,
-                       LocalString._locations_draft_title)
-        XCTAssertEqual(Message.Location.sent.title,
-                       LocalString._locations_outbox_title)
-        XCTAssertEqual(Message.Location.trash.title,
-                       LocalString._locations_trash_title)
-        XCTAssertEqual(Message.Location.archive.title,
-                       LocalString._locations_archive_title)
-        XCTAssertEqual(Message.Location.spam.title,
-                       LocalString._locations_spam_title)
-        XCTAssertEqual(Message.Location.allmail.title,
-                       LocalString._locations_all_mail_title)
-    }
-
     func testInit() {
         let labelID = LabelID("0")
         let sut = Message.Location("0")

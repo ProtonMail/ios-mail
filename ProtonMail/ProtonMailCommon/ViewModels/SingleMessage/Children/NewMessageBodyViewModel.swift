@@ -494,36 +494,3 @@ struct BannerHelper {
         return embeddedContentPolicy != .allowed && isHavingEmbeddedImages
     }
 }
-
-extension Message {
-    func isHavingEmbeddedImages(decryptedBody: String? = nil) -> Bool {
-        guard let attachments = self.attachments.allObjects as? [Attachment] else {
-            return false
-        }
-        guard let body = decryptedBody else {
-            let atts = attachments
-                .filter({ $0.inline() && $0.contentID()?.isEmpty == false })
-            return !atts.isEmpty
-        }
-        let cids = attachments.compactMap { $0.contentID() }
-        let inlines = cids.filter { cid in
-            return body.preg_match("src=\"\(cid)\"") ||
-                body.preg_match("src=\"cid:\(cid)\"") ||
-                body.preg_match("data-embedded-img=\"\(cid)\"") ||
-                body.preg_match("data-src=\"cid:\(cid)\"") ||
-                body.preg_match("proton-src=\"cid:\(cid)\"")
-        }
-        return !inlines.isEmpty
-    }
-
-    func getCIDOfInlineAttachment(decryptedBody: String?) -> [String]? {
-        guard let attachments = self.attachments.allObjects as? [Attachment],
-              let body = decryptedBody else {
-            return nil
-        }
-        let cids = attachments
-            .compactMap({ $0.contentID() })
-            .filter { body.contains(check: $0) }
-        return cids
-    }
-}

@@ -100,28 +100,6 @@ extension NSManagedObjectContext {
         return nil
     }
 
-    func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
-        do {
-            let results = try fetch(request)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
-    func objectsWithEntityName(_ entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> [NSManagedObject]? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        request.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
-        do {
-            let results = try fetch(request)
-            return results as? [NSManagedObject]
-        } catch {
-        }
-        return nil
-    }
-
     func fetchedControllerEntityName(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)

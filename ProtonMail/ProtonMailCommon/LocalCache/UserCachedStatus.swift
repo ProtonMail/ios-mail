@@ -166,20 +166,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     private(set) var hasShownStorageOverAlert: Bool = false
 
-    struct CoderKey {// Conflict with Key object
-           static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"
-           static let username                  = "usernameKeyProtectedWithMainKey"
-
-//           static let userInfo                  = "userInfoKeyProtectedWithMainKey"
-//           static let twoFAStatus               = "twofaKey"
-//           static let userPasswordMode          = "userPasswordModeKey"
-//
-//           static let roleSwitchCache           = "roleSwitchCache"
-//           static let defaultSignatureStatus    = "defaultSignatureStatus"
-//
-//           static let firstRunKey = "FirstRunKey"
-       }
-
     var isForcedLogout: Bool = false
 
     /// Record the last draft messageID, so the app can do delete / restore
@@ -235,28 +221,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             let dict: [String: Any] = [sessionID: realAttachments]
             let jsonString = dict.json()
             setValue(jsonString, forKey: Key.realAttachments)
-        }
-    }
-
-    var mobileSignature: String {
-        get {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
-                case let locked = Locked<String>(encryptedValue: cypherData),
-                let customSignature = try? locked.unlock(with: mainKey) else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
-                return "Sent from ProtonMail for iOS"
-            }
-
-            return customSignature
-        }
-        set {
-            guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
-                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else {
-                return
-            }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.lastLocalMobileSignature)
-            SharedCacheBase.getDefault().synchronize()
         }
     }
 

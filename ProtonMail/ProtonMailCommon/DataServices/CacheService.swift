@@ -267,43 +267,6 @@ class CacheService: Service {
         }
     }
 
-    func deleteMessage(by labelID: LabelID) -> Bool {
-        var result = false
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K == %@)",
-                                             labelID.rawValue,
-                                             Message.Attributes.userID,
-                                             self.userID.rawValue)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        context.performAndWait {
-            do {
-                if let oldMessages = try context.fetch(fetchRequest) as? [Message] {
-                    for message in oldMessages {
-                        context.delete(message)
-                    }
-                    if context.saveUpstreamIfNeeded() == nil {
-                        result = true
-                    }
-                }
-            } catch {
-            }
-        }
-        return result
-    }
-
-    func deleteMessage(messageID: MessageID, completion: (() -> Void)? = nil) {
-        context.perform {
-            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: self.context) {
-                let labelObjs = msg.mutableSetValue(forKey: Message.Attributes.labels)
-                labelObjs.removeAllObjects()
-                self.context.delete(msg)
-            }
-            _ = self.context.saveUpstreamIfNeeded()
-            completion?()
-        }
-    }
-
     func cleanReviewItems(completion: (() -> Void)? = nil) {
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
@@ -608,31 +571,6 @@ extension CacheService {
                 try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: response, in: self.context)
                 _ = self.context.saveUpstreamIfNeeded()
             } catch {
-            }
-            DispatchQueue.main.async {
-                completion?()
-            }
-        }
-    }
-    
-    func updateLabel(_ label: LabelEntity, name: String, color: String, completion: (() -> Void)?) {
-        context.perform {
-            if let labelToUpdate = try? self.context.existingObject(with: label.objectID.rawValue) as? Label {
-                labelToUpdate.name = name
-                labelToUpdate.color = color
-                _ = self.context.saveUpstreamIfNeeded()
-            }
-            DispatchQueue.main.async {
-                completion?()
-            }
-        }
-    }
-
-    func deleteLabel(_ label: LabelEntity, completion: (() -> Void)?) {
-        context.perform {
-            if let labelToDelete = try? self.context.existingObject(with: label.objectID.rawValue) {
-                self.context.delete(labelToDelete)
-                _ = self.context.saveUpstreamIfNeeded()
             }
             DispatchQueue.main.async {
                 completion?()

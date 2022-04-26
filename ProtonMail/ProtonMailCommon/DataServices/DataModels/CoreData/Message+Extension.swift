@@ -91,13 +91,6 @@ extension Message {
         return lists
     }
 
-    func getScore() -> Message.SpamScore {
-        if let e = Message.SpamScore(rawValue: self.spamScore.intValue) {
-            return e
-        }
-        return .others
-    }
-
     @discardableResult
     func add(labelID: String) -> String? {
         var outLabel: String?
@@ -412,10 +405,6 @@ extension Message {
         return ContactVO(id: "",
                          name: sender?.name ?? "",
                          email: sender?.address ?? "")
-    }
-
-    var isHavingMoreThanOneContact: Bool {
-        (toList.toContacts() + ccList.toContacts()).count > 1
     }
 
     var hasMetaData: Bool {
