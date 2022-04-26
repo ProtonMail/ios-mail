@@ -50,7 +50,7 @@ extension MessageDataService {
 
     @discardableResult
     func move(messages: [Message], to tLabel: String, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
-        let custom_folders = labelDataService.getAllLabels(of: .folder, context: coreDataService.mainContext).map { $0.labelID }
+        let custom_folders = labelDataService.getAllLabels(of: .folder, context: contextProvider.mainContext).map { $0.labelID }
         let messagesWithSourceIds = MessageDataService
             .findMessagesWithSourceIds(messages: messages,
                                        customFolderIds: custom_folders,

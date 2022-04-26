@@ -73,13 +73,13 @@ extension MailboxViewModelTests {
     func testCheckToUseReadOrUnreadAction_inConversation_withUnreadMessage() {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
-        let conversationToReturn = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationToReturn.conversationID = "1"
-        let testMessage = Message(context: coreDataServiceMock.mainContext)
+        let testMessage = Message(context: coreDataContextProviderMock.mainContext)
         testMessage.conversationID = "1"
         testMessage.unRead = true
         // Prepare the conversation has one message which is unread.
-        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataServiceMock.mainContext)
+        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataContextProviderMock.mainContext)
 
         conversationProviderMock.callFetchLocal.bodyIs { _, _, _  in
             return [conversationToReturn]
@@ -94,13 +94,13 @@ extension MailboxViewModelTests {
     func testCheckToUseReadOrUnreadAction_inConversation_withoutUnreadMessage() {
         conversationStateProviderMock.viewMode = .conversation
         createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
-        let conversationToReturn = Conversation(context: coreDataServiceMock.mainContext)
+        let conversationToReturn = Conversation(context: coreDataContextProviderMock.mainContext)
         conversationToReturn.conversationID = "1"
-        let testMessage = Message(context: coreDataServiceMock.mainContext)
+        let testMessage = Message(context: coreDataContextProviderMock.mainContext)
         testMessage.conversationID = "1"
         testMessage.unRead = false
         // Prepare the conversation has one message which is unread.
-        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataServiceMock.mainContext)
+        conversationToReturn.applyLabelChanges(labelID: "1245", apply: true, context: coreDataContextProviderMock.mainContext)
 
         conversationProviderMock.callFetchLocal.bodyIs { _, _, _  in
             return [conversationToReturn]

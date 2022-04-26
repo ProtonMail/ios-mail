@@ -21,6 +21,7 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import ProtonCore_Common
 
 class SettingsAccountCoordinator {
     private let viewModel: SettingsAccountViewModel
@@ -29,26 +30,17 @@ class SettingsAccountCoordinator {
     private weak var navigationController: UINavigationController?
 
     enum Destination: String {
-        case recoveryEmail = "setting_notification"// "recoveryEmail"
+        case recoveryEmail = "setting_notification"
         case loginPwd      = "setting_login_pwd"
         case mailboxPwd    = "setting_mailbox_pwd"
         case singlePwd     = "setting_single_password_segue"
         case displayName   = "setting_displayname"
         case signature     = "setting_signature"
         case mobileSignature = "setting_mobile_signature"
-
-//        case notification    = "setting_notification"
-//        case debugQueue      = "setting_debug_queue_segue"
-//        case pinCode         = "setting_setup_pingcode"
-//        case lableManager    = "toManagerLabelsSegue"
-//        case loginPwd        = "setting_login_pwd"
-//        case mailboxPwd      = "setting_mailbox_pwd"
-//        case singlePwd       = "setting_single_password_segue"
-//        case snooze          = "setting_notifications_snooze_segue"
         case privacy = "setting_privacy"
         case labels = "labels_management"
         case folders = "folders_management"
-        case conversation
+        case conversation = "conversation_mode"
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -59,12 +51,12 @@ class SettingsAccountCoordinator {
         viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
     }
 
-    func start() {
+    func start(animated: Bool = false) {
         let viewController = SettingsAccountViewController(viewModel: self.viewModel, coordinator: self)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: animated)
     }
 
-    func go(to dest: Destination, sender: Any? = nil) {
+    func go(to dest: Destination) {
         switch dest {
         case .singlePwd:
             openChangePassword(ofType: ChangeSinglePasswordViewModel.self)
@@ -89,6 +81,16 @@ class SettingsAccountCoordinator {
         case .conversation:
             openConversationSettings()
         }
+    }
+
+    func follow(deepLink: DeepLink?) {
+        guard let node = deepLink?.popFirst else {
+            return
+        }
+        guard let destination = Destination(rawValue: node.name) else {
+            return
+        }
+        go(to: destination)
     }
 
     private func openChangePassword<T: ChangePasswordViewModel>(ofType viewModelType: T.Type) {
@@ -129,4 +131,8 @@ class SettingsAccountCoordinator {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+}
+
+extension DeepLink.Node {
+    static let conversationMode = DeepLink.Node.init(name: "conversation_mode")
 }

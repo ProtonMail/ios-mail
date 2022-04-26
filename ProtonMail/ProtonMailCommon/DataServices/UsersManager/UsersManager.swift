@@ -449,8 +449,9 @@ extension UsersManager {
             self.users = []
             self.save()
 
-            // device level service
-            keymaker.wipeMainKey()
+            if !ProcessInfo.isRunningUnitTests {
+                keymaker.wipeMainKey()
+            }
             // good opportunity to remove all temp folders
             FileManager.default.cleanTemporaryDirectory()
             // some tests are messed up without tmp folder, so let's keep it for consistency
