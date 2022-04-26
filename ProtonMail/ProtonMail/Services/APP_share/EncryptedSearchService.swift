@@ -2529,7 +2529,7 @@ extension EncryptedSearchService {
                 self.messageService?.lastUpdatedStore.clear()
                 self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .singleMessage)
                 self.messageService?.lastUpdatedStore.removeUpdateTime(by: userID, type: .conversation)
-                localStorageViewModel.isCachedDataDeleted.value = true
+                // localStorageViewModel.isCachedDataDeleted.value = true
                 self.deletingCacheInProgress = false
             }
         }
